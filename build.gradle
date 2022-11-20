@@ -1,0 +1,51 @@
+plugins {
+	id 'java'
+	id 'org.springframework.boot' version '2.7.5'
+	id 'io.spring.dependency-management' version '1.0.15.RELEASE'
+}
+
+compileJava {
+	options.compilerArgs << '-Xlint'
+}
+
+group = 'eu.helium-iot'
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = '11'
+
+repositories {
+	mavenCentral()
+	jcenter()
+	maven {
+		url "https://repo.eclipse.org/content/repositories/paho-releases/"
+	}
+}
+
+bootJar {
+	launchScript()
+}
+
+dependencies {
+	implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
+	implementation 'org.springframework.boot:spring-boot-starter-mail'
+	implementation 'org.springframework.boot:spring-boot-starter-security'
+	implementation 'org.springframework.boot:spring-boot-starter-web'
+	implementation 'org.springframework.boot:spring-boot-starter-validation'
+	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+	implementation 'org.springframework.boot:spring-boot-starter-data-redis'
+	implementation 'org.eclipse.paho:org.eclipse.paho.client.mqttv3:1.2.5'
+	implementation group: 'org.postgresql', name: 'postgresql', version: '42.5.0'
+	implementation group: 'redis.clients', name: 'jedis', version: '4.3.1'
+	implementation group: 'com.google.protobuf', name: 'protobuf-java-util', version: '3.21.9'
+	implementation group: 'io.grpc', name: 'grpc-okhttp', version: '1.50.2'
+	implementation group: 'io.springfox', name: 'springfox-boot-starter', version: '3.0.0'
+	implementation group: 'io.springfox', name: 'springfox-swagger-ui', version: '3.0.0'
+	implementation group: 'javax.xml.bind', name: 'jaxb-api', version: '2.3.1'
+
+	runtimeOnly 'org.postgresql:postgresql'
+	//testImplementation 'org.springframework.boot:spring-boot-starter-test'
+}
+
+
+tasks.named('test') {
+	useJUnitPlatform()
+}

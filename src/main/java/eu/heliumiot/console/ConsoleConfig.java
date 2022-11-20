@@ -1,0 +1,368 @@
+/*
+ * Copyright (c) - Paul Pinault (aka disk91) - 2018.
+ *
+ *    Permission is hereby granted, free of charge, to any person obtaining a copy of this software
+ *    and associated documentation files (the "Software"), to deal in the Software without restriction,
+ *    including without limitation the rights to use, copy, modify, merge, publish, distribute,
+ *    sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is
+ *    furnished to do so, subject to the following conditions:
+ *
+ *    The above copyright notice and this permission notice shall be included in all copies or
+ *    substantial portions of the Software.
+ *
+ *    THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ *    IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS
+ *    FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS
+ *    OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
+ *    WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR
+ *    IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+ */
+
+package eu.heliumiot.console;
+
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.PropertySource;
+
+@Configuration
+@PropertySource("application.properties")
+@PropertySource(value = {"file:${config.file}"}, ignoreResourceNotFound = true)
+public class ConsoleConfig {
+
+    // =====================================
+    // Application Misc
+    // =====================================
+    @Value("${config.file}")
+    private String configFile;
+    public String getConfigFile() {
+        return configFile;
+    }
+
+    // =====================================
+    // BILLING
+    // =====================================
+    @Value ("${helium.billing.dcBalanceStop.default}")
+    private String heliumBillingDcBalanceStopDefault;
+
+    @Value ("${helium.billing.dcBalanceStop}")
+    private String heliumBillingDcBalanceStopExternal;
+
+    @Value ("${helium.billing.freeTenantDc.default}")
+    private String heliumBillingFreeTenantDcDefault;
+
+
+    @Value ("${helium.billing.freeTenantDc}")
+    private String heliumBillingFreeTenantDcExternal;
+
+    @Value ("${helium.billing.dcPer24BytesMessage.default}")
+    private String heliumBillingDcPer24BytesMessageDefault;
+
+    @Value ("${helium.billing.dcPer24BytesMessage}")
+    private String heliumBillingDcPer24BytesMessageExternal;
+
+    @Value ("${helium.billing.dcPer24BDuplicate.default}")
+    private String heliumBillingDcPer24BDuplicateDefault;
+
+    @Value ("${helium.billing.dcPer24BDuplicate}")
+    private String heliumBillingDcPer24BDuplicateExternal;
+
+    @Value ("${helium.billing.dcPer24BDownlink.default}")
+    private String heliumBillingDcPer24BDownlinkDefault;
+
+    @Value ("${helium.billing.dcPer24BDownlink}")
+    private String heliumBillingDcPer24BDownlinkExternal;
+
+    @Value ("${helium.billing.dcPerDeviceInserted.default}")
+    private String heliumBillingDcPerDeviceInsertedDefault;
+
+    @Value ("${helium.billing.dcPerDeviceInserted}")
+    private String heliumBillingDcPerDeviceInsertedExternal;
+
+    @Value ("${helium.billing.inactivityBillingPeriodMs.default}")
+    private String heliumBillingInactivityBillingPeriodMsDefault;
+
+    @Value ("${helium.billing.inactivityBillingPeriodMs}")
+    private String heliumBillingInactivityBillingPeriodMsExternal;
+
+    @Value ("${helium.billing.dcPerInactivityPeriod.default}")
+    private String heliumBillingDcPerInactivityPeriodDefault;
+
+    @Value ("${helium.billing.dcPerInactivityPeriod}")
+    private String heliumBillingDcPerInactivityPeriodExternal;
+
+    @Value ("${helium.billing.activityBillingPeriod.default}")
+    private String heliumBillingActivityBillingPeriodDefault;
+
+    @Value ("${helium.billing.activityBillingPeriod}")
+    private String heliumBillingActivityBillingPeriodExternal;
+
+    @Value ("${helium.billing.dcPerActivityPeriod.default}")
+    private String heliumBillingDcPerActivityPeriodDefault;
+
+    @Value ("${helium.billing.dcPerActivityPeriod}")
+    private String heliumBillingDcPerActivityPeriodExternal;
+
+
+
+    @Value ("${helium.billing.maxDcPerDevice.default}")
+    private String heliumBillingMaxDcPerDeviceDefault;
+
+    @Value ("${helium.billing.maxDcPerDevice}")
+    private String heliumBillingMaxDcPerDeviceExternal;
+
+    @Value ("${helium.billing.limitDcRatePerDevice.default}")
+    private String heliumBillingLimitDcRatePerDeviceDefault;
+
+    @Value ("${helium.billing.limitDcRatePerDevice}")
+    private String heliumBillingLimitDcRatePerDeviceExternal;
+
+    @Value ("${helium.billing.limitDcRatePeriod.default}")
+    private String heliumBillingLimitDcRatePeriodDefault;
+
+    @Value ("${helium.billing.limitDcRatePeriod}")
+    private String heliumBillingLimitDcRatePeriodExternal;
+
+
+    public String getHeliumBillingDcBalanceStopDefault() {
+        return heliumBillingDcBalanceStopDefault;
+    }
+
+    public String getHeliumBillingDcBalanceStopExternal() {
+        return heliumBillingDcBalanceStopExternal;
+    }
+
+    public String getHeliumBillingDcPer24BytesMessageDefault() {
+        return heliumBillingDcPer24BytesMessageDefault;
+    }
+
+    public String getHeliumBillingDcPer24BytesMessageExternal() {
+        return heliumBillingDcPer24BytesMessageExternal;
+    }
+
+    public String getHeliumBillingDcPer24BDuplicateDefault() {
+        return heliumBillingDcPer24BDuplicateDefault;
+    }
+
+    public String getHeliumBillingDcPer24BDuplicateExternal() {
+        return heliumBillingDcPer24BDuplicateExternal;
+    }
+
+    public String getHeliumBillingDcPer24BDownlinkDefault() {
+        return heliumBillingDcPer24BDownlinkDefault;
+    }
+
+    public String getHeliumBillingDcPer24BDownlinkExternal() {
+        return heliumBillingDcPer24BDownlinkExternal;
+    }
+
+    public String getHeliumBillingDcPerDeviceInsertedDefault() {
+        return heliumBillingDcPerDeviceInsertedDefault;
+    }
+
+    public String getHeliumBillingDcPerDeviceInsertedExternal() {
+        return heliumBillingDcPerDeviceInsertedExternal;
+    }
+
+    public String getHeliumBillingInactivityBillingPeriodMsDefault() {
+        return heliumBillingInactivityBillingPeriodMsDefault;
+    }
+
+    public String getHeliumBillingInactivityBillingPeriodMsExternal() {
+        return heliumBillingInactivityBillingPeriodMsExternal;
+    }
+
+    public String getHeliumBillingDcPerInactivityPeriodDefault() {
+        return heliumBillingDcPerInactivityPeriodDefault;
+    }
+
+    public String getHeliumBillingDcPerInactivityPeriodExternal() {
+        return heliumBillingDcPerInactivityPeriodExternal;
+    }
+
+    public String getHeliumBillingActivityBillingPeriodDefault() {
+        return heliumBillingActivityBillingPeriodDefault;
+    }
+
+    public String getHeliumBillingActivityBillingPeriodExternal() {
+        return heliumBillingActivityBillingPeriodExternal;
+    }
+
+    public String getHeliumBillingDcPerActivityPeriodDefault() {
+        return heliumBillingDcPerActivityPeriodDefault;
+    }
+
+    public String getHeliumBillingDcPerActivityPeriodExternal() {
+        return heliumBillingDcPerActivityPeriodExternal;
+    }
+
+    public String getHeliumBillingFreeTenantDcDefault() {
+        return heliumBillingFreeTenantDcDefault;
+    }
+
+    public String getHeliumBillingFreeTenantDcExternal() {
+        return heliumBillingFreeTenantDcExternal;
+    }
+
+    public String getHeliumBillingMaxDcPerDeviceDefault() {
+        return heliumBillingMaxDcPerDeviceDefault;
+    }
+
+    public String getHeliumBillingLimitDcRatePerDeviceDefault() {
+        return heliumBillingLimitDcRatePerDeviceDefault;
+    }
+
+    public String getHeliumBillingLimitDcRatePeriodDefault() {
+        return heliumBillingLimitDcRatePeriodDefault;
+    }
+
+    public String getHeliumBillingMaxDcPerDeviceExternal() {
+        return heliumBillingMaxDcPerDeviceExternal;
+    }
+
+    public String getHeliumBillingLimitDcRatePerDeviceExternal() {
+        return heliumBillingLimitDcRatePerDeviceExternal;
+    }
+
+    public String getHeliumBillingLimitDcRatePeriodExternal() {
+        return heliumBillingLimitDcRatePeriodExternal;
+    }
+
+    public int getHeliumBillingMaxDcPerDevice() {
+        if ( getHeliumBillingMaxDcPerDeviceExternal().length() > 0 ) return Integer.parseInt(getHeliumBillingMaxDcPerDeviceExternal());
+        return Integer.parseInt(getHeliumBillingMaxDcPerDeviceDefault());
+    }
+
+    public int getHeliumBillingLimitDcRatePerDevice() {
+        if ( getHeliumBillingLimitDcRatePerDeviceExternal().length() > 0 ) return Integer.parseInt(getHeliumBillingLimitDcRatePerDeviceExternal());
+        return Integer.parseInt(getHeliumBillingLimitDcRatePerDeviceDefault());
+    }
+
+    public long getHeliumBillingLimitDcRatePeriod() {
+        if ( getHeliumBillingLimitDcRatePeriodExternal().length() > 0 ) return Integer.parseInt(getHeliumBillingLimitDcRatePeriodExternal());
+        return Long.parseLong(getHeliumBillingLimitDcRatePeriodDefault());
+    }
+
+    public int getHeliumBillingFreeTenantDc() {
+        if ( getHeliumBillingFreeTenantDcExternal().length() > 0 ) return Integer.parseInt(getHeliumBillingFreeTenantDcExternal());
+        return Integer.parseInt(getHeliumBillingFreeTenantDcDefault());
+    }
+
+    public int getHeliumBillingDcBalanceStop() {
+        if ( getHeliumBillingDcBalanceStopExternal().length() > 0 ) return Integer.parseInt(getHeliumBillingDcBalanceStopExternal());
+        return Integer.parseInt(getHeliumBillingDcBalanceStopDefault());
+    }
+
+    public int getHeliumBillingDcPer24BytesMessage() {
+        if ( getHeliumBillingDcPer24BytesMessageExternal().length() > 0 ) return Integer.parseInt(getHeliumBillingDcPer24BytesMessageExternal());
+        return Integer.parseInt(getHeliumBillingDcPer24BytesMessageDefault());
+    }
+
+    public int getHeliumBillingDcPer24BDuplicate() {
+        if ( getHeliumBillingDcPer24BDuplicateExternal().length() > 0 ) return Integer.parseInt(getHeliumBillingDcPer24BDuplicateExternal());
+        return Integer.parseInt(getHeliumBillingDcPer24BDuplicateDefault());
+    }
+
+    public int getHeliumBillingDcPer24BDownlink() {
+        if ( getHeliumBillingDcPer24BDownlinkExternal().length() > 0 ) return Integer.parseInt(getHeliumBillingDcPer24BDownlinkExternal());
+        return Integer.parseInt(getHeliumBillingDcPer24BDownlinkDefault());
+    }
+
+
+    public int getHeliumBillingDcPerDeviceInserted() {
+        if ( getHeliumBillingDcPerDeviceInsertedExternal().length() > 0 ) return Integer.parseInt(getHeliumBillingDcPerDeviceInsertedExternal());
+        return Integer.parseInt(getHeliumBillingDcPerDeviceInsertedDefault());
+    }
+
+
+    public long getHeliumBillingInactivityBillingPeriodMs() {
+        if ( getHeliumBillingInactivityBillingPeriodMsExternal().length() > 0 ) return Long.parseLong(getHeliumBillingInactivityBillingPeriodMsExternal());
+        return Long.parseLong(getHeliumBillingInactivityBillingPeriodMsDefault());
+    }
+
+
+    public int getHeliumBillingDcPerInactivityPeriod() {
+        if ( getHeliumBillingDcPerInactivityPeriodExternal().length() > 0 ) return Integer.parseInt(getHeliumBillingDcPerInactivityPeriodExternal());
+        return Integer.parseInt(getHeliumBillingDcPerInactivityPeriodDefault());
+    }
+
+
+    public long getHeliumBillingActivityBillingPeriod() {
+        if ( getHeliumBillingActivityBillingPeriodExternal().length() > 0 ) return Long.parseLong(getHeliumBillingActivityBillingPeriodExternal());
+        return Long.parseLong(getHeliumBillingActivityBillingPeriodDefault());
+    }
+
+
+    public int getHeliumBillingDcPerActivityPeriod() {
+        if ( getHeliumBillingDcPerActivityPeriodExternal().length() > 0 ) return Integer.parseInt(getHeliumBillingDcPerActivityPeriodExternal());
+        return Integer.parseInt(getHeliumBillingDcPerActivityPeriodDefault());
+    }
+
+
+    // =====================================
+    // MQTT
+    // =====================================
+    @Value("${mqtt.server}")
+    private String mqttServerExternal;
+    protected String getMqttServerExternal() {
+        return mqttServerExternal;
+    }
+
+    @Value("${mqtt.login}")
+    private String mqttLoginExternal;
+    protected String getMqttLoginExternal() {
+        return mqttLoginExternal;
+    }
+
+    @Value("${mqtt.password}")
+    private String mqttPasswordExternal;
+    protected String getMqttPasswordExternal() {
+        return mqttPasswordExternal;
+    }
+
+    @Value("${mqtt.id}")
+    private String mqttIdExternal;
+    protected String getMqttIdExternal() {
+        return mqttIdExternal;
+    }
+
+    @Value("${mqtt.server.default}")
+    private String mqttServerDefault;
+    protected String getMqttServerDefault() {
+        return mqttServerDefault;
+    }
+
+    @Value("${mqtt.login.default}")
+    private String mqttLoginDefault;
+    public String getMqttLoginDefault() {
+        return mqttLoginDefault;
+    }
+
+    @Value("${mqtt.password.default}")
+    private String mqttPasswordDefault;
+    public String getMqttPasswordDefault() {
+        return mqttPasswordDefault;
+    }
+
+    @Value("${mqtt.id.default}")
+    private String mqttIdDefault;
+    public String getMqttIdDefault() {
+        return mqttIdDefault;
+    }
+
+    public String getMqttServer() {
+        if (this.getMqttServerExternal().length() > 0) return this.getMqttServerExternal();
+        return this.getMqttServerDefault();
+    }
+    public String getMqttId() {
+        if (this.getMqttIdExternal().length() > 0) return this.getMqttIdExternal();
+        return this.getMqttIdDefault();
+    }
+    public String getMqttLogin() {
+        if (this.getMqttLoginExternal().length() > 0) return this.getMqttLoginExternal();
+        return this.getMqttLoginDefault();
+    }
+    public String getMqttPassword() {
+        if (this.getMqttPasswordExternal().length() > 0) return this.getMqttPasswordExternal();
+        return this.getMqttPasswordDefault();
+    }
+}
