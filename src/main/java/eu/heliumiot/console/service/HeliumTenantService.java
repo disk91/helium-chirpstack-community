@@ -19,12 +19,17 @@
  */
 package eu.heliumiot.console.service;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
 import eu.heliumiot.console.ConsoleConfig;
 import eu.heliumiot.console.jpa.db.HeliumTenant;
 import eu.heliumiot.console.jpa.db.HeliumTenantSetup;
+import eu.heliumiot.console.mqtt.MqttSender;
 import eu.heliumiot.console.mqtt.api.HeliumDeviceStatItf;
 import eu.heliumiot.console.jpa.repository.HeliumTenantRepository;
 import eu.heliumiot.console.jpa.repository.HeliumTenantSetupRepository;
+import eu.heliumiot.console.mqtt.api.HeliumTenantActDeactItf;
 import fr.ingeniousthings.tools.Now;
 import fr.ingeniousthings.tools.ObjectCache;
 import org.slf4j.Logger;
@@ -156,6 +161,7 @@ public class HeliumTenantService {
             t = new HeliumTenant();
             t.setTenantUUID(tenantUUID);
             t.setDcBalance(ts.getFreeTenantDc());
+            t.setState(HeliumTenant.TenantState.NORMAL);
             return heliumTenantRepository.save(t);
         } else return t;
     }
@@ -164,7 +170,44 @@ public class HeliumTenantService {
         heliumTenantRepository.save(t);
     }
 
-    public HeliumDeviceStatItf processUplink(String tenantUUID, String deviceUUID,  int payloadSize, int duplicates) {
+    // ======================================================
+    // Async reporting
+    // ======================================================
+
+    protected ObjectMapper mapper;
+
+    @PostConstruct
+    private void initHeliumDeviceService() {
+        mapper = new ObjectMapper();
+        mapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
+        mapper.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
+        mapper.configure(SerializationFeature.FAIL_ON_SELF_REFERENCES, false);
+    }
+
+    @Autowired
+    protected MqttSender mqttSender;
+
+    public void reportStatToMqtt(HeliumDeviceStatItf i) {
+
+        try {
+            mqttSender.publishMessage(
+                    "helium/device/stats/" + i.getDeviceId(),
+                    mapper.writeValueAsString(i),
+                    2
+            );
+        } catch (Exception x) {
+            log.error("Something went wrong with publishing on MQTT");
+            log.error(x.getMessage());
+        }
+
+    }
+
+
+    // ======================================================
+    // Manage consumption
+    // ======================================================
+
+    public void processUplink(String tenantUUID, String deviceUUID,  int payloadSize, int duplicates) {
         log.info("Payload Size "+payloadSize);
         long start = Now.NowUtcMs();
         HeliumDeviceStatItf i = new HeliumDeviceStatItf();
@@ -176,7 +219,7 @@ public class HeliumTenantService {
             ts = this.getHeliumTenantSetup(tenantUUID);
             if ( ts == null ) {
                 log.error("Should not be  here ... (1)");
-                return i;
+                return;
             }
         }
         synchronized (this) {
@@ -193,15 +236,16 @@ public class HeliumTenantService {
                 i.setUplinkDc(uplinkDc);
                 i.setDuplicateDc(duplicateDc);
                 i.setUplink(1);
-                i.setEmpty(false);
+                reportStatToMqtt(i);
 
                 // check deactivation
-                processBalance(ts,t);
+                if ( !processBalance(ts,t) ) {
+                    this.flushHeliumTenant(t);
+                }
             }
         }
 
         log.debug("Process UPLINK in "+(Now.NowUtcMs()-start)+"ms");
-        return i;
     }
 
 
@@ -217,14 +261,17 @@ public class HeliumTenantService {
 
                 HeliumTenantSetup ts = this.getHeliumTenantSetup(infos.getTenantId());
                 if ( ts != null ) {
-                    processBalance(ts, t);
+                    if ( !processBalance(ts,t) ) {
+                        this.flushHeliumTenant(t);
+                    }
                 }
             }
         }
+        reportStatToMqtt(infos);
         log.debug("Process INSERT ACTIVITY INACTIVITY in "+(Now.NowUtcMs()-start)+"ms");
     }
 
-    public HeliumDeviceStatItf processJoin(String tenantUUID, String deviceUUID) {
+    public void processJoin(String tenantUUID, String deviceUUID) {
         long start = Now.NowUtcMs();
         HeliumDeviceStatItf i = new HeliumDeviceStatItf();
         i.setDeviceId(deviceUUID);
@@ -235,7 +282,7 @@ public class HeliumTenantService {
             ts = this.getHeliumTenantSetup(tenantUUID);
             if ( ts == null ) {
                 log.error("Should not be  here ... (2)");
-                return i;
+                return;
             }
         }
         synchronized (this) {
@@ -252,33 +299,48 @@ public class HeliumTenantService {
                 i.setDownlinkDc(downlinkDc);
                 i.setJoin(1);
                 i.setDownlink(1); // JOIN ACCEPT
-                i.setEmpty(false);
+                reportStatToMqtt(i);
 
                 // check deactivation
-                processBalance(ts,t);
+                if ( !processBalance(ts,t) ) {
+                    this.flushHeliumTenant(t);
+                }
             }
         }
         log.debug("Process JOIN in "+(Now.NowUtcMs()-start)+"ms");
-        return i;
     }
+
 
     /**
      * Process the tenant balance and return false when the balance has reached a minimum
      * value and devices needs to be blocked.
-     * ?? Peut etre le mettre au niveau du tenant ce flag pour un processing plus global
-     * @return
+     * The device modification is asynchronously managed
+     * @return false when the tenant runs out of DCs and deactiviation is requested
      */
     protected boolean processBalance(HeliumTenantSetup ts, HeliumTenant t) {
-        // @ TODO faire la gestion de la desactivation pour manque de DCs
-        // action on update the balance
-
-        // call deactivation with state OUTOFDCS when needed
-
-        // on fait un appel asynchrone qui met ca a zero
-        // meme file que la reactivation comme ca on traite en sequence
-
         if ( t.getDcBalance() < ts.getDcBalanceStop() ) {
+            ObjectMapper mapper = new ObjectMapper();
+            mapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
+            mapper.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
+            mapper.configure(SerializationFeature.FAIL_ON_SELF_REFERENCES, false);
+
             // manage deactivation
+            t.setState(HeliumTenant.TenantState.REQUESTDEACTIVATION);
+            HeliumTenantActDeactItf i = new HeliumTenantActDeactItf();
+            i.setActivateTenant(false);
+            i.setDeactivateTenant(true);
+            i.setTenantId(t.getTenantUUID());
+            i.setTime(Now.NowUtcMs());
+            try {
+                mqttSender.publishMessage(
+                        "helium/tenant/manage/" + i.getTenantId(),
+                        mapper.writeValueAsString(i),
+                        2
+                );
+            } catch (Exception x) {
+                log.error("Something went wrong with publishing on MQTT tenant deactivation");
+                log.error(x.getMessage());
+            }
             return false;
         } else {
             return true;
@@ -286,5 +348,27 @@ public class HeliumTenantService {
 
     }
 
+    /**
+     * Commit tenant deactivation once made asynchronously
+     */
+    public void commitTenantDeactivation(String tenantUUID) {
+        synchronized (this) {
+            HeliumTenant t = this.getHeliumTenant(tenantUUID);
+            if (t != null) {
+                t.setState(HeliumTenant.TenantState.DEACTIVATED);
+                this.flushHeliumTenant(t);
+            }
+        }
+    }
+
+    public void commitTenantReactivation(String tenantUUID) {
+        synchronized (this) {
+            HeliumTenant t = this.getHeliumTenant(tenantUUID);
+            if (t != null) {
+                t.setState(HeliumTenant.TenantState.NORMAL);
+                this.flushHeliumTenant(t);
+            }
+        }
+    }
 
 }

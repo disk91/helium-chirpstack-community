@@ -43,8 +43,6 @@ public class HeliumDeviceStatItf {
     protected int downlink = 0;
     protected int join=0;
 
-    protected boolean empty = true;
-
     // ---
 
     public String getDeviceId() {
@@ -133,14 +131,6 @@ public class HeliumDeviceStatItf {
 
     public void setJoin(int join) {
         this.join = join;
-    }
-
-    public boolean isEmpty() {
-        return empty;
-    }
-
-    public void setEmpty(boolean empty) {
-        this.empty = empty;
     }
 
     public String getTenantId() {

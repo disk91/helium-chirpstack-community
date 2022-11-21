@@ -32,6 +32,8 @@ import java.util.UUID;
 )
 public class HeliumTenant {
 
+    public enum TenantState { NORMAL, REQUESTDEACTIVATION, DEACTIVATED, DELETED }
+
     @Id
     @GenericGenerator(name = "UUIDGenerator", strategy = "uuid2")
     @GeneratedValue(generator = "UUIDGenerator")
@@ -45,6 +47,8 @@ public class HeliumTenant {
     // tenant DCs balance
     private long dcBalance;
 
+    // tenant state
+    private TenantState state;
 
 
     // ---
@@ -73,5 +77,13 @@ public class HeliumTenant {
 
     public void setTenantUUID(String tenantUUID) {
         this.tenantUUID = tenantUUID;
+    }
+
+    public TenantState getState() {
+        return state;
+    }
+
+    public void setState(TenantState state) {
+        this.state = state;
     }
 }

@@ -27,6 +27,8 @@ import eu.heliumiot.console.ConsoleConfig;
 import eu.heliumiot.console.mqtt.api.HeliumDeviceActDeactItf;
 import eu.heliumiot.console.mqtt.api.HeliumDeviceStatItf;
 import eu.heliumiot.console.jpa.repository.TenantRepository;
+import eu.heliumiot.console.mqtt.api.HeliumTenantActDeactItf;
+import eu.heliumiot.console.service.HeliumDeviceService;
 import eu.heliumiot.console.service.HeliumDeviceStatService;
 import eu.heliumiot.console.service.HeliumTenantService;
 import fr.ingeniousthings.tools.DateConverters;
@@ -125,13 +127,13 @@ public class MqttListener implements MqttCallback {
         }
 
         @Autowired
-        protected TenantRepository tenantRepository;
-
-        @Autowired
         protected HeliumTenantService heliumTenantService;
 
         @Autowired
         protected HeliumDeviceStatService heliumDeviceStatService;
+
+        @Autowired
+        protected HeliumDeviceService heliumDeviceService;
 
         @Override
         public void messageArrived(String topicName, MqttMessage message) throws Exception {
@@ -182,25 +184,12 @@ public class MqttListener implements MqttCallback {
                                         //log.info("Tenant " + t.getName() + " with " + t.getMax_device_count());
                                         //HeliumTenant ht = heliumTenantService.getHeliumTenant(e.getDeviceInfo().getTenantId());
                                         //log.info("Tenant DCs is " + ht.getDcBalance());
-                                        HeliumDeviceStatItf i = heliumTenantService.processUplink(
+                                        heliumTenantService.processUplink(
                                                 e.getDeviceInfo().getTenantId(),
                                                 e.getDeviceInfo().getDevEui(),
                                                 Base64.decode(e.getData()).length,
                                                 e.getRxInfo().size() - 1
                                         );
-                                        // Async publishing for device stats
-                                        if ( ! i.isEmpty() ) {
-                                                try {
-                                                        this.publishMessage(
-                                                                "helium/device/stats/" + e.getDeviceInfo().getDevEui(),
-                                                                mapper.writeValueAsString(i),
-                                                                2
-                                                        );
-                                                } catch (Exception x) {
-                                                        log.error("Something went wrong with publishing on MQTT");
-                                                        log.error(x.getMessage());
-                                                }
-                                        }
                                         /*
                                 } else {
                                         log.error("Tenant not found");
@@ -220,23 +209,10 @@ public class MqttListener implements MqttCallback {
                         try {
                                 JoinEvent e = mapper.readValue(message.toString(), JoinEvent.class);
                                 log.info("Dev: " + e.getDeviceInfo().getDeviceName() + " Adr:" + e.getDevAddr() + " timestamp :" + DateConverters.StringDateToMs(e.getTime()));
-                                HeliumDeviceStatItf i = heliumTenantService.processJoin(
+                                heliumTenantService.processJoin(
                                         e.getDeviceInfo().getTenantId(),
                                         e.getDeviceInfo().getDevEui()
                                 );
-                                // Async publishing for device stats
-                                if (!i.isEmpty()) {
-                                        try {
-                                                this.publishMessage(
-                                                        "helium/device/stats/" + e.getDeviceInfo().getDevEui(),
-                                                        mapper.writeValueAsString(i),
-                                                        2
-                                                );
-                                        } catch (Exception x) {
-                                                log.error("Something went wrong with publishing on MQTT");
-                                                log.error(x.getMessage());
-                                        }
-                                }
                         } catch (JsonProcessingException x) {
                                 log.error("MQTT - failed to parse App uplink - " + x.getMessage());
                                 x.printStackTrace();
@@ -270,20 +246,19 @@ public class MqttListener implements MqttCallback {
                         heliumDeviceStatService.updateDeviceStat(e);
                 } else if ( topicName.matches("helium/device/deactivate/.*") ) {
                         HeliumDeviceActDeactItf e = mapper.readValue(message.toString(), HeliumDeviceActDeactItf.class);
-                        // @Todo process the deactivation message
-                        log.error("Need to process device deactivation message");
+                        heliumDeviceService.processDeviceDeactivation(e);
                 } else if ( topicName.matches("helium/device/activate/.*") ) {
                         HeliumDeviceActDeactItf e = mapper.readValue(message.toString(), HeliumDeviceActDeactItf.class);
-                        // @Todo process the activation message
-                        log.error("Need to process device activation message");
-                } else if ( topicName.matches("helium/tenant/deactivate/.*") ) {
-                        //HeliumDeviceActDeactItf e = mapper.readValue(message.toString(), HeliumDeviceActDeactItf.class);
-                        // @Todo process the tenant deactivation message (out of DCs)
-                        log.error("Need to process tenant activation message");
-                } else if ( topicName.matches("helium/tenant/reactivate/.*") ) {
-                        //HeliumDeviceActDeactItf e = mapper.readValue(message.toString(), HeliumDeviceActDeactItf.class);
-                        // @Todo process the tenant reactivation message (DCs amount increased)
-                        log.error("Need to process tenant activation message");
+                        heliumDeviceService.processDeviceReactivation(e);
+                } else if ( topicName.matches("helium/tenant/manage/.*") ) {
+                        HeliumTenantActDeactItf e = mapper.readValue(message.toString(), HeliumTenantActDeactItf.class);
+                        if( e.isActivateTenant() ) {
+                                heliumDeviceService.processTenantReactivation(e.getTenantId());
+                        } else if ( e.isDeactivateTenant() ) {
+                                heliumDeviceService.processTenantDeactivation(e.getTenantId());
+                        } else {
+                                log.error("Invalid state for manage tenant request");
+                        }
                 } else {
                         // standard json messages
                         log.info("MQTT - message "+message);

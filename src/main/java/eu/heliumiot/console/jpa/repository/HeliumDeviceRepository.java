@@ -32,10 +32,16 @@ public interface HeliumDeviceRepository extends CrudRepository<HeliumDevice, UUI
 
     public HeliumDevice findOneHeliumDeviceByDeviceEui(String deviceId);
 
-    @Query("select * from helium_devices left join device on device.dev_eui = helium_devices.deviceuuid where device.dev_eui is null")
+    @Query("SELECT * FROM helium_devices LEFT JOIN device on device.dev_eui = helium_devices.deviceuuid where device.dev_eui is null")
     public List<HeliumDevice> findDeletedDevices();
 
     @Query("SELECT * FROM helium_devices WHERE toUpdate IS TRUE ORDER BY lastSeen ASC LIMIT ?1")
     public List<HeliumDevice> findHeliumDeviceToProcess(int limit);
 
+    public List<HeliumDevice> findHeliumDeviceByTenantUUID(
+            String tenantUUID
+    );
+
+
 }
+

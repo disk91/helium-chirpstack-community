@@ -23,10 +23,10 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import eu.heliumiot.console.jpa.db.*;
-import eu.heliumiot.console.mqtt.MqttListener;
 import eu.heliumiot.console.jpa.repository.ApplicationRepository;
 import eu.heliumiot.console.jpa.repository.DeviceRepository;
 import eu.heliumiot.console.jpa.repository.HeliumDeviceRepository;
+import eu.heliumiot.console.mqtt.MqttSender;
 import eu.heliumiot.console.mqtt.api.HeliumDeviceActDeactItf;
 import eu.heliumiot.console.mqtt.api.HeliumDeviceStatItf;
 import fr.ingeniousthings.tools.HexaConverters;
@@ -82,7 +82,7 @@ public class HeliumDeviceService {
     protected HeliumDeviceStatService heliumDeviceStatService;
 
     @Autowired
-    protected MqttListener mqttListener;
+    protected MqttSender mqttSender;
 
     protected ObjectMapper mapper;
 
@@ -94,22 +94,6 @@ public class HeliumDeviceService {
         mapper.configure(SerializationFeature.FAIL_ON_SELF_REFERENCES, false);
     }
 
-    protected void reportBillingOnMqtt(HeliumDeviceStatItf i) {
-        // need to process invoicing
-        heliumTenantService.processDeviceInsertionActivityInactivity(i);
-
-        // need to update stats
-        try {
-            mqttListener.publishMessage(
-                    "helium/device/stats/" + i.getDeviceId(),
-                    mapper.writeValueAsString(i),
-                    2
-            );
-        } catch (Exception x) {
-            log.error("Something went wrong with publishing on MQTT");
-            log.error(x.getMessage());
-        }
-    }
 
     protected void reportDeviceActivationOnMqtt(HeliumDevice hdev) {
         HeliumDeviceActDeactItf i = new HeliumDeviceActDeactItf();
@@ -120,7 +104,7 @@ public class HeliumDeviceService {
         i.setActivateDevice(true);
         i.setDeactivateDevice(false);
         try {
-            mqttListener.publishMessage(
+            mqttSender.publishMessage(
                     "helium/device/activate/" + i.getDeviceId(),
                     mapper.writeValueAsString(i),
                     2
@@ -140,7 +124,7 @@ public class HeliumDeviceService {
         i.setActivateDevice(false);
         i.setDeactivateDevice(true);
         try {
-            mqttListener.publishMessage(
+            mqttSender.publishMessage(
                     "helium/device/deactivate/" + i.getDeviceId(),
                     mapper.writeValueAsString(i),
                     2
@@ -209,9 +193,8 @@ public class HeliumDeviceService {
                 HeliumDeviceStatItf i = new HeliumDeviceStatItf();
                 i.setTenantId(hdev.getTenantUUID());
                 i.setDeviceId(hdev.getDeviceEui());
-                i.setEmpty(false);
                 i.setRegistrationDc(ts.getDcPerDeviceInserted());
-                this.reportBillingOnMqtt(i);
+                heliumTenantService.processDeviceInsertionActivityInactivity(i);
             }
 
             // Declare on Nova Lab Router asynchronously
@@ -360,8 +343,7 @@ public class HeliumDeviceService {
 
                     // send stat and invoicing information
                     if (invoicingReport) {
-                        i.setEmpty(false);
-                        this.reportBillingOnMqtt(i);
+                        heliumTenantService.processDeviceInsertionActivityInactivity(i);
                     }
 
 
@@ -478,30 +460,107 @@ public class HeliumDeviceService {
 
     }
 
+    @Autowired
+    protected NovaService novaService;
 
+    /**
+     * Search all devices of the tenant that are currently
+     * @param tenantID
+     */
     public void processTenantDeactivation(String tenantID) {
-        // @TODO - gestion de la desactivation des devices d'un tenant
-        //  search devices for a tenant
-        // deactivate all devices
-        // state devient OUTOFDCs, update passe à false
-        // pour les device actif seulement, inactif ou inserted uniquement
+        log.debug("Start tenant deactivation for "+tenantID);
+        long start = Now.NowUtcMs();
 
+        ArrayList<NovaDevice> toDeactivate = new ArrayList<>();
+        synchronized (this) {
+            List<HeliumDevice> devices = heliumDeviceRepository.findHeliumDeviceByTenantUUID(tenantID);
+            for ( HeliumDevice d : devices ) {
 
+                if (
+                        d.getState() == HeliumDevice.DeviceState.ACTIVE ||
+                        d.getState() == HeliumDevice.DeviceState.INACTIVE ||
+                        d.getState() == HeliumDevice.DeviceState.INSERTED
+                ) {
 
+                    d.setState(HeliumDevice.DeviceState.OUTOFDCS);
+                    d.setToUpdate(false);
+                    heliumDeviceRepository.save(d);
+
+                    NovaDevice n = new NovaDevice();
+                    n.devEui = d.getDeviceEui();
+                    n.appEui = d.getApplicationEui();
+                    toDeactivate.add(n);
+
+                }
+            }
+        }
+        novaService.deactivateDevices(toDeactivate);
+        heliumTenantService.commitTenantDeactivation(tenantID);
+        log.info("tenantDeactivation ("+tenantID+")- processed in " + (Now.NowUtcMs() - start) + "ms");
 
     }
 
     public void processTenantReactivation(String tenantID) {
+        log.debug("Start tenant reactivation for "+tenantID);
+        long start = Now.NowUtcMs();
 
-        // @TODO - gestion de la reactivation des devices d'un tenant
-        //  search devices for a tenant
-        // reactive all devices
-        // state devient INSERTED, update passe à true
-        // il faut juste les outofDCS
-        // il faut reseted les dates de calcul des actif / inactif en meme temps
+        ArrayList<NovaDevice> toReactivate = new ArrayList<>();
+        synchronized (this) {
+            // @todo optimisation by searching only the concerned devices
+            List<HeliumDevice> devices = heliumDeviceRepository.findHeliumDeviceByTenantUUID(tenantID);
+            for ( HeliumDevice d : devices ) {
+
+                if (
+                        d.getState() == HeliumDevice.DeviceState.OUTOFDCS
+                ) {
+                    d.setState(HeliumDevice.DeviceState.INSERTED);
+                    d.setLastActivityInvoiced(start);
+                    d.setLastInactivityInvoiced(start);
+                    d.setToUpdate(true);
+                    d.setLastSeen(start);
+                    heliumDeviceRepository.save(d);
+
+                    NovaDevice n = new NovaDevice();
+                    n.devEui = d.getDeviceEui();
+                    n.appEui = d.getApplicationEui();
+                    toReactivate.add(n);
+
+                }
+            }
+        }
+        novaService.activateDevices(toReactivate);
+        heliumTenantService.commitTenantReactivation(tenantID);
+        log.info("tenantReactivation ("+tenantID+")- processed in " + (Now.NowUtcMs() - start) + "ms");
+
+    }
 
 
+    public void processDeviceDeactivation(HeliumDeviceActDeactItf creds) {
+        log.debug("Start device deactivation for "+creds.getDeviceId());
+        long start = Now.NowUtcMs();
 
+        ArrayList<NovaDevice> toDeactivate = new ArrayList<>();
+
+        NovaDevice n = new NovaDevice();
+        n.devEui = creds.getDeviceId();
+        n.appEui = creds.getAppEui();
+        toDeactivate.add(n);
+
+        novaService.deactivateDevices(toDeactivate);
+    }
+
+    public void processDeviceReactivation(HeliumDeviceActDeactItf creds) {
+        log.debug("Start device (re)activation for "+creds.getDeviceId());
+        long start = Now.NowUtcMs();
+
+        ArrayList<NovaDevice> toReactivate = new ArrayList<>();
+
+        NovaDevice n = new NovaDevice();
+        n.devEui = creds.getDeviceId();
+        n.appEui = creds.getAppEui();
+        toReactivate.add(n);
+
+        novaService.activateDevices(toReactivate);
     }
 
 }
