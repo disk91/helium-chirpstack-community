@@ -51,9 +51,9 @@ public class Now {
         return todayMidnight.toEpochSecond(ZoneOffset.UTC)*1000;
     }
 
-    public static long ThisDayMidnightUtc(long date) {
+    public static long ThisDayMidnightUtc(long timeMs) {
         LocalTime midnight  = LocalTime.MIDNIGHT;
-        LocalDate day     = LocalDate.ofEpochDay(date);
+        LocalDate day     = Instant.ofEpochMilli(timeMs).atZone(ZoneId.of("UTC")).toLocalDate();
         LocalDateTime dayMidnight = LocalDateTime.of(day, midnight);
         return dayMidnight.toEpochSecond(ZoneOffset.UTC)*1000;
     }
