@@ -27,7 +27,7 @@ import java.util.UUID;
 @Entity
 @Table(name = "helium_devices",
         indexes = {
-                @Index(name="uniqueDeviceIndex", columnList = "deviceEui", unique = true),
+                @Index(name="uniqueDeviceIndex", columnList = "device_eui", unique = true),
                 @Index(name="tenantIndex", columnList = "tenantUUID")
         }
 )
@@ -42,8 +42,10 @@ public class HeliumDevice {
     private UUID id;
 
     // device UUID
+    @Column(name = "device_eui")
     private String deviceEui;
 
+    @Column(name = "application_eui")
     private String applicationEui; // usually empty with chirpstack w/o Join server
                                    // for later use
 
@@ -56,30 +58,40 @@ public class HeliumDevice {
     private DeviceState state;
 
     // accelerator related to state to process in batch or not
+    @Column(name = "to_update")
     private boolean toUpdate;
 
+    @Column(name = "created_at")
     private long createdAt;
 
+    @Column(name = "inserted_at")
     private long insertedAt;
 
+    @Column(name = "deleted_at")
     private long deletedAt;
 
     // Last time the device has been processed by the device process batch
+    @Column(name = "last_seen")
     private long lastSeen;
 
     // Activity is invoiced by period, take a note on the last check
+    @Column(name = "last_activity_invoiced")
     private long lastActivityInvoiced;
 
     // Inactivity is invoiced by period, take a note on the last check
+    @Column(name = "last_inactivity_invoiced")
     private long lastInactivityInvoiced;
 
     // Total number of DCs consumed by the device from creation in the past days
+    @Column(name = "totaldcs")
     private long totalDCs;
 
     // At what is the hourly timestamp corresponding to this total
+    @Column(name = "totaldcs_at")
     private long totalDCsAt;
 
     // DCs for current day (this value is not fix in the database and comes from cache for best value)
+    @Column(name = "todaydcs")
     private long todayDCs;
 
     // ---

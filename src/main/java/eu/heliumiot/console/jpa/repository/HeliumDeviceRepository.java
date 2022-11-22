@@ -35,7 +35,7 @@ public interface HeliumDeviceRepository extends CrudRepository<HeliumDevice, UUI
     @Query(value = "SELECT * FROM helium_devices LEFT JOIN device on device.dev_eui = helium_devices.deviceuuid where device.dev_eui is null", nativeQuery = true)
     public List<HeliumDevice> findDeletedDevices();
 
-    @Query(value = "SELECT * FROM helium_devices WHERE toUpdate IS TRUE ORDER BY lastSeen ASC LIMIT ?1", nativeQuery = true)
+    @Query(value = "SELECT * FROM helium_devices WHERE to_update IS TRUE ORDER BY last_seen ASC LIMIT ?1", nativeQuery = true)
     public List<HeliumDevice> findHeliumDeviceToProcess(int limit);
 
     public List<HeliumDevice> findHeliumDeviceByTenantUUID(
