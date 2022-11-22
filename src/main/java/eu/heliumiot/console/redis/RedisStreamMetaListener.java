@@ -30,6 +30,10 @@ public class RedisStreamMetaListener {
 
     private RedisCommands<String, byte[]> syncCommands;
 
+    protected int runningJobs;
+    protected boolean serviceEnable; // false to stop the services
+
+
     @PostConstruct
     public void setupRedisStreamMetaListener() {
         log.info("Init setupRedisStreamMetaListener");
@@ -54,51 +58,70 @@ public class RedisStreamMetaListener {
             // consumer group exist ... basically a normal situation
         }
 
+        this.runningJobs = 0;
+        this.serviceEnable = true;
     }
+
+    // request to stop the service properly
+    public void stopService() {
+        this.serviceEnable = false;
+    }
+
+    // return true when the service has stopped all the running jobs
+    public boolean hasStopped() {
+        return (this.serviceEnable == false && this.runningJobs == 0);
+    }
+
 
     @Scheduled(fixedRateString = "${spring.redis.metaRefreshRate}", initialDelay = 2_000)
     void ListenOnRedisStreamMeta() {
 
+        if ( ! this.serviceEnable ) return;
+        this.runningJobs++;
         long start = Now.NowUtcMs();
         int processed = 0;
+        try {
 
-        @SuppressWarnings("unchecked")
-        List<StreamMessage<String, byte[]>> messages = syncCommands.xreadgroup(
-                Consumer.from(redisConfiguration.getRedisCGroup(), redisConfiguration.getRedisConsumer()),
-                XReadArgs.StreamOffset.lastConsumed(redisConfiguration.getStreamMetaKey())
-        );
+            @SuppressWarnings("unchecked")
+            List<StreamMessage<String, byte[]>> messages = syncCommands.xreadgroup(
+                    Consumer.from(redisConfiguration.getRedisCGroup(), redisConfiguration.getRedisConsumer()),
+                    XReadArgs.StreamOffset.lastConsumed(redisConfiguration.getStreamMetaKey())
+            );
 
-        if (!messages.isEmpty()) {
-            for (StreamMessage<String, byte[]> message : messages) {
-                //log.info(message.getStream());
-                //log.info(message.getId());
-                Map<String, byte[]> m = message.getBody();
-                for (String k : m.keySet()) {
-                    processed++;
-                    if (k.compareToIgnoreCase("up") == 0) {
-                        byte[] byteData = message.getBody().get(k);
-                        try {
-                            UplinkMeta up = UplinkMeta.parseFrom(byteData);
-                            if (up != null) {
-                                log.info("dev_eui: " + up.getDevEui() + " freq : " + up.getTxInfo().getFrequency());
+            if (!messages.isEmpty()) {
+                for (StreamMessage<String, byte[]> message : messages) {
+                    //log.info(message.getStream());
+                    //log.info(message.getId());
+                    Map<String, byte[]> m = message.getBody();
+                    for (String k : m.keySet()) {
+                        processed++;
+                        if (k.compareToIgnoreCase("up") == 0) {
+                            byte[] byteData = message.getBody().get(k);
+                            try {
+                                UplinkMeta up = UplinkMeta.parseFrom(byteData);
+                                if (up != null) {
+                                    log.info("dev_eui: " + up.getDevEui() + " freq : " + up.getTxInfo().getFrequency());
+                                }
+                            } catch (InvalidProtocolBufferException x) {
+                                log.error("Impossible to parse stream:meta type up with " + x.getMessage());
+                                log.info(HexaConverters.byteToHexStringWithSpace(byteData));
                             }
-                        } catch (InvalidProtocolBufferException x) {
-                            log.error("Impossible to parse stream:meta type up with "+x.getMessage());
+                        } else {
+                            log.warn("## Found a new key on stream:meta " + k);
+                            byte[] byteData = message.getBody().get(k);
                             log.info(HexaConverters.byteToHexStringWithSpace(byteData));
                         }
-                    } else {
-                        log.warn("## Found a new key on stream:meta "+k);
-                        byte[] byteData = message.getBody().get(k);
-                        log.info(HexaConverters.byteToHexStringWithSpace(byteData));
                     }
+                    // Confirm that the message has been processed using XACK
+                    syncCommands.xack(
+                            redisConfiguration.getStreamMetaKey(),
+                            redisConfiguration.getRedisCGroup(),
+                            message.getId()
+                    );
                 }
-                // Confirm that the message has been processed using XACK
-                syncCommands.xack(
-                        redisConfiguration.getStreamMetaKey(),
-                        redisConfiguration.getRedisCGroup(),
-                        message.getId()
-                );
             }
+        } finally {
+          this.runningJobs--;
         }
         log.debug("ListenOnRedisStreamMeta - duration "+(Now.NowUtcMs()-start)+" ms, process "+processed+" new entries");
 

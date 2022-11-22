@@ -44,6 +44,9 @@ public class HeliumDeviceStatService {
     @Autowired
     protected HeliumDeviceStatsRepository heliumDeviceStatsRepository;
 
+    protected int runningJobs;
+    protected boolean serviceEnable; // false to stop the services
+
     private ObjectCache<String, HeliumDeviceStat> heliumDeviceStatCache;
     @PostConstruct
     private void initHeliumDeviceStatService() {
@@ -58,23 +61,48 @@ public class HeliumDeviceStatService {
                 heliumDeviceStatsRepository.save(obj);
             }
         };
+
+        runningJobs=0;
+        serviceEnable=true;
     }
 
-    public void stopHeliumDeviceStatService() {
+    // request to stop the service properly
+    public void stopService() {
+        this.serviceEnable = false;
+    }
+
+    // return true when the service has stopped all the running jobs
+    public boolean hasStopped() {
+        return (this.serviceEnable == false && this.runningJobs == 0);
+    }
+
+    public void stopHeliumDeviceStatServiceCache() {
         log.info("Stopping HeliumDeviceStatService");
         this.heliumDeviceStatCache.flush();
     }
 
     @Scheduled(fixedRateString = "${logging.cache.fixedrate}", initialDelay = 62_000)
     protected void cacheStatus() {
-        this.heliumDeviceStatCache.log();
+        if ( ! this.serviceEnable ) return;
+        this.runningJobs++;
+        try {
+            this.heliumDeviceStatCache.log();
+        } finally {
+            this.runningJobs--;
+        }
     }
 
     @Scheduled(fixedRate = 900_000, initialDelay = 900_000)
     protected void cacheFlush() {
-        // sync the cache with DB
+        if ( ! this.serviceEnable ) return;
+        this.runningJobs++;
         long start = Now.NowUtcMs();
-        this.heliumDeviceStatCache.flush();
+        try {
+            // sync the cache with DB
+            this.heliumDeviceStatCache.flush();
+        } finally {
+            this.runningJobs--;
+        }
         log.debug("Device stat cache flushed in "+(Now.NowUtcMs()-start)+"ms");
     }
 

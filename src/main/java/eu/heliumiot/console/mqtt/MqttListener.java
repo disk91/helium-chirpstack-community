@@ -87,6 +87,15 @@ public class MqttListener implements MqttCallback {
                 return this.mqttClient;
         }
 
+        // stop the listener once we request a stop of the application
+        public void stopListner() {
+                try {
+                        this.mqttClient.unsubscribe("#");
+                } catch (MqttException me) {
+                        log.error("MQTT ERROR", me);
+                }
+        }
+
         public void publishMessage(String topic, String message, int qos) {
 
                 try {

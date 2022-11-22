@@ -47,6 +47,9 @@ public class HeliumTenantService {
     @Autowired
     protected ConsoleConfig consoleConfig;
 
+    protected int runningJobs;
+    protected boolean serviceEnable; // false to stop the services
+
     private ObjectCache<String,HeliumTenantSetup> heliumSetupCache;
     @PostConstruct
     private void initHeliumTenantService() {
@@ -78,15 +81,33 @@ public class HeliumTenantService {
             heliumTenantSetupRepository.save(ts);
         }
         this.heliumSetupCache.put(ts,ts.getTenantUUID());
+        runningJobs=0;
+        serviceEnable=true;
     }
 
-    public void stopHeliumTenantService() {
+    // request to stop the service properly
+    public void stopService() {
+        this.serviceEnable = false;
+    }
+
+    // return true when the service has stopped all the running jobs
+    public boolean hasStopped() {
+        return (this.serviceEnable == false && this.runningJobs == 0);
+    }
+
+    public void stopHeliumTenantServiceCache() {
         log.info("Stopping HeliumTenantService");
     }
 
     @Scheduled(fixedRateString = "${logging.cache.fixedrate}", initialDelay = 60_000)
     protected void cacheStatus() {
-        this.heliumSetupCache.log();
+        if ( ! this.serviceEnable ) return;
+        this.runningJobs++;
+        try {
+            this.heliumSetupCache.log();
+        } finally {
+            this.runningJobs--;
+        }
     }
 
     // Get One element from cache, if failed, get it from DB and add it to cache

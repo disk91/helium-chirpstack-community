@@ -22,8 +22,11 @@ package eu.heliumiot.console;
 import eu.heliumiot.console.service.HeliumDeviceStatService;
 import eu.heliumiot.console.service.HeliumTenantService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.CommandLineRunner;
+import org.springframework.boot.ExitCodeGenerator;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.data.redis.core.RedisKeyValueAdapter;
@@ -35,10 +38,28 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 @SpringBootApplication
 @EnableJpaRepositories(basePackages = "eu.heliumiot.console.jpa")
 @EnableRedisRepositories(basePackages = "eu.heliumiot.console.redis", enableKeyspaceEvents = RedisKeyValueAdapter.EnableKeyspaceEvents.ON_STARTUP)
-public class ConsoleApplication {
+public class ConsoleApplication implements CommandLineRunner, ExitCodeGenerator{
+
+	public static ApplicationContext context;
 
 	public static void main(String[] args) {
-		SpringApplication.run(ConsoleApplication.class, args);
+		context = SpringApplication.run(ConsoleApplication.class, args);
+	}
+
+	@Override
+	public void run(String... args) throws Exception {
+		System.out.println("-------------- GO --------------");
+	}
+
+	public static void exit() {
+		int exitCode = SpringApplication.exit(context,new ExitCodeGenerator() {
+			@Override
+			public int getExitCode() {
+				// no errors
+				return 0;
+			}
+		});
+		System.exit(exitCode);
 	}
 
 	@Autowired
@@ -48,8 +69,6 @@ public class ConsoleApplication {
 	HeliumDeviceStatService heliumDeviceStatService;
 
 	public int getExitCode() {
-		heliumTenantService.stopHeliumTenantService();
-		heliumDeviceStatService.stopHeliumDeviceStatService();
 		System.out.println("------------- GONE --------------");
 		return 0;
 	}

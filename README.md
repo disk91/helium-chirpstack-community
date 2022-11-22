@@ -20,3 +20,7 @@
 - Manage multi-tenant chirpstack environment
 - ...
 
+## Stop the application
+- clean exist with cache purge and queing processes
+
+ `curl -fX GET http://127.0.0.1:8090/internal/3.0/exit`
