@@ -28,6 +28,10 @@
 sudo apt-get update
 sudo apt-get install default-jdk
 ```
+
+### configure
+- edit the configuration.properties file to setup the configurations
+
 ### build image
 ```bash
 ./build.sh
@@ -35,7 +39,7 @@ sudo apt-get install default-jdk
 
 ### run image ( not yet ready )
 ```bash
-docker run --name console disk91/console
+docker run --name console --network="host" disk91/console
 ```
 
 ## Stop the application
