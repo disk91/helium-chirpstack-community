@@ -29,6 +29,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.PreDestroy;
+
 @Service
 public class ExitService {
 
@@ -59,7 +61,10 @@ public class ExitService {
     @Autowired
     private HeliumTenantService heliumTenantService;
 
+    @PreDestroy
     public void onCallExit() {
+
+        if (this.exiting) return;
 
         // ------------------------------------------------
         log.info("Exit - stop listeners");
