@@ -8,10 +8,12 @@ build: .FORCE
 start:
 	-docker rm console
 	docker run --name console \
+	           --restart always \
+	           --port 8090:8090 \
                --network=$(NETWORK) \
-	       --add-host postgres:$(POSTGRESIP) \
+	           --add-host postgres:$(POSTGRESIP) \
                --add-host redis:$(REDISIP) \
                --add-host mqtt:$(MQTTIP) \
-       	       disk91/console
+       	       -d disk91/console
 
 
