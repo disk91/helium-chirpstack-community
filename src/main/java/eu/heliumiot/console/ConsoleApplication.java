@@ -38,7 +38,7 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 @SpringBootApplication
 @EnableJpaRepositories(basePackages = "eu.heliumiot.console.jpa")
 @EnableRedisRepositories(basePackages = "eu.heliumiot.console.redis", enableKeyspaceEvents = RedisKeyValueAdapter.EnableKeyspaceEvents.ON_STARTUP)
-public class ConsoleApplication implements CommandLineRunner, ExitCodeGenerator{
+public class ConsoleApplication implements CommandLineRunner, ExitCodeGenerator {
 
 	public static ApplicationContext context;
 
@@ -48,18 +48,20 @@ public class ConsoleApplication implements CommandLineRunner, ExitCodeGenerator{
 
 	@Override
 	public void run(String... args) throws Exception {
-		System.out.println("-------------- GO --------------");
+		long pid = ProcessHandle.current().pid();
+		System.out.println("-------------- GO ("+pid+")--------------");
 	}
 
 	public static void exit() {
 		int exitCode = SpringApplication.exit(context,new ExitCodeGenerator() {
 			@Override
 			public int getExitCode() {
-				// no errors
 				return 0;
 			}
 		});
-		System.exit(exitCode);
+		// Bug in springboot, calling exit is create a deadlock
+		//System.exit(exitCode);
+		System.out.println("------------- GONE --------------");
 	}
 
 	@Autowired
@@ -69,7 +71,6 @@ public class ConsoleApplication implements CommandLineRunner, ExitCodeGenerator{
 	HeliumDeviceStatService heliumDeviceStatService;
 
 	public int getExitCode() {
-		System.out.println("------------- GONE --------------");
 		return 0;
 	}
 }
