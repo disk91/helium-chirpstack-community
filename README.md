@@ -28,6 +28,11 @@
 sudo apt-get update
 sudo apt-get install default-jdk
 ```
+ - increase the psql max connection
+```bash
+vi /chirpstack/postgresql/postgresql.conf
+max_connections = 500                   # (change requires restart)
+```
 
 ### configure
 - edit the configuration.properties file to setup the configurations
