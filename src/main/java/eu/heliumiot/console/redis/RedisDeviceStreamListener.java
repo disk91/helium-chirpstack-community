@@ -5,7 +5,7 @@ import eu.heliumiot.console.service.HeliumTenantService;
 import fr.ingeniousthings.tools.HexaConverters;
 import fr.ingeniousthings.tools.Now;
 import io.chirpstack.api.DownlinkFrameLog;
-import io.chirpstack.api.UplinkFrameLog;
+import io.chirpstack.api.internal.Internal;
 import io.lettuce.core.*;
 import io.lettuce.core.api.StatefulRedisConnection;
 import io.lettuce.core.api.sync.RedisCommands;
@@ -19,8 +19,10 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 @Service
 public class RedisDeviceStreamListener {
@@ -168,6 +170,39 @@ public class RedisDeviceStreamListener {
         }
         log.debug("ListenOnRedisStreamMeta - duration "+(Now.NowUtcMs()-start)+" ms, process "+processed+" new entries");
 
+    }
+
+    // ================================================
+    // Redis query
+    // ================================================
+
+    public List<String> getDevEuiByDevAddr(String devaddr) {
+        devaddr = devaddr.toLowerCase();
+
+        Set<byte[]> devIds =  syncCommands.smembers("devaddr:{"+devaddr+"}");
+        ArrayList<String> devEuis = new ArrayList<>();
+        for ( byte[] devId : devIds ) {
+            devEuis.add(HexaConverters.byteToHexString(devId));
+            log.debug("REDIS DEVADDR : Found "+HexaConverters.byteToHexString(devId));
+        }
+        return devEuis;
+    }
+
+    public Internal.DeviceSession getDeviceDetails(String devEUI) {
+        devEUI = devEUI.toLowerCase();
+        byte[] deviceInfo = syncCommands.get("device:{"+devEUI+"}:ds");
+
+        try {
+            Internal.DeviceSession devSession = Internal.DeviceSession.parseFrom(deviceInfo);
+            log.debug("devEUI :"+HexaConverters.byteToHexString(devSession.getDevEui().toByteArray()));
+            log.debug("devADDR :"+HexaConverters.byteToHexString(devSession.getDevAddr().toByteArray()));
+            log.debug("NtwkSkey : "+HexaConverters.byteToHexString(devSession.getNwkSEncKey().toByteArray()));
+            return devSession;
+        } catch (InvalidProtocolBufferException x) {
+            log.error("Impossible to parse deviceSession");
+        }
+
+        return null;
     }
 
             //syncCommands.xgroupDestroy("stream:meta", CONSUMER_GROUP );
