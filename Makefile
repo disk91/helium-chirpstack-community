@@ -9,7 +9,7 @@ start:
 	-docker rm console
 	docker run --name console \
 	           --restart always \
-	           --expose 8090:8090 \
+	           --expose 8090 \
                --network=$(NETWORK) \
 	           --add-host postgres:$(POSTGRESIP) \
                --add-host redis:$(REDISIP) \
