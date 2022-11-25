@@ -1,0 +1,100 @@
+/*
+ * Copyright (c) - Paul Pinault (aka disk91) - 2020.
+ *
+ *    Permission is hereby granted, free of charge, to any person obtaining a copy of this software
+ *    and associated documentation files (the "Software"), to deal in the Software without restriction,
+ *    including without limitation the rights to use, copy, modify, merge, publish, distribute,
+ *    sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is
+ *    furnished to do so, subject to the following conditions:
+ *
+ *    The above copyright notice and this permission notice shall be included in all copies or
+ *    substantial portions of the Software.
+ *
+ *    THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ *    IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS
+ *    FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS
+ *    OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
+ *    WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR
+ *    IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+ */
+package eu.heliumiot.console.service;
+
+import eu.heliumiot.console.jpa.db.HeliumDevice;
+import eu.heliumiot.console.jpa.db.HeliumDeviceStat;
+import eu.heliumiot.console.jpa.repository.HeliumDeviceRepository;
+import fr.ingeniousthings.tools.Now;
+import fr.ingeniousthings.tools.ObjectCache;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.stereotype.Service;
+
+import javax.annotation.PostConstruct;
+
+// Main purpose is to not have a circular inclusion and optimize device access with inMemory storage
+@Service
+public class HeliumDeviceCacheService {
+
+    private final Logger log = LoggerFactory.getLogger(this.getClass());
+
+    @Autowired
+    protected HeliumDeviceRepository heliumDeviceRepository;
+
+    protected int runningJobs;
+    protected boolean serviceEnable; // false to stop the services
+
+    private ObjectCache<String, HeliumDevice> heliumDeviceCache;
+    @PostConstruct
+    private void initHeliumDeviceCacheService() {
+        this.heliumDeviceCache = new ObjectCache<String, HeliumDevice>(
+                "DeviceROCache",
+                5000,
+                 Now.ONE_HOUR
+        ) {
+            @Override
+            public void onCacheRemoval(String key, HeliumDevice obj) {
+            }
+        };
+        runningJobs=0;
+        serviceEnable=true;
+    }
+
+    @Scheduled(fixedRateString = "${logging.cache.fixedrate}", initialDelay = 63_000)
+    protected void cacheStatus() {
+        if ( ! this.serviceEnable ) return;
+        this.runningJobs++;
+        try {
+            this.heliumDeviceCache.log();
+        } finally {
+            this.runningJobs--;
+        }
+    }
+
+    public void stopService() {
+        this.serviceEnable = false;
+    }
+
+    // return true when the service has stopped all the running jobs
+    public boolean hasStopped() {
+        return (this.serviceEnable == false && this.runningJobs == 0);
+    }
+
+
+    /**
+     * Get the tenant ID with a device EUI
+     * @param deviceEui
+     * @return
+     */
+    protected String getTenantId(String deviceEui) {
+        deviceEui = deviceEui.toUpperCase();
+        HeliumDevice dev = heliumDeviceCache.get(deviceEui);
+        if ( dev == null ) {
+            dev = heliumDeviceRepository.findOneHeliumDeviceByDeviceEui(deviceEui);
+            heliumDeviceCache.put(dev,deviceEui);
+        }
+        if ( dev != null ) return dev.getTenantUUID();
+        return null;
+    }
+
+}

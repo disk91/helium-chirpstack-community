@@ -33,6 +33,7 @@ import java.util.UUID;
 )
 public class HeliumDevice {
 
+    // Warning, do not change the order - it will impact the BDD values
     public enum DeviceState { INSERTED, ACTIVE, INACTIVE, DEACTIVATED, OUTOFDCS, DELETED }
 
     @Id

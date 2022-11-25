@@ -22,7 +22,7 @@ package eu.heliumiot.console.service;
 
 import eu.heliumiot.console.ConsoleApplication;
 import eu.heliumiot.console.mqtt.MqttListener;
-import eu.heliumiot.console.redis.RedisStreamMetaListener;
+import eu.heliumiot.console.redis.RedisDeviceStreamListener;
 import fr.ingeniousthings.tools.Now;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -53,13 +53,16 @@ public class ExitService {
     private MqttListener mqttListener;
 
     @Autowired
-    private RedisStreamMetaListener redisStreamMetaListener;
+    private RedisDeviceStreamListener redisStreamMetaListener;
 
     @Autowired
     private HeliumDeviceStatService heliumDeviceStatService;
 
     @Autowired
     private HeliumTenantService heliumTenantService;
+
+    @Autowired
+    private HeliumDeviceCacheService heliumDeviceCacheService;
 
     @PreDestroy
     public void onCallExit() {
@@ -88,6 +91,7 @@ public class ExitService {
         heliumDeviceService.stopService();
         heliumDeviceStatService.stopService();
         heliumTenantService.stopService();
+        heliumDeviceCacheService.stopService();
 
 
         int services = 0;
@@ -98,6 +102,7 @@ public class ExitService {
             if ( ! heliumDeviceService.hasStopped() ) services++;
             if ( ! heliumDeviceStatService.hasStopped() ) services++;
             if ( ! heliumTenantService.hasStopped() ) services++;
+            if ( ! heliumDeviceCacheService.hasStopped() ) services++;
 
             if ( (Now.NowUtcMs() - d) > 1000 ) {
                 log.error("Waiting for "+services+" services to stop");

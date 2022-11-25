@@ -1,9 +1,11 @@
 package eu.heliumiot.console.redis;
 
 import com.google.protobuf.InvalidProtocolBufferException;
+import eu.heliumiot.console.service.HeliumTenantService;
 import fr.ingeniousthings.tools.HexaConverters;
 import fr.ingeniousthings.tools.Now;
-import io.chirpstack.api.meta.UplinkMeta;
+import io.chirpstack.api.DownlinkFrameLog;
+import io.chirpstack.api.UplinkFrameLog;
 import io.lettuce.core.*;
 import io.lettuce.core.api.StatefulRedisConnection;
 import io.lettuce.core.api.sync.RedisCommands;
@@ -17,18 +19,20 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
 @Service
-public class RedisStreamMetaListener {
+public class RedisDeviceStreamListener {
 
     @Autowired
     private RedisConfiguration redisConfiguration;
     private final Logger log = LoggerFactory.getLogger(this.getClass());
 
     private RedisCommands<String, byte[]> syncCommands;
+
+    private StatefulRedisConnection<String, byte[]> redisConnection;
+    private RedisClient redisClient;
 
     protected int runningJobs;
     protected boolean serviceEnable; // false to stop the services
@@ -42,10 +46,10 @@ public class RedisStreamMetaListener {
             connectionString += redisConfiguration.getRedisUsername() + ":" + redisConfiguration.getRedisPassword() + "@";
         }
         connectionString += redisConfiguration.getRedisHost() + ":" + redisConfiguration.getRedisPort();
-        RedisClient redisClient = RedisClient.create(connectionString);
+        redisClient = RedisClient.create(connectionString);
         RedisCodec<String, byte[]> codec = RedisCodec.of(new StringCodec(), new ByteArrayCodec());
-        StatefulRedisConnection<String, byte[]> connection = redisClient.connect(codec);
-        syncCommands = connection.sync();
+        redisConnection = redisClient.connect(codec);
+        syncCommands = redisConnection.sync();
 
         try {
             syncCommands.xgroupCreate(
@@ -65,6 +69,8 @@ public class RedisStreamMetaListener {
     // request to stop the service properly
     public void stopService() {
         this.serviceEnable = false;
+        this.redisConnection.close();
+        this.redisClient.shutdown();
     }
 
     // return true when the service has stopped all the running jobs
@@ -72,6 +78,8 @@ public class RedisStreamMetaListener {
         return (this.serviceEnable == false && this.runningJobs == 0);
     }
 
+    @Autowired
+    protected HeliumTenantService heliumTenantService;
 
     @Scheduled(fixedRateString = "${spring.redis.metaRefreshRate}", initialDelay = 2_000)
     void ListenOnRedisStreamMeta() {
@@ -90,22 +98,57 @@ public class RedisStreamMetaListener {
 
             if (!messages.isEmpty()) {
                 for (StreamMessage<String, byte[]> message : messages) {
-                    //log.info(message.getStream());
-                    //log.info(message.getId());
                     Map<String, byte[]> m = message.getBody();
                     for (String k : m.keySet()) {
                         processed++;
                         if (k.compareToIgnoreCase("up") == 0) {
+                            // @Todo - see how REDIS can be use later
+                            // Redis would be the right way to get information but the payload size
+                            // is not secured here. MQTT message are safer
+                            /*
+                            log.debug("REDIS - Receiving uplink");
                             byte[] byteData = message.getBody().get(k);
                             try {
-                                UplinkMeta up = UplinkMeta.parseFrom(byteData);
+                                UplinkFrameLog up = UplinkFrameLog.parseFrom(byteData);
+                                // The field is not the payload but the frame size ...
+                                // we can assume the size if for real more dynamic, unfortunately
+                                // at this point we have nothing more precise
+                                int receivedBytes = up.getPhyPayload().size()-13;
                                 if (up != null) {
-                                    log.info("dev_eui: " + up.getDevEui() + " freq : " + up.getTxInfo().getFrequency());
+                                    log.debug("Dev: " + up.getDevEui() + " Adr:" + up.getDevAddr() + " duplicates:" + up.getRxInfoList().size() + " size: "+receivedBytes);
+                                    heliumTenantService.processUplink(
+                                            null,
+                                            up.getDevEui(),
+                                            receivedBytes,
+                                            up.getRxInfoList().size() - 1
+                                    );
                                 }
                             } catch (InvalidProtocolBufferException x) {
-                                log.error("Impossible to parse stream:meta type up with " + x.getMessage());
+                                log.error("Impossible to parse stream type up with " + x.getMessage());
                                 log.info(HexaConverters.byteToHexStringWithSpace(byteData));
                             }
+                            */
+                        } else if (k.compareToIgnoreCase("down") == 0) {
+                                log.debug("REDIS - Receiving downlink/ack/join accept");
+                                byte[] byteData = message.getBody().get(k);
+                                try {
+                                    DownlinkFrameLog dwn = DownlinkFrameLog.parseFrom(byteData);
+                                    if (dwn != null) {
+                                        int downlinkSize =  dwn.getPhyPayload().size();
+                                        if ( downlinkSize <= 12 ) downlinkSize = 0;
+                                        else downlinkSize -= 13;
+
+                                        log.debug("Dev: " + dwn.getDevEui() + " Adr:" + dwn.getDevAddr() + " size: "+downlinkSize);
+                                        heliumTenantService.processDownlink(
+                                                null,
+                                                dwn.getDevEui(),
+                                                downlinkSize
+                                        );
+                                    }
+                                } catch (InvalidProtocolBufferException x) {
+                                    log.error("Impossible to parse stream type up with " + x.getMessage());
+                                    log.info(HexaConverters.byteToHexStringWithSpace(byteData));
+                                }
                         } else {
                             log.warn("## Found a new key on stream:meta " + k);
                             byte[] byteData = message.getBody().get(k);
@@ -129,8 +172,4 @@ public class RedisStreamMetaListener {
 
             //syncCommands.xgroupDestroy("stream:meta", CONSUMER_GROUP );
 
-        /*
-        connection.close();
-redisClient.shutdown();
-         */
 }

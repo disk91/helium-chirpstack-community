@@ -46,10 +46,17 @@ public class ConsoleApplication implements CommandLineRunner, ExitCodeGenerator 
 		context = SpringApplication.run(ConsoleApplication.class, args);
 	}
 
+	@Autowired
+	HeliumTenantService heliumTenantService;
+
 	@Override
 	public void run(String... args) throws Exception {
 		long pid = ProcessHandle.current().pid();
 		System.out.println("-------------- GO ("+pid+")--------------");
+
+		// add credits ..
+		//heliumTenantService.processBalanceIncrease("52f14cd4-c6f1-4fbd-8f87-4025e1d49242", 50000 );
+
 	}
 
 	public static void exit() {
@@ -63,12 +70,6 @@ public class ConsoleApplication implements CommandLineRunner, ExitCodeGenerator 
 		//System.exit(exitCode);
 		System.out.println("------------- GONE --------------");
 	}
-
-	@Autowired
-	HeliumTenantService heliumTenantService;
-
-	@Autowired
-	HeliumDeviceStatService heliumDeviceStatService;
 
 	public int getExitCode() {
 		return 0;

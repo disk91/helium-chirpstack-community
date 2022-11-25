@@ -227,9 +227,17 @@ public class HeliumTenantService {
     // ======================================================
     // Manage consumption
     // ======================================================
+    @Autowired
+    protected HeliumDeviceCacheService heliumDeviceCacheService;
 
-    public void processUplink(String tenantUUID, String deviceUUID,  int payloadSize, int duplicates) {
-        log.info("Payload Size "+payloadSize);
+    public void processUplink( String tenantUUID, String deviceUUID,  int payloadSize, int duplicates) {
+        if ( tenantUUID == null ) {
+            tenantUUID = heliumDeviceCacheService.getTenantId(deviceUUID);
+            if (tenantUUID == null) {
+                log.error("Impossible to find tenantUUID for (" + deviceUUID + ")");
+                return;
+            }
+        }
         long start = Now.NowUtcMs();
         HeliumDeviceStatItf i = new HeliumDeviceStatItf();
         i.setDeviceId(deviceUUID);
@@ -269,6 +277,50 @@ public class HeliumTenantService {
         log.debug("Process UPLINK in "+(Now.NowUtcMs()-start)+"ms");
     }
 
+    public void processDownlink( String tenantUUID, String deviceUUID,  int payloadSize ) {
+        if ( tenantUUID == null ) {
+            tenantUUID = heliumDeviceCacheService.getTenantId(deviceUUID);
+            if (tenantUUID == null) {
+                log.error("Impossible to find tenantUUID for (" + deviceUUID + ")");
+                return;
+            }
+        }
+        long start = Now.NowUtcMs();
+        HeliumDeviceStatItf i = new HeliumDeviceStatItf();
+        i.setDeviceId(deviceUUID);
+        i.setTenantId(tenantUUID);
+        HeliumTenantSetup ts = this.getHeliumTenantSetup(tenantUUID);
+        if ( ts == null ) {
+            HeliumTenant t = this.getHeliumTenant(tenantUUID);
+            ts = this.getHeliumTenantSetup(tenantUUID);
+            if ( ts == null ) {
+                log.error("Should not be  here ... (1a)");
+                return;
+            }
+        }
+        synchronized (this) {
+            HeliumTenant t = this.getHeliumTenant(tenantUUID);
+            if (t != null) {
+                payloadSize = (payloadSize / 24) + 1;
+                int downlinkDc = payloadSize * ts.getDcPer24BDownlink();
+                t.setDcBalance(t.getDcBalance() - downlinkDc);
+                this.flushHeliumTenant(t);
+
+                // publish message to update the stats async
+                i.setDownlinkDc(downlinkDc);
+                i.setDownlink(1);
+                reportStatToMqtt(i);
+
+                // check deactivation
+                if ( !processBalance(ts,t) ) {
+                    this.flushHeliumTenant(t);
+                }
+            }
+        }
+
+        log.debug("Process DOWNLINK in "+(Now.NowUtcMs()-start)+"ms");
+    }
+
 
     public void processDeviceInsertionActivityInactivity(HeliumDeviceStatItf infos) {
         long start = Now.NowUtcMs();
@@ -292,7 +344,7 @@ public class HeliumTenantService {
         log.debug("Process INSERT ACTIVITY INACTIVITY in "+(Now.NowUtcMs()-start)+"ms");
     }
 
-    public void processJoin(String tenantUUID, String deviceUUID) {
+    public void processJoin(String tenantUUID, String deviceUUID, String devAddr ) {
         long start = Now.NowUtcMs();
         HeliumDeviceStatItf i = new HeliumDeviceStatItf();
         i.setDeviceId(deviceUUID);
@@ -328,6 +380,7 @@ public class HeliumTenantService {
                 }
             }
         }
+        // @Todo Need to update the devAddr Network keys list
         log.debug("Process JOIN in "+(Now.NowUtcMs()-start)+"ms");
     }
 
@@ -367,6 +420,52 @@ public class HeliumTenantService {
             return true;
         }
 
+    }
+
+    /**
+     * Add credits to a tennant, returns true when added
+     * Asynchronous process
+     * @param tenantUUID
+     * @param amount
+     * @return
+     */
+    public boolean processBalanceIncrease(String tenantUUID, long amount) {
+        HeliumTenantSetup ts = this.getHeliumTenantSetup(tenantUUID);
+        if ( ts == null ) {
+            log.error("Impossible to find tenant setup for "+tenantUUID);
+            return false;
+        }
+        long balance = 0;
+        synchronized (this) {
+            HeliumTenant t = this.getHeliumTenant(tenantUUID);
+            if (t != null && ts != null) {
+                t.setDcBalance(t.getDcBalance() + amount);
+                balance = t.getDcBalance();
+                if ( balance > ts.getDcBalanceStop() ) {
+                    t.setState(HeliumTenant.TenantState.REQUESTREACTIVATION);
+                }
+                this.flushHeliumTenant(t);
+            }
+        }
+
+        if ( balance > ts.getDcBalanceStop() ) {
+            HeliumTenantActDeactItf i = new HeliumTenantActDeactItf();
+            i.setActivateTenant(true);
+            i.setDeactivateTenant(false);
+            i.setTenantId(tenantUUID);
+            i.setTime(Now.NowUtcMs());
+            try {
+                mqttSender.publishMessage(
+                        "helium/tenant/manage/" + i.getTenantId(),
+                        mapper.writeValueAsString(i),
+                        2
+                );
+            } catch (Exception x) {
+                log.error("Something went wrong with publishing on MQTT tenant reactivation");
+                log.error(x.getMessage());
+            }
+        }
+        return true;
     }
 
     /**

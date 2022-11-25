@@ -35,6 +35,7 @@ import fr.ingeniousthings.tools.DateConverters;
 import fr.ingeniousthings.tools.HexaConverters;
 import fr.ingeniousthings.tools.Now;
 import fr.ingeniousthings.tools.RandomString;
+import io.chirpstack.json.DownlinkEvent;
 import io.chirpstack.json.JoinEvent;
 import io.chirpstack.json.UplinkEvent;
 import org.postgresql.shaded.com.ongres.scram.common.bouncycastle.base64.Base64;
@@ -60,6 +61,9 @@ public class MqttListener implements MqttCallback {
         private MemoryPersistence persistence;
         private MqttClient mqttClient;
 
+        protected String _topics[] = {"application/#","helium/#"};
+        protected int _qos[] = { MQTT_QOS,MQTT_QOS };
+
         @PostConstruct
         public MqttClient initMqtt() {
 
@@ -79,7 +83,7 @@ public class MqttListener implements MqttCallback {
                         this.connectionOptions.setConnectionTimeout(10);
                         this.mqttClient.connect(this.connectionOptions);
                         this.mqttClient.setCallback(this);
-                        this.mqttClient.subscribe("#",2);
+                        this.mqttClient.subscribe(_topics,_qos);
                         log.info("Starting Mqtt listener");
                 } catch (MqttException me) {
                         log.error("MQTT ERROR", me);
@@ -90,24 +94,12 @@ public class MqttListener implements MqttCallback {
         // stop the listener once we request a stop of the application
         public void stopListner() {
                 try {
-                        this.mqttClient.unsubscribe("#");
+                        this.mqttClient.unsubscribe (_topics);
                 } catch (MqttException me) {
                         log.error("MQTT ERROR", me);
                 }
         }
 
-        public void publishMessage(String topic, String message, int qos) {
-
-                try {
-                        MqttMessage mqttmessage = new MqttMessage(message.getBytes());
-                        mqttmessage.setQos(qos);
-                        //log.info("MQTT : Topic("+topic+") Mess("+mqttmessage+")");
-                        this.mqttClient.publish(topic, mqttmessage);
-                } catch (MqttException me) {
-                        log.error("MessagePublish Error", me);
-                }
-
-        }
 
         /*
          * (non-Javadoc)
@@ -148,107 +140,73 @@ public class MqttListener implements MqttCallback {
         public void messageArrived(String topicName, MqttMessage message) throws Exception {
                 // Leave it blank for Publisher
                 long start = Now.NowUtcMs();
-                log.info("MQTT - MessageArrived on "+topicName);
+                //log.info("MQTT - MessageArrived on "+topicName);
                 ObjectMapper mapper = new ObjectMapper();
                 mapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
                 mapper.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
                 mapper.configure(SerializationFeature.FAIL_ON_SELF_REFERENCES, false);
 
                 // some of the messages are protobuf format
-                if ( topicName.matches(".*/gateway/.*/event/up$") ) {
-                        // uplink
-                        /*
-                        log.info("MQTT - uplink");
+                if ( topicName.matches("application/.*/event/up$") ) {
+                        // Prefer MQTT to get the uplink information because the data is decoded
                         try {
-                                UplinkFrame m = UplinkFrame.parseFrom(message.getPayload());
-                                log.info("ts :"+m.getRxInfo().getTime().getSeconds()+" :"+ HexaConverters.byteToHexString(m.getPhyPayload().toByteArray()));
-                        } catch (Exception e) { e.printStackTrace();}
-                        */
-                } else if ( topicName.matches(".*/gateway/.*/state/conn$") ) {
-                        // Connection State
-                        /*
-                        log.info("MQTT - Connection State");
-                        try {
-                                ConnState m= ConnState.parseFrom(message.getPayload());
-                                log.info(m.getGatewayId()+":"+m.getState());
-                        } catch (Exception e) { e.printStackTrace();}
-                        */
-                } else if ( topicName.matches(".*/gateway/.*/event/stats$") ) {
-                        // Connection State
-                        /*
-                        log.info("MQTT - Gw State");
-                        try {
-                                GatewayStats m= GatewayStats.parseFrom(message.getPayload());
-                                log.info(m.getGatewayId()+" Rx:"+m.getRxPacketsReceived());
-                        } catch (Exception e) { e.printStackTrace();}
-                        */
-                } else if ( topicName.matches("application/.*/event/up$") ) {
-                        // Application message .. this is not protobuf but json
-                        //log.info("MQTT - App uplink");
-                        try {
-                                UplinkEvent e = mapper.readValue(message.toString(), UplinkEvent.class);
-                                log.info("Dev: " + e.getDeviceInfo().getDeviceName() + " Adr:" + e.getDevAddr() + " timestamp :" + DateConverters.StringDateToMs(e.getTime()));
-                                //Tenant t = tenantRepository.findOneTenantById(UUID.fromString(e.getDeviceInfo().getTenantId()));
-                                //if (t != null) {
-                                        //log.info("Tenant " + t.getName() + " with " + t.getMax_device_count());
-                                        //HeliumTenant ht = heliumTenantService.getHeliumTenant(e.getDeviceInfo().getTenantId());
-                                        //log.info("Tenant DCs is " + ht.getDcBalance());
-                                        heliumTenantService.processUplink(
-                                                e.getDeviceInfo().getTenantId(),
-                                                e.getDeviceInfo().getDevEui(),
-                                                Base64.decode(e.getData()).length,
-                                                e.getRxInfo().size() - 1
-                                        );
-                                        /*
-                                } else {
-                                        log.error("Tenant not found");
-                                }
-                                */
+
+                                UplinkEvent up = mapper.readValue(message.toString(), UplinkEvent.class);
+                                log.debug("UPLINK Dev: " + up.getDeviceInfo().getDevEui() + " Adr:" + up.getDevAddr() + " duplicates:" + up.getRxInfo().size() + " size: "+Base64.decode(up.getData()).length);
+                                heliumTenantService.processUplink(
+                                        up.getDeviceInfo().getTenantId(),
+                                        up.getDeviceInfo().getDevEui(),
+                                        Base64.decode(up.getData()).length,
+                                        up.getRxInfo().size() - 1
+                                );
+
                         } catch (JsonProcessingException x) {
                                 log.error("MQTT - failed to parse App uplink - " + x.getMessage());
                                 x.printStackTrace();
                         } catch (Exception x) {
                                 x.printStackTrace();
                         }
-                        //log.info("" + message);
-                        //log.info(""+ Base64.encodeBytes(message.getPayload()));
-                        //log.info(""+HexaConverters.byteToHexStringWithSpace(message.getPayload()));
 
+                } else if ( topicName.matches("application/.*/event/down$") ) {
+                        // REDIS will be prefered because MQTT Json does not have size
+                        // And MQTT does not trace Uplink
+                        /*
+                        try {
+
+                                DownlinkEvent down = mapper.readValue(message.toString(), DownlinkEvent.class);
+                                log.debug("Dev: " + down.getDeviceInfo().getDevEui());
+                                heliumTenantService.processDownlink(
+                                        down.getDeviceInfo().getTenantId(),
+                                        down.getDeviceInfo().getDevEui(),
+                                        12,
+                                );
+
+                        } catch (JsonProcessingException x) {
+                                log.error("MQTT - failed to parse App downlink - " + x.getMessage());
+                                x.printStackTrace();
+                        } catch (Exception x) {
+                                x.printStackTrace();
+                        }
+                        */
                 } else if ( topicName.matches("application/.*/event/join$") ) {
                         try {
                                 JoinEvent e = mapper.readValue(message.toString(), JoinEvent.class);
-                                log.info("Dev: " + e.getDeviceInfo().getDeviceName() + " Adr:" + e.getDevAddr() + " timestamp :" + DateConverters.StringDateToMs(e.getTime()));
+                                log.debug("JOIN - Dev: " + e.getDeviceInfo().getDeviceName() + " Adr:" + e.getDevAddr() + " timestamp :" + DateConverters.StringDateToMs(e.getTime()));
                                 heliumTenantService.processJoin(
                                         e.getDeviceInfo().getTenantId(),
-                                        e.getDeviceInfo().getDevEui()
+                                        e.getDeviceInfo().getDevEui(),
+                                        e.getDevAddr()
                                 );
                         } catch (JsonProcessingException x) {
-                                log.error("MQTT - failed to parse App uplink - " + x.getMessage());
+                                log.error("MQTT - failed to parse App JOIN - " + x.getMessage());
                                 x.printStackTrace();
                         } catch (Exception x) {
                                 x.printStackTrace();
                         }
-                } else if ( topicName.matches(".*/gateway/.*/event/ack$") ) {
-                        // Downlink case, this is the best event we have
-                        log.info(""+ Base64.encode(message.getPayload()));
-                        log.info(""+ HexaConverters.byteToHexStringWithSpace(message.getPayload()));
 
-                        /*
-                        try {
-                                Down m = DownlinkFrame.parseFrom(message.getPayload());
-                                log.info("ts :"+m..getTime().getSeconds()+" :"+ HexaConverters.byteToHexString(m.getPhyPayload().toByteArray()));
-                        } catch (Exception e) { e.printStackTrace();}
-*/
-                } else if ( topicName.matches(".*/gateway/.*/command/down$") ) {
-                        // Downlink case, this is the best event we have
-                        log.info(""+ Base64.encode(message.getPayload()));
-                        log.info(""+ HexaConverters.byteToHexStringWithSpace(message.getPayload()));
-                        /*
-                        try {
-                                Down m = DownlinkFrame.parseFrom(message.getPayload());
-                                log.info("ts :"+m..getTime().getSeconds()+" :"+ HexaConverters.byteToHexString(m.getPhyPayload().toByteArray()));
-                        } catch (Exception e) { e.printStackTrace();}
-*/
+ // =================================================
+// INTERNAL ASYNCHRONOUS MESSAGES
+// =================================================
 
                 } else if ( topicName.matches("helium/device/stats/.*") ) {
                         HeliumDeviceStatItf e = mapper.readValue(message.toString(), HeliumDeviceStatItf.class);
@@ -269,7 +227,12 @@ public class MqttListener implements MqttCallback {
                                 log.error("Invalid state for manage tenant request");
                         }
                 } else {
+// =================================================
+// OTHERS
+// =================================================
+
                         // standard json messages
+                        log.info("MQTT - MessageArrived on "+topicName);
                         log.info("MQTT - message "+message);
                 }
                 log.debug("MQTT processing time "+(Now.NowUtcMs()-start)+"ms");

@@ -32,7 +32,7 @@ import java.util.UUID;
 )
 public class HeliumTenant {
 
-    public enum TenantState { NORMAL, REQUESTDEACTIVATION, DEACTIVATED, DELETED }
+    public enum TenantState { NORMAL, REQUESTDEACTIVATION, DEACTIVATED, DELETED, REQUESTREACTIVATION }
 
     @Id
     @GenericGenerator(name = "UUIDGenerator", strategy = "uuid2")

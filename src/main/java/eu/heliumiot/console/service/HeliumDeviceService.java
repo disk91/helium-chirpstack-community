@@ -98,6 +98,7 @@ public class HeliumDeviceService {
         serviceEnable=true;
     }
 
+
     // request to stop the service properly
     public void stopService() {
         this.serviceEnable = false;
@@ -321,8 +322,11 @@ public class HeliumDeviceService {
 
                     Device dev = deviceRepository.findOneDeviceByDevEui(hdev.getDeviceUUID());
                     if (dev != null) {
-                        Timestamp t = dev.getLastSeenAt();
-                        long lastSeenDevice = t.getTime();
+                        long lastSeenDevice = 0;
+                        if ( dev.getLastSeenAt() != null ) {
+                            Timestamp t = dev.getLastSeenAt();
+                            lastSeenDevice = t.getTime();
+                        }
                         if (lastSeenDevice == 0) lastSeenDevice = dev.getCreatedAt().getTime();
 
                         HeliumTenantSetup hts = heliumTenantService.getHeliumTenantSetup(
