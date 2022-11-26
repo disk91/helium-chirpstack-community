@@ -80,21 +80,31 @@ public class HeliumDeviceCacheService {
         return (this.serviceEnable == false && this.runningJobs == 0);
     }
 
-
     /**
-     * Get the tenant ID with a device EUI
+     * Get a device from cache, add it if not yet in the cache
      * @param deviceEui
      * @return
      */
-    protected String getTenantId(String deviceEui) {
+    public HeliumDevice getHeliumDevice(String deviceEui) {
         deviceEui = deviceEui.toUpperCase();
         HeliumDevice dev = heliumDeviceCache.get(deviceEui);
         if ( dev == null ) {
             dev = heliumDeviceRepository.findOneHeliumDeviceByDeviceEui(deviceEui);
             heliumDeviceCache.put(dev,deviceEui);
         }
+        return dev;
+    }
+
+    /**
+     * Get the tenant ID with a device EUI
+     * @param deviceEui
+     * @return
+     */
+    public String getTenantId(String deviceEui) {
+        HeliumDevice dev = this.getHeliumDevice(deviceEui);
         if ( dev != null ) return dev.getTenantUUID();
         return null;
     }
+
 
 }

@@ -344,6 +344,8 @@ public class HeliumTenantService {
         log.debug("Process INSERT ACTIVITY INACTIVITY in "+(Now.NowUtcMs()-start)+"ms");
     }
 
+    @Autowired
+    protected NovaService novaService;
     public void processJoin(String tenantUUID, String deviceUUID, String devAddr ) {
         long start = Now.NowUtcMs();
         HeliumDeviceStatItf i = new HeliumDeviceStatItf();
@@ -380,7 +382,7 @@ public class HeliumTenantService {
                 }
             }
         }
-        // @Todo Need to update the devAddr Network keys list
+        novaService.refreshDevAddrList(devAddr);
         log.debug("Process JOIN in "+(Now.NowUtcMs()-start)+"ms");
     }
 
