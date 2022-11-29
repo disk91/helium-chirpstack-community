@@ -122,7 +122,6 @@ public class ConsoleConfig {
     @Value ("${helium.billing.limitDcRatePeriod}")
     private String heliumBillingLimitDcRatePeriodExternal;
 
-
     public String getHeliumBillingDcBalanceStopDefault() {
         return heliumBillingDcBalanceStopDefault;
     }
@@ -365,4 +364,63 @@ public class ConsoleConfig {
         if (this.getMqttPasswordExternal().length() > 0) return this.getMqttPasswordExternal();
         return this.getMqttPasswordDefault();
     }
+
+
+    // =============================
+    // GPRC / Nova API
+    // =============================
+    @Value ("${helium.grpc.private.keyfile.path}")
+    private String heliumGrpcPrivateKeyfilePath;
+
+    @Value ("${helium.gprc.server}")
+    private String heliumGrpcServerExternal;
+
+    @Value ("${helium.gprc.server.default}")
+    private String heliumGrpcServerDefault;
+
+    @Value ("${helium.grpc.port}")
+    private String heliumGrpcPortExternal;
+
+    @Value ("${helium.grpc.port.default}")
+    private String heliumGrpcPortDefault;
+
+    @Value ("${helium.grpc.public.key}")
+    private String heliumGprcPublicKey;
+
+
+    public String getHeliumGprcPublicKey() {
+        return heliumGprcPublicKey;
+    }
+
+    public String getHeliumGrpcPrivateKeyfilePath() {
+        return heliumGrpcPrivateKeyfilePath;
+    }
+
+    public String getHeliumGrpcServerExternal() {
+        return heliumGrpcServerExternal;
+    }
+
+    public String getHeliumGrpcServerDefault() {
+        return heliumGrpcServerDefault;
+    }
+
+    public String getHeliumGrpcPortExternal() {
+        return heliumGrpcPortExternal;
+    }
+
+    public String getHeliumGrpcPortDefault() {
+        return heliumGrpcPortDefault;
+    }
+
+    public String getHeliumGrpcServer() {
+        if (this.getHeliumGrpcServerExternal().length() > 0) return this.getHeliumGrpcServerExternal();
+        return this.getHeliumGrpcServerDefault();
+    }
+
+    public int getHeliumGrpcPort() {
+        if (this.getHeliumGrpcPortExternal().length() > 0) return Integer.parseInt(this.getHeliumGrpcPortExternal());
+        return Integer.parseInt(this.getHeliumGrpcPortDefault());
+    }
+
+
 }

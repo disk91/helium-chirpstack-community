@@ -20,46 +20,5 @@
 
 package fr.ingeniousthings.tools;
 
-public class HexaConverters {
-
-    public static String byteToHexString(byte b[]) {
-        String r = "";
-        for ( int j = 0; j < b.length; j++ ) {
-            r+=byteToHexString(b[j]);
-        }
-        return r;
-    }
-
-    public static String byteToHexStringWithSpace(byte b[]) {
-        String r = "";
-        for ( int j = 0; j < b.length; j++ ) {
-            r+=byteToHexString(b[j]);
-            if ( j < b.length - 1 ) r+=" ";
-        }
-        return r;
-    }
-
-    public static String byteToDecStringWithSpace(byte b[]) {
-        String r = "";
-        for ( int j = 0; j < b.length; j++ ) {
-            if ( b[j] >= 0 ) {
-                r += "" + b[j];
-            } else {
-                r  += "" + (256+((int)b[j]));
-            }
-            if ( j < b.length - 1 ) r+=" ";
-        }
-        return r;
-    }
-
-
-    public static String byteToHexString(byte b) {
-        char[] hexChars = new char[2];
-        int v = b & 0xFF;
-        String s= "";
-        if ( v < 16 ) s+="0";
-        s+=Integer.toHexString(v).toUpperCase();
-        return s;
-    }
-
+public class ITParseException extends Exception {
 }
