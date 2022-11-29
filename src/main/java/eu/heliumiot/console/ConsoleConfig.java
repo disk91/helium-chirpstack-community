@@ -387,6 +387,13 @@ public class ConsoleConfig {
     @Value ("${helium.grpc.public.key}")
     private String heliumGprcPublicKey;
 
+    @Value ("${helium.grpc.oui}")
+    private int heliumGprcOui;
+
+
+    public int getHeliumGprcOui() {
+        return heliumGprcOui;
+    }
 
     public String getHeliumGprcPublicKey() {
         return heliumGprcPublicKey;

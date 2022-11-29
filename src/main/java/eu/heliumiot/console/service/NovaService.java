@@ -5,10 +5,7 @@ import eu.heliumiot.console.ConsoleConfig;
 import eu.heliumiot.console.jpa.db.HeliumDevice;
 import eu.heliumiot.console.jpa.db.NovaDevice;
 import eu.heliumiot.console.redis.RedisDeviceRepository;
-import fr.ingeniousthings.tools.Base58;
-import fr.ingeniousthings.tools.HexaConverters;
-import fr.ingeniousthings.tools.ITParseException;
-import fr.ingeniousthings.tools.Now;
+import fr.ingeniousthings.tools.*;
 import io.chirpstack.api.internal.Internal;
 import io.grpc.ManagedChannel;
 import io.grpc.ManagedChannelBuilder;
@@ -23,6 +20,7 @@ import xyz.nova.grpc.Config;
 import xyz.nova.grpc.RouteGrpc;
 
 import javax.annotation.PostConstruct;
+import javax.tools.Tool;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -260,8 +258,12 @@ public class NovaService {
         this.grpcInitOk = true;
     }
 
-    //"8e10ad69-f791-4a2e-9d58-12b7104bb4d2"
-    public Config.route_v1 grpcListOneRoute(String routeId) {
+    /**
+     * Get a single route with all the deveuis inside it
+     * @param routeId
+     * @return
+     */
+    public Config.route_v1 grpcGetOneRoute(String routeId) {
         if ( ! this.grpcInitOk ) return null;
 
         long start = Now.NowUtcMs();
@@ -291,10 +293,138 @@ public class NovaService {
                 .build());
         channel.shutdown();
         log.debug("GPRC get route duration "+(Now.NowUtcMs()-start)+"ms");
-        log.debug("GRPC route "+response.getId().toString()+ " has "+response.getEuisList().size()+" entries ");
+        log.debug("GRPC route "+response.getId().toStringUtf8()+ " has "+response.getEuisList().size()+" entries ");
 
         return response;
     }
+
+
+    public Config.route_list_res_v1 grpcListRoutes() {
+        if ( ! this.grpcInitOk ) return null;
+
+        long start = Now.NowUtcMs();
+        log.debug("GRPC List routes ");
+        ManagedChannel channel = ManagedChannelBuilder.forAddress(
+                consoleConfig.getHeliumGrpcServer(),
+                consoleConfig.getHeliumGrpcPort()
+        ).usePlaintext().build();
+        RouteGrpc.routeBlockingStub stub = RouteGrpc.newBlockingStub(channel);
+
+        long now = Now.NowUtcMs();
+        Config.route_list_req_v1 requestToSign = Config.route_list_req_v1.newBuilder()
+                .setOwner(this.owner)
+                .setOui(consoleConfig.getHeliumGprcOui())
+                .setTimestamp(now)
+                .clearSignature()
+                .build();
+        byte[] requestToSignContent = requestToSign.toByteArray();
+        this.signer.update(requestToSignContent, 0, requestToSignContent.length);
+        byte[] signature = signer.generateSignature();
+
+        Config.route_list_res_v1 response = stub.list(Config.route_list_req_v1.newBuilder()
+                .setOwner(this.owner)
+                .setOui(consoleConfig.getHeliumGprcOui())
+                .setTimestamp(now)
+                .setSignature(ByteString.copyFrom(signature))
+                .build());
+        channel.shutdown();
+        log.debug("GPRC list route duration "+(Now.NowUtcMs()-start)+"ms");
+        log.debug("GRPC routes ("+response.getRoutesCount()+ ")");
+        for ( Config.route_v1 route : response.getRoutesList() ) {
+            log.debug("GRPC route id "+route.getId().toStringUtf8()+ " with "+route.getEuisList().size()+" euis");
+        }
+
+        return response;
+    }
+
+
+
+    public void grpcAddInRoutes(List<NovaDevice> devices) {
+        if ( ! this.grpcInitOk ) return;
+        long start = Now.NowUtcMs();
+        log.debug("GRPC Add routes");
+
+        Config.route_list_res_v1 routes = this.grpcListRoutes();
+        if( routes.getRoutesCount() == 0 || routes.getRoutesCount() > 1) {
+            // @TODO keep it simple currently, only one route is supported
+            // means the route must be initialized previously
+            // and no more than one is supported
+            // we will later manage multi-route solution
+            // route can be saved in the config
+            // @TODO also manage route cache in memory to reduce the read impact ..
+            log.error("GRPC currently supporting configuration with one route created, not more/less");
+            return;
+        }
+        Config.route_v1 route = routes.getRoutes(0);
+
+        HashMap<String, NovaDevice> allDevices = new HashMap<>();
+        // add existing devices
+        for ( Config.eui_v1 euis : route.getEuisList() ) {
+            NovaDevice nd = new NovaDevice();
+            nd.devEui = Tools.EuiStringFromLong(euis.getDevEui());
+            nd.appEui = Tools.EuiStringFromLong(euis.getAppEui());
+            allDevices.put(nd.devEui+nd.appEui, nd);
+        }
+
+        // find devices to be added and do this
+        for ( NovaDevice device : devices ) {
+            if ( allDevices.get(device.devEui+device.appEui) == null ) {
+                allDevices.put(device.devEui+device.appEui, device);
+            }
+        }
+
+
+        // Update route
+        ArrayList<Config.eui_v1> updatedList = new ArrayList<>();
+        for ( NovaDevice device : allDevices.values() ) {
+            Config.eui_v1 n = Config.eui_v1.newBuilder()
+                    .setDevEui(Tools.EuiStringToLong(device.devEui))
+                    .setAppEui(Tools.EuiStringToLong(device.appEui))
+                    .build();
+
+            updatedList.add(n);
+        }
+
+        Config.route_v1 newRoute = Config.route_v1.newBuilder()
+                .setId(route.getId())
+                .setServer(route.getServer())
+                .setOui(route.getOui())
+                .setNetId(route.getNetId())
+                .setMaxCopies(route.getMaxCopies())
+
+                .build();
+
+                // @Todo - not working ... need to find how to create a new array of objet
+
+
+        // push the new version
+        ManagedChannel channel = ManagedChannelBuilder.forAddress(
+                consoleConfig.getHeliumGrpcServer(),
+                consoleConfig.getHeliumGrpcPort()
+        ).usePlaintext().build();
+        RouteGrpc.routeBlockingStub stub = RouteGrpc.newBlockingStub(channel);
+
+        long now = Now.NowUtcMs();
+        Config.route_update_req_v1 requestToSign = Config.route_update_req_v1.newBuilder()
+                .setOwner(this.owner)
+                .setRoute(route)
+                .setTimestamp(now)
+                .clearSignature()
+                .build();
+        byte[] requestToSignContent = requestToSign.toByteArray();
+        this.signer.update(requestToSignContent, 0, requestToSignContent.length);
+        byte[] signature = signer.generateSignature();
+
+        Config.route_v1 response = stub.update(Config.route_update_req_v1.newBuilder()
+                .setOwner(this.owner)
+                .setRoute(route)
+                .setTimestamp(now)
+                .setSignature(ByteString.copyFrom(signature))
+                .build());
+        channel.shutdown();
+        log.debug("GPRC list update duration "+(Now.NowUtcMs()-start)+"ms");
+    }
+
 
 }
 
