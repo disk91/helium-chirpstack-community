@@ -39,6 +39,11 @@ public class NovaService {
     @Autowired
     protected HeliumDeviceCacheService heliumDeviceCacheService;
 
+    // ----------------------------------
+    // MANAGE THE SESSIONS NwkSkey
+    // ----------------------------------
+
+
     public boolean refreshDevAddrList(String devaddr) {
         // Get the list of device using this devaddr
         List<String> deviceEUIs = redisDeviceRepository.getDevEuiByDevAddr(devaddr);
@@ -71,7 +76,7 @@ public class NovaService {
         return true;
     }
 
-    // ------
+
     protected int runningJobs = 0;
     protected boolean serviceEnable = true; // false to stop the services
 
@@ -168,10 +173,100 @@ public class NovaService {
         this.initialRefreshDone = true;
     }
 
+    // ---------------------------------------
+    // MANAGE THE EUIs Route update
+    // ---------------------------------------
+
+
+    // List of deviceEUI we want the add / remove in the list
+    protected ArrayList<NovaDevice> delayedEuisRefreshAddition = new ArrayList<>();
+    protected ArrayList<NovaDevice> delayedEuisRefreshRemoval = new ArrayList<>();
+
+    protected void addDelayedEuisRefreshAddition(NovaDevice dev) {
+        synchronized (delayedEuisRefreshAddition) {
+            this.delayedEuisRefreshAddition.add(dev);
+        }
+    }
+
+    protected void addDelayedEuisRefreshRemoval(NovaDevice dev) {
+        synchronized (delayedEuisRefreshRemoval) {
+            this.delayedEuisRefreshRemoval.add(dev);
+        }
+    }
+
+    /**
+     * On regular basis we update the route on Nova backend based on the movement made on the devices
+     * deletion, creation, deactivation, reactivation ...
+     */
+    @Scheduled(fixedRateString = "${helium.nova.publish.delayed.scanPeriod}", initialDelay = 15_000)
+    protected void flushDelayedEuisUpdate() {
+        if (!this.serviceEnable) return;
+        this.runningJobs++;
+        long start = Now.NowUtcMs();
+        try {
+
+            // Compute the real list (priority on removal)
+            // Add = Add - Remove
+            // Remove = Remove
+            ArrayList<NovaDevice> toRemove = new ArrayList<>();
+            synchronized (delayedEuisRefreshRemoval) {
+                for ( NovaDevice n : delayedEuisRefreshRemoval ) {
+                    toRemove.add(n);
+                }
+                this.delayedEuisRefreshRemoval.clear();
+            }
+
+            ArrayList<NovaDevice> toAdd = new ArrayList<>();
+            synchronized (delayedEuisRefreshAddition) {
+                for ( NovaDevice n : delayedEuisRefreshAddition ) {
+                    boolean found = false;
+                    for ( NovaDevice r : toRemove ) {
+                        if ( n.devEui.compareToIgnoreCase(r.devEui) == 0
+                        && n.appEui.compareToIgnoreCase(r.appEui) == 0 ) {
+                            found = true;
+                            break;
+                        }
+                    }
+                    if (!found) {
+                        toAdd.add(n);
+                    }
+                }
+                this.delayedEuisRefreshAddition.clear();
+            }
+
+            if ( toRemove.size() > 0 ) {
+                if ( ! grpcAddRemoveInRoutes(toRemove, false) ) {
+                    // restore the removal for next pass
+                    for ( NovaDevice d : toRemove ) {
+                        this.addDelayedEuisRefreshRemoval(d);
+                    }
+                }
+            }
+            if ( toAdd.size() > 0 ) {
+                if ( ! grpcAddRemoveInRoutes(toAdd, true) ) {
+                    // restore the removal for next pass
+                    for ( NovaDevice d : toAdd ) {
+                        this.addDelayedEuisRefreshAddition(d);
+                    }
+                }
+            }
+
+        } finally {
+            this.runningJobs--;
+        }
+        log.debug("End Running flushDelayedSessionUpdate - duration " + (Now.NowUtcMs() - start) + "ms");
+
+    }
+
+
+    // ----------------------------
+    // public handlers
+
 
     public boolean deactivateDevices(List<NovaDevice> devices) {
         for (NovaDevice d : devices) {
             this.addDelayedSessionRefresh(d.devEui);
+            this.addDelayedEuisRefreshRemoval(d);
             log.info("Deactivating device " + d.devEui);
         }
         return true;
@@ -180,6 +275,7 @@ public class NovaService {
     public boolean activateDevices(List<NovaDevice> devices) {
         for (NovaDevice d : devices) {
             this.addDelayedSessionRefresh(d.devEui);
+            this.addDelayedEuisRefreshAddition(d);
             log.info("Activating device " + d.devEui);
         }
         return true;
@@ -338,43 +434,78 @@ public class NovaService {
     }
 
 
-
-    public void grpcAddInRoutes(List<NovaDevice> devices) {
-        if ( ! this.grpcInitOk ) return;
+    /**
+     * Update an existing route by adding or removing EUIs in this route
+     * boolean to select add (true) or removal (false)
+     * @param devices
+     * @param add
+     */
+    public boolean grpcAddRemoveInRoutes(List<NovaDevice> devices, boolean add) {
+        if ( ! this.grpcInitOk ) return false;
         long start = Now.NowUtcMs();
-        log.debug("GRPC Add routes");
+        if ( add ) {
+            log.debug("GRPC Add routes");
+        } else {
+            log.debug("GRPC Remove routes");
+        }
 
         Config.route_list_res_v1 routes = this.grpcListRoutes();
-        if( routes.getRoutesCount() == 0 || routes.getRoutesCount() > 1) {
+        if( routes == null || routes.getRoutesCount() == 0 || routes.getRoutesCount() > 1) {
             // @TODO keep it simple currently, only one route is supported
             // means the route must be initialized previously
             // and no more than one is supported
             // we will later manage multi-route solution
             // route can be saved in the config
             // @TODO also manage route cache in memory to reduce the read impact ..
-            log.error("GRPC currently supporting configuration with one route created, not more/less");
-            return;
+            if ( routes != null ) {
+                log.error("GRPC currently supporting configuration with one route created, not more/less");
+            } else {
+                log.error("GRPC impossible to get the routes");
+            }
+            return false;
         }
         Config.route_v1 route = routes.getRoutes(0);
 
         HashMap<String, NovaDevice> allDevices = new HashMap<>();
         // add existing devices
         for ( Config.eui_v1 euis : route.getEuisList() ) {
-            NovaDevice nd = new NovaDevice();
-            nd.devEui = Tools.EuiStringFromLong(euis.getDevEui());
-            nd.appEui = Tools.EuiStringFromLong(euis.getAppEui());
-            allDevices.put(nd.devEui+nd.appEui, nd);
+            if ( add ) {
+                NovaDevice nd = new NovaDevice();
+                nd.devEui = Tools.EuiStringFromLong(euis.getDevEui());
+                nd.appEui = Tools.EuiStringFromLong(euis.getAppEui());
+                allDevices.put(nd.devEui + nd.appEui, nd);
+            } else {
+                String _devEui = Tools.EuiStringFromLong(euis.getDevEui());
+                String _appEui = Tools.EuiStringFromLong(euis.getAppEui());
+                boolean found = false;
+                for ( NovaDevice device : devices ) {
+                    if (  device.devEui.compareToIgnoreCase(_devEui) == 0
+                       && device.appEui.compareToIgnoreCase(_appEui) == 0
+                    ) {
+                        found = true;
+                        break;
+                    }
+                }
+                if ( !found ) {
+                    NovaDevice nd = new NovaDevice();
+                    nd.devEui = Tools.EuiStringFromLong(euis.getDevEui());
+                    nd.appEui = Tools.EuiStringFromLong(euis.getAppEui());
+                    allDevices.put(nd.devEui + nd.appEui, nd);
+                }
+            }
         }
 
         // find devices to be added and do this
-        for ( NovaDevice device : devices ) {
-            if ( allDevices.get(device.devEui+device.appEui) == null ) {
-                allDevices.put(device.devEui+device.appEui, device);
+        if ( add ) {
+            for (NovaDevice device : devices) {
+                if (allDevices.get(device.devEui + device.appEui) == null) {
+                    allDevices.put(device.devEui + device.appEui, device);
+                }
             }
         }
 
 
-        // Update route
+        // Update list of route
         ArrayList<Config.eui_v1> updatedList = new ArrayList<>();
         for ( NovaDevice device : allDevices.values() ) {
             Config.eui_v1 n = Config.eui_v1.newBuilder()
@@ -385,44 +516,51 @@ public class NovaService {
             updatedList.add(n);
         }
 
+        // Clone the route
         Config.route_v1 newRoute = Config.route_v1.newBuilder()
                 .setId(route.getId())
                 .setServer(route.getServer())
                 .setOui(route.getOui())
                 .setNetId(route.getNetId())
                 .setMaxCopies(route.getMaxCopies())
-
+                .addAllDevaddrRanges(route.getDevaddrRangesList())
+                .addAllEuis(updatedList)
+                .setNonce(route.getNonce())
                 .build();
 
-                // @Todo - not working ... need to find how to create a new array of objet
+        try {
+            // push the new version
+            ManagedChannel channel = ManagedChannelBuilder.forAddress(
+                    consoleConfig.getHeliumGrpcServer(),
+                    consoleConfig.getHeliumGrpcPort()
+            ).usePlaintext().build();
+            RouteGrpc.routeBlockingStub stub = RouteGrpc.newBlockingStub(channel);
 
+            long now = Now.NowUtcMs();
+            Config.route_update_req_v1 requestToSign = Config.route_update_req_v1.newBuilder()
+                    .setOwner(this.owner)
+                    .setRoute(newRoute)
+                    .setTimestamp(now)
+                    .clearSignature()
+                    .build();
+            byte[] requestToSignContent = requestToSign.toByteArray();
+            this.signer.update(requestToSignContent, 0, requestToSignContent.length);
+            byte[] signature = signer.generateSignature();
 
-        // push the new version
-        ManagedChannel channel = ManagedChannelBuilder.forAddress(
-                consoleConfig.getHeliumGrpcServer(),
-                consoleConfig.getHeliumGrpcPort()
-        ).usePlaintext().build();
-        RouteGrpc.routeBlockingStub stub = RouteGrpc.newBlockingStub(channel);
-
-        long now = Now.NowUtcMs();
-        Config.route_update_req_v1 requestToSign = Config.route_update_req_v1.newBuilder()
-                .setOwner(this.owner)
-                .setRoute(route)
-                .setTimestamp(now)
-                .clearSignature()
-                .build();
-        byte[] requestToSignContent = requestToSign.toByteArray();
-        this.signer.update(requestToSignContent, 0, requestToSignContent.length);
-        byte[] signature = signer.generateSignature();
-
-        Config.route_v1 response = stub.update(Config.route_update_req_v1.newBuilder()
-                .setOwner(this.owner)
-                .setRoute(route)
-                .setTimestamp(now)
-                .setSignature(ByteString.copyFrom(signature))
-                .build());
-        channel.shutdown();
+            Config.route_v1 response = stub.update(Config.route_update_req_v1.newBuilder()
+                    .setOwner(this.owner)
+                    .setRoute(newRoute)
+                    .setTimestamp(now)
+                    .setSignature(ByteString.copyFrom(signature))
+                    .build());
+            channel.shutdown();
+        } catch (Exception x) {
+            log.error("GRPC error during route update "+x.getMessage());
+            x.printStackTrace();
+            return false;
+        }
         log.debug("GPRC list update duration "+(Now.NowUtcMs()-start)+"ms");
+        return true;
     }
 
 
