@@ -20,7 +20,6 @@ import xyz.nova.grpc.Config;
 import xyz.nova.grpc.RouteGrpc;
 
 import javax.annotation.PostConstruct;
-import javax.tools.Tool;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -64,6 +63,9 @@ public class NovaService {
                         String nwkSKey = HexaConverters.byteToHexString(ds.getNwkSEncKey().toByteArray());
                         log.debug("Add Network encrypted Key " + nwkSKey);
                     }
+                    if (ds == null) {
+                        log.warn("Impossible to get detailed info on "+devEUI);
+                    }
                     break;
                 default:
                 case DEACTIVATED:
@@ -82,6 +84,9 @@ public class NovaService {
 
     // request to stop the service properly
     public void stopService() {
+        if ( ! this.flushDelayedEuisUpdateRunning ) {
+            this.flushDelayedEuisUpdate();
+        }
         this.serviceEnable = false;
     }
 
@@ -107,7 +112,7 @@ public class NovaService {
      */
     @Scheduled(fixedRateString = "${helium.nova.publish.delayed.scanPeriod}", initialDelay = 120_000)
     protected void flushDelayedSessionUpdate() {
-        if (!this.serviceEnable || !this.initialRefreshDone) return;
+        if (!this.serviceEnable || !this.initialSessionRefreshDone) return;
         this.runningJobs++;
         long start = Now.NowUtcMs();
         try {
@@ -127,9 +132,13 @@ public class NovaService {
                 HashMap<String, String> devAddr = new HashMap<>();
                 for (String devEUI : toRefresh) {
                     Internal.DeviceSession ds = redisDeviceRepository.getDeviceDetails(devEUI);
-                    String devad = HexaConverters.byteToHexString(ds.getDevAddr().toByteArray());
-                    if (devAddr.get(devad) == null) {
-                        devAddr.put(devad, devad);
+                    if ( ds != null && ds.getDevAddr() != null ) {
+                        String devad = HexaConverters.byteToHexString(ds.getDevAddr().toByteArray());
+                        if (devAddr.get(devad) == null) {
+                            devAddr.put(devad, devad);
+                        }
+                    } else {
+                        log.debug("Device "+devEUI+" does not have data in redis / no recent activity");
                     }
                 }
 
@@ -150,11 +159,11 @@ public class NovaService {
      * When starting the application, it's better to refresh all the sessions on Nova Backend
      * to avoid synchronization problems dur to chirpstack action executed when the console was down
      */
-    protected boolean initialRefreshDone = false;
+    protected boolean initialSessionRefreshDone = false;
 
     @Scheduled(fixedDelay = 3600_000, initialDelay = 180_000)
     protected void initialNovaSessionRefresh() {
-        if (!initialRefreshDone) {
+        if (!initialSessionRefreshDone) {
             if (!this.serviceEnable) return;
             this.runningJobs++;
             long start = Now.NowUtcMs();
@@ -170,8 +179,9 @@ public class NovaService {
             }
             log.debug("End Running initialNovaSessionRefresh - duration " + (Now.NowUtcMs() - start) + "ms");
         }
-        this.initialRefreshDone = true;
+        this.initialSessionRefreshDone = true;
     }
+
 
     // ---------------------------------------
     // MANAGE THE EUIs Route update
@@ -194,6 +204,7 @@ public class NovaService {
         }
     }
 
+    private boolean flushDelayedEuisUpdateRunning = false;
     /**
      * On regular basis we update the route on Nova backend based on the movement made on the devices
      * deletion, creation, deactivation, reactivation ...
@@ -201,6 +212,7 @@ public class NovaService {
     @Scheduled(fixedRateString = "${helium.nova.publish.delayed.scanPeriod}", initialDelay = 15_000)
     protected void flushDelayedEuisUpdate() {
         if (!this.serviceEnable) return;
+        this.flushDelayedEuisUpdateRunning = true;
         this.runningJobs++;
         long start = Now.NowUtcMs();
         try {
@@ -253,6 +265,7 @@ public class NovaService {
 
         } finally {
             this.runningJobs--;
+            this.flushDelayedEuisUpdateRunning = false;
         }
         log.debug("End Running flushDelayedSessionUpdate - duration " + (Now.NowUtcMs() - start) + "ms");
 
@@ -261,7 +274,6 @@ public class NovaService {
 
     // ----------------------------
     // public handlers
-
 
     public boolean deactivateDevices(List<NovaDevice> devices) {
         for (NovaDevice d : devices) {
@@ -280,6 +292,7 @@ public class NovaService {
         }
         return true;
     }
+
 
     // ===========================================================
     // GRPC Interface
@@ -359,7 +372,7 @@ public class NovaService {
      * @param routeId
      * @return
      */
-    public Config.route_v1 grpcGetOneRoute(String routeId) {
+    private Config.route_v1 grpcGetOneRoute(String routeId) {
         if ( ! this.grpcInitOk ) return null;
 
         long start = Now.NowUtcMs();
@@ -395,7 +408,7 @@ public class NovaService {
     }
 
 
-    public Config.route_list_res_v1 grpcListRoutes() {
+    private Config.route_list_res_v1 grpcListRoutes() {
         if ( ! this.grpcInitOk ) return null;
 
         long start = Now.NowUtcMs();
@@ -428,11 +441,41 @@ public class NovaService {
         log.debug("GRPC routes ("+response.getRoutesCount()+ ")");
         for ( Config.route_v1 route : response.getRoutesList() ) {
             log.debug("GRPC route id "+route.getId().toStringUtf8()+ " with "+route.getEuisList().size()+" euis");
+            for ( Config.eui_v1 eui : route.getEuisList() ) {
+                log.debug("GRPC contains route for "+Tools.EuiStringFromLong(eui.getDevEui())+" / "+Tools.EuiStringFromLong(eui.getAppEui()));
+            }
         }
-
         return response;
     }
 
+
+    public List<NovaDevice> getAllKnownDevices() {
+        ArrayList<NovaDevice> ret = new ArrayList<>();
+
+        Config.route_list_res_v1 routes = this.grpcListRoutes();
+        if( routes == null || routes.getRoutesCount() == 0 || routes.getRoutesCount() > 1) {
+            // @TODO keep it simple currently, only one route is supported
+            // means the route must be initialized previously
+            // and no more than one is supported
+            // we will later manage multi-route solution
+            // route can be saved in the config
+            // @TODO also manage route cache in memory to reduce the read impact ..
+            if ( routes != null ) {
+                log.error("GRPC currently supporting configuration with one route created, not more/less");
+            } else {
+                log.error("GRPC impossible to get the routes");
+            }
+        } else {
+            Config.route_v1 route = routes.getRoutes(0);
+            for ( Config.eui_v1 eui : route.getEuisList() ) {
+                NovaDevice n = new NovaDevice();
+                n.devEui = Tools.EuiStringFromLong(eui.getDevEui());
+                n.appEui = Tools.EuiStringFromLong(eui.getAppEui());
+                ret.add(n);
+            }
+        }
+        return ret;
+    }
 
     /**
      * Update an existing route by adding or removing EUIs in this route
@@ -446,7 +489,7 @@ public class NovaService {
         if ( add ) {
             log.debug("GRPC Add routes");
         } else {
-            log.debug("GRPC Remove routes");
+            log.debug("GRPC Remove routes ("+devices.size()+")");
         }
 
         Config.route_list_res_v1 routes = this.grpcListRoutes();
@@ -479,6 +522,7 @@ public class NovaService {
                 String _appEui = Tools.EuiStringFromLong(euis.getAppEui());
                 boolean found = false;
                 for ( NovaDevice device : devices ) {
+                    //log.debug("Compared "+device.devEui+" / "+device.appEui);
                     if (  device.devEui.compareToIgnoreCase(_devEui) == 0
                        && device.appEui.compareToIgnoreCase(_appEui) == 0
                     ) {
@@ -488,9 +532,12 @@ public class NovaService {
                 }
                 if ( !found ) {
                     NovaDevice nd = new NovaDevice();
-                    nd.devEui = Tools.EuiStringFromLong(euis.getDevEui());
-                    nd.appEui = Tools.EuiStringFromLong(euis.getAppEui());
+                    nd.devEui = _devEui;
+                    nd.appEui = _appEui;
                     allDevices.put(nd.devEui + nd.appEui, nd);
+                    log.debug("Device "+nd.devEui+" / "+nd.appEui+" not to be removed");
+                } else {
+                    log.debug("Device "+_devEui+" / "+_appEui+" to be removed");
                 }
             }
         }
@@ -504,7 +551,6 @@ public class NovaService {
             }
         }
 
-
         // Update list of route
         ArrayList<Config.eui_v1> updatedList = new ArrayList<>();
         for ( NovaDevice device : allDevices.values() ) {
@@ -514,6 +560,12 @@ public class NovaService {
                     .build();
 
             updatedList.add(n);
+        }
+
+        // debug
+        log.debug("New device list");
+        for ( Config.eui_v1 e : updatedList ) {
+            log.debug("Eui : "+Tools.EuiStringFromLong(e.getDevEui())+" / "+Tools.EuiStringFromLong(e.getAppEui()));
         }
 
         // Clone the route

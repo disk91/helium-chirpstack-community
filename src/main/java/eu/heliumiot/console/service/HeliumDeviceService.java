@@ -35,12 +35,15 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Slice;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 @Service
@@ -278,6 +281,120 @@ public class HeliumDeviceService {
         }
         log.debug("End Running scanDeletedDevicesJob - duration "+(Now.NowUtcMs()-start)+"ms");
     }
+
+    // ===========================================================
+    // Clean the routes
+    // ===========================================================
+
+    @Autowired
+    protected HeliumDeviceCacheService heliumDeviceCacheService;
+
+    /**
+     * List the device that are in the Helium route but not in the database to remove them
+     * @param commit
+     * @return
+     */
+    public List<NovaDevice> clearInvalidRouteEuis(boolean commit) {
+        ArrayList<NovaDevice> invalids = new ArrayList<>();
+        List<NovaDevice> all = novaService.getAllKnownDevices();
+        if ( all == null || all.size() ==  0 ) return invalids; // better do nothing that big mistake
+
+        for ( NovaDevice dev : all ) {
+
+            HeliumDevice hd = this.heliumDeviceCacheService.getHeliumDevice(dev.devEui,false);
+            if ( hd == null ) {
+                // this device does not exist
+                log.debug("Device "+dev.devEui+" / "+ dev.appEui+" can be cleared");
+                invalids.add(dev);
+            } else  {
+                switch ( hd.getState() ) {
+                    default:
+                    case INSERTED:
+                    case ACTIVE:
+                    case INACTIVE:
+                        break;
+
+                    case DEACTIVATED:
+                    case OUTOFDCS:
+                    case DELETED:
+                        log.debug("Device "+dev.devEui+" / "+ dev.appEui+" can be cleared");
+                        invalids.add(dev);
+                        break;
+                }
+            }
+
+        }
+        if ( commit ) {
+            novaService.deactivateDevices(invalids);
+        }
+        return invalids;
+    }
+
+    /**
+     * Resync the database devices with the helium route by searching all the device not in the helium route
+     * and adding them
+     * @param commit
+     * @return
+     */
+    public List<NovaDevice> searchMissingRouteEuis(boolean commit) {
+        ArrayList<NovaDevice> missing = new ArrayList<>();
+
+        // get the devices and store in hashmap for search
+        List<NovaDevice> all = novaService.getAllKnownDevices();
+        if ( all == null || all.size() ==  0 ) return missing; // better do nothing that big mistake
+
+        HashMap<String,NovaDevice> all_= new HashMap<>();
+        for ( NovaDevice n : all ) {
+            all_.put((""+n.devEui+n.appEui).toLowerCase(),n);
+        }
+
+        Slice<HeliumDevice> allDevices = heliumDeviceRepository.findAll(PageRequest.of(0, 100));
+        if ( allDevices != null ) {
+            do {
+                for ( HeliumDevice d : allDevices ) {
+                    switch ( d.getState() ) {
+                        case INSERTED:
+                        case ACTIVE:
+                        case INACTIVE:
+                            if ( all_.get((""+d.getDeviceEui()+d.getApplicationEui()).toLowerCase()) == null ) {
+                                NovaDevice n = new NovaDevice();
+                                n.devEui= d.getDeviceEui();
+                                n.appEui= d.getApplicationEui();
+                                missing.add(n);
+                                log.debug("Device "+n.devEui+" / "+ n.appEui+" should be added");
+                            }
+                            break;
+
+                        default:
+                        case DEACTIVATED:
+                        case OUTOFDCS:
+                        case DELETED:
+                        break;
+                    }
+
+                }
+                allDevices = heliumDeviceRepository.findAll(allDevices.nextPageable());
+            } while (allDevices.hasNext());
+        }
+        if (commit) novaService.activateDevices(missing);
+        return missing;
+    }
+
+    // On Start Schedule a route cleaning process
+    private boolean recycled = false;
+    @Scheduled(fixedRate = 3600_000, initialDelay = 45_000)
+    private void resyncOnce() {
+        if (recycled) return;
+        long start = Now.NowUtcMs();
+        log.info("resyncOnce - start db & helium route resync");
+
+        this.clearInvalidRouteEuis(true);
+        this.searchMissingRouteEuis(true);
+
+        recycled = true;
+        log.info("resyncOnce - processed in " + (Now.NowUtcMs() - start) + "ms");
+    }
+
 
     // process par groupe de 100 devices dont le last state est ancien, par contre il va faloir etre blocking
     // Invoicing Inactive devices

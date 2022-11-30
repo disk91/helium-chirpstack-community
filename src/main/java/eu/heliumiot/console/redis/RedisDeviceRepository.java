@@ -65,6 +65,7 @@ public class RedisDeviceRepository {
     public Internal.DeviceSession getDeviceDetails(String devEUI) {
         devEUI = devEUI.toLowerCase();
         byte[] deviceInfo = syncCommands.get("device:{"+devEUI+"}:ds");
+        if ( deviceInfo == null ) return null;
 
         try {
             Internal.DeviceSession devSession = Internal.DeviceSession.parseFrom(deviceInfo);

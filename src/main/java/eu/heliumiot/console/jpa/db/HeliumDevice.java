@@ -178,6 +178,7 @@ public class HeliumDevice {
     }
 
     public String getApplicationEui() {
+        if ( applicationEui.length() < 16 ) return "0000000000000000";
         return applicationEui;
     }
 

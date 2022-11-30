@@ -80,17 +80,22 @@ public class HeliumDeviceCacheService {
         return (this.serviceEnable == false && this.runningJobs == 0);
     }
 
+
+    public HeliumDevice getHeliumDevice(String deviceEui) {
+        return getHeliumDevice(deviceEui,true);
+    }
+
     /**
      * Get a device from cache, add it if not yet in the cache
      * @param deviceEui
      * @return
      */
-    public HeliumDevice getHeliumDevice(String deviceEui) {
+    public HeliumDevice getHeliumDevice(String deviceEui, boolean cache) {
         deviceEui = deviceEui.toUpperCase();
         HeliumDevice dev = heliumDeviceCache.get(deviceEui);
         if ( dev == null ) {
             dev = heliumDeviceRepository.findOneHeliumDeviceByDeviceEui(deviceEui);
-            heliumDeviceCache.put(dev,deviceEui);
+            if ( cache && dev != null ) heliumDeviceCache.put(dev,deviceEui);
         }
         return dev;
     }
