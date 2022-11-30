@@ -6,7 +6,7 @@ NETWORK=$(shell docker network ls | grep chirpstack | cut -d " " -f 1)
 build: .FORCE
 	./gradlew build -x test && docker build -t disk91/console .
 start:
-    -docker stop console
+	-docker stop console
 	-docker rm console
 	docker run --name console \
 	           --restart always \
