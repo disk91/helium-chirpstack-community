@@ -10,7 +10,7 @@ start:
 	docker run --name console \
 	           --restart always \
 	           --expose 8090 \
-	           -v $(KEYFILE):/etc/helium/pkey.bin \
+                   --mount type=bind,source=$(KEYFILE),target=/etc/helium/pkey.bin \
                --network=$(NETWORK) \
 	           --add-host postgres:$(POSTGRESIP) \
                --add-host redis:$(REDISIP) \
