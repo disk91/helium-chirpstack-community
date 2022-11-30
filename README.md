@@ -31,12 +31,12 @@ route. You need to manually generate the private keys and set up a first route.
 
 For this you need to use the [helium config service cli](https://github.com/helium/helium-config-service-cli)
 - generate your keypair and makes it registered on router (manual process in beta)
-```aidl
+```bash
 ./main generate-keypair <keyname>.bin
 ./main env-info --keypair ./<keyname>.bin
 ```
 - init the router settings
-```aidl
+```bash
 ./main env-init
   - change the keypair location
   - nedID C00053
@@ -44,14 +44,14 @@ For this you need to use the [helium config service cli](https://github.com/heli
   - set default multi-buy value (duplicates)
 ```
 - create an env file
-```aidl
+```bash
 export HELIUM_KEYPAIR_BIN=./<keyname>.bin
 export HELIUM_NET_ID=C00053
 export HELIUM_MAX_COPIES=xx
 ```
 
 - generate the first route
-```aidl
+```bash
 ./main generate-route
 ./main add devaddr <start> <end> --commit
 ./main add protocol gwmp --host <your chirpstack server IP> --port <your chirpstack port> --commit
