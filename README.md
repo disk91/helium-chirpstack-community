@@ -78,7 +78,7 @@ max_connections = 500                   # (change requires restart)
 
 ### configure
 - edit the configuration.properties file to setup the configurations. In particular the following elements
-```aidl
+```bash
 ## GPRC
 helium.grpc.private.keyfile.path=/etc/helium/pkey.bin
 helium.grpc.public.key=<your public key>
