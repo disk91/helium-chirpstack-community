@@ -1,8 +1,11 @@
 # Helium / Chirpstack integration
 
-## Not yet ready to be used and forked
+Follow progress and roadmap on the [project board](https://github.com/users/disk91/projects/1/views/1)
 
-## Features (development in progress)
+__/!\ MVP1 ready for HIP70 beta testers only__
+
+
+### Features (development in progress)
 
 - Manage fully configurable billing capabilities for helium
     - cost per uplink
@@ -14,11 +17,50 @@
     - limit device DCs consumption on a given period of time
     - Limit device DCs consumption overall
     - upfront billing
-    - en of month billing
-- Manage payment with stripe
+    - end of month billing
 - Manage the device declaration / deactivation on helium router
-- Manage multi-tenant chirpstack environment
+- 
+- TODO - Manage payment with stripe
+- TODO - Manage multi-tenant chirpstack environment
 - ...
+
+## Pre-requisite
+
+Currently, the solution supports a single route to helium router (1 route = 1 LNS server) and does not create the initial
+route. You need to manually generate the private keys and set up a first route.
+
+For this you need to use the [helium config service cli](https://github.com/helium/helium-config-service-cli)
+- generate your keypair and makes it registered on router (manual process in beta)
+```aidl
+./main generate-keypair <keyname>.bin
+./main env-info --keypair ./<keyname>.bin
+```
+- init the router settings
+```aidl
+./main env-init
+  - change the keypair location
+  - nedID C00053
+  - select you OUI
+  - set default multi-buy value (duplicates)
+```
+- create an env file
+```aidl
+export HELIUM_KEYPAIR_BIN=./<keyname>.bin
+export HELIUM_NET_ID=C00053
+export HELIUM_MAX_COPIES=xx
+```
+
+- generate the first route
+```aidl
+./main generate-route
+./main add devaddr <start> <end> --commit
+./main add protocol gwmp --host <your chirpstack server IP> --port <your chirpstack port> --commit
+./main create-route --owner <your public key> --commit
+```
+
+Once your have this first route created you can run this project and the route will be updated automatically on device 
+addition & removal into chirpstack
+
 
 ## Build the application
 
@@ -35,16 +77,26 @@ max_connections = 500                   # (change requires restart)
 ```
 
 ### configure
-- edit the configuration.properties file to setup the configurations
+- edit the configuration.properties file to setup the configurations. In particular the following elements
+```aidl
+## GPRC
+helium.grpc.private.keyfile.path=/etc/helium/pkey.bin
+helium.grpc.public.key=<your public key>
+helium.grpc.oui=<your oui>
+helium.gprc.server=<Helium Grpc Server>
+helium.grpc.port=<Helium Gprc Port>
+```
+- make sure your billing settings are also corresponding to your expectation. The default DCs per Tenant is really large
+to support non billing situation for beta test. Take care of this.
 
 ### build image
 ```bash
-./build.sh
+make build
 ```
 
 ### run image ( not yet ready )
 ```bash
-docker run --name console --network="host" disk91/console
+make KEYFILE=<keyfile>.bin start
 ```
 
 ## Stop the application
