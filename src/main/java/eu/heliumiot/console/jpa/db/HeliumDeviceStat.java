@@ -76,11 +76,11 @@ public class HeliumDeviceStat {
     }
 
     public String getDeviceUUID() {
-        return deviceUUID;
+        return deviceUUID.toUpperCase();
     }
 
     public void setDeviceUUID(String deviceUUID) {
-        this.deviceUUID = deviceUUID;
+        this.deviceUUID = deviceUUID.toUpperCase();
     }
 
     public long getDay() {

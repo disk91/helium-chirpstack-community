@@ -20,7 +20,6 @@
 package eu.heliumiot.console.service;
 
 import eu.heliumiot.console.jpa.db.HeliumDevice;
-import eu.heliumiot.console.jpa.db.HeliumDeviceStat;
 import eu.heliumiot.console.jpa.repository.HeliumDeviceRepository;
 import fr.ingeniousthings.tools.Now;
 import fr.ingeniousthings.tools.ObjectCache;

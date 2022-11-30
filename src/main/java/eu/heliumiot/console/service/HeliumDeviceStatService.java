@@ -109,6 +109,7 @@ public class HeliumDeviceStatService {
     protected HeliumDeviceStat getCurrentDeviceStat(String devId, String tenantId, boolean createOne) {
         long dayRef = Now.TodayMidnightUtc();
         // try cache
+        devId = devId.toUpperCase();
         HeliumDeviceStat s = this.heliumDeviceStatCache.get(devId);
         if ( s != null && s.getDay() == dayRef ) {
             if ( Now.NowUtcMs() - s.getLastCommit() > Now.ONE_HOUR ) {
@@ -178,6 +179,7 @@ public class HeliumDeviceStatService {
      * @return
      */
     public List<HeliumDeviceStat> getDeviceStatsUnsafe(String devEUI, String tenantID, long start, long stop) {
+        devEUI = devEUI.toUpperCase();
         List<HeliumDeviceStat> r = this.heliumDeviceStatsRepository.findHeliumDeviceStatByDeviceUUIDAndDayBetween(
                 devEUI,
                 start,
