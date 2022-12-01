@@ -265,6 +265,7 @@ public class HeliumTenantService {
                 i.setUplinkDc(uplinkDc);
                 i.setDuplicateDc(duplicateDc);
                 i.setUplink(1);
+                i.setDuplicate(duplicates);
                 reportStatToMqtt(i);
 
                 // check deactivation

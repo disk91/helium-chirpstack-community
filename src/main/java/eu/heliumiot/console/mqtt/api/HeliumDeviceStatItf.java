@@ -34,6 +34,8 @@ public class HeliumDeviceStatItf {
     @ApiModelProperty(notes = "time of the update", required = false)
     protected long time = 0;
     protected int uplinkDc = 0;
+
+    protected int duplicate = 0;
     protected int duplicateDc = 0;
     protected int downlinkDc = 0;
     protected int inactivityDc = 0;
@@ -44,6 +46,15 @@ public class HeliumDeviceStatItf {
     protected int join=0;
 
     // ---
+
+
+    public int getDuplicate() {
+        return duplicate;
+    }
+
+    public void setDuplicate(int duplicate) {
+        this.duplicate = duplicate;
+    }
 
     public String getDeviceId() {
         return deviceId;

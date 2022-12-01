@@ -141,6 +141,7 @@ public class HeliumDeviceStatService {
             s.setLastCommit(Now.NowUtcMs());
             s.setUplinkDc(0);
             s.setDuplicateDc(0);
+            s.setDuplicate(0);
             s.setDownlinkDc(0);
             s.setInactivityDc(0);
             s.setActivityDc(0);
@@ -159,6 +160,7 @@ public class HeliumDeviceStatService {
     ) {
         HeliumDeviceStat s = this.getCurrentDeviceStat(e.getDeviceId(), e.getTenantId(), true);
         s.setUplinkDc(s.getUplinkDc()+e.getUplinkDc());
+        s.setDuplicate(s.getDuplicate()+e.getDuplicate());
         s.setDuplicateDc(s.getDuplicateDc()+e.getDuplicateDc());
         s.setDownlinkDc(s.getDownlinkDc()+e.getDownlinkDc());
         s.setInactivityDc(s.getInactivityDc()+e.getInactivityDc());

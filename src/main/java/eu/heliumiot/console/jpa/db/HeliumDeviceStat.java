@@ -53,6 +53,8 @@ public class HeliumDeviceStat {
     // --- type of cost
     private int registrationDc; // device creation costs
     private int uplinkDc;
+
+    private int duplicate;
     private int duplicateDc;
     private int downlinkDc;
     private int inactivityDc;
@@ -177,5 +179,13 @@ public class HeliumDeviceStat {
 
     public void setTenantUUID(String tenantUUID) {
         this.tenantUUID = tenantUUID;
+    }
+
+    public int getDuplicate() {
+        return duplicate;
+    }
+
+    public void setDuplicate(int duplicate) {
+        this.duplicate = duplicate;
     }
 }
