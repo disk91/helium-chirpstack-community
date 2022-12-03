@@ -144,6 +144,9 @@ to support non billing situation for beta test. Take care of this.
 change the start procedure to mount a local configuration file.
 
 ### build image
+Depends on your server configuration, you will need to run this as root/sudo, or with your local user. Building and running
+process use docker commands and need docker rights.
+
 ```bash
 make build
 ```
