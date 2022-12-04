@@ -429,5 +429,25 @@ public class ConsoleConfig {
         return Integer.parseInt(this.getHeliumGrpcPortDefault());
     }
 
+    // =========================================
+    // Chirpstack API
+    // =========================================
+    @Value ("${chirpstack.api.base}")
+    private String chirpstackApiBaseExternal;
 
+    @Value ("${chirpstack.api.base.default}")
+    private String chirpstackApiBaseDefault;
+
+    public String getChirpstackApiBase() {
+        if (this.getChirpstackApiBaseExternal().length() > 0) return this.getChirpstackApiBaseExternal();
+        return getChirpstackApiBaseDefault();
+    }
+
+    public String getChirpstackApiBaseExternal() {
+        return chirpstackApiBaseExternal;
+    }
+
+    public String getChirpstackApiBaseDefault() {
+        return chirpstackApiBaseDefault;
+    }
 }

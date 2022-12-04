@@ -65,6 +65,7 @@ public class WebSecurityProfile extends WebSecurityConfigurerAdapter {
         http.cors().and().csrf().disable().authorizeRequests()
                 .antMatchers("/").permitAll()
                 .antMatchers("/internal/3.0/exit").permitAll()
+                .antMatchers("/console/1.0/sign/**").permitAll()
                 // Springfox swagger url
                 .antMatchers("/swagger-**").permitAll()
                 .antMatchers("/v3/api-docs/**").permitAll()

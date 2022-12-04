@@ -50,7 +50,7 @@ public class ActionResult {
             example = "Invalid request, missing field xxx",
             requiredMode = Schema.RequiredMode.REQUIRED
     )
-    protected String message;
+    protected String message = "";
 
 
     // ------------------------------------
