@@ -20,7 +20,6 @@
 package io.chirpstack.json.sub;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import io.swagger.annotations.ApiModelProperty;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class UplinkEventRxInfo {
@@ -40,22 +39,22 @@ public class UplinkEventRxInfo {
                 }
      */
 
-    @ApiModelProperty(notes = "Id of the gateway", required = false)
+    // @ApiModelProperty(notes = "Id of the gateway", required = false)
     protected String gatewayId;
 
-    @ApiModelProperty(notes = "uplinkId ", required = false)
+    // @ApiModelProperty(notes = "uplinkId ", required = false)
     protected long uplinkId;
 
-    @ApiModelProperty(notes = "time of the reception", required = false)
+    // @ApiModelProperty(notes = "time of the reception", required = false)
     protected String time;
 
-    @ApiModelProperty(notes = "Rssi", required = false)
+    // @ApiModelProperty(notes = "Rssi", required = false)
     protected int rssi;
 
-    @ApiModelProperty(notes = "Snr", required = false)
+    // @ApiModelProperty(notes = "Snr", required = false)
     protected double snr;
 
-    @ApiModelProperty(notes = "Associated metadat", required = false)
+    //@ApiModelProperty(notes = "Associated metadat", required = false)
     protected UplinkEventRxInfoMetadata metadata;
 
     // ---

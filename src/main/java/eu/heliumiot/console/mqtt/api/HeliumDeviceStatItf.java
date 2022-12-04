@@ -20,18 +20,17 @@
 package eu.heliumiot.console.mqtt.api;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import io.swagger.annotations.ApiModelProperty;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class HeliumDeviceStatItf {
 
-    @ApiModelProperty(notes = "deviceId", required = false)
+    // @ApiModelProperty(notes = "deviceId", required = false)
     protected String deviceId;
 
-    @ApiModelProperty(notes = "tenantId", required = false)
+    // @ApiModelProperty(notes = "tenantId", required = false)
     protected String tenantId;
 
-    @ApiModelProperty(notes = "time of the update", required = false)
+    // @ApiModelProperty(notes = "time of the update", required = false)
     protected long time = 0;
     protected int uplinkDc = 0;
 

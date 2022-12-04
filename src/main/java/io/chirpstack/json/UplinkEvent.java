@@ -23,7 +23,6 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import io.chirpstack.json.sub.UplinkEventDeviceInfo;
 import io.chirpstack.json.sub.UplinkEventRxInfo;
 import io.chirpstack.json.sub.UplinkEventTxInfo;
-import io.swagger.annotations.ApiModelProperty;
 
 import java.util.List;
 
@@ -76,34 +75,34 @@ public class UplinkEvent {
       }
      */
 
-    @ApiModelProperty(notes = "message uniq identifier ", required = false)
+    // @ApiModelProperty(notes = "message uniq identifier ", required = false)
     protected String deduplicationId;
 
-    @ApiModelProperty(notes = "time ", required = false)
+    // @ApiModelProperty(notes = "time ", required = false)
     protected String time;
 
-    @ApiModelProperty(notes = "device address", required = false)
+    // @ApiModelProperty(notes = "device address", required = false)
     protected String devAddr;
 
-    @ApiModelProperty(notes = "data rate", required = false)
+    // @ApiModelProperty(notes = "data rate", required = false)
     protected int dr;
 
-    @ApiModelProperty(notes = "frame counter ", required = false)
+    // @ApiModelProperty(notes = "frame counter ", required = false)
     protected int fCnt;
 
-    @ApiModelProperty(notes = "frame port ", required = false)
+    // @ApiModelProperty(notes = "frame port ", required = false)
     protected int fPort;
 
-    @ApiModelProperty(notes = "data string base 64", required = false)
+    // @ApiModelProperty(notes = "data string base 64", required = false)
     protected String data;
 
-    @ApiModelProperty(notes = "device & context detailed information", required = false)
+    // @ApiModelProperty(notes = "device & context detailed information", required = false)
     protected UplinkEventDeviceInfo deviceInfo;
 
-    @ApiModelProperty(notes = "Information about receivers", required = false)
+    // @ApiModelProperty(notes = "Information about receivers", required = false)
     protected List<UplinkEventRxInfo> rxInfo;
 
-    @ApiModelProperty(notes = "RF information", required = false)
+    // @ApiModelProperty(notes = "RF information", required = false)
     protected UplinkEventTxInfo txInfo;
 
     // ---

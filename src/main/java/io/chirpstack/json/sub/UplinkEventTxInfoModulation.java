@@ -20,7 +20,6 @@
 package io.chirpstack.json.sub;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import io.swagger.annotations.ApiModelProperty;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class UplinkEventTxInfoModulation {
@@ -38,7 +37,7 @@ public class UplinkEventTxInfoModulation {
       }
      */
 
-    @ApiModelProperty(notes = "lora modulation details", required = false)
+    // @ApiModelProperty(notes = "lora modulation details", required = false)
     protected UplinkEventTxInfoModulationLoRa lora;
 
     // ---

@@ -20,10 +20,10 @@
 
 package eu.heliumiot.console.api.interfaces;
 
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.tags.Tag;
 
-@Api(tags = "Action Result")
+@Tag(name = "Action Result", description = "common format for better front-end integration")
 public class ActionResult {
 
     public static enum ACTION_RESULT  {
@@ -37,18 +37,18 @@ public class ActionResult {
         UNKNOWDN           // Unknown
     }
 
-    @ApiModelProperty(
-            notes = "Result of a given action",
+    @Schema(
+            description = "Result of a given action",
             example = "SUCCESS",
             allowableValues = "SUCCESS, FAILED, NODATA, NOTFOUND, FORBIDDEN, MALFORMED, BADREQUEST, UNKNOWN",
-            required = true
+            requiredMode = Schema.RequiredMode.REQUIRED
     )
     protected ACTION_RESULT status;
 
-    @ApiModelProperty(
-            notes = "Associated custom message",
+    @Schema(
+            description = "Associated custom message",
             example = "Invalid request, missing field xxx",
-            required = false
+            requiredMode = Schema.RequiredMode.REQUIRED
     )
     protected String message;
 

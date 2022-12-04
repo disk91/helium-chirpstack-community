@@ -20,21 +20,20 @@
 package eu.heliumiot.console.mqtt.api;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import io.swagger.annotations.ApiModelProperty;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class HeliumTenantActDeactItf {
 
-    @ApiModelProperty(notes = "tenantId", required = false)
+    // @ApiModelProperty(notes = "tenantId", required = false)
     protected String tenantId;
 
-    @ApiModelProperty(notes = "time of the request", required = false)
+    // @ApiModelProperty(notes = "time of the request", required = false)
     protected long time = 0;
 
-    @ApiModelProperty(notes = "true to request tenant's device deactivation", required = false)
+    // @ApiModelProperty(notes = "true to request tenant's device deactivation", required = false)
     protected boolean deactivateTenant;
 
-    @ApiModelProperty(notes = "true to request tenant's device activation", required = false)
+    // @ApiModelProperty(notes = "true to request tenant's device activation", required = false)
     protected boolean activateTenant;
 
     // ---

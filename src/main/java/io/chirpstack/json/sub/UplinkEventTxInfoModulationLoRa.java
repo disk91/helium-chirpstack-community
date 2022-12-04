@@ -20,7 +20,7 @@
 package io.chirpstack.json.sub;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class UplinkEventTxInfoModulationLoRa {
@@ -38,13 +38,13 @@ public class UplinkEventTxInfoModulationLoRa {
       }
      */
 
-    @ApiModelProperty(notes = "bandwidth in Hz", required = false)
+    @Schema(description = "bandwidth in Hz", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     protected long bandwidth;
 
-    @ApiModelProperty(notes = "spreading factor ", required = false)
+    @Schema(description = "spreading factor ", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     protected int spreadingFactor;
 
-    @ApiModelProperty(notes = "coding rate", required = false)
+    @Schema(description = "coding rate", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     protected String codeRate;
 
     // ---

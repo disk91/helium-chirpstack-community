@@ -21,9 +21,6 @@ package io.chirpstack.json;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import io.chirpstack.json.sub.UplinkEventDeviceInfo;
-import io.chirpstack.json.sub.UplinkEventRxInfo;
-import io.chirpstack.json.sub.UplinkEventTxInfo;
-import io.swagger.annotations.ApiModelProperty;
 
 import java.util.List;
 
@@ -48,16 +45,16 @@ public class JoinEvent {
      }
      */
 
-    @ApiModelProperty(notes = "message uniq identifier ", required = false)
+    // @ApiModelProperty(notes = "message uniq identifier ", required = false)
     protected String deduplicationId;
 
-    @ApiModelProperty(notes = "time ", required = false)
+    // @ApiModelProperty(notes = "time ", required = false)
     protected String time;
 
-    @ApiModelProperty(notes = "device address", required = false)
+    // @ApiModelProperty(notes = "device address", required = false)
     protected String devAddr;
 
-    @ApiModelProperty(notes = "device & context detailed information", required = false)
+    // @ApiModelProperty(notes = "device & context detailed information", required = false)
     protected UplinkEventDeviceInfo deviceInfo;
 
     public String getDeduplicationId() {

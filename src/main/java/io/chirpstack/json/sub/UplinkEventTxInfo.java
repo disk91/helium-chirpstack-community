@@ -20,7 +20,6 @@
 package io.chirpstack.json.sub;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import io.swagger.annotations.ApiModelProperty;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class UplinkEventTxInfo {
@@ -38,10 +37,10 @@ public class UplinkEventTxInfo {
       }
      */
 
-    @ApiModelProperty(notes = "reception frequency", required = false)
+    // @ApiModelProperty(notes = "reception frequency", required = false)
     protected long frequency;
 
-    @ApiModelProperty(notes = "modulation details ", required = false)
+    // @ApiModelProperty(notes = "modulation details ", required = false)
     protected UplinkEventTxInfoModulation modulation;
 
     // ---

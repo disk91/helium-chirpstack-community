@@ -188,6 +188,7 @@ public class HeliumTenantService {
     }
 
     protected void flushHeliumTenant(HeliumTenant t) {
+        log.debug("#> new balance "+t.getDcBalance()+" for "+t.getTenantUUID());
         heliumTenantRepository.save(t);
     }
 
@@ -234,7 +235,7 @@ public class HeliumTenantService {
         if ( tenantUUID == null ) {
             tenantUUID = heliumDeviceCacheService.getTenantId(deviceUUID);
             if (tenantUUID == null) {
-                log.error("Impossible to find tenantUUID for (" + deviceUUID + ")");
+                log.error("Impossible to find tenantUUID for (" + deviceUUID + ") - 1 ");
                 return;
             }
         }
@@ -282,7 +283,7 @@ public class HeliumTenantService {
         if ( tenantUUID == null ) {
             tenantUUID = heliumDeviceCacheService.getTenantId(deviceUUID);
             if (tenantUUID == null) {
-                log.error("Impossible to find tenantUUID for (" + deviceUUID + ")");
+                log.error("Impossible to find tenantUUID for (" + deviceUUID + ") - 2");
                 return;
             }
         }

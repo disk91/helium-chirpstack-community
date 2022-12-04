@@ -2,7 +2,6 @@ package io.chirpstack.json;
 
 import io.chirpstack.json.sub.UplinkEventDeviceInfo;
 import io.chirpstack.json.sub.UplinkEventTxInfo;
-import io.swagger.annotations.ApiModelProperty;
 
 import java.util.List;
 
@@ -45,25 +44,25 @@ public class DownlinkEvent {
 }
      */
 
-    @ApiModelProperty(notes = "downlink uniq identifier ", required = false)
+    // @ApiModelProperty(notes = "downlink uniq identifier ", required = false)
     protected long downlinkId;
 
-    @ApiModelProperty(notes = "time ", required = false)
+    // @ApiModelProperty(notes = "time ", required = false)
     protected String time;
 
-    @ApiModelProperty(notes = "device & context detailed information", required = false)
+    // @ApiModelProperty(notes = "device & context detailed information", required = false)
     protected UplinkEventDeviceInfo deviceInfo;
 
-    @ApiModelProperty(notes = "downlink queue reference Id ", required = false)
+    // @ApiModelProperty(notes = "downlink queue reference Id ", required = false)
     protected String queueItemId;
 
-    @ApiModelProperty(notes = "frame counter ", required = false)
+    // @ApiModelProperty(notes = "frame counter ", required = false)
     protected int fCntDown;
 
-    @ApiModelProperty(notes = "gateway address", required = false)
+    // @ApiModelProperty(notes = "gateway address", required = false)
     protected String gatewayId;
 
-    @ApiModelProperty(notes = "RF information", required = false)
+    // @ApiModelProperty(notes = "RF information", required = false)
     protected UplinkEventTxInfo txInfo;
 
     // ---

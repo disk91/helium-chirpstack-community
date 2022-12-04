@@ -20,7 +20,6 @@
 package io.chirpstack.json.sub;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import io.swagger.annotations.ApiModelProperty;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class UplinkEventRxInfoMetadata {
@@ -32,10 +31,10 @@ public class UplinkEventRxInfoMetadata {
                     }
      */
 
-    @ApiModelProperty(notes = "name of the LoRaWan region", required = false)
+    // @ApiModelProperty(notes = "name of the LoRaWan region", required = false)
     protected String region_name;
 
-    @ApiModelProperty(notes = "same one ", required = false)
+    // @ApiModelProperty(notes = "same one ", required = false)
     protected String region_common_name;
 
     // ---

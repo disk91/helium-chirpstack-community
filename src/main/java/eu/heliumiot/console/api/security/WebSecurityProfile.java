@@ -67,10 +67,11 @@ public class WebSecurityProfile extends WebSecurityConfigurerAdapter {
                 .antMatchers("/internal/3.0/exit").permitAll()
                 // Springfox swagger url
                 .antMatchers("/swagger-**").permitAll()
-                .antMatchers("/swagger-ui/**").permitAll()
-                .antMatchers("/v2/api-docs**").permitAll()
+                .antMatchers("/v3/api-docs/**").permitAll()
+                //.antMatchers("/swagger-ui/**").permitAll()
+                //.antMatchers("/v2/api-docs**").permitAll()
                 .antMatchers("/swagger-doc/v2/**").permitAll()
-                .antMatchers("/swagger-resources/**").permitAll()
+                //.antMatchers("/swagger-resources/**").permitAll()
                 .antMatchers("/webjars/**").permitAll()
 
                 .anyRequest().authenticated()

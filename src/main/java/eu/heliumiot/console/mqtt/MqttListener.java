@@ -203,6 +203,8 @@ public class MqttListener implements MqttCallback {
                         } catch (Exception x) {
                                 x.printStackTrace();
                         }
+                } else if ( topicName.matches("application/.*/event/log$") ) {
+                        // just do nothing for this one
 
  // =================================================
 // INTERNAL ASYNCHRONOUS MESSAGES

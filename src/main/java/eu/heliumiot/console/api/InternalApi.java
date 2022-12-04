@@ -21,10 +21,11 @@ package eu.heliumiot.console.api;
 
 import eu.heliumiot.console.api.interfaces.ActionResult;
 import eu.heliumiot.console.service.ExitService;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiResponse;
-import io.swagger.annotations.ApiResponses;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,7 +36,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 
-@Api(value="admin", tags="admin-pfAdmin-api")
+@Tag( name = "admin api", description = "admin api" )
 @CrossOrigin
 @RequestMapping(value = "/internal/3.0")
 @RestController
@@ -46,13 +47,12 @@ public class InternalApi {
     @Autowired
     private ExitService exitService;
 
-    @ApiOperation(value = "Exit the application - this API is not exposed",
-            notes = "Request the backend to stop processing after terminating current work.",
-            response = ActionResult.class
+    @Operation(summary = "Exit the application - this API is not exposed",
+            description = "Request the backend to stop processing after terminating current work.",
+            responses = {
+                @ApiResponse(responseCode = "200", description= "Done", content = @Content(schema = @Schema(implementation = ActionResult.class)))
+            }
     )
-    @ApiResponses({
-            @ApiResponse(code = 200, message= "Done", response = ActionResult.class),
-    })
     @RequestMapping(value="/exit",
             produces = MediaType.APPLICATION_JSON_VALUE,
             method= RequestMethod.GET)

@@ -20,7 +20,6 @@
 package io.chirpstack.json.sub;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import io.swagger.annotations.ApiModelProperty;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class UplinkEventDeviceInfo {
@@ -38,28 +37,28 @@ public class UplinkEventDeviceInfo {
         },
      */
 
-    @ApiModelProperty(notes = "tenant ID", required = false)
+    // @ApiModelProperty(notes = "tenant ID", required = false)
     protected String tenantId;
 
-    @ApiModelProperty(notes = "tenant name ", required = false)
+    //@ApiModelProperty(notes = "tenant name ", required = false)
     protected String tenantName;
 
-    @ApiModelProperty(notes = "application ID", required = false)
+    // @ApiModelProperty(notes = "application ID", required = false)
     protected String applicationId;
 
-    @ApiModelProperty(notes = "application Name", required = false)
+    // @ApiModelProperty(notes = "application Name", required = false)
     protected String applicationName;
 
-    @ApiModelProperty(notes = "device profile ID", required = false)
+    // @ApiModelProperty(notes = "device profile ID", required = false)
     protected String deviceProfileId;
 
-    @ApiModelProperty(notes = "device profile name", required = false)
+    // @ApiModelProperty(notes = "device profile name", required = false)
     protected String deviceProfileName;
 
-    @ApiModelProperty(notes = "device given name", required = false)
+    // @ApiModelProperty(notes = "device given name", required = false)
     protected String deviceName;
 
-    @ApiModelProperty(notes = "device EUI", required = false)
+    // @ApiModelProperty(notes = "device EUI", required = false)
     protected String devEui;
 
     //  ---

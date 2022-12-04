@@ -21,4 +21,13 @@
 package fr.ingeniousthings.tools;
 
 public class ITParseException extends Exception {
+    private static final long serialVersionUID = 1L;
+    public ITParseException() {
+        super("default message");
+    }
+
+    public ITParseException(String errorMessage) {
+        super(errorMessage);
+    }
+
 }
