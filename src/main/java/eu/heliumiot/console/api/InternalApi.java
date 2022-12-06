@@ -64,5 +64,21 @@ public class InternalApi {
         return new ResponseEntity<>(ActionResult.SUCESS(), HttpStatus.OK);
     }
 
+    @Operation(summary = "Healthcheck",
+            description = "Just to make sure the api is up & running.",
+            responses = {
+                    @ApiResponse(responseCode = "200", description= "Done", content = @Content(schema = @Schema(implementation = ActionResult.class)))
+            }
+    )
+    @RequestMapping(value="/health",
+            produces = MediaType.APPLICATION_JSON_VALUE,
+            method= RequestMethod.GET)
+    public ResponseEntity<?> requestApplicationHealth(
+            HttpServletRequest request
+    ) {
+        return new ResponseEntity<>(ActionResult.SUCESS(), HttpStatus.OK);
+    }
+
+
 }
 

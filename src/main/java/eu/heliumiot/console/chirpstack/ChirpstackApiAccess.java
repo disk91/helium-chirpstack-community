@@ -65,8 +65,8 @@ public class ChirpstackApiAccess {
             headers.add("X-Grpc-Web","grpc-web-javascript/0.1");
 
 
-            log.info("Connect to "+url);
-            log.info("With body "+bodyStr);
+            log.debug("Connect to "+url);
+            log.debug("With body "+bodyStr);
 
 
             HttpEntity<String> he;
@@ -94,7 +94,7 @@ public class ChirpstackApiAccess {
                     // invalid password as an example !
                     throw new ITNotFoundException();
                 }
-                log.info("Response from the API :"+respStr);
+                log.debug("Response from the API :"+respStr);
 
                 // The response comes with 2 Base64 string concatenated, so the decoder don't like this
                 // the second one is a grpc status, we can remove it from the response
@@ -104,7 +104,7 @@ public class ChirpstackApiAccess {
                 } else if ( respStr.indexOf("=") > 0 && respStr.indexOf("=") < respStr.length() - 1 ) {
                     respStr = respStr.substring(0,respStr.indexOf("=")+1);
                 }
-                log.info("Response after processing :"+respStr);
+                log.debug("Response after processing :"+respStr);
                 byte[] fullResp = Base64.decode(respStr);
                 // the response also contains a header with the size of the response
                 // we can remove it assuming we have the right quantity fo data into the response

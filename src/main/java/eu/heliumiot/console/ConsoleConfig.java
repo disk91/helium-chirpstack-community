@@ -20,6 +20,8 @@
 
 package eu.heliumiot.console;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
@@ -28,6 +30,8 @@ import org.springframework.context.annotation.PropertySource;
 @PropertySource("application.properties")
 @PropertySource(value = {"file:${config.file}"}, ignoreResourceNotFound = true)
 public class ConsoleConfig {
+
+    private final Logger log = LoggerFactory.getLogger(this.getClass());
 
     // =====================================
     // Application Misc
@@ -430,13 +434,19 @@ public class ConsoleConfig {
     }
 
     // =========================================
-    // Chirpstack API
+    // Chirpstack / Console API
     // =========================================
     @Value ("${chirpstack.api.base}")
     private String chirpstackApiBaseExternal;
 
     @Value ("${chirpstack.api.base.default}")
     private String chirpstackApiBaseDefault;
+
+    @Value ("${helium.jwt.signature.key.default}")
+    private String jwtSignatureKeyDefault;
+
+    @Value ("${helium.jwt.signature.key}")
+    private String jwtSignatureKeyExternal;
 
     public String getChirpstackApiBase() {
         if (this.getChirpstackApiBaseExternal().length() > 0) return this.getChirpstackApiBaseExternal();
@@ -449,5 +459,21 @@ public class ConsoleConfig {
 
     public String getChirpstackApiBaseDefault() {
         return chirpstackApiBaseDefault;
+    }
+
+    public String getJwtSignatureKey() {
+        if (this.getJwtSignatureKeyExternal().length() >  0 && this.getJwtSignatureKeyExternal().length() != 64) {
+            log.error("helium.jwt.signature.key format is invalid, must be 64 char. Back to default");
+        }
+        if (this.getJwtSignatureKeyExternal().length() == 64) return this.getJwtSignatureKeyExternal();
+        return getJwtSignatureKeyDefault();
+    }
+
+    public String getJwtSignatureKeyDefault() {
+        return jwtSignatureKeyDefault;
+    }
+
+    public String getJwtSignatureKeyExternal() {
+        return jwtSignatureKeyExternal;
     }
 }
