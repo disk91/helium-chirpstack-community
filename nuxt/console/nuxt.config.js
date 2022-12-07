@@ -8,6 +8,9 @@ export default {
   // env variables loaded accessible on the front-end
   publicRuntimeConfig: {
     apiHost:process.env.API_HOST,
+    chirpstackHost:process.env.CHIRPSTACK_HOST || '/',
+    consoleName:process.env.CONSOLE_NAME || 'HeliumConsole',
+    dcbalanceEndpoint:process.env.API_HOST+'/console/1.0/tenant/',
   },
 
   // env variables loaded accessible on the server side
@@ -71,14 +74,14 @@ export default {
     strategies: {
       local: {
         token: {
-          property: 'chirpstackBearer',
+          property: 'consoleBearer',
           global: true,
           required: true,
           type: 'Bearer'
         },
         user: {
-          property: 'user',
-          autoFetch: false
+          property: '',
+          autoFetch: true
         },
         chirpstackBearer: {
           property: 'chirpstackBearer',
@@ -88,13 +91,13 @@ export default {
         endpoints: {
           login: { url: process.env.API_HOST+'/console/1.0/sign/in', method: 'post' },
           logout: { url: process.env.API_HOST+'/console/1.0/sign/out', method: 'get' },
-          user: { url: process.env.API_HOST+'/console/1.0/user', method: 'get' }
+          user: { url: process.env.API_HOST+'/console/1.0/user/', method: 'get' }
         },
         redirect: {
-          login: '/login',
-          logout: '/',
-          callback: '/login',
-          home: '/'
+          login: '/front/login',
+          logout: '/front/logout',
+          callback: '/front/login',
+          home: '/front/'
         }
       }
     },

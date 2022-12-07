@@ -23,13 +23,19 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import eu.heliumiot.console.ConsoleConfig;
+import eu.heliumiot.console.api.TenantApi;
+import eu.heliumiot.console.api.interfaces.TenantBalanceItf;
 import eu.heliumiot.console.jpa.db.HeliumTenant;
 import eu.heliumiot.console.jpa.db.HeliumTenantSetup;
+import eu.heliumiot.console.jpa.db.User;
+import eu.heliumiot.console.jpa.db.UserTenant;
+import eu.heliumiot.console.jpa.repository.UserTenantRepository;
 import eu.heliumiot.console.mqtt.MqttSender;
 import eu.heliumiot.console.mqtt.api.HeliumDeviceStatItf;
 import eu.heliumiot.console.jpa.repository.HeliumTenantRepository;
 import eu.heliumiot.console.jpa.repository.HeliumTenantSetupRepository;
 import eu.heliumiot.console.mqtt.api.HeliumTenantActDeactItf;
+import fr.ingeniousthings.tools.ITRightException;
 import fr.ingeniousthings.tools.Now;
 import fr.ingeniousthings.tools.ObjectCache;
 import org.slf4j.Logger;
@@ -39,6 +45,7 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
+import java.util.UUID;
 
 @Service
 public class HeliumTenantService {
@@ -494,6 +501,49 @@ public class HeliumTenantService {
                 this.flushHeliumTenant(t);
             }
         }
+    }
+
+    // ======================================================
+    // API
+    // ======================================================
+
+    @Autowired
+    protected UserService userService;
+
+    @Autowired
+    protected UserTenantRepository userTenantRepository;
+
+    public TenantBalanceItf getTenantDcBalance(String userId, String tenantId)
+    throws ITRightException
+    {
+
+        UserService.UserCacheElement user = userService.getUserById(userId);
+        if (user == null) throw new ITRightException();
+        if ( !user.user.isAdmin() ) {
+            // search if tenant authorization exists
+            UserTenant ut = userTenantRepository.findOneUserByUserIdAndTenantId(
+                    UUID.fromString(userId),
+                    UUID.fromString(tenantId)
+            );
+
+            if ( ut == null ) throw new ITRightException();
+            // when non admin we just return 0, only admin can see DC balance
+            if ( ! ut.isAdmin() ) {
+                TenantBalanceItf r = new TenantBalanceItf();
+                r.setDcBalance(0);
+                r.setMinBalance(0);
+                return r;
+            }
+        }
+
+        // Here we are the right to get the DC Balance info
+        HeliumTenant ht = this.getHeliumTenant(tenantId);
+        HeliumTenantSetup hts = this.getHeliumTenantSetup(tenantId);
+
+        TenantBalanceItf r = new TenantBalanceItf();
+        r.setDcBalance(ht.getDcBalance());
+        r.setMinBalance(hts.getDcBalanceStop());
+        return r;
     }
 
 }

@@ -1,10 +1,18 @@
 export const state = () => ({
-    chirpstackBearer:''
+    chirpstackBearer:'',
+    consoleBearer:'',
+    currentTenant:'',
 })
 
 export const getters = {
   getChirpstackBearer(state) {
     return state.chirpstackBearer;
+  },
+  getConsoleBearer(state) {
+    return state.consoleBearer;
+  },
+  getCurrentTenant(state) {
+    return state.currentTenant;
   },
   isAuthenticated(state) {
     return state.auth.loggedIn
@@ -19,10 +27,14 @@ export const getters = {
 export const mutations = {
 
     setChirpstackBearer(state, b) {
-        console.log("set cBearer to",b)
         state.getChirpstackBearer = b;
+    },
+    setConsoleBearer(state, b) {
+        state.getConsoleBearer = b;
+    },
+    setCurrentTenant(state, b) {
+        state.currentTenant = b;
     }
-
 
 }
 

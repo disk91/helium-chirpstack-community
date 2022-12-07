@@ -42,8 +42,12 @@ export default Vue.extend({
                     if ( resp != null ) {
                        let chBearer = resp.data.chirpstackBearer
                        this.$store.commit('setChirpstackBearer', chBearer)
+                       localStorage.setItem("token", chBearer)
+                       console.log(chBearer);
+                       let conBearer = resp.data.consoleBearer
+                       this.$store.commit('setConsoleBearer', conBearer)
                     }
-                    this.$router.push('/');
+                    this.$router.push('/front/');
                 });
             } catch (err) {
                 console.log(err);
