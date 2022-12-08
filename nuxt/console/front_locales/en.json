@@ -1,0 +1,9 @@
+{
+  "username" : "email",
+  "password" : "password",
+  "welcome_message" : "Submit your credentials to access the console",
+  "submit" : "Submit",
+  "signup_message" : "No account ? signup !",
+
+  "end" : "end"
+}

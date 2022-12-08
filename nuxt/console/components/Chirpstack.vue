@@ -1,8 +1,8 @@
 <template>
-    <div style='height: 100vh'>
+    <div style='height:100vh;'>
       <iframe
         id="chirpstack-frame-id"
-        :src="$config.chirpstackHost"
+        :src="$config.chirpstackHost+'?override=true'"
         style="overflow:hidden;height:100%;width:100%" height="100%"
         width="100%"
         frameborder="0"

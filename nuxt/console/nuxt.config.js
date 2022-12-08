@@ -8,9 +8,9 @@ export default {
   // env variables loaded accessible on the front-end
   publicRuntimeConfig: {
     apiHost:process.env.API_HOST,
-    chirpstackHost:process.env.CHIRPSTACK_HOST || '/',
+    chirpstackHost:process.env.CHIRPSTACK_HOST+'/' || '/',
     consoleName:process.env.CONSOLE_NAME || 'HeliumConsole',
-    dcbalanceEndpoint:process.env.API_HOST+'/console/1.0/tenant/',
+    dcbalanceEndpoint:process.env.API_HOST+'/console/1.0/tenant',
   },
 
   // env variables loaded accessible on the server side
@@ -54,9 +54,21 @@ export default {
     'bootstrap-vue/nuxt',
     // https://go.nuxtjs.dev/axios
     '@nuxtjs/axios',
-    // ???
-    '@nuxtjs/auth-next'
+    // authentication
+    '@nuxtjs/auth-next',
+    // internationalization
+    '@nuxtjs/i18n',
   ],
+
+  // Internationalization
+  i18n: {
+    locales: [
+      { code: 'en', iso: 'en-US', file: 'en.json', dir: 'ltr'},
+      { code: 'fr', iso: 'fr-FR', file: 'fr.json', dir: 'ltr'},
+    ],
+    defaultLocale: 'en',
+    langDir: '~/front_locales/'
+  },
 
   // Axios module configuration: https://go.nuxtjs.dev/config-axios
   axios: {

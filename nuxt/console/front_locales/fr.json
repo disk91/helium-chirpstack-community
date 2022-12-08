@@ -1,0 +1,10 @@
+{
+    "username" : "email",
+    "password" : "mot de passe",
+    "welcome_message" : "Saisissez vos identifiants pour acceder à la console",
+    "submit" : "Envoyer",
+    "signup_message" : "Pas de compte ? inscrivez-vous !",
+
+    "end" : "fin"
+
+}

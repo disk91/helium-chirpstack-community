@@ -50,21 +50,22 @@ export default Vue.extend({
 		  this.polling = setInterval(() => {
           //this.$nuxt.refresh();
           let tenantId = this.$store.state.currentTenant;
-          console.log('### '+tenantId);
-          let config = {
-                headers: {
-                    Authorization: 'Bearer '+this.$store.state.consoleBearer,
-                }
-            };
-          this.$axios.get(/*process.env.API_HOST+*/'/console/1.0/tenant/'+tenantId+'/')
-          .then((response) =>{
-              const dcb = response.data;
-              this.dc = dcb.dcBalance;
-              this.mindc = dcb.minBalance;
-              if (( this.dc - this.mindc ) > 5000 ) this.color="light"
-              else if (( this.dc - this.mindc ) > 1000 ) this.color="warning"
-              else this.color = "danger";
-          })
+          if ( tenantId.length > 5 ) {
+            let config = {
+                  headers: {
+                      Authorization: 'Bearer '+this.$store.state.consoleBearer,
+                  }
+              };
+            this.$axios.get(this.$config.dcbalanceEndpoint+'/'+tenantId+'/')
+            .then((response) =>{
+                const dcb = response.data;
+                this.dc = dcb.dcBalance;
+                this.mindc = dcb.minBalance;
+                if (( this.dc - this.mindc ) > 5000 ) this.color="light"
+                else if (( this.dc - this.mindc ) > 1000 ) this.color="warning"
+                else this.color = "danger";
+            })
+          }
 		    } , 3000)
 	    }
     },
