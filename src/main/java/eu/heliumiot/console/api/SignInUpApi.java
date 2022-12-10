@@ -1,14 +1,13 @@
 package eu.heliumiot.console.api;
 
 
-import eu.heliumiot.console.api.interfaces.ActionResult;
-import eu.heliumiot.console.api.interfaces.LoginReqItf;
-import eu.heliumiot.console.api.interfaces.LoginRespItf;
+import eu.heliumiot.console.api.interfaces.*;
 import eu.heliumiot.console.service.UserService;
 import fr.ingeniousthings.tools.ITNotFoundException;
 import fr.ingeniousthings.tools.ITParseException;
 import fr.ingeniousthings.tools.ITRightException;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -60,6 +59,67 @@ public class SignInUpApi {
             return new ResponseEntity<>(ActionResult.FORBIDDEN(), HttpStatus.FORBIDDEN);
         } catch (ITParseException x) {
             return new ResponseEntity<>(ActionResult.BADREQUEST(), HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @Operation(summary = "Sign-up endpoint",
+            description = "Create account on back-end and in chirpstack",
+            responses = {
+                    @ApiResponse(responseCode = "200", description= "Done", content = @Content(schema = @Schema(implementation = UserSignUpRespItf.class))),
+                    @ApiResponse(responseCode = "403", description= "Forbidden", content = @Content(schema = @Schema(implementation = ActionResult.class))),
+                    @ApiResponse(responseCode = "400", description= "Bad Request", content = @Content(schema = @Schema(implementation = UserSignUpRespItf.class)))
+            }
+    )
+    @RequestMapping(value="/up",
+            consumes = MediaType.APPLICATION_JSON_VALUE,
+            produces = MediaType.APPLICATION_JSON_VALUE,
+            method= RequestMethod.POST)
+    public ResponseEntity<?> requestUserSignUp(
+            HttpServletRequest request,
+            @RequestBody(required = true) UserSignUpReqItf signup
+    ) {
+        log.debug("Sign up for "+signup.getUsername());
+        try {
+            UserSignUpRespItf r = userService.userSignup(signup);
+            return new ResponseEntity<>(r, HttpStatus.OK);
+        } catch (ITNotFoundException x) {
+            return new ResponseEntity<>(ActionResult.FORBIDDEN(), HttpStatus.FORBIDDEN);
+        } catch (ITParseException x) {
+            // manage errors
+            UserSignUpRespItf r = new UserSignUpRespItf();
+            r.setErrorMessage(x.getMessage());
+            return new ResponseEntity<>(r, HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @Operation(summary = "Sign-up confirmation endpoint",
+            description = "Create account on back-end and in chirpstack",
+            responses = {
+                    @ApiResponse(responseCode = "200", description= "Done", content = @Content(schema = @Schema(implementation = UserSignUpConfirmRespItf.class))),
+                    @ApiResponse(responseCode = "403", description= "Forbidden", content = @Content(schema = @Schema(implementation = ActionResult.class))),
+                    @ApiResponse(responseCode = "400", description= "Bad Request", content = @Content(schema = @Schema(implementation = UserSignUpConfirmRespItf.class)))
+            }
+    )
+    @RequestMapping(value="/confirm/{confirmationId}/",
+            produces = MediaType.APPLICATION_JSON_VALUE,
+            method= RequestMethod.GET)
+    public ResponseEntity<?> requestUserSignUpConfirm(
+            HttpServletRequest request,
+            @Parameter(required = true, name = "confirmationId", description = "confirmation code obtained by email")
+            @PathVariable("confirmationId") String confirmationId
+
+    ) {
+        log.debug("Sign up confirmation received");
+        UserSignUpConfirmRespItf r = new UserSignUpConfirmRespItf();
+        try {
+            userService.userSignupConfirmation(confirmationId);
+            r.setErrorMessage("success");
+            return new ResponseEntity<>(r, HttpStatus.OK);
+        } catch (ITNotFoundException x) {
+            return new ResponseEntity<>(ActionResult.FORBIDDEN(), HttpStatus.FORBIDDEN);
+        } catch (ITParseException x) {
+            r.setErrorMessage(x.getMessage());
+            return new ResponseEntity<>(r, HttpStatus.BAD_REQUEST);
         }
     }
 

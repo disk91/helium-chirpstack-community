@@ -2,14 +2,14 @@
   <div style="height: 100vh; width: 100%; 
         z-index: 1; overflow: hidden; position: relative; 
         display: flex; 
-        background: url('/static/background.svg') center center / cover rgb(240, 242, 245); 
+        background: url('/static/front/background.svg') center center / cover rgb(240, 242, 245); 
         box-sizing: border-box;
         justify-content: center;">
         <div style="max-width: 500px; position: absolute; 
             top: 47%; left: 50%; transform: translate(-50%, -50%); 
             height: auto;">
             <b-card align="center" style="border-radius: 1.5rem;padding: 2rem;">
-              <b-card-img src="/static/logo.svg" 
+              <b-card-img src="/static/front/logo.svg" 
                           alt="logo" 
                           style="width: 25%; margin: 20px 0px 20px 0px;" 
                           top></b-card-img>
@@ -32,12 +32,21 @@
                                   :placeholder="$t('password')"
                                   class="mb-1"
                                   ></b-form-input>
-                    <b-button block variant="primary" class="mb-2">{{ $t('submit') }}</b-button>
+                    <b-button block 
+                              variant="primary" 
+                              @click="userLogin()"
+                              class="mb-2">
+                              {{ $t('submit') }}</b-button>
               </form> 
               <b-button block 
                         variant="outline-primary"
                         @click="redirectToSignup()"
                         >{{ $t('signup_message') }}</b-button>
+              <b-card-text @click="redirectPassLost()" style="text-align:right;">
+                <span style="color: rgb(150,50,50);">
+                    {{ $t('lost_password')}} 
+                </span>
+              </b-card-text>
             </b-card>
         </div>
   </div>
@@ -70,7 +79,6 @@ export default Vue.extend({
                        let chBearer = resp.data.chirpstackBearer
                        this.$store.commit('setChirpstackBearer', chBearer)
                        localStorage.setItem("token", chBearer)
-                       console.log(chBearer);
                        let conBearer = resp.data.consoleBearer
                        this.$store.commit('setConsoleBearer', conBearer)
                     }
@@ -82,6 +90,9 @@ export default Vue.extend({
         },
         async redirectToSignup() {
             this.$router.push('/front/signup');
+        },
+        async redirectPassLost() {
+            this.$router.push('/front/lostpass');
         }
     }
 })

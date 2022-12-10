@@ -23,6 +23,7 @@ import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Immutable;
 
 import javax.persistence.*;
+import java.sql.Timestamp;
 import java.util.UUID;
 
 @Entity
@@ -78,9 +79,13 @@ public class HeliumUser {
     @Column(name = "default_offer")
     private String defaultOffer="default";
 
+    @Column(name = "registration_time")
+    private Timestamp registrationTime;
+
+    @Column(name = "condition_validation")
+    private boolean conditionValidation = false;
 
     // ---
-
 
     public UUID getId() {
         return id;
@@ -184,5 +189,21 @@ public class HeliumUser {
 
     public void setDefaultOffer(String defaultOffer) {
         this.defaultOffer = defaultOffer;
+    }
+
+    public Timestamp getRegistrationTime() {
+        return registrationTime;
+    }
+
+    public void setRegistrationTime(Timestamp registrationTime) {
+        this.registrationTime = registrationTime;
+    }
+
+    public boolean isConditionValidation() {
+        return conditionValidation;
+    }
+
+    public void setConditionValidation(boolean conditionValidation) {
+        this.conditionValidation = conditionValidation;
     }
 }

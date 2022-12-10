@@ -11,6 +11,9 @@ export default {
     chirpstackHost:process.env.CHIRPSTACK_HOST+'/' || '/',
     consoleName:process.env.CONSOLE_NAME || 'HeliumConsole',
     dcbalanceEndpoint:process.env.API_HOST+'/console/1.0/tenant',
+    signupEndpoint:process.env.API_HOST+'/console/1.0/sign/up',
+    validationEndpoint:process.env.API_HOST+'/console/1.0/sign/confirm',
+    termAndUse:process.env.CONSOLE_TERMS || '/',
   },
 
   // env variables loaded accessible on the server side
@@ -47,6 +50,10 @@ export default {
     // https://go.nuxtjs.dev/typescript
     '@nuxt/typescript-build',
   ],
+
+  bootstrapVue: {
+    icons: true
+  },
 
   // Modules: https://go.nuxtjs.dev/config-modules
   modules: [

@@ -50,7 +50,7 @@ export default Vue.extend({
 		  this.polling = setInterval(() => {
           //this.$nuxt.refresh();
           let tenantId = this.$store.state.currentTenant;
-          if ( tenantId.length > 5 ) {
+          if ( tenantId != undefined && tenantId != null && tenantId.length > 5 ) {
             let config = {
                   headers: {
                       Authorization: 'Bearer '+this.$store.state.consoleBearer,

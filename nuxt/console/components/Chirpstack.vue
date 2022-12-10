@@ -22,6 +22,9 @@ export default Vue.extend({
 		    polling: null
 	    }
     },
+    created() {
+        this.$store.commit('setCurrentTenant','');
+    },
     methods: {
 	    pollData () {
 		  this.polling = setInterval(() => {

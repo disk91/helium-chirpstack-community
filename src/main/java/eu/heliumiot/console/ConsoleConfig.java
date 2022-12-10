@@ -434,6 +434,31 @@ public class ConsoleConfig {
     }
 
     // =========================================
+    // EMAIL CONFIG
+    // =========================================
+    @Value ("${helium.mail.from}")
+    private String heliumMailFrom;
+
+    @Value ("${helium.console.url}")
+    private String heliumConsoleUrl;
+
+    @Value ("${helium.console.name}")
+    private String heliumConsoleName;
+
+
+    public String getHeliumMailFrom() {
+        return heliumMailFrom;
+    }
+
+    public String getHeliumConsoleUrl() {
+        return heliumConsoleUrl;
+    }
+
+    public String getHeliumConsoleName() {
+        return heliumConsoleName;
+    }
+
+    // =========================================
     // Chirpstack / Console API
     // =========================================
     @Value ("${chirpstack.api.base}")
@@ -442,11 +467,18 @@ public class ConsoleConfig {
     @Value ("${chirpstack.api.base.default}")
     private String chirpstackApiBaseDefault;
 
+    @Value ("${chirpstack.api.admin.key}")
+    private String chirpstackApiAdminKey;
+
     @Value ("${helium.jwt.signature.key.default}")
     private String jwtSignatureKeyDefault;
 
     @Value ("${helium.jwt.signature.key}")
     private String jwtSignatureKeyExternal;
+
+    public String getChirpstackApiAdminKey() {
+        return chirpstackApiAdminKey;
+    }
 
     public String getChirpstackApiBase() {
         if (this.getChirpstackApiBaseExternal().length() > 0) return this.getChirpstackApiBaseExternal();
