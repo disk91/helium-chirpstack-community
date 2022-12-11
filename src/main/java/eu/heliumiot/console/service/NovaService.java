@@ -1,6 +1,7 @@
 package eu.heliumiot.console.service;
 
 import com.google.protobuf.ByteString;
+import eu.heliumiot.console.ConsoleApplication;
 import eu.heliumiot.console.ConsoleConfig;
 import eu.heliumiot.console.jpa.db.HeliumDevice;
 import eu.heliumiot.console.jpa.db.NovaDevice;
@@ -327,11 +328,13 @@ public class NovaService {
             if (k != 65) {
                 // error
                 log.error("Invalid private keyfile");
+                ConsoleApplication.requestingExitForStartupFailure = true;
                 return;
             }
 
         } catch (IOException x) {
             log.error("Impossible to access private key file " + x.getMessage());
+            ConsoleApplication.requestingExitForStartupFailure = true;
             return;
         }
 
@@ -353,10 +356,12 @@ public class NovaService {
                 this.owner = ByteString.copyFrom(owner_b2);
             } else {
                 log.error("The public key size is not valid");
+                ConsoleApplication.requestingExitForStartupFailure = true;
                 return;
             }
         } catch (ITParseException x) {
             log.error("Impossible to parse Public Key with Base58");
+            ConsoleApplication.requestingExitForStartupFailure = true;
             return;
         }
 

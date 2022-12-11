@@ -31,7 +31,8 @@ public interface HeliumPendingUserRepository extends CrudRepository<HeliumPendin
 
     public HeliumPendingUser findOneHeliumUserById(UUID id);
 
-    public HeliumPendingUser findOneHeliumPendingUserByUsername(String username);
+    public HeliumPendingUser findOneHeliumPendingUserByUsernameAndType(String username, int type);
+
 
     public HeliumPendingUser findOneHeliumPendingUserByValidationCode(String validationCode);
 

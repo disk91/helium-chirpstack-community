@@ -431,6 +431,9 @@ public class HeliumDeviceService {
                 // search for device to check.
                 List<HeliumDevice> toProceedDevices = heliumDeviceRepository.findHeliumDeviceToProcess((int) toRead);
                 for (HeliumDevice hdev : toProceedDevices) {
+                    // no need to reprocess always the same device
+                    if ( (now - hdev.getLastSeen()) < 3600_000 ) continue;
+
                     boolean invoicingReport = false;    // reporting invoicing needed
 
                     HeliumDeviceStatItf i = new HeliumDeviceStatItf();

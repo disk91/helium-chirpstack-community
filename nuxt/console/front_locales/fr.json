@@ -36,6 +36,15 @@
     "signup_vmessage_nokey" : "La validation requière une clef de validation",
     "signup_vmessage_success" : "Votre compte est maintenant actif, vous pouvez vous connecter",
     "signup_login_button" : "Aller au login",
+    "passlost_wmessage" : "Pour permettre le renouvellement de votre mot de passe, veuillez saisir votre email",
+    "passlost_pmessage_1" : "Votre demande de changement de mot de passe a été prise en compte, un email vient de vous être envoyé",
+    "passlost_pmessage_2" : "Merci de suivre le lien présent dans cet email.",
+    "passlost_pmessage_3" : "Si vous n'avez pas reçu l'email, merci de vérifier dans vos spams.",
+    "ploss_button" : "Sauvez moi !",
+    "passlost_vmessage_badkey" : "La clef de validation n'est pas valide.",
+    "passlost_vmessage_nokey" : "Le changeemnt de mot de passe requière une clef de validation",
+    "passlost_vmessage_success" : "Votre nouveau mot de passe est actif, vous pouvez vous connecter",
+    "passlost_emessage" : "Vous allez maintenant pouvoir saisir votre nouveau mot de passe",
 
     "end" : "fin"
 

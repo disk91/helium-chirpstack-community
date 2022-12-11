@@ -38,6 +38,10 @@ public class HeliumPendingUser {
     @Column(name = "id", updatable = false, nullable = false)
     private UUID id;
 
+    // type of entry, user creation / password loss see UserService
+    @Column(name = "type")
+    private int type;
+
     // reference to the User table
     @Column(name = "username")
     private String username;
@@ -63,6 +67,14 @@ public class HeliumPendingUser {
 
     // ---
 
+
+    public int getType() {
+        return type;
+    }
+
+    public void setType(int type) {
+        this.type = type;
+    }
 
     public UUID getId() {
         return id;

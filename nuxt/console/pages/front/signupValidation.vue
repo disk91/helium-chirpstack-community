@@ -18,7 +18,7 @@
               </b-card-text>
               <b-card-text class="mb-2 text-success" v-show="printSuccess">
                 <b-icon icon="check-square" variant="success"></b-icon>
-                {{ $t(successMessage) }}test
+                {{ $t(successMessage) }}
               </b-card-text>
               <b-button block @click="redirectLogin"
                               variant="success" 

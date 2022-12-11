@@ -13,6 +13,8 @@ export default {
     dcbalanceEndpoint:process.env.API_HOST+'/console/1.0/tenant',
     signupEndpoint:process.env.API_HOST+'/console/1.0/sign/up',
     validationEndpoint:process.env.API_HOST+'/console/1.0/sign/confirm',
+    passLostEndpoint:process.env.API_HOST+'/console/1.0/sign/lost',
+    passChangeEndpoint:process.env.API_HOST+'/console/1.0/sign/password',
     termAndUse:process.env.CONSOLE_TERMS || '/',
   },
 

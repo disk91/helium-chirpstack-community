@@ -19,8 +19,12 @@
  */
 package eu.heliumiot.console;
 
+import eu.heliumiot.console.jpa.db.NovaDevice;
+import eu.heliumiot.console.redis.RedisDeviceStreamListener;
 import eu.heliumiot.console.service.HeliumDeviceStatService;
 import eu.heliumiot.console.service.HeliumTenantService;
+import eu.heliumiot.console.service.NovaService;
+import fr.ingeniousthings.tools.Tools;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.ExitCodeGenerator;
@@ -32,13 +36,19 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.data.redis.core.RedisKeyValueAdapter;
 import org.springframework.data.redis.repository.configuration.EnableRedisRepositories;
 import org.springframework.scheduling.annotation.EnableScheduling;
+import org.springframework.web.servlet.config.annotation.EnableWebMvc;
+
+import java.util.ArrayList;
 
 @EnableScheduling
+@EnableWebMvc
 @Configuration
 @SpringBootApplication
 @EnableJpaRepositories(basePackages = "eu.heliumiot.console.jpa")
 @EnableRedisRepositories(basePackages = "eu.heliumiot.console.redis", enableKeyspaceEvents = RedisKeyValueAdapter.EnableKeyspaceEvents.ON_STARTUP)
 public class ConsoleApplication implements CommandLineRunner, ExitCodeGenerator {
+
+	public static boolean requestingExitForStartupFailure = false;
 
 	public static ApplicationContext context;
 
@@ -46,16 +56,17 @@ public class ConsoleApplication implements CommandLineRunner, ExitCodeGenerator 
 		context = SpringApplication.run(ConsoleApplication.class, args);
 	}
 
-	@Autowired
-	HeliumTenantService heliumTenantService;
+
+	//@Autowired
+	//NovaService novaService;
 
 	@Override
 	public void run(String... args) throws Exception {
 		long pid = ProcessHandle.current().pid();
 		System.out.println("-------------- GO ("+pid+")--------------");
 
-		// add credits ..
-		//heliumTenantService.processBalanceIncrease("52f14cd4-c6f1-4fbd-8f87-4025e1d49242", 50000 );
+		if (ConsoleApplication.requestingExitForStartupFailure) exit();
+
 
 	}
 

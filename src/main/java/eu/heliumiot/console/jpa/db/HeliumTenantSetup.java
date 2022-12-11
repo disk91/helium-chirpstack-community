@@ -27,7 +27,7 @@ import java.util.UUID;
 @Entity
 @Table(name = "helium_tenantSetup",
         indexes = {
-          @Index(name="uniqueTenantIndex", columnList = "tenantUUID", unique = true)
+          @Index(name="uniqueTenantSetupIndex", columnList = "tenantUUID", unique = true)
         }
 )
 public class HeliumTenantSetup {

@@ -37,6 +37,15 @@
   "signup_vmessage_nokey" : "The validation require a validation key to be provided",
   "signup_vmessage_success" : "Your account has been created. Now, you can connect",
   "signup_login_button" : "Go to login page",
+  "passlost_wmessage" : "To recover your password, please enter your email address",
+  "passlost_pmessage_1" : "Your password reset request has been taken into account, an email has been sent to your inbox.",
+  "passlost_pmessage_2" : "Please follow the link sent to you.",
+  "passlost_pmessage_3" : "If you do not find the email, please check your spam folder.",
+  "ploss_button" : "Recover password",
+  "passlost_vmessage_badkey" : "The validation key is not valid.",
+  "passlost_vmessage_nokey" : "The validation require a validation key to be provided",
+  "passlost_vmessage_success" : "Your password has been updated. Now, you can connect",
+  "passlost_emessage" : "Your are now able to enter your new password",
 
   "end" : "end"
 }

@@ -45,6 +45,7 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
+import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -502,6 +503,37 @@ public class HeliumTenantService {
             }
         }
     }
+
+    // Secure the tenant reactivation in case a payment is received but the
+    // processing of the reactivation has been missed
+    @Scheduled(fixedRateString = "${helium.tenant.activation.scanPeriod}", initialDelay = 40_000)
+    protected void backgroundTenantReactivation() {
+        log.info("running backgroundTenantReactivation");
+        List<HeliumTenant> ts = heliumTenantRepository.findHeliumTenantByState(HeliumTenant.TenantState.DEACTIVATED);
+        for ( HeliumTenant t : ts ) {
+            HeliumTenantSetup s = getHeliumTenantSetup(t.getTenantUUID());
+            if ( s != null && s.getDcBalanceStop() < t.getDcBalance() ) {
+                // we have a candidate to be restored
+                log.warn("Tenant "+t.getTenantUUID()+" was deactivated with valid DC Balance "+t.getDcBalance()+" / "+s.getDcBalanceStop());
+                HeliumTenantActDeactItf i = new HeliumTenantActDeactItf();
+                i.setActivateTenant(true);
+                i.setDeactivateTenant(false);
+                i.setTenantId(t.getTenantUUID());
+                i.setTime(Now.NowUtcMs());
+                try {
+                    mqttSender.publishMessage(
+                            "helium/tenant/manage/" + i.getTenantId(),
+                            mapper.writeValueAsString(i),
+                            2
+                    );
+                } catch (Exception x) {
+                    log.error("Something went wrong with publishing on MQTT tenant reactivation");
+                    log.error(x.getMessage());
+                }
+            }
+        }
+    }
+
 
     // ======================================================
     // API

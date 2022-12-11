@@ -123,4 +123,58 @@ public class SignInUpApi {
         }
     }
 
+
+    @Operation(summary = "Lost Password endpoint",
+            description = "Request a way to change the user password, send an email with a key...",
+            responses = {
+                    @ApiResponse(responseCode = "200", description= "Done", content = @Content(schema = @Schema(implementation = ActionResult.class))),
+                    @ApiResponse(responseCode = "400", description= "Bad Request", content = @Content(schema = @Schema(implementation = ActionResult.class)))
+            }
+    )
+    @RequestMapping(value="/lost",
+            consumes = MediaType.APPLICATION_JSON_VALUE,
+            produces = MediaType.APPLICATION_JSON_VALUE,
+            method= RequestMethod.POST)
+    public ResponseEntity<?> requestUserLostPassword(
+            HttpServletRequest request,
+            @RequestBody(required = true) UserLostPassReqItf lost
+    ) {
+        log.debug("Password lost for "+lost.getUsername());
+        try {
+            userService.userLostReq(lost);
+            return new ResponseEntity<>(ActionResult.SUCESS(), HttpStatus.OK);
+        } catch (ITParseException x) {
+            return new ResponseEntity<>(ActionResult.BADREQUEST(), HttpStatus.BAD_REQUEST);
+        }
+    }
+
+
+    @Operation(summary = "Password Change endpoint",
+            description = "Change the user password after an email validation",
+            responses = {
+                    @ApiResponse(responseCode = "200", description= "Done", content = @Content(schema = @Schema(implementation = UserPassChangeRespItf.class))),
+                    @ApiResponse(responseCode = "400", description= "Bad Request", content = @Content(schema = @Schema(implementation = UserPassChangeRespItf.class)))
+            }
+    )
+    @RequestMapping(value="/password",
+            consumes = MediaType.APPLICATION_JSON_VALUE,
+            produces = MediaType.APPLICATION_JSON_VALUE,
+            method= RequestMethod.POST)
+    public ResponseEntity<?> requestUserPasswordChange(
+            HttpServletRequest request,
+            @RequestBody(required = true) UserPassResetReqItf change
+    ) {
+        log.debug("Password change with key "+change.getValidationKey());
+        try {
+            userService.userPasswordReset(change);
+            UserPassChangeRespItf resp = new UserPassChangeRespItf();
+            resp.setErrorMessage("success");
+            return new ResponseEntity<>(resp, HttpStatus.OK);
+        } catch (ITParseException x) {
+            UserPassChangeRespItf resp = new UserPassChangeRespItf();
+            resp.setErrorMessage(x.getMessage());
+            return new ResponseEntity<>(resp, HttpStatus.BAD_REQUEST);
+        }
+    }
+
 }

@@ -77,6 +77,8 @@ public class UserService {
         public HeliumUser heliumUser;
     }
 
+    protected String bottomEmail_en;
+
     private ObjectCache<String, UserCacheElement> userCache;
     @PostConstruct
     private void initUserService() {
@@ -87,6 +89,13 @@ public class UserService {
                 // nothing to do, readOnly
             }
         };
+
+        // common email footer
+        bottomEmail_en = "\n\n";
+        bottomEmail_en+="This message has been sent automatically from the "+consoleConfig.getHeliumConsoleName()+" service and sent according to your request." +
+                "If you don't think you have been involved, just ignore this message.";
+        bottomEmail_en+="\n\n";
+        bottomEmail_en+=""+consoleConfig.getHeliumConsoleUrl() +" - Helium Provider";
     }
 
     public UserCacheElement getUserByUsername(String userName) {
@@ -124,6 +133,10 @@ public class UserService {
 
     public static final String HUPROFILE_STATUS_CREATED="created";
     public static final String HUPROFILE_STATUS_COMPLETED="completed";
+
+    public static final int HPU_TYPE_CREATION = 1;
+    public static final int HPU_TYPE_PLOSS = 2;
+
 
 
     public static final String ROLE_USER = "ROLE_USER";
@@ -255,7 +268,10 @@ public class UserService {
         // @todo chercher s'il n'existe pas deja, sinon faire le menage
         // chiffre les password dans la transition
         //HeliumPendingUser ....
-        HeliumPendingUser hpe = heliumPendingUserRepository.findOneHeliumPendingUserByUsername(req.getUsername());
+        HeliumPendingUser hpe = heliumPendingUserRepository.findOneHeliumPendingUserByUsernameAndType(
+                req.getUsername(),
+                HPU_TYPE_CREATION
+                );
         int retry = 0;
         if ( hpe != null ) {
             retry = hpe.getRetrial()+1;
@@ -270,23 +286,18 @@ public class UserService {
         hpe.setOfferName(profile);
         hpe.setValidationCode(RandomString.getRandomAZString(80));
         hpe.setUserPassword(encryptionHelper.encryptStringWithServerKey(req.getPassword()));
+        hpe.setType(HPU_TYPE_CREATION);
         heliumPendingUserRepository.save(hpe);
 
         // Now we need to send an email
-        String bottomEmail_en = "\n\n";
-        bottomEmail_en+="This message has been sent automatically from the "+consoleConfig.getHeliumConsoleName()+" service and sent according to your request." +
-                "If you don't think you have been involved, just ignore this message.";
-        bottomEmail_en+="\n\n";
-        bottomEmail_en+=""+consoleConfig.getHeliumConsoleUrl() +" - Helium Provider";
-
         String bodyEmail_en = "You just have requested to signup on "+consoleConfig.getHeliumConsoleName()+". This email is " +
                 "a confirmation of your request. To validate your registration, you need to follow this link to terminate the process: \n\n" +
                 ""+consoleConfig.getHeliumConsoleUrl()+"/front/signupValidation?key="+hpe.getValidationCode()+"\n\n" +
-                "This link will be valid for the next 15 minutes.";
+                "This link will be valid for the next 30 minutes.";
 
         executeEmail.execute(
                 hpe.getUsername(),
-                bodyEmail_en+bottomEmail_en,
+                bodyEmail_en+this.bottomEmail_en,
                 "["+consoleConfig.getHeliumConsoleName()+"] Email registration confirmation",
                 consoleConfig.getHeliumMailFrom()
         );
@@ -320,6 +331,11 @@ public class UserService {
         );
         if ( hpe == null ) {
             log.warn("Getting not existing validation code");
+            throw new ITParseException("error_invalid");
+        }
+
+        if ( hpe.getType() != HPU_TYPE_CREATION ) {
+            log.warn("Getting a code for the wrong type of action");
             throw new ITParseException("error_invalid");
         }
 
@@ -368,6 +384,8 @@ public class UserService {
 
         } catch ( ITRightException x ) {
             log.error("Impossible to create new tenant - rights");
+        } catch ( ITNotFoundException x ) {
+            log.error("Impossible to create new user - not found");
         } catch ( InvalidProtocolBufferException x ) {
             log.error("Impossible to create new tenant - protobuf");
         }
@@ -420,6 +438,8 @@ public class UserService {
 
         } catch ( ITRightException x ) {
             log.error("Impossible to create new user - rights");
+        } catch ( ITNotFoundException x ) {
+            log.error("Impossible to create new user - not found");
         } catch ( InvalidProtocolBufferException x ) {
             log.error("Impossible to create new user - protobuf");
         }
@@ -451,12 +471,12 @@ public class UserService {
 
 
 
-        /**
-         * Receives a login request, verify validity and returns the bearers for both chirpstack and api
-         * @param request
-         * @throws ITNotFoundException
-         * @throws ITRightException
-         */
+    /**
+     * Receives a login request, verify validity and returns the bearers for both chirpstack and api
+     * @param request
+     * @throws ITNotFoundException
+     * @throws ITRightException
+     */
     public LoginRespItf verifyUserLogin(LoginReqItf request)
     throws ITNotFoundException, ITRightException, ITParseException
     {
@@ -546,5 +566,130 @@ public class UserService {
         r.setUsername(c.user.getEmail());
         return r;
     }
+
+
+    /**
+     * Create a password lost request
+     * @param req
+     * @throws ITParseException
+     */
+    public void userLostReq(UserLostPassReqItf req)
+    throws ITParseException {
+
+        UserCacheElement u = getUserByUsername(req.getUsername());
+        if ( u == null ) {
+            try {
+                Thread.sleep((Math.abs(new Random().nextInt()) % 40));
+            }catch (InterruptedException x){};
+            throw new ITParseException();
+        }
+
+        HeliumPendingUser hpe = heliumPendingUserRepository.findOneHeliumPendingUserByUsernameAndType(
+                u.heliumUser.getUserid(),
+                HPU_TYPE_PLOSS
+        );
+        int retry = 0;
+        if ( hpe != null ) {
+            retry = hpe.getRetrial()+1;
+            heliumPendingUserRepository.delete(hpe);
+        }
+
+        hpe = new HeliumPendingUser();
+        hpe.setUsername(u.user.getId().toString());
+        hpe.setInsertedAt(new Timestamp(Now.NowUtcMs()));
+        hpe.setRetrial(retry);
+        hpe.setValidationCode(RandomString.getRandomAZString(80));
+        hpe.setType(HPU_TYPE_PLOSS);
+        heliumPendingUserRepository.save(hpe);
+
+        // Now we need to send an email
+
+        String bodyEmail_en = "You just sent a request on "+consoleConfig.getHeliumConsoleName()+" to reset your password. This email is " +
+                "a confirmation of your request. To change your password, you need to follow this link to terminate the process: \n\n" +
+                ""+consoleConfig.getHeliumConsoleUrl()+"/front/passwordReset?key="+hpe.getValidationCode()+"\n\n" +
+                "This link will be valid for the next 30 minutes.";
+
+        executeEmail.execute(
+                hpe.getUsername(),
+                bodyEmail_en+this.bottomEmail_en,
+                "["+consoleConfig.getHeliumConsoleName()+"] Password change request",
+                consoleConfig.getHeliumMailFrom()
+        );
+
+        // add time delay to avoid analysis of the response time
+        try {
+            Thread.sleep((Math.abs(new Random().nextInt()) % 20));
+        }catch (InterruptedException x){};
+
+    }
+
+    public void userPasswordReset(UserPassResetReqItf req)
+    throws ITParseException {
+
+        String registrationCode = req.getValidationKey();
+
+        // check input
+        if ( registrationCode.length() != 80 ) {
+            log.warn("Getting invalid validation code / ploss");
+            throw new ITParseException("error_invalid");
+        }
+
+        HeliumPendingUser hpe = heliumPendingUserRepository.findOneHeliumPendingUserByValidationCode(
+                registrationCode
+        );
+        if ( hpe == null ) {
+            log.warn("Getting not existing validation code / ploss");
+            throw new ITParseException("error_invalid");
+        }
+
+        if ( hpe.getType() != HPU_TYPE_PLOSS ) {
+            log.warn("Getting a code for the wrong type of action / ploss");
+            throw new ITParseException("error_invalid");
+        }
+
+        if ( hpe.getRetrial() > 10 ) {
+            log.error("User with email "+hpe.getUsername()+" has made too many psloss retry");
+            throw new ITParseException("error_invalid");
+        }
+
+        if( hpe.getInsertedAt().getTime() < (Now.NowUtcMs() - 30*60_000) ) {
+            log.info("Validation code is outdated / ploss");
+            throw new ITParseException("error_timeout");
+        }
+
+        if ( req.getPassword().length() < 12 ) {
+            log.info("Password length too small");
+            throw new ITParseException("error_password_size");
+        }
+
+        HttpHeaders heads = new HttpHeaders();
+        heads.add("authorization", "Bearer "+consoleConfig.getChirpstackApiAdminKey());
+
+        UpdateUserPasswordRequest upd = UpdateUserPasswordRequest.newBuilder()
+                .setUserId(hpe.getUsername())
+                .setPassword(req.getPassword())
+                .build();
+        try {
+
+            byte[] respB = chirpstackApiAccess.execute(
+                    HttpMethod.POST,
+                    "/api.UserService/UpdatePassword",
+                    null,
+                    heads,
+                    upd.toByteArray()
+            );
+
+        } catch ( ITRightException x ) {
+            log.error("Impossible to change password - rights");
+        } catch ( ITNotFoundException x ) {
+            log.error("Impossible to change password - not found");
+        }
+
+        // delete validation code
+        heliumPendingUserRepository.delete(hpe);
+    }
+
+
+
 
 }

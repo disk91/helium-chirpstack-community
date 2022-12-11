@@ -1,5 +1,5 @@
 /*
- * Copyright (c) - Paul Pinault (aka disk91) - 2020.
+ * Copyright (c) - Paul Pinault (aka disk91) - 2018.
  *
  *    Permission is hereby granted, free of charge, to any person obtaining a copy of this software
  *    and associated documentation files (the "Software"), to deal in the Software without restriction,
@@ -17,20 +17,31 @@
  *    WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR
  *    IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-package eu.heliumiot.console.jpa.repository;
 
-import eu.heliumiot.console.jpa.db.HeliumTenant;
-import org.springframework.data.repository.CrudRepository;
-import org.springframework.stereotype.Repository;
+package eu.heliumiot.console.api.interfaces;
 
-import java.util.List;
-import java.util.UUID;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.tags.Tag;
 
-@Repository
-public interface HeliumTenantRepository extends CrudRepository<HeliumTenant, UUID> {
+@Tag(name = "User password lost request Interface", description = "User lost password request interface")
+public class UserLostPassReqItf {
 
-    public HeliumTenant findOneHeliumTenantByTenantUUID(String id);
+    @Schema(
+            description = "Username must be an email",
+            requiredMode = Schema.RequiredMode.REQUIRED
+    )
+    protected String username;
 
-    public List<HeliumTenant> findHeliumTenantByState(HeliumTenant.TenantState state);
+
+    // ------------------------------------
+
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
 
 }
