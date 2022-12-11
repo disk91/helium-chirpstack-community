@@ -610,7 +610,7 @@ public class UserService {
                 "This link will be valid for the next 30 minutes.";
 
         executeEmail.execute(
-                hpe.getUsername(),
+                u.user.getEmail(),
                 bodyEmail_en+this.bottomEmail_en,
                 "["+consoleConfig.getHeliumConsoleName()+"] Password change request",
                 consoleConfig.getHeliumMailFrom()
