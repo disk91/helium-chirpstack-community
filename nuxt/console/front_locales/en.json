@@ -26,6 +26,7 @@
   "sret_error_invalid_email" : "The given email is not accepted",
   "sret_error_password_size" : "Please use a longer password",
   "sret_error_tenant_size" : "Please use a longer tenant name",
+  "sret_error_signupclose" : "Signup is not authorized",
   "sret_success" : "Registration success",
   "sret_error_invalid" : "The given information are invalid, registration failed",
   "sret_error_timeout" : "Your registration token has expired please retry",

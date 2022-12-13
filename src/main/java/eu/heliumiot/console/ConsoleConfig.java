@@ -42,6 +42,26 @@ public class ConsoleConfig {
         return configFile;
     }
 
+    @Value ("${helium.allows.signup.default}")
+    private String heliumAllowsSignupDefault;
+
+    @Value ("${helium.allows.signup}")
+    private String heliumAllowsSignupExternal;
+
+
+    public String getHeliumAllowsSignupDefault() {
+        return heliumAllowsSignupDefault;
+    }
+
+    public String getHeliumAllowsSignupExternal() {
+        return heliumAllowsSignupExternal;
+    }
+
+    public boolean isHeliumAllowsSignup() {
+        if ( getHeliumAllowsSignupExternal().length() > 0 ) return Boolean.parseBoolean(getHeliumAllowsSignupExternal());
+        return Boolean.parseBoolean(getHeliumAllowsSignupDefault());
+    }
+
     // =====================================
     // BILLING
     // =====================================
@@ -125,6 +145,32 @@ public class ConsoleConfig {
 
     @Value ("${helium.billing.limitDcRatePeriod}")
     private String heliumBillingLimitDcRatePeriodExternal;
+
+
+    @Value ("${helium.billing.dc.price.default}")
+    private String heliumBillingDcPriceDefault;
+
+    @Value ("${helium.billing.dc.price}")
+    private String heliumBillingDcPriceExternal;
+
+    @Value ("${helium.billing.dc.min.amount.default}")
+    private String heliumBillingDcMinAmountDefault;
+
+    @Value ("${helium.billing.dc.min.amount}")
+    private String heliumBillingDcMinAmountExternal;
+
+    @Value ("${helium.billing.max.tenant.default}")
+    private String heliumBillingMaxTenantDefault;
+
+    @Value ("${helium.billing.max.tenant}")
+    private String heliumBillingMaxTenantExternal;
+
+    @Value ("${helium.billing.max.devices.default}")
+    private String heliumBillingMaxDevicesDefault;
+
+    @Value ("${helium.billing.max.devices}")
+    private String heliumBillingMaxDevicesExternal;
+
 
     public String getHeliumBillingDcBalanceStopDefault() {
         return heliumBillingDcBalanceStopDefault;
@@ -298,6 +344,58 @@ public class ConsoleConfig {
     public int getHeliumBillingDcPerActivityPeriod() {
         if ( getHeliumBillingDcPerActivityPeriodExternal().length() > 0 ) return Integer.parseInt(getHeliumBillingDcPerActivityPeriodExternal());
         return Integer.parseInt(getHeliumBillingDcPerActivityPeriodDefault());
+    }
+
+    public String getHeliumBillingDcPriceDefault() {
+        return heliumBillingDcPriceDefault;
+    }
+
+    public String getHeliumBillingDcPriceExternal() {
+        return heliumBillingDcPriceExternal;
+    }
+
+    public String getHeliumBillingDcMinAmountDefault() {
+        return heliumBillingDcMinAmountDefault;
+    }
+
+    public String getHeliumBillingDcMinAmountExternal() {
+        return heliumBillingDcMinAmountExternal;
+    }
+
+    public String getHeliumBillingMaxTenantDefault() {
+        return heliumBillingMaxTenantDefault;
+    }
+
+    public String getHeliumBillingMaxTenantExternal() {
+        return heliumBillingMaxTenantExternal;
+    }
+
+    public String getHeliumBillingMaxDevicesDefault() {
+        return heliumBillingMaxDevicesDefault;
+    }
+
+    public String getHeliumBillingMaxDevicesExternal() {
+        return heliumBillingMaxDevicesExternal;
+    }
+
+    public double getHeliumBillingDcPrice() {
+        if ( getHeliumBillingDcPriceExternal().length() > 0 ) return Double.parseDouble(getHeliumBillingDcPriceExternal());
+        return Double.parseDouble(getHeliumBillingDcPriceDefault());
+    }
+
+    public long getHeliumBillingDcMinAmount() {
+        if ( getHeliumBillingDcMinAmountExternal().length() > 0 ) return Long.parseLong(getHeliumBillingDcMinAmountExternal());
+        return Long.parseLong(getHeliumBillingDcMinAmountDefault());
+    }
+
+    public int getHeliumBillingMaxTenant() {
+        if ( getHeliumBillingMaxTenantExternal().length() > 0 ) return Integer.parseInt(getHeliumBillingMaxTenantExternal());
+        return Integer.parseInt(getHeliumBillingMaxTenantDefault());
+    }
+
+    public int getHeliumBillingMaxDevices() {
+        if ( getHeliumBillingMaxDevicesExternal().length() > 0 ) return Integer.parseInt(getHeliumBillingMaxDevicesExternal());
+        return Integer.parseInt(getHeliumBillingMaxDevicesDefault());
     }
 
 

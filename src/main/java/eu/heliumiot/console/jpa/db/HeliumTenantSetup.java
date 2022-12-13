@@ -79,6 +79,22 @@ public class HeliumTenantSetup {
     private int limitDcRatePerDevice;
     private long limitDcRatePeriodMs;
 
+    // ---
+    // cost in $ for a single DC
+    private double dcPrice;
+
+    // minimum qty of DCs you can buy in a single order
+    private long dcMin;
+
+    // max tenant owened per user
+    private int maxOwnedTenants;
+
+    // max device per tenant
+    private int maxDevices;
+
+    // ---
+    private boolean signupAllowed;
+
 
     public UUID getId() {
         return id;
@@ -198,5 +214,45 @@ public class HeliumTenantSetup {
 
     public void setLimitDcRatePeriodMs(long limitDcRatePeriodMs) {
         this.limitDcRatePeriodMs = limitDcRatePeriodMs;
+    }
+
+    public double getDcPrice() {
+        return dcPrice;
+    }
+
+    public void setDcPrice(double dcPrice) {
+        this.dcPrice = dcPrice;
+    }
+
+    public long getDcMin() {
+        return dcMin;
+    }
+
+    public void setDcMin(long dcMin) {
+        this.dcMin = dcMin;
+    }
+
+    public int getMaxOwnedTenants() {
+        return maxOwnedTenants;
+    }
+
+    public void setMaxOwnedTenants(int maxOwnedTenants) {
+        this.maxOwnedTenants = maxOwnedTenants;
+    }
+
+    public int getMaxDevices() {
+        return maxDevices;
+    }
+
+    public void setMaxDevices(int maxDevices) {
+        this.maxDevices = maxDevices;
+    }
+
+    public boolean isSignupAllowed() {
+        return signupAllowed;
+    }
+
+    public void setSignupAllowed(boolean signupAllowed) {
+        this.signupAllowed = signupAllowed;
     }
 }

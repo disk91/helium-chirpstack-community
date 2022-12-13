@@ -25,6 +25,7 @@
     "sret_error_invalid_email" : "L'email soumis n'a pu être accepté",
     "sret_error_password_size" : "Merci de saisir un mot de passe plus long",
     "sret_error_tenant_size" : "Merci de saisir un tenant plus long",
+    "sret_error_signupclose" : "L'inscription est désactivée",
     "sret_success" : "Super, vous êtes inscrit",
     "sret_error_invalid" : "Les informations fournis ne sont pas valides, enregistrement échoué",
     "sret_error_timeout" : "Votre clef d'enregistrement a expiré, recommencez une nouvelle incription",

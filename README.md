@@ -14,10 +14,13 @@ __/!\ MVP1 ready for HIP70 beta testers only__
     - cost per device creation
     - cost per period of activity
     - cost per period of inactivity
+    - cost pers DCs / minimum DCs volume purchasing
     - limit device DCs consumption on a given period of time
     - Limit device DCs consumption overall
     - upfront billing
     - end of month billing
+- Allows public signup or not
+- Ability to limit the number of device and tenant
 - Manage the device declaration / deactivation on helium router
 - 
 - TODO - Manage payment with stripe
@@ -166,6 +169,19 @@ make KEYFILE=<keyfile>.bin start
 
 
 ## License
-This program is distributed according to [GPLv3](https://www.gnu.org/licenses/gpl-3.0.en.html) licences. Specific licences 
+This program is distributed according to [GPLv3](https://www.gnu.org/licenses/gpl-3.0.en.html) licence for any private 
+IoT device fleet purpose, without restriction.
+
+In case you provide a public service with this software, even free for user, or in case you manage a service for a third party 
+with this software you have two options:
+- having a minimum Uplink cost of $0.00010 per Uplink x 24 Bytes
+- request for a specific license w/o pricing limitation by contacting the author
+
+
+
+
+
+
+Specific licences 
 can be obtained by contacting the Author. Any reuse of this code-source needs to be indicated and modifications/addition need to 
 be publicly published, even when small pieces of code or architecture are reused.

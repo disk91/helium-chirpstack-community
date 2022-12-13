@@ -52,6 +52,8 @@ import java.util.UUID;
 public class HeliumTenantService {
     private final Logger log = LoggerFactory.getLogger(this.getClass());
 
+    public final static String HELIUM_TENANT_SETUP_DEFAULT = "default";
+
     @Autowired
     protected ConsoleConfig consoleConfig;
 
@@ -70,10 +72,10 @@ public class HeliumTenantService {
         };
 
         // search for default entry
-        HeliumTenantSetup ts = heliumTenantSetupRepository.findOneHeliumTenantSetupByTenantUUID("default");
+        HeliumTenantSetup ts = heliumTenantSetupRepository.findOneHeliumTenantSetupByTenantUUID(HELIUM_TENANT_SETUP_DEFAULT);
         if ( ts == null ) {
             ts = new HeliumTenantSetup();
-            ts.setTenantUUID("default");
+            ts.setTenantUUID(HELIUM_TENANT_SETUP_DEFAULT);
             ts.setDcBalanceStop(consoleConfig.getHeliumBillingDcBalanceStop());
             ts.setDcPer24BMessage(consoleConfig.getHeliumBillingDcPer24BytesMessage());
             ts.setDcPer24BDuplicate(consoleConfig.getHeliumBillingDcPer24BDuplicate());
@@ -87,6 +89,11 @@ public class HeliumTenantService {
             ts.setMaxDcPerDevice(consoleConfig.getHeliumBillingMaxDcPerDevice());
             ts.setLimitDcRatePerDevice(consoleConfig.getHeliumBillingLimitDcRatePerDevice());
             ts.setLimitDcRatePeriodMs(consoleConfig.getHeliumBillingLimitDcRatePeriod());
+            ts.setMaxDevices(consoleConfig.getHeliumBillingMaxDevices());
+            ts.setMaxOwnedTenants(consoleConfig.getHeliumBillingMaxTenant());
+            ts.setDcPrice(consoleConfig.getHeliumBillingDcPrice());
+            ts.setDcMin(consoleConfig.getHeliumBillingDcMinAmount());
+            ts.setSignupAllowed(consoleConfig.isHeliumAllowsSignup());
             heliumTenantSetupRepository.save(ts);
         }
         this.heliumSetupCache.put(ts,ts.getTenantUUID());
@@ -136,14 +143,14 @@ public class HeliumTenantService {
               }
             } else {
                 // create the tenant with the default setup
-                HeliumTenantSetup def = heliumSetupCache.get("default");
+                HeliumTenantSetup def = heliumSetupCache.get(HELIUM_TENANT_SETUP_DEFAULT);
                 if ( def == null  ) {
-                    def = heliumTenantSetupRepository.findOneHeliumTenantSetupByTenantUUID("default");
+                    def = heliumTenantSetupRepository.findOneHeliumTenantSetupByTenantUUID(HELIUM_TENANT_SETUP_DEFAULT);
                     if ( def == null ) {
                         log.error("can't find default tenant settings");
                         return null;
                     }
-                    heliumSetupCache.put(def,"default");
+                    heliumSetupCache.put(def,HELIUM_TENANT_SETUP_DEFAULT);
 
                 }
                 ts = new HeliumTenantSetup();
@@ -161,6 +168,11 @@ public class HeliumTenantService {
                 ts.setMaxDcPerDevice(def.getMaxDcPerDevice());
                 ts.setLimitDcRatePerDevice(def.getLimitDcRatePerDevice());
                 ts.setLimitDcRatePeriodMs(def.getLimitDcRatePeriodMs());
+                ts.setMaxOwnedTenants(def.getMaxOwnedTenants());
+                ts.setMaxDevices(def.getMaxDevices());
+                ts.setDcPrice(def.getDcPrice());
+                ts.setDcMin(def.getDcMin());
+                ts.setSignupAllowed(def.isSignupAllowed());
 
                 heliumTenantSetupRepository.save(ts);
                 if ( addInCache && heliumSetupCache.cacheUsage() <= cacheLimit ) {
