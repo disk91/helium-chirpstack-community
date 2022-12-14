@@ -23,21 +23,17 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import eu.heliumiot.console.ConsoleConfig;
-import eu.heliumiot.console.api.TenantApi;
 import eu.heliumiot.console.api.interfaces.TenantBalanceItf;
 import eu.heliumiot.console.jpa.db.HeliumTenant;
 import eu.heliumiot.console.jpa.db.HeliumTenantSetup;
-import eu.heliumiot.console.jpa.db.User;
 import eu.heliumiot.console.jpa.db.UserTenant;
 import eu.heliumiot.console.jpa.repository.UserTenantRepository;
 import eu.heliumiot.console.mqtt.MqttSender;
 import eu.heliumiot.console.mqtt.api.HeliumDeviceStatItf;
 import eu.heliumiot.console.jpa.repository.HeliumTenantRepository;
-import eu.heliumiot.console.jpa.repository.HeliumTenantSetupRepository;
 import eu.heliumiot.console.mqtt.api.HeliumTenantActDeactItf;
 import fr.ingeniousthings.tools.ITRightException;
 import fr.ingeniousthings.tools.Now;
-import fr.ingeniousthings.tools.ObjectCache;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -57,46 +53,23 @@ public class HeliumTenantService {
     @Autowired
     protected ConsoleConfig consoleConfig;
 
+    @Autowired
+    protected HeliumTenantSetupService heliumTenantSetupService;
+
     protected int runningJobs;
     protected boolean serviceEnable; // false to stop the services
 
-    private ObjectCache<String,HeliumTenantSetup> heliumSetupCache;
+    protected ObjectMapper mapper;
+
     @PostConstruct
     private void initHeliumTenantService() {
         log.info("initHeliumTenantService initialization");
-        this.heliumSetupCache = new ObjectCache<String, HeliumTenantSetup>("HeliumSetup", 5000) {
-            @Override
-            public void onCacheRemoval(String key, HeliumTenantSetup obj) {
-                log.info("Removal of helium setup "+key+" previously updated");
-            }
-        };
 
-        // search for default entry
-        HeliumTenantSetup ts = heliumTenantSetupRepository.findOneHeliumTenantSetupByTenantUUID(HELIUM_TENANT_SETUP_DEFAULT);
-        if ( ts == null ) {
-            ts = new HeliumTenantSetup();
-            ts.setTenantUUID(HELIUM_TENANT_SETUP_DEFAULT);
-            ts.setDcBalanceStop(consoleConfig.getHeliumBillingDcBalanceStop());
-            ts.setDcPer24BMessage(consoleConfig.getHeliumBillingDcPer24BytesMessage());
-            ts.setDcPer24BDuplicate(consoleConfig.getHeliumBillingDcPer24BDuplicate());
-            ts.setDcPer24BDownlink(consoleConfig.getHeliumBillingDcPer24BDownlink());
-            ts.setDcPerDeviceInserted(consoleConfig.getHeliumBillingDcPerDeviceInserted());
-            ts.setDcPerInactivityPeriod(consoleConfig.getHeliumBillingDcPerInactivityPeriod());
-            ts.setInactivityBillingPeriodMs(consoleConfig.getHeliumBillingInactivityBillingPeriodMs());
-            ts.setDcPerActivityPeriod(consoleConfig.getHeliumBillingDcPerActivityPeriod());
-            ts.setActivityBillingPeriodMs(consoleConfig.getHeliumBillingActivityBillingPeriod());
-            ts.setFreeTenantDc(consoleConfig.getHeliumBillingFreeTenantDc());
-            ts.setMaxDcPerDevice(consoleConfig.getHeliumBillingMaxDcPerDevice());
-            ts.setLimitDcRatePerDevice(consoleConfig.getHeliumBillingLimitDcRatePerDevice());
-            ts.setLimitDcRatePeriodMs(consoleConfig.getHeliumBillingLimitDcRatePeriod());
-            ts.setMaxDevices(consoleConfig.getHeliumBillingMaxDevices());
-            ts.setMaxOwnedTenants(consoleConfig.getHeliumBillingMaxTenant());
-            ts.setDcPrice(consoleConfig.getHeliumBillingDcPrice());
-            ts.setDcMin(consoleConfig.getHeliumBillingDcMinAmount());
-            ts.setSignupAllowed(consoleConfig.isHeliumAllowsSignup());
-            heliumTenantSetupRepository.save(ts);
-        }
-        this.heliumSetupCache.put(ts,ts.getTenantUUID());
+        mapper = new ObjectMapper();
+        mapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
+        mapper.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
+        mapper.configure(SerializationFeature.FAIL_ON_SELF_REFERENCES, false);
+
         runningJobs=0;
         serviceEnable=true;
     }
@@ -115,80 +88,10 @@ public class HeliumTenantService {
         log.info("Stopping HeliumTenantService");
     }
 
-    @Scheduled(fixedRateString = "${logging.cache.fixedrate}", initialDelay = 60_000)
-    protected void cacheStatus() {
-        if ( ! this.serviceEnable ) return;
-        this.runningJobs++;
-        try {
-            this.heliumSetupCache.log();
-        } finally {
-            this.runningJobs--;
-        }
-    }
-
-    // Get One element from cache, if failed, get it from DB and add it to cache
-    protected HeliumTenantSetup getHeliumTenantSetup(String tenantUUID) {
-        return getHeliumTenantSetup(tenantUUID,true,100);
-    }
-
-    // Get an element from cache, if failed, get it from DB, the tenant will be cached only if
-    // we want to add in cache and cache is under the given limit
-    protected HeliumTenantSetup getHeliumTenantSetup(String tenantUUID, boolean addInCache, int cacheLimit) {
-        HeliumTenantSetup ts = heliumSetupCache.get(tenantUUID);
-        if (ts == null) {
-            ts = heliumTenantSetupRepository.findOneHeliumTenantSetupByTenantUUID(tenantUUID);
-            if ( ts != null ) {
-              if ( addInCache && heliumSetupCache.cacheUsage() <= cacheLimit ) {
-                  heliumSetupCache.put(ts,tenantUUID);
-              }
-            } else {
-                // create the tenant with the default setup
-                HeliumTenantSetup def = heliumSetupCache.get(HELIUM_TENANT_SETUP_DEFAULT);
-                if ( def == null  ) {
-                    def = heliumTenantSetupRepository.findOneHeliumTenantSetupByTenantUUID(HELIUM_TENANT_SETUP_DEFAULT);
-                    if ( def == null ) {
-                        log.error("can't find default tenant settings");
-                        return null;
-                    }
-                    heliumSetupCache.put(def,HELIUM_TENANT_SETUP_DEFAULT);
-
-                }
-                ts = new HeliumTenantSetup();
-                ts.setTenantUUID(tenantUUID);
-                ts.setDcBalanceStop(def.getDcBalanceStop());
-                ts.setFreeTenantDc(def.getFreeTenantDc());
-                ts.setDcPer24BMessage(def.getDcPer24BMessage());
-                ts.setDcPer24BDuplicate(def.getDcPer24BDuplicate());
-                ts.setDcPer24BDownlink(def.getDcPer24BDownlink());
-                ts.setDcPerDeviceInserted(def.getDcPerDeviceInserted());
-                ts.setDcPerInactivityPeriod(def.getDcPerInactivityPeriod());
-                ts.setInactivityBillingPeriodMs(def.getInactivityBillingPeriodMs());
-                ts.setDcPerActivityPeriod(def.getDcPerActivityPeriod());
-                ts.setActivityBillingPeriodMs(def.getActivityBillingPeriodMs());
-                ts.setMaxDcPerDevice(def.getMaxDcPerDevice());
-                ts.setLimitDcRatePerDevice(def.getLimitDcRatePerDevice());
-                ts.setLimitDcRatePeriodMs(def.getLimitDcRatePeriodMs());
-                ts.setMaxOwnedTenants(def.getMaxOwnedTenants());
-                ts.setMaxDevices(def.getMaxDevices());
-                ts.setDcPrice(def.getDcPrice());
-                ts.setDcMin(def.getDcMin());
-                ts.setSignupAllowed(def.isSignupAllowed());
-
-                heliumTenantSetupRepository.save(ts);
-                if ( addInCache && heliumSetupCache.cacheUsage() <= cacheLimit ) {
-                    heliumSetupCache.put(ts,tenantUUID.toString());
-                }
-            }
-        }
-        return ts;
-    }
-
 
     @Autowired
     private HeliumTenantRepository heliumTenantRepository;
 
-    @Autowired
-    private HeliumTenantSetupRepository heliumTenantSetupRepository;
 
     /**
      * Get a Helium Tenant and create one if not yet existing
@@ -199,7 +102,7 @@ public class HeliumTenantService {
         HeliumTenant t = heliumTenantRepository.findOneHeliumTenantByTenantUUID(tenantUUID);
         if ( t == null ) {
             // create it
-            HeliumTenantSetup ts = this.getHeliumTenantSetup(tenantUUID);
+            HeliumTenantSetup ts = heliumTenantSetupService.getHeliumTenantSetup(tenantUUID);
             t = new HeliumTenant();
             t.setTenantUUID(tenantUUID);
             t.setDcBalance(ts.getFreeTenantDc());
@@ -217,15 +120,6 @@ public class HeliumTenantService {
     // Async reporting
     // ======================================================
 
-    protected ObjectMapper mapper;
-
-    @PostConstruct
-    private void initHeliumDeviceService() {
-        mapper = new ObjectMapper();
-        mapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
-        mapper.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
-        mapper.configure(SerializationFeature.FAIL_ON_SELF_REFERENCES, false);
-    }
 
     @Autowired
     protected MqttSender mqttSender;
@@ -264,10 +158,10 @@ public class HeliumTenantService {
         HeliumDeviceStatItf i = new HeliumDeviceStatItf();
         i.setDeviceId(deviceUUID);
         i.setTenantId(tenantUUID);
-        HeliumTenantSetup ts = this.getHeliumTenantSetup(tenantUUID);
+        HeliumTenantSetup ts = heliumTenantSetupService.getHeliumTenantSetup(tenantUUID);
         if ( ts == null ) {
             HeliumTenant t = this.getHeliumTenant(tenantUUID);
-            ts = this.getHeliumTenantSetup(tenantUUID);
+            ts = heliumTenantSetupService.getHeliumTenantSetup(tenantUUID);
             if ( ts == null ) {
                 log.error("Should not be  here ... (1)");
                 return;
@@ -312,10 +206,10 @@ public class HeliumTenantService {
         HeliumDeviceStatItf i = new HeliumDeviceStatItf();
         i.setDeviceId(deviceUUID);
         i.setTenantId(tenantUUID);
-        HeliumTenantSetup ts = this.getHeliumTenantSetup(tenantUUID);
+        HeliumTenantSetup ts = heliumTenantSetupService.getHeliumTenantSetup(tenantUUID);
         if ( ts == null ) {
             HeliumTenant t = this.getHeliumTenant(tenantUUID);
-            ts = this.getHeliumTenantSetup(tenantUUID);
+            ts = heliumTenantSetupService.getHeliumTenantSetup(tenantUUID);
             if ( ts == null ) {
                 log.error("Should not be  here ... (1a)");
                 return;
@@ -355,7 +249,7 @@ public class HeliumTenantService {
                 t.setDcBalance(t.getDcBalance() - infos.getRegistrationDc());
                 this.flushHeliumTenant(t);
 
-                HeliumTenantSetup ts = this.getHeliumTenantSetup(infos.getTenantId());
+                HeliumTenantSetup ts = heliumTenantSetupService.getHeliumTenantSetup(infos.getTenantId());
                 if ( ts != null ) {
                     if ( !processBalance(ts,t) ) {
                         this.flushHeliumTenant(t);
@@ -374,10 +268,10 @@ public class HeliumTenantService {
         HeliumDeviceStatItf i = new HeliumDeviceStatItf();
         i.setDeviceId(deviceUUID);
         i.setTenantId(tenantUUID);
-        HeliumTenantSetup ts = this.getHeliumTenantSetup(tenantUUID);
+        HeliumTenantSetup ts = heliumTenantSetupService.getHeliumTenantSetup(tenantUUID);
         if ( ts == null ) {
             HeliumTenant t = this.getHeliumTenant(tenantUUID);
-            ts = this.getHeliumTenantSetup(tenantUUID);
+            ts = heliumTenantSetupService.getHeliumTenantSetup(tenantUUID);
             if ( ts == null ) {
                 log.error("Should not be  here ... (2)");
                 return;
@@ -455,7 +349,7 @@ public class HeliumTenantService {
      * @return
      */
     public boolean processBalanceIncrease(String tenantUUID, long amount) {
-        HeliumTenantSetup ts = this.getHeliumTenantSetup(tenantUUID);
+        HeliumTenantSetup ts = heliumTenantSetupService.getHeliumTenantSetup(tenantUUID);
         if ( ts == null ) {
             log.error("Impossible to find tenant setup for "+tenantUUID);
             return false;
@@ -523,7 +417,7 @@ public class HeliumTenantService {
         log.info("running backgroundTenantReactivation");
         List<HeliumTenant> ts = heliumTenantRepository.findHeliumTenantByState(HeliumTenant.TenantState.DEACTIVATED);
         for ( HeliumTenant t : ts ) {
-            HeliumTenantSetup s = getHeliumTenantSetup(t.getTenantUUID());
+            HeliumTenantSetup s = heliumTenantSetupService.getHeliumTenantSetup(t.getTenantUUID());
             if ( s != null && s.getDcBalanceStop() < t.getDcBalance() ) {
                 // we have a candidate to be restored
                 log.warn("Tenant "+t.getTenantUUID()+" was deactivated with valid DC Balance "+t.getDcBalance()+" / "+s.getDcBalanceStop());
@@ -582,7 +476,7 @@ public class HeliumTenantService {
 
         // Here we are the right to get the DC Balance info
         HeliumTenant ht = this.getHeliumTenant(tenantId);
-        HeliumTenantSetup hts = this.getHeliumTenantSetup(tenantId);
+        HeliumTenantSetup hts = heliumTenantSetupService.getHeliumTenantSetup(tenantId);
 
         TenantBalanceItf r = new TenantBalanceItf();
         r.setDcBalance(ht.getDcBalance());

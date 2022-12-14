@@ -26,6 +26,7 @@ import eu.heliumiot.console.ConsoleConfig;
 import eu.heliumiot.console.api.interfaces.*;
 import eu.heliumiot.console.chirpstack.ChirpstackApiAccess;
 import eu.heliumiot.console.jpa.db.HeliumPendingUser;
+import eu.heliumiot.console.jpa.db.HeliumTenantSetup;
 import eu.heliumiot.console.jpa.db.HeliumUser;
 import eu.heliumiot.console.jpa.db.User;
 import eu.heliumiot.console.jpa.repository.HeliumPendingUserRepository;
@@ -47,13 +48,14 @@ import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
-import javax.validation.constraints.Email;
 import java.security.Key;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Random;
 import java.util.UUID;
+
+import static eu.heliumiot.console.service.HeliumTenantService.HELIUM_TENANT_SETUP_DEFAULT;
 
 @Service
 public class UserService {
@@ -209,6 +211,9 @@ public class UserService {
     @Autowired
     protected ExecuteEmail executeEmail;
 
+    @Autowired
+    protected HeliumTenantSetupService heliumTenantSetupService;
+
     /**
      * Create a user account with email validation, the user creation in chirpstack is really created once the email validation
      * has been made
@@ -220,8 +225,23 @@ public class UserService {
     public UserSignUpRespItf userSignup(UserSignUpReqItf req)
     throws ITNotFoundException,ITParseException
     {
+        // @TODO - heliumTenant service appele UserService et on boucle
+        // il faut sortir la partie TenantSetup de TenantService
+
+        // @todo verify the invitation code
+        String profile = HELIUM_TENANT_SETUP_DEFAULT;
+        if  (req.getInviteCode().length() > 0) {
+            // process verification ...
+            // set profile based on the invitation code verification
+        }
+        // is signup allowed
+        HeliumTenantSetup hts = heliumTenantSetupService.getHeliumTenantSetup(profile);
+        if( hts == null || ! hts.isSignupAllowed() ) {
+            throw new ITParseException("error_signupclose");
+        }
+
         UserSignUpRespItf r = new UserSignUpRespItf();
-        // verify informations
+        // verify information
         //  is conditions accepted ?
         if ( ! req.isConditionsAccepted() ) {
             throw new ITParseException("error_conditions");
@@ -254,13 +274,6 @@ public class UserService {
                 Thread.sleep(8+((new Random().nextInt()) % 7));
             }catch (InterruptedException x){};
             return r;
-        }
-
-        // @todo verify the invitation code
-        String profile = "default";
-        if  (req.getInviteCode().length() > 0) {
-            // process verification ...
-            // set profile based on the invitation code verification
         }
 
         // All test ok, prepare to the next phase : the user will only be
@@ -349,6 +362,11 @@ public class UserService {
             throw new ITParseException("error_timeout");
         }
 
+        HeliumTenantSetup hts = heliumTenantSetupService.getHeliumTenantSetup(hpe.getOfferName());
+        if ( hts == null || ! hts.isSignupAllowed() ) {
+            throw new ITParseException("error_signupclose");
+        }
+
         HttpHeaders heads = new HttpHeaders();
         heads.add("authorization", "Bearer "+consoleConfig.getChirpstackApiAdminKey());
 
@@ -357,7 +375,7 @@ public class UserService {
                 .setName(hpe.getTenantName())
                 .setDescription("Default user tenant")
                 .setCanHaveGateways(false)
-                .setMaxDeviceCount(0)
+                .setMaxDeviceCount(hts.getMaxDevices())
                 .setMaxGatewayCount(0)
                 .setPrivateGateways(false)
                 .build();

@@ -65,6 +65,9 @@ public class ExitService {
     private HeliumDeviceCacheService heliumDeviceCacheService;
 
     @Autowired
+    private HeliumTenantSetupService heliumTenantSetupService;
+
+    @Autowired
     private NovaService novaService;
 
     @PreDestroy
@@ -94,6 +97,7 @@ public class ExitService {
         heliumDeviceService.stopService();
         heliumDeviceStatService.stopService();
         heliumTenantService.stopService();
+        heliumTenantSetupService.stopService();
         heliumDeviceCacheService.stopService();
         novaService.stopService();
 
@@ -106,6 +110,7 @@ public class ExitService {
             if ( ! heliumDeviceService.hasStopped() ) services++;
             if ( ! heliumDeviceStatService.hasStopped() ) services++;
             if ( ! heliumTenantService.hasStopped() ) services++;
+            if ( ! heliumTenantSetupService.hasStopped() ) services++;
             if ( ! heliumDeviceCacheService.hasStopped() ) services++;
             if ( ! novaService.hasStopped() ) services++;
 

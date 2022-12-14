@@ -82,6 +82,10 @@ public class HeliumDeviceService {
     protected HeliumTenantService heliumTenantService;
 
     @Autowired
+    protected HeliumTenantSetupService heliumTenantSetupService;
+
+
+    @Autowired
     protected HeliumDeviceStatService heliumDeviceStatService;
 
     @Autowired
@@ -210,7 +214,7 @@ public class HeliumDeviceService {
                 heliumDeviceRepository.save(hdev);
 
                 // need to process stats and invoicing
-                HeliumTenantSetup ts = heliumTenantService.getHeliumTenantSetup(hdev.getTenantUUID());
+                HeliumTenantSetup ts = heliumTenantSetupService.getHeliumTenantSetup(hdev.getTenantUUID());
                 if (ts != null) {
                     HeliumDeviceStatItf i = new HeliumDeviceStatItf();
                     i.setTenantId(hdev.getTenantUUID());
@@ -449,7 +453,7 @@ public class HeliumDeviceService {
                         }
                         if (lastSeenDevice == 0) lastSeenDevice = dev.getCreatedAt().getTime();
 
-                        HeliumTenantSetup hts = heliumTenantService.getHeliumTenantSetup(
+                        HeliumTenantSetup hts = heliumTenantSetupService.getHeliumTenantSetup(
                                 hdev.getTenantUUID(), true, 50
                         );
 
