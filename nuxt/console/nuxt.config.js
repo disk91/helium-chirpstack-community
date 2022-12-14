@@ -92,6 +92,12 @@ export default {
 
   // Authentication configuration to use JWT during authentication
   auth: {
+    redirect: {
+      login: '/front/login',
+      logout: '/front/logout',
+      callback: false,
+      home: '/front/'
+    },
     strategies: {
       local: {
         token: {
@@ -114,12 +120,6 @@ export default {
           logout: { url: process.env.API_HOST+'/console/1.0/sign/out', method: 'get' },
           user: { url: process.env.API_HOST+'/console/1.0/user/', method: 'get' }
         },
-        redirect: {
-          login: '/front/login',
-          logout: '/front/logout',
-          callback: '/front/login',
-          home: '/front/'
-        }
       }
     },
   },

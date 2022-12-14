@@ -31,6 +31,8 @@
   "sret_error_invalid" : "The given information are invalid, registration failed",
   "sret_error_timeout" : "Your registration token has expired please retry",
   "sret_error_internal" : "Internal failure, please try register later",
+  "sret_error_invalidcoupon" : "Invalid coupon code",
+  "sret_error_max_tenant" : "Impossible to create new tenant, maximum reached",
   "signup_pmessage_1" : "Your registration has been taken into account, an email has been sent to your inbox.",
   "signup_pmessage_2" : "Please confirm your email following the link sent to you.",
   "signup_pmessage_3" : "If you do not find the email, please check your spam folder.",
@@ -47,6 +49,9 @@
   "passlost_vmessage_nokey" : "The validation require a validation key to be provided",
   "passlost_vmessage_success" : "Your password has been updated. Now, you can connect",
   "passlost_emessage" : "Your are now able to enter your new password",
+  "page_not_found" : "You get lost into the P2P network ... not found",
+  "page_error" : "Hummm ... sounds like we get stuck, too bad !",
+  "page_home" : "Let's try a safe place, nothing better than home",
 
   "end" : "end"
 }

@@ -30,6 +30,8 @@
     "sret_error_invalid" : "Les informations fournis ne sont pas valides, enregistrement échoué",
     "sret_error_timeout" : "Votre clef d'enregistrement a expiré, recommencez une nouvelle incription",
     "sret_error_internal" : "Problème interne, veuillez renouveler votre inscription ultérieurement",
+    "sret_error_invalidcoupon" : "Code complémentaire invalide",
+    "sret_error_max_tenant" : "Impossible d'ajouter un tenant, la limite est atteinte",
     "signup_pmessage_1" : "Votre inscription a été prise en compte, un email vient de vous être envoyé",
     "signup_pmessage_2" : "Merci de confirmer votre inscription via le lien dans cet email.",
     "signup_pmessage_3" : "Si vous n'avez pas reçu l'email, merci de vérifier dans vos spams.",
@@ -46,7 +48,10 @@
     "passlost_vmessage_nokey" : "Le changeemnt de mot de passe requière une clef de validation",
     "passlost_vmessage_success" : "Votre nouveau mot de passe est actif, vous pouvez vous connecter",
     "passlost_emessage" : "Vous allez maintenant pouvoir saisir votre nouveau mot de passe",
-
+    "page_not_found" : "Oups... nous sommes actuellement dans l'inconnu",
+    "page_error" : "Aïe, on dirait qu'un truc s'est mal passé !",
+    "page_home" : "Le mieux est de retourner dans un lieu sûr : l'acceuil",
+  
     "end" : "fin"
 
 }
