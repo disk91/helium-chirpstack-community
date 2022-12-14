@@ -139,33 +139,40 @@ public class HeliumTenantSetupService {
                     heliumSetupCache.put(def,HELIUM_TENANT_SETUP_DEFAULT);
 
                 }
-                ts = new HeliumTenantSetup();
-                ts.setTenantUUID(tenantUUID);
-                ts.setDcBalanceStop(def.getDcBalanceStop());
-                ts.setFreeTenantDc(def.getFreeTenantDc());
-                ts.setDcPer24BMessage(def.getDcPer24BMessage());
-                ts.setDcPer24BDuplicate(def.getDcPer24BDuplicate());
-                ts.setDcPer24BDownlink(def.getDcPer24BDownlink());
-                ts.setDcPerDeviceInserted(def.getDcPerDeviceInserted());
-                ts.setDcPerInactivityPeriod(def.getDcPerInactivityPeriod());
-                ts.setInactivityBillingPeriodMs(def.getInactivityBillingPeriodMs());
-                ts.setDcPerActivityPeriod(def.getDcPerActivityPeriod());
-                ts.setActivityBillingPeriodMs(def.getActivityBillingPeriodMs());
-                ts.setMaxDcPerDevice(def.getMaxDcPerDevice());
-                ts.setLimitDcRatePerDevice(def.getLimitDcRatePerDevice());
-                ts.setLimitDcRatePeriodMs(def.getLimitDcRatePeriodMs());
-                ts.setMaxOwnedTenants(def.getMaxOwnedTenants());
-                ts.setMaxDevices(def.getMaxDevices());
-                ts.setDcPrice(def.getDcPrice());
-                ts.setDcMin(def.getDcMin());
-                ts.setSignupAllowed(def.isSignupAllowed());
-
-                heliumTenantSetupRepository.save(ts);
+                ts = this.createAndSave(def,tenantUUID);
                 if ( addInCache && heliumSetupCache.cacheUsage() <= cacheLimit ) {
                     heliumSetupCache.put(ts,tenantUUID.toString());
                 }
             }
         }
+        return ts;
+    }
+
+    /**
+     * create a new Tenant Setup for a new tenant
+     */
+    public HeliumTenantSetup createAndSave(HeliumTenantSetup def, String tenantUUID) {
+        HeliumTenantSetup ts = new HeliumTenantSetup();
+        ts.setTenantUUID(tenantUUID);
+        ts.setDcBalanceStop(def.getDcBalanceStop());
+        ts.setFreeTenantDc(def.getFreeTenantDc());
+        ts.setDcPer24BMessage(def.getDcPer24BMessage());
+        ts.setDcPer24BDuplicate(def.getDcPer24BDuplicate());
+        ts.setDcPer24BDownlink(def.getDcPer24BDownlink());
+        ts.setDcPerDeviceInserted(def.getDcPerDeviceInserted());
+        ts.setDcPerInactivityPeriod(def.getDcPerInactivityPeriod());
+        ts.setInactivityBillingPeriodMs(def.getInactivityBillingPeriodMs());
+        ts.setDcPerActivityPeriod(def.getDcPerActivityPeriod());
+        ts.setActivityBillingPeriodMs(def.getActivityBillingPeriodMs());
+        ts.setMaxDcPerDevice(def.getMaxDcPerDevice());
+        ts.setLimitDcRatePerDevice(def.getLimitDcRatePerDevice());
+        ts.setLimitDcRatePeriodMs(def.getLimitDcRatePeriodMs());
+        ts.setMaxOwnedTenants(def.getMaxOwnedTenants());
+        ts.setMaxDevices(def.getMaxDevices());
+        ts.setDcPrice(def.getDcPrice());
+        ts.setDcMin(def.getDcMin());
+        ts.setSignupAllowed(def.isSignupAllowed());
+        heliumTenantSetupRepository.save(ts);
         return ts;
     }
 

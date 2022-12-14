@@ -22,8 +22,11 @@ package eu.heliumiot.console.service;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
+import com.google.protobuf.InvalidProtocolBufferException;
 import eu.heliumiot.console.ConsoleConfig;
 import eu.heliumiot.console.api.interfaces.TenantBalanceItf;
+import eu.heliumiot.console.api.interfaces.TenantCreateReqItf;
+import eu.heliumiot.console.chirpstack.ChirpstackApiAccess;
 import eu.heliumiot.console.jpa.db.HeliumTenant;
 import eu.heliumiot.console.jpa.db.HeliumTenantSetup;
 import eu.heliumiot.console.jpa.db.UserTenant;
@@ -32,11 +35,16 @@ import eu.heliumiot.console.mqtt.MqttSender;
 import eu.heliumiot.console.mqtt.api.HeliumDeviceStatItf;
 import eu.heliumiot.console.jpa.repository.HeliumTenantRepository;
 import eu.heliumiot.console.mqtt.api.HeliumTenantActDeactItf;
+import fr.ingeniousthings.tools.ITNotFoundException;
+import fr.ingeniousthings.tools.ITParseException;
 import fr.ingeniousthings.tools.ITRightException;
 import fr.ingeniousthings.tools.Now;
+import io.chirpstack.restapi.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
@@ -103,17 +111,21 @@ public class HeliumTenantService {
         if ( t == null ) {
             // create it
             HeliumTenantSetup ts = heliumTenantSetupService.getHeliumTenantSetup(tenantUUID);
-            t = new HeliumTenant();
-            t.setTenantUUID(tenantUUID);
-            t.setDcBalance(ts.getFreeTenantDc());
-            t.setState(HeliumTenant.TenantState.NORMAL);
-            return heliumTenantRepository.save(t);
+            return this.createNewHeliumTenant(tenantUUID,ts);
         } else return t;
     }
 
     protected void flushHeliumTenant(HeliumTenant t) {
         log.debug("#> new balance "+t.getDcBalance()+" for "+t.getTenantUUID());
         heliumTenantRepository.save(t);
+    }
+
+    public HeliumTenant createNewHeliumTenant(String tenantUUID, HeliumTenantSetup ts) {
+        HeliumTenant t = new HeliumTenant();
+        t.setTenantUUID(tenantUUID);
+        t.setDcBalance(ts.getFreeTenantDc());
+        t.setState(HeliumTenant.TenantState.NORMAL);
+        return heliumTenantRepository.save(t);
     }
 
     // ======================================================
@@ -342,7 +354,7 @@ public class HeliumTenantService {
     }
 
     /**
-     * Add credits to a tennant, returns true when added
+     * Add credits to a tenant, returns true when added
      * Asynchronous process
      * @param tenantUUID
      * @param amount
@@ -482,6 +494,177 @@ public class HeliumTenantService {
         r.setDcBalance(ht.getDcBalance());
         r.setMinBalance(hts.getDcBalanceStop());
         return r;
+    }
+
+    @Autowired
+    protected ChirpstackApiAccess chirpstackApiAccess;
+
+
+    /**
+     * Create a new tenant for an existing user. Possible until reaching the max tenant parameter
+     * associated to the given coupon code of default. Coupon code can be "" (default)
+     * @param userId
+     * @param req
+     * @throws ITParseException
+     * @throws ITRightException
+     */
+    public void addNewTenant(String userId, TenantCreateReqItf req)
+    throws ITParseException, ITRightException {
+
+        // verify tenantName
+        if ( req.getTenantName().length() < 3 ) {
+            throw new ITParseException("error_tenant_size");
+        }
+
+        // get User
+        UserService.UserCacheElement user = userService.getUserById(userId);
+        if ( user == null ) throw new ITRightException();
+
+        // check profile
+        // @todo verify the invitation code
+        String profile = HELIUM_TENANT_SETUP_DEFAULT;
+        if  (req.getCouponCode().length() > 0) {
+            // process verification ...
+            // set profile based on the invitation code verification
+        }
+        // is signup allowed
+        HeliumTenantSetup hts = heliumTenantSetupService.getHeliumTenantSetup(profile);
+        if( hts == null ) {
+            throw new ITParseException("error_invalidcoupon");
+        }
+
+        // get tenant owned by user to check number limit
+        List<UserTenant> uts = userTenantRepository.findUserTenantByUserIdAndIsAdmin(
+                user.user.getId(),
+                true
+        );
+        if ( uts.size() >= hts.getMaxOwnedTenants() ) throw new ITParseException("error_max_tenant");
+
+        // Lets create the tenant first
+        Tenant tenant = Tenant.newBuilder()
+                .setName(req.getTenantName())
+                .setDescription("Other user tenant")
+                .setCanHaveGateways(false)
+                .setMaxDeviceCount(hts.getMaxDevices())
+                .setMaxGatewayCount(0)
+                .setPrivateGateways(false)
+                .build();
+
+        CreateTenantRequest tenantReq = CreateTenantRequest.newBuilder()
+                .setTenant(tenant)
+                .build();
+
+        HttpHeaders heads = new HttpHeaders();
+        heads.add("authorization", "Bearer "+consoleConfig.getChirpstackApiAdminKey());
+
+        String tenantId = null;
+        try {
+
+            byte[] respB = chirpstackApiAccess.execute(
+                    HttpMethod.POST,
+                    "/api.TenantService/Create",
+                    null,
+                    heads,
+                    tenantReq.toByteArray()
+            );
+            CreateTenantResponse resp = CreateTenantResponse.parseFrom(respB);
+
+            if ( resp != null ) {
+                tenantId = resp.getId();
+            }
+
+        } catch ( ITRightException x ) {
+            log.error("Impossible to create additionnal tenant - rights");
+        } catch ( ITNotFoundException x ) {
+            log.error("Impossible to create additionnal tenant - not found");
+        } catch ( InvalidProtocolBufferException x ) {
+            log.error("Impossible to create additionnal tenant - protobuf");
+        }
+
+        if ( tenantId == null ) throw new ITParseException("error_internal");
+
+        TenantUser tu = TenantUser.newBuilder()
+                .setIsAdmin(true)
+                .setIsDeviceAdmin(true)
+                .setIsGatewayAdmin(false)
+                .setTenantId(tenantId)
+                .setEmail(user.user.getEmail())
+                .setUserId(user.user.getId().toString())
+                .build();
+
+        AddTenantUserRequest addtenant = AddTenantUserRequest.newBuilder()
+                .setTenantUser(tu)
+                .build();
+
+        boolean linksuccess = false;
+        try {
+
+            byte[] respB = chirpstackApiAccess.execute(
+                    HttpMethod.POST,
+                    "/api.TenantService/AddUser",
+                    null,
+                    heads,
+                    addtenant.toByteArray()
+            );
+            linksuccess = true;
+
+        } catch ( ITRightException x ) {
+            log.error("Impossible to create additional tenant 2 - rights");
+            this.deleteTenant(null,tenantId,true);
+            throw new ITParseException("error_internal");
+        } catch ( ITNotFoundException x ) {
+            log.error("Impossible to create additional tenant 2 - not found");
+            this.deleteTenant(null,tenantId,true);
+            throw new ITParseException("error_internal");
+        }
+
+        if ( linksuccess ) {
+            // create the HeliumTenantSetup
+            heliumTenantSetupService.createAndSave(hts, tenantId);
+
+            // create HeliumTenant
+            this.createNewHeliumTenant(tenantId, hts);
+        }
+
+    }
+
+
+    public void deleteTenant(String userId, String tenantId, boolean force)
+    throws ITRightException, ITParseException {
+
+        if ( !force ) {
+            log.error("Tenant deletion not forced is not implemented");
+            return;
+        }
+
+        HttpHeaders heads = new HttpHeaders();
+        heads.add("authorization", "Bearer "+consoleConfig.getChirpstackApiAdminKey());
+
+        // delete tenant
+        DeleteTenantRequest dt = DeleteTenantRequest.newBuilder()
+                .setId(tenantId)
+                .build();
+        try {
+
+            byte[] respB = chirpstackApiAccess.execute(
+                    HttpMethod.POST,
+                    "/api.TenantService/Delete",
+                    null,
+                    heads,
+                    dt.toByteArray()
+            );
+
+        } catch ( ITRightException x ) {
+            log.error("Impossible to delete tenant - rights");
+            throw new ITParseException("error_internal");
+        } catch (ITNotFoundException x) {
+            log.error("Impossible to delete tenant - not found");
+            throw new ITParseException("error_internal");
+        } catch ( ITParseException x) {
+            log.error("Impossible to delete tenant - parse");
+            throw new ITParseException("error_internal");
+        }
+
     }
 
 }

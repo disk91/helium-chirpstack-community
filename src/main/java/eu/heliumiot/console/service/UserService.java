@@ -25,11 +25,10 @@ import com.google.protobuf.InvalidProtocolBufferException;
 import eu.heliumiot.console.ConsoleConfig;
 import eu.heliumiot.console.api.interfaces.*;
 import eu.heliumiot.console.chirpstack.ChirpstackApiAccess;
-import eu.heliumiot.console.jpa.db.HeliumPendingUser;
-import eu.heliumiot.console.jpa.db.HeliumTenantSetup;
-import eu.heliumiot.console.jpa.db.HeliumUser;
+import eu.heliumiot.console.jpa.db.*;
 import eu.heliumiot.console.jpa.db.User;
 import eu.heliumiot.console.jpa.repository.HeliumPendingUserRepository;
+import eu.heliumiot.console.jpa.repository.HeliumTenantRepository;
 import eu.heliumiot.console.jpa.repository.HeliumUserRepository;
 import eu.heliumiot.console.jpa.repository.UserRepository;
 import eu.heliumiot.console.tools.EncryptionHelper;
@@ -37,6 +36,8 @@ import eu.heliumiot.console.tools.ExecuteEmail;
 import fr.ingeniousthings.tools.*;
 import fr.ingeniousthings.tools.Claims;
 import io.chirpstack.restapi.*;
+import io.chirpstack.restapi.Tenant;
+import io.chirpstack.restapi.UserTenant;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
 import org.apache.commons.validator.routines.EmailValidator;
@@ -225,8 +226,6 @@ public class UserService {
     public UserSignUpRespItf userSignup(UserSignUpReqItf req)
     throws ITNotFoundException,ITParseException
     {
-        // @TODO - heliumTenant service appele UserService et on boucle
-        // il faut sortir la partie TenantSetup de TenantService
 
         // @todo verify the invitation code
         String profile = HELIUM_TENANT_SETUP_DEFAULT;
@@ -322,6 +321,10 @@ public class UserService {
         r.setErrorMessage("success");
         return r;
     }
+
+
+    @Autowired
+    private HeliumTenantRepository heliumTenantRepository;
 
     /**
      * Get the registration confirmation code to terminate the user signup
@@ -479,9 +482,23 @@ public class UserService {
 
             } catch ( ITRightException x ) {
                 log.error("Impossible to delete tenant - rights");
+            } catch (ITNotFoundException x) {
+                log.error("Impossible to delete tenant - not found");
+            } catch ( ITParseException x) {
+                log.error("Impossible to delete tenant - parse");
             }
             throw new ITParseException("error_internal");
         }
+
+        // create the Helium Tenant Setup Instance
+        heliumTenantSetupService.createAndSave(hts,tenantId);
+
+        // create the Helium Tenant instance
+        HeliumTenant t = new HeliumTenant();
+        t.setTenantUUID(tenantId);
+        t.setDcBalance(hts.getFreeTenantDc());
+        t.setState(HeliumTenant.TenantState.NORMAL);
+        heliumTenantRepository.save(t);
 
         // delete validation code
         heliumPendingUserRepository.delete(hpe);

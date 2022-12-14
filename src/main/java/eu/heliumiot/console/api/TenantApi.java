@@ -1,12 +1,11 @@
 package eu.heliumiot.console.api;
 
 
-import eu.heliumiot.console.api.interfaces.ActionResult;
-import eu.heliumiot.console.api.interfaces.TenantBalanceItf;
-import eu.heliumiot.console.api.interfaces.UserDetailRespItf;
+import eu.heliumiot.console.api.interfaces.*;
 import eu.heliumiot.console.service.HeliumTenantService;
 import eu.heliumiot.console.service.UserService;
 import fr.ingeniousthings.tools.ITNotFoundException;
+import fr.ingeniousthings.tools.ITParseException;
 import fr.ingeniousthings.tools.ITRightException;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -47,7 +46,7 @@ public class TenantApi {
             produces = MediaType.APPLICATION_JSON_VALUE,
             method= RequestMethod.GET)
     @PreAuthorize("hasAnyRole('ROLE_USER')")
-    public ResponseEntity<?> requestUserDetail(
+    public ResponseEntity<?> requestTenantBalanceDetail(
             HttpServletRequest request,
             @Parameter(required = true, name = "tenantId", description = "tenant UUID")
             @PathVariable String tenantId
@@ -58,6 +57,41 @@ public class TenantApi {
             return new ResponseEntity<>(r, HttpStatus.OK);
         } catch (ITRightException x) {
             return new ResponseEntity<>(ActionResult.FORBIDDEN(), HttpStatus.FORBIDDEN);
+        }
+    }
+
+
+    @Operation(summary = "create tenant",
+            description = "Crate a new tenant for an existing user",
+            responses = {
+                    @ApiResponse(responseCode = "200", description= "Done", content = @Content(schema = @Schema(implementation = TenantCreateRespItf.class))),
+                    @ApiResponse(responseCode = "400", description= "Bad Request", content = @Content(schema = @Schema(implementation = TenantCreateRespItf.class))),
+                    @ApiResponse(responseCode = "403", description= "Forbidden", content = @Content(schema = @Schema(implementation = TenantCreateRespItf.class))),
+            }
+    )
+    @RequestMapping(value="/create",
+            consumes = MediaType.APPLICATION_JSON_VALUE,
+            produces = MediaType.APPLICATION_JSON_VALUE,
+            method= RequestMethod.POST)
+    @PreAuthorize("hasAnyRole('ROLE_USER')")
+    public ResponseEntity<?> requestTenantCreation(
+            HttpServletRequest request,
+            @RequestBody(required = true) TenantCreateReqItf tenantInfo
+    ) {
+        log.debug("Create tenant for "+request.getUserPrincipal().getName());
+        try {
+            heliumTenantService.addNewTenant(request.getUserPrincipal().getName(), tenantInfo);
+            TenantCreateRespItf r = new TenantCreateRespItf();
+            r.setErrorMessage("success");
+            return new ResponseEntity<>(r, HttpStatus.OK);
+        } catch (ITParseException x) {
+            TenantCreateRespItf r = new TenantCreateRespItf();
+            r.setErrorMessage(x.getMessage());
+            return new ResponseEntity<>(r, HttpStatus.BAD_REQUEST);
+        } catch (ITRightException x) {
+            TenantCreateRespItf r = new TenantCreateRespItf();
+            r.setErrorMessage(x.getMessage());
+            return new ResponseEntity<>(r, HttpStatus.FORBIDDEN);
         }
     }
 
