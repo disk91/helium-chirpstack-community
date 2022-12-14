@@ -53,5 +53,8 @@
   "page_error" : "Hummm ... sounds like we get stuck, too bad !",
   "page_home" : "Let's try a safe place, nothing better than home",
 
+  "menu_add_tenant" : "Add new tenant",
+  "addtenant_vmessage_success" : "The tenant has been created",
+
   "end" : "end"
 }

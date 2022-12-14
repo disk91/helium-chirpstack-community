@@ -15,6 +15,7 @@ export default {
     validationEndpoint:process.env.API_HOST+'/console/1.0/sign/confirm',
     passLostEndpoint:process.env.API_HOST+'/console/1.0/sign/lost',
     passChangeEndpoint:process.env.API_HOST+'/console/1.0/sign/password',
+    addTenantEndpoint:process.env.API_HOST+'/console/1.0/tenant/create',
     termAndUse:process.env.CONSOLE_TERMS || '/',
   },
 

@@ -22,6 +22,7 @@
             <em>{{ $auth.user.username }}</em>
           </template>
           <b-dropdown-item href="#">Profile</b-dropdown-item>
+          <b-dropdown-item href="#" @click="addTenantAction">{{$t('menu_add_tenant')}}</b-dropdown-item>
           <b-dropdown-item href="#">Sign Out</b-dropdown-item>
         </b-nav-item-dropdown>
       </b-navbar-nav>
@@ -47,7 +48,7 @@ export default Vue.extend({
     },
     methods: {
 	    pollData () {
-		  this.polling = setInterval(() => {
+		      this.polling = setInterval(() => {
           //this.$nuxt.refresh();
           let tenantId = this.$store.state.currentTenant;
           if ( tenantId != undefined && tenantId != null && tenantId.length > 5 ) {
@@ -67,7 +68,10 @@ export default Vue.extend({
             })
           }
 		    } , 3000)
-	    }
+	    },
+      addTenantAction() {
+        this.$root.$emit("message-display-add-tenant", "");
+      }
     },
     created () {
 	    this.pollData()   
