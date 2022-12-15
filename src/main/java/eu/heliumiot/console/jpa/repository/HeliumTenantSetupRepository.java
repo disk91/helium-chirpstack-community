@@ -31,6 +31,8 @@ public interface HeliumTenantSetupRepository extends CrudRepository<HeliumTenant
 
     public HeliumTenantSetup findOneHeliumTenantSetupByTenantUUID(String id);
 
+    public HeliumTenantSetup findOneHeliumTenantSetupById(String id);
+
     public List<HeliumTenantSetup> findHeliumTenantSetupByTemplate(boolean template);
 
 }

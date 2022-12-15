@@ -20,7 +20,9 @@
 package eu.heliumiot.console.service;
 
 import eu.heliumiot.console.ConsoleConfig;
+import eu.heliumiot.console.api.interfaces.TenantSetupTemplateCreateReqItf;
 import eu.heliumiot.console.api.interfaces.TenantSetupTemplateListRespItf;
+import eu.heliumiot.console.api.interfaces.TenantSetupTemplateUpdateReqItf;
 import eu.heliumiot.console.jpa.db.HeliumTenantSetup;
 import eu.heliumiot.console.jpa.repository.HeliumTenantSetupRepository;
 import fr.ingeniousthings.tools.ITRightException;
@@ -225,6 +227,105 @@ public class HeliumTenantSetupService {
 
         return r;
     }
+
+    /**
+     * Update an existing tenant template, should also work for any tenant Setup
+     * @param user
+     * @param def
+     * @throws ITRightException
+     */
+    public  void updateTenantSetupTemplates (
+            String user,
+            TenantSetupTemplateUpdateReqItf def
+    ) throws ITRightException {
+        UserCacheService.UserCacheElement u = userCacheService.getUserById(user);
+        if ( u == null || ! u.user.isAdmin() ) throw new ITRightException();
+
+        HeliumTenantSetup ts = this.getHeliumTenantSetup(def.getTenantUUID(),false,100);
+        if ( ts == null ) throw new ITRightException();
+
+        ts.setDcBalanceStop(def.getDcBalanceStop());
+        ts.setFreeTenantDc(def.getFreeTenantDc());
+        ts.setDcPer24BMessage(def.getDcPer24BMessage());
+        ts.setDcPer24BDuplicate(def.getDcPer24BDuplicate());
+        ts.setDcPer24BDownlink(def.getDcPer24BDownlink());
+        ts.setDcPerDeviceInserted(def.getDcPerDeviceInserted());
+        ts.setDcPerInactivityPeriod(def.getDcPerInactivityPeriod());
+        ts.setInactivityBillingPeriodMs(def.getInactivityBillingPeriodMs());
+        ts.setDcPerActivityPeriod(def.getDcPerActivityPeriod());
+        ts.setActivityBillingPeriodMs(def.getActivityBillingPeriodMs());
+        ts.setMaxDcPerDevice(def.getMaxDcPerDevice());
+        ts.setLimitDcRatePerDevice(def.getLimitDcRatePerDevice());
+        ts.setLimitDcRatePeriodMs(def.getLimitDcRatePeriodMs());
+        ts.setMaxOwnedTenants(def.getMaxOwnedTenants());
+        ts.setMaxDevices(def.getMaxDevices());
+        ts.setDcPrice(def.getDcPrice());
+        ts.setDcMin(def.getDcMin());
+        ts.setSignupAllowed(def.isSignupAllowed());
+
+        heliumTenantSetupRepository.save(ts);
+        this.heliumSetupCache.remove(ts.getTenantUUID(),false);
+    }
+
+    /**
+     * Create a new tenant template, should also work for any tenant Setup
+     * @param user
+     * @param def
+     * @throws ITRightException
+     */
+    public void createTenantSetupTemplates (
+            String user,
+            TenantSetupTemplateCreateReqItf def
+    ) throws ITRightException {
+        UserCacheService.UserCacheElement u = userCacheService.getUserById(user);
+        if ( u == null || ! u.user.isAdmin() ) throw new ITRightException();
+
+        HeliumTenantSetup ts = this.getHeliumTenantSetup(def.getTenantUUID(),false,100);
+        if ( ts != null ) throw new ITRightException();
+
+        ts = new HeliumTenantSetup();
+        ts.setTenantUUID(def.getTenantUUID());
+        ts.setDcBalanceStop(def.getDcBalanceStop());
+        ts.setFreeTenantDc(def.getFreeTenantDc());
+        ts.setDcPer24BMessage(def.getDcPer24BMessage());
+        ts.setDcPer24BDuplicate(def.getDcPer24BDuplicate());
+        ts.setDcPer24BDownlink(def.getDcPer24BDownlink());
+        ts.setDcPerDeviceInserted(def.getDcPerDeviceInserted());
+        ts.setDcPerInactivityPeriod(def.getDcPerInactivityPeriod());
+        ts.setInactivityBillingPeriodMs(def.getInactivityBillingPeriodMs());
+        ts.setDcPerActivityPeriod(def.getDcPerActivityPeriod());
+        ts.setActivityBillingPeriodMs(def.getActivityBillingPeriodMs());
+        ts.setMaxDcPerDevice(def.getMaxDcPerDevice());
+        ts.setLimitDcRatePerDevice(def.getLimitDcRatePerDevice());
+        ts.setLimitDcRatePeriodMs(def.getLimitDcRatePeriodMs());
+        ts.setMaxOwnedTenants(def.getMaxOwnedTenants());
+        ts.setMaxDevices(def.getMaxDevices());
+        ts.setDcPrice(def.getDcPrice());
+        ts.setDcMin(def.getDcMin());
+        ts.setSignupAllowed(def.isSignupAllowed());
+        heliumTenantSetupRepository.save(ts);
+    }
+
+    public void deleteTenantSetupTemplate (
+            String user,
+            String tenantSetupId
+    ) throws ITRightException {
+        UserCacheService.UserCacheElement u = userCacheService.getUserById(user);
+        if (u == null || !u.user.isAdmin()) throw new ITRightException();
+
+        // exists ?
+        HeliumTenantSetup ts = heliumTenantSetupRepository.findOneHeliumTenantSetupById(tenantSetupId);
+        if (ts == null) throw new ITRightException();
+
+        // can't delete default
+        if ( ts.getTenantUUID().compareToIgnoreCase(HELIUM_TENANT_SETUP_DEFAULT) == 0 ) {
+            throw new ITRightException();
+        }
+
+        this.heliumSetupCache.remove(ts.getTenantUUID(),false);
+        heliumTenantSetupRepository.delete(ts);
+    }
+
 
 
 }

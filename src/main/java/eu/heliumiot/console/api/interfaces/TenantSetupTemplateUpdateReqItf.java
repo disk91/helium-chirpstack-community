@@ -25,25 +25,8 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 
 import java.util.UUID;
 
-@Tag(name = "Tenant creation response Interface", description = "New tenant creation response interface")
-public class TenantSetupTemplateListRespItf extends TenantSetupTemplateCreateReqItf {
-
-    @Schema(
-            description = "UUID of the tenant template",
-            example = "b6490156-acd6-414c-aeeb-15b3b42af6c3",
-            requiredMode = Schema.RequiredMode.REQUIRED
-    )
-    private UUID id;
+@Tag(name = "Tenant update request Interface", description = "existing tenant update request interface")
+public class TenantSetupTemplateUpdateReqItf extends TenantSetupTemplateListRespItf{
 
 
-    // ------------------------------------
-
-
-    public UUID getId() {
-        return id;
-    }
-
-    public void setId(UUID id) {
-        this.id = id;
-    }
 }

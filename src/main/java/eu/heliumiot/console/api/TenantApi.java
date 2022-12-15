@@ -120,7 +120,7 @@ public class TenantApi {
     public ResponseEntity<?> requestTenantSetupTemplate(
             HttpServletRequest request
     ) {
-        log.debug("Get lis of tenant setup template "+request.getUserPrincipal().getName());
+        log.debug("Get list of tenant setup template "+request.getUserPrincipal().getName());
         try {
             List<TenantSetupTemplateListRespItf> r = heliumTenantSetupService.getTenantSetupTemplates(request.getUserPrincipal().getName());
             return new ResponseEntity<>(r, HttpStatus.OK);
@@ -129,7 +129,84 @@ public class TenantApi {
         }
     }
 
+    // ########
 
+    @Operation(summary = "Update tenant setup templates",
+            description = "Update the tenant setup template",
+            responses = {
+                    @ApiResponse(responseCode = "200", description= "Ok", content = @Content(schema = @Schema(implementation = ActionResult.class))),
+                    @ApiResponse(responseCode = "403", description= "Forbidden", content = @Content(schema = @Schema(implementation = ActionResult.class))),
+            }
+    )
+    @RequestMapping(value="/setup",
+            produces = MediaType.APPLICATION_JSON_VALUE,
+            method= RequestMethod.PUT)
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
+    public ResponseEntity<?> updateTenantSetupTemplate(
+            HttpServletRequest request,
+            @RequestBody(required = true) TenantSetupTemplateUpdateReqItf template
+    ) {
+        log.debug("Update one tenant setup template "+request.getUserPrincipal().getName());
+        try {
+            heliumTenantSetupService.updateTenantSetupTemplates(request.getUserPrincipal().getName(), template);
+            return new ResponseEntity<>(ActionResult.SUCESS(), HttpStatus.OK);
+        } catch (ITRightException x) {
+            return new ResponseEntity<>(ActionResult.FORBIDDEN(), HttpStatus.FORBIDDEN);
+        }
+    }
+
+    // ########
+
+    @Operation(summary = "Create new tenant setup templates",
+            description = "Create new the tenant setup template",
+            responses = {
+                    @ApiResponse(responseCode = "201", description= "Created", content = @Content(schema = @Schema(implementation = ActionResult.class))),
+                    @ApiResponse(responseCode = "403", description= "Forbidden", content = @Content(schema = @Schema(implementation = ActionResult.class))),
+            }
+    )
+    @RequestMapping(value="/setup",
+            produces = MediaType.APPLICATION_JSON_VALUE,
+            method= RequestMethod.POST)
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
+    public ResponseEntity<?> createTenantSetupTemplate(
+            HttpServletRequest request,
+            @RequestBody(required = true) TenantSetupTemplateCreateReqItf template
+    ) {
+        log.debug("Create one tenant setup template "+request.getUserPrincipal().getName());
+        try {
+            heliumTenantSetupService.createTenantSetupTemplates(request.getUserPrincipal().getName(), template);
+            return new ResponseEntity<>(ActionResult.SUCESS(), HttpStatus.CREATED);
+        } catch (ITRightException x) {
+            return new ResponseEntity<>(ActionResult.FORBIDDEN(), HttpStatus.FORBIDDEN);
+        }
+    }
+
+    // ########
+
+    @Operation(summary = "Delete tenant setup",
+            description = "Delete  given tenant setup. Default can't be deleted",
+            responses = {
+                    @ApiResponse(responseCode = "200", description= "Done", content = @Content(schema = @Schema(implementation = ActionResult.class))),
+                    @ApiResponse(responseCode = "403", description= "Forbidden", content = @Content(schema = @Schema(implementation = ActionResult.class))),
+            }
+    )
+    @RequestMapping(value="/setup/{tenantId}/",
+            produces = MediaType.APPLICATION_JSON_VALUE,
+            method= RequestMethod.DELETE)
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
+    public ResponseEntity<?> deleteTenantSetup(
+            HttpServletRequest request,
+            @Parameter(required = true, name = "tenantId", description = "tenant Id")
+            @PathVariable String tenantId
+    ) {
+        log.debug("Delete tenant setup ("+tenantId+") by "+request.getUserPrincipal().getName());
+        try {
+            heliumTenantSetupService.deleteTenantSetupTemplate(request.getUserPrincipal().getName(), tenantId);
+            return new ResponseEntity<>(ActionResult.SUCESS(), HttpStatus.OK);
+        } catch (ITRightException x) {
+            return new ResponseEntity<>(ActionResult.FORBIDDEN(), HttpStatus.FORBIDDEN);
+        }
+    }
 
 
 }
