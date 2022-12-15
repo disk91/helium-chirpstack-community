@@ -16,6 +16,10 @@ export default {
     passLostEndpoint:process.env.API_HOST+'/console/1.0/sign/lost',
     passChangeEndpoint:process.env.API_HOST+'/console/1.0/sign/password',
     addTenantEndpoint:process.env.API_HOST+'/console/1.0/tenant/create',
+    tenantSetupCreate:process.env.API_HOST+'/console/1.0/tenant/setup',
+    tenantSetupTemplateList:process.env.API_HOST+'/console/1.0/tenant/setup/templates',
+    tenantSetupUpdate:process.env.API_HOST+'/console/1.0/tenant/setup',
+    tenantSetupDelete:process.env.API_HOST+'/console/1.0/tenant/setup',
     termAndUse:process.env.CONSOLE_TERMS || '/',
   },
 
