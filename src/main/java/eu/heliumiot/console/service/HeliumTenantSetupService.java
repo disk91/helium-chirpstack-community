@@ -20,8 +20,10 @@
 package eu.heliumiot.console.service;
 
 import eu.heliumiot.console.ConsoleConfig;
+import eu.heliumiot.console.api.interfaces.TenantSetupTemplateListRespItf;
 import eu.heliumiot.console.jpa.db.HeliumTenantSetup;
 import eu.heliumiot.console.jpa.repository.HeliumTenantSetupRepository;
+import fr.ingeniousthings.tools.ITRightException;
 import fr.ingeniousthings.tools.ObjectCache;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -30,6 +32,8 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 public class HeliumTenantSetupService {
@@ -80,6 +84,7 @@ public class HeliumTenantSetupService {
             ts.setDcPrice(consoleConfig.getHeliumBillingDcPrice());
             ts.setDcMin(consoleConfig.getHeliumBillingDcMinAmount());
             ts.setSignupAllowed(consoleConfig.isHeliumAllowsSignup());
+            ts.setTemplate(true);
             heliumTenantSetupRepository.save(ts);
         }
         this.heliumSetupCache.put(ts,ts.getTenantUUID());
@@ -172,10 +177,54 @@ public class HeliumTenantSetupService {
         ts.setDcPrice(def.getDcPrice());
         ts.setDcMin(def.getDcMin());
         ts.setSignupAllowed(def.isSignupAllowed());
+        ts.setTemplate(false);
         heliumTenantSetupRepository.save(ts);
         return ts;
     }
 
+    // ===============================================
+    // API
+    // ===============================================
+
+    @Autowired
+    protected UserCacheService userCacheService;
+
+    public List<TenantSetupTemplateListRespItf> getTenantSetupTemplates (
+            String user
+    ) throws ITRightException {
+        UserCacheService.UserCacheElement u = userCacheService.getUserById(user);
+        if ( u == null || ! u.user.isAdmin() ) throw new ITRightException();
+
+        List<HeliumTenantSetup>  templates = heliumTenantSetupRepository.findHeliumTenantSetupByTemplate(true);
+        ArrayList<TenantSetupTemplateListRespItf> r = new ArrayList<>();
+
+        for ( HeliumTenantSetup def : templates) {
+            TenantSetupTemplateListRespItf ts = new TenantSetupTemplateListRespItf();
+            ts.setId(def.getId());
+            ts.setTenantUUID(def.getTenantUUID());
+            ts.setDcBalanceStop(def.getDcBalanceStop());
+            ts.setFreeTenantDc(def.getFreeTenantDc());
+            ts.setDcPer24BMessage(def.getDcPer24BMessage());
+            ts.setDcPer24BDuplicate(def.getDcPer24BDuplicate());
+            ts.setDcPer24BDownlink(def.getDcPer24BDownlink());
+            ts.setDcPerDeviceInserted(def.getDcPerDeviceInserted());
+            ts.setDcPerInactivityPeriod(def.getDcPerInactivityPeriod());
+            ts.setInactivityBillingPeriodMs(def.getInactivityBillingPeriodMs());
+            ts.setDcPerActivityPeriod(def.getDcPerActivityPeriod());
+            ts.setActivityBillingPeriodMs(def.getActivityBillingPeriodMs());
+            ts.setMaxDcPerDevice(def.getMaxDcPerDevice());
+            ts.setLimitDcRatePerDevice(def.getLimitDcRatePerDevice());
+            ts.setLimitDcRatePeriodMs(def.getLimitDcRatePeriodMs());
+            ts.setMaxOwnedTenants(def.getMaxOwnedTenants());
+            ts.setMaxDevices(def.getMaxDevices());
+            ts.setDcPrice(def.getDcPrice());
+            ts.setDcMin(def.getDcMin());
+            ts.setSignupAllowed(def.isSignupAllowed());
+            r.add(ts);
+        }
+
+        return r;
+    }
 
 
 }

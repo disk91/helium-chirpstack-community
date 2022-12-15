@@ -3,12 +3,14 @@ package eu.heliumiot.console.api;
 
 import eu.heliumiot.console.api.interfaces.*;
 import eu.heliumiot.console.service.HeliumTenantService;
+import eu.heliumiot.console.service.HeliumTenantSetupService;
 import eu.heliumiot.console.service.UserService;
 import fr.ingeniousthings.tools.ITNotFoundException;
 import fr.ingeniousthings.tools.ITParseException;
 import fr.ingeniousthings.tools.ITRightException;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -23,6 +25,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 
 @Tag( name = "tenant api", description = "Information about tenant api" )
 @CrossOrigin
@@ -34,6 +37,9 @@ public class TenantApi {
 
     @Autowired
     protected HeliumTenantService heliumTenantService;
+
+    @Autowired
+    protected HeliumTenantSetupService heliumTenantSetupService;
 
     @Operation(summary = "Get tenant balance",
             description = "Get balance for a given tenant",
@@ -94,5 +100,36 @@ public class TenantApi {
             return new ResponseEntity<>(r, HttpStatus.FORBIDDEN);
         }
     }
+
+    // =================================================================
+    // TENANT SETUP (ADMIN)
+    // =================================================================
+
+    @Operation(summary = "Get tenant setup templates",
+            description = "Get the tenant setup template list",
+            responses = {
+                    @ApiResponse(responseCode = "200", description= "Done",
+                                 content = @Content(array = @ArraySchema(schema = @Schema( implementation = TenantSetupTemplateListRespItf.class)))),
+                    @ApiResponse(responseCode = "403", description= "Forbidden", content = @Content(schema = @Schema(implementation = ActionResult.class))),
+            }
+    )
+    @RequestMapping(value="/setup/templates",
+            produces = MediaType.APPLICATION_JSON_VALUE,
+            method= RequestMethod.GET)
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
+    public ResponseEntity<?> requestTenantSetupTemplate(
+            HttpServletRequest request
+    ) {
+        log.debug("Get lis of tenant setup template "+request.getUserPrincipal().getName());
+        try {
+            List<TenantSetupTemplateListRespItf> r = heliumTenantSetupService.getTenantSetupTemplates(request.getUserPrincipal().getName());
+            return new ResponseEntity<>(r, HttpStatus.OK);
+        } catch (ITRightException x) {
+            return new ResponseEntity<>(ActionResult.FORBIDDEN(), HttpStatus.FORBIDDEN);
+        }
+    }
+
+
+
 
 }

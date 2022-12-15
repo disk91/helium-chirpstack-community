@@ -92,9 +92,12 @@ public class HeliumTenantSetup {
     // max device per tenant
     private int maxDevices;
 
-    // ---
     private boolean signupAllowed;
 
+    // true when this is a template
+    private boolean template = false;
+
+    // ---
 
     public UUID getId() {
         return id;
@@ -254,5 +257,13 @@ public class HeliumTenantSetup {
 
     public void setSignupAllowed(boolean signupAllowed) {
         this.signupAllowed = signupAllowed;
+    }
+
+    public boolean isTemplate() {
+        return template;
+    }
+
+    public void setTemplate(boolean template) {
+        this.template = template;
     }
 }

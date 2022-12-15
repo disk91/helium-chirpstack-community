@@ -461,13 +461,16 @@ public class HeliumTenantService {
     protected UserService userService;
 
     @Autowired
+    protected UserCacheService userCacheService;
+
+    @Autowired
     protected UserTenantRepository userTenantRepository;
 
     public TenantBalanceItf getTenantDcBalance(String userId, String tenantId)
     throws ITRightException
     {
 
-        UserService.UserCacheElement user = userService.getUserById(userId);
+        UserCacheService.UserCacheElement user = userCacheService.getUserById(userId);
         if (user == null) throw new ITRightException();
         if ( !user.user.isAdmin() ) {
             // search if tenant authorization exists
@@ -517,7 +520,7 @@ public class HeliumTenantService {
         }
 
         // get User
-        UserService.UserCacheElement user = userService.getUserById(userId);
+        UserCacheService.UserCacheElement user = userCacheService.getUserById(userId);
         if ( user == null ) throw new ITRightException();
 
         // check profile

@@ -20,6 +20,7 @@
 
 package eu.heliumiot.console.api.security;
 
+import eu.heliumiot.console.service.UserCacheService;
 import eu.heliumiot.console.service.UserService;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.SignatureException;
@@ -60,6 +61,9 @@ public class JWTAuthorizationFilter extends GenericFilterBean {
     }
 
     @Autowired
+    private UserCacheService userCacheService;
+
+    @Autowired
     private UserService userService;
 
     @Override
@@ -88,7 +92,7 @@ public class JWTAuthorizationFilter extends GenericFilterBean {
                 public Key resolveSigningKey(JwsHeader header, Claims _claims) {
                     // Examine header and claims
                     String user = _claims.getSubject();
-                    UserService.UserCacheElement u = userService.getUserById(user);
+                    UserCacheService.UserCacheElement u = userCacheService.getUserById(user);
                     if ( u == null ) return null;
                     return userService.generateKeyForUser(u.heliumUser);
                 }
@@ -110,7 +114,7 @@ public class JWTAuthorizationFilter extends GenericFilterBean {
                 }
             }
             String user = claims.getSubject();
-            UserService.UserCacheElement u = userService.getUserById(user);
+            UserCacheService.UserCacheElement u = userCacheService.getUserById(user);
             if ( u != null && u.user.isActive() /* todo ... more test */ ) {
                 // accept the authentication
                 SecurityContextHolder

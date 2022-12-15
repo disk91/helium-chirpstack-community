@@ -38,6 +38,12 @@ public class LoginRespItf {
     )
     protected String consoleBearer;
 
+    @Schema(
+            description = "True when the user is platform admin",
+            requiredMode = Schema.RequiredMode.REQUIRED
+    )
+    protected boolean admin;
+
     // ------------------------------------
 
 
@@ -55,5 +61,13 @@ public class LoginRespItf {
 
     public void setConsoleBearer(String consoleBearer) {
         this.consoleBearer = consoleBearer;
+    }
+
+    public boolean isAdmin() {
+        return admin;
+    }
+
+    public void setAdmin(boolean admin) {
+        this.admin = admin;
     }
 }

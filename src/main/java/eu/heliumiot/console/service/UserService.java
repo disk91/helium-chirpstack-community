@@ -26,11 +26,9 @@ import eu.heliumiot.console.ConsoleConfig;
 import eu.heliumiot.console.api.interfaces.*;
 import eu.heliumiot.console.chirpstack.ChirpstackApiAccess;
 import eu.heliumiot.console.jpa.db.*;
-import eu.heliumiot.console.jpa.db.User;
 import eu.heliumiot.console.jpa.repository.HeliumPendingUserRepository;
 import eu.heliumiot.console.jpa.repository.HeliumTenantRepository;
 import eu.heliumiot.console.jpa.repository.HeliumUserRepository;
-import eu.heliumiot.console.jpa.repository.UserRepository;
 import eu.heliumiot.console.tools.EncryptionHelper;
 import eu.heliumiot.console.tools.ExecuteEmail;
 import fr.ingeniousthings.tools.*;
@@ -54,7 +52,6 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Random;
-import java.util.UUID;
 
 import static eu.heliumiot.console.service.HeliumTenantService.HELIUM_TENANT_SETUP_DEFAULT;
 
@@ -65,8 +62,9 @@ public class UserService {
 
     @Autowired
     protected ConsoleConfig consoleConfig;
+
     @Autowired
-    protected UserRepository userRepository;
+    protected UserCacheService userCacheService;
 
     @Autowired
     protected HeliumUserRepository heliumUserRepository;
@@ -75,23 +73,11 @@ public class UserService {
     // ===================================================
     // Cache Management
     // ===================================================
-    public class UserCacheElement {
-        public User user;
-        public HeliumUser heliumUser;
-    }
 
     protected String bottomEmail_en;
 
-    private ObjectCache<String, UserCacheElement> userCache;
     @PostConstruct
     private void initUserService() {
-        log.info("initUserService initialization");
-        this.userCache = new ObjectCache<String, UserCacheElement>("UserCache", 2000) {
-            @Override
-            public void onCacheRemoval(String key, UserCacheElement obj) {
-                // nothing to do, readOnly
-            }
-        };
 
         // common email footer
         bottomEmail_en = "\n\n";
@@ -101,34 +87,6 @@ public class UserService {
         bottomEmail_en+=""+consoleConfig.getHeliumConsoleUrl() +" - Helium Provider";
     }
 
-    public UserCacheElement getUserByUsername(String userName) {
-        User u = userRepository.findOneUserByEmail(userName);
-        if ( u == null ) return null;
-        return getUserById(u.getId().toString());
-    }
-
-    // get user if exist from cache, then from DB
-    public UserCacheElement getUserById(String userId) {
-        UserCacheElement r = this.userCache.get(userId);
-        if ( r == null ) {
-            // search in db
-            User u = userRepository.findOneUserById(UUID.fromString(userId));
-            if ( u == null ) return null;
-
-            // search the heliumUser
-            HeliumUser h = heliumUserRepository.findOneHeliumUserByUserid(u.getId().toString());
-            if ( h == null ) {
-                // happen on initialization ...
-                h = createHeliumUserFromUser(u,"default");
-            }
-
-            r = new UserCacheElement();
-            r.user = u;
-            r.heliumUser = h;
-            this.userCache.put(r,userId);
-        }
-        return r;
-    }
 
     // ===================================================
     // Helium User Management
@@ -144,17 +102,6 @@ public class UserService {
 
     public static final String ROLE_USER = "ROLE_USER";
     public static final String ROLE_ADMIN = "ROLE_ADMIN";
-
-    protected HeliumUser createHeliumUserFromUser(User u, String offer) {
-        HeliumUser h = new HeliumUser();
-        h.setUserid(u.getId().toString());
-        h.setUsername(u.getEmail());
-        h.setProfileStatus(HUPROFILE_STATUS_CREATED);
-        h.setUserSecret(RandomString.getRandomAZString(64));
-        h.setDefaultOffer(offer);
-        h = heliumUserRepository.save(h);
-        return h;
-    }
 
     // ===================================================
     // Login Management
@@ -264,7 +211,7 @@ public class UserService {
         }
 
         // verify email does not exists
-        if ( this.getUserByUsername(req.getUsername()) != null ) {
+        if ( userCacheService.getUserByUsername(req.getUsername()) != null ) {
             // return success but nothing will be made, the
             // email already exist but we do not want this infomration
             // to be publicly reported
@@ -448,7 +395,7 @@ public class UserService {
             if ( resp != null && resp.getId() != null && resp.getId().length() > 5 ) {
                 // get User to make sure
                 userId = resp.getId();
-                UserCacheElement u = this.getUserById(resp.getId());
+                UserCacheService.UserCacheElement u = userCacheService.getUserById(resp.getId());
                 if ( u != null ) {
                     u.heliumUser.setDefaultOffer(hpe.getOfferName());
                     u.heliumUser.setConditionValidation(true);
@@ -521,7 +468,7 @@ public class UserService {
 
         // check for user existence, no need to go further otherwise
         // @Todo check 2FA and check too many login attempt later
-        UserCacheElement u = this.getUserByUsername(request.getUsername());
+        UserCacheService.UserCacheElement u = userCacheService.getUserByUsername(request.getUsername());
         if ( u == null ) throw new ITNotFoundException();
         if ( ! u.user.isActive() ) throw new ITRightException();
 
@@ -545,6 +492,8 @@ public class UserService {
             LoginResponse resp = LoginResponse.parseFrom(respB);
 
             LoginRespItf r = new LoginRespItf();
+            r.setAdmin(u.user.isAdmin());
+
             if (resp != null && resp.getJwt() != null && resp.getJwt().length() > 10) {
                 r.setChirpstackBearer(resp.getJwt());
             } else {
@@ -595,7 +544,7 @@ public class UserService {
      */
     public UserDetailRespItf getUserdetails(String userid)
     throws ITNotFoundException, ITRightException {
-        UserCacheElement c =  this.getUserById(userid);
+        UserCacheService.UserCacheElement c =  userCacheService.getUserById(userid);
         if ( c == null ) throw new ITNotFoundException();
         UserDetailRespItf r = new UserDetailRespItf();
         r.setUsername(c.user.getEmail());
@@ -611,7 +560,7 @@ public class UserService {
     public void userLostReq(UserLostPassReqItf req)
     throws ITParseException {
 
-        UserCacheElement u = getUserByUsername(req.getUsername());
+        UserCacheService.UserCacheElement u = userCacheService.getUserByUsername(req.getUsername());
         if ( u == null ) {
             try {
                 Thread.sleep((Math.abs(new Random().nextInt()) % 40));
@@ -723,8 +672,6 @@ public class UserService {
         // delete validation code
         heliumPendingUserRepository.delete(hpe);
     }
-
-
 
 
 }
