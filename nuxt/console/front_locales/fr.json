@@ -53,6 +53,7 @@
     "page_home" : "Le mieux est de retourner dans un lieu sûr : l'acceuil",
   
     "menu_add_tenant" : "Créer un tenant",
+    "menu_sign_out" : "Deconnexion",
     "addtenant_vmessage_success" : "Le tenant a bien été créé",
 
 

@@ -23,7 +23,7 @@
           </template>
           <b-dropdown-item href="#">Profile</b-dropdown-item>
           <b-dropdown-item href="#" @click="addTenantAction">{{$t('menu_add_tenant')}}</b-dropdown-item>
-          <b-dropdown-item href="#">Sign Out</b-dropdown-item>
+          <b-dropdown-item href="#" @click="signoutAction">{{$t('menu_sign_out')}}</b-dropdown-item>
         </b-nav-item-dropdown>
       </b-navbar-nav>
     </b-collapse>
@@ -71,6 +71,14 @@ export default Vue.extend({
 	    },
       addTenantAction() {
         this.$root.$emit("message-display-add-tenant", "");
+      },
+      signoutAction() {
+        // clear the token and back to login page
+        this.$auth.logout();
+        this.$store.commit('setChirpstackBearer', '');
+        localStorage.setItem("token", '');
+        this.$store.commit('setConsoleBearer', '');
+        this.$router.push('/front/login');
       }
     },
     created () {
