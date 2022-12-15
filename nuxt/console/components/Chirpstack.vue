@@ -1,5 +1,5 @@
 <template>
-    <div style='height:100vh;'>
+    <div style="height:100vh;">
       <iframe
         id="chirpstack-frame-id"
         :src="$config.chirpstackHost+'?override=true'"
@@ -14,16 +14,32 @@
 <script>
 // Local storage contains the Bearer 
 import Vue from 'vue'
-import { mapMutations } from 'vuex'
 
 export default Vue.extend({
     data () {
 	    return {
-		    polling: null
+		    polling: null,
+            chipstackUrl: '',
 	    }
     },
-    created() {
+    mounted() {
         this.$store.commit('setCurrentTenant','');
+        if ( this.$store.state.lastChirpstackUrl == 'about:blank' ) {
+            document.getElementById("chirpstack-frame-id").contentWindow.location.href = this.$config.chirpstackHost+'?override=true';
+        } else if ( this.$store.state.lastChirpstackUrl != '' ) {
+            //console.log(">>> "+this.$store.state.lastChirpstackUrl );
+            document.getElementById("chirpstack-frame-id").contentWindow.location.href = this.$store.state.lastChirpstackUrl ;
+        }
+    },
+    created() {
+	    this.pollData()   
+    },
+    beforeDestroy() {
+      // store chirpstack url for next refresh
+      var iframeUrl = document.getElementById("chirpstack-frame-id").contentWindow.location.href;
+      this.$store.commit('setLastChirpstackUrl',iframeUrl);  
+      // clean poller
+  	  clearInterval(this.polling)
     },
     methods: {
 	    pollData () {
@@ -44,12 +60,6 @@ export default Vue.extend({
 		    } , 3000)
 	    }
     },
-    created () {
-	    this.pollData()   
-    },
-    beforeDestroy () {
-  	  clearInterval(this.polling)
-    }
 })
 
 </script>

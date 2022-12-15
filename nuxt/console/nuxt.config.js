@@ -95,7 +95,7 @@ export default {
   auth: {
     redirect: {
       login: '/front/login',
-      logout: '/front/logout',
+      logout: '/front/login',
       callback: false,
       home: '/front/'
     },

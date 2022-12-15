@@ -76,11 +76,12 @@ export default Vue.extend({
                     {data: this.login }
                 ).then( resp => {
                     if ( resp != null ) {
-                       let chBearer = resp.data.chirpstackBearer
-                       this.$store.commit('setChirpstackBearer', chBearer)
-                       localStorage.setItem("token", chBearer)
-                       let conBearer = resp.data.consoleBearer
-                       this.$store.commit('setConsoleBearer', conBearer)
+                       let chBearer = resp.data.chirpstackBearer;
+                       this.$store.commit('setChirpstackBearer', chBearer);
+                       localStorage.setItem("token", chBearer);
+                       let conBearer = resp.data.consoleBearer;
+                       this.$store.commit('setConsoleBearer', conBearer);
+                       this.$store.commit('setUserAdmin',resp.data.admin);
                     }
                     this.$router.push('/front/');
                 });

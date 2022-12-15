@@ -1,13 +1,14 @@
 <template>
    <div>
   <b-navbar toggleable="lg" type="dark" variant="info">
-    <b-navbar-brand href="#">{{ $config.consoleName }}</b-navbar-brand>
+    <b-navbar-brand to="/front/">{{ $config.consoleName }}</b-navbar-brand>
 
     <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
     <b-collapse id="nav-collapse" is-nav>
       <b-navbar-nav>
-        <b-nav-item href="#">Chirpstack</b-nav-item>
-        <b-nav-item href="#" disabled>...</b-nav-item>
+        <b-nav-item to="/front/" exact active-class="active">{{ $t('menu_chirpstack') }}</b-nav-item>
+        <b-nav-item to="/front/stats" exact active-class="active">{{ $t('menu_user_stats') }}</b-nav-item>
+        <b-nav-item to="/front/profiles" exact active-class="active" v-if="$store.state.admin" class="ml-4">{{ $t('menu_admin_profiles') }}</b-nav-item>
       </b-navbar-nav>
 
       <b-navbar-nav class="ml-auto">
@@ -21,7 +22,8 @@
           <template #button-content>
             <em>{{ $auth.user.username }}</em>
           </template>
-          <b-dropdown-item href="#">Profile</b-dropdown-item>
+          <b-dropdown-item href="#" @click="purchaseDcAction">{{$t('menu_purchase_dc')}}</b-dropdown-item>
+          <b-dropdown-item href="#" @click="editProfileAction">{{$t('menu_edit_profile')}}</b-dropdown-item>
           <b-dropdown-item href="#" @click="addTenantAction">{{$t('menu_add_tenant')}}</b-dropdown-item>
           <b-dropdown-item href="#" @click="signoutAction">{{$t('menu_sign_out')}}</b-dropdown-item>
         </b-nav-item-dropdown>
@@ -47,6 +49,9 @@ export default Vue.extend({
 	    }
     },
     methods: {
+      isChirpStackActive() {
+          return false;
+      },
 	    pollData () {
 		      this.polling = setInterval(() => {
           //this.$nuxt.refresh();
@@ -72,6 +77,12 @@ export default Vue.extend({
       addTenantAction() {
         this.$root.$emit("message-display-add-tenant", "");
       },
+      purchaseDcAction() {
+        this.$root.$emit("message-purchase-dc", "");
+      },
+      editProfileAction() {
+        this.$root.$emit("message-edit-profile", "");
+      },
       signoutAction() {
         // clear the token and back to login page
         this.$auth.logout();
@@ -85,6 +96,7 @@ export default Vue.extend({
 	    this.pollData()   
     },
     beforeDestroy () {
+      // clean DC poller
   	  clearInterval(this.polling)
     },
 })

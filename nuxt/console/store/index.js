@@ -2,6 +2,8 @@ export const state = () => ({
     chirpstackBearer:'',
     consoleBearer:'',
     currentTenant:'',
+    lastChirpstackUrl:'',
+    admin:false,
 })
 
 export const getters = {
@@ -17,9 +19,14 @@ export const getters = {
   isAuthenticated(state) {
     return state.auth.loggedIn
   },
+  getLastChirpstackUrl(state) {
 
+  },
   loggedInUser(state) {
     return state.auth.user
+  }, 
+  isAdmin(state) {
+    return state.admin;
   }
 
 }
@@ -34,6 +41,12 @@ export const mutations = {
     },
     setCurrentTenant(state, b) {
         state.currentTenant = b;
+    },
+    setLastChirpstackUrl(state, b) {
+        state.lastChirpstackUrl = b;
+    },
+    setUserAdmin(state, b) {
+        state.admin = b;
     }
 
 }

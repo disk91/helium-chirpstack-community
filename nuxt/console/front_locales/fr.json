@@ -54,6 +54,11 @@
   
     "menu_add_tenant" : "Créer un tenant",
     "menu_sign_out" : "Deconnexion",
+    "menu_chirpstack" : "Chripstack",
+    "menu_user_stats" : "Statistiques",
+    "menu_purchase_dc": "Acheter des Data Credits",
+    "menu_admin_profiles" : "Gestion des profils",
+    "menu_edit_profile" : "Mes informations",  
     "addtenant_vmessage_success" : "Le tenant a bien été créé",
 
 
