@@ -33,6 +33,7 @@
   "sret_error_internal" : "Internal failure, please try register later",
   "sret_error_invalidcoupon" : "Invalid coupon code",
   "sret_error_max_tenant" : "Impossible to create new tenant, maximum reached",
+  "sret_error_forbidden" : "This opperation is not authorized",
   "signup_pmessage_1" : "Your registration has been taken into account, an email has been sent to your inbox.",
   "signup_pmessage_2" : "Please confirm your email following the link sent to you.",
   "signup_pmessage_3" : "If you do not find the email, please check your spam folder.",
@@ -81,7 +82,7 @@
   "tsl_maxDevices" : "Max dev",
   "tsl_signupAllowed" : "Signup",
   "tsl_freeTenantDc" : "Free DC",
-  "tsl_edit" : "Edition",
+  "tsl_edit" : "Edit",
   "ts_list_title" : "List tenant setup templates",
 
   "tip_tenantUUID" : "Name of the template.",
@@ -105,6 +106,20 @@
   "tip_freeTenantDc" : "Quantity of DCs offered on tenant creation",
 
   "profile_modal" : "Update / Create a template",
+  "profile_add_new" : "Add a new template",
+  "updtenant_vmessage_success" : "Tenant setup updated",
+  "addtenantt_vmessage_success" : "Add a new template with success",
+  "updtenant_del_button" : "Delete this template",
+  "deltenantt_vmessage_success" : "Template deletion success",
+
+  "t_search_title" : "Tenant Mangement",
+  "tip_search_tenant" : "Enter at least 3 char to start searching for tenants, search owner email, tenant name and ids",
+  "tsl_search_tenant" : "Search keyword",
+  "tsl_tenantName" : "Tenant Name",
+  "tsl_ownerEmail" : "Owner",
+  "tsl_dcBalance" : "Balance (DCs)",
+  "tsl_tenantID" : "Tenant UUID",
+
 
   "end" : "end"
 }

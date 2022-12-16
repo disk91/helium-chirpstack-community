@@ -20,9 +20,11 @@
 package eu.heliumiot.console.jpa.repository;
 
 import eu.heliumiot.console.jpa.db.HeliumUser;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.UUID;
 
 @Repository
@@ -33,5 +35,11 @@ public interface HeliumUserRepository extends CrudRepository<HeliumUser, UUID> {
     public HeliumUser findOneHeliumUserByUserid(String id);
 
     public HeliumUser findOneHeliumUserByUsername(String username);
+
+    @Query(value = "SELECT * FROM helium_user WHERE username LIKE CONCAT('%',?1,'%') OR userid LIKE CONCAT('%',?1,'%') LIMIT 5", nativeQuery = true)
+    public List<HeliumUser> findHeliumUsersBySearch(String search);
+
+    //public List<HeliumUser> findHeliumUsersByUsernameContainingOrUseridContaining(String search,String search2);
+
 
 }

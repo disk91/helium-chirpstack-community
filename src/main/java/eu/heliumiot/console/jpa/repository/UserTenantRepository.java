@@ -40,4 +40,15 @@ public interface UserTenantRepository extends CrudRepository<UserTenant, UUID> {
             boolean isAdmin
     );
 
+    public List<UserTenant> findUserTenantByTenantIdAndIsAdmin(
+            UUID tenantId,
+            boolean isAdmin
+    );
+
+
+    public List<UserTenant> findUserTenantByUserId(
+            UUID userId
+    );
+
+
 }

@@ -26,10 +26,14 @@ import com.google.protobuf.InvalidProtocolBufferException;
 import eu.heliumiot.console.ConsoleConfig;
 import eu.heliumiot.console.api.interfaces.TenantBalanceItf;
 import eu.heliumiot.console.api.interfaces.TenantCreateReqItf;
+import eu.heliumiot.console.api.interfaces.TenantSearchRespItf;
 import eu.heliumiot.console.chirpstack.ChirpstackApiAccess;
 import eu.heliumiot.console.jpa.db.HeliumTenant;
 import eu.heliumiot.console.jpa.db.HeliumTenantSetup;
+import eu.heliumiot.console.jpa.db.HeliumUser;
 import eu.heliumiot.console.jpa.db.UserTenant;
+import eu.heliumiot.console.jpa.repository.HeliumUserRepository;
+import eu.heliumiot.console.jpa.repository.TenantRepository;
 import eu.heliumiot.console.jpa.repository.UserTenantRepository;
 import eu.heliumiot.console.mqtt.MqttSender;
 import eu.heliumiot.console.mqtt.api.HeliumDeviceStatItf;
@@ -43,12 +47,15 @@ import io.chirpstack.restapi.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
 
@@ -669,5 +676,60 @@ public class HeliumTenantService {
         }
 
     }
+
+    // ------------
+    // Search tenants by id / name / owner email ...
+    @Autowired
+    protected TenantRepository tenantRepository;
+
+    @Autowired
+    protected HeliumUserRepository heliumUserRepository;
+
+    public List<TenantSearchRespItf> searchTenants(String searchKey)
+    throws ITParseException {
+        if ( searchKey.length() < 3 || searchKey.length() > 15 ) throw new ITParseException();
+
+        HashMap<String,String> tenantsId = new HashMap<>();
+        // create a list with 10 - 20 entries based on the search criteria type like
+        List<eu.heliumiot.console.jpa.db.Tenant> t0 = tenantRepository.findTenantLike(searchKey);
+        for (eu.heliumiot.console.jpa.db.Tenant t : t0) {
+            if ( tenantsId.get(t.getId().toString()) == null ) {
+                tenantsId.put(t.getId().toString(),t.getId().toString());
+            }
+        }
+
+        // search 5 owners with email like
+        List<HeliumUser> u1 = heliumUserRepository.findHeliumUsersBySearch(searchKey);
+        for ( HeliumUser u : u1 ) {
+            List<UserTenant> t1 = userTenantRepository.findUserTenantByUserId(UUID.fromString(u.getUserid()));
+            for (UserTenant t : t1 ) {
+                if ( tenantsId.get(t.getTenantId().toString()) == null ) {
+                    tenantsId.put(t.getTenantId().toString(),t.getTenantId().toString());
+                }
+            }
+        }
+
+        // Build the output based on this
+        ArrayList<TenantSearchRespItf> r = new ArrayList<>();
+        for ( String tId : tenantsId.values() ) {
+            HeliumTenant ht = this.getHeliumTenant(tId);
+            TenantSearchRespItf k = new TenantSearchRespItf();
+            k.setTenantUUID(ht.getTenantUUID());
+            k.setDcBalance(ht.getDcBalance());
+            eu.heliumiot.console.jpa.db.Tenant t = tenantRepository.findOneTenantById(UUID.fromString(tId));
+            if ( t == null ) continue;
+            k.setTenantName(t.getName());
+            List<UserTenant> u = userTenantRepository.findUserTenantByTenantIdAndIsAdmin(t.getId(),true);
+            if ( u.size() == 0 ) k.setOwnerEmail("admin");
+            else {
+                UserCacheService.UserCacheElement uc = userCacheService.getUserById(u.get(0).getUserId().toString());
+                k.setOwnerEmail(uc.user.getEmail());
+            }
+            r.add(k);
+        }
+        return r;
+    }
+
+
 
 }

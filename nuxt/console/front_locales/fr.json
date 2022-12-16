@@ -32,6 +32,7 @@
     "sret_error_internal" : "Problème interne, veuillez renouveler votre inscription ultérieurement",
     "sret_error_invalidcoupon" : "Code complémentaire invalide",
     "sret_error_max_tenant" : "Impossible d'ajouter un tenant, la limite est atteinte",
+    "sret_error_forbidden" : "Cette opération n'est pas autorisée",
     "signup_pmessage_1" : "Votre inscription a été prise en compte, un email vient de vous être envoyé",
     "signup_pmessage_2" : "Merci de confirmer votre inscription via le lien dans cet email.",
     "signup_pmessage_3" : "Si vous n'avez pas reçu l'email, merci de vérifier dans vos spams.",
@@ -103,8 +104,20 @@
     "tip_signupAllowed" : "Autoriser l'inscription publique lorsque vrai",
     "tip_freeTenantDc" : "Nombre de DCs offert lors de la création d'un tenant",
 
-    "profile_modal" : "Création mise à jour d'un template",
+    "profile_modal" : "Création mise à jour d'un modèle",
+    "profile_add_new" : "Ajout d'un modèle",
+    "updtenant_vmessage_success" : "Mise à jour du modèle réussie",
+    "addtenantt_vmessage_success" : "Ajout du modèle réussie",
+    "updtenant_del_button" : "Supprimer ce modèle",
+    "deltenantt_vmessage_success" : "Supression du modèle réussie",
+
+    "t_search_title" : "Gestion des tenants",
+    "tip_search_tenant" : "Saisissez au moins 3 lettres pour chercher des tenants par nom, id ou email du propriétaire",
+    "tsl_search_tenant" : "Recherche",
+    "tsl_tenantName" : "Nom du tenant",
+    "tsl_ownerEmail" : "Propriétaire",
+    "tsl_dcBalance" : "Balance (DCs)",
+    "tsl_tenantID" : "Tenant UUID",
 
     "end" : "fin"
-
 }

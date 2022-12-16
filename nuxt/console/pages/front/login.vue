@@ -43,7 +43,7 @@
                         @click="redirectToSignup()"
                         >{{ $t('signup_message') }}</b-button>
               <b-card-text @click="redirectPassLost()" style="text-align:right;">
-                <span style="color: rgb(150,50,50);">
+                <span style="color: rgb(150,50,50);text-decoration: underline;">
                     {{ $t('lost_password')}} 
                 </span>
               </b-card-text>

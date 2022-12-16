@@ -36,6 +36,7 @@ import org.springframework.stereotype.Service;
 import javax.annotation.PostConstruct;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 @Service
 public class HeliumTenantSetupService {
@@ -280,10 +281,11 @@ public class HeliumTenantSetupService {
         UserCacheService.UserCacheElement u = userCacheService.getUserById(user);
         if ( u == null || ! u.user.isAdmin() ) throw new ITRightException();
 
-        HeliumTenantSetup ts = this.getHeliumTenantSetup(def.getTenantUUID(),false,100);
+        HeliumTenantSetup ts = heliumTenantSetupRepository.findOneHeliumTenantSetupByTenantUUID(def.getTenantUUID());
         if ( ts != null ) throw new ITRightException();
 
         ts = new HeliumTenantSetup();
+        ts.setTemplate((def.getTenantUUID().length() < 30));
         ts.setTenantUUID(def.getTenantUUID());
         ts.setDcBalanceStop(def.getDcBalanceStop());
         ts.setFreeTenantDc(def.getFreeTenantDc());
@@ -314,7 +316,8 @@ public class HeliumTenantSetupService {
         if (u == null || !u.user.isAdmin()) throw new ITRightException();
 
         // exists ?
-        HeliumTenantSetup ts = heliumTenantSetupRepository.findOneHeliumTenantSetupById(tenantSetupId);
+        UUID id = UUID.fromString(tenantSetupId);
+        HeliumTenantSetup ts = heliumTenantSetupRepository.findOneHeliumTenantSetupById(id);
         if (ts == null) throw new ITRightException();
 
         // can't delete default

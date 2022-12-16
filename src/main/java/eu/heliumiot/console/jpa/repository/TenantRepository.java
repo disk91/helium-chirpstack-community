@@ -20,14 +20,20 @@
 package eu.heliumiot.console.jpa.repository;
 
 import eu.heliumiot.console.jpa.db.Tenant;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.UUID;
 
 @Repository
 public interface TenantRepository extends CrudRepository<Tenant, UUID> {
 
     public Tenant findOneTenantById(UUID id);
+
+    @Query(value = "SELECT * FROM tenant WHERE name LIKE CONCAT('%',?1,'%') OR CAST(id as TEXT) LIKE CONCAT('%',?1,'%') LIMIT 10", nativeQuery = true)
+    public List<Tenant> findTenantLike(String search);
+
 
 }

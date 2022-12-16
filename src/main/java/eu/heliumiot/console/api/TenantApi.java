@@ -208,5 +208,34 @@ public class TenantApi {
         }
     }
 
+    // #####################
+
+    @Operation(summary = "Search tenants based on keyword",
+            description = "get about 10-20 tenants based on keyword. Look at UUIDs, Name and email." +
+                    "The search key is any string from 3 to 15 chars.",
+            responses = {
+                    @ApiResponse(responseCode = "200", description= "Done",
+                            content = @Content(array = @ArraySchema(schema = @Schema( implementation = TenantSearchRespItf.class)))),
+                    @ApiResponse(responseCode = "403", description= "Forbidden", content = @Content(schema = @Schema(implementation = ActionResult.class))),
+            }
+    )
+    @RequestMapping(value="/search/",
+            produces = MediaType.APPLICATION_JSON_VALUE,
+            method= RequestMethod.GET)
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
+    public ResponseEntity<?> searchTenant(
+            HttpServletRequest request,
+            @Parameter(required = true, name = "keyword", description = "search key")
+            @RequestParam("keyword") String keyword
+    ) {
+        log.debug("Search list of tenant "+request.getUserPrincipal().getName()+" with search key "+keyword);
+        try {
+            List<TenantSearchRespItf> r = heliumTenantService.searchTenants(keyword);
+            return new ResponseEntity<>(r, HttpStatus.OK);
+        } catch (ITParseException x) {
+            return new ResponseEntity<>(ActionResult.FORBIDDEN(), HttpStatus.FORBIDDEN);
+        }
+    }
+
 
 }

@@ -20,6 +20,7 @@ export default {
     tenantSetupTemplateList:process.env.API_HOST+'/console/1.0/tenant/setup/templates',
     tenantSetupUpdate:process.env.API_HOST+'/console/1.0/tenant/setup',
     tenantSetupDelete:process.env.API_HOST+'/console/1.0/tenant/setup',
+    tenantSearch:process.env.API_HOST+'/console/1.0/tenant/search',
     termAndUse:process.env.CONSOLE_TERMS || '/',
   },
 
