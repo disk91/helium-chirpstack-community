@@ -12,7 +12,7 @@
             </b-form-group>
         </div>
 
-        <div class="col-md-6">
+        <div class="col-md-6 ml-0">
         <b-table 
           :items="tenants" 
           :fields="fields" 
@@ -21,7 +21,7 @@
           small
           striped
           headVariant="dark"
-          class="p-2 pb-5"
+          class="pt-1 pb-5"
           style="font-size:8px;">
           <template #cell(edit)="row">
             <b-button size="sm" 
@@ -41,17 +41,67 @@
         </b-table>
         </div>
 
+        <b-modal id="balance-modal" ref="balance-modal"
+                 centered 
+                 :title="$t('balance_modal')"
+                 content-class="shadow"
+                 v-model="showModal"
+                 @ok="updateModal"
+                 header-bg-variant="dark"
+                 header-text-variant="white"
+                 header-border-variant="dark"
+                 footer-border-variant="white"
+        >
+            <b-form-group :description="$t('tsl_tenantName')" style="text-align:left;" class="mb-1 small">
+                <b-form-input v-model="tenant.tenantName"
+                              type="text" size="sm"
+                              :placeholder="$t('tsl_tenantName')"
+                              disabled="true"
+                ></b-form-input>
+            </b-form-group>
+            <b-form-group :description="$t('tsl_dcBalance')" style="text-align:left;" class="mb-1 small">
+                <b-form-input v-model.number="tenant.dcBalance" type="number" size="sm"
+                                :placeholder="$t('tsl_dcBalance')"
+                                disabled="true"
+                ></b-form-input>
+            </b-form-group>
+            <b-form-group :description="$t('tsl_addBalance')" style="text-align:left;" class="mb-1 small">
+                <b-form-input v-model.number="modalDcChange" type="number" size="sm"
+                                :placeholder="$t('tsl_addBalance')"
+                                @keyup="onDcChange"
+                ></b-form-input>
+            </b-form-group>
+            <b-form-group :description="$t('tsl_newBalance')" style="text-align:left;" class="mb-1 small">
+                <b-form-input v-model.number="modalDcTotal" type="number" size="sm"
+                                :placeholder="$t('tsl_newBalance')"
+                                disabled="true"
+                ></b-form-input>
+            </b-form-group>
+            <b-card-text class="text-danger" style="text-align:center;" >
+                {{ $t(errorMessageMod)}} 
+            </b-card-text>
+            <b-card-text class="text-success" style="text-align:center;">
+                {{ $t(successMessageMod)}} 
+            </b-card-text>
+        </b-modal>
+
     </div>
 </template>
 <script lang="ts">
 import Vue from 'vue'
-import { TenantSearchResponse } from 'vue/types/tenantSearch';
+import { TenantSearchResponse, TenantDcBalanceReqItf } from 'vue/types/tenantSearch';
 
 interface data {
     keyword : string,
     tenants : TenantSearchResponse[],
+    tenant : TenantSearchResponse,
     fields : any,
-    isBusy : boolean
+    isBusy : boolean,
+    showModal : boolean,
+    errorMessageMod : string,
+    successMessageMod : string,
+    modalDcChange: bigint,
+    modalDcTotal: bigint,
 }
 
 export default Vue.extend({
@@ -60,6 +110,7 @@ export default Vue.extend({
         return {
             keyword : '',
             tenants : [],
+            tenant : {} as TenantSearchResponse,
             fields : [
                 {key: 'edit', label : this.$t('tsl_edit')},
                 {key: 'tenantName', sortable: false, label : this.$t('tsl_tenantName')},
@@ -68,11 +119,21 @@ export default Vue.extend({
                 {key: 'tenantUUID', sortable: false, label : this.$t('tsl_tenantID')},
             ],
             isBusy : false,
+            showModal : false,
+            errorMessageMod : '',
+            successMessageMod : '',
+            modalDcChange : BigInt(0),
+            modalDcTotal : BigInt(0),
         };
     },
     methods : {
+        onDcChange() {
+            this.modalDcTotal = this.tenant.dcBalance + this.modalDcChange;
+        },
         onSearchChange() {
+            if ( this.isBusy ) return;
             if ( this.keyword.length > 3 && this.keyword.length < 15 ) {
+                this.isBusy = true;
                 console.log(this.keyword);
                 let config = {
                     headers: {
@@ -80,7 +141,6 @@ export default Vue.extend({
                         'Authorization': 'Bearer '+this.$store.state.consoleBearer,  
                     }
                 };
-                this.isBusy = true;
                 this.tenants = [];
                 this.$axios.get<TenantSearchResponse[]>(this.$config.tenantSearch+'/?keyword='+this.keyword,config)
                     .then((response) =>{
@@ -92,11 +152,51 @@ export default Vue.extend({
                         }
                     }).catch((err) =>{
                        this.tenants = [];
+                       this.isBusy = false;
                     })
             }
         },
-        onLineClick(row : TenantSearchResponse) {
-            console.log(row);
+        onLineClick(row : any) {
+            this.tenant = Object.assign({},row.item);
+            this.modalDcChange = BigInt(0);
+            this.modalDcTotal = this.tenant.dcBalance;
+            this.showModal = true;
+        },
+        updateModal(bvModalEvent: any) {
+          this.errorMessageMod='';
+          this.successMessageMod='';
+          let config = {
+              headers: {
+                'Content-Type': 'application/json',  
+                'Authorization': 'Bearer '+this.$store.state.consoleBearer,
+              }
+          };
+          
+          let body = {
+            tenantUUID : this.tenant.tenantUUID,
+            dcs : this.modalDcChange
+          };
+          this.$axios.put(this.$config.tenantDcUpdate, body, config)
+                .then((response) =>{
+                    if (response.status == 200 ) {
+                        this.successMessageMod = "updtenant_vmessage_success";
+                        this.tenant={} as TenantSearchResponse; // avoid reentering
+                        var self = this;
+                        setTimeout(function() { 
+                            self.$data.showModal = false;
+                            self.errorMessageMod='';
+                            self.successMessageMod='';
+                        }, 1500);
+                        this.onSearchChange();
+                    }
+                }).catch((err) =>{
+                    if ( err.response.status == 400 ) {
+                        let message = err.response.data.errorMessage;
+                        this.errorMessageMod = 'sret_'+message;
+                    }
+                })
+                bvModalEvent.preventDefault();
+                
         }
     }
 })

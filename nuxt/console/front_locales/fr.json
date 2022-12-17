@@ -118,6 +118,9 @@
     "tsl_ownerEmail" : "Propriétaire",
     "tsl_dcBalance" : "Balance (DCs)",
     "tsl_tenantID" : "Tenant UUID",
+    "tsl_addBalance" : "DCs a ajouter / enlever",
+    "tsl_newBalance" : "Balance future",  
+    "balance_modal" : "Mis à jour d'un tenant",
 
     "end" : "fin"
 }

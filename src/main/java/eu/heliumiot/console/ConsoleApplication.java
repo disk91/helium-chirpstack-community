@@ -19,13 +19,6 @@
  */
 package eu.heliumiot.console;
 
-import eu.heliumiot.console.jpa.db.NovaDevice;
-import eu.heliumiot.console.redis.RedisDeviceStreamListener;
-import eu.heliumiot.console.service.HeliumDeviceStatService;
-import eu.heliumiot.console.service.HeliumTenantService;
-import eu.heliumiot.console.service.NovaService;
-import fr.ingeniousthings.tools.Tools;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.ExitCodeGenerator;
 import org.springframework.boot.SpringApplication;
@@ -37,8 +30,6 @@ import org.springframework.data.redis.core.RedisKeyValueAdapter;
 import org.springframework.data.redis.repository.configuration.EnableRedisRepositories;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
-
-import java.util.ArrayList;
 
 @EnableScheduling
 @EnableWebMvc
@@ -56,9 +47,6 @@ public class ConsoleApplication implements CommandLineRunner, ExitCodeGenerator 
 		context = SpringApplication.run(ConsoleApplication.class, args);
 	}
 
-
-	//@Autowired
-	//NovaService novaService;
 
 	@Override
 	public void run(String... args) throws Exception {

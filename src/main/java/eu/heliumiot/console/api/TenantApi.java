@@ -237,5 +237,29 @@ public class TenantApi {
         }
     }
 
+    // #########################
+
+    @Operation(summary = "Update tenant DC balance",
+            description = "Update a tenant DC balance",
+            responses = {
+                    @ApiResponse(responseCode = "200", description= "Ok", content = @Content(schema = @Schema(implementation = ActionResult.class))),
+                    @ApiResponse(responseCode = "403", description= "Forbidden", content = @Content(schema = @Schema(implementation = ActionResult.class))),
+            }
+    )
+    @RequestMapping(value="/balance",
+            produces = MediaType.APPLICATION_JSON_VALUE,
+            method= RequestMethod.PUT)
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
+    public ResponseEntity<?> updateTenantDCBalance(
+            HttpServletRequest request,
+            @RequestBody(required = true) TenantDcBalanceReqItf balance
+    ) {
+        log.debug("Update one tenant dc balance "+request.getUserPrincipal().getName());
+        if ( heliumTenantService.processBalanceIncrease(balance.getTenantUUID(), balance.getDcs()) ){
+            return new ResponseEntity<>(ActionResult.SUCESS(), HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(ActionResult.BADREQUEST(), HttpStatus.BAD_REQUEST);
+        }
+    }
 
 }
