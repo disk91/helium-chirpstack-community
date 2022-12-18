@@ -1,0 +1,73 @@
+version: "3"
+
+services:
+  chirpstack:
+    image: chirpstack/chirpstack:4.1.1
+    command: -c /etc/chirpstack
+    restart: unless-stopped
+    volumes:
+      - /helium/configuration/chirpstack:/etc/chirpstack
+      - /helium/lorawan-devices:/opt/lorawan-devices
+    depends_on:
+      - postgres
+      - mosquitto
+      - redis
+    environment:
+      - MQTT_BROKER_HOST=mosquitto
+      - REDIS_HOST=redis
+      - POSTGRESQL_HOST=postgres
+    ports:
+      - 8080:8080
+
+  chirpstack-gateway-bridge-eu868:
+    image: chirpstack/chirpstack-gateway-bridge:4.0.3
+    restart: unless-stopped
+    ports:
+      - 1700:1700/udp
+    volumes:
+      - /helium/configuration/chirpstack-gateway-bridge-eu868:/etc/chirpstack-gateway-bridge
+    depends_on:
+      - mosquitto
+
+  chirpstack-gateway-bridge-us915:
+    image: chirpstack/chirpstack-gateway-bridge:4.0.3
+    restart: unless-stopped
+    ports:
+      - 1701:1701/udp
+    volumes:
+      - /helium/configuration/chirpstack-gateway-bridge-us915:/etc/chirpstack-gateway-bridge
+    depends_on:
+      - mosquitto
+
+  chirpstack-rest-api:
+    image: chirpstack/chirpstack-rest-api:4.1.1
+    restart: unless-stopped
+    command: --server chirpstack:8080 --bind 0.0.0.0:8090 --insecure
+    ports:
+      - 8090:8090
+    depends_on:
+      - chirpstack
+
+  postgres:
+    image: postgres:14-alpine
+    restart: unless-stopped
+    volumes:
+      - /helium/configuration/postgresql/initdb:/docker-entrypoint-initdb.d
+      - postgresqldata:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_PASSWORD=root
+
+  redis:
+    image: redis:7-alpine
+    restart: unless-stopped
+    volumes:
+      - /helium/redis:/data
+
+  mosquitto:
+    image: eclipse-mosquitto:2
+    restart: unless-stopped
+    ports:
+      - 1883:1883
+    volumes:
+      - /helium/configuration/mosquitto/mosquitto.conf:/mosquitto/config/mosquitto.conf
+      - /helium/mosquitto:/mosquitto/data
