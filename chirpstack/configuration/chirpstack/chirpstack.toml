@@ -95,7 +95,7 @@
   # is never exposed. Changing this secret will invalidate all login and API
   # tokens. The following command can be used to generate a random secret:
   #   openssl rand -base64 32
-  secret="085bf0650702cf2302fad329c3c81484"
+  secret="MIy62sTfjD87B8PJxaQkk5tt8dbUNH3p2CZmVwFB4F4="
 
 
 [integration]
