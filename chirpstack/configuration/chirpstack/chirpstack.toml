@@ -19,7 +19,7 @@
   #  * require - Always SSL (skip verification)
   #  * verify-ca - Always SSL (verify that the certificate presented by the server was signed by a trusted CA)
   #  * verify-full - Always SSL (verify that the certification presented by the server was signed by a trusted CA and the server host name matches the one in the certificate)
-  dsn="postgres://chirpstack:chirpstack@$POSTGRESQL_HOST/chirpstack?sslmode=disable"
+  dsn="postgres://chirpstack:fdfce449c0ba34332525@$POSTGRESQL_HOST/chirpstack?sslmode=disable"
 
   # Max open connections.
   #
@@ -58,7 +58,7 @@
 [network]
 
   # Network identifier (NetID, 3 bytes) encoded as HEX (e.g. 010203).
-  net_id="000000"
+  net_id="C00053"
 
   # Enabled regions.
   #
@@ -95,7 +95,7 @@
   # is never exposed. Changing this secret will invalidate all login and API
   # tokens. The following command can be used to generate a random secret:
   #   openssl rand -base64 32
-  secret="you-must-replace-this"
+  secret="085bf0650702cf2302fad329c3c81484"
 
 
 [integration]
@@ -104,3 +104,6 @@
   [integration.mqtt]
     server="tcp://$MQTT_BROKER_HOST:1883/"
     json=true
+
+[gateway]
+  allow_unknown_gateways=true
