@@ -53,7 +53,7 @@ services:
     restart: unless-stopped
     volumes:
       - /helium/configuration/postgresql/initdb:/docker-entrypoint-initdb.d
-      - postgresqldata:/var/lib/postgresql/data
+      - /helium/postgresql:/var/lib/postgresql/data
     environment:
       - POSTGRES_PASSWORD=root
 
