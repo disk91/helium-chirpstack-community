@@ -48,7 +48,7 @@ public class TenantApi {
                     @ApiResponse(responseCode = "403", description= "Forbidden", content = @Content(schema = @Schema(implementation = ActionResult.class))),
             }
     )
-    @RequestMapping(value="/{tenantId}/",
+    @RequestMapping(value="/balance/{tenantId}/",
             produces = MediaType.APPLICATION_JSON_VALUE,
             method= RequestMethod.GET)
     @PreAuthorize("hasAnyRole('ROLE_USER')")
@@ -261,5 +261,37 @@ public class TenantApi {
             return new ResponseEntity<>(ActionResult.BADREQUEST(), HttpStatus.BAD_REQUEST);
         }
     }
+
+    // ######################
+
+    @Operation(summary = "Get tenant information",
+            description = "Get tenant basic consumption information with tenant configuration and " +
+                    "last day consumption",
+            responses = {
+                    @ApiResponse(responseCode = "200", description= "Ok", content = @Content(schema = @Schema(implementation = TenantBasicStatRespItf.class))),
+                    @ApiResponse(responseCode = "400", description= "Bad Request", content = @Content(schema = @Schema(implementation = ActionResult.class))),
+                    @ApiResponse(responseCode = "403", description= "Forbidden", content = @Content(schema = @Schema(implementation = ActionResult.class))),
+            }
+    )
+    @RequestMapping(value="/{tenantId}/",
+            produces = MediaType.APPLICATION_JSON_VALUE,
+            method= RequestMethod.GET)
+    @PreAuthorize("hasAnyRole('ROLE_USER')")
+    public ResponseEntity<?> getTenantBasicStat(
+            HttpServletRequest request,
+            @Parameter(required = true, name = "tenantId", description = "tenant UUID")
+            @PathVariable String tenantId
+    ) {
+        log.debug("Get tenant basic stats "+request.getUserPrincipal().getName()+" for tenant "+tenantId);
+        try {
+            TenantBasicStatRespItf r = heliumTenantService.getTenantBasicStat(request.getUserPrincipal().getName(),tenantId);
+            return new ResponseEntity<>(r, HttpStatus.OK);
+        } catch (ITParseException x) {
+            return new ResponseEntity<>(ActionResult.BADREQUEST(), HttpStatus.BAD_REQUEST);
+        } catch (ITRightException x) {
+            return new ResponseEntity<>(ActionResult.FORBIDDEN(), HttpStatus.FORBIDDEN);
+        }
+    }
+
 
 }

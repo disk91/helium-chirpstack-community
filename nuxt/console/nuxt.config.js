@@ -10,7 +10,7 @@ export default {
     apiHost:process.env.API_HOST,
     chirpstackHost:process.env.CHIRPSTACK_HOST+'/' || '/',
     consoleName:process.env.CONSOLE_NAME || 'HeliumConsole',
-    dcbalanceEndpoint:process.env.API_HOST+'/console/1.0/tenant',
+    dcbalanceEndpoint:process.env.API_HOST+'/console/1.0/tenant/balance',
     signupEndpoint:process.env.API_HOST+'/console/1.0/sign/up',
     validationEndpoint:process.env.API_HOST+'/console/1.0/sign/confirm',
     passLostEndpoint:process.env.API_HOST+'/console/1.0/sign/lost',
@@ -22,6 +22,7 @@ export default {
     tenantSetupDelete:process.env.API_HOST+'/console/1.0/tenant/setup',
     tenantSearch:process.env.API_HOST+'/console/1.0/tenant/search',
     tenantDcUpdate:process.env.API_HOST+'/console/1.0/tenant/balance',
+    tenantBasicStat:process.env.API_HOST+'/console/1.0/tenant',
     termAndUse:process.env.CONSOLE_TERMS || '/',
   },
 

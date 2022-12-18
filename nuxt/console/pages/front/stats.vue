@@ -1,13 +1,14 @@
 <template>
     <div>
       <Navbar/>
-      Comming soon...
+      <BasicStat/>
     </div>
   </template>
   
   <script lang="ts">
   import Vue from 'vue'
   import Navbar from '~/components/Navbar.vue';
+  import BasicStat from '~/components/BasicStats.vue';
   
   export default Vue.extend({
       name: "TestPage",
@@ -16,6 +17,7 @@
       //middleware: 'auth', // not needed as it is globally setup
       components: { 
         'Navbar' : Navbar,
+        'BasicStat' : BasicStat,
       }
   })
   

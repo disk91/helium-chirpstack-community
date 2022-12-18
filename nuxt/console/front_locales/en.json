@@ -122,6 +122,16 @@
   "tsl_addBalance" : "DCs to add/remove",
   "tsl_newBalance" : "Future balance",
   "balance_modal" : "Update tenant DC balance",
+  
+  "error_load_basicstat" : "Impossible to load the tenant statistics, try later",
+  "error_find_basicstat" : "A tenant need to be seleted first. Go back on Chirpstack page",
+  "bstat_card_title" : "Tenant setup & last 7 days stats",
+  "bstat_card_param" : "Parameter",
+  "bstat_card_value" : "Setup value",
+  "bstat_card_stat" : "7 day consumption",
+
+  "days" : "Days",
+  "hours" : "Hours",
 
   "end" : "end"
 }

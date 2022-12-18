@@ -39,7 +39,7 @@ export default Vue.extend({
       var iframeUrl = document.getElementById("chirpstack-frame-id").contentWindow.location.href;
       this.$store.commit('setLastChirpstackUrl',iframeUrl);  
       // clean poller
-  	  clearInterval(this.polling)
+  	  clearInterval(this.polling);
     },
     methods: {
 	    pollData () {
@@ -54,10 +54,12 @@ export default Vue.extend({
                     this.$store.commit('setCurrentTenant',iframeUrl);
                 } else {
                     iframeUrl = localStorage.getItem("tenantId");
-                    this.$store.commit('setCurrentTenant',iframeUrl);
+                    if ( strlen(iframeUrl) > 10  ) {
+                       this.$store.commit('setCurrentTenant',iframeUrl);
+                    } // else better to keep the previous one
                 }
             }
-		    } , 3000)
+		  } , 3000)
 	    }
     },
 })

@@ -609,9 +609,9 @@ public class HeliumDeviceService {
                                     );
                                 }
                             }
-                            hdev.setLastSeen(now);
-                            heliumDeviceRepository.save(hdev);
                         }
+                        hdev.setLastSeen(now);
+                        heliumDeviceRepository.save(hdev);
                     }
                 }
             }

@@ -25,6 +25,7 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 import com.google.protobuf.InvalidProtocolBufferException;
 import eu.heliumiot.console.ConsoleConfig;
 import eu.heliumiot.console.api.interfaces.TenantBalanceItf;
+import eu.heliumiot.console.api.interfaces.TenantBasicStatRespItf;
 import eu.heliumiot.console.api.interfaces.TenantCreateReqItf;
 import eu.heliumiot.console.api.interfaces.TenantSearchRespItf;
 import eu.heliumiot.console.chirpstack.ChirpstackApiAccess;
@@ -728,6 +729,40 @@ public class HeliumTenantService {
             r.add(k);
         }
         return r;
+    }
+
+    // ###################
+
+    @Autowired
+    protected HeliumTenantStatService heliumTenantStatService;
+
+    public TenantBasicStatRespItf getTenantBasicStat(String userId, String tenantId)
+    throws ITRightException, ITParseException {
+        // check user and ownership
+        UserCacheService.UserCacheElement user = userCacheService.getUserById(userId);
+        if (user == null) throw new ITRightException();
+        if ( !user.user.isAdmin() ) {
+            // search if tenant authorization exists
+            UserTenant ut = userTenantRepository.findOneUserByUserIdAndTenantId(
+                    UUID.fromString(userId),
+                    UUID.fromString(tenantId)
+            );
+
+            if ( ut == null ) throw new ITRightException();
+            if ( ! ut.isAdmin() ) {
+                throw new ITRightException();
+            }
+        }
+
+        long duration = 7*Now.ONE_FULL_DAY;
+        long start = Now.TodayMidnightUtc() - duration;
+        TenantBasicStatRespItf stats = heliumTenantStatService.getStatForTenantFromDate(
+                tenantId,
+                start,
+                duration
+        );
+
+        return stats;
     }
 
 

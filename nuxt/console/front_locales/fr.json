@@ -122,5 +122,15 @@
     "tsl_newBalance" : "Balance future",  
     "balance_modal" : "Mis à jour d'un tenant",
 
+    "error_load_basicstat" : "Impossible de charger des statistique du tenant",
+    "error_find_basicstat" : "Un tenant doit etre selectionné dans la page Chirpstack",
+    "bstat_card_title" : "Configuration du tenant et usage des 7 derniers jours",
+    "bstat_card_param" : "Paramètre",
+    "bstat_card_value" : "Valeur",
+    "bstat_card_stat" : "Usage des 7 derniers jours",
+  
+    "days" : "Jours",
+    "hours" : "Heures",
+
     "end" : "fin"
 }
