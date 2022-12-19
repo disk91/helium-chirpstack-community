@@ -15,7 +15,7 @@ start:
                --network=$(NETWORK) \
 	           --add-host postgres:$(POSTGRESIP) \
                --add-host redis:$(REDISIP) \
-               --add-host mqtt:$(MQTTIP) \
+               --add-host mosquitto:$(MQTTIP) \
        	       -d disk91/console
 
 
