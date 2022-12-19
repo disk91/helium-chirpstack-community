@@ -1,6 +1,23 @@
 version: "3"
 
 services:
+  nginx:
+    image: nginx:latest
+    ports:
+      - 80:80
+      - 443:443
+    restart: unless-stopped
+    volumes:
+      - /helium/configuration/nginx/:/etc/nginx/conf.d/:ro
+      - /helium/configuration/certbot/:/var/www/certbot/:ro
+      - /helium/configuration/ssl/:/etc/nginx/ssl/:ro
+
+  certbot:
+    image: certbot/certbot:latest
+    volumes:
+      - /helium/configuration/certbot/:/var/www/certbot/:rw
+      - /helium/configuration/ssl/:/etc/letsencrypt/:rw
+
   helium:
     image: disk91/console
     restart: unless-stopped
