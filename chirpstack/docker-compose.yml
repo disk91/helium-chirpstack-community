@@ -1,6 +1,19 @@
 version: "3"
 
 services:
+  helium:
+    image: disk91/console
+    restart: unless-stopped
+    volumes:
+      - /helium/cli/key.bin:/etc/helium/pkey.bin
+      - /helium/configuration/helium/configuration.properties:/configuration.properties
+    depends_on:
+      - postgres
+      - mosquitto
+      - redis
+    ports:
+      - 8081:8081
+
   chirpstack:
     image: chirpstack/chirpstack:4.1.1
     command: -c /etc/chirpstack

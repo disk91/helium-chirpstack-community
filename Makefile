@@ -10,7 +10,7 @@ start:
 	-docker rm console
 	docker run --name console \
 	           --restart always \
-	           --expose 8090 \
+	           --expose 8081 \
                --mount type=bind,source=$(KEYFILE),target=/etc/helium/pkey.bin \
                --network=$(NETWORK) \
 	           --add-host postgres:$(POSTGRESIP) \
