@@ -86,18 +86,18 @@ export default Vue.extend({
     },
     computed : {
       printError() {
-          return (this.errorMessage.length > 0);
+          return ( this.$data.errorMessage.length > 0 );
       },
       printSuccess() {
-          return (this.successMessage.length > 0);
+          return ( this.$data.successMessage.length > 0 );
       },
       passwordState() {
-            if ( this.pReset.password.length == 0 ) return null;
-            return (this.pReset.password.length >= 12 );
+            if ( this.$data.pReset.password.length == 0 ) return null;
+            return (this.$data.pReset.password.length >= 12 );
         },
       rpasswordState() {
-            if ( this.pReset.rpassword.length == 0 ) return null;
-            return ( this.pReset.password == this.pReset.rpassword );
+            if ( this.$data.pReset.rpassword.length == 0 ) return null;
+            return ( this.$data.pReset.password == this.$data.pReset.rpassword );
       },
       acceptSubmit() {
             if ( this.passwordState != true || this.rpasswordState != true || this.errorMessage.length > 0 ) return true;
@@ -121,7 +121,7 @@ export default Vue.extend({
           this.$data.errorMessage='';
           this.$data.successMessage='';
           let body = {
-                  password: this.pReset.password,
+                  password: this.$data.pReset.password,
                   validationKey: key,
               };
           let config = {

@@ -51,10 +51,10 @@ export default Vue.extend({
     },
     computed : {
       printError() {
-          return (this.errorMessage.length > 0);
+          return (this.$data.errorMessage.length > 0);
       },
       printSuccess() {
-          return (this.successMessage.length > 0);
+          return (this.$data.successMessage.length > 0);
       }
     },
     created() {

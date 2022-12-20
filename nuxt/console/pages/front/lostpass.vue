@@ -71,8 +71,8 @@ export default Vue.extend({
     },
     computed: {
         emailState() {
-            if ( this.signup.username.length < 5 ) return null;
-            return (this.signup.username.indexOf('@') >= 0);
+            if ( this.$data.signup.username.length < 5 ) return null;
+            return ( this.$data.signup.username.indexOf('@') >= 0 );
         },
         acceptSubmit() {
             if ( this.emailState != true ) return true;

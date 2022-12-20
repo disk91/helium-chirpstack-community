@@ -11,6 +11,7 @@ services:
       - /helium/configuration/nginx/:/etc/nginx/conf.d/:ro
       - /helium/configuration/certbot/:/var/www/certbot/:ro
       - /helium/configuration/ssl/:/etc/nginx/ssl/:ro
+      - /helium/front:/var/www/front/:ro
 
   certbot:
     image: certbot/certbot:latest

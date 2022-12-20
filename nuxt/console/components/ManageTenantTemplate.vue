@@ -320,8 +320,8 @@
               }
           };
           // because JS is not respecting types, even if ts ... ts should learn this
-          if ( this.template.signupAllowed == "true" ) this.template.signupAllowed = true;
-          if ( this.template.signupAllowed == "false" ) this.template.signupAllowed = false;
+          if ( ((this.template.signupAllowed as unknown ) as string ) == "true" ) this.template.signupAllowed = true;
+          if ( ((this.template.signupAllowed as unknown ) as string ) == "false" ) this.template.signupAllowed = false;
           if ( this.template.id != null && this.template.id != '' ) {
             this.$axios.put(this.$config.tenantSetupUpdate, this.template, config)
                 .then((response) =>{

@@ -125,24 +125,24 @@ export default Vue.extend({
     },
     computed: {
         emailState() {
-            if ( this.signup.username.length < 5 ) return null;
-            return (this.signup.username.indexOf('@') >= 0);
+            if ( this.$data.signup.username.length < 5 ) return null;
+            return (this.$data.signup.username.indexOf('@') >= 0);
         },
         passwordState() {
-            if ( this.signup.password.length == 0 ) return null;
-            return (this.signup.password.length >= 12 );
+            if ( this.$data.signup.password.length == 0 ) return null;
+            return (this.$data.signup.password.length >= 12 );
         },
         rpasswordState() {
-            if ( this.signup.rpassword.length == 0 ) return null;
-            return ( this.signup.password == this.signup.rpassword );
+            if ( this.$data.signup.rpassword.length == 0 ) return null;
+            return ( this.$data.signup.password == this.$data.signup.rpassword );
         },
         tenantState() {
-            if ( this.signup.tenantName.length == 0 ) return null;
-            return ( this.signup.tenantName.length > 3 );
+            if ( this.$data.signup.tenantName.length == 0 ) return null;
+            return ( this.$data.signup.tenantName.length > 3 );
         },
         conditionState() {
             if ( this.emailState != true || this.passwordState != true || this.rpasswordState != true || this.tenantState != true ) return null;
-            return ( this.signup.conditionAccepted == 'true');
+            return ( this.$data.signup.conditionAccepted == 'true');
         },
         acceptSubmit() {
             if ( this.emailState != true || this.passwordState != true || this.rpasswordState != true || this.tenantState != true || this.conditionState != true ) return true;
@@ -152,13 +152,13 @@ export default Vue.extend({
     methods: {
         async userSignup() {
             let body = {
-                username: this.signup.username,
-                password: this.signup.password,
-                tenantName: this.signup.tenantName,
-                inviteCode: this.signup.inviteCode,
-                conditionsAccepted: (this.signup.conditionAccepted == 'true'),
+                username: this.$data.signup.username,
+                password: this.$data.signup.password,
+                tenantName: this.$data.signup.tenantName,
+                inviteCode: this.$data.signup.inviteCode,
+                conditionsAccepted: (this.$data.signup.conditionAccepted == 'true'),
             };
-            this.signup.errorMessage='';
+            this.$data.signup.errorMessage='';
             let config = {
                   headers: {
                       'Content-Type': 'application/json'  
@@ -172,12 +172,12 @@ export default Vue.extend({
             }).catch((err) =>{
                 if ( err.response.status == 400 ) {
                     let message = err.response.data.errorMessage;
-                    this.signup.errorMessage = 'sret_'+message;
+                    this.$data.signup.errorMessage = 'sret_'+message;
                 }
             })
         },
         async printData() {
-            console.log(this.signup);
+            //console.log(this.signup);
         },
         async redirectLogin() {
             this.$router.push('/front/login');

@@ -4,14 +4,10 @@ upstream backend {
 upstream chirpstack {
    server chirpstack:8080;
 }
-upstream frontend {
-   server localhost:3000;
-}
 map $arg_override $override {
-   true chirpstack:8080;
-   default localhost:3000;
+   true chirpstack;
+   default front;
 }
-
 server {
     listen 80;
     listen [::]:80;
@@ -46,17 +42,12 @@ server {
     }
 
     location ~ ^(/front/|/_nuxt/|/_loading/|/__webpack_hmr/|/static/front/) {
-         proxy_pass http://frontend$request_uri;
-         proxy_redirect  off;
-         proxy_set_header        X-Real-IP $remote_addr;
-         proxy_set_header        X-Forwarded-For $proxy_add_x_forwarded_for;
-         proxy_set_header        Host $http_host;
-
+         root /var/www/front;
     }
 
     location = / {
-         resolver 127.0.0.11;
-         proxy_pass http://$override$request_uri;
+         if ( $override = "front" ) { return 301 /front/; }
+         proxy_pass http://chirpstack$request_uri;
          proxy_redirect  off;
          proxy_set_header        X-Real-IP $remote_addr;
          proxy_set_header        X-Forwarded-For $proxy_add_x_forwarded_for;
