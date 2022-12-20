@@ -62,6 +62,11 @@ public class RedisDeviceStreamListener {
             );
         } catch (RedisBusyException redisBusyException) {
             // consumer group exist ... basically a normal situation
+        } catch (Exception x) {
+            // the stream does not exist yet ... until the first device it seems we don't have it or it's name
+            // has changed ... not sure ...
+            // by the way, skip it for now
+            log.error("### TODO Manage the stream question ...");
         }
 
         this.runningJobs = 0;
