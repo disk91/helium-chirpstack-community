@@ -136,26 +136,26 @@ public class RedisDeviceStreamListener {
                             }
                             */
                         } else if (k.compareToIgnoreCase("down") == 0) {
-                                log.debug("REDIS - Receiving downlink/ack/join accept");
-                                byte[] byteData = message.getBody().get(k);
-                                try {
-                                    DownlinkFrameLog dwn = DownlinkFrameLog.parseFrom(byteData);
-                                    if (dwn != null) {
-                                        int downlinkSize =  dwn.getPhyPayload().size();
-                                        if ( downlinkSize <= 12 ) downlinkSize = 0;
-                                        else downlinkSize -= 13;
+                            log.debug("REDIS - Receiving downlink/ack/join accept");
+                            byte[] byteData = message.getBody().get(k);
+                            try {
+                                DownlinkFrameLog dwn = DownlinkFrameLog.parseFrom(byteData);
+                                if (dwn != null) {
+                                    int downlinkSize = dwn.getPhyPayload().size();
+                                    if (downlinkSize <= 12) downlinkSize = 0;
+                                    else downlinkSize -= 13;
 
-                                        log.debug("Dev: " + dwn.getDevEui() + " Adr:" + dwn.getDevAddr() + " size: "+downlinkSize);
-                                        heliumTenantService.processDownlink(
-                                                null,
-                                                dwn.getDevEui(),
-                                                downlinkSize
-                                        );
-                                    }
-                                } catch (InvalidProtocolBufferException x) {
-                                    log.error("Impossible to parse stream type up with " + x.getMessage());
-                                    log.info(HexaConverters.byteToHexStringWithSpace(byteData));
+                                    log.debug("Dev: " + dwn.getDevEui() + " Adr:" + dwn.getDevAddr() + " size: " + downlinkSize);
+                                    heliumTenantService.processDownlink(
+                                            null,
+                                            dwn.getDevEui(),
+                                            downlinkSize
+                                    );
                                 }
+                            } catch (InvalidProtocolBufferException x) {
+                                log.error("Impossible to parse stream type up with " + x.getMessage());
+                                log.info(HexaConverters.byteToHexStringWithSpace(byteData));
+                            }
                         } else {
                             log.warn("## Found a new key on stream:meta " + k);
                             byte[] byteData = message.getBody().get(k);
@@ -170,6 +170,9 @@ public class RedisDeviceStreamListener {
                     );
                 }
             }
+        } catch ( RedisCommandExecutionException x ) {
+            // @TODO what happen
+            log.error("### TODO fix this ... the stream is not existing ");
         } finally {
           this.runningJobs--;
         }
