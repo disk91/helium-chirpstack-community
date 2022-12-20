@@ -5,6 +5,7 @@ NETWORK=$(shell docker network ls | grep chirpstack | cut -d " " -f 1)
 .FORCE:
 build: .FORCE
 	./gradlew build -x test && docker build -t disk91/console .
+	cd nuxt/console && yarn install --ignore-engines && yarn generate && cp -R dist/* /helium/front/
 start:
 	-docker stop console
 	-docker rm console
