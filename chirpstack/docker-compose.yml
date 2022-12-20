@@ -12,6 +12,10 @@ services:
       - /helium/configuration/certbot/:/var/www/certbot/:ro
       - /helium/configuration/ssl/:/etc/nginx/ssl/:ro
       - /helium/front:/var/www/front/:ro
+    depends_on:
+      - helium
+      - chirpstack
+      - chirpstack-rest-api
 
   certbot:
     image: certbot/certbot:latest
