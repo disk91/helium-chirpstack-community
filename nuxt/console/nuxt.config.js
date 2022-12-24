@@ -124,9 +124,9 @@ export default {
           required: true,
         },
         endpoints: {
-          login: { url: process.env.API_HOST+'/console/1.0/sign/in', method: 'post' },
-          logout: { url: process.env.API_HOST+'/console/1.0/sign/out', method: 'get' },
-          user: { url: process.env.API_HOST+'/console/1.0/user/', method: 'get' }
+          login: { url: (process.env.API_HOST || '')+'/console/1.0/sign/in', method: 'post' },
+          logout: { url: (process.env.API_HOST || '')+'/console/1.0/sign/out', method: 'get' },
+          user: { url: (process.env.API_HOST || '')+'/console/1.0/user/', method: 'get' }
         },
       }
     },
