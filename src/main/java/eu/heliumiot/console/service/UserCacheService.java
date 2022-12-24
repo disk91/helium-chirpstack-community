@@ -54,8 +54,6 @@ public class UserCacheService {
         public HeliumUser heliumUser;
     }
 
-    protected String bottomEmail_en;
-
     private ObjectCache<String, UserCacheElement> userCache;
     @PostConstruct
     private void initUserCacheService() {
@@ -107,5 +105,15 @@ public class UserCacheService {
         h.setDefaultOffer(offer);
         h = heliumUserRepository.save(h);
         return h;
+    }
+
+    /**
+     * Update a HeliumUser elment, save it in db and update cache
+     * @param u
+     */
+    public void updateHeliumUser(UserCacheElement u) {
+        this.userCache.remove(u.heliumUser.getUserid(), true);
+        this.heliumUserRepository.save(u.heliumUser);
+        this.userCache.put(u,u.heliumUser.getUserid());
     }
 }

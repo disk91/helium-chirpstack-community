@@ -85,6 +85,13 @@ public class HeliumUser {
     @Column(name = "condition_validation")
     private boolean conditionValidation = false;
 
+    @Column(name = "last_seen")
+    private long lastSeen = 0;      // last login
+
+    @Column(name = "last_mess_seen")
+    private long lastMessSeen = 0;  // last message seen
+
+
     // ---
 
     public UUID getId() {
@@ -205,5 +212,21 @@ public class HeliumUser {
 
     public void setConditionValidation(boolean conditionValidation) {
         this.conditionValidation = conditionValidation;
+    }
+
+    public long getLastSeen() {
+        return lastSeen;
+    }
+
+    public void setLastSeen(long lastSeen) {
+        this.lastSeen = lastSeen;
+    }
+
+    public long getLastMessSeen() {
+        return lastMessSeen;
+    }
+
+    public void setLastMessSeen(long lastMessSeen) {
+        this.lastMessSeen = lastMessSeen;
     }
 }

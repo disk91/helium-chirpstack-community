@@ -523,6 +523,11 @@ public class UserService {
                     .compact();
 
             r.setConsoleBearer(token);
+
+            // update User Last Seen
+            u.heliumUser.setLastSeen(Now.NowUtcMs());
+            userCacheService.updateHeliumUser(u);
+
             return r;
         } catch ( ITNotFoundException x ) {
             throw new ITRightException();
@@ -532,6 +537,7 @@ public class UserService {
             x.printStackTrace();
             throw new ITParseException();
         }
+
 
     }
 
