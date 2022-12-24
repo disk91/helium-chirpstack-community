@@ -98,6 +98,7 @@ public class RedisDeviceStreamListener {
                 this.streamExists = true;
             } catch (RedisBusyException redisBusyException) {
                 // consumer group exist ... basically a normal situation
+                this.streamExists = true;
             } catch (Exception x) {
                 // the stream does not exist yet ... until the first device it seems we don't have it or it's name
             }
