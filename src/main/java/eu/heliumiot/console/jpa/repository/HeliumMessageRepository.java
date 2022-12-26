@@ -35,4 +35,13 @@ public interface HeliumMessageRepository extends CrudRepository<HeliumMessages, 
 
     public HeliumMessages findFirstHeliumMessagesByIndexGreaterThanOrderByIndexDesc(long index);
 
+    public HeliumMessages findFirstHeliumMessagesByUntilGreaterThanAndOnlyoneOrderByUntilAsc(
+            long now,
+            boolean onlyone
+    );
+
+    @Query(value = "SELECT * FROM helium_messages ORDER BY index DESC LIMIT ?1", nativeQuery = true)
+    public List<HeliumMessages> findLastHeliumMessages(int number);
+
+
 }

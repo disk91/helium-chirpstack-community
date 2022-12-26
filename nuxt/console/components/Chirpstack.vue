@@ -54,7 +54,7 @@ export default Vue.extend({
                     this.$store.commit('setCurrentTenant',iframeUrl);
                 } else {
                     iframeUrl = localStorage.getItem("tenantId");
-                    if ( strlen(iframeUrl) > 10  ) {
+                    if ( iframeUrl.length > 10  ) {
                        this.$store.commit('setCurrentTenant',iframeUrl);
                     } // else better to keep the previous one
                 }

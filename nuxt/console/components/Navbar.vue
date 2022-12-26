@@ -1,5 +1,5 @@
 <template>
-   <div>
+<div>
   <b-navbar toggleable="lg" type="dark" variant="primary">
     <b-navbar-brand to="/front/">{{ $config.consoleName }}</b-navbar-brand>
 
@@ -9,6 +9,7 @@
         <b-nav-item to="/front/" exact active-class="active">{{ $t('menu_chirpstack') }}</b-nav-item>
         <b-nav-item to="/front/stats" exact active-class="active">{{ $t('menu_user_stats') }}</b-nav-item>
         <b-nav-item to="/front/profiles" exact active-class="active" v-if="$store.state.admin" class="ml-4">{{ $t('menu_admin_profiles') }}</b-nav-item>
+        <b-nav-item to="/front/messages" exact active-class="active" v-if="$store.state.admin" class="ml-4">{{ $t('menu_admin_messages') }}</b-nav-item>
       </b-navbar-nav>
 
       <b-navbar-nav class="ml-auto">
@@ -30,6 +31,30 @@
       </b-navbar-nav>
     </b-collapse>
   </b-navbar>
+  <b-modal id="umessage-modal" ref="umessage-modal"
+                 centered 
+                 :title="$t('message_title')"
+                 content-class="shadow"
+                 v-model="umessage.showModal"
+                 @ok="ackMessage"
+                 :header-bg-variant="umessage.bgTitle"
+                 header-text-variant="white"
+                 :header-border-variant="umessage.bgTitle"
+                 footer-border-variant="white"
+                 size="small"
+        >
+        {{ umessage.content }}
+  </b-modal>
+  <b-alert 
+    v-model="umessage.showAlert"
+    class="position-fixed fixed-bottom m-0 rounded-0"
+    style="z-index:2000;"
+    :variant="umessage.bgTitle"
+    dismissible
+    @dismissed="ackMessage"
+  >
+    {{ umessage.content }}
+  </b-alert>
 </div>
 </template>
 
@@ -45,16 +70,84 @@ export default Vue.extend({
 		    polling: null,
         dc : 0,
         mindc : 0,
-        color : "light"
+        color : "light",
+        messages : [],
+        umessage : {
+          showModal : false,
+          showAlert : false,
+          bgTitle : 'info',
+          content : '',
+        } 
 	    }
     },
+    async fetch() {
+        let config = {
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': 'Bearer '+this.$store.state.consoleBearer,  
+            }
+        };
+        this.$data.messages = [];
+        this.$axios.get(this.$config.messageGet,config)
+            .then((response) =>{
+                if (response.status == 200 ) {
+                  response.data.forEach( element => {
+                    this.$data.messages.push(element)
+                  });
+                  this.displayMessages();
+                }
+            }).catch((err) =>{
+            })
+    },
     methods: {
+      displayMessages() {
+        if ( this.$data.messages.length > 0 ) {
+          this.$data.messages.forEach( (message) => {
+            var variant = "info";
+            switch (message.category) {
+              default:
+              case 0 : variant = "primary"; break;
+              case 1 : variant = "warning"; break;
+              case 2 : variant = "danger"; break;
+            }
+            var type = "modal";
+            switch (message.type) {
+              default:
+              case 1: type = "modal"; break;
+              case 2: type = 'b-toaster-bottom-full'; break;
+            }
+
+            if ( type == "modal" ) {
+              this.$data.umessage.showModal = true;
+              this.$data.umessage.bgTitle = variant;
+              this.$data.umessage.content = message.content;
+            } else {
+              this.$data.umessage.showAlert = true;
+              this.$data.umessage.bgTitle = variant;
+              this.$data.umessage.content = message.content;
+            }
+          })
+        }
+      },
+      ackMessage() {
+        let config = {
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': 'Bearer '+this.$store.state.consoleBearer,  
+            }
+        };
+        this.$data.messages = [];
+        this.$axios.put(this.$config.messageAck,config)
+            .then((response) =>{
+            }).catch((err) =>{
+            })
+        this.umessage.content='';
+      },
       isChirpStackActive() {
           return false;
       },
 	    pollData () {
 		      this.polling = setInterval(() => {
-          //this.$nuxt.refresh();
           let tenantId = this.$store.state.currentTenant;
           if ( tenantId != undefined && tenantId != null && tenantId.length > 5 ) {
             let config = {
