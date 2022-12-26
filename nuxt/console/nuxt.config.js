@@ -39,7 +39,7 @@ export default {
 
   // Global page headers: https://go.nuxtjs.dev/config-head
   head: {
-    title: 'console',
+    title: (process.env.CONSOLE_NAME || 'Helium Console'),
     htmlAttrs: {
       lang: 'en',
     },
@@ -49,7 +49,7 @@ export default {
       { hid: 'description', name: 'description', content: '' },
       { name: 'format-detection', content: 'telephone=no' },
     ],
-    link: [{ rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }],
+    link: [{ rel: 'icon', type: 'image/x-icon', href: '/static/favicon.ico' }],
   },
 
   // Global CSS: https://go.nuxtjs.dev/config-css
@@ -90,6 +90,9 @@ export default {
       { code: 'fr', iso: 'fr-FR', file: 'fr.json', dir: 'ltr'},
     ],
     defaultLocale: 'en',
+    detectBrowserLanguage: {
+      useCookie: false
+    },
     langDir: '~/front_locales/'
   },
 
