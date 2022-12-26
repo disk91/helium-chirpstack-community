@@ -23,6 +23,12 @@ export default {
     tenantSearch:(process.env.API_HOST || '')+'/console/1.0/tenant/search',
     tenantDcUpdate:(process.env.API_HOST || '')+'/console/1.0/tenant/balance',
     tenantBasicStat:(process.env.API_HOST || '')+'/console/1.0/tenant',
+    messageAdmGet:(process.env.API_HOST || '')+'/console/1.0/message/admin',
+    messageAdmUpd:(process.env.API_HOST || '')+'/console/1.0/message/admin',
+    messageAdmNew:(process.env.API_HOST || '')+'/console/1.0/message/admin',
+    messageAdmDel:(process.env.API_HOST || '')+'/console/1.0/message/admin',
+    messageGet:(process.env.API_HOST || '')+'/console/1.0/message/',
+    messageAck:(process.env.API_HOST || '')+'/console/1.0/message/',
     termAndUse:process.env.CONSOLE_TERMS || '/',
   },
 
