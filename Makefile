@@ -8,11 +8,17 @@ API_HOST=
 CHIRPSTACK_HOST=
 
 .FORCE:
-build: .FORCE
-	./gradlew build -x test && docker build -t disk91/console .
+
+front: .FORCE
 	export CONSOLE_NAME=$(CONSOLE_NAME) ; export CONSOLE_TERMS=$(CONSOLE_TERMS) ; \
 	export API_HOST=$(API_HOST) ; export CHIRPSTACK_HOST=$(CHIRPSTACK_HOST) ; \
 	cd nuxt/console && yarn install --ignore-engines && yarn generate && cp -R dist/* /helium/front/
+
+back: .FORCE
+	./gradlew build -x test && docker build -t disk91/console .
+
+build: front back
+
 start:
 	-docker stop console
 	-docker rm console
