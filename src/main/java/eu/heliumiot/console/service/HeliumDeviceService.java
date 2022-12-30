@@ -467,9 +467,9 @@ public class HeliumDeviceService {
                                 long inactivityPeriods = inactivityPeriod / hts.getInactivityBillingPeriodMs();
                                 log.debug("Found " + inactivityPeriods + " periods of inactivity for device " + hdev.getDeviceEui());
                                 if (inactivityPeriods > 0) {
-                                    hdev.setLastInactivityInvoiced(hdev.getLastActivityInvoiced() + inactivityPeriods * hts.getInactivityBillingPeriodMs());
-                                    hdev.setLastActivityInvoiced(hdev.getLastInactivityInvoiced() + inactivityPeriods * hts.getDcPerInactivityPeriod());
-                                    if (hts.getDcPerActivityPeriod() > 0) {
+                                    hdev.setLastInactivityInvoiced(hdev.getLastInactivityInvoiced() + inactivityPeriods * hts.getInactivityBillingPeriodMs());
+                                    hdev.setLastActivityInvoiced(hdev.getLastActivityInvoiced() + inactivityPeriods * hts.getInactivityBillingPeriodMs());
+                                    if (hts.getDcPerInactivityPeriod() > 0) {
                                         i.setInactivityDc((int) inactivityPeriods * hts.getDcPerInactivityPeriod());
                                         invoicingReport = true;
                                     }
