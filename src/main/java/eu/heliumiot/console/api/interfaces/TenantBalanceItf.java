@@ -27,6 +27,13 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 public class TenantBalanceItf {
 
     @Schema(
+            description = "Associated Tenant Name",
+            requiredMode = Schema.RequiredMode.REQUIRED
+    )
+    protected String tenantName;
+
+
+    @Schema(
             description = "Current DC balance",
             requiredMode = Schema.RequiredMode.REQUIRED
     )
@@ -57,5 +64,13 @@ public class TenantBalanceItf {
 
     public void setMinBalance(long minBalance) {
         this.minBalance = minBalance;
+    }
+
+    public String getTenantName() {
+        return tenantName;
+    }
+
+    public void setTenantName(String tenantName) {
+        this.tenantName = tenantName;
     }
 }

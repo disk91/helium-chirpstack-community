@@ -115,6 +115,8 @@ public class HeliumTenantService {
      * @return
      */
     protected HeliumTenant getHeliumTenant(String tenantUUID){
+        // @TODO - on peut optimiser en cachant le resultat tant qu'il n'a pas changé
+        //         de cette facon on ne fait pas un appel a chaque fois
         HeliumTenant t = heliumTenantRepository.findOneHeliumTenantByTenantUUID(tenantUUID);
         if ( t == null ) {
             // create it
@@ -466,9 +468,6 @@ public class HeliumTenantService {
     // ======================================================
 
     @Autowired
-    protected UserService userService;
-
-    @Autowired
     protected UserCacheService userCacheService;
 
     @Autowired
@@ -500,10 +499,14 @@ public class HeliumTenantService {
         // Here we are the right to get the DC Balance info
         HeliumTenant ht = this.getHeliumTenant(tenantId);
         HeliumTenantSetup hts = heliumTenantSetupService.getHeliumTenantSetup(tenantId);
+        eu.heliumiot.console.jpa.db.Tenant t = tenantRepository.findOneTenantById(UUID.fromString(ht.getTenantUUID()));
 
         TenantBalanceItf r = new TenantBalanceItf();
         r.setDcBalance(ht.getDcBalance());
         r.setMinBalance(hts.getDcBalanceStop());
+        if ( t != null ) {
+            r.setTenantName(t.getName());
+        }
         return r;
     }
 
