@@ -1,10 +1,7 @@
 package eu.heliumiot.console.api;
 
 
-import eu.heliumiot.console.api.interfaces.ActionResult;
-import eu.heliumiot.console.api.interfaces.LoginReqItf;
-import eu.heliumiot.console.api.interfaces.LoginRespItf;
-import eu.heliumiot.console.api.interfaces.UserDetailRespItf;
+import eu.heliumiot.console.api.interfaces.*;
 import eu.heliumiot.console.service.UserService;
 import fr.ingeniousthings.tools.ITNotFoundException;
 import fr.ingeniousthings.tools.ITParseException;
@@ -36,6 +33,33 @@ public class UserApi {
     @Autowired
     protected UserService userService;
 
+    @Operation(summary = "Get user login",
+            description = "Get login for user executing the request",
+            responses = {
+                    @ApiResponse(responseCode = "200", description= "Done", content = @Content(schema = @Schema(implementation = UserLoginRespItf.class))),
+                    @ApiResponse(responseCode = "403", description= "Forbidden", content = @Content(schema = @Schema(implementation = ActionResult.class))),
+                    @ApiResponse(responseCode = "400", description= "Bad Request", content = @Content(schema = @Schema(implementation = ActionResult.class)))
+            }
+    )
+    @RequestMapping(value="/",
+            produces = MediaType.APPLICATION_JSON_VALUE,
+            method= RequestMethod.GET)
+    @PreAuthorize("hasAnyRole('ROLE_USER')")
+    public ResponseEntity<?> requestUserLogin(
+            HttpServletRequest request
+    ) {
+        log.debug("Get user login for "+request.getUserPrincipal().getName());
+        try {
+            UserLoginRespItf r = userService.getUserLogin(request.getUserPrincipal().getName());
+            return new ResponseEntity<>(r, HttpStatus.OK);
+        } catch (ITNotFoundException x) {
+            return new ResponseEntity<>(ActionResult.FORBIDDEN(), HttpStatus.BAD_REQUEST);
+        } catch (ITRightException x) {
+            return new ResponseEntity<>(ActionResult.FORBIDDEN(), HttpStatus.FORBIDDEN);
+        }
+    }
+
+
     @Operation(summary = "Get user details",
             description = "Get details on the user executing the request",
             responses = {
@@ -44,7 +68,7 @@ public class UserApi {
                     @ApiResponse(responseCode = "400", description= "Bad Request", content = @Content(schema = @Schema(implementation = ActionResult.class)))
             }
     )
-    @RequestMapping(value="/",
+    @RequestMapping(value="/details",
             produces = MediaType.APPLICATION_JSON_VALUE,
             method= RequestMethod.GET)
     @PreAuthorize("hasAnyRole('ROLE_USER')")
@@ -54,6 +78,35 @@ public class UserApi {
         log.debug("Get user details for "+request.getUserPrincipal().getName());
         try {
             UserDetailRespItf r = userService.getUserdetails(request.getUserPrincipal().getName());
+            return new ResponseEntity<>(r, HttpStatus.OK);
+        } catch (ITNotFoundException x) {
+            return new ResponseEntity<>(ActionResult.FORBIDDEN(), HttpStatus.BAD_REQUEST);
+        } catch (ITRightException x) {
+            return new ResponseEntity<>(ActionResult.FORBIDDEN(), HttpStatus.FORBIDDEN);
+        }
+    }
+
+
+    @Operation(summary = "Update user details",
+            description = "Update details on the user executing the request",
+            responses = {
+                    @ApiResponse(responseCode = "200", description= "Done", content = @Content(schema = @Schema(implementation = UserDetailRespItf.class))),
+                    @ApiResponse(responseCode = "403", description= "Forbidden", content = @Content(schema = @Schema(implementation = ActionResult.class))),
+                    @ApiResponse(responseCode = "400", description= "Bad Request", content = @Content(schema = @Schema(implementation = ActionResult.class)))
+            }
+    )
+    @RequestMapping(value="/details",
+            produces = MediaType.APPLICATION_JSON_VALUE,
+            consumes = MediaType.APPLICATION_JSON_VALUE,
+            method= RequestMethod.PUT)
+    @PreAuthorize("hasAnyRole('ROLE_USER')")
+    public ResponseEntity<?> updateUserDetail(
+            HttpServletRequest request,
+            @RequestBody(required = true) UserDetailUpdateReqItf userInfo
+    ) {
+        log.debug("Update user details for "+request.getUserPrincipal().getName());
+        try {
+            UserDetailRespItf r = userService.updateUserdetails(request.getUserPrincipal().getName(),userInfo);
             return new ResponseEntity<>(r, HttpStatus.OK);
         } catch (ITNotFoundException x) {
             return new ResponseEntity<>(ActionResult.FORBIDDEN(), HttpStatus.BAD_REQUEST);

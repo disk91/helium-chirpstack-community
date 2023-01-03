@@ -23,6 +23,9 @@ package eu.heliumiot.console.api.interfaces;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.tags.Tag;
 
+import javax.persistence.Column;
+import java.sql.Timestamp;
+
 @Tag(name = "User details Interface", description = "user details interface")
 public class UserDetailRespItf {
 
@@ -31,6 +34,49 @@ public class UserDetailRespItf {
             requiredMode = Schema.RequiredMode.REQUIRED
     )
     protected String username;
+
+
+    @Schema(
+            description = "Billing company name",
+            requiredMode = Schema.RequiredMode.REQUIRED
+    )
+    private String company ="";
+
+    @Schema(
+            description = "User first name",
+            requiredMode = Schema.RequiredMode.REQUIRED
+    )
+    private String firstName ="";
+
+    @Schema(
+            description = "User last name",
+            requiredMode = Schema.RequiredMode.REQUIRED
+    )
+    private String lastName ="";
+
+    @Schema(
+            description = "User address",
+            requiredMode = Schema.RequiredMode.REQUIRED
+    )
+    private String address="";
+
+    @Schema(
+            description = "User city code",
+            requiredMode = Schema.RequiredMode.REQUIRED
+    )
+    private String cityCode="";
+
+    @Schema(
+            description = "User city name",
+            requiredMode = Schema.RequiredMode.REQUIRED
+    )
+    private String cityName="";
+
+    @Schema(
+            description = "User country",
+            requiredMode = Schema.RequiredMode.REQUIRED
+    )
+    private String country="";
 
 
     // ------------------------------------
@@ -42,5 +88,61 @@ public class UserDetailRespItf {
 
     public void setUsername(String username) {
         this.username = username;
+    }
+
+    public String getCompany() {
+        return company;
+    }
+
+    public void setCompany(String company) {
+        this.company = company;
+    }
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public String getCityCode() {
+        return cityCode;
+    }
+
+    public void setCityCode(String cityCode) {
+        this.cityCode = cityCode;
+    }
+
+    public String getCityName() {
+        return cityName;
+    }
+
+    public void setCityName(String cityName) {
+        this.cityName = cityName;
+    }
+
+    public String getCountry() {
+        return country;
+    }
+
+    public void setCountry(String country) {
+        this.country = country;
     }
 }

@@ -548,14 +548,81 @@ public class UserService {
      * @param userid
      * @return
      */
-    public UserDetailRespItf getUserdetails(String userid)
+    public UserLoginRespItf getUserLogin(String userid)
     throws ITNotFoundException, ITRightException {
+        UserCacheService.UserCacheElement c =  userCacheService.getUserById(userid);
+        if ( c == null ) throw new ITNotFoundException();
+        UserLoginRespItf r = new UserLoginRespItf();
+        r.setUsername(c.user.getEmail());
+        r.setCompletion(c.heliumUser.getProfileStatus());
+        return r;
+    }
+
+
+    /**
+     * Get the user profile details
+     * @param userid
+     * @return
+     * @throws ITNotFoundException
+     * @throws ITRightException
+     */
+    public UserDetailRespItf getUserdetails(String userid)
+            throws ITNotFoundException, ITRightException {
         UserCacheService.UserCacheElement c =  userCacheService.getUserById(userid);
         if ( c == null ) throw new ITNotFoundException();
         UserDetailRespItf r = new UserDetailRespItf();
         r.setUsername(c.user.getEmail());
+        r.setAddress(c.heliumUser.getAddress());
+        r.setCityCode(c.heliumUser.getCityCode());
+        r.setCityName(c.heliumUser.getCityName());
+        r.setCompany(c.heliumUser.getCompany());
+        r.setCountry(c.heliumUser.getCountry());
+        r.setFirstName(c.heliumUser.getFirstName());
+        r.setLastName(c.heliumUser.getLastName());
         return r;
     }
+
+    /**
+     * Update the User profile
+     * @param userid
+     * @param u
+     * @return
+     * @throws ITNotFoundException
+     * @throws ITRightException
+     */
+    public UserDetailRespItf updateUserdetails(String userid, UserDetailUpdateReqItf u)
+            throws ITNotFoundException, ITRightException {
+        UserCacheService.UserCacheElement c =  userCacheService.getUserById(userid);
+        if ( c == null ) throw new ITNotFoundException();
+
+        if ( u.getUsername().compareToIgnoreCase(c.user.getEmail()) != 0 ) throw new ITRightException();
+
+        c.heliumUser.setFirstName(u.getFirstName());
+        c.heliumUser.setLastName(u.getLastName());
+        c.heliumUser.setCompany(u.getCompany());
+        c.heliumUser.setAddress(u.getAddress());
+        c.heliumUser.setCityCode(u.getCityCode());
+        c.heliumUser.setCityName(u.getCityName());
+        c.heliumUser.setCountry(u.getCountry());
+        if ( u.getLastName().length() > 0 && u.getCityCode().length() >0 && u.getCityName().length() > 0 && u.getCountry().length() > 0 ) {
+            c.heliumUser.setProfileStatus(HUPROFILE_STATUS_COMPLETED);
+        } else {
+            c.heliumUser.setProfileStatus(HUPROFILE_STATUS_CREATED);
+        }
+        userCacheService.updateHeliumUser(c);
+
+        UserDetailRespItf r = new UserDetailRespItf();
+        r.setUsername(c.user.getEmail());
+        r.setAddress(c.heliumUser.getAddress());
+        r.setCityCode(c.heliumUser.getCityCode());
+        r.setCityName(c.heliumUser.getCityName());
+        r.setCompany(c.heliumUser.getCompany());
+        r.setCountry(c.heliumUser.getCountry());
+        r.setFirstName(c.heliumUser.getFirstName());
+        r.setLastName(c.heliumUser.getLastName());
+        return r;
+    }
+
 
 
     /**

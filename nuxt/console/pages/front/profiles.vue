@@ -13,7 +13,7 @@
   import ManageTenant from '~/components/ManageTenant.vue';
 
   export default Vue.extend({
-      name: "ManageTenants",
+      name: "ManageTenantProfiles",
       components: { 
         'Navbar' : Navbar,
         'ManageTenantTemplate' : ManageTenantTemplate,

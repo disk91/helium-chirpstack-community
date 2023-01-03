@@ -2,6 +2,7 @@
     <div>
       <Navbar/>
       <BasicStat/>
+      <AddTenant/>
     </div>
   </template>
   
@@ -9,7 +10,8 @@
   import Vue from 'vue'
   import Navbar from '~/components/Navbar.vue';
   import BasicStat from '~/components/BasicStats.vue';
-  
+  import AddTenant from '~/components/AddTenant.vue';
+
   export default Vue.extend({
       name: "TestPage",
       
@@ -18,6 +20,7 @@
       components: { 
         'Navbar' : Navbar,
         'BasicStat' : BasicStat,
+        'AddTenant' : AddTenant,
       }
   })
   

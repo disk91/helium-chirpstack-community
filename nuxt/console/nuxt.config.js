@@ -29,6 +29,8 @@ export default {
     messageAdmDel:(process.env.API_HOST || '')+'/console/1.0/message/admin',
     messageGet:(process.env.API_HOST || '')+'/console/1.0/message/',
     messageAck:(process.env.API_HOST || '')+'/console/1.0/message/',
+    userDetailsGet:(process.env.API_HOST || '')+'/console/1.0/user/details',
+    userDetailsUpd:(process.env.API_HOST || '')+'/console/1.0/user/details',
     termAndUse:process.env.CONSOLE_TERMS || '/',
   },
 

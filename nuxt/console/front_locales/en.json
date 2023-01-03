@@ -163,5 +163,26 @@
   "tmes_unlimited" : "Check this for unlimited one time display",
   "message_title" : "Message from admin",
 
+  "profile_title" : "Profile",
+  "profile_detail" : "Profile details",
+  "tsl_username" : "User Name",
+  "tsl_company" :"Company Name",
+  "tsl_firstname" : "First Name",
+  "tsl_lastname" : "Last Name",
+  "tsl_address" : "Address",
+  "tsl_citycode" : "City Code",
+  "tsl_cityname" : "City Name",
+  "tsl_country" : "Country",
+  "tip_username" : "User name, usually email, can't be changed",
+  "tip_company" : "(Recommended) Company name if relevant",
+  "tip_firstname" : "(Recommended) User first name",
+  "tip_lastname" : "(Mandatory) User last name",
+  "tip_address" : "(Recommended) User billing address",
+  "tip_citycode" : "(Mandatory) User billing address city code",
+  "tip_cityname" : "(Mandatory) User billing city name",
+  "tip_country" : "(Mandatory) User billing country name",
+  "profile_upt_but" : "Update profile",
+
+
   "end" : "end"
 }

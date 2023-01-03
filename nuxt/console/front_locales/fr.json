@@ -162,5 +162,25 @@
     "tmes_unlimited" : "Cocher ceci pour un seul affichage sans limite de temps",
     "message_title" : "Message de l'administrateur",
 
+    "profile_title" : "Utilisateur",
+    "profile_detail" : "Information utilisateur",
+    "tsl_username" : "Identifiant",
+    "tsl_company" :"Entreprise",
+    "tsl_firstname" : "Prénom",
+    "tsl_lastname" : "Nom",
+    "tsl_address" : "Addresse",
+    "tsl_citycode" : "Code Postal",
+    "tsl_cityname" : "Ville",
+    "tsl_country" : "Pays",
+    "tip_username" : "Identifiant de connection, habituellement un email, ne peut être modifié",
+    "tip_company" : "(Recommandé) Nom de l'entreprise le cas échéant",
+    "tip_firstname" : "(Recommandé) Prénom",
+    "tip_lastname" : "(Obligatoire) Nom de famille",
+    "tip_address" : "(Recommandé) Adresse de facturation à utiliser",
+    "tip_citycode" : "(Obligatoire) Code postal de l'adresse de facturation",
+    "tip_cityname" : "(Obligatoire) Ville de l'adresse de facturation",
+    "tip_country" : "(Obligatoire) Pays de l'adresse de facturation",
+    "profile_upt_but" : "Mise à jour",
+
     "end" : "fin"
 }
