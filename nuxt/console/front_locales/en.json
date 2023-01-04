@@ -182,7 +182,13 @@
   "tip_cityname" : "(Mandatory) User billing city name",
   "tip_country" : "(Mandatory) User billing country name",
   "profile_upt_but" : "Update profile",
-
+  "profile_uncomplete" : "Your user profile needs to be completed to purchase DCs, please fill at least the mandatory fields to reach the purchase pannel.",
+  "updprofile_vmessage_success" : "Your profile has been saved",
+  "updprofile_vmessage_error" : "Error while saving your profile",
+  "dc_title" : "Data Credits",
+  "error_load_dc_tenants" : "Error during Tenants information loading",
+  "dc_remain_dc_title" : "remaining data credit",
+  "dc_payment_dc_title" : "default payment mehod",
 
   "end" : "end"
 }

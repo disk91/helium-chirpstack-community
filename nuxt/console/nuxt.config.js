@@ -22,6 +22,7 @@ export default {
     tenantSetupDelete:(process.env.API_HOST || '')+'/console/1.0/tenant/setup',
     tenantSearch:(process.env.API_HOST || '')+'/console/1.0/tenant/search',
     tenantDcUpdate:(process.env.API_HOST || '')+'/console/1.0/tenant/balance',
+    tenantsDcGet:(process.env.API_HOST || '')+'/console/1.0/tenant/balance',
     tenantBasicStat:(process.env.API_HOST || '')+'/console/1.0/tenant',
     messageAdmGet:(process.env.API_HOST || '')+'/console/1.0/message/admin',
     messageAdmUpd:(process.env.API_HOST || '')+'/console/1.0/message/admin',
@@ -31,6 +32,7 @@ export default {
     messageAck:(process.env.API_HOST || '')+'/console/1.0/message/',
     userDetailsGet:(process.env.API_HOST || '')+'/console/1.0/user/details',
     userDetailsUpd:(process.env.API_HOST || '')+'/console/1.0/user/details',
+    userStatusGet:(process.env.API_HOST || '')+'/console/1.0/user/',
     termAndUse:process.env.CONSOLE_TERMS || '/',
   },
 

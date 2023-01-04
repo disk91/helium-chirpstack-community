@@ -181,6 +181,13 @@
     "tip_cityname" : "(Obligatoire) Ville de l'adresse de facturation",
     "tip_country" : "(Obligatoire) Pays de l'adresse de facturation",
     "profile_upt_but" : "Mise à jour",
+    "profile_uncomplete" : "Vos information personnelles doivent etre complétée pour permettre d'accéder à la gestion de votre crédit de communication. Merci de remplir à minima les champs obligatoire pour continuer.",
+    "updprofile_vmessage_success" : "Vos informations ont été mise à jour",
+    "updprofile_vmessage_error" : "Un problème est survenu durant la mide à jour de vos informations.",
+    "dc_title" : "Data Credits",
+    "error_load_dc_tenants" : "Erreur lors du changement des données des tenants",
+    "dc_remain_dc_title" : "data credit restants",
+    "dc_payment_dc_title" : "moyen de paiement",
 
     "end" : "fin"
 }

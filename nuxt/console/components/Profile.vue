@@ -5,7 +5,11 @@
                 :header="$t('profile_detail')"
                 class="m-4"
         >
-            Message en haut si besoin update
+            <b-row cols="1" v-if="!isComplete" align-h="center" class="mb-3">
+                <b-col cols="6" class="bg-warning py-2" style="border-radius: 0.7rem;font-size:0.8rem;">
+                    {{  $t('profile_uncomplete') }}
+                </b-col>
+            </b-row>
 
             <b-form-group 
                         :label="$t('tsl_username')"
@@ -151,8 +155,14 @@
                     >
                     {{ $t('profile_upt_but') }}
                     </b-button>
-                    {{ errorMessageMod }}
-                    {{ successMessageMod }}
+                    <b-card-text class="small mb-2 text-danger" v-show="errorMessageMod!=''">
+                        <b-icon icon="exclamation-circle-fill" variant="danger"></b-icon>
+                        {{ $t(errorMessageMod) }}
+                    </b-card-text>
+                    <b-card-text class="mb-2 text-success" v-show="successMessageMod!=''">
+                        <b-icon icon="check-square" variant="success"></b-icon>
+                        {{ $t(successMessageMod) }}
+                    </b-card-text>
             </b-form-group>
         </b-card>
     </div>
@@ -166,6 +176,7 @@
 </style>
 
 <script lang="ts">
+import { tsImportEqualsDeclaration } from '@babel/types';
 import Vue from 'vue'
 import { UserDetails } from 'vue/types/userProfile';
 
@@ -175,6 +186,7 @@ interface data {
     errorMessage : string,
     errorMessageMod : string,
     successMessageMod : string,
+    isComplete: boolean,
 }
 
 export default Vue.extend({
@@ -186,6 +198,7 @@ export default Vue.extend({
             errorMessage : '',
             errorMessageMod : '',
             successMessageMod : '',
+            isComplete : true,
         };
     },
     async fetch() {
@@ -201,6 +214,7 @@ export default Vue.extend({
                 if (response.status == 200 ) {
                   this.profile = response.data;
                   this.isBusy = false;
+                  this.checkComplete();
                 }
             }).catch((err) =>{
                this.errorMessage = 'error_load_profile';
@@ -208,6 +222,13 @@ export default Vue.extend({
             })
     },
     methods : {
+        checkComplete() {
+            if ( this.profile.lastName == '' || this.profile.cityName == '' || this.profile.cityCode == '' || this.profile.country == '' ) {
+                this.isComplete = false;
+            } else {
+                this.isComplete = true;
+            }
+        },
         updateUser() {
           this.errorMessageMod='';
           this.successMessageMod='';
@@ -222,6 +243,7 @@ export default Vue.extend({
                     if (response.status == 200 ) {
                         this.successMessageMod = "updprofile_vmessage_success";
                         this.profile=response.data; // avoid reentering
+                        this.checkComplete();
                     }
                 }).catch((err) =>{
                     if ( err.response.status == 403 ) {

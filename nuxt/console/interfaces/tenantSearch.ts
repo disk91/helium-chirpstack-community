@@ -9,4 +9,10 @@ declare module "vue/types/tenantSearch" {
         tenantUUID : string,
         dcs : bigint
     }
+    interface TenantDcBalancesReqItf {
+        tenantName : string,
+        tenantUUID : string,
+        dcBalance : bigint,
+        minBalance : bigint
+    }
 }

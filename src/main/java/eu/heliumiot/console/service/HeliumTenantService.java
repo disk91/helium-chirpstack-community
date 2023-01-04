@@ -24,10 +24,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.google.protobuf.InvalidProtocolBufferException;
 import eu.heliumiot.console.ConsoleConfig;
-import eu.heliumiot.console.api.interfaces.TenantBalanceItf;
-import eu.heliumiot.console.api.interfaces.TenantBasicStatRespItf;
-import eu.heliumiot.console.api.interfaces.TenantCreateReqItf;
-import eu.heliumiot.console.api.interfaces.TenantSearchRespItf;
+import eu.heliumiot.console.api.interfaces.*;
 import eu.heliumiot.console.chirpstack.ChirpstackApiAccess;
 import eu.heliumiot.console.jpa.db.HeliumTenant;
 import eu.heliumiot.console.jpa.db.HeliumTenantSetup;
@@ -472,6 +469,44 @@ public class HeliumTenantService {
 
     @Autowired
     protected UserTenantRepository userTenantRepository;
+
+    /**
+     * Get the list of tenant a User own
+     * @param userId
+     * @return
+     * @throws ITRightException
+     */
+    public List<TenantBalancesItf> getTenantDcBalances(String userId)
+    throws ITRightException {
+        UserCacheService.UserCacheElement user = userCacheService.getUserById(userId);
+        if (user == null) throw new ITRightException();
+        // admin see everything and don't need to buy Dcs ...
+        ArrayList<TenantBalancesItf> rs = new ArrayList<>();
+        if ( !user.user.isAdmin() ) {
+            // search if tenant authorization exists
+            List<UserTenant> uts = userTenantRepository.findUserTenantByUserIdAndIsAdmin(
+                    UUID.fromString(userId),
+                    true
+            );
+            if ( uts == null || uts.size() == 0 ) throw new ITRightException();
+
+            for ( UserTenant ut : uts ) {
+                HeliumTenant ht = this.getHeliumTenant(ut.getTenantId().toString());
+                HeliumTenantSetup hts = heliumTenantSetupService.getHeliumTenantSetup(ut.getTenantId().toString());
+                eu.heliumiot.console.jpa.db.Tenant t = tenantRepository.findOneTenantById(ut.getTenantId());
+                TenantBalancesItf r = new TenantBalancesItf();
+                r.setTenantUUID(ut.getTenantId().toString());
+                r.setDcBalance(ht.getDcBalance());
+                r.setMinBalance(hts.getDcBalanceStop());
+                if ( t != null ) {
+                    r.setTenantName(t.getName());
+                }
+                rs.add(r);
+            }
+        }
+        return rs;
+    }
+
 
     public TenantBalanceItf getTenantDcBalance(String userId, String tenantId)
     throws ITRightException

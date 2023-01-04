@@ -79,9 +79,22 @@ public class EncryptionHelper {
      */
     public String encrypt(String tobeEncrypted, String iv, String encKey ) {
 
-        int padding = tobeEncrypted.length() & 0x0F;
-        if ( padding > 0 ) {
-            for (int i = 0; i < 16 - padding; i++) tobeEncrypted += ' ';
+        byte [] byteToEncrytp;
+        try {
+            byte [] byteToEncrytpLen = tobeEncrypted.getBytes("UTF-8");
+            int pad = (16 - (byteToEncrytpLen.length & 0x0F) );
+            if ( pad == 16 ) pad = 0;
+            pad += byteToEncrytpLen.length;
+            byteToEncrytp = new byte[pad];
+            for ( int i = 0 ; i < byteToEncrytpLen.length ; i++ ) {
+                byteToEncrytp[i] = byteToEncrytpLen[i];
+            }
+            for ( int i = byteToEncrytpLen.length ; i < pad ; i ++ ) {
+                byteToEncrytp[i] = 0;
+            }
+        } catch ( UnsupportedEncodingException e ) {
+            log.error(e.getLocalizedMessage());
+            return null;
         }
 
         byte[] _iv = Stuff.getBytesFromInt(Stuff.getDataArray(iv));
@@ -95,7 +108,7 @@ public class EncryptionHelper {
                             )), "AES");
             Cipher cipher = Cipher.getInstance("AES/CBC/NoPadding");
             cipher.init(Cipher.ENCRYPT_MODE, skeySpec, iv_);
-            String result = Base64.getEncoder().encodeToString(cipher.doFinal(tobeEncrypted.getBytes("UTF-8")));
+            String result = Base64.getEncoder().encodeToString(cipher.doFinal(byteToEncrytp));
             return result;
         } catch (NoSuchPaddingException e) {
             log.error("Error initializing the AES encryption library 1");
@@ -110,8 +123,6 @@ public class EncryptionHelper {
         } catch (IllegalBlockSizeException e) {
             log.error(e.getLocalizedMessage());
         } catch (BadPaddingException e) {
-            log.error(e.getLocalizedMessage());
-        } catch (UnsupportedEncodingException e) {
             log.error(e.getLocalizedMessage());
         }
         return null;
@@ -139,7 +150,21 @@ public class EncryptionHelper {
             Cipher cipher = Cipher.getInstance("AES/CBC/NoPadding");
             cipher.init(Cipher.DECRYPT_MODE, skeySpec, iv_);
 
-            return new String (cipher.doFinal(Base64.getDecoder().decode(tobeDecrypted)), StandardCharsets.UTF_8).trim();
+            byte [] decryptedBytes = cipher.doFinal(Base64.getDecoder().decode(tobeDecrypted));
+            int pad = 0;
+            for ( int i = decryptedBytes.length ; i > 0 ; i-- ) {
+                if ( decryptedBytes[i-1] == 0 ) pad++;
+                else break;
+            }
+
+            byte [] unpadded = new byte[decryptedBytes.length-pad];
+            for ( int i = 0 ; i < decryptedBytes.length-pad ; i++ ) {
+                unpadded[i] = decryptedBytes[i];
+            }
+
+            // trim should be removed with the new method but I keep it for non regression
+            // with the string already stored in database
+            return new String (unpadded, StandardCharsets.UTF_8).trim();
         } catch (NoSuchPaddingException e) {
             log.error("Error initializing the AES decryption library 1");
         } catch (NoSuchAlgorithmException e) {

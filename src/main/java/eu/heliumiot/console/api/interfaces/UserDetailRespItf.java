@@ -23,9 +23,6 @@ package eu.heliumiot.console.api.interfaces;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.tags.Tag;
 
-import javax.persistence.Column;
-import java.sql.Timestamp;
-
 @Tag(name = "User details Interface", description = "user details interface")
 public class UserDetailRespItf {
 

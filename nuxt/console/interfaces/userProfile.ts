@@ -9,4 +9,8 @@ declare module "vue/types/userProfile" {
         cityName : string
         country: string,
     }
+    interface UserLogin {
+        username : string,
+        completion: string
+    }
 }

@@ -572,13 +572,21 @@ public class UserService {
         if ( c == null ) throw new ITNotFoundException();
         UserDetailRespItf r = new UserDetailRespItf();
         r.setUsername(c.user.getEmail());
-        r.setAddress(c.heliumUser.getAddress());
+        if ( c.heliumUser.getAddress() != null ) {
+            r.setAddress(encryptionHelper.decryptStringWithServerKey(c.heliumUser.getAddress()));
+        } else r.setAddress("");
         r.setCityCode(c.heliumUser.getCityCode());
         r.setCityName(c.heliumUser.getCityName());
-        r.setCompany(c.heliumUser.getCompany());
+        if ( c.heliumUser.getCompany() != null ) {
+            r.setCompany(encryptionHelper.decryptStringWithServerKey(c.heliumUser.getCompany()));
+        } else r.setCompany("");
         r.setCountry(c.heliumUser.getCountry());
-        r.setFirstName(c.heliumUser.getFirstName());
-        r.setLastName(c.heliumUser.getLastName());
+        if ( c.heliumUser.getFirstName() != null ) {
+            r.setFirstName(encryptionHelper.decryptStringWithServerKey(c.heliumUser.getFirstName()));
+        } else r.setFirstName("");
+        if ( c.heliumUser.getLastName() != null ) {
+            r.setLastName(encryptionHelper.decryptStringWithServerKey(c.heliumUser.getLastName()));
+        } else r.setLastName("");
         return r;
     }
 
@@ -597,10 +605,10 @@ public class UserService {
 
         if ( u.getUsername().compareToIgnoreCase(c.user.getEmail()) != 0 ) throw new ITRightException();
 
-        c.heliumUser.setFirstName(u.getFirstName());
-        c.heliumUser.setLastName(u.getLastName());
-        c.heliumUser.setCompany(u.getCompany());
-        c.heliumUser.setAddress(u.getAddress());
+        c.heliumUser.setFirstName(encryptionHelper.encryptStringWithServerKey(u.getFirstName()));
+        c.heliumUser.setLastName(encryptionHelper.encryptStringWithServerKey(u.getLastName()));
+        c.heliumUser.setCompany(encryptionHelper.encryptStringWithServerKey(u.getCompany()));
+        c.heliumUser.setAddress(encryptionHelper.encryptStringWithServerKey(u.getAddress()));
         c.heliumUser.setCityCode(u.getCityCode());
         c.heliumUser.setCityName(u.getCityName());
         c.heliumUser.setCountry(u.getCountry());
@@ -613,17 +621,15 @@ public class UserService {
 
         UserDetailRespItf r = new UserDetailRespItf();
         r.setUsername(c.user.getEmail());
-        r.setAddress(c.heliumUser.getAddress());
+        r.setAddress(u.getAddress());
         r.setCityCode(c.heliumUser.getCityCode());
         r.setCityName(c.heliumUser.getCityName());
-        r.setCompany(c.heliumUser.getCompany());
+        r.setCompany(u.getCompany());
         r.setCountry(c.heliumUser.getCountry());
-        r.setFirstName(c.heliumUser.getFirstName());
-        r.setLastName(c.heliumUser.getLastName());
+        r.setFirstName(u.getFirstName());
+        r.setLastName(u.getLastName());
         return r;
     }
-
-
 
     /**
      * Create a password lost request
