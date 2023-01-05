@@ -1,5 +1,5 @@
 /*
- * Copyright (c) - Paul Pinault (aka disk91) - 2020.
+ * Copyright (c) - Paul Pinault (aka disk91) - 2018.
  *
  *    Permission is hereby granted, free of charge, to any person obtaining a copy of this software
  *    and associated documentation files (the "Software"), to deal in the Software without restriction,
@@ -17,41 +17,46 @@
  *    WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR
  *    IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-package eu.heliumiot.console.jpa.repository;
 
-import eu.heliumiot.console.jpa.db.User;
-import eu.heliumiot.console.jpa.db.UserTenant;
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.CrudRepository;
-import org.springframework.stereotype.Repository;
+package eu.heliumiot.console.api.interfaces;
 
-import java.util.List;
-import java.util.UUID;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.tags.Tag;
 
-@Repository
-public interface UserTenantRepository extends CrudRepository<UserTenant, UUID> {
-
-    public UserTenant findOneUserByUserIdAndTenantId(
-            UUID userId,
-            UUID tenantId
-            );
+@Tag(name = "Transfer DC between Tenant Response", description = "transfer DCs between a tenant owned by the user and a tenant with access")
+public class TenantDcTransferRespItf {
 
 
-    //@Query(value = "SELECT * from tenant_user where user_id='23e008f4-49e1-4378-b2fc-fff9fc444f3e' and is_admin=true;", nativeQuery = true)
-    public List<UserTenant> findUserTenantByUserIdAndIsAdmin(
-            UUID userId,
-            boolean isAdmin
-    );
-
-    public List<UserTenant> findUserTenantByTenantIdAndIsAdmin(
-            UUID tenantId,
-            boolean isAdmin
-    );
+    @Schema(
+            description = "Transaction UUID",
+            requiredMode = Schema.RequiredMode.REQUIRED
+    )
+    protected String transcationUUID;
 
 
-    public List<UserTenant> findUserTenantByUserId(
-            UUID userId
-    );
+    @Schema(
+            description = "Quantity of DCs really transferred",
+            requiredMode = Schema.RequiredMode.REQUIRED
+    )
+    protected long dcs;
 
 
+    // ------------------------------------
+
+
+    public String getTranscationUUID() {
+        return transcationUUID;
+    }
+
+    public void setTranscationUUID(String transcationUUID) {
+        this.transcationUUID = transcationUUID;
+    }
+
+    public long getDcs() {
+        return dcs;
+    }
+
+    public void setDcs(long dcs) {
+        this.dcs = dcs;
+    }
 }

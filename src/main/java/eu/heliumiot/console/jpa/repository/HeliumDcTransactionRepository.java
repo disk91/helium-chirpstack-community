@@ -19,39 +19,23 @@
  */
 package eu.heliumiot.console.jpa.repository;
 
-import eu.heliumiot.console.jpa.db.User;
-import eu.heliumiot.console.jpa.db.UserTenant;
+import eu.heliumiot.console.jpa.db.HeliumDcTransaction;
+import eu.heliumiot.console.jpa.db.HeliumDevice;
 import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.UUID;
 
 @Repository
-public interface UserTenantRepository extends CrudRepository<UserTenant, UUID> {
+public interface HeliumDcTransactionRepository extends PagingAndSortingRepository<HeliumDcTransaction, UUID> {
 
-    public UserTenant findOneUserByUserIdAndTenantId(
-            UUID userId,
-            UUID tenantId
-            );
+    public HeliumDcTransaction findOneHeliumDcTransactionById(UUID transactionId);
 
-
-    //@Query(value = "SELECT * from tenant_user where user_id='23e008f4-49e1-4378-b2fc-fff9fc444f3e' and is_admin=true;", nativeQuery = true)
-    public List<UserTenant> findUserTenantByUserIdAndIsAdmin(
-            UUID userId,
-            boolean isAdmin
+    public List<HeliumDcTransaction> findHeliumDcTransactionByUserUUID(
+            String userUUID
     );
-
-    public List<UserTenant> findUserTenantByTenantIdAndIsAdmin(
-            UUID tenantId,
-            boolean isAdmin
-    );
-
-
-    public List<UserTenant> findUserTenantByUserId(
-            UUID userId
-    );
-
 
 }
+

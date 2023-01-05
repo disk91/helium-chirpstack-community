@@ -22,6 +22,7 @@ export default {
     tenantSetupDelete:(process.env.API_HOST || '')+'/console/1.0/tenant/setup',
     tenantSearch:(process.env.API_HOST || '')+'/console/1.0/tenant/search',
     tenantDcUpdate:(process.env.API_HOST || '')+'/console/1.0/tenant/balance',
+    tenantDcTrans:(process.env.API_HOST || '')+'/console/1.0/tenant/dc/transfer',
     tenantsDcGet:(process.env.API_HOST || '')+'/console/1.0/tenant/balance',
     tenantBasicStat:(process.env.API_HOST || '')+'/console/1.0/tenant',
     messageAdmGet:(process.env.API_HOST || '')+'/console/1.0/message/admin',

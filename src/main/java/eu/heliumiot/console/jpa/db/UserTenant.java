@@ -22,15 +22,13 @@ package eu.heliumiot.console.jpa.db;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Immutable;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.sql.Timestamp;
 import java.util.UUID;
 
 @Entity
 @Immutable
+@IdClass(UserTenantId.class)
 @Table(name = "tenant_user", schema = "public")
 public class UserTenant {
     @Id
@@ -38,6 +36,7 @@ public class UserTenant {
     @Column(name = "user_id", updatable = false, nullable = false)
     private UUID userId;
 
+    @Id
     @GenericGenerator(name = "UUIDGenerator", strategy = "uuid2")
     @Column(name = "tenant_id", updatable = false, nullable = false)
     private UUID tenantId;

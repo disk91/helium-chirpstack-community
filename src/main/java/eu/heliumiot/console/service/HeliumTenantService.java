@@ -26,32 +26,29 @@ import com.google.protobuf.InvalidProtocolBufferException;
 import eu.heliumiot.console.ConsoleConfig;
 import eu.heliumiot.console.api.interfaces.*;
 import eu.heliumiot.console.chirpstack.ChirpstackApiAccess;
-import eu.heliumiot.console.jpa.db.HeliumTenant;
-import eu.heliumiot.console.jpa.db.HeliumTenantSetup;
-import eu.heliumiot.console.jpa.db.HeliumUser;
+import eu.heliumiot.console.jpa.db.*;
 import eu.heliumiot.console.jpa.db.UserTenant;
-import eu.heliumiot.console.jpa.repository.HeliumUserRepository;
-import eu.heliumiot.console.jpa.repository.TenantRepository;
-import eu.heliumiot.console.jpa.repository.UserTenantRepository;
+import eu.heliumiot.console.jpa.repository.*;
 import eu.heliumiot.console.mqtt.MqttSender;
 import eu.heliumiot.console.mqtt.api.HeliumDeviceStatItf;
-import eu.heliumiot.console.jpa.repository.HeliumTenantRepository;
 import eu.heliumiot.console.mqtt.api.HeliumTenantActDeactItf;
+import eu.heliumiot.console.tools.EncryptionHelper;
 import fr.ingeniousthings.tools.ITNotFoundException;
 import fr.ingeniousthings.tools.ITParseException;
 import fr.ingeniousthings.tools.ITRightException;
 import fr.ingeniousthings.tools.Now;
 import io.chirpstack.restapi.*;
+import io.chirpstack.restapi.Tenant;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.jpa.repository.Query;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -406,6 +403,7 @@ public class HeliumTenantService {
         return true;
     }
 
+
     /**
      * Commit tenant deactivation once made asynchronously
      */
@@ -498,6 +496,34 @@ public class HeliumTenantService {
                 r.setTenantUUID(ut.getTenantId().toString());
                 r.setDcBalance(ht.getDcBalance());
                 r.setMinBalance(hts.getDcBalanceStop());
+                if ( t != null ) {
+                    r.setTenantName(t.getName());
+                }
+                rs.add(r);
+            }
+        }
+        return rs;
+    }
+
+    public List<TenantBalancesItf> getAllTenantDcBalances(String userId)
+            throws ITRightException {
+        UserCacheService.UserCacheElement user = userCacheService.getUserById(userId);
+        if (user == null) throw new ITRightException();
+        // admin see everything and don't need to buy Dcs ...
+        ArrayList<TenantBalancesItf> rs = new ArrayList<>();
+        if ( !user.user.isAdmin() ) {
+            // search if tenant authorization exists
+            List<UserTenant> uts = userTenantRepository.findUserTenantByUserId(
+                    UUID.fromString(userId)
+            );
+            if ( uts == null || uts.size() == 0 ) throw new ITRightException();
+
+            for ( UserTenant ut : uts ) {
+                eu.heliumiot.console.jpa.db.Tenant t = tenantRepository.findOneTenantById(ut.getTenantId());
+                TenantBalancesItf r = new TenantBalancesItf();
+                r.setTenantUUID(ut.getTenantId().toString());
+                r.setDcBalance(0);
+                r.setMinBalance(0);
                 if ( t != null ) {
                     r.setTenantName(t.getName());
                 }
@@ -803,6 +829,94 @@ public class HeliumTenantService {
         return stats;
     }
 
+    @Autowired
+    protected HeliumDcTransactionRepository heliumDcTransactionRepository;
 
+    @Autowired
+    protected EncryptionHelper encryptionHelper;
+
+    public static final int HTRANSACTION_TYPE_TRANSFER = 0;
+    public static final int HTRANSACTION_TYPE_STRIPE = 1;
+
+
+    /**
+     * Transfer DCs between different tenant
+     * The source must be owned by user
+     * The destination must be accessible by user
+     * The amount is a maximum
+     * @param userId
+     * @param req
+     * @return
+     */
+    public TenantDcTransferRespItf transferDcBetweenTenant(
+            String userId,
+            String ip,
+            TenantDcTransferReqItf req
+    ) throws ITRightException {
+
+        UserCacheService.UserCacheElement user = userCacheService.getUserById(userId);
+        if (user == null) throw new ITRightException();
+        if (req.getDcs() <= 0) throw new ITRightException();
+
+        // check ownership
+        UserTenant ts = userTenantRepository.findOneUserByUserIdAndTenantId(UUID.fromString(userId), UUID.fromString(req.getTenantSrcUUID()));
+        UserTenant td = userTenantRepository.findOneUserByUserIdAndTenantId(UUID.fromString(userId), UUID.fromString(req.getTenantDestUUID()));
+        if ( ts == null || ts.isAdmin() == false || td == null ) {
+            log.warn("TransferDC - attempt to transfer from not owned tenant by " + userId);
+            throw new ITRightException();
+        }
+
+        // Execute transaction
+        long realDc = 0;
+        synchronized (this) {
+            HeliumTenant src = this.getHeliumTenant(req.getTenantSrcUUID());
+            HeliumTenant dst = this.getHeliumTenant(req.getTenantDestUUID());
+            if (src != null && dst != null) {
+                if ( src.getDcBalance() >= req.getDcs() ) {
+                    src.setDcBalance(src.getDcBalance()-req.getDcs());
+                    dst.setDcBalance(dst.getDcBalance()+req.getDcs());
+                    realDc = req.getDcs();
+                } else {
+                    realDc = src.getDcBalance();
+                    if ( realDc > 0 ) {
+                        dst.setDcBalance(dst.getDcBalance() + realDc);
+                        src.setDcBalance(0);
+                    } else realDc = 0;
+                }
+                if ( realDc > 0 ) {
+                    this.flushHeliumTenant(src);
+                    this.flushHeliumTenant(dst);
+                }
+            }
+        }
+
+        if ( realDc == 0 ) throw new ITRightException();
+
+
+        // Store transaction
+        HeliumDcTransaction t = new HeliumDcTransaction();
+        t.setUserUUID(user.user.getId().toString());
+        t.setType(HTRANSACTION_TYPE_TRANSFER);
+        t.setDcs(realDc);
+        t.setDcsRequested(req.getDcs());
+        t.setTargetTenantUUID(req.getTenantDestUUID());
+        t.setSourceTenantUUID(req.getTenantSrcUUID());
+        t.setCreatedAt(new Timestamp(Now.NowUtcMs()));
+        try {
+            if ( ip != null ) {
+                String eIp = encryptionHelper.encryptStringWithServerKey(ip);
+                t.setUserIP(eIp);
+            } else t.setUserIP("");
+        } catch (Exception e) {
+            t.setUserIP("");
+        }
+        t = heliumDcTransactionRepository.save(t);
+
+        TenantDcTransferRespItf r = new TenantDcTransferRespItf();
+        r.setTranscationUUID(t.getId().toString());
+        r.setDcs(t.getDcs());
+
+        return r;
+    }
 
 }

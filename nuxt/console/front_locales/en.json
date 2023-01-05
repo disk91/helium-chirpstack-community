@@ -189,6 +189,24 @@
   "error_load_dc_tenants" : "Error during Tenants information loading",
   "dc_remain_dc_title" : "remaining data credit",
   "dc_payment_dc_title" : "default payment mehod",
+  "dc_transfer" : "Tranfer DC to Tenant",
+  "dc_purchase" : "Purchase Data Credits",
+  "dc_tenant_label" : "Tenant name",
+  "dc_balance_label" : "Remaining Data Credits",
+  "dc_minbal_label" : "Lower authorized limit",
+  "dc_payment_histo" : "payment history",
+
+  "dc_trans_title" : "Transfer DC between Tenants",
+  "dc_trans_select_source" : "Select the source tenant where you want to take the Data Credits:",
+  "dc_trans_select_dest" : "Data Credits can be transered to any other Tenant you have access to. This operation is one way, make sure you select the right target.",
+  "dc_trans_quantity" : "Enter Quantity",
+  "dc_trans_select_quantity" : "I'd like to send:",
+  "dc_trans_select_dest2" : "Which Tenant should receive them?",
+  "dc_trans_cancel" : "Cancel",
+  "dc_trans_make" : "Make Transfer",
+  "error_transfer_dc" : "Transaction failed, please try again",
+  "succes_transfer_dc1" : "Transaction success, ",
+  "succes_transfer_dc2" : " DCs transfered",
 
   "end" : "end"
 }

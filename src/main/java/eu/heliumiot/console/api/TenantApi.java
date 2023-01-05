@@ -25,7 +25,10 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.Enumeration;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Optional;
 
 @Tag( name = "tenant api", description = "Information about tenant api" )
 @CrossOrigin
@@ -79,11 +82,18 @@ public class TenantApi {
             method= RequestMethod.GET)
     @PreAuthorize("hasAnyRole('ROLE_USER')")
     public ResponseEntity<?> requestUserTenantBalancesDetail(
-            HttpServletRequest request
+            HttpServletRequest request,
+            @Parameter(required = false, name = "notOwned", description = "get tenant including not owned, in this case balance returned will be 0")
+            @RequestParam("notOwned") Optional<String> notOwned
     ) {
         log.debug("Get user tenants balances for "+request.getUserPrincipal().getName());
         try {
-            List<TenantBalancesItf> r = heliumTenantService.getTenantDcBalances(request.getUserPrincipal().getName());
+            List<TenantBalancesItf> r;
+            if ( ! notOwned.isEmpty() && notOwned.get().compareToIgnoreCase("true") == 0 ) {
+                r = heliumTenantService.getAllTenantDcBalances(request.getUserPrincipal().getName());
+            } else {
+                r = heliumTenantService.getTenantDcBalances(request.getUserPrincipal().getName());
+            }
             return new ResponseEntity<>(r, HttpStatus.OK);
         } catch (ITRightException x) {
             return new ResponseEntity<>(ActionResult.FORBIDDEN(), HttpStatus.FORBIDDEN);
@@ -284,6 +294,44 @@ public class TenantApi {
             return new ResponseEntity<>(ActionResult.BADREQUEST(), HttpStatus.BAD_REQUEST);
         }
     }
+
+    @Operation(summary = "Transfer tenant DC ",
+            description = "Transfer DCs between tenant you have access",
+            responses = {
+                    @ApiResponse(responseCode = "200", description= "Ok", content = @Content(schema = @Schema(implementation = TenantDcTransferRespItf.class))),
+                    @ApiResponse(responseCode = "403", description= "Forbidden", content = @Content(schema = @Schema(implementation = ActionResult.class))),
+            }
+    )
+    @RequestMapping(value="/dc/transfer",
+            produces = MediaType.APPLICATION_JSON_VALUE,
+            method= RequestMethod.PUT)
+    @PreAuthorize("hasAnyRole('ROLE_USER')")
+    public ResponseEntity<?> transferTenantDC(
+            HttpServletRequest request,
+            @RequestBody(required = true) TenantDcTransferReqItf transferDcs
+    ) {
+        log.debug("Transfer DCs between tenants "+request.getUserPrincipal().getName());
+
+        /*
+        Iterator<String> hs = request.getHeaderNames().asIterator();
+        while (  hs.hasNext() ) {
+            String h = hs.next();
+            log.info("### header : "+h+" value"+request.getHeader(h));
+        }
+         */
+
+        try {
+            TenantDcTransferRespItf r = heliumTenantService.transferDcBetweenTenant(
+                    request.getUserPrincipal().getName(),
+                    request.getHeader("x-real-ip"),
+                    transferDcs
+            );
+            return new ResponseEntity<>(r, HttpStatus.OK);
+        } catch ( ITRightException x ) {
+            return new ResponseEntity<>(ActionResult.FORBIDDEN(), HttpStatus.FORBIDDEN);
+        }
+    }
+
 
     // ######################
 

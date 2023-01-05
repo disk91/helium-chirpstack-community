@@ -188,6 +188,24 @@
     "error_load_dc_tenants" : "Erreur lors du changement des données des tenants",
     "dc_remain_dc_title" : "data credit restants",
     "dc_payment_dc_title" : "moyen de paiement",
+    "dc_transfer" : "Tranferer des DC vers un Tenant",
+    "dc_purchase" : "Acheter des Data Credits",
+    "dc_tenant_label" : "Nom du tenant",
+    "dc_balance_label" : "Data Credits restant",
+    "dc_minbal_label" : "Limite autorisée",
+    "dc_payment_histo" : "historique des paiements",
 
+    "dc_trans_title" : "Transfert de DC entre Tenants",
+    "dc_trans_select_source" : "Sélectionner le tenant où prélever les Data credits",
+    "dc_trans_select_dest" : "Les Data Credits peuvent etre transférés vers un tenant auquel vous avez accès, cette opération n'est pas annulable, prenez soin de bien vérifier la destination.",
+    "dc_trans_quantity" : "Saisir la Quantité",
+    "dc_trans_select_quantity" : "Je veux transférer:",
+    "dc_trans_select_dest2" : "Quel Tenant doit les recevoir ?",
+    "dc_trans_cancel" : "Abandonner",
+    "dc_trans_make" : "Transférer",
+    "error_transfer_dc" : "Echec du transfer, merci d'essayer plus tard.",
+    "succes_transfer_dc1" : "Transaction effectuée, ",
+    "succes_transfer_dc2" : " DCs transférés",
+  
     "end" : "fin"
 }

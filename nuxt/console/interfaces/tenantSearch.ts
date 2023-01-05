@@ -15,4 +15,13 @@ declare module "vue/types/tenantSearch" {
         dcBalance : bigint,
         minBalance : bigint
     }
+    interface TenantDcTransferReqItf {
+        tenantSrcUUID : string,
+        tenantDestUUID : string,
+        dcs : BigInt
+    } 
+    interface TenantDcTransferRespItf {
+        transcationUUID : string,
+        dcs : BigInt
+    } 
 }
