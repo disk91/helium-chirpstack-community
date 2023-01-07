@@ -1,11 +1,5 @@
 <template>
     <div>
-        <b-card-text class="m-4"><h5>{{$t('dc_title')}}</h5></b-card-text>
-       
-        <b-card
-                class="m-4"
-        >
-
         <b-row cols="3" class="mb-2">
             <b-col cols="3" class="py-2" style="font-size:0.8rem;">
                 <b-button block
@@ -85,27 +79,7 @@
                 </b-card>
             </b-col>
         </b-row>
-
-        <b-row col="3" class="mb-3">
-            <b-col cols="12" class="py-1" style="font-size:0.8rem;">
-                <b-card
-                        :header="$t('dc_payment_histo')"
-                        class="ml-0 DataCredit"
-                >
-
-                </b-card>
-            </b-col>
-        </b-row>
-
-
-    </b-card>
-
-
-    <DataCreditTransfer/>
-
-
-
-
+        <DataCreditTransfer/>
     </div>
 </template>
 <style>

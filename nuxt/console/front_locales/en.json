@@ -194,7 +194,7 @@
   "dc_tenant_label" : "Tenant name",
   "dc_balance_label" : "Remaining Data Credits",
   "dc_minbal_label" : "Lower authorized limit",
-  "dc_payment_histo" : "payment history",
+  "dc_payment_histo" : "payment / transfer history",
 
   "dc_trans_title" : "Transfer DC between Tenants",
   "dc_trans_select_source" : "Select the source tenant where you want to take the Data Credits:",
@@ -207,6 +207,10 @@
   "error_transfer_dc" : "Transaction failed, please try again",
   "succes_transfer_dc1" : "Transaction success, ",
   "succes_transfer_dc2" : " DCs transfered",
+  "dc_transac_time_label" : "Transaction time",
+  "dc_transac_tenant_label" : "Credited tenant",
+  "dc_transac_dcs_label" : "Data Credits",
+  "dc_transac_cost_label" : "Cost",
 
   "end" : "end"
 }

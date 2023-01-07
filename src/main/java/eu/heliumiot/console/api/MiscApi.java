@@ -33,51 +33,39 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
 
-@Tag( name = "admin api", description = "admin api" )
+@Tag( name = "misc api", description = "misc api" )
 @CrossOrigin
-@RequestMapping(value = "/internal/3.0")
+@RequestMapping(value = "/console/1.0/misc")
 @RestController
-public class InternalApi {
+public class MiscApi {
 
     private final Logger log = LoggerFactory.getLogger(this.getClass());
 
     @Autowired
-    private ExitService exitService;
+    ConsoleConfig consoleConfig;
 
-    @Operation(summary = "Exit the application - this API is not exposed",
-            description = "Request the backend to stop processing after terminating current work.",
-            responses = {
-                @ApiResponse(responseCode = "200", description= "Done", content = @Content(schema = @Schema(implementation = ActionResult.class)))
-            }
-    )
-    @RequestMapping(value="/exit",
-            produces = MediaType.APPLICATION_JSON_VALUE,
-            method= RequestMethod.GET)
-    public ResponseEntity<?> requestStopApplication(
-            HttpServletRequest request
-    ) {
-        log.info("Request to stop the application");
-        exitService.onCallExit();
-        return new ResponseEntity<>(ActionResult.SUCESS(), HttpStatus.OK);
-    }
-
-    @Operation(summary = "Healthcheck",
-            description = "Just to make sure the api is up & running.",
+    @Operation(summary = "Backend Version",
+            description = "Returns the backend version",
             responses = {
                     @ApiResponse(responseCode = "200", description= "Done", content = @Content(schema = @Schema(implementation = ActionResult.class)))
             }
     )
-    @RequestMapping(value="/health",
+    @RequestMapping(value="/version",
             produces = MediaType.APPLICATION_JSON_VALUE,
             method= RequestMethod.GET)
-    public ResponseEntity<?> requestApplicationHealth(
+    public ResponseEntity<?> requestApplicationVersion(
             HttpServletRequest request
     ) {
-        return new ResponseEntity<>(ActionResult.SUCESS(), HttpStatus.OK);
+        ActionResult r = ActionResult.SUCESS();
+        r.setMessage(consoleConfig.getVersion());
+        return new ResponseEntity<>(r, HttpStatus.OK);
     }
 
 }

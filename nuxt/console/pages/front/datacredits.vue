@@ -2,7 +2,13 @@
     <div>
       <Navbar/>
       <AddTenant/>
-      <DataCredit/>
+      <b-card-text class="m-4"><h5>{{$t('dc_title')}}</h5></b-card-text>
+      <b-card
+               class="m-4"
+      >
+        <DataCredit/>
+        <TransactionList/>
+      </b-card>
     </div>
 </template>
 
@@ -11,6 +17,7 @@
   import Navbar from '~/components/Navbar.vue';
   import AddTenant from '~/components/AddTenant.vue';
   import DataCredit from '~/components/DataCredit.vue';
+  import TransactionList from "~/components/TransactionList.vue";
   import { UserLogin } from 'vue/types/userProfile';
 
 interface data {
@@ -23,6 +30,7 @@ export default Vue.extend({
         'Navbar' : Navbar,
         'AddTenant' : AddTenant,
         'DataCredit' : DataCredit,
+        'TransactionList' : TransactionList,
       },
       data() : data {
         return {

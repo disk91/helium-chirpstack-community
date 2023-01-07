@@ -34,7 +34,10 @@ export default {
     userDetailsGet:(process.env.API_HOST || '')+'/console/1.0/user/details',
     userDetailsUpd:(process.env.API_HOST || '')+'/console/1.0/user/details',
     userStatusGet:(process.env.API_HOST || '')+'/console/1.0/user/',
+    transactionListGet:(process.env.API_HOST || '')+'/console/1.0/transaction/',
+    backVersionGet:(process.env.API_HOST || '')+'/console/1.0/misc/version',
     termAndUse:process.env.CONSOLE_TERMS || '/',
+    frontVersion:'0.3.0'
   },
 
   // env variables loaded accessible on the server side

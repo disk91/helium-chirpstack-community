@@ -36,11 +36,11 @@ public class ConsoleConfig {
     // =====================================
     // Application Misc
     // =====================================
+    @Value("${helium.version}")
+    private String version;
+
     @Value("${config.file}")
     private String configFile;
-    public String getConfigFile() {
-        return configFile;
-    }
 
     @Value ("${helium.allows.signup.default}")
     private String heliumAllowsSignupDefault;
@@ -48,6 +48,13 @@ public class ConsoleConfig {
     @Value ("${helium.allows.signup}")
     private String heliumAllowsSignupExternal;
 
+    public String getVersion() {
+        return version;
+    }
+
+    public String getConfigFile() {
+        return configFile;
+    }
 
     public String getHeliumAllowsSignupDefault() {
         return heliumAllowsSignupDefault;

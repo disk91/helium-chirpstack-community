@@ -33,7 +33,7 @@ public interface HeliumDcTransactionRepository extends PagingAndSortingRepositor
 
     public HeliumDcTransaction findOneHeliumDcTransactionById(UUID transactionId);
 
-    public List<HeliumDcTransaction> findHeliumDcTransactionByUserUUID(
+    public List<HeliumDcTransaction> findHeliumDcTransactionByUserUUIDOrderByCreatedAtDesc(
             String userUUID
     );
 

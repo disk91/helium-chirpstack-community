@@ -1,7 +1,12 @@
 <template>
 <div>
   <b-navbar toggleable="lg" type="dark" variant="dark" class="py-0">
-    <b-navbar-brand to="/front/">{{ $config.consoleName }}</b-navbar-brand>
+    <img src="/static/front/helium_logo.svg" style="width: 22px; position: relative; top: 0px ; left: -5px; ; margin-right: 4px;"/>
+    <b-navbar-brand to="/front/">
+      <span class="text-light" style="font-size:1.2rem;height:20px;float:left;clear:left;font-weight: 400;position:relative; top:-5px;">{{ $config.consoleName }}</span>
+      <span class="text-secondary" style="font-size:0.4rem;float:left;clear:left;font-weight: 400;">Version : {{ backVersion }} / {{ $config.frontVersion }}</span> 
+    </b-navbar-brand>
+ 
 
     <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
     <b-collapse id="nav-collapse" is-nav>
@@ -101,7 +106,8 @@ export default Vue.extend({
           showAlert : false,
           bgTitle : 'info',
           content : '',
-        } 
+        },
+        backVersion : 'NA',
 	    }
     },
     async fetch() {
@@ -119,6 +125,14 @@ export default Vue.extend({
                     this.$data.messages.push(element)
                   });
                   this.displayMessages();
+                }
+            }).catch((err) =>{
+            })
+            this.$data.messages = [];
+        this.$axios.get(this.$config.backVersionGet,config)
+            .then((response) =>{
+                if (response.status == 200 ) {
+                  this.backVersion = response.data.message;
                 }
             }).catch((err) =>{
             })

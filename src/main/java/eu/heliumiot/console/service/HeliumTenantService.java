@@ -132,6 +132,13 @@ public class HeliumTenantService {
         return heliumTenantRepository.save(t);
     }
 
+    public eu.heliumiot.console.jpa.db.Tenant getTenant(UUID tenantId) {
+        eu.heliumiot.console.jpa.db.Tenant t = tenantRepository.findOneTenantById(tenantId);
+        return t;
+    }
+
+
+
     // ======================================================
     // Async reporting
     // ======================================================
@@ -491,7 +498,7 @@ public class HeliumTenantService {
             for ( UserTenant ut : uts ) {
                 HeliumTenant ht = this.getHeliumTenant(ut.getTenantId().toString());
                 HeliumTenantSetup hts = heliumTenantSetupService.getHeliumTenantSetup(ut.getTenantId().toString());
-                eu.heliumiot.console.jpa.db.Tenant t = tenantRepository.findOneTenantById(ut.getTenantId());
+                eu.heliumiot.console.jpa.db.Tenant t = this.getTenant(ut.getTenantId());
                 TenantBalancesItf r = new TenantBalancesItf();
                 r.setTenantUUID(ut.getTenantId().toString());
                 r.setDcBalance(ht.getDcBalance());
@@ -519,7 +526,7 @@ public class HeliumTenantService {
             if ( uts == null || uts.size() == 0 ) throw new ITRightException();
 
             for ( UserTenant ut : uts ) {
-                eu.heliumiot.console.jpa.db.Tenant t = tenantRepository.findOneTenantById(ut.getTenantId());
+                eu.heliumiot.console.jpa.db.Tenant t = this.getTenant(ut.getTenantId());
                 TenantBalancesItf r = new TenantBalancesItf();
                 r.setTenantUUID(ut.getTenantId().toString());
                 r.setDcBalance(0);
@@ -560,7 +567,7 @@ public class HeliumTenantService {
         // Here we are the right to get the DC Balance info
         HeliumTenant ht = this.getHeliumTenant(tenantId);
         HeliumTenantSetup hts = heliumTenantSetupService.getHeliumTenantSetup(tenantId);
-        eu.heliumiot.console.jpa.db.Tenant t = tenantRepository.findOneTenantById(UUID.fromString(ht.getTenantUUID()));
+        eu.heliumiot.console.jpa.db.Tenant t = this.getTenant(UUID.fromString(ht.getTenantUUID()));
 
         TenantBalanceItf r = new TenantBalanceItf();
         r.setDcBalance(ht.getDcBalance());
@@ -781,7 +788,7 @@ public class HeliumTenantService {
             TenantSearchRespItf k = new TenantSearchRespItf();
             k.setTenantUUID(ht.getTenantUUID());
             k.setDcBalance(ht.getDcBalance());
-            eu.heliumiot.console.jpa.db.Tenant t = tenantRepository.findOneTenantById(UUID.fromString(tId));
+            eu.heliumiot.console.jpa.db.Tenant t = this.getTenant(UUID.fromString(tId));
             if ( t == null ) continue;
             k.setTenantName(t.getName());
             List<UserTenant> u = userTenantRepository.findUserTenantByTenantIdAndIsAdmin(t.getId(),true);

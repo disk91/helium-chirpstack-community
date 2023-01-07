@@ -193,7 +193,7 @@
     "dc_tenant_label" : "Nom du tenant",
     "dc_balance_label" : "Data Credits restant",
     "dc_minbal_label" : "Limite autorisée",
-    "dc_payment_histo" : "historique des paiements",
+    "dc_payment_histo" : "historique des paiements et transfers",
 
     "dc_trans_title" : "Transfert de DC entre Tenants",
     "dc_trans_select_source" : "Sélectionner le tenant où prélever les Data credits",
@@ -206,6 +206,10 @@
     "error_transfer_dc" : "Echec du transfer, merci d'essayer plus tard.",
     "succes_transfer_dc1" : "Transaction effectuée, ",
     "succes_transfer_dc2" : " DCs transférés",
-  
+    "dc_transac_time_label" : "Horaire",
+    "dc_transac_tenant_label" : "Tenant crédité",
+    "dc_transac_dcs_label" : "Data Credits",
+    "dc_transac_cost_label" : "Cout",
+
     "end" : "fin"
 }
