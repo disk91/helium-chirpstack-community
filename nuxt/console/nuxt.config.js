@@ -16,6 +16,7 @@ export default {
     passLostEndpoint:(process.env.API_HOST || '')+'/console/1.0/sign/lost',
     passChangeEndpoint:(process.env.API_HOST || '')+'/console/1.0/sign/password',
     addTenantEndpoint:(process.env.API_HOST || '')+'/console/1.0/tenant/create',
+    tenantSetupGet:(process.env.API_HOST || '')+'/console/1.0/tenant/setup',
     tenantSetupCreate:(process.env.API_HOST || '')+'/console/1.0/tenant/setup',
     tenantSetupTemplateList:(process.env.API_HOST || '')+'/console/1.0/tenant/setup/templates',
     tenantSetupUpdate:(process.env.API_HOST || '')+'/console/1.0/tenant/setup',
@@ -58,6 +59,10 @@ export default {
       { name: 'format-detection', content: 'telephone=no' },
     ],
     link: [{ rel: 'icon', type: 'image/x-icon', href: '/static/front/favicon.ico' }],
+    script: [
+      { src: 'https://js.stripe.com/v3/' },
+      { src: 'https://polyfill.io/v3/polyfill.min.js?version=3.52.1&features=fetch'}
+    ],
   },
 
   // Global CSS: https://go.nuxtjs.dev/config-css

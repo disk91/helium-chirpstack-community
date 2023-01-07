@@ -24,4 +24,10 @@ declare module "vue/types/tenantSearch" {
         transcationUUID : string,
         dcs : BigInt
     } 
+    interface TenantSetupRespItf {
+        tenantUUID : string,
+        dcBalanceStop : number,
+        dcPrice : number,
+        dcMin : number
+    }
 }

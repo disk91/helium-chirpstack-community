@@ -16,7 +16,7 @@
                 <b-button block
                     variant="primary"
                     size="sm"
-                    @click=""
+                    @click="onPurchaseDcClick()"
                     style="text-align: left;font-size:0.8rem;"
                 >
                 <b-icon icon="credit-card" variant="white"></b-icon>
@@ -80,6 +80,7 @@
             </b-col>
         </b-row>
         <DataCreditTransfer/>
+        <DataCreditPurchase/>
     </div>
 </template>
 <style>
@@ -95,6 +96,7 @@ import { tsImportEqualsDeclaration } from '@babel/types';
 import Vue from 'vue'
 import { TenantDcBalancesReqItf } from 'vue/types/tenantSearch';
 import DataCreditTransfer from '~/components/DataCreditTransfer.vue';
+import DataCreditPurchase from './DataCreditPurchase.vue';
 
 interface data {
     tenants : TenantDcBalancesReqItf[],
@@ -109,6 +111,7 @@ export default Vue.extend({
     name: "UserProfile",
     components: {
        'DataCreditTransfer' : DataCreditTransfer,
+       'DataCreditPurchase' : DataCreditPurchase,
     },
     data() : data {
         return {
@@ -142,11 +145,16 @@ export default Vue.extend({
     methods : {
         onTransferDcClick() {
             this.$root.$emit("message-display-transfer-dc", "");
+        },
+        onPurchaseDcClick() {
+            this.$root.$emit("message-display-purchase-dc", "");
         }
-
     },
     mounted() {
         this.$root.$on("message-close-transfer-dc", (msg:any) => {
+            this.$fetch();
+        });
+        this.$root.$on("message-close-purchase-dc", (msg:any) => {
             this.$fetch();
         });
     },

@@ -100,6 +100,35 @@ public class TenantApi {
         }
     }
 
+
+    @Operation(summary = "Get tenant setup public configuration",
+            description = "Get the tenant setup public configuration",
+            responses = {
+                    @ApiResponse(responseCode = "200", description= "Done",
+                            content = @Content(array = @ArraySchema(schema = @Schema( implementation = TenantSetupRespItf.class)))),
+                    @ApiResponse(responseCode = "403", description= "Forbidden", content = @Content(schema = @Schema(implementation = ActionResult.class))),
+            }
+    )
+    @RequestMapping(value="/setup/{tenantId}/",
+            produces = MediaType.APPLICATION_JSON_VALUE,
+            method= RequestMethod.GET)
+    @PreAuthorize("hasAnyRole('ROLE_USER')")
+    public ResponseEntity<?> requestTenantSetupPublic(
+            HttpServletRequest request,
+            @Parameter(required = true, name = "tenantId", description = "tenant Id")
+            @PathVariable String tenantId
+
+    ) {
+        log.debug("Get tenant setup for "+request.getUserPrincipal().getName());
+        try {
+            TenantSetupRespItf r = heliumTenantService.getTenantSetup(request.getUserPrincipal().getName(), tenantId);
+            return new ResponseEntity<>(r, HttpStatus.OK);
+        } catch (ITRightException x) {
+            return new ResponseEntity<>(ActionResult.FORBIDDEN(), HttpStatus.FORBIDDEN);
+        }
+    }
+
+
     @Operation(summary = "create tenant",
             description = "Crate a new tenant for an existing user",
             responses = {

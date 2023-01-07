@@ -20,10 +20,12 @@
 package eu.heliumiot.console.service;
 
 import eu.heliumiot.console.ConsoleConfig;
+import eu.heliumiot.console.api.interfaces.TenantSetupRespItf;
 import eu.heliumiot.console.api.interfaces.TenantSetupTemplateCreateReqItf;
 import eu.heliumiot.console.api.interfaces.TenantSetupTemplateListRespItf;
 import eu.heliumiot.console.api.interfaces.TenantSetupTemplateUpdateReqItf;
 import eu.heliumiot.console.jpa.db.HeliumTenantSetup;
+import eu.heliumiot.console.jpa.db.UserTenant;
 import eu.heliumiot.console.jpa.repository.HeliumTenantSetupRepository;
 import fr.ingeniousthings.tools.ITRightException;
 import fr.ingeniousthings.tools.ObjectCache;
@@ -191,6 +193,7 @@ public class HeliumTenantSetupService {
 
     @Autowired
     protected UserCacheService userCacheService;
+
 
     public List<TenantSetupTemplateListRespItf> getTenantSetupTemplates (
             String user

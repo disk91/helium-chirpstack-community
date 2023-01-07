@@ -211,5 +211,19 @@
     "dc_transac_dcs_label" : "Data Credits",
     "dc_transac_cost_label" : "Cout",
 
+    "dc_purch_title" : "Combien de Data Credits souhaitez vous acheter ?",
+    "dc_purch_select_tenant" : "Selectionner le Tenant a créditer",
+    "error_load_tenants_setup" : "Erreur lors du chargement des paramètres des tenants",
+    "error_load_tenants_list" : "Erreur lors du chargement de la liste des tenants",
+    "dc_purch_minimum" : "Pour ce Tenant le montant d'achat minium est de ",
+    "dc_purch_nontransfer" : "Les Data Credits achetés sur la Console ne sont utilisables que pour le fonctionnement des objets et sont ni remboursables, ni transferables en dehors de la Console.",
+    "dc_purch_select_quantity" : "Je veux acheter :",
+    "dc_trans_cost" : "Coût :",
+    "dc_trans_memo" : "Memo",
+    "dc_trans_memo_desc" : "Ajouter une information que vous souhaitez voir apparaitre sur le reçu, la facture",
+    "dc_trans_pay" : "Acheter avec votre Carte de Crédit",
+    "dc_purch_bycb" : "Achat de DC par Carte de Crédit",
+    "dc_purch_add_card" : "Ajouter la CB",
+
     "end" : "fin"
 }

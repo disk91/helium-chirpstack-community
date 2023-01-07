@@ -836,6 +836,37 @@ public class HeliumTenantService {
         return stats;
     }
 
+
+
+    public TenantSetupRespItf getTenantSetup(String userId, String tenantId)
+            throws ITRightException {
+        TenantSetupRespItf r = new TenantSetupRespItf();
+
+        UserCacheService.UserCacheElement user = userCacheService.getUserById(userId);
+        if (user == null) throw new ITRightException();
+        if ( !user.user.isAdmin() ) {
+            // search if tenant authorization exists
+            UserTenant ut = userTenantRepository.findOneUserByUserIdAndTenantId(
+                    UUID.fromString(userId),
+                    UUID.fromString(tenantId)
+            );
+
+            if ( ut == null ) throw new ITRightException();
+            if ( ! ut.isAdmin() ) {
+                throw new ITRightException();
+            }
+        }
+        HeliumTenantSetup ts = heliumTenantSetupService.getHeliumTenantSetup(tenantId);
+        if ( ts == null ) throw new ITRightException();
+
+        r.setTenantUUID(tenantId);
+        r.setDcBalanceStop(ts.getDcBalanceStop());
+        r.setDcMin(ts.getDcMin());
+        r.setDcPrice(ts.getDcPrice());
+        return r;
+    }
+
+
     @Autowired
     protected HeliumDcTransactionRepository heliumDcTransactionRepository;
 

@@ -25,7 +25,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 
 import java.util.UUID;
 
-@Tag(name = "Tenant creation response Interface", description = "New tenant creation response interface")
+@Tag(name = "Tenant configuration & usage statistics", description = "Information about tenant configuration and usage statistics")
 public class TenantBasicStatRespItf {
 
 

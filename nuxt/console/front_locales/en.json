@@ -212,5 +212,19 @@
   "dc_transac_dcs_label" : "Data Credits",
   "dc_transac_cost_label" : "Cost",
 
+  "dc_purch_title" : "How many Data Credits do you wish to purchase?",
+  "dc_purch_select_tenant" : "Select the Tenant you want to credit",
+  "error_load_tenants_setup" : "Failed to load the tenant parameters",
+  "error_load_tenants_list" : "Failed to load the tenants",
+  "dc_purch_minimum" : "Tenant purchases, minimum ",
+  "dc_purch_nontransfer" : "Data Credit purchased on Console can only by used for device comunications and are non refoundable and non transferrable outside the Console.",
+  "dc_purch_select_quantity" : "I want to purchase:",
+  "dc_trans_cost" : "Cost:",
+  "dc_trans_memo" : "Memo",
+  "dc_trans_memo_desc" : "Add an information you want to see on receipt, invoice",
+  "dc_trans_pay" : "Purchase with Credit Card",
+  "dc_purch_bycb" : "Purchase DC with Credit Card",
+  "dc_purch_add_card" : "Add Card",
+
   "end" : "end"
 }
