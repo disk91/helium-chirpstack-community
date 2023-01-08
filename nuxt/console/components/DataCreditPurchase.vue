@@ -4,7 +4,7 @@
                  centered 
                  content-class="shadow"
                  v-model="show"
-                 @show="resetForm"
+                 @show="preShowModal"
                  header-border-variant="white"
                  header-text-variant="dark"
                  footer-border-variant="white"
@@ -153,7 +153,7 @@
                  centered 
                  content-class="shadow"
                  v-model="showCb"
-                 @show="initStripe"
+                 @shown="initStripe"
                  header-border-variant="white"
                  header-text-variant="dark"
                  footer-border-variant="white"
@@ -168,7 +168,7 @@
             <b-row>
                 <b-col cols="1"></b-col>
                 <b-col cols="10"
-                    class="py-2"
+                    class="py-3"
                     style="border-radius: 0.6rem;background-color:rgb(186, 231, 255);"
                 >
                     <b-row>
@@ -192,24 +192,23 @@
             <b-row>
                 <b-col cols="1"></b-col>
                 <b-col cols="10"
-                    class="py-2"
+                    class="pt-3"
                 >
                     {{ $t('dc_purch_add_card') }}
                 </b-col>
                 <b-col cols="1"></b-col>
             </b-row>
-            <form id="payment-form">
-            <div id="card-element"><!--Stripe.js injects the Card Element--></div>
-            <button id="submit">
-                <div class="spinner hidden" id="spinner"></div>
-                <span id="button-text">Pay now</span>
-            </button>
-            <p id="card-error" role="alert"></p>
-            <p class="result-message hidden">
-                    Payment succeeded, see the result in your
-                    <a href="" target="_blank">Stripe dashboard.</a> Refresh the page to pay again.
-            </p>
-            </form>
+            <b-row>
+                <b-col cols="1"></b-col>
+                <b-col cols="10"
+                    class="py-2 bg-light"
+                    style="border-radius: 0.2rem;"
+                >
+                    <div id="card-element"><!--Stripe.js injects the Card Element--></div>
+                </b-col>
+                <b-col cols="1"></b-col>
+            </b-row>
+
 
             <b-row class="mb-2 mt-4">
                 <b-col cols="1"></b-col>
@@ -217,11 +216,11 @@
                     <b-button block
                         variant="outline-dark"
                         size="sm"
-                        @click="cancelModal()"
+                        @click="backModal()"
                         style="text-align: left;font-size:0.8rem;"
                     >
                         <b-icon icon="reply" variant="secondary"></b-icon>
-                        {{ $t('dc_trans_cancel') }}
+                        {{ $t('dc_trans_back') }}
                     </b-button>
                 </b-col>
                 <b-col cols="6" class="py-2" style="font-size:0.8rem;">
@@ -238,6 +237,7 @@
                 </b-col>
             </b-row>
             <b-card-text class="text-danger" style="text-align:center;" >
+                <p id="card-error" role="alert"></p>
                 {{ $t(errorMessageMod)}} 
             </b-card-text>
             <b-card-text class="text-success" style="text-align:center;">
@@ -263,6 +263,7 @@ import { BooleanTypeAnnotation } from '@babel/types';
 import { data } from 'browserslist';
 import Vue from 'vue'
 import { TenantDcBalancesReqItf, TenantSetupRespItf } from 'vue/types/tenantSearch';
+import { TransactionStripeReqItf, TransactionStripeRespItf} from 'vue/types/transaction';
 
 interface data {
     ownedTenants : TenantDcBalancesReqItf[],
@@ -279,16 +280,14 @@ interface data {
     showCb : boolean,
     price : number,
     memo : string,
+    backFromCB : boolean,
+    destroyed : boolean,
 }
 
 Vue.filter('currency', function (value:number) {
   return value.toLocaleString('en-US', { style: 'currency', currency: 'USD' })
 })
 
-var stripe = Stripe("pk_test_oKhSR5nslBRnBZpjO6KuzZeX");
-var purchase = {
-  items: [{ id: "xl-tshirt" }]
-};
 
 export default Vue.extend({
     name: "DataCreditPurchase",
@@ -308,6 +307,8 @@ export default Vue.extend({
             showCb : false,
             price : 0.0,
             memo : '',
+            backFromCB : false,
+            destroyed : true,
         };
     },
     async fetch() {
@@ -378,25 +379,65 @@ export default Vue.extend({
             this.price = this.quantity * this.tenantSetup.dcPrice;
         },
         initStripe() {
-            var elements = stripe.elements();
-            var style = {
-                base: {
-                    color: "#32325d",
-                    fontFamily: 'Arial, sans-serif',
-                    fontSmoothing: "antialiased",
-                    fontSize: "16px",
-                    "::placeholder": {
-                    color: "#32325d"
-                    }
-                },
-                invalid: {
-                    fontFamily: 'Arial, sans-serif',
-                    color: "#fa755a",
-                    iconColor: "#fa755a"
+
+            let config = {
+                headers: {
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer '+this.$store.state.consoleBearer,  
                 }
             };
-            var card = elements.create("card", { style: style });
-            card.mount("#card-element");
+            let body : TransactionStripeReqItf = {
+                tenantUUID: this.ownedTenants[this.sourceTenant].tenantUUID,
+                dcs: this.quantity,
+                cost: this.price,
+            };
+        
+            this.isBusy = true;
+            this.$axios.post<TransactionStripeRespItf>(this.$config.transactionStripeCreate,body,config)
+                .then((response) =>{
+                    if (response.status == 200 ) {
+                        this.isBusy = false;
+                        let r : TransactionStripeRespItf = response.data;
+                        var stripe = Stripe(r.stripePublicKey);
+                        var elements = stripe.elements();
+                        var style = {
+                            base: {
+                                color: "#32325d",
+                                fontFamily: 'Arial, sans-serif',
+                                fontSmoothing: "antialiased",
+                                fontSize: "16px",
+                                "::placeholder": {
+                                color: "#32325d"
+                                }
+                            },
+                            invalid: {
+                                fontFamily: 'Arial, sans-serif',
+                                color: "#fa755a",
+                                iconColor: "#fa755a"
+                            }
+                        };
+                        var card = elements.create("card", { style: style });
+                        card.mount("#card-element");
+
+                    }
+                }).catch((err) =>{
+                    this.isBusy = false;
+                    if ( err == undefined ) {
+                        this.$data.errorMessageMod = 'sret_stripe_unknown';
+                    } else {
+                        if ( err.response.status == 400 || err.response.status == 403 ) {
+                            let message = err.response.data.message;
+                            this.$data.errorMessageMod = 'sret_'+message;
+                        } else {
+                            this.$data.errorMessageMod = 'sret_stripe_unknown';
+                        }
+                    }
+                })
+
+
+            // var purchase = {
+            //    items: [{ id: "xl-tshirt" }]
+            //};
           //  card.on("change", function (event) {
           //      // Disable the Pay button if there are no card details in the Element
           //  });
@@ -404,6 +445,7 @@ export default Vue.extend({
         gotopay() {
             this.show = false;
             this.showCb = true;
+            this.backFromCB = true;
 
             /*
             let config = {
@@ -438,8 +480,30 @@ export default Vue.extend({
             })
             */
         },
+        preShowModal() {
+            // when the first modal is open, can come from
+            // dc pannel (first open) - need to call reset
+            // dc pannel (after cancel) - has been cleaned prevsouly
+            // dc pannel (after destroy) - need to call reset
+            // CB purchase ( back ) - must not be cleared
+            if ( this.backFromCB ) {
+                // no reset
+                this.backFromCB = false;
+            } else if ( this.destroyed ) {
+                // need reset, this includes the first load as it is default value
+                this.resetForm();
+            }
+            // open call after cancel may pass through the message handler doing the reset
+            this.destroyed = true;
+        },
+        backModal() {
+            this.show = true;
+            this.showCb = false;
+            this.errorMessageMod = '';            
+        },
         cancelModal() {
             this.show = false;
+            this.destroyed = false;
             this.resetForm();
         },
         canTransfer() {

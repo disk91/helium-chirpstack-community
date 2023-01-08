@@ -39,6 +39,45 @@ public class TransactionApi {
     protected TransactionService transactionService;
 
 
+    @Operation(summary = "Create a stripe transaction intent",
+            description = "Create a Stripe transaction intent for a customer order",
+            responses = {
+                    @ApiResponse(responseCode = "200", description= "Done", content = @Content(schema =@Schema(implementation = TransactionStripeReqItf.class))),
+                    @ApiResponse(responseCode = "400", description= "Bad Request", content = @Content(schema = @Schema(implementation = ActionResult.class))),
+                    @ApiResponse(responseCode = "403", description= "Forbidden", content = @Content(schema = @Schema(implementation = ActionResult.class))),
+            }
+    )
+    @RequestMapping(value="/intent",
+            produces = MediaType.APPLICATION_JSON_VALUE,
+            method= RequestMethod.POST)
+    @PreAuthorize("hasAnyRole('ROLE_USER')")
+    public ResponseEntity<?> requestTransactionIntentCreation(
+            HttpServletRequest request,
+            @RequestBody(required = true) TransactionStripeReqItf txReq
+    ) {
+        log.debug("Create transaction for "+request.getUserPrincipal().getName());
+        try {
+            TransactionStripeRespItf r = transactionService.initStripeTransaction(
+                    request.getUserPrincipal().getName(),
+                    request.getHeader("x-real-ip"),
+                    txReq
+            );
+            return new ResponseEntity<>(r, HttpStatus.OK);
+        } catch ( ITRightException x ) {
+            ActionResult a = ActionResult.FORBIDDEN();
+            a.setMessage(x.getMessage());
+            return new ResponseEntity<>(a, HttpStatus.FORBIDDEN);
+        } catch ( ITParseException x ) {
+            ActionResult a = ActionResult.BADREQUEST();
+            a.setMessage(x.getMessage());
+            return new ResponseEntity<>(a, HttpStatus.BAD_REQUEST);
+        }
+
+    }
+
+
+    // ----
+
     @Operation(summary = "Get transaction list",
             description = "Get the list of transaction for a given user, empty list when none, sort by creation date",
             responses = {
@@ -58,5 +97,7 @@ public class TransactionApi {
         List<TransactionListRespItf> r = transactionService.getTransactionHistory(request.getUserPrincipal().getName());
         return new ResponseEntity<>(r, HttpStatus.OK);
     }
+
+
 
 }

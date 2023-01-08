@@ -225,6 +225,17 @@
   "dc_trans_pay" : "Purchase with Credit Card",
   "dc_purch_bycb" : "Purchase DC with Credit Card",
   "dc_purch_add_card" : "Add Card",
+  "dc_trans_back" : "Back",
+  "sret_stripe_unknown" : "Unknown backend error during stripe transaction creation",
+  "sret_stripe_failed_intent" : "Failed to create stripe transaction, try later",
+  "sret_stripe_invalid_tenant" : "Invalid Tenant selected",
+  "sret_stripe_invalid_amount" : "Invalid transaction amount",
+  "sret_stripe_invalid_qty" : "Invalid transaction DC quantity",
+  "sret_stripe_amount_too_low" : "Currency amount is under the stripe limit",
+  "sret_stripe_invalid_back_currency" : "Currency selected is not supported",
+  "sret_stripe_invalid_email_admin" : "Admin user is not authorized to pay with stripe",
+
+
 
   "end" : "end"
 }

@@ -7,4 +7,14 @@ declare module "vue/types/transaction" {
         tenantName : string,
         cost : number
     }
+    interface TransactionStripeReqItf {
+        dcs : bigint,
+        tenantUUID : string,
+        cost : number,
+    }
+    interface TransactionStripeRespItf {
+        stripePublicKey : string,
+        stripeTxSecret : string,
+        transactionUUID : string,
+    }
 }

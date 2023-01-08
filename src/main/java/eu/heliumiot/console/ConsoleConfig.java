@@ -613,4 +613,59 @@ public class ConsoleConfig {
     public String getJwtSignatureKeyExternal() {
         return jwtSignatureKeyExternal;
     }
+
+    // ==========================================
+    // Stripe
+    // ==========================================
+
+    @Value ("${helium.stripe.key.private}")
+    private String stripeKeyPrivateExternal;
+
+    @Value ("${helium.stripe.key.private.default}")
+    private String stripeKeyPrivateDefault;
+
+    @Value ("${helium.stripe.key.public}")
+    private String stripeKeyPublicExternal;
+
+    @Value ("${helium.stripe.key.public.default}")
+    private String stripeKeyPublicDefault;
+
+    @Value ("${helium.stripe.currency.default}")
+    private String stripeCurrencyDefault;
+
+    public String getStripeKeyPrivateExternal() {
+        return stripeKeyPrivateExternal;
+    }
+
+    public String getStripeKeyPrivateDefault() {
+        return stripeKeyPrivateDefault;
+    }
+
+    public String getStripeKeyPublicExternal() {
+        return stripeKeyPublicExternal;
+    }
+
+    public String getStripeKeyPublicDefault() {
+        return stripeKeyPublicDefault;
+    }
+
+    public String getStripeCurrencyDefault() {
+        return stripeCurrencyDefault;
+    }
+
+    public String getStripeKeyPrivate() {
+        if (this.getStripeKeyPrivateExternal().length() > 0) return this.getStripeKeyPrivateExternal();
+        return getStripeKeyPrivateDefault();
+    }
+
+    public String getStripeKeyPublic() {
+        if (this.getStripeKeyPublicExternal().length() > 0) return this.getStripeKeyPublicExternal();
+        return getStripeKeyPublicDefault();
+    }
+
+    public String getStripeCurrency() {
+        // Until we make it modifiable for each instance, but it need to change many things in the Front also
+        return getStripeCurrencyDefault();
+    }
+
 }

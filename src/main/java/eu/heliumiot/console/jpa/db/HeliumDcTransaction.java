@@ -85,6 +85,17 @@ public class HeliumDcTransaction {
     private double totalEuro;
     private double applicableVAT;
 
+    // Stripe info
+    @Column(name="stripe_client_key")
+    private String stripeClientKey = null;
+
+    @Column(name="is_completed")
+    private boolean isCompleted = true;
+
+    @Column(name="intentTime")
+    private long intentTime = 0;
+
+
     // ##############################
 
 
@@ -262,5 +273,29 @@ public class HeliumDcTransaction {
 
     public void setApplicableVAT(double applicableVAT) {
         this.applicableVAT = applicableVAT;
+    }
+
+    public String getStripeClientKey() {
+        return stripeClientKey;
+    }
+
+    public void setStripeClientKey(String stripeClientKey) {
+        this.stripeClientKey = stripeClientKey;
+    }
+
+    public boolean isCompleted() {
+        return isCompleted;
+    }
+
+    public void setCompleted(boolean completed) {
+        isCompleted = completed;
+    }
+
+    public long getIntentTime() {
+        return intentTime;
+    }
+
+    public void setIntentTime(long intentTime) {
+        this.intentTime = intentTime;
     }
 }
