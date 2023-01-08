@@ -234,8 +234,7 @@
   "sret_stripe_amount_too_low" : "Currency amount is under the stripe limit",
   "sret_stripe_invalid_back_currency" : "Currency selected is not supported",
   "sret_stripe_invalid_email_admin" : "Admin user is not authorized to pay with stripe",
-
-
+  "dc_stripe_success" : "Stripe payment has been a success",
 
   "end" : "end"
 }

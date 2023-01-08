@@ -233,6 +233,7 @@
     "sret_stripe_amount_too_low" : "Le montant est en dessous de la limite stripe pour cette monaie",
     "sret_stripe_invalid_back_currency" : "La monnaie choisie n'est pas supportée",
     "sret_stripe_invalid_email_admin" : "L'admin n'est pas autorisé à faire des paiement stripe",
+    "dc_stripe_success" : "Le paiement stripe a été validé",
 
     "end" : "fin"
 }

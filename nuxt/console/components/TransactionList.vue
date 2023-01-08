@@ -130,6 +130,9 @@ export default Vue.extend({
         this.$root.$on("message-close-transfer-dc", (msg:any) => {
             this.$fetch();
         });
+        this.$root.$on("message-close-purchase-dc", (msg:any) => {
+            this.$fetch();
+        });
     },
 })
 </script>

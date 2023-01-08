@@ -227,9 +227,9 @@
                     <b-button block
                         variant="primary"
                         size="sm"
-                        @click="gotopay()"
+                        @click="pay()"
                         style="text-align: right;font-size:0.8rem;"
-                        :disabled="!canTransfer()"
+                        :disabled="!isValidCb"
                     >
                         {{ $t('dc_trans_pay') }}
                         <b-icon icon="arrow-right-circle" variant="white"></b-icon>
@@ -282,6 +282,12 @@ interface data {
     memo : string,
     backFromCB : boolean,
     destroyed : boolean,
+    isValidCb : boolean,
+
+    stripe : any,
+    card : any,
+    secret : string,
+
 }
 
 Vue.filter('currency', function (value:number) {
@@ -309,6 +315,12 @@ export default Vue.extend({
             memo : '',
             backFromCB : false,
             destroyed : true,
+            isValidCb : false,
+
+            stripe : undefined,
+            card : undefined,
+            secret : '',
+
         };
     },
     async fetch() {
@@ -350,6 +362,10 @@ export default Vue.extend({
             this.price = 0.0;
             this.memo = '';
             this.showCb = false;
+            this.isValidCb = false;
+            this.stripe = undefined;
+            this.card = undefined;
+            this.secret = '';
         },
         updateTenantConfiguration() {
             this.isBusy = true;
@@ -419,7 +435,21 @@ export default Vue.extend({
                         var card = elements.create("card", { style: style });
                         card.mount("#card-element");
 
-                    }
+                        this.stripe = stripe;
+                        this.card = card;
+                        this.secret = r.stripeTxSecret;
+
+                        var self = this;
+                        card.on("change", function (event:any) {
+                            if ( event.complete ) {
+                                self.isValidCb = true;
+                            } else self.isValidCb = false;
+
+                            if ( event.error ) {
+                                self.errorMessageMod = event.error.message;
+                            }
+                        });  
+                    }    
                 }).catch((err) =>{
                     this.isBusy = false;
                     if ( err == undefined ) {
@@ -433,52 +463,36 @@ export default Vue.extend({
                         }
                     }
                 })
+        },
+        pay() {
+            var self = this;
+            this.stripe.confirmCardPayment(
+                this.secret, {
+                    payment_method: {
+                        card: this.card
+                    }
+                }
+            ).then(function(result:any) {
+                if (result.error) {
+                    self.$data.errorMessageMod = result.error.message;
+                    self.$data.isValidCb = false;
+                } else {
+                    self.$data.successMessageMod = 'dc_stripe_success';
+                    setTimeout(function() { 
+                        self.$data.showCb = false;
+                        self.resetForm();
+                        self.$root.$emit("message-close-purchase-dc", "");
+                  }, 1500);
 
-
-            // var purchase = {
-            //    items: [{ id: "xl-tshirt" }]
-            //};
-          //  card.on("change", function (event) {
-          //      // Disable the Pay button if there are no card details in the Element
-          //  });
+                    // The payment succeeded!
+                    // result.paymentIntent.id;
+                }
+            });
         },
         gotopay() {
             this.show = false;
             this.showCb = true;
             this.backFromCB = true;
-
-            /*
-            let config = {
-            headers: {
-              'Content-Type': 'application/json',
-              'Authorization': 'Bearer '+this.$store.state.consoleBearer,  
-            }
-        };
-        let body : TenantDcTransferReqItf = {
-            tenantSrcUUID : this.ownedTenants[this.sourceTenant].tenantUUID,
-            tenantDestUUID : this.allTenants[this.destTenant].tenantUUID,
-            dcs : this.quantity
-        };
-        
-        this.isBusy = true;
-        this.$axios.put<TenantDcTransferRespItf>(this.$config.tenantDcTrans,body,config)
-            .then((response) =>{
-                if (response.status == 200 ) {
-                  this.isBusy = false;
-                  this.successMessageMod = this.$t('succes_transfer_dc1') as string;
-                  this.successMessageMod += response.data.dcs;
-                  this.successMessageMod += this.$t('succes_transfer_dc2');
-                  var self = this;
-                  setTimeout(function() { 
-                        self.$data.show = false;s
-                        self.resetForm();
-                        self.$root.$emit("message-close-purchase-dc", "");
-                  }, 1500);
-                }
-            }).catch((err) =>{
-               this.errorMessageMod = 'error_transfer_dc';
-            })
-            */
         },
         preShowModal() {
             // when the first modal is open, can come from
