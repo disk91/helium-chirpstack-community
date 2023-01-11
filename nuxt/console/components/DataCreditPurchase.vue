@@ -264,6 +264,7 @@ import { data } from 'browserslist';
 import Vue from 'vue'
 import { TenantDcBalancesReqItf, TenantSetupRespItf } from 'vue/types/tenantSearch';
 import { TransactionStripeReqItf, TransactionStripeRespItf} from 'vue/types/transaction';
+//import { Stripe } from '@types/stripe-v3';
 
 interface data {
     ownedTenants : TenantDcBalancesReqItf[],
@@ -294,6 +295,7 @@ Vue.filter('currency', function (value:number) {
   return value.toLocaleString('en-US', { style: 'currency', currency: 'USD' })
 })
 
+declare function Stripe(key: string) : any;
 
 export default Vue.extend({
     name: "DataCreditPurchase",
@@ -404,7 +406,7 @@ export default Vue.extend({
             };
             let body : TransactionStripeReqItf = {
                 tenantUUID: this.ownedTenants[this.sourceTenant].tenantUUID,
-                dcs: this.quantity,
+                dcs: this.quantity as any,
                 cost: this.price,
             };
         
