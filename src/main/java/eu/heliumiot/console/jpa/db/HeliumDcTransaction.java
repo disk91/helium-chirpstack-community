@@ -78,16 +78,31 @@ public class HeliumDcTransaction {
     private String cityName;
     private String country;
 
-    // stripe cost
+    // stripe cost (fee)
     private double stripeCost;
+
+    // stripe currency
+    @Column(name="stripe_currency")
+    private String stripeCurrency;
+
+    // what stripe gives in the currency after conv rate
+    @Column(name="stripe_amount")
+    private double stripeAmount;
+
+    // what is currency conv rate
+    @Column(name="stripe_crate")
+    private double stripeCRate;
+
     private String transactionId;
     private String stripeUser;
-    private double totalEuro;
     private double applicableVAT;
 
     // Stripe info
     @Column(name="stripe_client_key")
     private String stripeClientKey = null;
+
+    @Column(name="stripe_status")
+    private String stripeStatus;
 
     @Column(name="is_completed")
     private boolean isCompleted = true;
@@ -259,14 +274,6 @@ public class HeliumDcTransaction {
         this.stripeUser = stripeUser;
     }
 
-    public double getTotalEuro() {
-        return totalEuro;
-    }
-
-    public void setTotalEuro(double totalEuro) {
-        this.totalEuro = totalEuro;
-    }
-
     public double getApplicableVAT() {
         return applicableVAT;
     }
@@ -297,5 +304,37 @@ public class HeliumDcTransaction {
 
     public void setIntentTime(long intentTime) {
         this.intentTime = intentTime;
+    }
+
+    public String getStripeStatus() {
+        return stripeStatus;
+    }
+
+    public void setStripeStatus(String stripeStatus) {
+        this.stripeStatus = stripeStatus;
+    }
+
+    public String getStripeCurrency() {
+        return stripeCurrency;
+    }
+
+    public void setStripeCurrency(String stripeCurrency) {
+        this.stripeCurrency = stripeCurrency;
+    }
+
+    public double getStripeAmount() {
+        return stripeAmount;
+    }
+
+    public void setStripeAmount(double stripeAmount) {
+        this.stripeAmount = stripeAmount;
+    }
+
+    public double getStripeCRate() {
+        return stripeCRate;
+    }
+
+    public void setStripeCRate(double stripeCRate) {
+        this.stripeCRate = stripeCRate;
     }
 }

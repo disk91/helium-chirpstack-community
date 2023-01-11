@@ -10,14 +10,17 @@
                     <b-col cols="3" class="bg-secondary text-white ml-3" style="margin-right:2px;border-radius: 0.2rem;">
                         {{ $t('dc_transac_time_label') }}
                     </b-col>
-                    <b-col cols="4" class="bg-secondary text-white" style="margin-right:2px;border-radius: 0.2rem;">
+                    <b-col cols="3" class="bg-secondary text-white" style="margin-right:2px;border-radius: 0.2rem;">
                         {{ $t('dc_transac_tenant_label') }}
                     </b-col>
                     <b-col cols="2" class="bg-secondary text-white" style="margin-right:2px;border-radius: 0.2rem;">
                         {{ $t('dc_transac_dcs_label') }}
                     </b-col>
-                    <b-col cols="2" class="bg-secondary text-white" style="border-radius: 0.2rem;">
+                    <b-col cols="1" class="bg-secondary text-white" style="margin-right:2px;border-radius: 0.2rem;">
                         {{ $t('dc_transac_cost_label') }}
+                    </b-col>
+                    <b-col cols="2" class="bg-secondary text-white" style="border-radius: 0.2rem;">
+                        {{ $t('dc_transac_status_label') }}
                     </b-col>
                 </b-row>
                 <b-row v-for="transaction in transactions"
@@ -31,7 +34,7 @@
                     >
                         {{ dateFormatter(transaction.createAt) }} 
                     </b-col>
-                    <b-col cols="4"
+                    <b-col cols="3"
                         style="text-align:left;font-size:0.9rem;"
                         class="text-dark bg-light"
                     >
@@ -44,11 +47,17 @@
                         {{ transaction.dcs.toLocaleString("en-US") }} 
                         <img src="/static/front/dc_icon.svg" style="width: 13px; position: relative; top: -2px ; margin-right: 2px;"/>
                     </b-col>
-                    <b-col cols="2"
+                    <b-col cols="1"
                         style="text-align:right;margin-right:2px;font-size:0.9rem;"
                         class="text-info bg-light"
                     >
                         {{ costFormatter(transaction.type, transaction.cost) }}                  
+                    </b-col>
+                    <b-col cols="2"
+                        style="text-align:right;font-size:0.9rem;"
+                        class="text-info bg-light"
+                    >
+                        {{ $t('txst_'+transaction.status) }}                  
                     </b-col>
                   </b-row>
                 </b-card>              

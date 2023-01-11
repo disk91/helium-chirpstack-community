@@ -64,6 +64,13 @@ public class TransactionListRespItf {
     )
     protected double cost;
 
+    @Schema(
+            description = "Transaction status",
+            requiredMode = Schema.RequiredMode.REQUIRED
+    )
+    protected String status;
+
+
 
 
     // ------------------------------------
@@ -115,5 +122,13 @@ public class TransactionListRespItf {
 
     public void setCost(double cost) {
         this.cost = cost;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 }

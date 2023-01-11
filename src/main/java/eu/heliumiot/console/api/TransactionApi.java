@@ -75,6 +75,36 @@ public class TransactionApi {
 
     }
 
+    @Operation(summary = "Request Update on a stripe transaction intent",
+            description = "Force to update the stripe transcation intent, it's managed in background also",
+            responses = {
+                    @ApiResponse(responseCode = "200", description= "Done", content = @Content(schema =@Schema(implementation = ActionResult.class))),
+                    @ApiResponse(responseCode = "403", description= "Forbidden", content = @Content(schema = @Schema(implementation = ActionResult.class))),
+            }
+    )
+    @RequestMapping(value="/intent/{txUUID}/",
+            produces = MediaType.APPLICATION_JSON_VALUE,
+            method= RequestMethod.PUT)
+    @PreAuthorize("hasAnyRole('ROLE_USER')")
+    public ResponseEntity<?> updateTransactionIntentCreation(
+            HttpServletRequest request,
+            @Parameter(required = true, name = "txUUID", description = "transaction Id")
+            @PathVariable String txUUID
+    ) {
+        log.debug("Refresh transaction for "+request.getUserPrincipal().getName());
+        try {
+            transactionService.updateStripeTransaction(
+                    request.getUserPrincipal().getName(),
+                    txUUID
+            );
+            return new ResponseEntity<>(ActionResult.SUCESS(), HttpStatus.OK);
+        } catch ( ITRightException x ) {
+            ActionResult a = ActionResult.FORBIDDEN();
+            a.setMessage(x.getMessage());
+            return new ResponseEntity<>(a, HttpStatus.FORBIDDEN);
+        }
+    }
+
 
     // ----
 

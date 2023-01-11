@@ -211,6 +211,7 @@
   "dc_transac_tenant_label" : "Credited tenant",
   "dc_transac_dcs_label" : "Data Credits",
   "dc_transac_cost_label" : "Cost",
+  "dc_transac_status_label" : "Status",
 
   "dc_purch_title" : "How many Data Credits do you wish to purchase?",
   "dc_purch_select_tenant" : "Select the Tenant you want to credit",
@@ -235,6 +236,15 @@
   "sret_stripe_invalid_back_currency" : "Currency selected is not supported",
   "sret_stripe_invalid_email_admin" : "Admin user is not authorized to pay with stripe",
   "dc_stripe_success" : "Stripe payment has been a success",
+  "txst_succeeded" : "Success",
+  "txst_requires_payment_method" : "Pending",
+  "txst_requires_confirmation" : "Pending",
+  "txst_requires_action" : "Pending",
+  "txst_processing" : "Pending",
+  "txst_requires_capture" : "Pending",
+  "txst_canceled" : "Failed",
+  "txst_timeout" : "Failed", 
+  "txst_null" : "Unknown", 
 
   "end" : "end"
 }

@@ -5,7 +5,8 @@ declare module "vue/types/transaction" {
         createAt : BigInt,
         dcs : BigInt,
         tenantName : string,
-        cost : number
+        cost : number,
+        status : string
     }
     interface TransactionStripeReqItf {
         dcs : bigint,

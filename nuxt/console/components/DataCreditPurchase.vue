@@ -447,6 +447,8 @@ export default Vue.extend({
 
                             if ( event.error ) {
                                 self.errorMessageMod = event.error.message;
+                            } else {
+                                self.errorMessageMod = '';
                             }
                         });  
                     }    
@@ -466,6 +468,7 @@ export default Vue.extend({
         },
         pay() {
             var self = this;
+            self.errorMessageMod = '';
             this.stripe.confirmCardPayment(
                 this.secret, {
                     payment_method: {
@@ -478,14 +481,23 @@ export default Vue.extend({
                     self.$data.isValidCb = false;
                 } else {
                     self.$data.successMessageMod = 'dc_stripe_success';
+                    // refresh the backend intent
+                    let config = {
+                        headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': 'Bearer '+self.$store.state.consoleBearer,  
+                        }
+                    };
+                    self.$axios.put(self.$config.transactionStripeUpdate+'/'+result.paymentIntent.id+'/',null,config)
+                    .then((response) =>{})
+                    .catch((err) => {})
+
+                    // display success and quit
                     setTimeout(function() { 
                         self.$data.showCb = false;
                         self.resetForm();
                         self.$root.$emit("message-close-purchase-dc", "");
                   }, 1500);
-
-                    // The payment succeeded!
-                    // result.paymentIntent.id;
                 }
             });
         },

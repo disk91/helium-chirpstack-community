@@ -37,6 +37,7 @@ export default {
     userStatusGet:(process.env.API_HOST || '')+'/console/1.0/user/',
     transactionListGet:(process.env.API_HOST || '')+'/console/1.0/transaction/',
     transactionStripeCreate:(process.env.API_HOST || '')+'/console/1.0/transaction/intent',
+    transactionStripeUpdate:(process.env.API_HOST || '')+'/console/1.0/transaction/intent',
     backVersionGet:(process.env.API_HOST || '')+'/console/1.0/misc/version',
     termAndUse:process.env.CONSOLE_TERMS || '/',
     frontVersion:'0.3.0'

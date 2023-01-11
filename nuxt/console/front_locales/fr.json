@@ -210,6 +210,7 @@
     "dc_transac_tenant_label" : "Tenant crédité",
     "dc_transac_dcs_label" : "Data Credits",
     "dc_transac_cost_label" : "Cout",
+    "dc_transac_status_label" : "Etat",
 
     "dc_purch_title" : "Combien de Data Credits souhaitez vous acheter ?",
     "dc_purch_select_tenant" : "Selectionner le Tenant a créditer",
@@ -234,6 +235,15 @@
     "sret_stripe_invalid_back_currency" : "La monnaie choisie n'est pas supportée",
     "sret_stripe_invalid_email_admin" : "L'admin n'est pas autorisé à faire des paiement stripe",
     "dc_stripe_success" : "Le paiement stripe a été validé",
+    "txst_succeeded" : "Success",
+    "txst_requires_payment_method" : "En attente",
+    "txst_requires_confirmation" : "En attente",
+    "txst_requires_action" : "En attente",
+    "txst_processing" : "En attente",
+    "txst_requires_capture" : "En attente",
+    "txst_canceled" : "Abandonnée",
+    "txst_timeout" : "Abandonnée", 
+    "txst_null" : "Inconnu", 
 
     "end" : "fin"
 }

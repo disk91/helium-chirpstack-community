@@ -378,19 +378,26 @@ public class HeliumTenantService {
             return false;
         }
         long balance = 0;
+        long initialBalance = 0;
+        boolean toReactivate = false;
         synchronized (this) {
             HeliumTenant t = this.getHeliumTenant(tenantUUID);
             if (t != null && ts != null) {
-                t.setDcBalance(t.getDcBalance() + amount);
+                initialBalance = t.getDcBalance();
+                t.setDcBalance(initialBalance + amount);
                 balance = t.getDcBalance();
-                if ( balance > ts.getDcBalanceStop() ) {
+                if (
+                        ( initialBalance <= ts.getDcBalanceStop() || t.getState() == HeliumTenant.TenantState.DEACTIVATED )
+                     && balance > ts.getDcBalanceStop()
+                ) {
                     t.setState(HeliumTenant.TenantState.REQUESTREACTIVATION);
+                    toReactivate = true;
                 }
                 this.flushHeliumTenant(t);
             }
         }
 
-        if ( balance > ts.getDcBalanceStop() ) {
+        if ( toReactivate ) {
             HeliumTenantActDeactItf i = new HeliumTenantActDeactItf();
             i.setActivateTenant(true);
             i.setDeactivateTenant(false);
@@ -908,27 +915,35 @@ public class HeliumTenantService {
         long realDc = 0;
         synchronized (this) {
             HeliumTenant src = this.getHeliumTenant(req.getTenantSrcUUID());
-            HeliumTenant dst = this.getHeliumTenant(req.getTenantDestUUID());
-            if (src != null && dst != null) {
+            if (src != null) {
                 if ( src.getDcBalance() >= req.getDcs() ) {
                     src.setDcBalance(src.getDcBalance()-req.getDcs());
-                    dst.setDcBalance(dst.getDcBalance()+req.getDcs());
                     realDc = req.getDcs();
                 } else {
                     realDc = src.getDcBalance();
                     if ( realDc > 0 ) {
-                        dst.setDcBalance(dst.getDcBalance() + realDc);
                         src.setDcBalance(0);
                     } else realDc = 0;
                 }
                 if ( realDc > 0 ) {
                     this.flushHeliumTenant(src);
-                    this.flushHeliumTenant(dst);
                 }
             }
         }
 
         if ( realDc == 0 ) throw new ITRightException();
+
+        if ( ! processBalanceIncrease(req.getTenantDestUUID(), realDc) ) {
+            // rollback
+            log.error("RollBack in transaction, Template messaging... strange");
+            synchronized (this) {
+                HeliumTenant src = this.getHeliumTenant(req.getTenantSrcUUID());
+                if (src != null ) {
+                        src.setDcBalance(src.getDcBalance()+realDc);
+                }
+                throw new ITRightException();
+            }
+        }
 
 
         // Store transaction

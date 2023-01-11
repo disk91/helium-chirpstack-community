@@ -35,6 +35,7 @@ public class HeliumParameterService {
     private final Logger log = LoggerFactory.getLogger(this.getClass());
 
     public static final String PARAM_DEVICE_LASTSCAN_TIME = "deviceLastScanTime";
+    public static final String PARAM_INVOICE_VAT = "invoiceVat";
 
     @Autowired
     protected ConsoleConfig consoleConfig;
@@ -52,6 +53,14 @@ public class HeliumParameterService {
             deviceScanTime.setLongValue(0);
             deviceScanTime.setStrValue("");
             heliumParameterRepository.save(deviceScanTime);
+        }
+        HeliumParameter invoiceVat = heliumParameterRepository.findOneHeliumParameterByParameterName(PARAM_INVOICE_VAT);
+        if ( invoiceVat == null ) {
+            invoiceVat = new HeliumParameter();
+            invoiceVat.setParameterName(PARAM_INVOICE_VAT);
+            invoiceVat.setLongValue(2000); // 20.00%
+            invoiceVat.setStrValue("");
+            heliumParameterRepository.save(invoiceVat);
         }
 
     }
