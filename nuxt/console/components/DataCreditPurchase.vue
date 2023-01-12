@@ -408,6 +408,7 @@ export default Vue.extend({
                 tenantUUID: this.ownedTenants[this.sourceTenant].tenantUUID,
                 dcs: this.quantity as any,
                 cost: this.price,
+                memo: this.memo,
             };
         
             this.isBusy = true;

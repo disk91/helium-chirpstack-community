@@ -23,67 +23,67 @@ package eu.heliumiot.console.api.interfaces;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.tags.Tag;
 
-@Tag(name = "Stripe transaction initialization", description = "Init a stripe transaction")
-public class TransactionStripeReqItf {
+@Tag(name = "Service provider company information", description = "Company informations that will be used for the invoice creation")
+public class CompanyIdentityRespItf {
 
     @Schema(
-            description = "Quantity of DCs really transferred",
+            description = "Name of the company",
             requiredMode = Schema.RequiredMode.REQUIRED
     )
-    protected long dcs;
+    protected String companyName;
 
 
     @Schema(
-            description = "Target tenant UUID",
+            description = "Full Address of the company",
             requiredMode = Schema.RequiredMode.REQUIRED
     )
-    protected String tenantUUID;
+    protected String companyAddress;
 
     @Schema(
-            description = "Front calculated cost - backend verified",
+            description = "VAT number",
             requiredMode = Schema.RequiredMode.REQUIRED
     )
-    protected double cost;
+    protected String companyVAT;
 
     @Schema(
-            description = "Additional customer information to be printed on invoice",
+            description = "Company ID + registration sentence",
             requiredMode = Schema.RequiredMode.REQUIRED
     )
-    protected String memo;
+    protected String companyRegistration;
 
 
     // ------------------------------------
 
 
-    public long getDcs() {
-        return dcs;
+    public String getCompanyName() {
+        return companyName;
     }
 
-    public void setDcs(long dcs) {
-        this.dcs = dcs;
+    public void setCompanyName(String companyName) {
+        this.companyName = companyName;
     }
 
-    public String getTenantUUID() {
-        return tenantUUID;
+    public String getCompanyAddress() {
+        return companyAddress;
     }
 
-    public void setTenantUUID(String tenantUUID) {
-        this.tenantUUID = tenantUUID;
+    public void setCompanyAddress(String companyAddress) {
+        this.companyAddress = companyAddress;
     }
 
-    public double getCost() {
-        return cost;
+    public String getCompanyVAT() {
+        return companyVAT;
     }
 
-    public void setCost(double cost) {
-        this.cost = cost;
+    public void setCompanyVAT(String companyVAT) {
+        this.companyVAT = companyVAT;
     }
 
-    public String getMemo() {
-        return memo;
+    public String getCompanyRegistration() {
+        return companyRegistration;
     }
 
-    public void setMemo(String memo) {
-        this.memo = memo;
+    public void setCompanyRegistration(String companyRegistration) {
+        this.companyRegistration = companyRegistration;
     }
 }

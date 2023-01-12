@@ -53,6 +53,9 @@ public class HeliumDcTransaction {
     // Ip of the transaction
     private String userIP;
 
+    // Customer custom message associated to the operation.
+    private String memo;
+
     // ----------------------
     // Type 0 information
 
@@ -336,5 +339,13 @@ public class HeliumDcTransaction {
 
     public void setStripeCRate(double stripeCRate) {
         this.stripeCRate = stripeCRate;
+    }
+
+    public String getMemo() {
+        return memo;
+    }
+
+    public void setMemo(String memo) {
+        this.memo = memo;
     }
 }

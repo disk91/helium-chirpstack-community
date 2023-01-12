@@ -162,6 +162,9 @@ public class TransactionService {
 
         t.setIntentTime(Now.NowUtcMs());
         t.setCompleted(false);
+        if ( req.getMemo() != null ) {
+            t.setMemo(req.getMemo());
+        } else t.setMemo("");
 
         // Amount calculation
         // Stripe uses integer amount, it depends on the currency
