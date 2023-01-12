@@ -2,7 +2,7 @@
     <div>
         <h5><b-badge variant="secondary" class="m-2">{{ $t('t_search_title') }}</b-badge></h5>
 
-        <div class="col-md-4">
+        <div class="col-md-8">
             <b-form-group :description="$t('tip_search_tenant')" style="text-align:left;" class="mb-1 small">
                 <b-form-input v-model="keyword"
                               type="text" size="sm"
@@ -12,7 +12,7 @@
             </b-form-group>
         </div>
 
-        <div class="col-md-6 ml-0">
+        <div class="col-md-12 ml-0">
         <b-table 
           :items="tenants" 
           :fields="fields" 

@@ -23,67 +23,7 @@ package eu.heliumiot.console.api.interfaces;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.tags.Tag;
 
-@Tag(name = "Service provider company information", description = "Company informations that will be used for the invoice creation")
-public class InvoiceSetupGetRespItf {
+@Tag(name = "Service provider company information", description = "Company information that will be used for the invoice creation")
+public class InvoiceSetupPutReqItf extends InvoiceSetupGetRespItf {
 
-    @Schema(
-            description = "Name of the company",
-            requiredMode = Schema.RequiredMode.REQUIRED
-    )
-    protected String companyName;
-
-
-    @Schema(
-            description = "Full Address of the company",
-            requiredMode = Schema.RequiredMode.REQUIRED
-    )
-    protected String companyAddress;
-
-    @Schema(
-            description = "VAT number",
-            requiredMode = Schema.RequiredMode.REQUIRED
-    )
-    protected String companyVAT;
-
-    @Schema(
-            description = "Company ID + registration sentence",
-            requiredMode = Schema.RequiredMode.REQUIRED
-    )
-    protected String companyRegistration;
-
-
-    // ------------------------------------
-
-
-    public String getCompanyName() {
-        return companyName;
-    }
-
-    public void setCompanyName(String companyName) {
-        this.companyName = companyName;
-    }
-
-    public String getCompanyAddress() {
-        return companyAddress;
-    }
-
-    public void setCompanyAddress(String companyAddress) {
-        this.companyAddress = companyAddress;
-    }
-
-    public String getCompanyVAT() {
-        return companyVAT;
-    }
-
-    public void setCompanyVAT(String companyVAT) {
-        this.companyVAT = companyVAT;
-    }
-
-    public String getCompanyRegistration() {
-        return companyRegistration;
-    }
-
-    public void setCompanyRegistration(String companyRegistration) {
-        this.companyRegistration = companyRegistration;
-    }
 }

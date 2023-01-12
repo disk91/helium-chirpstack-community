@@ -2,7 +2,14 @@
     <div>
       <Navbar/>
       <ManageTenantTemplate/>
-      <ManageTenant/>
+      <b-row>
+        <b-col cols="6">
+          <ManageTenant/>
+        </b-col>
+        <b-col cols="6">        
+         <InvoiceSetup/>
+        </b-col>
+      </b-row>
     </div>
 </template>
 
@@ -11,6 +18,7 @@
   import Navbar from '~/components/Navbar.vue';
   import ManageTenantTemplate from '~/components/ManageTenantTemplate.vue'; 
   import ManageTenant from '~/components/ManageTenant.vue';
+  import InvoiceSetup from '~/components/InvoiceSetup.vue';
 
   export default Vue.extend({
       name: "ManageTenantProfiles",
@@ -18,6 +26,7 @@
         'Navbar' : Navbar,
         'ManageTenantTemplate' : ManageTenantTemplate,
         'ManageTenant' : ManageTenant,
+        'InvoiceSetup' : InvoiceSetup,
       },
     })
 </script>

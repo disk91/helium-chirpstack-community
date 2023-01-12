@@ -24,7 +24,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.tags.Tag;
 
 @Tag(name = "Service provider company information", description = "Company informations that will be used for the invoice creation")
-public class CompanyIdentityRespItf {
+public class InvoiceSetupGetRespItf {
 
     @Schema(
             description = "Name of the company",

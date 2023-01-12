@@ -245,5 +245,19 @@
     "txst_timeout" : "Abandonnée", 
     "txst_null" : "Inconnu", 
 
+    "error_load_invoice_setup" : "Impossible charger la configuration des factures",
+    "inv_setup_title" : "Configuration des factures",
+    "inv_companyName" : "Nom",
+    "inv_companyName_det": "Nom de l'entreprise à afficher sur la facture",
+    "inv_companyAddress" : "Adresse",
+    "inv_companyAddress_det": "Adresse de l'entreprise, sur plusieurs lignes",
+    "inv_companyVAT" : "TVA",
+    "inv_companyVAT_det" : "Information TVA concernant l'entreprise",
+    "inv_companyRegistration" : "RCS",
+    "inv_companyRegistration_det" : "Infomration concernant l'enregistrement de la société",
+    "inv_upt_but" : "Mise à jour",
+    "inv_update_success" : "Les information société ont été mise à jour",
+    "inv_update_error" : "Erreur durant la mise à jour des informations société",
+  
     "end" : "fin"
 }

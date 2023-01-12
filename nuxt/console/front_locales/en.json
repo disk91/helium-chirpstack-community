@@ -246,5 +246,19 @@
   "txst_timeout" : "Failed", 
   "txst_null" : "Unknown", 
 
+  "error_load_invoice_setup" : "Impossible to load invoice setup",
+  "inv_setup_title" : "Invoice setup",
+  "inv_companyName" : "Name",
+  "inv_companyName_det": "Company name to be printed on invoice",
+  "inv_companyAddress" : "Address",
+  "inv_companyAddress_det": "Company address to be printed on invoice, mulitple lines",
+  "inv_companyVAT" : "VAT",
+  "inv_companyVAT_det" : "Company VAT number",
+  "inv_companyRegistration" : "Id",
+  "inv_companyRegistration_det" : "Company registration ID sentense",
+  "inv_upt_but" : "Update",
+  "inv_update_success" : "Company setup has been updated",
+  "inv_update_error" : "Company setup update failed",
+
   "end" : "end"
 }

@@ -11,9 +11,7 @@ import com.stripe.model.Charge;
 import com.stripe.model.PaymentIntent;
 import com.stripe.param.PaymentIntentCreateParams;
 import eu.heliumiot.console.ConsoleConfig;
-import eu.heliumiot.console.api.interfaces.TransactionListRespItf;
-import eu.heliumiot.console.api.interfaces.TransactionStripeReqItf;
-import eu.heliumiot.console.api.interfaces.TransactionStripeRespItf;
+import eu.heliumiot.console.api.interfaces.*;
 import eu.heliumiot.console.jpa.db.*;
 import eu.heliumiot.console.jpa.repository.HeliumDcTransactionRepository;
 import eu.heliumiot.console.jpa.repository.UserTenantRepository;
@@ -337,6 +335,54 @@ public class TransactionService {
 
             }
         }
+    }
+
+    // ======================================================
+    // INVOICING
+    // ======================================================
+
+    public InvoiceSetupGetRespItf getInvoiceSetup() {
+
+        InvoiceSetupGetRespItf r = new InvoiceSetupGetRespItf();
+        HeliumParameter p = heliumParameterService.getParameter(HeliumParameterService.PARAM_COMPANY_NAME);
+        r.setCompanyName(p.getStrValue());
+        p = heliumParameterService.getParameter(HeliumParameterService.PARAM_COMPANY_ADDRESS);
+        r.setCompanyAddress(p.getStrValue());
+        p = heliumParameterService.getParameter(HeliumParameterService.PARAM_COMPANY_VAT);
+        r.setCompanyVAT(p.getStrValue());
+        p = heliumParameterService.getParameter(HeliumParameterService.PARAM_COMPANY_REGISTER);
+        r.setCompanyRegistration(p.getStrValue());
+
+        return r;
+    }
+
+    public void updateInvoiceSetup(InvoiceSetupPutReqItf i) throws ITParseException {
+
+        HeliumParameter p;
+        if ( i.getCompanyName() != null ) {
+            p = heliumParameterService.getParameter(HeliumParameterService.PARAM_COMPANY_NAME);
+            p.setStrValue(i.getCompanyName());
+            heliumParameterService.flushParameter(p);
+        } else throw new ITParseException();
+
+        if ( i.getCompanyAddress() != null ) {
+            p = heliumParameterService.getParameter(HeliumParameterService.PARAM_COMPANY_ADDRESS);
+            p.setStrValue(i.getCompanyAddress());
+            heliumParameterService.flushParameter(p);
+        } else throw new ITParseException();
+
+        if ( i.getCompanyVAT() != null ) {
+            p = heliumParameterService.getParameter(HeliumParameterService.PARAM_COMPANY_VAT);
+            p.setStrValue(i.getCompanyVAT());
+            heliumParameterService.flushParameter(p);
+        } else throw new ITParseException();
+
+        if ( i.getCompanyRegistration() != null ) {
+            p = heliumParameterService.getParameter(HeliumParameterService.PARAM_COMPANY_REGISTER);
+            p.setStrValue(i.getCompanyRegistration());
+            heliumParameterService.flushParameter(p);
+        } else throw new ITParseException();
+
     }
 
 }

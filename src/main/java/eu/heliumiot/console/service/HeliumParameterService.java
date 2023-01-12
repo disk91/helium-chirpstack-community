@@ -37,6 +37,13 @@ public class HeliumParameterService {
     public static final String PARAM_DEVICE_LASTSCAN_TIME = "deviceLastScanTime";
     public static final String PARAM_INVOICE_VAT = "invoiceVat";
 
+    public static final String PARAM_COMPANY_NAME = "companyName";
+    public static final String PARAM_COMPANY_ADDRESS = "companyAddress";
+    public static final String PARAM_COMPANY_VAT = "companyVat";
+    public static final String PARAM_COMPANY_REGISTER = "companyRegistration";
+
+
+
     @Autowired
     protected ConsoleConfig consoleConfig;
 
@@ -62,7 +69,38 @@ public class HeliumParameterService {
             invoiceVat.setStrValue("");
             heliumParameterRepository.save(invoiceVat);
         }
-
+        HeliumParameter companyName = heliumParameterRepository.findOneHeliumParameterByParameterName(PARAM_COMPANY_NAME);
+        if ( companyName == null ) {
+            companyName = new HeliumParameter();
+            companyName.setParameterName(PARAM_COMPANY_NAME);
+            companyName.setLongValue(0);
+            companyName.setStrValue("Acme");
+            heliumParameterRepository.save(companyName);
+        }
+        HeliumParameter companyAddress = heliumParameterRepository.findOneHeliumParameterByParameterName(PARAM_COMPANY_ADDRESS);
+        if ( companyAddress == null ) {
+            companyAddress = new HeliumParameter();
+            companyAddress.setParameterName(PARAM_COMPANY_ADDRESS);
+            companyAddress.setLongValue(0);
+            companyAddress.setStrValue("1 Bd Helium Rd \n San Francisco, CA \n U.S.A. \n Phone : 001 xx xx xx\n");
+            heliumParameterRepository.save(companyAddress);
+        }
+        HeliumParameter companyVat = heliumParameterRepository.findOneHeliumParameterByParameterName(PARAM_COMPANY_VAT);
+        if ( companyVat == null ) {
+            companyVat = new HeliumParameter();
+            companyVat.setParameterName(PARAM_COMPANY_VAT);
+            companyVat.setLongValue(0);
+            companyVat.setStrValue("FR123445678901234");
+            heliumParameterRepository.save(companyVat);
+        }
+        HeliumParameter companyRegister = heliumParameterRepository.findOneHeliumParameterByParameterName(PARAM_COMPANY_REGISTER);
+        if ( companyRegister == null ) {
+            companyRegister = new HeliumParameter();
+            companyRegister.setParameterName(PARAM_COMPANY_REGISTER);
+            companyRegister.setLongValue(0);
+            companyRegister.setStrValue("Acme is a company registered at xxx with company number 1235432516");
+            heliumParameterRepository.save(companyRegister);
+        }
     }
 
     public HeliumParameter getParameter(String paramName) {

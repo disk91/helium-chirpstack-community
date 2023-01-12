@@ -39,6 +39,8 @@ export default {
     transactionStripeCreate:(process.env.API_HOST || '')+'/console/1.0/transaction/intent',
     transactionStripeUpdate:(process.env.API_HOST || '')+'/console/1.0/transaction/intent',
     backVersionGet:(process.env.API_HOST || '')+'/console/1.0/misc/version',
+    invoiceSetupGet:(process.env.API_HOST || '')+'/console/1.0/invoice/setup',
+    invoiceSetupUpd:(process.env.API_HOST || '')+'/console/1.0/invoice/setup',
     termAndUse:process.env.CONSOLE_TERMS || '/',
     frontVersion:'0.3.0'
   },
