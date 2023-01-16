@@ -149,4 +149,45 @@ public class TransactionApi {
     }
 
 
+
+    /**
+     * Get the invoice for a completed transaction
+     * @param request
+     * @return
+     */
+    @Operation(summary = "Get invoice",
+            description = "Create a pdf from a completed transaction",
+            responses = {
+                    @ApiResponse(responseCode = "200", description= "Done",
+                            content = @Content(array = @ArraySchema(schema = @Schema( implementation = byte[].class)))),
+                    @ApiResponse(responseCode = "403", description= "Forbidden", content = @Content(schema = @Schema(implementation = ActionResult.class))),
+                    @ApiResponse(responseCode = "400", description= "Bad Request", content = @Content(schema = @Schema(implementation = ActionResult.class))),
+            }
+    )
+    @RequestMapping(value="/invoice/{txUUID}/",
+            produces = MediaType.APPLICATION_PDF_VALUE,
+            method= RequestMethod.GET)
+    //@PreAuthorize("hasAnyRole('ROLE_USER')")
+    public ResponseEntity<?> requestInvoice(
+            HttpServletRequest request,
+            @Parameter(required = true, name = "txUUID", description = "transaction Id")
+            @PathVariable String txUUID
+    ) {
+        //log.debug("Get invoice "+ txUUID +" setup for "+request.getUserPrincipal().getName());
+        try {
+            byte [] r = transactionService.getInvoice("23e008f4-49e1-4378-b2fc-fff9fc444f3e", "8f44eadc-791e-47eb-bf2c-c40ddd049f9c");
+            return new ResponseEntity<>(r, HttpStatus.OK);
+        } catch ( ITRightException x ) {
+            ActionResult a = ActionResult.FORBIDDEN();
+            a.setMessage(x.getMessage());
+            return new ResponseEntity<>(a, HttpStatus.FORBIDDEN);
+        } catch ( ITParseException x ) {
+            ActionResult a = ActionResult.BADREQUEST();
+            a.setMessage(x.getMessage());
+            return new ResponseEntity<>(a, HttpStatus.BAD_REQUEST);
+        }
+    }
+
+
+
 }

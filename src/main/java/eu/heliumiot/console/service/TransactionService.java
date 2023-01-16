@@ -19,16 +19,22 @@ import eu.heliumiot.console.tools.EncryptionHelper;
 import fr.ingeniousthings.tools.ITParseException;
 import fr.ingeniousthings.tools.ITRightException;
 import fr.ingeniousthings.tools.Now;
+import org.apache.pdfbox.pdmodel.PDDocument;
+import org.apache.pdfbox.pdmodel.PDPage;
+import org.apache.pdfbox.pdmodel.PDPageContentStream;
+import org.apache.pdfbox.pdmodel.common.PDRectangle;
+import org.apache.pdfbox.pdmodel.font.PDType1Font;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 import static eu.heliumiot.console.service.HeliumTenantService.HTRANSACTION_TYPE_STRIPE;
 import static eu.heliumiot.console.service.UserService.HUPROFILE_STATUS_COMPLETED;
@@ -164,8 +170,8 @@ public class TransactionService {
         t.setIntentTime(Now.NowUtcMs());
         t.setCompleted(false);
         if ( req.getMemo() != null ) {
-            t.setMemo(req.getMemo());
-        } else t.setMemo("");
+            t.setMemo(encryptionHelper.encryptStringWithServerKey(req.getMemo()));
+        } else t.setMemo(encryptionHelper.encryptStringWithServerKey(""));
 
         // Amount calculation
         // Stripe uses integer amount, it depends on the currency
@@ -402,6 +408,156 @@ public class TransactionService {
         r.setStripeEnable(consoleConfig.isStripeEnable());
         r.setTransferEnable(consoleConfig.isTransferEnable());
         return r;
+    }
+
+
+    // ======================================================
+    // Generate invoice pdf
+    // ======================================================
+
+    public byte [] getInvoice(String userId, String transactionId)
+    throws ITRightException, ITParseException {
+
+        // check the rights
+        HeliumDcTransaction t = heliumDcTransactionRepository.findOneHeliumDcTransactionById(UUID.fromString(transactionId));
+        if (t == null) throw new ITRightException();
+        if (t.getUserUUID().compareToIgnoreCase(userId) != 0) {
+            throw new ITRightException();
+        }
+        if ( t.getType() != HTRANSACTION_TYPE_STRIPE ) throw new ITRightException("invalid_type");
+        if ( ! t.isCompleted() ) throw new ITRightException("incomplete");
+
+        // all good
+        HeliumParameter p;
+        try {
+            PDDocument document = new PDDocument();
+            PDPage page = new PDPage();
+            document.addPage(page);
+            PDPageContentStream contentStream = new PDPageContentStream(document, page);
+
+            // company name
+            contentStream.beginText();
+            contentStream.setFont(PDType1Font.TIMES_BOLD, 14);
+            contentStream.newLineAtOffset(10, 750);
+            p = heliumParameterService.getParameter(HeliumParameterService.PARAM_COMPANY_NAME);
+            contentStream.showText(p.getStrValue());
+            contentStream.endText();
+
+            // invoice Id
+            contentStream.moveTo(0,0);
+            contentStream.beginText();
+            contentStream.setFont(PDType1Font.TIMES_BOLD, 12);
+            contentStream.newLineAtOffset(300, 750);
+            contentStream.showText("Invoice ID: "+t.getId().toString());
+            contentStream.endText();
+
+            // date
+            contentStream.moveTo(0,0);
+            contentStream.beginText();
+            contentStream.setFont(PDType1Font.TIMES_ROMAN, 12);
+            contentStream.newLineAtOffset(300, 734);
+            Date d = new Date(t.getIntentTime());
+            Locale locale = new Locale("en", "US");
+            SimpleDateFormat sdf =  new SimpleDateFormat("yyyy-MMMM-dd",locale);
+            contentStream.showText("Date: "+sdf.format(d));
+            contentStream.endText();
+
+
+            // company address
+            contentStream.moveTo(0,0);
+            contentStream.beginText();
+            contentStream.newLineAtOffset(10, 734);
+            contentStream.setFont(PDType1Font.TIMES_ROMAN, 12);
+            p = heliumParameterService.getParameter(HeliumParameterService.PARAM_COMPANY_ADDRESS);
+            String [] ss = p.getStrValue().split("\n");
+            for ( String s : ss ) {
+                // relative position
+                contentStream.showText(s.trim());
+                contentStream.newLineAtOffset(0, -16);
+            }
+            contentStream.endText();
+
+            int offset = 680;
+
+            // Customer company
+            if ( t.getCompany() != null ) {
+                String s = encryptionHelper.decryptStringWithServerKey(t.getCompany());
+                if ( s.length() > 0 ) {
+                    contentStream.moveTo(0, 0);
+                    contentStream.beginText();
+                    contentStream.newLineAtOffset(300, offset);
+                    contentStream.setFont(PDType1Font.TIMES_ROMAN, 12);
+                    contentStream.showText(s);
+                    contentStream.endText();
+                    offset -= 16;
+                }
+            }
+
+            // Customer name
+            if ( t.getFirstName() != null || t.getLastName() != null ) {
+                String first = "";
+                String last = "";
+                if ( t.getFirstName() != null ) first = encryptionHelper.decryptStringWithServerKey(t.getFirstName());
+                if ( t.getLastName() != null ) last = encryptionHelper.decryptStringWithServerKey(t.getLastName());
+                contentStream.moveTo(0, 0);
+                contentStream.beginText();
+                contentStream.newLineAtOffset(300, offset);
+                contentStream.setFont(PDType1Font.TIMES_ROMAN, 12);
+                contentStream.showText(first+' '+last);
+                contentStream.endText();
+                offset -= 16;
+            }
+
+            // Customer address
+            if ( t.getAddress() != null ) {
+                String ad = encryptionHelper.decryptStringWithServerKey(t.getAddress());
+                String [] as = ad.split("\n");
+                contentStream.moveTo(0, 0);
+                contentStream.beginText();
+                contentStream.newLineAtOffset(300, offset);
+                for ( String a : as ) {
+                    // relative position
+                    contentStream.showText(a.trim());
+                    contentStream.newLineAtOffset(0, -16);
+                    offset -= 16;
+                }
+                contentStream.endText();
+            }
+
+            // Customer city and CP
+            if ( t.getCityName() != null || t.getCityId() != null || t.getCountry() != null ) {
+                String cn = ""; if ( t.getCityName() != null ) cn = t.getCityName();
+                String ci = ""; if ( t.getCityId() != null ) ci = t.getCityId();
+                String cc = ""; if ( t.getCountry() != null ) cc = t.getCountry();
+                contentStream.moveTo(0, 0);
+                contentStream.beginText();
+                contentStream.newLineAtOffset(300, offset);
+                contentStream.setFont(PDType1Font.TIMES_ROMAN, 12);
+                contentStream.showText(cn+", "+ci);
+                offset -= 16;
+                contentStream.newLineAtOffset(0, -16);
+                contentStream.showText(cc);
+                contentStream.endText();
+                offset -= 16;
+            }
+
+            // customer ID
+
+            // ligne
+            // Memo (decrypted)
+            // vat ...
+
+
+
+            contentStream.close();
+            ByteArrayOutputStream out = new ByteArrayOutputStream();
+            document.save(out);
+            document.close();
+            return out.toByteArray();
+        } catch (IOException x) {
+            throw new ITParseException("pdf_failure");
+        }
+
     }
 
 }
