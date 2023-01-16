@@ -633,6 +633,20 @@ public class ConsoleConfig {
     @Value ("${helium.stripe.currency.default}")
     private String stripeCurrencyDefault;
 
+    @Value ("${helium.stripe.enable}")
+    private boolean stripeEnable;
+
+    @Value ("${helium.transfer.enable}")
+    private boolean transferEnable;
+
+    public boolean isStripeEnable() {
+        return stripeEnable;
+    }
+
+    public boolean isTransferEnable() {
+        return transferEnable;
+    }
+
     public String getStripeKeyPrivateExternal() {
         return stripeKeyPrivateExternal;
     }

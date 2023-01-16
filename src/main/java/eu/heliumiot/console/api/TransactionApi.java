@@ -128,6 +128,25 @@ public class TransactionApi {
         return new ResponseEntity<>(r, HttpStatus.OK);
     }
 
+    @Operation(summary = "Get transaction setup",
+            description = "get the transaction setup : authorization to use stripe of DC transfer",
+            responses = {
+                    @ApiResponse(responseCode = "200", description= "Done",
+                            content = @Content(array = @ArraySchema(schema = @Schema( implementation = TransactionConfigRespItf.class)))),
+                    @ApiResponse(responseCode = "403", description= "Forbidden", content = @Content(schema = @Schema(implementation = ActionResult.class))),
+            }
+    )
+    @RequestMapping(value="/setup",
+            produces = MediaType.APPLICATION_JSON_VALUE,
+            method= RequestMethod.GET)
+    @PreAuthorize("hasAnyRole('ROLE_USER')")
+    public ResponseEntity<?> requestTransactionSetup(
+            HttpServletRequest request
+    ) {
+        log.debug("Get transaction setup for "+request.getUserPrincipal().getName());
+        TransactionConfigRespItf r = transactionService.getTransactionSetup();
+        return new ResponseEntity<>(r, HttpStatus.OK);
+    }
 
 
 }

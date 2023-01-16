@@ -899,6 +899,9 @@ public class HeliumTenantService {
             TenantDcTransferReqItf req
     ) throws ITRightException {
 
+        // check if stripe is authorized
+        if ( ! consoleConfig.isTransferEnable() ) throw new ITRightException("transfer_disable");
+
         UserCacheService.UserCacheElement user = userCacheService.getUserById(userId);
         if (user == null) throw new ITRightException();
         if (req.getDcs() <= 0) throw new ITRightException();

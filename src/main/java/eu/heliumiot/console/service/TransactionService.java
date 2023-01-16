@@ -110,12 +110,15 @@ public class TransactionService {
         TransactionStripeRespItf r = new TransactionStripeRespItf();
         HeliumDcTransaction t = new HeliumDcTransaction();
 
+        // check if stripe is authorized
+        if ( ! consoleConfig.isStripeEnable() ) throw new ITRightException("stripe_disable");
+
         // checks
         UserCacheService.UserCacheElement user = userCacheService.getUserById(userId);
         if (user == null) throw new ITRightException();
         if (req.getDcs() <= 0) throw new ITRightException();
         if (user.heliumUser.getProfileStatus().compareToIgnoreCase(HUPROFILE_STATUS_COMPLETED) != 0)
-            throw new ITRightException("strip_incomplete_profile");
+            throw new ITRightException("stripe_incomplete_profile");
 
         // check ownership
         UserTenant td = userTenantRepository.findOneUserByUserIdAndTenantId(UUID.fromString(userId), UUID.fromString(req.getTenantUUID()));
@@ -317,6 +320,9 @@ public class TransactionService {
     public void updateStripeTransaction(String userId, String transactionId)
             throws ITRightException {
 
+        // check if stripe is authorized
+        if ( ! consoleConfig.isStripeEnable() ) throw new ITRightException("stripe_disable");
+
         // check the rights
         HeliumDcTransaction t = heliumDcTransactionRepository.findOneHeliumDcTransactionById(UUID.fromString(transactionId));
         if (t == null) throw new ITRightException();
@@ -383,6 +389,19 @@ public class TransactionService {
             heliumParameterService.flushParameter(p);
         } else throw new ITParseException();
 
+    }
+
+
+    /**
+     * Return the configuration of the transaction for managing front configuration
+     * of the visible buttons
+     * @return
+     */
+    public TransactionConfigRespItf getTransactionSetup() {
+        TransactionConfigRespItf r = new TransactionConfigRespItf();
+        r.setStripeEnable(consoleConfig.isStripeEnable());
+        r.setTransferEnable(consoleConfig.isTransferEnable());
+        return r;
     }
 
 }

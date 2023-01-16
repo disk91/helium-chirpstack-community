@@ -7,6 +7,7 @@
                     size="sm"
                     @click="onTransferDcClick()"
                     style="text-align: left;font-size:0.8rem;"
+                    :disabled="! transferEnable"
                 >
                     <b-icon icon="arrow-right-circle" variant="secondary"></b-icon>
                     {{ $t('dc_transfer') }}
@@ -18,6 +19,7 @@
                     size="sm"
                     @click="onPurchaseDcClick()"
                     style="text-align: left;font-size:0.8rem;"
+                    :disabled="! stripeEnable"
                 >
                 <b-icon icon="credit-card" variant="white"></b-icon>
                     {{ $t('dc_purchase') }}
@@ -97,6 +99,7 @@ import Vue from 'vue'
 import { TenantDcBalancesReqItf } from 'vue/types/tenantSearch';
 import DataCreditTransfer from '~/components/DataCreditTransfer.vue';
 import DataCreditPurchase from './DataCreditPurchase.vue';
+import { TransactionConfigRespItf } from 'vue/types/transaction';
 
 interface data {
     tenants : TenantDcBalancesReqItf[],
@@ -105,6 +108,8 @@ interface data {
     errorMessageMod : string,
     successMessageMod : string,
     isComplete: boolean,
+    stripeEnable: boolean,
+    transferEnable: boolean,
 }
 
 export default Vue.extend({
@@ -121,6 +126,8 @@ export default Vue.extend({
             errorMessageMod : '',
             successMessageMod : '',
             isComplete : true,
+            stripeEnable : false,
+            transferEnable : false,
         };
     },
     async fetch() {
@@ -141,6 +148,19 @@ export default Vue.extend({
                this.errorMessage = 'error_load_dc_tenants';
                this.tenants = [];
             })
+            this.isBusy = true;
+        this.$axios.get<TransactionConfigRespItf>(this.$config.transactionSetup,config)
+            .then((response) =>{
+                if (response.status == 200 ) {
+                  this.stripeEnable = response.data.stripeEnable;
+                  this.transferEnable = response.data.transferEnable;
+                  this.isBusy = false;
+                }
+            }).catch((err) =>{
+               this.errorMessage = 'error_load_transac_config';
+               this.tenants = [];
+            })
+            
     },
     methods : {
         onTransferDcClick() {
