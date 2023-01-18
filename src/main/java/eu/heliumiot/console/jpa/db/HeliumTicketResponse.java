@@ -22,15 +22,16 @@ package eu.heliumiot.console.jpa.db;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
+import java.sql.Timestamp;
 import java.util.UUID;
 
 @Entity
-@Table(name = "helium_messages",
+@Table(name = "helium_ticket_response",
         indexes = {
-                @Index(name="uniqueHeliumMessageIndex", columnList = "index", unique = true)
+                @Index(name="uniqueHeliumMessageIndex", columnList = "ticket_uuid", unique = true)
         }
 )
-public class HeliumMessages {
+public class HeliumTicketResponse {
 
     @Id
     @GenericGenerator(name = "UUIDGenerator", strategy = "uuid2")
@@ -38,34 +39,23 @@ public class HeliumMessages {
     @Column(name = "id", updatable = false, nullable = false)
     private UUID id;
 
-    // message Index (user store this index to record the seen messages)
+    // User owner of the ticket
     // basically Now
-    @Column(name = "index")
-    private long index;
+    @Column(name = "ticket_uuid")
+    private UUID ticketUUID;
 
-    // Type of message, can be a modal (in the middle of the screen) or a toaster
-    @Column(name = "type")
-    private int type;
+    // Creation of the ticket
+    @Column(name = "created_at")
+    private Timestamp createdAt;
 
-    // category of message - info / warning / error
-    @Column(name = "category")
-    private int category;
-
-    // content of the message to be displayed
+    // Content of the response
     @Column(name = "content")
     private String content;
 
-    // Final date to display this message
-    @Column(name = "until")
-    private long until;
+    // true when admin is the responder
+    @Column(name = "is_admin")
+    private boolean isAdmin;
 
-    // When true the message is printed only one time otherwise, until the end-date
-    @Column(name = "onlyone")
-    private boolean onlyone;
-
-    // True when a user message vs a front page message
-    @Column(name = "user_mess")
-    private boolean userMess;
 
     // ---
 
@@ -78,28 +68,20 @@ public class HeliumMessages {
         this.id = id;
     }
 
-    public long getIndex() {
-        return index;
+    public UUID getTicketUUID() {
+        return ticketUUID;
     }
 
-    public void setIndex(long index) {
-        this.index = index;
+    public void setTicketUUID(UUID ticketUUID) {
+        this.ticketUUID = ticketUUID;
     }
 
-    public int getType() {
-        return type;
+    public Timestamp getCreatedAt() {
+        return createdAt;
     }
 
-    public void setType(int type) {
-        this.type = type;
-    }
-
-    public int getCategory() {
-        return category;
-    }
-
-    public void setCategory(int category) {
-        this.category = category;
+    public void setCreatedAt(Timestamp createdAt) {
+        this.createdAt = createdAt;
     }
 
     public String getContent() {
@@ -110,27 +92,11 @@ public class HeliumMessages {
         this.content = content;
     }
 
-    public long getUntil() {
-        return until;
+    public boolean isAdmin() {
+        return isAdmin;
     }
 
-    public void setUntil(long until) {
-        this.until = until;
-    }
-
-    public boolean isOnlyone() {
-        return onlyone;
-    }
-
-    public void setOnlyone(boolean onlyone) {
-        this.onlyone = onlyone;
-    }
-
-    public boolean isUserMess() {
-        return userMess;
-    }
-
-    public void setUserMess(boolean userMess) {
-        this.userMess = userMess;
+    public void setAdmin(boolean admin) {
+        isAdmin = admin;
     }
 }

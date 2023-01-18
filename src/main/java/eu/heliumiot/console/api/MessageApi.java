@@ -37,6 +37,26 @@ public class MessageApi {
     @Autowired
     protected HeliumMessageService heliumMessageService;
 
+
+    @Operation(summary = "Get public Messages for front page",
+            description = "Get public message for front page",
+            responses = {
+                    @ApiResponse(responseCode = "200", description= "Done",
+                            content = @Content(array = @ArraySchema(schema = @Schema( implementation = MessagePendingRespItf.class)))),
+                    @ApiResponse(responseCode = "403", description= "Forbidden", content = @Content(schema = @Schema(implementation = ActionResult.class))),
+            }
+    )
+    @RequestMapping(value="/public",
+            produces = MediaType.APPLICATION_JSON_VALUE,
+            method= RequestMethod.GET)
+    public ResponseEntity<?> getPublicMessage(
+            HttpServletRequest request
+    ) {
+        List<MessagePendingRespItf> r = heliumMessageService.getHeliumMessageFrontPage();
+        return new ResponseEntity<>(r, HttpStatus.OK);
+    }
+
+
     @Operation(summary = "Get pending Messages",
             description = "Get pending messages to be displayed to user",
             responses = {

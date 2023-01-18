@@ -49,6 +49,16 @@
               </b-card-text>
             </b-card>
         </div>
+        <b-alert 
+            v-model="umessage.showAlert"
+            class="position-fixed fixed-top m-0 rounded-0"
+            style="z-index:2000;"
+            :variant="umessage.bgTitle"
+            dismissible
+        >
+            {{ umessage.content }}
+        </b-alert>
+
   </div>
 </template>
 
@@ -56,6 +66,21 @@
 <script lang="ts">
 import Vue from 'vue'
 import { Store } from 'vuex/types/index';
+import { UserMessage } from 'vue/types/message';
+
+
+interface data {
+    messages : UserMessage[],
+    login : {
+        username : string,
+        password : string,
+    },
+    umessage : {
+          showAlert : boolean,
+          bgTitle : string,
+          content : string,
+    },
+}
 
 export default Vue.extend({
     name: "LoginPage",
@@ -65,10 +90,50 @@ export default Vue.extend({
             login: {
                 username: '',
                 password: ''
-            }
+            },
+            messages : [],
+            umessage : {
+                showAlert : false,
+                bgTitle : 'info',
+                content : '',
+            },
         }
     },
+    async fetch() {
+        let config = {
+            headers: {
+              'Content-Type': 'application/json',
+            }
+        };
+        this.$data.messages = [];
+        this.$axios.get(this.$config.messagePublicGet,config)
+            .then((response) =>{
+                if (response.status == 200 ) {
+                  this.$data.messages = response.data;
+                  this.displayMessages();
+                }
+            }).catch((err) =>{
+            })
+            this.$data.messages = [];
+    },
     methods: {
+        async displayMessages() {
+            if ( this.$data.messages.length > 0 ) {
+                this.$data.messages.forEach( (message : UserMessage) => {
+                    var variant = "info";
+                    switch (message.category) {
+                    default:
+                    case 0 as any : variant = "primary"; break;
+                    case 1 as any : variant = "warning"; break;
+                    case 2 as any : variant = "danger"; break;
+                    }
+                    var type = "b-toaster-top-full";
+                    this.$data.umessage.showAlert = true;
+                    this.$data.umessage.bgTitle = variant;
+                    this.$data.umessage.content = message.content;
+                })
+            }
+        },
         async userLogin() {
             try {
                 await this.$auth.loginWith(

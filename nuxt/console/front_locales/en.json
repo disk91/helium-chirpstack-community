@@ -263,5 +263,11 @@
   "inv_update_success" : "Company setup has been updated",
   "inv_update_error" : "Company setup update failed",
 
+  "ticket_title" : "Service request",
+  "tick_status_1" : "Open",
+  "tick_status_2" : "Pending Response",
+  "tick_status_3" : "Closed",
+  "tick_add_ticket" : "Open a service request",
+
   "end" : "end"
 }

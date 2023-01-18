@@ -261,6 +261,13 @@
     "inv_upt_but" : "Mise à jour",
     "inv_update_success" : "Les information société ont été mise à jour",
     "inv_update_error" : "Erreur durant la mise à jour des informations société",
+
+    "ticket_title" : "Demande de service",
+    "tick_status_1" : "Ouvert",
+    "tick_status_2" : "En attente de réponse",
+    "tick_status_3" : "Fermé",
+    "tick_add_ticket" : "Ouvrir une demande de service",
+
   
     "end" : "fin"
 }

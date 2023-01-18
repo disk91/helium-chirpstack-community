@@ -43,6 +43,8 @@ public class HeliumMessageService {
     public static final int HELIUM_MESSAGE_TYPE_MODAL = 1;       // modal for full screen display
     public static final int HELIUM_MESSAGE_TYPE_LTOATS = 2;      // Large Toaster display
 
+    public static final int HELIUM_MESSAGE_FRONT_PAGE = 3;       // message printed on front page before login
+
     public static final int HELIUM_MESSAGE_CATEGORY_INFO = 0;       // type of display
     public static final int HELIUM_MESSAGE_CATEGORY_WARNING = 1;
     public static final int HELIUM_MESSAGE_CATEGORY_DANGER = 2;
@@ -53,6 +55,25 @@ public class HeliumMessageService {
     @Autowired
     protected UserCacheService userCacheService;
 
+    public List<MessagePendingRespItf> getHeliumMessageFrontPage() {
+        ArrayList<MessagePendingRespItf> r = new ArrayList<>();
+        HeliumMessages hm = heliumMessageRepository.findFirstHeliumMessagesByUntilGreaterThanAndTypeOrderByIndexDesc(
+                Now.NowUtcMs(),
+                HELIUM_MESSAGE_FRONT_PAGE
+        );
+
+        if ( hm != null ) {
+            MessagePendingRespItf i = new MessagePendingRespItf();
+            i.setType(hm.getType());
+            i.setCategory(hm.getCategory());
+            i.setContent(hm.getContent());
+            r.add(i);
+        }
+
+        return r;
+    }
+
+
     public List<MessagePendingRespItf> getHeliumMessageForUser(String user)
     throws ITRightException {
 
@@ -60,15 +81,17 @@ public class HeliumMessageService {
         if ( u == null ) throw new ITRightException();
 
         ArrayList<MessagePendingRespItf> r = new ArrayList<>();
-        HeliumMessages hm = heliumMessageRepository.findFirstHeliumMessagesByIndexGreaterThanOrderByIndexDesc(
-            u.heliumUser.getLastMessSeen()
+        HeliumMessages hm = heliumMessageRepository.findFirstHeliumMessagesByIndexGreaterThanAndUserMessOrderByIndexDesc(
+                u.heliumUser.getLastMessSeen(),
+                true
         );
 
         if ( hm == null ) {
             // try to see if we have an until without onlyOne to be displayed again
-            hm = heliumMessageRepository.findFirstHeliumMessagesByUntilGreaterThanAndOnlyoneOrderByUntilAsc(
+            hm = heliumMessageRepository.findFirstHeliumMessagesByUntilGreaterThanAndOnlyoneAndUserMessOrderByUntilAsc(
                     Now.NowUtcMs(),
-                    false
+                    false,
+                    true
             );
         }
 
@@ -110,7 +133,7 @@ public class HeliumMessageService {
         if ( m.getCategory() < HELIUM_MESSAGE_CATEGORY_INFO || m.getCategory() > HELIUM_MESSAGE_CATEGORY_DANGER )
             throw new ITParseException("err_category");
 
-        if ( m.getType() < HELIUM_MESSAGE_TYPE_MODAL || m.getType() > HELIUM_MESSAGE_TYPE_LTOATS )
+        if ( m.getType() < HELIUM_MESSAGE_TYPE_MODAL || m.getType() > HELIUM_MESSAGE_FRONT_PAGE )
             throw new ITParseException("err_type");
 
         if ( m.getContent().length() == 0 ) throw new ITParseException("err_content");
@@ -123,6 +146,12 @@ public class HeliumMessageService {
         hm.setType(m.getType());
         hm.setUntil(m.getUntil());
         hm.setOnlyone(m.isOnlyone());
+        if ( m.getType() == HELIUM_MESSAGE_TYPE_MODAL || m.getType() == HELIUM_MESSAGE_TYPE_LTOATS ) {
+            hm.setUserMess(true);
+        }
+        if ( m.getType() == HELIUM_MESSAGE_FRONT_PAGE ) {
+            hm.setUserMess(false);
+        }
         hm = this.heliumMessageRepository.save(hm);
 
         m.setId(hm.getId().toString());
@@ -147,7 +176,7 @@ public class HeliumMessageService {
         if ( m.getCategory() < HELIUM_MESSAGE_CATEGORY_INFO || m.getCategory() > HELIUM_MESSAGE_CATEGORY_DANGER )
             throw new ITParseException("err_category");
 
-        if ( m.getType() < HELIUM_MESSAGE_TYPE_MODAL || m.getType() > HELIUM_MESSAGE_TYPE_LTOATS )
+        if ( m.getType() < HELIUM_MESSAGE_TYPE_MODAL || m.getType() > HELIUM_MESSAGE_FRONT_PAGE )
             throw new ITParseException("err_type");
 
         if ( m.getContent().length() == 0 ) throw new ITParseException("err_content");
@@ -158,6 +187,12 @@ public class HeliumMessageService {
         hm.setType(m.getType());
         hm.setUntil(m.getUntil());
         hm.setOnlyone(m.isOnlyone());
+        if ( m.getType() == HELIUM_MESSAGE_TYPE_MODAL || m.getType() == HELIUM_MESSAGE_TYPE_LTOATS ) {
+            hm.setUserMess(true);
+        }
+        if ( m.getType() == HELIUM_MESSAGE_FRONT_PAGE ) {
+            hm.setUserMess(false);
+        }
         hm = this.heliumMessageRepository.save(hm);
 
         return m;

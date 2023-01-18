@@ -30,11 +30,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
+import java.awt.*;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.List;
 
 import static eu.heliumiot.console.service.HeliumTenantService.HTRANSACTION_TYPE_STRIPE;
 import static eu.heliumiot.console.service.UserService.HUPROFILE_STATUS_COMPLETED;
@@ -451,17 +453,24 @@ public class TransactionService {
             contentStream.showText("Invoice ID: "+t.getId().toString());
             contentStream.endText();
 
+            // customer Id
+            contentStream.moveTo(0,0);
+            contentStream.beginText();
+            contentStream.setFont(PDType1Font.TIMES_BOLD, 12);
+            contentStream.newLineAtOffset(300, 734);
+            contentStream.showText("Customer ID: "+t.getUserUUID());
+            contentStream.endText();
+
             // date
             contentStream.moveTo(0,0);
             contentStream.beginText();
             contentStream.setFont(PDType1Font.TIMES_ROMAN, 12);
-            contentStream.newLineAtOffset(300, 734);
+            contentStream.newLineAtOffset(300, 718);
             Date d = new Date(t.getIntentTime());
             Locale locale = new Locale("en", "US");
             SimpleDateFormat sdf =  new SimpleDateFormat("yyyy-MMMM-dd",locale);
             contentStream.showText("Date: "+sdf.format(d));
             contentStream.endText();
-
 
             // company address
             contentStream.moveTo(0,0);
@@ -541,7 +550,71 @@ public class TransactionService {
                 offset -= 16;
             }
 
-            // customer ID
+            // headers
+            int qtyPos = 60;
+            int descPos = 120;
+            int pricePos = 380;
+            int totalPos = 460;
+            int totalSz  = 80;
+            int tableStart = 500;
+            int tableHeight = 200;
+            int summaryHeight = 100;
+
+            contentStream.moveTo(0,0);
+            contentStream.beginText();
+            contentStream.setFont(PDType1Font.TIMES_BOLD, 10);
+            contentStream.newLineAtOffset(qtyPos, tableStart);
+            contentStream.showText("Quantity");
+            contentStream.newLineAtOffset(descPos-qtyPos, 0);
+            contentStream.showText("Description");
+            contentStream.newLineAtOffset(pricePos-descPos, 0);
+            contentStream.showText("Unit price");
+            contentStream.newLineAtOffset(totalPos-pricePos, 0);
+            contentStream.showText("Total");
+            contentStream.endText();
+
+            contentStream.setStrokingColor(Color.BLACK);
+            contentStream.setNonStrokingColor(10/255.0f);
+            contentStream.addRect(qtyPos-5,tableStart+12,totalPos-qtyPos+totalSz,-18);
+            contentStream.addRect(qtyPos-5,tableStart+12,totalPos-qtyPos+totalSz,-tableHeight);
+            contentStream.addRect(descPos-5,tableStart+12,0,-tableHeight);
+            contentStream.addRect(pricePos-5,tableStart+12,0,-tableHeight);
+            contentStream.addRect(totalPos-5,tableStart+12,0,-tableHeight);
+            contentStream.addRect(pricePos-5,tableStart+12-tableHeight,totalPos-pricePos+totalSz,-summaryHeight);
+            contentStream.addRect(totalPos-5,tableStart+12-tableHeight,0,-summaryHeight);
+            contentStream.stroke();
+
+            // DCs line
+            contentStream.moveTo(0,0);
+            contentStream.beginText();
+            contentStream.setFont(PDType1Font.TIMES_ROMAN, 10);
+            contentStream.newLineAtOffset(qtyPos, tableStart-20);
+            contentStream.showText(""+String.format("%,d",t.getDcs()));
+            contentStream.newLineAtOffset(descPos-qtyPos, 0);
+            contentStream.showText("Data Credits for helium communication");
+            contentStream.newLineAtOffset(pricePos-descPos, 0);
+            contentStream.showText("$"+String.format("%,.5f",t.getDcsPrice()));
+            contentStream.newLineAtOffset(totalPos-pricePos, 0);
+            contentStream.showText("$"+String.format("%,.2f",t.getDcsPrice()*t.getDcs()));
+            contentStream.endText();
+
+
+
+            // Seller information
+            contentStream.moveTo(0,0);
+            contentStream.setStrokingColor(Color.BLACK);
+            contentStream.addRect(10,30,580,1);
+            contentStream.fill();
+            contentStream.beginText();
+            contentStream.setFont(PDType1Font.TIMES_ROMAN, 10);
+            contentStream.newLineAtOffset(10, 10);
+            p = heliumParameterService.getParameter(HeliumParameterService.PARAM_COMPANY_VAT);
+            contentStream.showText("VAT # "+p.getStrValue());
+            contentStream.newLineAtOffset(0, 10);
+            p = heliumParameterService.getParameter(HeliumParameterService.PARAM_COMPANY_REGISTER);
+            contentStream.showText(p.getStrValue());
+            contentStream.endText();
+
 
             // ligne
             // Memo (decrypted)

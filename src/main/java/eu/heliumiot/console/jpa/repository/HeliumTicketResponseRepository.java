@@ -20,8 +20,8 @@
 package eu.heliumiot.console.jpa.repository;
 
 import eu.heliumiot.console.jpa.db.HeliumMessages;
-import eu.heliumiot.console.jpa.db.HeliumUser;
-import org.springframework.data.jpa.repository.Query;
+import eu.heliumiot.console.jpa.db.HeliumTicket;
+import eu.heliumiot.console.jpa.db.HeliumTicketResponse;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
@@ -29,29 +29,12 @@ import java.util.List;
 import java.util.UUID;
 
 @Repository
-public interface HeliumMessageRepository extends CrudRepository<HeliumMessages, UUID> {
+public interface HeliumTicketResponseRepository extends CrudRepository<HeliumTicketResponse, UUID> {
 
-    public HeliumMessages findOneHeliumMessageById(UUID id);
+    public HeliumTicketResponse findOneHeliumTicketResponseById(UUID id);
 
-    public HeliumMessages findFirstHeliumMessagesByIndexGreaterThanAndUserMessOrderByIndexDesc(
-            long index,
-            boolean userMess
+    public List<HeliumTicketResponse> findHeliumTicketByTicketUUIDOrderByCreatedAtDesc(
+            UUID ticketUUID
     );
-
-    public HeliumMessages findFirstHeliumMessagesByUntilGreaterThanAndOnlyoneAndUserMessOrderByUntilAsc(
-            long now,
-            boolean onlyone,
-            boolean userMess
-    );
-
-    // search the right front page message to be displayed
-    public HeliumMessages findFirstHeliumMessagesByUntilGreaterThanAndTypeOrderByIndexDesc(
-        long now,
-        int type
-    );
-
-    @Query(value = "SELECT * FROM helium_messages ORDER BY index DESC LIMIT ?1", nativeQuery = true)
-    public List<HeliumMessages> findLastHeliumMessages(int number);
-
 
 }

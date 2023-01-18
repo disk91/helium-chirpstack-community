@@ -181,7 +181,8 @@
           type_option : [
             {value: 0, text : this.$t('tmes_type') },
             {value: 1, text : "Modal"},
-            {value: 2, text : "Toaster"}
+            {value: 2, text : "Toaster"},
+            {value: 3, text : "FrontPage"},
           ],
           category_option : [
             {value: -1, text : this.$t('tmes_category') },
@@ -241,6 +242,7 @@
         typeFormatter(value:number,key:string,item:Message) {
            if ( value == 1 ) return "Modal";
            if ( value == 2 ) return "Toaster";
+           if ( value == 3 ) return "FrontPage";
            return "NA"; 
         },  
         categoryFormatter(value:number,key:string,item:Message) {

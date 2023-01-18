@@ -32,6 +32,7 @@ export default {
     messageAdmDel:(process.env.API_HOST || '')+'/console/1.0/message/admin',
     messageGet:(process.env.API_HOST || '')+'/console/1.0/message/',
     messageAck:(process.env.API_HOST || '')+'/console/1.0/message/',
+    messagePublicGet:(process.env.API_HOST || '')+'/console/1.0/message/public',
     userDetailsGet:(process.env.API_HOST || '')+'/console/1.0/user/details',
     userDetailsUpd:(process.env.API_HOST || '')+'/console/1.0/user/details',
     userStatusGet:(process.env.API_HOST || '')+'/console/1.0/user/',
@@ -42,6 +43,10 @@ export default {
     backVersionGet:(process.env.API_HOST || '')+'/console/1.0/misc/version',
     invoiceSetupGet:(process.env.API_HOST || '')+'/console/1.0/invoice/setup',
     invoiceSetupUpd:(process.env.API_HOST || '')+'/console/1.0/invoice/setup',
+    ticketListGet:(process.env.API_HOST || '')+'/console/1.0/ticket/',
+    ticketDetailGet:(process.env.API_HOST || '')+'/console/1.0/ticket',
+    ticketCreatePost:(process.env.API_HOST || '')+'/console/1.0/ticket/',
+    ticketCreateResponsePut:(process.env.API_HOST || '')+'/console/1.0/ticket/',
     termAndUse:process.env.CONSOLE_TERMS || '/',
     frontVersion:'0.3.0'
   },
