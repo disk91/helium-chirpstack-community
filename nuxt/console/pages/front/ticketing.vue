@@ -14,13 +14,15 @@
                     @click="onCreateNewTicket()"
                     style="text-align: left;font-size:0.8rem;"
                 >
-                    <b-icon icon="arrow-right-circle" variant="secondary"></b-icon>
+                    <b-icon icon="plus-circle" variant="secondary"></b-icon>
                     {{ $t('tick_add_ticket') }}
                 </b-button>
             </b-col>
         </b-row>
         <TicketList/>
+        <TicketDetail/>
       </b-card>
+      <TicketNew/>
     </div>
 </template>
 
@@ -29,6 +31,8 @@
   import Navbar from '~/components/Navbar.vue';
   import AddTenant from '~/components/AddTenant.vue';
   import TicketList from "~/components/TicketList.vue";
+  import TicketNew from "~/components/TicketNew.vue";
+  import TicketDetail from "~/components/TicketDisplay.vue";
 
 interface data {
     isBusy : boolean,
@@ -40,6 +44,7 @@ export default Vue.extend({
         'Navbar' : Navbar,
         'AddTenant' : AddTenant,
         'TicketList' : TicketList,
+        'TicketDetail' : TicketDetail,
       },
       data() : data {
         return {
@@ -48,8 +53,13 @@ export default Vue.extend({
       },
       methods: {
         onCreateNewTicket(){
-
+          this.$root.$emit("message-display-tick-new", "");
         },
+      },
+      mounted() {
+        this.$root.$on("message-close-ticker-new", (msg:any) => {
+            this.$fetch();
+        });
       },
     })
 </script>

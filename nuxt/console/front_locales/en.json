@@ -61,6 +61,7 @@
   "menu_purchase_dc": "Purchase Data Credits",
   "menu_admin_profiles" : "Adm profiles",
   "menu_edit_profile" : "My profile",
+  "menu_service_request" : "Service request",
   "addtenant_vmessage_success" : "The tenant has been created",
 
   "tsl_tenantUUID" : "Name",
@@ -249,6 +250,8 @@
   "txst_canceled" : "Failed",
   "txst_timeout" : "Failed", 
   "txst_null" : "Unknown", 
+  "dc_transaction_histo" : "Completed Transaction history",
+  "dc_transac_owner_label" : "Invoiced to",
 
   "error_load_invoice_setup" : "Impossible to load invoice setup",
   "inv_setup_title" : "Invoice setup",
@@ -265,10 +268,29 @@
   "inv_update_error" : "Company setup update failed",
 
   "ticket_title" : "Service request",
+  "ticket_histo_title" : "Service request history",
   "tick_status_1" : "Open",
   "tick_status_2" : "Pending Response",
   "tick_status_3" : "Closed",
   "tick_add_ticket" : "Open a service request",
+  "tick_time_label" : "Date",
+  "tick_status_label" : "State",
+  "tick_topic_label" : "Topic",
+  "tick_new_title" : "Create a new service request",
+  "ticket_new_topic" : "What is your service request about?",
+  "ticket_new_details" : "Please give details about your service request",
+  "ticket_new_topic_field" : "SR Topic",
+  "ticket_new_cancel" : "Cancel",
+  "ticket_new_create" : "Create SR",
+  "ticket_new_success" : "Service request created",
+  "ticket_new_failed" : "Failed to create request",
+  "tick_edit_label" : "Edit",
+  "ticket_details" : "Service Request : ",
+  "tick_owner_label" : "Requester",
+  "tick_add_response" : "Add a response",
+  "ticket_response_add" : "Add response",
+  "ticket_response_close" : "Add & Close",
+  "ticket_response_saved" : "response recorded",
 
   "end" : "end"
 }

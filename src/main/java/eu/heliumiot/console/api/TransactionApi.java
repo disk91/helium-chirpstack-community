@@ -7,6 +7,7 @@ import eu.heliumiot.console.service.HeliumTenantSetupService;
 import eu.heliumiot.console.service.TransactionService;
 import fr.ingeniousthings.tools.ITParseException;
 import fr.ingeniousthings.tools.ITRightException;
+import fr.ingeniousthings.tools.Now;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
@@ -125,6 +126,26 @@ public class TransactionApi {
     ) {
         log.debug("Get transaction list for "+request.getUserPrincipal().getName());
         List<TransactionListRespItf> r = transactionService.getTransactionHistory(request.getUserPrincipal().getName());
+        return new ResponseEntity<>(r, HttpStatus.OK);
+    }
+
+    @Operation(summary = "Get transaction list fro admin",
+            description = "Get the list of completed transaction for all the user in the past 60 days",
+            responses = {
+                    @ApiResponse(responseCode = "200", description= "Done",
+                            content = @Content(array = @ArraySchema(schema = @Schema( implementation = TransactionListRespItf.class)))),
+                    @ApiResponse(responseCode = "403", description= "Forbidden", content = @Content(schema = @Schema(implementation = ActionResult.class))),
+            }
+    )
+    @RequestMapping(value="/completed",
+            produces = MediaType.APPLICATION_JSON_VALUE,
+            method= RequestMethod.GET)
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
+    public ResponseEntity<?> requestAdminTransactionList(
+            HttpServletRequest request
+    ) {
+        log.debug("Get admin transaction list for "+request.getUserPrincipal().getName());
+        List<TransactionListRespItf> r = transactionService.getPastStripeTransactions(Now.NowUtcMs()-(60*Now.ONE_FULL_DAY));
         return new ResponseEntity<>(r, HttpStatus.OK);
     }
 

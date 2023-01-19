@@ -1,8 +1,5 @@
 package eu.heliumiot.console.service;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializationFeature;
 import com.google.gson.Gson;
 import com.stripe.Stripe;
 import com.stripe.exception.StripeException;
@@ -81,6 +78,39 @@ public class TransactionService {
                 if (dst != null) {
                     r.setTenantName(dst.getName());
                 } else r.setTenantName("unknown");
+                rs.add(r);
+            }
+        }
+        return rs;
+    }
+
+    /**
+     * Get the list of stripe transaction in success from a past date
+     * @param from
+     * @return
+     */
+    public List<TransactionListRespItf> getPastStripeTransactions(long from) {
+
+        List<HeliumDcTransaction> ts = heliumDcTransactionRepository.findHeliumDcTransactionByTypeAndIsCompletedAndIntentTimeGreaterThanOrderByIntentTimeDesc(
+                HTRANSACTION_TYPE_STRIPE,
+                true,
+                from
+        );
+
+        ArrayList<TransactionListRespItf> rs = new ArrayList<>();
+        if ( ts != null && ts.size() > 0 ) {
+            for ( HeliumDcTransaction t : ts ) {
+                TransactionListRespItf r = new TransactionListRespItf();
+                r.setTransactionUUID(t.getId().toString());
+                r.setType(t.getType());
+                r.setDcs(t.getDcs());
+                r.setCreateAt(t.getCreatedAt().getTime());
+                r.setCost(t.getDcs()*t.getDcsPrice());
+                r.setStatus(t.getStripeStatus());
+                r.setTenantName(
+                        encryptionHelper.decryptStringWithServerKey(t.getCompany()) + " / " +
+                        encryptionHelper.decryptStringWithServerKey(t.getLastName())
+                );
                 rs.add(r);
             }
         }
@@ -299,10 +329,10 @@ public class TransactionService {
 
     @Scheduled(fixedRateString = "${helium.transaction.intent.upd.scanPeriod}", initialDelay = 5_000)
     private void scanStripeTransactionJob() {
-        List<HeliumDcTransaction> ts = heliumDcTransactionRepository.findHeliumDcTransactionByTypeAndIsCompletedAndIntentTimeGreaterThan(
+        List<HeliumDcTransaction> ts = heliumDcTransactionRepository.findHeliumDcTransactionByTypeAndIsCompletedAndIntentTimeGreaterThanOrderByIntentTimeDesc(
                 HTRANSACTION_TYPE_STRIPE,
                 false,
-                Now.NowUtcMs()-(20*60_000)-(24*3600_000)
+                Now.NowUtcMs()-(20*60_000)
         );
         for ( HeliumDcTransaction t : ts ) {
             try {
@@ -423,9 +453,16 @@ public class TransactionService {
         // check the rights
         HeliumDcTransaction t = heliumDcTransactionRepository.findOneHeliumDcTransactionById(UUID.fromString(transactionId));
         if (t == null) throw new ITRightException();
-        if (t.getUserUUID().compareToIgnoreCase(userId) != 0) {
-            throw new ITRightException();
+
+        UserCacheService.UserCacheElement user = userCacheService.getUserById(userId);
+        if (user == null) throw new ITRightException();
+
+        if ( ! user.user.isAdmin() ) {
+            if (t.getUserUUID().compareToIgnoreCase(userId) != 0) {
+                throw new ITRightException();
+            }
         }
+
         if ( t.getType() != HTRANSACTION_TYPE_STRIPE ) throw new ITRightException("invalid_type");
         if ( ! t.isCompleted() ) throw new ITRightException("incomplete");
 

@@ -37,7 +37,7 @@ public interface HeliumDcTransactionRepository extends PagingAndSortingRepositor
             String userUUID
     );
 
-    public List<HeliumDcTransaction> findHeliumDcTransactionByTypeAndIsCompletedAndIntentTimeGreaterThan(
+    public List<HeliumDcTransaction> findHeliumDcTransactionByTypeAndIsCompletedAndIntentTimeGreaterThanOrderByIntentTimeDesc(
             int type,
             boolean completed,
             long intentTime

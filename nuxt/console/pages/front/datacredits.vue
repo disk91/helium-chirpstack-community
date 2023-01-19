@@ -8,6 +8,7 @@
       >
         <DataCredit/>
         <TransactionList/>
+        <AdminTransactionHistory v-if="$store.state.admin" />
       </b-card>
     </div>
 </template>
@@ -18,6 +19,7 @@
   import AddTenant from '~/components/AddTenant.vue';
   import DataCredit from '~/components/DataCredit.vue';
   import TransactionList from "~/components/TransactionList.vue";
+  import AdminTransactionHistory from "~/components/TransactionAdmin.vue";
   import { UserLogin } from 'vue/types/userProfile';
 
 interface data {
@@ -31,6 +33,7 @@ export default Vue.extend({
         'AddTenant' : AddTenant,
         'DataCredit' : DataCredit,
         'TransactionList' : TransactionList,
+        'AdminTransactionHistory' : AdminTransactionHistory,
       },
       data() : data {
         return {

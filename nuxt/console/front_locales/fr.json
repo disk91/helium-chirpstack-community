@@ -60,6 +60,7 @@
     "menu_purchase_dc": "Acheter des Data Credits",
     "menu_admin_profiles" : "Adm profils",
     "menu_edit_profile" : "Mes informations",  
+    "menu_service_request" : "Service request",
     "addtenant_vmessage_success" : "Le tenant a bien été créé",
 
     "tsl_tenantUUID" : "Nom",
@@ -248,6 +249,9 @@
     "txst_canceled" : "Abandonnée",
     "txst_timeout" : "Abandonnée", 
     "txst_null" : "Inconnu", 
+    "dc_transaction_histo" : "Historique des transactions réussies",
+    "dc_transac_owner_label" : "Facturé à",
+
 
     "error_load_invoice_setup" : "Impossible charger la configuration des factures",
     "inv_setup_title" : "Configuration des factures",
@@ -264,11 +268,30 @@
     "inv_update_error" : "Erreur durant la mise à jour des informations société",
 
     "ticket_title" : "Demande de service",
+    "ticket_histo_title" : "Historique des demandes de service",
     "tick_status_1" : "Ouvert",
     "tick_status_2" : "En attente de réponse",
     "tick_status_3" : "Fermé",
     "tick_add_ticket" : "Ouvrir une demande de service",
-
+    "tick_time_label" : "Date",
+    "tick_status_label" : "Etat",
+    "tick_topic_label" : "Sujet",
+    "tick_new_title" : "Création d'une demande de service",
+    "ticket_new_topic" : "Quel est le sujet de votre demande de service ?",
+    "ticket_new_details" : "Détaillez vos attentes concernant cette service request:",
+    "ticket_new_topic_field" : "Sujet de la demande",
+    "ticket_new_cancel" : "Annuler",
+    "ticket_new_create" : "Créer la demande",
+    "ticket_new_success" : "Demande créée",
+    "ticket_new_failed" : "Impossible d'enregistrer la demande",
+    "tick_edit_label" : "Edit",
+    "ticket_details" : "Demande de service : ",
+    "tick_owner_label" : "Demandeur",
+    "tick_add_response" : "Ajouter une réponse",
+    "ticket_response_add" : "Répondre",
+    "ticket_response_close" : "Répondre et fermer",
+    "ticket_response_saved" : "Réponse enregistrée",
+  
   
     "end" : "fin"
 }

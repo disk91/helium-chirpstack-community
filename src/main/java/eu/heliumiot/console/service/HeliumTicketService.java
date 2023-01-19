@@ -142,10 +142,12 @@ public class HeliumTicketService {
         HeliumTicket t = heliumTicketRepository.findOneHeliumTicketById(UUID.fromString(tr.getTicketUUID()));
         if ( t == null ) throw new ITRightException("not_found");
 
+        if ( tr.getContent() == null ) tr.setContent("");
         if ( tr.getContent().length() == 0 && tr.isClosing() == false ) throw  new ITParseException("empty");
 
         if ( user.user.isAdmin() || t.getUserUUID().toString().compareToIgnoreCase(userUUID) == 0) {
             HeliumTicketResponse r = new HeliumTicketResponse();
+            r.setTicketUUID(UUID.fromString(tr.getTicketUUID()));
             r.setCreatedAt(new Timestamp(Now.NowUtcMs()));
             r.setAdmin(user.user.isAdmin());
             r.setContent(tr.getContent());
@@ -196,7 +198,7 @@ public class HeliumTicketService {
             }
 
             ArrayList<TicketDetailResponseItf> rrs = new ArrayList<>();
-            List<HeliumTicketResponse> trs = heliumTicketResponseRepository.findHeliumTicketByTicketUUIDOrderByCreatedAtDesc(t.getId());
+            List<HeliumTicketResponse> trs = heliumTicketResponseRepository.findHeliumTicketByTicketUUIDOrderByCreatedAtAsc(t.getId());
             for (HeliumTicketResponse tr : trs) {
                 TicketDetailResponseItf rr =  new TicketDetailResponseItf();
                 rr.setAdminReponse(tr.isAdmin());

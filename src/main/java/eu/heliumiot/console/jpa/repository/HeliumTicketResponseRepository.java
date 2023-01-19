@@ -33,7 +33,7 @@ public interface HeliumTicketResponseRepository extends CrudRepository<HeliumTic
 
     public HeliumTicketResponse findOneHeliumTicketResponseById(UUID id);
 
-    public List<HeliumTicketResponse> findHeliumTicketByTicketUUIDOrderByCreatedAtDesc(
+    public List<HeliumTicketResponse> findHeliumTicketByTicketUUIDOrderByCreatedAtAsc(
             UUID ticketUUID
     );
 
