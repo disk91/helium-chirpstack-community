@@ -57,7 +57,12 @@
                         style="text-align:right;font-size:0.9rem;"
                         class="text-info bg-light"
                     >
-                        {{ $t('txst_'+transaction.status) }}                  
+                        {{ $t('txst_'+transaction.status) }} 
+                        <b-icon-file-pdf
+                            v-if="transaction.status == 'succeeded' && transaction.type == 1"
+                            class="text-dark"
+                            @click="getInvoice(transaction.transactionUUID)"
+                        />                 
                     </b-col>
                   </b-row>
                 </b-card>              
@@ -133,6 +138,31 @@ export default Vue.extend({
             if ( type == 1 ) {
                 return '$'+cost.toLocaleString("en-US") 
             } else return 'N/A';
+        },
+        getInvoice(txId:string) {
+            let config = {
+                headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/pdf',
+                'Authorization': 'Bearer '+this.$store.state.consoleBearer,  
+                }
+            };
+        this.$axios.get(this.$config.transactionInvoice+'/'+txId+'/',{
+                responseType: 'blob',
+                headers: config.headers
+            })
+            .then((response) =>{
+                if (response.status == 200 ) {
+                    const blob = new Blob([response.data], {
+                        type: 'application/pdf',
+                     });
+                     const objectUrl = window.URL.createObjectURL(blob)
+                     window.open(objectUrl)                    
+                }
+            }).catch((err) =>{
+               this.errorMessage = 'error_load_transactions';
+               this.transactions = [];
+            })
         }
     },
     mounted() {

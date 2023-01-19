@@ -242,6 +242,7 @@
     "txst_requires_payment_method" : "En attente",
     "txst_requires_confirmation" : "En attente",
     "txst_requires_action" : "En attente",
+    "txst_pending" : "En attente",
     "txst_processing" : "En attente",
     "txst_requires_capture" : "En attente",
     "txst_canceled" : "Abandonnée",

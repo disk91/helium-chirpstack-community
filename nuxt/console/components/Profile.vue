@@ -24,7 +24,7 @@
                                 v-model="profile.username"
                                 id="username"
                                 type="text" size="sm"
-                                disabled=true
+                                :disabled="true"
                     ></b-form-input>
                     <b-form-text style="font-size:0.5rem;">{{ $t('tip_username') }}</b-form-text>
             </b-form-group>

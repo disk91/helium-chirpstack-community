@@ -244,6 +244,7 @@
   "txst_requires_confirmation" : "Pending",
   "txst_requires_action" : "Pending",
   "txst_processing" : "Pending",
+  "txst_pending" : "Pending",
   "txst_requires_capture" : "Pending",
   "txst_canceled" : "Failed",
   "txst_timeout" : "Failed", 

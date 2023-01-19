@@ -558,7 +558,7 @@ public class TransactionService {
             int totalSz  = 80;
             int tableStart = 500;
             int tableHeight = 200;
-            int summaryHeight = 100;
+            int summaryHeight = 50;
 
             contentStream.moveTo(0,0);
             contentStream.beginText();
@@ -591,13 +591,137 @@ public class TransactionService {
             contentStream.newLineAtOffset(qtyPos, tableStart-20);
             contentStream.showText(""+String.format("%,d",t.getDcs()));
             contentStream.newLineAtOffset(descPos-qtyPos, 0);
-            contentStream.showText("Data Credits for helium communication");
+            contentStream.showText("Data Credits for helium communication (with taxes)");
             contentStream.newLineAtOffset(pricePos-descPos, 0);
             contentStream.showText("$"+String.format("%,.5f",t.getDcsPrice()));
             contentStream.newLineAtOffset(totalPos-pricePos, 0);
             contentStream.showText("$"+String.format("%,.2f",t.getDcsPrice()*t.getDcs()));
             contentStream.endText();
 
+            // Total in invoice currency w/o tax
+            double ht;
+            double vat;
+            int cur;
+            if ( t.getStripeCurrency().compareToIgnoreCase("eur") == 0 ) {
+                ht = (t.getStripeAmount()/100.0) / (1.0 + t.getApplicableVAT());
+                vat = ht * t.getApplicableVAT();
+                cur = 1; //euro
+            } else if ( t.getStripeCurrency().compareToIgnoreCase("usd") == 0 ) {
+                ht = (t.getStripeAmount()/100.0) / (1.0 + t.getApplicableVAT());
+                vat = ht * t.getApplicableVAT();
+                cur = 2; //usd
+            } else {
+                ht = (t.getStripeAmount()/100.0) / (1.0 + t.getApplicableVAT());
+                vat = (t.getStripeAmount()/100.0) * t.getApplicableVAT();
+                cur = 0; //unknown
+            }
+
+            contentStream.moveTo(0,0);
+            contentStream.beginText();
+            contentStream.setFont(PDType1Font.TIMES_ROMAN, 9);
+            contentStream.newLineAtOffset(pricePos, tableStart-tableHeight);
+            contentStream.showText("Total w/o taxes");
+            contentStream.newLineAtOffset(totalPos-pricePos, 0);
+            contentStream.setFont(PDType1Font.TIMES_BOLD, 9);
+            switch (cur) {
+                case 1: // euro
+                    contentStream.showText(""+String.format("%,.2f",ht)+"€");
+                    break;
+                case 2: // usd
+                    contentStream.showText("$"+String.format("%,.2f",ht));
+                    break;
+                default:
+                    contentStream.showText("unsupported currency");
+                    break;
+            }
+            contentStream.endText();
+
+            // taxes
+            contentStream.moveTo(0,0);
+            contentStream.beginText();
+            contentStream.setFont(PDType1Font.TIMES_ROMAN, 9);
+            contentStream.newLineAtOffset(pricePos, tableStart-tableHeight-12);
+            contentStream.showText("Taxes ("+String.format("%,.2f",t.getApplicableVAT()*100)+"%)");
+            contentStream.newLineAtOffset(totalPos-pricePos, 0);
+            contentStream.setFont(PDType1Font.TIMES_BOLD, 9);
+            switch (cur) {
+                case 1: // euro
+                    contentStream.showText(""+String.format("%,.2f",vat)+"€");
+                    break;
+                case 2: // usd
+                    contentStream.showText("$"+String.format("%,.2f",vat));
+                    break;
+                default:
+                    contentStream.showText("unsupported currency");
+                    break;
+            }
+            contentStream.endText();
+
+            // total with tax
+            contentStream.moveTo(0,0);
+            contentStream.beginText();
+            contentStream.setFont(PDType1Font.TIMES_ROMAN, 9);
+            contentStream.newLineAtOffset(pricePos, tableStart-tableHeight-24);
+            contentStream.showText("Total with taxes");
+            contentStream.newLineAtOffset(totalPos-pricePos, 0);
+            contentStream.setFont(PDType1Font.TIMES_BOLD, 9);
+            switch (cur) {
+                case 1: // euro
+                    contentStream.showText(""+String.format("%,.2f",(t.getStripeAmount()/100.0))+"€");
+                    break;
+                case 2: // usd
+                    contentStream.showText("$"+String.format("%,.2f",(t.getStripeAmount()/100.0)));
+                    break;
+                default:
+                    contentStream.showText("unsupported currency");
+                    break;
+            }
+            contentStream.endText();
+
+            // Other information
+            contentStream.moveTo(0,0);
+            contentStream.beginText();
+            contentStream.setFont(PDType1Font.TIMES_ROMAN, 9);
+            contentStream.newLineAtOffset(descPos, tableStart-tableHeight);
+            switch (cur) {
+                case 1: // euro
+                    contentStream.showText("Stripe cost (included) "+String.format("%,.2f",(t.getStripeCost()/100.0))+"€");
+                    break;
+                case 2: // usd
+                    contentStream.showText("Stripe cost (included) $"+String.format("%,.2f",(t.getStripeCost()/100.0)));
+                    break;
+                default:
+                    contentStream.showText("unsupported currency");
+                    break;
+            }
+            contentStream.endText();
+
+            contentStream.moveTo(0,0);
+            contentStream.beginText();
+            contentStream.setFont(PDType1Font.TIMES_ROMAN, 9);
+            contentStream.newLineAtOffset(descPos, tableStart-tableHeight-12);
+            contentStream.showText("Currency conversion rate applied by stripe: "+String.format("%,.4f",(t.getStripeCRate())));
+            contentStream.endText();
+
+            contentStream.moveTo(0,0);
+            contentStream.beginText();
+            contentStream.setFont(PDType1Font.TIMES_BOLD, 9);
+            contentStream.newLineAtOffset(descPos, tableStart-tableHeight-24);
+            contentStream.showText("Invoice paid online");
+            contentStream.endText();
+
+            if ( t.getMemo() != null ) {
+
+                String memo = encryptionHelper.decryptStringWithServerKey(t.getMemo());
+                if ( memo.length() > 0 ) {
+                    contentStream.moveTo(0,0);
+                    contentStream.beginText();
+                    contentStream.setFont(PDType1Font.TIMES_BOLD, 9);
+                    contentStream.newLineAtOffset(qtyPos, tableStart-tableHeight-64);
+                    contentStream.showText("Customer additional information : "+memo);
+                    contentStream.endText();
+                }
+            }
 
 
             // Seller information
@@ -614,13 +738,6 @@ public class TransactionService {
             p = heliumParameterService.getParameter(HeliumParameterService.PARAM_COMPANY_REGISTER);
             contentStream.showText(p.getStrValue());
             contentStream.endText();
-
-
-            // ligne
-            // Memo (decrypted)
-            // vat ...
-
-
 
             contentStream.close();
             ByteArrayOutputStream out = new ByteArrayOutputStream();
