@@ -1,9 +1,11 @@
 # Helium / Chirpstack integration
 
-Follow progress and roadmap on the [project board](https://github.com/users/disk91/projects/1/views/1)
+__/!\ MVP3 ready for HIP70 beta testers only__
 
-__/!\ MVP1 ready for HIP70 beta testers only__
+![screenshot](homepage.png)
 
+- Follow progress and roadmap on the [project board](https://github.com/users/disk91/projects/1/views/1)
+- Test in on the live demo site [dev.helium-iot.eu](https://dev.helium-iot.eu)
 
 ### Features (development in progress)
 
@@ -23,9 +25,12 @@ __/!\ MVP1 ready for HIP70 beta testers only__
 - Ability to limit the number of device and tenant
 - Manage the device declaration / deactivation on helium router
 - Manage multi-tenant chirpstack environment
+- Manage stripe payments to get DCs
+- Manage DC transfer between payments
+- Manage Service Request between customer and admin
+- Manage Communication to users
+- Manage Invoice generation
 
-- TODO - Manage payment with stripe
-- ...
 
 #### MVP1 - terminated
 The MVP1 aim to support the backend device management to support the self hosting situation. It allows to detect device 
@@ -38,15 +43,20 @@ statistics for later explaination of the invoicing.
 The MVP2 aim to provide a muti-tenant, self boarding solution allowing seamless access to chirpstack and DC balance display.
 It allows platform administrator to manage the tenant billing settings and router DC balance.
 
-#### MVP3 - starting
+#### MVP3 - terminated (tag V0.3)
 The MVP3 aim to provide the payment solution for increasing the tenant DC balance. It is planned to have a stripe support
 for payment. Crypto payment will be developed once migrated to Solana, when the environment will be in place to test this.
+It includes invoice generation for customers and Ticketing solution. It also allows to transfer DCs between tenants.
 
-#### MVP4 - pending
+### MVP4 - in progress
+The MVP4 aim to allow user to migrate devices from a legacy console to the new chirpstack / helium environment based on a wizard.
+It allows to migrate one or many devices from one environment to another.
+
+#### MVP5 - pending
 The MVP4 aime to provide the user screen to manage all the specific situation like device reactivation, access to invoice, 
 consumption statistics... It also includes the users/customer communication solutions for the platform administrator.
 
-#### MVP5 - pending
+#### MVP6 - pending
 The MVP5 may address some specific program support like university program to offer a free access to Helium network for
 universities. Support of coupons will allow larger program solution including devkit including communications ...
 

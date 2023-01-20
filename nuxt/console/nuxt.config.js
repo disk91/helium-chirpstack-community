@@ -50,7 +50,7 @@ export default {
     ticketCreatePost:(process.env.API_HOST || '')+'/console/1.0/ticket/',
     ticketCreateResponsePut:(process.env.API_HOST || '')+'/console/1.0/ticket/',
     termAndUse:process.env.CONSOLE_TERMS || '/',
-    frontVersion:'0.3.0'
+    frontVersion:'0.4.0'
   },
 
   // env variables loaded accessible on the server side
