@@ -68,7 +68,7 @@ services:
     image: chirpstack/chirpstack-gateway-bridge:4.0.3
     restart: unless-stopped
     ports:
-      - 1701:1701/udp
+      - 1701:1700/udp
     volumes:
       - /helium/configuration/chirpstack-gateway-bridge-us915:/etc/chirpstack-gateway-bridge
     depends_on:
@@ -78,7 +78,7 @@ services:
     image: chirpstack/chirpstack-gateway-bridge:4.0.3
     restart: unless-stopped
     ports:
-      - 1702:1702/udp
+      - 1702:1700/udp
     volumes:
       - /helium/configuration/chirpstack-gateway-bridge-au915:/etc/chirpstack-gateway-bridge
     depends_on:
