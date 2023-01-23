@@ -61,6 +61,7 @@
     "menu_admin_profiles" : "Adm profils",
     "menu_edit_profile" : "Mes informations",  
     "menu_service_request" : "Service request",
+    "menu_migration" : "Import d'objets",   
     "addtenant_vmessage_success" : "Le tenant a bien été créé",
 
     "tsl_tenantUUID" : "Nom",
@@ -291,6 +292,17 @@
     "ticket_response_add" : "Répondre",
     "ticket_response_close" : "Répondre et fermer",
     "ticket_response_saved" : "Réponse enregistrée",
+  
+    "mig_title" : "Migration d'objets depuis la console Helium historique",
+    "mig_setup" : "Configuration de l'API",
+    "mig_chirpstack" : "Configuration de Chirpstack",
+    "mig_setup_apiexplained_1" : "You need to create an API key from the legacy helium console to authorized our service to access your data and migrate your devices. The API key is not sent to our backend services and stays on your browser for all the operations.",
+    "mig_setup_apiexplained_2" : "To create the API key, go to your previous helium console / profile and create an API key ",
+    "mig_setup_setkey" : "Enter your API key:",
+    "mig_setup_setkeyinput" : "X7oK8jJn7A0ysD4D7AN6yUjJi0g5oHaCiFp30vQByM",
+    "mig_setup_setapi" : "Select console:",
+    "mig_setup_setotherapi" : "https://console.helium-iot.eu/api/",
+    "mig_setup_testapi" : "Test connection",
   
   
     "end" : "fin"

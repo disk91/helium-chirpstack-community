@@ -39,6 +39,7 @@
           <b-dropdown-item to="/front/datacredits">{{$t('menu_purchase_dc')}}</b-dropdown-item>
           <b-dropdown-item href="#" @click="addTenantAction">{{$t('menu_add_tenant')}}</b-dropdown-item>
           <b-dropdown-item to="/front/ticketing">{{$t('menu_service_request')}}</b-dropdown-item>
+          <b-dropdown-item to="/front/migration">{{$t('menu_migration')}}</b-dropdown-item>
           <b-dropdown-item to="/front/user">{{$t('menu_edit_profile')}}</b-dropdown-item>
           <b-dropdown-item href="#" @click="signoutAction">{{$t('menu_sign_out')}}</b-dropdown-item>
         </b-nav-item-dropdown>
