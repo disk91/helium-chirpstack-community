@@ -30,4 +30,8 @@ declare module "vue/types/tenantSearch" {
         dcPrice : number,
         dcMin : number
     }
+    interface TenantApiKeyRespItf {
+        tenantUUID : string,
+        tenantApiKey : string
+    }
 }

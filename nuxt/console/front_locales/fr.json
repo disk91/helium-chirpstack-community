@@ -314,6 +314,8 @@
     "mig_loaded_data" : "Données chargées depuis la console source:",
     "mig_loaded_labels" : "Labels:",
     "mig_loaded_devices" :"Devices:",
-  
+    "mig_setup_tenant_select" : "Sélectionnnez le tenant où deployer vos objets. Le système va vérifier que la configuration necessaire au déploiement de vos objets soit en place.",
+    "mig_select_tenant" : "Choisir",
+
     "end" : "fin"
 }

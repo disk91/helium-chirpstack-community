@@ -27,7 +27,7 @@
                   <b-icon icon="hdd-network" variant="primary"></b-icon> {{ $t('mig_chirpstack') }}
                 </template>
               
-                <MigrationChirpstackSetup :consoleObject="heliumConsoleService"/>
+                <MigrationChirpstackSetup :consoleObject="heliumConsoleService" :chripstackObject="chirpstackService"/>
               
               </b-tab>
               <b-tab title="Premium Plan" disabled>Sibzamini!</b-tab>
@@ -47,6 +47,7 @@
   import MigrationHeliumSetup from '~/components/MigrationHeliumSetup.vue';
   import MigrationChirpstackSetup from '~/components/MigrationChirpstackSetup.vue';
   import { HeliumConsoleService } from '~/services/console';
+  import { ChirpstackService } from '~/services/chirpstack';
   import { ProxyConfig } from 'vue/types/proxy';
 
   export default Vue.extend({
@@ -63,6 +64,7 @@
             bearer: this.$store.state.consoleBearer,
             getterUrl: this.$config.proxyGet,
           } as ProxyConfig),
+          chirpstackService : new ChirpstackService(this.$axios),
           tabIndex: 0,
           step: 0,
         }

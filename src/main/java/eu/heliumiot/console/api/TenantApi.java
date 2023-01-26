@@ -393,5 +393,75 @@ public class TenantApi {
         }
     }
 
+    // ==========================================
+    // Manage Tenant Api keys
+    // ==========================================
+
+    @Operation(summary = "Create an API key for migrating devices",
+            description = "Create an API key for a migration, front will be able to automate the operations",
+            responses = {
+                    @ApiResponse(responseCode = "200", description= "Done", content = @Content(schema = @Schema( implementation = TenantApiKeyRespItf.class))),
+                    @ApiResponse(responseCode = "403", description= "Forbidden", content = @Content(schema = @Schema(implementation = ActionResult.class))),
+                    @ApiResponse(responseCode = "400", description= "Bad Request", content = @Content(schema = @Schema(implementation = ActionResult.class))),
+            }
+    )
+    @RequestMapping(value="/key/{tenantId}/",
+            produces = MediaType.APPLICATION_JSON_VALUE,
+            method= RequestMethod.GET)
+    @PreAuthorize("hasAnyRole('ROLE_USER')")
+    public ResponseEntity<?> requestTenantApiKey(
+            HttpServletRequest request,
+            @Parameter(required = true, name = "tenantId", description = "tenant Id")
+            @PathVariable String tenantId
+
+    ) {
+        log.debug("Create API key for "+request.getUserPrincipal().getName());
+        try {
+            TenantApiKeyRespItf r = heliumTenantService.getTenantApiKey(request.getUserPrincipal().getName(), tenantId);
+            return new ResponseEntity<>(r, HttpStatus.OK);
+        } catch (ITRightException x) {
+            ActionResult a = ActionResult.FORBIDDEN();
+            a.setMessage(x.getMessage());
+            return new ResponseEntity<>(a, HttpStatus.FORBIDDEN);
+        } catch ( ITParseException x ) {
+            ActionResult a = ActionResult.BADREQUEST();
+            a.setMessage(x.getMessage());
+            return new ResponseEntity<>(a, HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @Operation(summary = "Delete API keys created for migrating devices",
+            description = "Delete all the API key created for the migration",
+            responses = {
+                    @ApiResponse(responseCode = "200", description= "Done", content = @Content(schema = @Schema( implementation = ActionResult.class))),
+                    @ApiResponse(responseCode = "403", description= "Forbidden", content = @Content(schema = @Schema(implementation = ActionResult.class))),
+                    @ApiResponse(responseCode = "400", description= "Bad Request", content = @Content(schema = @Schema(implementation = ActionResult.class))),
+            }
+    )
+    @RequestMapping(value="/key/{tenantId}/",
+            produces = MediaType.APPLICATION_JSON_VALUE,
+            method= RequestMethod.DELETE)
+    @PreAuthorize("hasAnyRole('ROLE_USER')")
+    public ResponseEntity<?> deleteTenantApiKey(
+            HttpServletRequest request,
+            @Parameter(required = true, name = "tenantId", description = "tenant Id")
+            @PathVariable String tenantId
+
+    ) {
+        log.debug("Delete API key for "+request.getUserPrincipal().getName());
+        try {
+            heliumTenantService.clearMigrationApiKey(request.getUserPrincipal().getName(), tenantId);
+            return new ResponseEntity<>(ActionResult.SUCESS(), HttpStatus.OK);
+        } catch (ITRightException x) {
+            ActionResult a = ActionResult.FORBIDDEN();
+            a.setMessage(x.getMessage());
+            return new ResponseEntity<>(a, HttpStatus.FORBIDDEN);
+        } catch ( ITParseException x ) {
+            ActionResult a = ActionResult.BADREQUEST();
+            a.setMessage(x.getMessage());
+            return new ResponseEntity<>(a, HttpStatus.BAD_REQUEST);
+        }
+    }
+
 
 }

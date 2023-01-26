@@ -53,6 +53,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
+import java.util.concurrent.ExecutionException;
 
 @Service
 public class HeliumTenantService {
@@ -974,5 +975,146 @@ public class HeliumTenantService {
 
         return r;
     }
+
+    /**
+     * Get a API key to access tenant information through the chirpstack restapi
+     * If not existing an API key is created. Name of the key MigrationKey
+     * @param userUUID
+     * @param tenantUUID
+     * @return
+     */
+    public TenantApiKeyRespItf getTenantApiKey(String userUUID, String tenantUUID)
+    throws ITParseException, ITRightException {
+
+        UserCacheService.UserCacheElement user = userCacheService.getUserById(userUUID);
+        if (user == null) throw new ITRightException();
+
+        // check ownership
+        UserTenant ts = userTenantRepository.findOneUserByUserIdAndTenantId(UUID.fromString(userUUID), UUID.fromString(tenantUUID));
+        if ( ts == null || ts.isAdmin() == false ) {
+            log.warn("Create ApiKey - attempt to create from non tenant owner / try by " + userUUID);
+            throw new ITRightException();
+        }
+
+        this.clearMigrationApiKey(userUUID,tenantUUID);
+
+        HttpHeaders heads = new HttpHeaders();
+        heads.add("authorization", "Bearer "+consoleConfig.getChirpstackApiAdminKey());
+        try {
+
+            // Create a new Api key
+            ApiKey a = ApiKey.newBuilder()
+                    .setTenantId(tenantUUID)
+                    .setName("MigrationKey")
+                    .setIsAdmin(false)
+                    .build();
+
+            CreateApiKeyRequest car = CreateApiKeyRequest.newBuilder()
+                    .setApiKey(a)
+                    .build();
+
+            byte[] respC = chirpstackApiAccess.execute(
+                    HttpMethod.POST,
+                    "/api.InternalService/CreateApiKey",
+                    null,
+                    heads,
+                    car.toByteArray()
+            );
+
+            if ( respC != null ) {
+                CreateApiKeyResponse kr = CreateApiKeyResponse.parseFrom(respC);
+                TenantApiKeyRespItf r = new TenantApiKeyRespItf();
+                r.setTenantUUID(tenantUUID);
+                r.setTenantApiKey(kr.getToken());
+                return r;
+            }
+
+        } catch ( ITRightException x ) {
+            log.error("Impossible to create api keys - rights");
+        } catch ( ITNotFoundException x ) {
+            log.error("Impossible to create api keys - not found");
+        } catch ( InvalidProtocolBufferException x ) {
+            log.error("Impossible to create api keys - protobuf");
+        } catch ( ITParseException x) {
+            log.error("Impossible to create api keys - parse "+x.getMessage());
+        }
+        throw new ITParseException("api_key_create");
+    }
+
+    /**
+     * Clear the Migration API keys
+     * @param userUUID
+     * @param tenantUUID
+     * @throws ITParseException
+     * @throws ITRightException
+     */
+    public void clearMigrationApiKey(String userUUID, String tenantUUID)
+    throws ITParseException, ITRightException {
+
+        UserCacheService.UserCacheElement user = userCacheService.getUserById(userUUID);
+        if (user == null) throw new ITRightException("api_key_right");
+
+        // check ownership
+        UserTenant ts = userTenantRepository.findOneUserByUserIdAndTenantId(UUID.fromString(userUUID), UUID.fromString(tenantUUID));
+        if ( ts == null || ts.isAdmin() == false ) {
+            log.warn("Create ApiKey - attempt to create from non tenant owner / try by " + userUUID);
+            throw new ITRightException("api_key_right");
+        }
+
+        ListApiKeysRequest lar = ListApiKeysRequest.newBuilder()
+                .setTenantId(tenantUUID)
+                .setIsAdmin(false)
+                .build();
+
+        HttpHeaders heads = new HttpHeaders();
+        heads.add("authorization", "Bearer "+consoleConfig.getChirpstackApiAdminKey());
+        try {
+
+            byte[] respB = chirpstackApiAccess.execute(
+                    HttpMethod.POST,
+                    "/api.InternalService/ListApiKeys",
+                    null,
+                    heads,
+                    lar.toByteArray()
+            );
+            ListApiKeysResponse resp = ListApiKeysResponse.parseFrom(respB);
+            if ( resp != null ) {
+                for ( ApiKey a : resp.getResultList() ) {
+                    if ( a.getName().compareToIgnoreCase("MigrationKey") == 0 ) {
+                        // destroy the previous ApiKey
+                        DeleteApiKeyRequest dar = DeleteApiKeyRequest.newBuilder()
+                                .setId(a.getId())
+                                .build();
+                        try {
+                            chirpstackApiAccess.execute(
+                                    HttpMethod.POST,
+                                    "/api.InternalService/DeleteApiKey",
+                                    null,
+                                    heads,
+                                    dar.toByteArray()
+                            );
+                        } catch (Exception x) {
+                            log.error("Failed to delete previous Api Key "+x.getMessage());
+                        }
+
+                    }
+                }
+            }
+
+        } catch ( ITRightException x ) {
+            log.error("Impossible to list api keys - rights");
+        } catch ( ITNotFoundException x ) {
+            log.error("Impossible to list api keys - not found");
+        } catch ( InvalidProtocolBufferException x ) {
+            log.error("Impossible to list api keys - protobuf");
+        } catch ( ITParseException x) {
+            log.error("Impossible to list api keys - parse "+x.getMessage());
+        }
+        throw new ITParseException("api_key_delete");
+
+    }
+
+
+
 
 }

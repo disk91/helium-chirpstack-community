@@ -26,6 +26,8 @@ export default {
     tenantDcTrans:(process.env.API_HOST || '')+'/console/1.0/tenant/dc/transfer',
     tenantsDcGet:(process.env.API_HOST || '')+'/console/1.0/tenant/balance',
     tenantBasicStat:(process.env.API_HOST || '')+'/console/1.0/tenant',
+    tenantKeyCreate:(process.env.API_HOST || '')+'/console/1.0/tenant/key',
+    tenantKeyDelete:(process.env.API_HOST || '')+'/console/1.0/tenant/key',
     messageAdmGet:(process.env.API_HOST || '')+'/console/1.0/message/admin',
     messageAdmUpd:(process.env.API_HOST || '')+'/console/1.0/message/admin',
     messageAdmNew:(process.env.API_HOST || '')+'/console/1.0/message/admin',

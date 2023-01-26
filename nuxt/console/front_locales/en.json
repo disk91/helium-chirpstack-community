@@ -313,7 +313,9 @@
   "mig_loading_devices" : "Loading devices data",
   "mig_loaded_data" : "Data loaded from legacy console:",
   "mig_loaded_labels" : "Labels:",
-  "mig_loaded_devices" :"Devices:",
+  "mig_loaded_devices" : "Devices:",
+  "mig_setup_tenant_select" : "Select the tenant wherr you want to deploy your device fleet. The system is going to verify that the pre-requisite are in place to migrate your devices.",
+  "mig_select_tenant" : "Select tenant",
 
   "end" : "end"
 }
