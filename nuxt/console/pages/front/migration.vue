@@ -27,7 +27,7 @@
                   <b-icon icon="hdd-network" variant="primary"></b-icon> {{ $t('mig_chirpstack') }}
                 </template>
               
-                <MigrationChirpstackSetup :consoleObject="heliumConsoleService" :chripstackObject="chirpstackService"/>
+                <MigrationChirpstackSetup :consoleObject="heliumConsoleService" :chirpstackObject="chirpstackService"/>
               
               </b-tab>
               <b-tab title="Premium Plan" disabled>Sibzamini!</b-tab>

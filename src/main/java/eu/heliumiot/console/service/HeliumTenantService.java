@@ -983,7 +983,7 @@ public class HeliumTenantService {
      * @param tenantUUID
      * @return
      */
-    public TenantApiKeyRespItf getTenantApiKey(String userUUID, String tenantUUID)
+    public TenantApiKeyRespItf getTenantApiKey(String userUUID, String tenantUUID, String bearer)
     throws ITParseException, ITRightException {
 
         UserCacheService.UserCacheElement user = userCacheService.getUserById(userUUID);
@@ -996,10 +996,11 @@ public class HeliumTenantService {
             throw new ITRightException();
         }
 
-        this.clearMigrationApiKey(userUUID,tenantUUID);
+        this.clearMigrationApiKey(userUUID,tenantUUID, bearer);
 
         HttpHeaders heads = new HttpHeaders();
-        heads.add("authorization", "Bearer "+consoleConfig.getChirpstackApiAdminKey());
+        heads.add("authorization", "Bearer "+bearer);
+
         try {
 
             // Create a new Api key
@@ -1048,7 +1049,7 @@ public class HeliumTenantService {
      * @throws ITParseException
      * @throws ITRightException
      */
-    public void clearMigrationApiKey(String userUUID, String tenantUUID)
+    public void clearMigrationApiKey(String userUUID, String tenantUUID, String bearer)
     throws ITParseException, ITRightException {
 
         UserCacheService.UserCacheElement user = userCacheService.getUserById(userUUID);
@@ -1057,17 +1058,19 @@ public class HeliumTenantService {
         // check ownership
         UserTenant ts = userTenantRepository.findOneUserByUserIdAndTenantId(UUID.fromString(userUUID), UUID.fromString(tenantUUID));
         if ( ts == null || ts.isAdmin() == false ) {
-            log.warn("Create ApiKey - attempt to create from non tenant owner / try by " + userUUID);
+            log.warn("Create ApiKey - attempt to delete from non tenant owner / try by " + userUUID);
             throw new ITRightException("api_key_right");
         }
 
         ListApiKeysRequest lar = ListApiKeysRequest.newBuilder()
                 .setTenantId(tenantUUID)
+                .setOffset(0)
+                .setLimit(10)
                 .setIsAdmin(false)
                 .build();
 
         HttpHeaders heads = new HttpHeaders();
-        heads.add("authorization", "Bearer "+consoleConfig.getChirpstackApiAdminKey());
+        heads.add("authorization", "Bearer "+bearer);
         try {
 
             byte[] respB = chirpstackApiAccess.execute(
@@ -1100,6 +1103,7 @@ public class HeliumTenantService {
                     }
                 }
             }
+            return;
 
         } catch ( ITRightException x ) {
             log.error("Impossible to list api keys - rights");

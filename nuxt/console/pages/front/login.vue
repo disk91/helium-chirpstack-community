@@ -21,6 +21,12 @@
                   {{ $t('welcome_message') }}
                 </span>
               </b-card-text>
+              <b-card-text class="small">
+                <b-icon v-if="(errorMessage.length > 0)" icon="x-circle" variant="danger"></b-icon>
+                <span v-if="(errorMessage.length > 0)" class="text-danger">
+                  {{ errorMessage }}
+                </span>
+              </b-card-text>
               <form @submit.prevent="userLogin">
                     <b-form-input v-model="login.username"
                                   type="text" 
@@ -80,6 +86,7 @@ interface data {
           bgTitle : string,
           content : string,
     },
+    errorMessage : string,
 }
 
 export default Vue.extend({
@@ -97,6 +104,7 @@ export default Vue.extend({
                 bgTitle : 'info',
                 content : '',
             },
+            errorMessage : '',
         }
     },
     async fetch() {
@@ -135,6 +143,7 @@ export default Vue.extend({
             }
         },
         async userLogin() {
+            this.errorMessage='';
             try {
                 await this.$auth.loginWith(
                     'local',
@@ -151,7 +160,7 @@ export default Vue.extend({
                     this.$router.push('/front/');
                 });
             } catch (err) {
-                console.log(err);
+                this.errorMessage=this.$t('login_error') as string;
             }
         },
         async redirectToSignup() {
@@ -160,6 +169,12 @@ export default Vue.extend({
         async redirectPassLost() {
             this.$router.push('/front/lostpass');
         }
+    },
+    mounted() {
+        this.$store.commit('setChirpstackBearer', '');
+        localStorage.setItem('token', '');
+        this.$store.commit('setConsoleBearer', '');
+        this.$store.commit('setUserAdmin',false);
     }
 })
 

@@ -92,6 +92,9 @@ public class ChirpstackApiAccess {
                 if ( respStr == null ) {
                     // case of error ... the backend loves to send 200 when you have an
                     // invalid password as an example !
+                    // message in header "gprc-message"
+                    String v = response.getHeaders().getFirst("grpc-message");
+                    if ( v != null ) log.debug("Problem : "+v);
                     throw new ITNotFoundException();
                 }
                 log.debug("Response from the API :"+respStr);
@@ -103,6 +106,10 @@ public class ChirpstackApiAccess {
                     respStr = respStr.substring(0,respStr.indexOf("==")+2);
                 } else if ( respStr.indexOf("=") > 0 && respStr.indexOf("=") < respStr.length() - 1 ) {
                     respStr = respStr.substring(0,respStr.indexOf("=")+1);
+                } else if ( respStr.substring(5).indexOf("AAAAA") > 0 ) {
+                    // when we have no "="   between the Base64 strings
+                    // keep the first of the A
+                    respStr = respStr.substring(0,respStr.substring(5).indexOf("AAAAA")+4);
                 }
                 log.debug("Response after processing :"+respStr);
                 byte[] fullResp = Base64.decode(respStr);

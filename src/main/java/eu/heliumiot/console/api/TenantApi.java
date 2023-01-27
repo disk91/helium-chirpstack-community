@@ -417,7 +417,11 @@ public class TenantApi {
     ) {
         log.debug("Create API key for "+request.getUserPrincipal().getName());
         try {
-            TenantApiKeyRespItf r = heliumTenantService.getTenantApiKey(request.getUserPrincipal().getName(), tenantId);
+            if ( request.getHeader("X-Chripstack-Bearer") == null || request.getHeader("X-Chripstack-Bearer").length() < 10  ) {
+                throw new ITRightException("invalid_bearer");
+            }
+            String bearer = request.getHeader("X-Chripstack-Bearer");
+            TenantApiKeyRespItf r = heliumTenantService.getTenantApiKey(request.getUserPrincipal().getName(), tenantId,bearer);
             return new ResponseEntity<>(r, HttpStatus.OK);
         } catch (ITRightException x) {
             ActionResult a = ActionResult.FORBIDDEN();
@@ -450,7 +454,12 @@ public class TenantApi {
     ) {
         log.debug("Delete API key for "+request.getUserPrincipal().getName());
         try {
-            heliumTenantService.clearMigrationApiKey(request.getUserPrincipal().getName(), tenantId);
+            if ( request.getHeader("X-Chripstack-Bearer") == null && request.getHeader("X-Chripstack-Bearer").length() > 10  ) {
+                throw new ITRightException("invalid_bearer");
+            }
+            String bearer = request.getHeader("X-Chripstack-Bearer");
+
+            heliumTenantService.clearMigrationApiKey(request.getUserPrincipal().getName(), tenantId, bearer);
             return new ResponseEntity<>(ActionResult.SUCESS(), HttpStatus.OK);
         } catch (ITRightException x) {
             ActionResult a = ActionResult.FORBIDDEN();

@@ -28,12 +28,13 @@
                     </b-col>
                 </b-row>
                 <b-row>
-                    <b-col cols="4">
+                    <b-col cols="4" class="mb-3">
                         <b-form-select v-model.number="targetTenant" 
                                 :options="sourceOption"
                                 size="sm"
-                                class="mb-3 mt-2"
+                                class="mt-2"
                         ></b-form-select>
+                        <b-form-text style="font-size:0.6rem;color:#DC3545 !important;">{{ $t(errorMessage) }}</b-form-text>
                     </b-col>
                     <b-col cols="2">
                         <b-button block
@@ -41,10 +42,25 @@
                             size="sm"
                             @click="selectTenant()"
                             style="text-align: right;font-size:0.8rem;"
+                            class="mt-2"
                         >
                             {{ $t('mig_select_tenant') }}
                             <b-icon icon="arrow-right-circle" variant="white"></b-icon>
                         </b-button>
+                    </b-col>
+                    <b-col cols="6" class="mt-2">
+                        <b-icon v-if="(apiState==0)" icon="question-circle" variant="secondary"></b-icon>
+                        
+                        <b-icon v-if="(apiState==1)" icon="check-circle" variant="success"></b-icon>
+                        <span v-if="(apiState==1)" class="text-success">{{ $t(apiMessage) }}</span>
+
+                        <b-icon v-if="(apiState==2)" icon="x-circle" variant="danger"></b-icon>
+                        <span v-if="(apiState==2)" class="text-danger">{{ $t(apiMessage) }}</span>
+                    </b-col>
+                </b-row>
+                <b-row>
+                    <b-col cols="12">
+                        <div v-html="$t('mig_setup_tenant_api')"></div>
                     </b-col>
                 </b-row>
             </b-col>
@@ -99,6 +115,9 @@ export default Vue.extend({
                 if (response.status == 200 ) {
                   this.ownedTenants = response.data;
                   this.sourceOption=[];
+                  if ( this.ownedTenants.length == 0 ) {
+                    this.errorMessage = 'mig_err_empty_tenants';
+                  }
                   for ( let i = 0 ; i < this.ownedTenants.length ; i++ ) {
                     this.sourceOption.push( {
                         value: i,
@@ -120,12 +139,16 @@ export default Vue.extend({
             ownedTenants : [] as TenantDcBalancesReqItf[],
             sourceOption : [] as any,
             targetTenant : 0 as number,
+            apiState : 0 as number,
+            apiMessage : '',
 
         };
     },
     methods : {
         reset() {
             this.errorMessage = "";
+            this.apiMessage = "";
+            this.apiState = 0;
         },
         selectTenant() {
 
@@ -133,23 +156,29 @@ export default Vue.extend({
                 headers: {
                 'Content-Type': 'application/json',
                 'Authorization': 'Bearer '+this.$store.state.consoleBearer,  
+                'X-Chripstack-Bearer' : this.$store.state.chirpstackBearer,
                 }
             };
             this.isBusy = true;
 
             let tenantUUID = this.ownedTenants[this.targetTenant].tenantUUID;
 
+            this.apiMessage='';
+            this.apiState=0;
             this.$axios.get<TenantApiKeyRespItf>(this.$config.tenantKeyCreate+'/'+tenantUUID+'/',config)
             .then((response) =>{
                 if (response.status == 200 ) {
+                  this.apiState=1;
+                  this.apiMessage='mig_chip_api_ok';
                   this.chirpstackObject.setApiKey(response.data.tenantApiKey);
                   this.isBusy = false;
                 }
             }).catch((err) =>{
-               this.errorMessage = 'mig_err_'+err.data.message;
+               this.apiState=2;
+               this.apiMessage='mig_err_'+err.response.data.message;
                this.chirpstackObject.setApiKey("");
             })
-            
+
         },
     },
     mounted() {

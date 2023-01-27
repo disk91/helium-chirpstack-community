@@ -1,6 +1,7 @@
 {
   "username" : "email",
   "password" : "password",
+  "login_error" : "Invalid email/password",
   "welcome_message" : "Submit your credentials to access the console",
   "submit" : "Submit",
   "signup_message" : "No account ? signup !",
@@ -314,8 +315,16 @@
   "mig_loaded_data" : "Data loaded from legacy console:",
   "mig_loaded_labels" : "Labels:",
   "mig_loaded_devices" : "Devices:",
-  "mig_setup_tenant_select" : "Select the tenant wherr you want to deploy your device fleet. The system is going to verify that the pre-requisite are in place to migrate your devices.",
+  "mig_setup_tenant_select" : "Select the tenant where you want to deploy your device fleet. The system is going to verify that the pre-requisite are in place to migrate your devices.",
   "mig_select_tenant" : "Select tenant",
+  "mig_setup_tenant_api" : "By selecting a tenant, an API key is going to be created into your chirpstack account, it is name <b>MigrationKey</b> and it can be deleted after the migration.",
+  "mig_chip_api_ok" : "Api key creation success",
+  "mig_err_api_key_right" : "Tenant selection unauthorized",
+  "mig_err_api_key_delete" : "Internal error, impossible to delete previous Api Key",
+  "mig_err_api_key_create" : "Internal error, impossible to create the Api Key",
+  "mig_err_empty_tenants" : "No tenant found, you need to create one",
+  "mig_err_invalid_bearer" : "Invalid chripstack authentication, try to logout / login",
+  "mig_err_undefined" : "Error during Api Key creation, try later",
 
   "end" : "end"
 }

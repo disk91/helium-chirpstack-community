@@ -1,6 +1,7 @@
 {
     "username" : "email",
     "password" : "mot de passe",
+    "login_error" : "email/mot de passe invalides",
     "welcome_message" : "Saisissez vos identifiants pour acceder à la console",
     "submit" : "Envoyer",
     "signup_message" : "Pas de compte ? inscrivez-vous !",
@@ -316,6 +317,14 @@
     "mig_loaded_devices" :"Devices:",
     "mig_setup_tenant_select" : "Sélectionnnez le tenant où deployer vos objets. Le système va vérifier que la configuration necessaire au déploiement de vos objets soit en place.",
     "mig_select_tenant" : "Choisir",
+    "mig_setup_tenant_api" : "En selectionnant un Tenant, une clef d'API va être créée dans votre chirpstack, son nom est <b>MigrationKey</b> vous pouvez la supprimer à la fin de la migration.",
+    "mig_chip_api_ok" : "Le clef d'API a été crée",
+    "mig_err_api_key_right" : "Le tenant chosit n'est pas utilisable",
+    "mig_err_api_key_delete" : "Erreur interne, les anciennes clefs ne peuvent pas être utilisées",
+    "mig_err_api_key_create" : "Erreur interne, impossible de créer la clef API",
+    "mig_err_empty_tenants" : "Vous n'avez pas de tenant, créez en un",
+    "mig_err_invalid_bearer" : "Token chirpstack invalide, essayez de vous reconnecter",
+    "mig_err_undefined" : "Erreur lors de la creation du token API, essayez plus tard",
 
     "end" : "fin"
 }

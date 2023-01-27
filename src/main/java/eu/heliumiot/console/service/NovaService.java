@@ -10,6 +10,7 @@ import fr.ingeniousthings.tools.*;
 import io.chirpstack.api.internal.Internal;
 import io.grpc.ManagedChannel;
 import io.grpc.ManagedChannelBuilder;
+import io.grpc.StatusRuntimeException;
 import org.bouncycastle.crypto.params.Ed25519PrivateKeyParameters;
 import org.bouncycastle.crypto.signers.Ed25519Signer;
 import org.slf4j.Logger;
@@ -435,22 +436,27 @@ public class NovaService {
         this.signer.update(requestToSignContent, 0, requestToSignContent.length);
         byte[] signature = signer.generateSignature();
 
-        Config.route_list_res_v1 response = stub.list(Config.route_list_req_v1.newBuilder()
-                .setOwner(this.owner)
-                .setOui(consoleConfig.getHeliumGprcOui())
-                .setTimestamp(now)
-                .setSignature(ByteString.copyFrom(signature))
-                .build());
-        channel.shutdown();
-        log.debug("GPRC list route duration "+(Now.NowUtcMs()-start)+"ms");
-        log.debug("GRPC routes ("+response.getRoutesCount()+ ")");
-        for ( Config.route_v1 route : response.getRoutesList() ) {
-            log.debug("GRPC route id "+route.getId().toStringUtf8()+ " with "+route.getEuisList().size()+" euis");
-            for ( Config.eui_v1 eui : route.getEuisList() ) {
-                log.debug("GRPC contains route for "+Tools.EuiStringFromLong(eui.getDevEui())+" / "+Tools.EuiStringFromLong(eui.getAppEui()));
+        try {
+            Config.route_list_res_v1 response = stub.list(Config.route_list_req_v1.newBuilder()
+                    .setOwner(this.owner)
+                    .setOui(consoleConfig.getHeliumGprcOui())
+                    .setTimestamp(now)
+                    .setSignature(ByteString.copyFrom(signature))
+                    .build());
+            channel.shutdown();
+            log.debug("GPRC list route duration "+(Now.NowUtcMs()-start)+"ms");
+            log.debug("GRPC routes ("+response.getRoutesCount()+ ")");
+            for ( Config.route_v1 route : response.getRoutesList() ) {
+                log.debug("GRPC route id "+route.getId().toStringUtf8()+ " with "+route.getEuisList().size()+" euis");
+                for ( Config.eui_v1 eui : route.getEuisList() ) {
+                    log.debug("GRPC contains route for "+Tools.EuiStringFromLong(eui.getDevEui())+" / "+Tools.EuiStringFromLong(eui.getAppEui()));
+                }
             }
+            return response;
+        } catch ( StatusRuntimeException x ) {
+            log.warn("Nova Backend not reachable");
+            return null;
         }
-        return response;
     }
 
 

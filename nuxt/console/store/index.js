@@ -34,10 +34,10 @@ export const getters = {
 export const mutations = {
 
     setChirpstackBearer(state, b) {
-        state.getChirpstackBearer = b;
+        state.chirpstackBearer = b;
     },
     setConsoleBearer(state, b) {
-        state.getConsoleBearer = b;
+        state.consoleBearer = b;
     },
     setCurrentTenant(state, b) {
         state.currentTenant = b;
