@@ -32,7 +32,6 @@ declare module "vue/types/chirpstack" {
         description : string,
         deviceStatusReqInterval : number,
         flushQueueOnActivate : boolean,
-        id: string,
         macVersion : string,
         name : string,
         payloadCodecRuntime : string,

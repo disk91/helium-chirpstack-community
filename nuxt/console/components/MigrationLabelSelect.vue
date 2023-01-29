@@ -110,7 +110,18 @@
 
         </b-card>
 
-
+        <b-card v-if="true || selectLabelDisabled">
+            <b-row><b-col cols="12" class="mb-2" style="font-weight: 600;">
+                {{ $t('mig_label_data')}}
+            </b-col></b-row>
+            <b-row>
+                <b-col cols="6" class="mb-2">
+                    <client-only>
+                      <CodeEditor :hide_header="true" v-model="leftEditor" height="600px"></CodeEditor>
+                    </client-only>
+                </b-col>
+            </b-row>
+        </b-card>
 
     </div>
 </template>
@@ -120,6 +131,7 @@
 <script lang="ts">
 import Vue from 'vue'
 import { HeliumConsoleService } from '~/services/console';
+// doc code-editor https://github.com/justcaliturner/simple-code-editor 
 
 export default Vue.extend({
     name: "MigrationLabelSelect",
@@ -141,6 +153,7 @@ export default Vue.extend({
             sourceLabel : [] as any,
             targetLabel : "" as string,
             selectLabelDisabled : false as boolean,
+            leftEditor : '' as string,
         };
     },
     methods : {

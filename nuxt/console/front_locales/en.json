@@ -342,7 +342,7 @@
   "mig_setup_devprofexplained_3" : "Migration requires OTAA profiles as a target for the devices, please create the missing one.",
   "mig_setup_label_select" : "Migration is possible 1 label at a time. When a multiple labels are associated to a sigle device, these labels can't be migrated. Please select the label you want to migrate.",
   "mig_select_label" : "Select Label",
-  "mig_label" : "Setup Label",
+  "mig_label" : "Select Label",
   "mig_label_data" : "Data from selected Label:",
 
   "end" : "end"

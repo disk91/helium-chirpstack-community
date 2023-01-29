@@ -110,6 +110,8 @@ export default {
     '@nuxtjs/auth-next',
     // internationalization
     '@nuxtjs/i18n',
+    // simple-code-editor
+    'simple-code-editor/nuxt',
   ],
 
   // Internationalization

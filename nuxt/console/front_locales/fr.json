@@ -342,7 +342,7 @@
     "mig_setup_devprofexplained_3" : "La migration demande la creation de profils OTAA, merci de creer les manquants.",
     "mig_setup_label_select" : "La migration se fait par Label uniquement. Si un objet est associé à plusieurs labels, ces labels ne peuvent être migrés. Merci de selectionner le label que vous souhaitez migrer.",
     "mig_select_label" : "Choix du Label",
-    "mig_label" : "Config Label",
+    "mig_label" : "Choix Label",
     "mig_label_data" : "Données du label selectionné:",
 
     "end" : "fin"
