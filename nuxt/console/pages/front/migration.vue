@@ -20,6 +20,17 @@
                 <MigrationHeliumSetup :consoleObject="heliumConsoleService"/>
 
               </b-tab>
+
+              <b-tab 
+                :disabled="disableLabelSelectTab()"
+              >
+                <template #title> 
+                  <b-icon icon="files" variant="primary"></b-icon> {{ $t('mig_label') }}
+                </template>
+              
+                <MigrationLabelSelect :consoleObject="heliumConsoleService"/>              
+              </b-tab>
+
               <b-tab 
                 :disabled="disableChirpstackTab()"
               >
@@ -30,7 +41,6 @@
                 <MigrationChirpstackSetup :consoleObject="heliumConsoleService" :chirpstackObject="chirpstackService"/>
               
               </b-tab>
-              <b-tab title="Premium Plan" disabled>Sibzamini!</b-tab>
             </b-tabs>
           </b-card>
 
@@ -46,6 +56,7 @@
   import AddTenant from '~/components/AddTenant.vue';
   import MigrationHeliumSetup from '~/components/MigrationHeliumSetup.vue';
   import MigrationChirpstackSetup from '~/components/MigrationChirpstackSetup.vue';
+  import MigrationLabelSelect from '~/components/MigrationLabelSelect.vue';
   import { HeliumConsoleService } from '~/services/console';
   import { ChirpstackService } from '~/services/chirpstack';
   import { ProxyConfig } from 'vue/types/proxy';
@@ -56,6 +67,7 @@
         'Navbar' : Navbar,
         'AddTenant' : AddTenant,
         'MigrationHeliumSetup' : MigrationHeliumSetup,
+        'MigrationLabelSelect' : MigrationLabelSelect,
         'MigrationChirpstackSetup' : MigrationChirpstackSetup,
       },
       data() {
@@ -73,8 +85,12 @@
         disableSetupTab() : boolean {
           return ( this.step > 0 );
         },
+        disableLabelSelectTab() : boolean {
+          if ( this.step != 1 ) return true;
+          return false;
+        },
         disableChirpstackTab() : boolean {
-          if ( this.step == 0 ) return true;
+          if ( this.step != 2 ) return true;
           return false;
         }
       },
@@ -82,10 +98,35 @@
         this.$root.$on("message-migration-validate-api", (msg:any) => {
             this.step=1;
         });
+        this.$root.$on("message-migration-validate-label", (msg:any) => {
+            this.step=2;
+        });
         this.$root.$on("message-migration-next-tab", (msg:any) => {
             this.tabIndex++;
         });
       },
+      async fetch() {
+        // Get OUI parameter
+        let config = {
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer '+this.$store.state.consoleBearer,  
+          }
+        };
+
+        this.$axios.get(this.$config.ouiGet,config)
+        .then((response) =>{
+          if (response.status == 200 ) {
+            this.heliumConsoleService.setOui(6);
+            this.chirpstackService.setOui(6);
+//            this.chirpstackService.setOui(response.data.message);
+//            this.heliumConsoleService.setOui(response.data.message)
+          }
+        }).catch((err) =>{
+            this.chirpstackService.setOui(-1);
+            this.heliumConsoleService.setOui(-1);
+        })
+      }
     })
 </script>
   

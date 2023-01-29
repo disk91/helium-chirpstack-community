@@ -68,5 +68,23 @@ public class MiscApi {
         return new ResponseEntity<>(r, HttpStatus.OK);
     }
 
+    @Operation(summary = "Router oui",
+            description = "Returns the router oui",
+            responses = {
+                    @ApiResponse(responseCode = "200", description= "Done", content = @Content(schema = @Schema(implementation = ActionResult.class)))
+            }
+    )
+    @RequestMapping(value="/oui",
+            produces = MediaType.APPLICATION_JSON_VALUE,
+            method= RequestMethod.GET)
+    public ResponseEntity<?> requestRouterOui(
+            HttpServletRequest request
+    ) {
+        ActionResult r = ActionResult.SUCESS();
+        r.setMessage(""+consoleConfig.getHeliumGprcOui());
+        return new ResponseEntity<>(r, HttpStatus.OK);
+    }
+
+
 }
 

@@ -52,6 +52,7 @@ export default {
     ticketCreatePost:(process.env.API_HOST || '')+'/console/1.0/ticket/',
     ticketCreateResponsePut:(process.env.API_HOST || '')+'/console/1.0/ticket/',
     proxyGet:(process.env.API_HOST || '')+'/console/1.0/proxy/getter',
+    ouiGet:(process.env.API_HOST || '')+'/console/1.0/misc/oui',
     termAndUse:process.env.CONSOLE_TERMS || '/',
     frontVersion:'0.4.0'
   },
