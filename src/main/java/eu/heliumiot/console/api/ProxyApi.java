@@ -80,6 +80,8 @@ public class ProxyApi {
                 if (!reqItf.getEndpoint().contains("&") && !reqItf.getEndpoint().contains("?")) {
                     if ( reqItf.getEndpoint().endsWith("/v1/labels")
                       || reqItf.getEndpoint().endsWith("/v1/devices")
+                      || reqItf.getEndpoint().endsWith("/v1/functions")
+                      || reqItf.getEndpoint().endsWith("/v1/flows")
                     ) {
                         // Accepted URL
                         HttpHeaders headers = new HttpHeaders();

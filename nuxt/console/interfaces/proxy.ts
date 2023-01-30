@@ -34,4 +34,22 @@ declare module "vue/types/proxy" {
         rx_delay : number,
         total_packets : number,
     }
+    interface FunctionItf {
+        active : boolean,
+        body : string,
+        format : string,  // browan_object_locator | cayenne | custom
+        id : string,
+        name : string,
+        type : string,
+    }
+
+    interface FlowItf {
+        device_id : string,
+        function_id: string,
+        id : string,
+        integration_id : string,
+        label_id: string,
+        organization_id : string,
+    }
+
 }

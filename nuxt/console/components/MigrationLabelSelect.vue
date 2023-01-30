@@ -110,17 +110,53 @@
 
         </b-card>
 
-        <b-card v-if="true || selectLabelDisabled">
+        <b-row v-if="selectLabelDisabled" class="mx-1 my-3">
+            <b-col cols="12"
+                   class="bg-light p-3"
+                   style="border-radius: 0.5rem;"
+            >
+                <b-row>
+                    <b-col cols="12">
+                        <div v-html="$t('mig_setup_function_select')"></div>
+                    </b-col>
+                </b-row>
+                <b-row>
+                    <b-col cols="4" class="mb-3">
+                        <b-form-select v-model="targetFunction" 
+                                :options="sourceFunction"
+                                size="sm"
+                                class="mt-2"
+                                :disabled="selectFunctionDisabled"
+                                @change="onFunctionSelectChange($event)"
+                        ></b-form-select>
+                    </b-col>
+                    <b-col cols="2">
+                        <b-button block
+                            variant="primary"
+                            size="sm"
+                            @click="selectFunction()"
+                            style="text-align: right;font-size:0.8rem;"
+                            class="mt-2"
+                            :disabled="selectFunctionDisabled"
+                        >
+                            {{ $t('mig_select_function') }}
+                        </b-button>
+                    </b-col>
+                </b-row>
+                <b-row>
+                    <b-col cols="6" class="mb-2">
+                        <client-only>
+                        <CodeEditor :hide_header="true" v-model="leftEditor" height="600px"></CodeEditor>
+                        </client-only>
+                    </b-col>
+                </b-row>
+            </b-col>
+        </b-row>
+
+        <b-card>
             <b-row><b-col cols="12" class="mb-2" style="font-weight: 600;">
                 {{ $t('mig_label_data')}}
             </b-col></b-row>
-            <b-row>
-                <b-col cols="6" class="mb-2">
-                    <client-only>
-                      <CodeEditor :hide_header="true" v-model="leftEditor" height="600px"></CodeEditor>
-                    </client-only>
-                </b-col>
-            </b-row>
         </b-card>
 
     </div>
@@ -154,6 +190,10 @@ export default Vue.extend({
             targetLabel : "" as string,
             selectLabelDisabled : false as boolean,
             leftEditor : '' as string,
+            sourceFunction : [] as any,
+            targetFunction : "" as string,
+            selectFunctionDisabled : false as boolean,
+
         };
     },
     methods : {
@@ -166,14 +206,48 @@ export default Vue.extend({
         },
         selectLabel() {
             this.selectLabelDisabled=true;
+            this.selectFunctionDisabled=false;
+            let notusedFunction = [] as any;
+            this.sourceFunction = [];
+            let o = {
+                    value : "no_function",
+                    text : "None",
+            };
+            this.sourceFunction.push(o);
+
+            this.consoleObject.getDownloadedFunction().forEach((func) => {
+                let o = {
+                    value : func.id,
+                    text : func.name
+                }
+                if ( this.consoleObject.isFunctionUsedInALabel(func.id,this.targetLabel) ) {
+                    this.sourceFunction.push(o);
+                } else {
+                    notusedFunction.push(o);
+                }
+            });
+            this.sourceFunction = this.sourceFunction.concat(notusedFunction);
+            this.targetFunction = this.sourceFunction[0].value;
+
         },
+        onFunctionSelectChange(event:any) {
+            let f = this.consoleObject.getOneFunction(event);
+            if ( f != undefined ) {
+                this.leftEditor = f.body;
+            }
+            this.leftEditor = "";
+        },
+        selectFunction() {
+            this.selectFunctionDisabled=true;
+
+        }
     },
     mounted() {
         this.$root.$on("message-migration-validate-api", (msg:any) => {
             // configure the label selection
             this.sourceLabel = [];
-            var labels = this.consoleObject.getLabels();
-            this.consoleObject.getLabels().forEach((label) =>{
+            var labels = this.consoleObject.getDownloadedLabels();
+            this.consoleObject.getDownloadedLabels().forEach((label) =>{
                 var disable = !this.consoleObject.isLabelSingleUsed(label.id); 
                 let o = {
                     value : label.id,
@@ -182,6 +256,12 @@ export default Vue.extend({
                 };
                 this.sourceLabel.push(o);
             });
+            let o = {
+                    value : "no_label",
+                    text : "Without label",
+                    disabled : false,
+            };
+            this.sourceLabel.push(o);
             if ( this.sourceLabel.length > 0 ) {
                 this.targetLabel = this.sourceLabel[0].value;
             }

@@ -446,8 +446,8 @@ export default Vue.extend({
         this.$root.$on("message-migration-validate-api", (msg:any) => {
             // configure the label selection
             this.sourceLabel = [];
-            var labels = this.consoleObject.getLabels();
-            this.consoleObject.getLabels().forEach((label) =>{
+            var labels = this.consoleObject.getDownloadedLabels();
+            this.consoleObject.getDownloadedLabels().forEach((label) =>{
                 var disable = !this.consoleObject.isLabelSingleUsed(label.id); 
                 let o = {
                     value : label.id,

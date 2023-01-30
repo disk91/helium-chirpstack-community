@@ -344,6 +344,8 @@
     "mig_select_label" : "Choix du Label",
     "mig_label" : "Choix Label",
     "mig_label_data" : "Données du label selectionné:",
+    "mig_setup_function_select" : "Selectionnez la fonction de décodage à appliquer :",
+    "mig_select_function" : "Choix de la fonction",
 
     "end" : "fin"
 }

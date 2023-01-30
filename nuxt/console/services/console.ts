@@ -1,4 +1,4 @@
-import { ProxyConfig, ProxyGetReqItf, LabelItf, DeviceItf } from 'vue/types/proxy';
+import { ProxyConfig, ProxyGetReqItf, LabelItf, DeviceItf, FunctionItf, FlowItf } from 'vue/types/proxy';
 
 
 interface Device {
@@ -19,8 +19,9 @@ interface Device {
     region : string,
     isRegion : boolean, // false = unknonwn
     isMultipleLabel : boolean,
-
 }
+
+
 
 export class HeliumConsoleService {
 
@@ -34,9 +35,13 @@ export class HeliumConsoleService {
 
     accountLabels : LabelItf[];
     accountDevices : Device[];
+    accountFunctions : FunctionItf[];
+    accountFlows : FlowItf[];
 
     labelsGet : string = "v1/labels";
     devicesGet : string = "v1/devices";
+    functionGet : string = "v1/functions"
+    flowGet : string = "v1/flows"
 
     constructor (axios:any, proxyConfig:ProxyConfig) {
         this.proxyConfig = proxyConfig;
@@ -47,6 +52,8 @@ export class HeliumConsoleService {
         this.isBusy = false;
         this.accountLabels = [];
         this.accountDevices = [];
+        this.accountFunctions = [];
+        this.accountFlows = [];
         this.oui = -1;
     }
 
@@ -103,6 +110,7 @@ export class HeliumConsoleService {
     countDevices(label:string = "") : number {
         let r = 0;
         this.accountDevices.forEach( (device) => {
+            if ( label == "no_label" && device.rawDevice.labels.length  == 0 ) r++;
             if ( label == "" || device.rawDevice.labels.length > 0 && device.rawDevice.labels[0].id == label ) r++;
         })
         return r;
@@ -111,6 +119,8 @@ export class HeliumConsoleService {
     countActive(label:string = "") : number {
         let r = 0;
         this.accountDevices.forEach( (device) => {
+            if ( label == "no_label" && device.rawDevice.labels.length  == 0 )
+                if ( device.isActive ) r++;
             if ( label == "" || device.rawDevice.labels.length > 0 && device.rawDevice.labels[0].id == label )
                if ( device.isActive ) r++;
         })
@@ -120,6 +130,8 @@ export class HeliumConsoleService {
     countIncompatible(label:string = "") : number {
         let r = 0;
         this.accountDevices.forEach( (device) => {
+            if ( label == "no_label" && device.rawDevice.labels.length  == 0 )
+                if ( device.isMultipleLabel ) r++;
             if ( label == "" || device.rawDevice.labels.length > 0 && device.rawDevice.labels[0].id == label )
                if ( device.isMultipleLabel ) r++;
         })
@@ -129,6 +141,8 @@ export class HeliumConsoleService {
     countEU868(label:string = "") : number {
         let r = 0;
         this.accountDevices.forEach( (device) => {
+            if ( label == "no_label" && device.rawDevice.labels.length  == 0 )
+                if ( device.isEU868 ) r++;
             if ( label == "" || device.rawDevice.labels.length > 0 && device.rawDevice.labels[0].id == label )
                if ( device.isEU868 ) r++;
         })
@@ -138,6 +152,8 @@ export class HeliumConsoleService {
     countUS915(label:string = "") : number {
         let r = 0;
         this.accountDevices.forEach( (device) => {
+            if ( label == "no_label" && device.rawDevice.labels.length  == 0 )
+                if ( device.isUS915 ) r++;
             if ( label == "" || device.rawDevice.labels.length > 0 && device.rawDevice.labels[0].id == label )
                if ( device.isUS915 ) r++;
         })
@@ -147,6 +163,8 @@ export class HeliumConsoleService {
     countAU915(label:string = "") : number {
         let r = 0;
         this.accountDevices.forEach( (device) => {
+            if ( label == "no_label" && device.rawDevice.labels.length  == 0 )
+                if ( device.isAU915_1 ) r++;
             if ( label == "" || device.rawDevice.labels.length > 0 && device.rawDevice.labels[0].id == label )
                if ( device.isAU915_1 ) r++;
         })
@@ -156,6 +174,8 @@ export class HeliumConsoleService {
     countAS923(label:string = "") : number {
         let r = 0;
         this.accountDevices.forEach( (device) => {
+            if ( label == "no_label" && device.rawDevice.labels.length  == 0 )
+                if ( device.isAS923_1 ) r++;
             if ( label == "" || device.rawDevice.labels.length > 0 && device.rawDevice.labels[0].id == label )
                if ( device.isAS923_1 ) r++;
         })
@@ -165,6 +185,8 @@ export class HeliumConsoleService {
     countUnknownRegion(label:string = "") : number {
         let r = 0;
         this.accountDevices.forEach( (device) => {
+            if ( label == "no_label" && device.rawDevice.labels.length  == 0 )
+                if ( !device.isRegion ) r++;
             if ( label == "" || device.rawDevice.labels.length > 0 && device.rawDevice.labels[0].id == label )
                if ( !device.isRegion ) r++;
         })
@@ -174,14 +196,20 @@ export class HeliumConsoleService {
     countInOui(label:string = "") : number {
         let r = 0;
         this.accountDevices.forEach( (device) => {
+            if ( label == "no_label" && device.rawDevice.labels.length  == 0 )
+                if ( device.rawDevice.oui == this.oui ) r++;
             if ( label == "" || device.rawDevice.labels.length > 0 && device.rawDevice.labels[0].id == label )
                if ( device.rawDevice.oui == this.oui ) r++;
         })
         return r;
     }
 
-    getLabels() : LabelItf[] {
+    getDownloadedLabels() : LabelItf[] {
         return this.accountLabels;
+    }
+
+    getDownloadedFunction() : FunctionItf[] {
+        return this.accountFunctions;
     }
 
     /**
@@ -245,5 +273,68 @@ export class HeliumConsoleService {
             })
         });
     }
+
+
+    async getFunctions() : Promise<string> {
+        this.isBusy = true;
+        let body : ProxyGetReqItf = {
+            endpoint: this.apiUrl+this.functionGet,
+            key:this.apiKey,
+        };
+        this.accountFunctions = [];
+        return new Promise<string>((resolve) => { 
+            this.axios.post(this.proxyConfig.getterUrl,body,this.getHeader())
+            .then((response : any) =>{
+                if (response.status == 200 ) {
+                  this.isBusy = false;
+                  (response.data as FunctionItf[]).forEach ( (functionItf)=> {
+                       this.accountFunctions.push(functionItf); 
+                  });
+                  resolve("");
+                } else resolve(response.data.message);
+            }).catch((err : any) =>{
+                if ( err != undefined ) resolve(err.response.data.message);
+            })
+        });
+    }
+
+    getOneFunction(funcId:string) : FunctionItf {
+        this.accountFunctions.forEach( (func) => {
+            if ( func.id == funcId ) return func;
+        })
+        return undefined as any;
+    }
+
+    async getFlows() : Promise<string> {
+        this.isBusy = true;
+        let body : ProxyGetReqItf = {
+            endpoint: this.apiUrl+this.flowGet,
+            key:this.apiKey,
+        };
+        this.accountFlows = [];
+        return new Promise<string>((resolve) => { 
+            this.axios.post(this.proxyConfig.getterUrl,body,this.getHeader())
+            .then((response : any) =>{
+                this.accountFlows = [];
+                if (response.status == 200 ) {
+                  this.isBusy = false;
+                  (response.data as FlowItf[]).forEach ( (flowItf)=> {
+                       this.accountFlows.push(flowItf); 
+                  });
+                  resolve("");
+                } else resolve(response.data.message);
+            }).catch((err : any) =>{
+                if ( err != undefined ) resolve(err.response.data.message);
+            })
+        });
+    }
+
+    isFunctionUsedInALabel(funcId:string, labelId:string) : boolean {
+        this.accountFlows.forEach((flow:FlowItf) => {
+            if ( flow.function_id != null && flow.function_id == funcId ) return true;
+        });
+        return false;
+    }
+
 
   }
