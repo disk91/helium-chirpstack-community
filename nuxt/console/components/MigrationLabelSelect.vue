@@ -142,22 +142,59 @@
                             {{ $t('mig_select_function') }}
                         </b-button>
                     </b-col>
+                    <b-col cols="4"></b-col>
+                    <b-col cols="2" v-if="selectFunctionDisabled">
+                        <b-button block
+                            variant="primary"
+                            size="sm"
+                            @click="commitFunction()"
+                            style="text-align: right;font-size:0.8rem;"
+                            class="mt-2"
+                        >
+                            {{ $t('mig_commit_function') }}
+                        </b-button>
+                    </b-col>
                 </b-row>
                 <b-row>
                     <b-col cols="6" class="mb-2">
                         <client-only>
-                        <CodeEditor :hide_header="true" v-model="leftEditor" height="600px"></CodeEditor>
+                        <CodeEditor 
+                            :hide_header="true" 
+                            v-model="leftEditor" 
+                            height="600px"
+                            border_radius="10px"
+                            font_size="12px"
+                            width="100%"
+                            :read_only="true"
+                        ></CodeEditor>
                         </client-only>
+                    </b-col>
+                    <b-col cols="6" class="mb-2">
+                        <b-row class="h-25">
+                            <b-col cols="12">
+                                <div class="bg-warning p-3 mx-1 mb-2" style="border-radius: 0.5rem;" v-html="$t('mig_setup_function_rewrite')"></div>
+                            </b-col>
+                        </b-row>
+                        <b-row class="h-75">
+                            <b-col cols="12">
+                                <client-only>
+                                <CodeEditor 
+                                    :hide_header="true" 
+                                    v-model="rightEditor" 
+                                    border_radius="10px"
+                                    font_size="12px"
+                                    width="100%"
+                                    height="450px"
+                                    :read_only="false"
+                                ></CodeEditor>
+                                </client-only>
+                            </b-col>
+                        </b-row>
                     </b-col>
                 </b-row>
             </b-col>
         </b-row>
 
-        <b-card>
-            <b-row><b-col cols="12" class="mb-2" style="font-weight: 600;">
-                {{ $t('mig_label_data')}}
-            </b-col></b-row>
-        </b-card>
 
     </div>
 </template>
@@ -165,14 +202,17 @@
 </style>
 
 <script lang="ts">
+import { conditionalExpression } from '@babel/types';
 import Vue from 'vue'
 import { HeliumConsoleService } from '~/services/console';
+import { ChirpstackService } from '~/services/chirpstack';
 // doc code-editor https://github.com/justcaliturner/simple-code-editor 
 
 export default Vue.extend({
     name: "MigrationLabelSelect",
     props : {
         consoleObject : HeliumConsoleService,
+        chirpstackObject : ChirpstackService,
     },
     components: {
     },
@@ -190,6 +230,7 @@ export default Vue.extend({
             targetLabel : "" as string,
             selectLabelDisabled : false as boolean,
             leftEditor : '' as string,
+            rightEditor : '' as string,
             sourceFunction : [] as any,
             targetFunction : "" as string,
             selectFunctionDisabled : false as boolean,
@@ -209,44 +250,74 @@ export default Vue.extend({
             this.selectFunctionDisabled=false;
             let notusedFunction = [] as any;
             this.sourceFunction = [];
-            let o = {
+            let none = {
                     value : "no_function",
                     text : "None",
             };
-            this.sourceFunction.push(o);
 
+            let found = false;
             this.consoleObject.getDownloadedFunction().forEach((func) => {
                 let o = {
                     value : func.id,
                     text : func.name
                 }
                 if ( this.consoleObject.isFunctionUsedInALabel(func.id,this.targetLabel) ) {
+                    found = true;
                     this.sourceFunction.push(o);
                 } else {
                     notusedFunction.push(o);
                 }
             });
-            this.sourceFunction = this.sourceFunction.concat(notusedFunction);
+            if ( ! found ) {
+                this.sourceFunction = [none].concat(this.sourceFunction);
+                this.sourceFunction = this.sourceFunction.concat(notusedFunction);
+            } else {
+                this.sourceFunction = this.sourceFunction.concat(notusedFunction);
+                this.sourceFunction.push(none);
+                this.onFunctionSelectChange(this.sourceFunction[0].value);
+            }
             this.targetFunction = this.sourceFunction[0].value;
 
         },
         onFunctionSelectChange(event:any) {
             let f = this.consoleObject.getOneFunction(event);
             if ( f != undefined ) {
-                this.leftEditor = f.body;
+                if ( f.format == "cayenne" ) {
+                    this.leftEditor = "LPP Generic decoder";
+                    this.rightEditor = "Nothing needs to be migrated";
+                } else {
+                    this.leftEditor = f.body;
+                    this.rightEditor = this.chirpstackObject.migrateFunction(f.body);
+                }
+            } else {
+                this.leftEditor = "";
+                this.rightEditor = "";
             }
-            this.leftEditor = "";
         },
         selectFunction() {
             this.selectFunctionDisabled=true;
 
+        },
+        commitFunction() {
+            // go to the next step
+            let f = this.consoleObject.getOneFunction(this.targetFunction);
+            if ( f != undefined ) {
+                if ( f.format == "cayenne" ) {
+                    this.chirpstackObject.setFunction("cayenne");
+                } else {
+                    this.chirpstackObject.setFunction(this.rightEditor);
+                }
+            } else {
+                this.chirpstackObject.setFunction("none");
+            }
+            this.$root.$emit("message-migration-validate-label", "");
+            this.$root.$emit("message-migration-next-tab", "");
         }
     },
     mounted() {
         this.$root.$on("message-migration-validate-api", (msg:any) => {
             // configure the label selection
             this.sourceLabel = [];
-            var labels = this.consoleObject.getDownloadedLabels();
             this.consoleObject.getDownloadedLabels().forEach((label) =>{
                 var disable = !this.consoleObject.isLabelSingleUsed(label.id); 
                 let o = {

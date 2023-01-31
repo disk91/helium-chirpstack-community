@@ -346,6 +346,8 @@
     "mig_label_data" : "Données du label selectionné:",
     "mig_setup_function_select" : "Selectionnez la fonction de décodage à appliquer :",
     "mig_select_function" : "Choix de la fonction",
+    "mig_setup_function_rewrite" : "La fonction ci-dessous sera utilisée dans Chirpstack, il faut vérifier cette fonction et l'adapter, l'écriture automatique ne peut pas traiter toutes les situations correctement.",
+    "mig_commit_function" : "La fonction est prette",
 
     "end" : "fin"
 }

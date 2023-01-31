@@ -299,9 +299,9 @@ export class HeliumConsoleService {
     }
 
     getOneFunction(funcId:string) : FunctionItf {
-        this.accountFunctions.forEach( (func) => {
-            if ( func.id == funcId ) return func;
-        })
+        for ( let i = 0 ; i < this.accountFunctions.length ; i ++ ) {
+            if ( this.accountFunctions[i].id == funcId ) return this.accountFunctions[i]; 
+        }
         return undefined as any;
     }
 
@@ -330,10 +330,13 @@ export class HeliumConsoleService {
     }
 
     isFunctionUsedInALabel(funcId:string, labelId:string) : boolean {
+        let found = false;
         this.accountFlows.forEach((flow:FlowItf) => {
-            if ( flow.function_id != null && flow.function_id == funcId ) return true;
+            if ( flow.function_id != null && flow.label_id != null && flow.function_id == funcId && flow.label_id == labelId ) {
+                found = true;
+            } 
         });
-        return false;
+        return found;
     }
 
 

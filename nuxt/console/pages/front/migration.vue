@@ -28,7 +28,7 @@
                   <b-icon icon="files" variant="primary"></b-icon> {{ $t('mig_label') }}
                 </template>
               
-                <MigrationLabelSelect :consoleObject="heliumConsoleService"/>              
+                <MigrationLabelSelect :consoleObject="heliumConsoleService" :chirpstackObject="chirpstackService"/>              
               </b-tab>
 
               <b-tab 

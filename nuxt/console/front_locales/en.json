@@ -346,7 +346,8 @@
   "mig_label_data" : "Data from selected Label:",
   "mig_setup_function_select" : "Select the docoder function to be applied:",
   "mig_select_function" : "Select Function",
-
+  "mig_setup_function_rewrite" : "The following function will be applied in chirpstack, please review this function and adapt it, the automatic migration is not able to manage all the migration situation.",
+  "mig_commit_function" : "Function is ready",
 
   "end" : "end"
 }

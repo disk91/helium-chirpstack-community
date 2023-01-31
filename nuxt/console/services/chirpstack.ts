@@ -11,6 +11,7 @@ export class ChirpstackService {
     apiKey : string;       
     tenantId : string;
     oui : number;
+    function : string;  // data transformation function
 
     deviceProfileGet : string = "/rest-api/api/device-profiles";
     devicesGet : string = "v1/devices";
@@ -20,6 +21,7 @@ export class ChirpstackService {
         this.tenantId = "";
         this.oui = -1;
         this.axios = axios.create();
+        this.function = "";
         delete this.axios.defaults.headers.common['Authorization'];
     }
 
@@ -32,6 +34,10 @@ export class ChirpstackService {
     }
     setOui(o:number) {
         this.oui = o;
+    }
+
+    setFunction(f:string) {
+        this.function = f;
     }
 
     getHeader() : any {
@@ -117,6 +123,58 @@ export class ChirpstackService {
             }
         }
 
+    }
+
+    /**
+     * Migrate a legacy console function to a chirpstack function
+     * try to make our best ;)
+     * @param fsource 
+     */
+    migrateFunction(fsource: string) : string {
+        var fdest : string;
+        const reg = /function[ ]+Decoder([^)]+)[^{]*{/
+        fdest = fsource.replace(reg,
+         "// Decode uplink function.\n"
+        +"//\n"
+        +"// Input is an object with the following fields:\n"
+        +"// - bytes = Byte array containing the uplink payload, e.g. [255, 230, 255, 0]\n"
+        +"// - fPort = Uplink fPort.\n"
+        +"// - variables = Object containing the configured device variables.\n"
+        +"//\n"
+        +"// Output must be an object with the following fields:\n"
+        +"// - data = Object representing the decoded payload.\n"
+        +"function decodeUplink(intput) { \n"
+        +"   var bytes = input.bytes;\n"
+        +"   var port = input.fPort;\n"
+        +"   var uplink_info = {};\n"
+        +"   // Initial code imported, if you were using \n"
+        +"   // uplink_info, you really need to review your function \n"
+        );
+        
+        const reg3 = /return[^;{]*({[^}]*})/g
+        fdest = fdest.replace(reg3,"return { \n     data: \n$1 \n  };\n");
+
+        const reg2 = /return([^;{}]*)(;|\n)/g
+        fdest = fdest.replace(reg2,"return { \n     data:$1 \n  };\n");
+
+        fdest = fdest.concat(
+            "\n"+
+            "// Encode downlink function.\n" +
+            "//\n" +
+            "// Input is an object with the following fields:\n" +
+            "// - data = Object representing the payload that must be encoded.\n" +
+            "// - variables = Object containing the configured device variables.\n" +
+            "//\n" +
+            "// Output must be an object with the following fields:\n" +
+            "// - bytes = Byte array containing the downlink payload.\n" +
+            "function encodeDownlink(input) {\n" +
+            "   return {\n" +
+            "      bytes: [0]\n" +
+            "   };\n" +
+            "}\n"
+        );
+
+        return fdest;
     }
 
 
