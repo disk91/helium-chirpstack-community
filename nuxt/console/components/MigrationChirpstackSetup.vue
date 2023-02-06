@@ -278,26 +278,33 @@
                    style="border-radius: 0.5rem;"    
             >
                 <b-row>
-                    <b-col cols="3">
-                        <div v-html="$t('mig_setup_defaultapp')"></div>
+                    <b-col cols="12">
+                        <div v-html="$t('mig_setup_appexplained_1')"></div>
                     </b-col>
+                </b-row>
 
-                    <b-col cols="2">
+                <b-row>
+
+                    <b-col cols="3">
                         <b-button block
                             variant="primary"
                             size="sm"
                             @click="addApplication()"
                             style="text-align: right;font-size:0.8rem;"
                             class="mt-2"
-                            :disabled="selectApplicationDisabled"
+                            :disabled="createApplicationDisabled"
                         >
+                            <b-icon icon="plus-circle" variant="white"></b-icon>
                             {{ $t('mig_add_application') }}
-                            <b-icon icon="arrow-right-circle" variant="white"></b-icon>
                         </b-button>
                     </b-col>
 
+                    <b-col cols="2" class="mt-2">
+                        <div v-html="$t('mig_setup_defaultapp')"></div>
+                    </b-col>
+
                     <b-col cols="3" class="mb-3">
-                        <b-form-select v-model.number="targetApplication" 
+                        <b-form-select v-model="targetApplication" 
                                 :options="applicationOption"
                                 size="sm"
                                 class="mt-2"
@@ -306,7 +313,7 @@
                         <b-form-text style="font-size:0.6rem;color:#DC3545 !important;">{{ $t(appErrorMessage) }}</b-form-text>
                     </b-col>
 
-                    <b-col cols="2">
+                    <b-col cols="3">
                         <b-button block
                             variant="primary"
                             size="sm"
@@ -341,10 +348,39 @@
             </b-card-text>
         </b-modal>
 
+        <b-modal id="NewApplicationName" 
+                 centered 
+                 content-class="shadow"
+                 v-model="newAppNameModal"
+                 header-border-variant="white"
+                 header-text-variant="dark"
+                 footer-border-variant="white"
+                 class="text-center"
+                 button-size="sm"
+                 hide-header
+                 @ok="createNewApplication"
+        >
+            <b-card-text class="text-dark" style="text-align:center;font-size:1.2rem;" >
+                {{ $t('mig_new_app_setname') }}
+            </b-card-text>
+            <b-form-input v-model="newAppName"
+                          type="text" 
+                          :placeholder="$t('mig_new_app_expl')"
+                          class="mb-2"
+                          size="sm"
+            ></b-form-input>
+
+        </b-modal>
+
 
     </div>
 </template>
 <style>
+div#NewApplicationName___BV_modal_content_ {
+    -webkit-border-radius: 1rem !important;
+    -moz-border-radius: 1rem !important;
+    border-radius: 1rem !important; 
+}
 </style>
 
 <script lang="ts">
@@ -409,9 +445,12 @@ export default Vue.extend({
             targetLabel : {} as LabelItf,
             selectTenantDisabled : false as boolean,
             applicationOption : [] as any,
-            targetApplication : {} as Application,
+            targetApplication : 0 as number,
             appErrorMessage : "" as string,
             selectApplicationDisabled : false as boolean,
+            createApplicationDisabled : false as boolean,
+            newAppNameModal : false as boolean,
+            newAppName : "" as string,
         };
     },
     methods : {
@@ -424,8 +463,11 @@ export default Vue.extend({
             this.loadedChirpstack = false;
             this.selectTenantDisabled = false;
             this.targetLabel = {} as LabelItf;
-            this.targetApplication = {} as Application;
+            this.targetApplication = 0 as number;
             this.selectApplicationDisabled = false;
+            this.createApplicationDisabled = false;
+            this.newAppNameModal = false;
+            this.newAppName = "";
         },
         selectTenant() {
 
@@ -452,24 +494,34 @@ export default Vue.extend({
 
                   // Now we can get the data from chirpstack
                   this.loadChirpstack = true;
-                  this.chirpstackObject.loadDeviceProfile();
-                  this.chirpstackObject.loadAplications();
-
-                  this.applicationOption = [];
-                  this.chirpstackObject.getApplications().forEach( (app) => {
-                    this.applicationOption.push( {
-                        value: app,
-                        text: app.name,
+                  this.chirpstackObject.loadDeviceProfile()
+                  .then ( (mess) => {
+                    this.chirpstackObject.loadApplications()
+                    .then ( (mess) => {
+                        if ( mess == "" ) {
+                            this.applicationOption = [];
+                            for ( var i = 0 ; i < this.chirpstackObject.getApplications().length ; i++ ) {
+                                this.applicationOption.push( {
+                                    value: i,
+                                    text: this.chirpstackObject.getApplications()[i].name,
+                                });
+                            };
+                            if ( this.applicationOption.length > 0 ) {
+                                this.targetApplication = 0;
+                                this.selectApplicationDisabled = false;
+                            } else {
+                            this.selectApplicationDisabled = true;
+                            }
+                        } else {
+                            this.appErrorMessage = mess;
+                            this.selectApplicationDisabled = true;
+                        }
+                        this.isBusy = false;
+                        this.loadChirpstack = false;
+                        this.loadedChirpstack = true;
+                        this.selectTenantDisabled = true;
                     });
                   });
-                  if ( this.applicationOption.length > 0 ) {
-                    this.targetApplication = this.applicationOption[0].app;
-                  }
-
-                  this.loadChirpstack = false;
-                  this.isBusy = false;
-                  this.loadedChirpstack = true;
-                  this.selectTenantDisabled = true;
                 }
             }).catch((err) =>{
                this.apiState=2;
@@ -507,11 +559,48 @@ export default Vue.extend({
         },
         selectApplication() {
             // store selected app for next step
-
+            this.chirpstackObject.setDefaultApplication(this.chirpstackObject.getApplications()[this.targetApplication]);
+            this.selectApplicationDisabled = true;
+            this.createApplicationDisabled = true;
         },
         addApplication() {
             // need to modal for the name and create it
-        }
+            this.newAppNameModal = true;
+        },
+        createNewApplication() {
+            if ( this.newAppName != "" ) {
+                this.chirpstackObject.addApplication(this.newAppName)
+                .then ( (mess) => {
+                    if (mess == "" ) {
+                        this.reloadApplication();
+                        this.newAppName = "";
+                    }
+                });
+            }
+        },
+        reloadApplication() {
+            this.chirpstackObject.loadApplications()
+            .then ( (mess) => {
+                if ( mess == "" ) {
+                    this.applicationOption = [];
+                    for ( var i = 0 ; i < this.chirpstackObject.getApplications().length ; i++ ) {
+                        this.applicationOption.push( {
+                            value: i,
+                            text: this.chirpstackObject.getApplications()[i].name,
+                        });
+                    };
+                    if ( this.applicationOption.length > 0 ) {
+                        this.targetApplication = 0;
+                        this.selectApplicationDisabled = false;
+                    } else {
+                        this.selectApplicationDisabled = true;
+                    }
+                } else {
+                    this.appErrorMessage = mess;
+                    this.selectApplicationDisabled = true;
+                }
+            });
+        },
     },
     mounted() {
         this.$root.$on("message-migration-validate-label", (msg:any) => {

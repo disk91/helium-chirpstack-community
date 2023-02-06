@@ -24,6 +24,8 @@ export class ChirpstackService {
         this.oui = -1;
         this.axios = axios.create();
         this.funcDecoder = "";
+        this.applications = [];
+        this.defaultApplication = undefined as any;
         delete this.axios.defaults.headers.common['Authorization'];
     }
 
@@ -54,21 +56,25 @@ export class ChirpstackService {
     // --------------------------------------
 
     deviceProfile : _DeviceProfile[] = [];
-    loadDeviceProfile() {
+    loadDeviceProfile() : Promise<string>  {
         this.deviceProfile = [];
-        this.axios.get(this.deviceProfileGet+'?tenantId='+this.tenantId+'&limit=100',this.getHeader())
-        .then((response : any) =>{
-            if (response.status == 200 ) {
-                response.data.result.forEach((devicep : DeviceProfile) => {
-                    let d : _DeviceProfile = {} as _DeviceProfile;
-                    d.profile = devicep;
-                    d.isUsable = true;
-                    this.deviceProfile.push(d);
-                });  
-            }
-        }).catch((err : any) =>{
-            this.deviceProfile = [] as _DeviceProfile[];
-        })
+        return new Promise<string>((resolve) => { 
+            this.axios.get(this.deviceProfileGet+'?tenantId='+this.tenantId+'&limit=100',this.getHeader())
+            .then((response : any) =>{
+                if (response.status == 200 ) {
+                    response.data.result.forEach((devicep : DeviceProfile) => {
+                        let d : _DeviceProfile = {} as _DeviceProfile;
+                        d.profile = devicep;
+                        d.isUsable = true;
+                        this.deviceProfile.push(d);
+                    });  
+                    resolve("");
+                }
+            }).catch((err : any) =>{
+                this.deviceProfile = [] as _DeviceProfile[];
+                resolve(err.response.data.message);
+            })
+        });
     }
 
     /**
@@ -218,18 +224,23 @@ export class ChirpstackService {
 
     // --------------------------------------
 
-    applications : Application[] = [];
-    loadAplications() {
+    applications : Application[];
+    defaultApplication : Application;
+    loadApplications() : Promise<string> {
         this.applications = [];
-        this.axios.get(this.applicationsGet+'?tenantId='+this.tenantId+'&limit=100',this.getHeader())
-        .then((response : any) =>{
-            if (response.status == 200 ) {
-                let r : ApplicationList = response.data.result;
-                this.applications = r.result;
-            }
-        }).catch((err : any) =>{
-            this.applications = [] as Application[];
-        })
+        return new Promise<string>( (resolve) => {
+            this.axios.get(this.applicationsGet+'?tenantId='+this.tenantId+'&limit=100',this.getHeader())
+            .then((response : any) =>{
+                if (response.status == 200 ) {
+                    let r : ApplicationList = response.data;
+                    this.applications = r.result;
+                    resolve("");
+                }
+            }).catch((err : any) =>{
+                this.applications = [] as Application[];
+                resolve(err.response.data.message);
+            })
+        });
     }
 
     addApplication(_name : string) : Promise<string> {
@@ -260,7 +271,16 @@ export class ChirpstackService {
     }
 
     countApplications() : number {
+        if ( this.applications == undefined ) return 0;
         return this.applications.length;
+    }
+
+    setDefaultApplication( a : Application ) {
+        this.defaultApplication = a;
+    }
+
+    getDefaultApplication() : Application {
+        return this.defaultApplication;
     }
 
 

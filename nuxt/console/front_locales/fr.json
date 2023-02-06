@@ -350,9 +350,12 @@
     "mig_commit_function" : "La fonction est prette",
     "mig_data_select" : "Périmètre de la migration",
     "mig_loaded_applications" : "Applications",
-    "mig_setup_defaultapp": "Choix de l'application par defaut",
+    "mig_setup_defaultapp": "Choix de l'app par defaut",
     "mig_add_application" : "Créer une application",
-
+    "mig_select_application" : "Choisir",
+    "mig_setup_appexplained_1" : "Voici la liste des applications existantes dans votre Tenant. Une application est un group de devices avec <b>la même cible d'intégration</b>. Vous pouvez créer une application dédiée. Sélectionnez l'application par défaut dans laquelle migrer vos objets.",
+    "mig_new_app_expl" : "mon application",
+    "mig_new_app_setname" : "Merci de choisir un nom pour votre application :",
 
     "end" : "fin"
 }
