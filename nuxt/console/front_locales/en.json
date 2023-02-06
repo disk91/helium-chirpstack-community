@@ -330,7 +330,7 @@
   "mig_loaded_us915" : "US915:",
   "mig_loaded_as923" : "AS923:",
   "mig_loaded_active" : "Active devices:",
-  "mig_loaded_impact" : "Uncompatible:",
+  "mig_loaded_impact" : "Multiple label:",
   "mig_loaded_uregion" : "Unknown region:",
   "mig_loading_chirpstack" : "Loading chirpstack data",
   "mig_loaded_chirpdata" : "Data loaded from Chirpstack",
@@ -348,6 +348,10 @@
   "mig_select_function" : "Select Function",
   "mig_setup_function_rewrite" : "The following function will be applied in chirpstack, please review this function and adapt it, the automatic migration is not able to manage all the migration situation.",
   "mig_commit_function" : "Function is ready",
-
+  "mig_data_select" : "Scope of the migration",
+  "mig_loaded_applications" : "Applications",
+  "mig_setup_defaultapp": "Select default app",
+  "mig_add_application" : "Add new Application",
+  
   "end" : "end"
 }

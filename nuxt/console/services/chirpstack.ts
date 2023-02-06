@@ -1,4 +1,4 @@
-import { DeviceProfileList, DeviceProfile, DeviceProfileCreate } from 'vue/types/chirpstack';
+import { DeviceProfileList, DeviceProfile, DeviceProfileCreate, ApplicationList, Application, ApplicationCreate } from 'vue/types/chirpstack';
 
 interface _DeviceProfile {
     profile: DeviceProfile,
@@ -11,17 +11,19 @@ export class ChirpstackService {
     apiKey : string;       
     tenantId : string;
     oui : number;
-    function : string;  // data transformation function
+    funcDecoder : string;  // data transformation function
 
     deviceProfileGet : string = "/rest-api/api/device-profiles";
-    devicesGet : string = "v1/devices";
+    deviceProfilePost : string = "/rest-api/api/device-profiles";
+    applicationsGet : string = "/rest-api/api/applications";
+    applicationsPost : string = "/rest-api/api/applications";
 
     constructor (axios:any) {
         this.apiKey = "";
         this.tenantId = "";
         this.oui = -1;
         this.axios = axios.create();
-        this.function = "";
+        this.funcDecoder = "";
         delete this.axios.defaults.headers.common['Authorization'];
     }
 
@@ -37,7 +39,7 @@ export class ChirpstackService {
     }
 
     setFunction(f:string) {
-        this.function = f;
+        this.funcDecoder = f;
     }
 
     getHeader() : any {
@@ -63,7 +65,6 @@ export class ChirpstackService {
                     d.isUsable = true;
                     this.deviceProfile.push(d);
                 });  
-                console.log(this.deviceProfile);
             }
         }).catch((err : any) =>{
             this.deviceProfile = [] as _DeviceProfile[];
@@ -88,12 +89,38 @@ export class ChirpstackService {
         return r;
     }
 
+
+    /**
+     * Returns true when the device profile already exists on the backend
+     * This is based on the device profile name
+     * @param zone 
+     * @param otaa 
+     */
+    existsDevProfile(zone:string, otaa:boolean, label: string = "") : boolean {
+        for ( var i = 0 ; i < this.deviceProfile.length ; i++ ) {
+            console.log(this.deviceProfile[i].profile.name);
+            if ( this.deviceProfile[i].profile.name == "Migration "+((otaa)?"OTAA":"ABP")+" "+label && this.deviceProfile[i].profile.region == zone ) return true;
+        }
+        return false;     
+    }
+
     /**
      * Create a device profile for migration, for a given zone with a given profile OTAA or ABP
      * @param zone - zone to be created
      * @param otaa - type of profile
      */
-    addDevProfile(zone:string, otaa:boolean, label: string = "") {
+    async addDevProfile(zone:string, otaa:boolean, label: string = "") : Promise<string>  {
+        let script = "// Decode uplink function.\n//\n// Input is an object with the following fields:\n// - bytes = Byte array containing the uplink payload, e.g. [255, 230, 255, 0]\n// - fPort = Uplink fPort.\n// - variables = Object containing the configured device variables.\n//\n// Output must be an object with the following fields:\n// - data = Object representing the decoded payload.\nfunction decodeUplink(input) {\n  return {\n    data: {\n      temp: 22.5\n    }\n  };\n}\n\n// Encode downlink function.\n//\n// Input is an object with the following fields:\n// - data = Object representing the payload that must be encoded.\n// - variables = Object containing the configured device variables.\n//\n// Output must be an object with the following fields:\n// - bytes = Byte array containing the downlink payload.\nfunction encodeDownlink(input) {\n  return {\n    bytes: [225, 230, 255, 0]\n  };\n}\n";
+        let decoder = "NONE";
+        if ( this.funcDecoder == "cayenne" ) {
+            decoder = "CAYENNE_LPP";
+        } else if (this.funcDecoder == "none") {
+            // default values
+        } else {
+            decoder = "JS";
+            script = this.funcDecoder;
+        }
+
         let body : DeviceProfileCreate = {
             deviceProfile : {
                 abpRx1Delay : 0,
@@ -106,23 +133,35 @@ export class ChirpstackService {
                 classBPingSlotPeriod : 0,
                 classBTimeout : 0,
                 classCTimeout : 0,
-                description : "Migrated "+zone+" for label "+label,
+                description : "Migration Profile "+zone+" for label "+label,
                 deviceStatusReqInterval : 1,
                 flushQueueOnActivate : false,
                 macVersion : "LORAWAN_1_1_0",
                 regParamsRevision : "B",
-                name : ((otaa)?"OTAA":"ABP")+"Migration "+label,
-                payloadCodecRuntime : "NONE",
-                payloadCodecScript : "",
+                name : "Migration "+((otaa)?"OTAA":"ABP")+" "+label,
+                payloadCodecRuntime : decoder,
+                payloadCodecScript : script,
                 region : zone,
                 supportsClassB : false,
                 supportsClassC : false,
                 supportsOtaa : otaa,
                 tenantId : this.tenantId,
                 uplinkInterval : 3600,
+                tags : {
+                    "label" : label,
+                },
             }
         }
-
+        return new Promise<string>((resolve) => { 
+            this.axios.post(this.deviceProfilePost,body,this.getHeader())
+            .then((response : any) =>{
+                if (response.status == 200 ) {
+                    resolve("");
+                }
+            }).catch((err : any) =>{
+                resolve("Error : "+err.response.data.message);
+            })
+        });
     }
 
     /**
@@ -176,6 +215,54 @@ export class ChirpstackService {
 
         return fdest;
     }
+
+    // --------------------------------------
+
+    applications : Application[] = [];
+    loadAplications() {
+        this.applications = [];
+        this.axios.get(this.applicationsGet+'?tenantId='+this.tenantId+'&limit=100',this.getHeader())
+        .then((response : any) =>{
+            if (response.status == 200 ) {
+                let r : ApplicationList = response.data.result;
+                this.applications = r.result;
+            }
+        }).catch((err : any) =>{
+            this.applications = [] as Application[];
+        })
+    }
+
+    addApplication(_name : string) : Promise<string> {
+
+        let body : ApplicationCreate = {
+                application : {
+                    name : _name,
+                    description : "Application created by migration tools",
+                    tenantId : this.tenantId
+                }
+            }
+
+        return new Promise<string>((resolve) => { 
+            this.axios.post(this.applicationsPost,body,this.getHeader())
+            .then((response : any) =>{
+                if (response.status == 200 ) {
+                    resolve("");
+                }
+            }).catch((err : any) =>{
+                resolve("Error : "+err.response.data.message);
+            })
+        });
+
+    }
+
+    getApplications() : Application[] {
+        return this.applications;
+    }
+
+    countApplications() : number {
+        return this.applications.length;
+    }
+
 
 
   }

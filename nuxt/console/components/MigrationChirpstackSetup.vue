@@ -3,78 +3,43 @@
 
         <b-card>
             <b-row><b-col cols="12" class="mb-2" style="font-weight: 600;">
-                {{ $t('mig_loaded_data')}}
+                {{ $t('mig_data_select')}}
             </b-col></b-row>
             <b-row>
                 <b-col cols="2">{{ $t('mig_loaded_labels') }}</b-col>
-                <b-col cols="2" class="text-primary">{{ consoleObject.countLabels() }}</b-col>
+                <b-col cols="2" class="text-primary">{{ targetLabel.name }}</b-col>
 
                 <b-col cols="2">{{ $t('mig_loaded_eu868') }}</b-col>
-                <b-col cols="2" class="text-primary">{{ consoleObject.countEU868() }}</b-col>
+                <b-col cols="2" class="text-primary">{{ consoleObject.countEU868(targetLabel.id) }}</b-col>
                 <b-col cols="2">{{ $t('mig_loaded_au915') }}</b-col>
-                <b-col cols="2" class="text-primary">{{ consoleObject.countAU915() }}</b-col>
+                <b-col cols="2" class="text-primary">{{ consoleObject.countAU915(targetLabel.id) }}</b-col>
             </b-row>
             <b-row>
                 <b-col cols="2">{{ $t('mig_loaded_devices') }}</b-col>
-                <b-col cols="2" class="text-primary">{{ consoleObject.countDevices() }}</b-col>
+                <b-col cols="2" class="text-primary">{{ consoleObject.countDevices(targetLabel.id) }}</b-col>
 
                 <b-col cols="2">{{ $t('mig_loaded_us915') }}</b-col>
-                <b-col cols="2" class="text-primary">{{ consoleObject.countUS915() }}</b-col>
+                <b-col cols="2" class="text-primary">{{ consoleObject.countUS915(targetLabel.id) }}</b-col>
                 <b-col cols="2">{{ $t('mig_loaded_as923') }}</b-col>
-                <b-col cols="2" class="text-primary">{{ consoleObject.countAS923() }}</b-col>
+                <b-col cols="2" class="text-primary">{{ consoleObject.countAS923(targetLabel.id) }}</b-col>
             </b-row>
             <b-row>
                 <b-col cols="2">{{ $t('mig_loaded_active') }}</b-col>
-                <b-col cols="2" class="text-primary">{{ consoleObject.countActive() }}</b-col>
+                <b-col cols="2" class="text-primary">{{ consoleObject.countActive(targetLabel.id) }}</b-col>
             </b-row>
             <b-row>
                 <b-col cols="2">{{ $t('mig_loaded_live') }}</b-col>
-                <b-col cols="2" class="text-success">{{ consoleObject.countInOui() }}</b-col>
+                <b-col cols="2" class="text-success">{{ consoleObject.countInOui(targetLabel.id) }}</b-col>
                 <b-col cols="2">{{ $t('mig_loaded_impact') }}</b-col>
-                <b-col cols="2" class="text-danger">{{ consoleObject.countIncompatible() }}</b-col>
+                <b-col v-if="consoleObject.countIncompatible(targetLabel.id) > 0" cols="2" class="text-danger">{{ consoleObject.countIncompatible(targetLabel.id) }}</b-col>
+                <b-col v-if="consoleObject.countIncompatible(targetLabel.id) == 0" cols="2" class="text-success">{{ consoleObject.countIncompatible(targetLabel.id) }}</b-col>
                 <b-col cols="2">{{ $t('mig_loaded_uregion') }}</b-col>
-                <b-col cols="2" class="text-danger">{{ consoleObject.countUnknownRegion() }}</b-col>
+                <b-col v-if="consoleObject.countUnknownRegion(targetLabel.id) > 0" cols="2" class="text-warning">{{ consoleObject.countUnknownRegion(targetLabel.id) }}</b-col>
+                <b-col v-if="consoleObject.countUnknownRegion(targetLabel.id) == 0" cols="2" class="text-success">{{ consoleObject.countUnknownRegion(targetLabel.id) }}</b-col>
             </b-row>
-
         </b-card>
 
         <b-row class="mx-1 my-3">
-            <b-col cols="12"
-                   class="bg-light p-3"
-                   style="border-radius: 0.5rem;"
-            >
-                <b-row>
-                    <b-col cols="12">
-                        <div v-html="$t('mig_setup_label_select')"></div>
-                    </b-col>
-                </b-row>
-                <b-row>
-                    <b-col cols="4" class="mb-3">
-                        <b-form-select v-model="targetLabel" 
-                                :options="sourceLabel"
-                                size="sm"
-                                class="mt-2"
-                                :disabled="selectLabelDisabled"
-                        ></b-form-select>
-                    </b-col>
-                    <b-col cols="2">
-                        <b-button block
-                            variant="primary"
-                            size="sm"
-                            @click="selectLabel()"
-                            style="text-align: right;font-size:0.8rem;"
-                            class="mt-2"
-                            :disabled="selectLabelDisabled"
-                        >
-                            {{ $t('mig_select_label') }}
-                        </b-button>
-                    </b-col>
-                </b-row>
-            </b-col>
-        </b-row>
-
-
-        <b-row class="mx-1 my-3" v-if="selectLabelDisabled">
             <b-col cols="12"
                    class="bg-light p-3"
                    style="border-radius: 0.5rem;"
@@ -145,8 +110,8 @@
                 </b-col>
             </b-row>
             <b-row>
-                <b-col cols="2">{{ $t('mig_loaded_devices') }}</b-col>
-                <b-col cols="2" class="text-primary">{{0 }}</b-col>
+                <b-col cols="2"></b-col>
+                <b-col cols="2" class="text-primary"></b-col>
 
                 <b-col cols="1">{{ $t('mig_loaded_us915') }}</b-col>
                 <b-col cols="2" class="text-primary">
@@ -183,9 +148,10 @@
                         <b-button block
                             :variant="getVariant('EU868',false)"
                             size="sm"
-                            @click="chirpstackObject.addDevProfile('EU868', false)"
+                            @click="createDevProfile('EU868', false)"
                             style="text-align: center;font-size:0.8rem;"
                             class=""
+                            :disabled="existDevProfile('EU868',false)"
                         >
                             <b-icon icon="plus-circle-dotted" variant="white" style="font-size:0.8rem;"></b-icon>
                             ABP - EU868
@@ -195,9 +161,10 @@
                         <b-button block
                             :variant="getVariant('US915',false)"
                             size="sm"
-                            @click="chirpstackObject.addDevProfile('US915', false)"
+                            @click="createDevProfile('US915', false)"
                             style="text-align: center;font-size:0.8rem;"
                             class=""
+                            :disabled="existDevProfile('US915',false)"
                         >
                         <b-icon icon="plus-circle-dotted" variant="white" style="font-size:0.8rem;"></b-icon>
                             ABP - US915
@@ -207,9 +174,10 @@
                         <b-button block
                             :variant="getVariant('AU915',false)"
                             size="sm"
-                            @click="chirpstackObject.addDevProfile('AU915', false)"
+                            @click="createDevProfile('AU915', false)"
                             style="text-align: center;font-size:0.8rem;"
                             class=""
+                            :disabled="existDevProfile('AU915',false)"
                         >
                             <b-icon icon="plus-circle-dotted" variant="white" style="font-size:0.8rem;"></b-icon>
                             ABP - AU915
@@ -219,9 +187,10 @@
                         <b-button block
                             :variant="getVariant('AS923',false)"
                             size="sm"
-                            @click="chirpstackObject.addDevProfile('AS923', false)"
+                            @click="createDevProfile('AS923', false)"
                             style="text-align: center;font-size:0.8rem;"
                             class=""
+                            :disabled="existDevProfile('AS923',false)"
                         >
                             <b-icon icon="plus-circle-dotted" variant="white" style="font-size:0.8rem;"></b-icon>
                             ABP - AS923
@@ -239,9 +208,10 @@
                         <b-button block
                             :variant="getVariant('EU868',true)"
                             size="sm"
-                            @click="chirpstackObject.addDevProfile('EU868', true)"
+                            @click="createDevProfile('EU868', true)""
                             style="text-align: center;font-size:0.8rem;"
                             class=""
+                            :disabled="existDevProfile('EU868',true)"
                         >
                             <b-icon icon="plus-circle-dotted" variant="white" style="font-size:0.8rem;"></b-icon>
                             OTAA - EU868
@@ -251,9 +221,10 @@
                         <b-button block
                             :variant="getVariant('US915',true)"
                             size="sm"
-                            @click="chirpstackObject.addDevProfile('US915', true)"
+                            @click="createDevProfile('US915', true)""
                             style="text-align: center;font-size:0.8rem;"
                             class=""
+                            :disabled="existDevProfile('US915',true)"
                         >
                         <b-icon icon="plus-circle-dotted" variant="white" style="font-size:0.8rem;"></b-icon>
                             OTAA - US915
@@ -263,9 +234,10 @@
                         <b-button block
                             :variant="getVariant('AU915',true)"
                             size="sm"
-                            @click="chirpstackObject.addDevProfile('AU915', true)"
+                            @click="createDevProfile('AU915', true)"
                             style="text-align: center;font-size:0.8rem;"
                             class=""
+                            :disabled="existDevProfile('AU915',true)"
                         >
                             <b-icon icon="plus-circle-dotted" variant="white" style="font-size:0.8rem;"></b-icon>
                             OTAA - AU915
@@ -275,9 +247,10 @@
                         <b-button block
                             :variant="getVariant('AS923',true)"
                             size="sm"
-                            @click="chirpstackObject.addDevProfile('AS923', true)"
+                            @click="createDevProfile('AS923', true)"
                             style="text-align: center;font-size:0.8rem;"
                             class=""
+                            :disabled="existDevProfile('AS923',true)"
                         >
                             <b-icon icon="plus-circle-dotted" variant="white" style="font-size:0.8rem;"></b-icon>
                             OTAA - AS923
@@ -286,6 +259,67 @@
                 </b-row>
 
 
+            </b-col>
+        </b-row>
+
+        <b-card v-if="loadedChirpstack">
+            <b-row><b-col cols="12" class="mb-2" style="font-weight: 600;">
+                {{ $t('mig_loaded_chirpdata')}}
+            </b-col></b-row>
+            <b-row>
+                <b-col cols="2">{{ $t('mig_loaded_applications') }}</b-col>
+                <b-col cols="2" class="text-primary">{{ chirpstackObject.countApplications() }}</b-col>
+            </b-row>
+        </b-card>
+
+        <b-row  v-if="loadedChirpstack" class="mx-1 my-3">
+            <b-col cols="12"
+                   class="bg-light p-3"
+                   style="border-radius: 0.5rem;"    
+            >
+                <b-row>
+                    <b-col cols="3">
+                        <div v-html="$t('mig_setup_defaultapp')"></div>
+                    </b-col>
+
+                    <b-col cols="2">
+                        <b-button block
+                            variant="primary"
+                            size="sm"
+                            @click="addApplication()"
+                            style="text-align: right;font-size:0.8rem;"
+                            class="mt-2"
+                            :disabled="selectApplicationDisabled"
+                        >
+                            {{ $t('mig_add_application') }}
+                            <b-icon icon="arrow-right-circle" variant="white"></b-icon>
+                        </b-button>
+                    </b-col>
+
+                    <b-col cols="3" class="mb-3">
+                        <b-form-select v-model.number="targetApplication" 
+                                :options="applicationOption"
+                                size="sm"
+                                class="mt-2"
+                                :disabled="selectApplicationDisabled"
+                        ></b-form-select>
+                        <b-form-text style="font-size:0.6rem;color:#DC3545 !important;">{{ $t(appErrorMessage) }}</b-form-text>
+                    </b-col>
+
+                    <b-col cols="2">
+                        <b-button block
+                            variant="primary"
+                            size="sm"
+                            @click="selectApplication()"
+                            style="text-align: right;font-size:0.8rem;"
+                            class="mt-2"
+                            :disabled="selectApplicationDisabled"
+                        >
+                            {{ $t('mig_select_application') }}
+                            <b-icon icon="arrow-right-circle" variant="white"></b-icon>
+                        </b-button>
+                    </b-col>
+                </b-row>
             </b-col>
         </b-row>
 
@@ -319,6 +353,7 @@ import { HeliumConsoleService } from '~/services/console';
 import { TenantDcBalancesReqItf, TenantApiKeyRespItf } from 'vue/types/tenantSearch';
 import { ChirpstackService } from '~/services/chirpstack';
 import { LabelItf } from 'vue/types/proxy';
+import { Application } from 'vue/types/chirpstack';
 
 export default Vue.extend({
     name: "MigrationChirpstackSetup",
@@ -371,24 +406,26 @@ export default Vue.extend({
             apiMessage : '',
             loadChirpstack : false as boolean,
             loadedChirpstack : false as boolean,
-            sourceLabel : [] as any,
-            targetLabel : 0 as number,
-            selectLabelDisabled : false as boolean,
+            targetLabel : {} as LabelItf,
             selectTenantDisabled : false as boolean,
+            applicationOption : [] as any,
+            targetApplication : {} as Application,
+            appErrorMessage : "" as string,
+            selectApplicationDisabled : false as boolean,
         };
     },
     methods : {
         reset() {
             this.errorMessage = "";
+            this.appErrorMessage = "";
             this.apiMessage = "";
             this.apiState = 0;
             this.loadChirpstack = false;
             this.loadedChirpstack = false;
-            this.selectLabelDisabled = false;
             this.selectTenantDisabled = false;
-        },
-        selectLabel() {
-            this.selectLabelDisabled=true;
+            this.targetLabel = {} as LabelItf;
+            this.targetApplication = {} as Application;
+            this.selectApplicationDisabled = false;
         },
         selectTenant() {
 
@@ -416,6 +453,18 @@ export default Vue.extend({
                   // Now we can get the data from chirpstack
                   this.loadChirpstack = true;
                   this.chirpstackObject.loadDeviceProfile();
+                  this.chirpstackObject.loadAplications();
+
+                  this.applicationOption = [];
+                  this.chirpstackObject.getApplications().forEach( (app) => {
+                    this.applicationOption.push( {
+                        value: app,
+                        text: app.name,
+                    });
+                  });
+                  if ( this.applicationOption.length > 0 ) {
+                    this.targetApplication = this.applicationOption[0].app;
+                  }
 
                   this.loadChirpstack = false;
                   this.isBusy = false;
@@ -440,25 +489,34 @@ export default Vue.extend({
                 if ( zone == 'AU915' && ( this.consoleObject.countAU915() == 0 && this.consoleObject.countUnknownRegion() == 0 ) ) r = "secondary"; 
             }
             return r;
+        },
+        createDevProfile(zone:string, otaa:boolean) {
+
+            this.chirpstackObject.addDevProfile(zone,otaa,this.targetLabel.name)
+            .then((response:string) => {
+                if ( response.length == 0 ) {
+                    this.chirpstackObject.loadDeviceProfile();
+                } else {
+                    console.log(response);
+                }
+            });
+
+        },
+        existDevProfile(zone:string, otaa:boolean) : boolean {
+            return this.chirpstackObject.existsDevProfile(zone,otaa,this.targetLabel.name);
+        },
+        selectApplication() {
+            // store selected app for next step
+
+        },
+        addApplication() {
+            // need to modal for the name and create it
         }
     },
     mounted() {
-        this.$root.$on("message-migration-validate-api", (msg:any) => {
-            // configure the label selection
-            this.sourceLabel = [];
-            var labels = this.consoleObject.getDownloadedLabels();
-            this.consoleObject.getDownloadedLabels().forEach((label) =>{
-                var disable = !this.consoleObject.isLabelSingleUsed(label.id); 
-                let o = {
-                    value : label.id,
-                    text : label.name,
-                    disabled : disable,
-                };
-                this.sourceLabel.push(o);
-            });
-            if ( this.sourceLabel.length > 0 ) {
-                this.targetLabel = this.sourceLabel[0].value;
-            }
+        this.$root.$on("message-migration-validate-label", (msg:any) => {
+            let l = this.consoleObject.getLabelById(this.consoleObject.getCurrentLabel());
+            this.targetLabel = l;
         });
     },
     created () {

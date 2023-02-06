@@ -32,6 +32,7 @@ export class HeliumConsoleService {
     apiUrl : string;
     isBusy : boolean;
     oui : number;
+    currentLabel : string;
 
     accountLabels : LabelItf[];
     accountDevices : Device[];
@@ -55,6 +56,7 @@ export class HeliumConsoleService {
         this.accountFunctions = [];
         this.accountFlows = [];
         this.oui = -1;
+        this.currentLabel = "";
     }
 
     setApiKey(ak:string) {
@@ -76,6 +78,14 @@ export class HeliumConsoleService {
                 'Authorization': 'Bearer '+this.proxyConfig.bearer, 
             }
         }
+    }
+
+    setCurrentLabel(l:string) {
+        this.currentLabel = l;
+    }
+
+    getCurrentLabel() : string {
+        return this.currentLabel;
     }
 
     // --------------------------------------
@@ -210,6 +220,13 @@ export class HeliumConsoleService {
 
     getDownloadedFunction() : FunctionItf[] {
         return this.accountFunctions;
+    }
+
+    getLabelById(id:string) : LabelItf {
+        for ( var i = 0 ; i < this.accountLabels.length ; i++ ) {
+            if ( this.accountLabels[i].id == id ) return this.accountLabels[i];
+        }
+        return undefined as any;
     }
 
     /**

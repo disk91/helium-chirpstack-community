@@ -8,20 +8,15 @@
             <b-row>
                 <b-col cols="2">{{ $t('mig_loaded_labels') }}</b-col>
                 <b-col cols="2" class="text-primary">{{ consoleObject.countLabels() }}</b-col>
-
-                <b-col cols="2">{{ $t('mig_loaded_eu868') }}</b-col>
-                <b-col cols="2" class="text-primary">{{ consoleObject.countEU868() }}</b-col>
-                <b-col cols="2">{{ $t('mig_loaded_au915') }}</b-col>
-                <b-col cols="2" class="text-primary">{{ consoleObject.countAU915() }}</b-col>
             </b-row>
             <b-row>
                 <b-col cols="2">{{ $t('mig_loaded_devices') }}</b-col>
                 <b-col cols="2" class="text-primary">{{ consoleObject.countDevices() }}</b-col>
-
-                <b-col cols="2">{{ $t('mig_loaded_us915') }}</b-col>
-                <b-col cols="2" class="text-primary">{{ consoleObject.countUS915() }}</b-col>
-                <b-col cols="2">{{ $t('mig_loaded_as923') }}</b-col>
-                <b-col cols="2" class="text-primary">{{ consoleObject.countAS923() }}</b-col>
+            </b-row>
+            <b-row>
+                <b-col cols="2">{{ $t('mig_loaded_impact') }}</b-col>
+                <b-col v-if="consoleObject.countIncompatible() > 0" cols="2" class="text-danger">{{ consoleObject.countIncompatible() }}</b-col>
+                <b-col v-if="consoleObject.countIncompatible() == 0" cols="2" class="text-success">{{ consoleObject.countIncompatible() }}</b-col>
             </b-row>
             <b-row>
                 <b-col cols="2">{{ $t('mig_loaded_active') }}</b-col>
@@ -30,10 +25,6 @@
             <b-row>
                 <b-col cols="2">{{ $t('mig_loaded_live') }}</b-col>
                 <b-col cols="2" class="text-success">{{ consoleObject.countInOui() }}</b-col>
-                <b-col cols="2">{{ $t('mig_loaded_impact') }}</b-col>
-                <b-col cols="2" class="text-danger">{{ consoleObject.countIncompatible() }}</b-col>
-                <b-col cols="2">{{ $t('mig_loaded_uregion') }}</b-col>
-                <b-col cols="2" class="text-danger">{{ consoleObject.countUnknownRegion() }}</b-col>
             </b-row>
 
         </b-card>
@@ -80,20 +71,11 @@
             <b-row>
                 <b-col cols="2">{{ $t('mig_loaded_devices') }}</b-col>
                 <b-col cols="2" class="text-primary">{{ consoleObject.countDevices(targetLabel) }}</b-col>
-
-                <b-col cols="2">{{ $t('mig_loaded_eu868') }}</b-col>
-                <b-col cols="2" class="text-primary">{{ consoleObject.countEU868(targetLabel) }}</b-col>
-                <b-col cols="2">{{ $t('mig_loaded_au915') }}</b-col>
-                <b-col cols="2" class="text-primary">{{ consoleObject.countAU915(targetLabel) }}</b-col>
             </b-row>
             <b-row>
-                <b-col cols="2"></b-col>
-                <b-col cols="2" class="text-primary"></b-col>
-
-                <b-col cols="2">{{ $t('mig_loaded_us915') }}</b-col>
-                <b-col cols="2" class="text-primary">{{ consoleObject.countUS915(targetLabel) }}</b-col>
-                <b-col cols="2">{{ $t('mig_loaded_as923') }}</b-col>
-                <b-col cols="2" class="text-primary">{{ consoleObject.countAS923(targetLabel) }}</b-col>
+                <b-col cols="2">{{ $t('mig_loaded_impact') }}</b-col>
+                <b-col v-if="consoleObject.countIncompatible(targetLabel) > 0" cols="2" class="text-danger">{{ consoleObject.countIncompatible(targetLabel) }}</b-col>
+                <b-col v-if="consoleObject.countIncompatible(targetLabel) == 0" cols="2" class="text-success">{{ consoleObject.countIncompatible(targetLabel) }}</b-col>
             </b-row>
             <b-row>
                 <b-col cols="2">{{ $t('mig_loaded_active') }}</b-col>
@@ -102,12 +84,7 @@
             <b-row>
                 <b-col cols="2">{{ $t('mig_loaded_live') }}</b-col>
                 <b-col cols="2" class="text-success">{{ consoleObject.countInOui(targetLabel) }}</b-col>
-                <b-col cols="2">{{ $t('mig_loaded_impact') }}</b-col>
-                <b-col cols="2" class="text-danger">{{ consoleObject.countIncompatible(targetLabel) }}</b-col>
-                <b-col cols="2">{{ $t('mig_loaded_uregion') }}</b-col>
-                <b-col cols="2" class="text-danger">{{ consoleObject.countUnknownRegion(targetLabel) }}</b-col>
             </b-row>
-
         </b-card>
 
         <b-row v-if="selectLabelDisabled" class="mx-1 my-3">
@@ -247,6 +224,7 @@ export default Vue.extend({
         },
         selectLabel() {
             this.selectLabelDisabled=true;
+            this.consoleObject.setCurrentLabel(this.targetLabel);
             this.selectFunctionDisabled=false;
             let notusedFunction = [] as any;
             this.sourceFunction = [];

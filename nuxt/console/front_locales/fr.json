@@ -330,7 +330,7 @@
     "mig_loaded_us915" : "US915 :",
     "mig_loaded_as923" : "AS923 :",
     "mig_loaded_active" : "Actifs :",
-    "mig_loaded_impact" : "Incompatible :",
+    "mig_loaded_impact" : "Label multiples:",
     "mig_loaded_uregion" : "Région inconnue :",
     "mig_loading_chirpstack" : "Chargement des données chirpstack",
     "mig_loaded_chirpdata" : "Données chargée depuis Chirpstack",
@@ -348,6 +348,11 @@
     "mig_select_function" : "Choix de la fonction",
     "mig_setup_function_rewrite" : "La fonction ci-dessous sera utilisée dans Chirpstack, il faut vérifier cette fonction et l'adapter, l'écriture automatique ne peut pas traiter toutes les situations correctement.",
     "mig_commit_function" : "La fonction est prette",
+    "mig_data_select" : "Périmètre de la migration",
+    "mig_loaded_applications" : "Applications",
+    "mig_setup_defaultapp": "Choix de l'application par defaut",
+    "mig_add_application" : "Créer une application",
+
 
     "end" : "fin"
 }

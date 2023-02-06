@@ -43,10 +43,32 @@ declare module "vue/types/chirpstack" {
         supportsOtaa : boolean,
         tenantId : string,
         uplinkInterval : number,
+        tags : any,
     }
 
     interface DeviceProfileCreate {
         deviceProfile : DeviceProfileCreateSub,
+    }
+
+    interface ApplicationList {
+        totalCount : number,
+        result : Application[],
+    }
+
+    interface Application {
+        id : string,
+        createdAt : string,
+        updatedAt : string,
+        name : string,
+        description : string,
+    }
+
+    interface ApplicationCreate {
+        application : {
+            description : string,
+            name : string,
+            tenantId : string,
+        }
     }
 
 }
