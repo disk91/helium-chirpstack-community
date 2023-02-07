@@ -104,7 +104,7 @@ export class ChirpstackService {
      */
     existsDevProfile(zone:string, otaa:boolean, label: string = "") : boolean {
         for ( var i = 0 ; i < this.deviceProfile.length ; i++ ) {
-            console.log(this.deviceProfile[i].profile.name);
+            //console.log(this.deviceProfile[i].profile.name);
             if ( this.deviceProfile[i].profile.name == "Migration "+((otaa)?"OTAA":"ABP")+" "+label && this.deviceProfile[i].profile.region == zone ) return true;
         }
         return false;     
@@ -188,7 +188,7 @@ export class ChirpstackService {
         +"//\n"
         +"// Output must be an object with the following fields:\n"
         +"// - data = Object representing the decoded payload.\n"
-        +"function decodeUplink(intput) { \n"
+        +"function decodeUplink(input) { \n"
         +"   var bytes = input.bytes;\n"
         +"   var port = input.fPort;\n"
         +"   var uplink_info = {};\n"

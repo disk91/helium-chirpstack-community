@@ -359,6 +359,7 @@
   "mig_goto_migration" : "Next Step: Device migration",
 
   "mig_migration" : "Device Migration",
+  "mig_cancel" : "Cancel Migration",
 
   "end" : "end"
 }

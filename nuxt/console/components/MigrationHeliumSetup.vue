@@ -239,6 +239,9 @@ export default Vue.extend({
         },
     },
     mounted() {
+        this.$root.$on("message-migration-cancel", (msg:any) => {
+            this.reset();
+        });
     },
     created () {
     },

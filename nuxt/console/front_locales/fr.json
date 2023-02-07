@@ -359,6 +359,7 @@
     "mig_goto_migration" : "Etape suivante: migration des devices",
 
     "mig_migration" : "Migration des objets",
+    "mig_cancel" : "Annuler la migration",
 
 
     "end" : "fin"

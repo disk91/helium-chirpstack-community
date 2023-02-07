@@ -98,6 +98,7 @@ export class HeliumConsoleService {
             key:this.apiKey,
         };
         return new Promise<string>((resolve) => { 
+            this.accountLabels = [];
             this.axios.post(this.proxyConfig.getterUrl,body,this.getHeader())
             .then((response : any) =>{
                 if (response.status == 200 ) {

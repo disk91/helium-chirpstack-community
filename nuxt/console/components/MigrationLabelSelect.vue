@@ -221,6 +221,11 @@ export default Vue.extend({
             this.apiState = 0;
             this.selectLabelDisabled = false;
             this.targetLabel = "";
+            this.sourceLabel = [];
+            this.sourceFunction = [];
+            this.targetFunction = "";
+            this.leftEditor = "";
+            this.rightEditor = "";
         },
         selectLabel() {
             this.selectLabelDisabled=true;
@@ -261,7 +266,7 @@ export default Vue.extend({
             let f = this.consoleObject.getOneFunction(event);
             if ( f != undefined ) {
                 if ( f.format == "cayenne" ) {
-                    this.leftEditor = "LPP Generic decoder";
+                    this.leftEditor = "Cayenne LPP Generic decoder";
                     this.rightEditor = "Nothing needs to be migrated";
                 } else {
                     this.leftEditor = f.body;
@@ -297,23 +302,33 @@ export default Vue.extend({
             // configure the label selection
             this.sourceLabel = [];
             this.consoleObject.getDownloadedLabels().forEach((label) =>{
-                var disable = !this.consoleObject.isLabelSingleUsed(label.id); 
-                let o = {
-                    value : label.id,
-                    text : label.name,
-                    disabled : disable,
-                };
-                this.sourceLabel.push(o);
+                var multiLabel = !this.consoleObject.isLabelSingleUsed(label.id); 
+                if ( multiLabel ) {
+                    let o = {
+                        value : label.id,
+                        html : '<em>'+label.name+'</em>',
+                    };
+                    this.sourceLabel.push(o);
+                } else {
+                    let o = {
+                        value : label.id,
+                        text : label.name,
+                    };
+                    this.sourceLabel.push(o);
+                }
             });
             let o = {
                     value : "no_label",
                     text : "Without label",
-                    disabled : false,
             };
             this.sourceLabel.push(o);
             if ( this.sourceLabel.length > 0 ) {
                 this.targetLabel = this.sourceLabel[0].value;
             }
+        });
+
+        this.$root.$on("message-migration-cancel", (msg:any) => {
+            this.reset();
         });
     },
     created () {

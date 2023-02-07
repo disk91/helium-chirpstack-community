@@ -47,11 +47,18 @@
               >
                 <template #title> 
                   <b-icon icon="caret-right-square" variant="primary"></b-icon> {{ $t('mig_migration') }}
-                </template>
-                            
+                </template>                
               </b-tab>
 
-              
+              <b-tab 
+                 @click="onCancelClick()"
+                 :disabled="disableCancelTab"
+              >
+                <template #title> 
+                  <b-icon icon="backspace" variant="danger"></b-icon> <span class="text-danger">{{ $t('mig_cancel') }}</span>
+                </template>                
+              </b-tab>
+            
             </b-tabs>
           </b-card>
 
@@ -90,6 +97,7 @@
           chirpstackService : new ChirpstackService(this.$axios),
           tabIndex: 0,
           step: 0,
+          disableCancelTab : false as boolean,
         }
       },
       methods : {
@@ -108,6 +116,11 @@
           if ( this.step != 3 ) return true;
           return false;
         },
+        onCancelClick() {
+          this.step = 0;
+          this.tabIndex = 0;
+          this.$root.$emit("message-migration-cancel", "");
+        }
       },
       mounted() {
         this.$root.$on("message-migration-validate-api", (msg:any) => {
@@ -120,7 +133,12 @@
             this.step=3;
         });
         this.$root.$on("message-migration-next-tab", (msg:any) => {
+            this.disableCancelTab = true;
             this.tabIndex++;
+            let self = this;
+            setTimeout( () => {
+              self.disableCancelTab = false;
+            },1000);
         });
       },
       async fetch() {

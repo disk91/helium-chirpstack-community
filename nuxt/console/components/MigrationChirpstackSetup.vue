@@ -637,6 +637,9 @@ export default Vue.extend({
             let l = this.consoleObject.getLabelById(this.consoleObject.getCurrentLabel());
             this.targetLabel = l;
         });
+        this.$root.$on("message-migration-cancel", (msg:any) => {
+            this.reset();
+        });
     },
     created () {
     },
