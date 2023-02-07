@@ -356,6 +356,9 @@
   "mig_setup_appexplained_1" : "You can see the list of applications existing in your tenant, application is a group of devices with the <b>same integration target</b>. You can create a dedicated application. Select the default application you want to use for your devices.",
   "mig_new_app_expl" : "my Application",
   "mig_new_app_setname" : "Please type a name for your application:",
+  "mig_goto_migration" : "Next Step: Device migration",
+
+  "mig_migration" : "Device Migration",
 
   "end" : "end"
 }

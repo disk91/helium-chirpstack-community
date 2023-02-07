@@ -330,6 +330,28 @@
             </b-col>
         </b-row>
 
+        <b-row  v-if="loadedChirpstack" class="mx-1 my-3">
+            <b-col cols="12"
+                   class="bg-light p-3"
+                   style="border-radius: 0.5rem;"    
+            >
+                <b-row>
+                    <b-col cols="12">
+                        <b-button block
+                            variant="primary"
+                            size="sm"
+                            @click="gotoMigration()"
+                            style="text-align: center;font-size:0.8rem;"
+                            class="mt-2"
+                            :disabled="gotoMigrationDisabled()"
+                        >
+                            {{ $t('mig_goto_migration') }}
+                            <b-icon icon="arrow-right-circle" variant="white"></b-icon>
+                        </b-button>
+                    </b-col>
+                </b-row>
+            </b-col>
+        </b-row>
 
         <b-modal id="LoadChirpsatckModal" 
                  centered 
@@ -601,6 +623,14 @@ export default Vue.extend({
                 }
             });
         },
+        gotoMigrationDisabled() : boolean {
+            return ! (   this.selectApplicationDisabled && this.applicationOption.length > 0 
+                      && this.selectTenantDisabled && this.sourceOption.length > 0 );
+        },
+        gotoMigration() {
+            this.$root.$emit("message-migration-validate-chirpstack", "");
+            this.$root.$emit("message-migration-next-tab", "");
+        }
     },
     mounted() {
         this.$root.$on("message-migration-validate-label", (msg:any) => {

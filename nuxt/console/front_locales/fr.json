@@ -356,6 +356,10 @@
     "mig_setup_appexplained_1" : "Voici la liste des applications existantes dans votre Tenant. Une application est un group de devices avec <b>la même cible d'intégration</b>. Vous pouvez créer une application dédiée. Sélectionnez l'application par défaut dans laquelle migrer vos objets.",
     "mig_new_app_expl" : "mon application",
     "mig_new_app_setname" : "Merci de choisir un nom pour votre application :",
+    "mig_goto_migration" : "Etape suivante: migration des devices",
+
+    "mig_migration" : "Migration des objets",
+
 
     "end" : "fin"
 }

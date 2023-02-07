@@ -41,6 +41,17 @@
                 <MigrationChirpstackSetup :consoleObject="heliumConsoleService" :chirpstackObject="chirpstackService"/>
               
               </b-tab>
+
+              <b-tab 
+                :disabled="disableMigrationTab()"
+              >
+                <template #title> 
+                  <b-icon icon="caret-right-square" variant="primary"></b-icon> {{ $t('mig_migration') }}
+                </template>
+                            
+              </b-tab>
+
+              
             </b-tabs>
           </b-card>
 
@@ -92,7 +103,11 @@
         disableChirpstackTab() : boolean {
           if ( this.step != 2 ) return true;
           return false;
-        }
+        },
+        disableMigrationTab() : boolean {
+          if ( this.step != 3 ) return true;
+          return false;
+        },
       },
       mounted() {
         this.$root.$on("message-migration-validate-api", (msg:any) => {
@@ -100,6 +115,9 @@
         });
         this.$root.$on("message-migration-validate-label", (msg:any) => {
             this.step=2;
+        });
+        this.$root.$on("message-migration-validate-chirpstack", (msg:any) => {
+            this.step=3;
         });
         this.$root.$on("message-migration-next-tab", (msg:any) => {
             this.tabIndex++;
