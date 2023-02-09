@@ -1,26 +1,5 @@
 import { ProxyConfig, ProxyGetReqItf, LabelItf, DeviceItf, FunctionItf, FlowItf } from 'vue/types/proxy';
-
-
-interface Device {
-    rawDevice : DeviceItf,
-    isActive : boolean,             // the activation flag is on
-    isInactive : boolean,           // !active || last_connected = 0 || dc_usage = 0 || in_xor_filter = false
-    isNeverSeen : boolean,          // !active || last_connected = 0 || dc_usage = 0 || in_xor_filter = false
-    isEU868 : boolean,
-    isUS915 : boolean,
-    isAS923_1 : boolean,
-    isAS923_1B : boolean,
-    isAS923_2 : boolean,
-    isAS923_3 : boolean,
-    isAS923_4 : boolean,
-    isCN470 : boolean,
-    isAU915_1 : boolean,
-    isAU915_6 : boolean,
-    region : string,
-    isRegion : boolean, // false = unknonwn
-    isMultipleLabel : boolean,
-}
-
+import { Device } from 'vue/types/console';
 
 
 export class HeliumConsoleService {
@@ -292,6 +271,21 @@ export class HeliumConsoleService {
         });
     }
 
+    getSelectedDevices() : Device[] {
+        let r = [] as Device[];
+        this.accountDevices.forEach( (dev) => {
+            if ( this.currentLabel == "no_label" && dev.rawDevice.labels.length  == 0 ) {
+                r.push(dev);
+            } else if ( dev.rawDevice.labels.length > 0 ) {
+                for ( var l = 0 ; l < dev.rawDevice.labels.length ; l++ ) {
+                    if ( dev.rawDevice.labels[l].id == this.currentLabel ) {
+                        r.push(dev);
+                    }
+                }
+            }
+        });
+        return r;
+    }
 
     async getFunctions() : Promise<string> {
         this.isBusy = true;

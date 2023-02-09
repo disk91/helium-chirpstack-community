@@ -48,6 +48,9 @@
                 <template #title> 
                   <b-icon icon="caret-right-square" variant="primary"></b-icon> {{ $t('mig_migration') }}
                 </template>                
+
+                <MigrationDevices :consoleObject="heliumConsoleService" :chirpstackObject="chirpstackService"/>
+
               </b-tab>
 
               <b-tab 
@@ -75,6 +78,7 @@
   import MigrationHeliumSetup from '~/components/MigrationHeliumSetup.vue';
   import MigrationChirpstackSetup from '~/components/MigrationChirpstackSetup.vue';
   import MigrationLabelSelect from '~/components/MigrationLabelSelect.vue';
+  import MigrationDevices from '~/components/MigrationDevices.vue';
   import { HeliumConsoleService } from '~/services/console';
   import { ChirpstackService } from '~/services/chirpstack';
   import { ProxyConfig } from 'vue/types/proxy';
@@ -87,6 +91,7 @@
         'MigrationHeliumSetup' : MigrationHeliumSetup,
         'MigrationLabelSelect' : MigrationLabelSelect,
         'MigrationChirpstackSetup' : MigrationChirpstackSetup,
+        'MigrationDevices' : MigrationDevices,
       },
       data() {
         return {
