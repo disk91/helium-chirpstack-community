@@ -19,8 +19,9 @@ declare module "vue/types/console" {
         region : string,
         isRegion : boolean, // false = unknonwn
         isMultipleLabel : boolean,
-        status : string,
+        status : number,
         selected : boolean,
+        filtered : boolean,  // when true, not selected
         devProfile : string, // selected device type
         application : string, // selected application
     }

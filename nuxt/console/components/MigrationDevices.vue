@@ -18,25 +18,32 @@
                             :items="allDevices" 
                             :fields="fields" 
                             :busy="isBusy"
+                            :filter="filterByName"
+                            :filter-function="onFilterDevices"
                             responsive 
                             small
                             striped
                             headVariant="dark"
                             class="pt-1 pb-5"
-                            style="font-size:10px;">
+                            style="font-size:0.7rem;">
                             <template #cell(selected)="row">
                                 <b-form-checkbox
                                     class="m0"
                                     variant="outline-secondary"
                                     style="font-size:0.5rem;margin:2px;"
-                                    :v-model="row.value"
+                                    v-model="row.value"
+                                    @change="onChangeSelect(row)"
                                 >
                                 </b-form-checkbox>
+                            </template>
+                            <template #cell(rawDevice.labels)="row">  
+                                <div v-html="getLabelStr(row.value)"></div>
                             </template>
                             <template #cell(region)="region">
                                 <b-form-select 
                                     v-model="region.value" 
                                     :options="regionOption"
+                                    @change="onChangeRegion(region)"
                                     size="sm"
                                     class="m0"
                                 ></b-form-select>
@@ -57,11 +64,33 @@
                                     class="m0"
                                 ></b-form-select>
                             </template>
-                            <template #cell(rawDevice.labels)="row">  
-                                <div v-html="getLabelStr(row.value)"></div>
+                            <template #cell(status)="row">  
+                                <b-icon v-if="row.value == 0" icon="dash-circle-fill" variant="danger" font-scale="1.7"></b-icon>
+                                <b-icon v-if="row.value == 1" icon="play-circle-fill" variant="warning" font-scale="1.7"></b-icon> 
+                                <b-icon v-if="row.value == 2" icon="play-circle-fill" variant="primary" font-scale="1.7"></b-icon> 
                             </template>
                             <template #head()="data">
                                 {{ data.label }}
+                            </template>
+                            <template #head(selected)="data">
+                                {{ data.label }}
+                                <b-form-checkbox
+                                    class="m0"
+                                    variant="outline-secondary"
+                                    style="font-size:0.5rem;margin:2px;"
+                                    v-model="globalSelect"
+                                    @change="onChangeGlobalSelect()"
+                                >
+                                </b-form-checkbox>
+                            </template>
+                            <template #head(rawDevice.name)="data">
+                                {{ data.label }}
+                                <b-form-input v-model="filterByName"
+                                            type="text" 
+                                            class="m0"
+                                            size="sm"
+                                            @change="onChangeGlobalName()"
+                                ></b-form-input>
                             </template>
                         </b-table>
                     </b-col>
@@ -72,7 +101,9 @@
     </div>
 </template>
 <style>
-
+.table .thead-dark th {
+    vertical-align: top;
+}
 </style>
 
 <script lang="ts">
@@ -111,6 +142,8 @@ export default Vue.extend({
             regionOption : [] as any,
             applicationOption : [] as any,
             profileOption: [] as any,       // option profile []
+            globalSelect: false as boolean,
+            filterByName: "" as string,
         };
     },
     async fetch() {
@@ -122,6 +155,8 @@ export default Vue.extend({
             this.allDevices = [] as Device[];
             this.applicationOption = [];
             this.regionOption = [];
+            this.filterByName = "";
+            this.globalSelect = false;
         },
         getLabelStr(labels:LabelItf[]) : string {
             let r = "" as string;
@@ -153,6 +188,44 @@ export default Vue.extend({
                 { value : "Unknown", text: "Unknown" },
             ];
         },
+        onFilterDevices(dev : Device) : boolean {
+            console.log(dev);
+            if ( ! dev.rawDevice.name.match(this.filterByName) ) {
+                dev.filtered = true;
+                return false;
+            } else {
+                dev.filtered = false;
+                return true;
+            }
+        },
+        onChangeGlobalName() {
+            // filter the device List with by device Name
+            this.allDevices.forEach( (dev) => {
+                if ( ! dev.rawDevice.name.match(this.filterByName) ) {
+                    dev.filtered = true;
+                } else {
+                    dev.filtered = false;
+                }
+            });
+        },
+        onChangeGlobalSelect() {
+            // select all device listed
+            this.allDevices.forEach( (dev) => {
+                dev.selected=this.globalSelect;
+                this.updateStatus(dev);
+            });
+        },
+        onChangeSelect(row : any) {
+            let dev = row.item as Device;
+            dev.selected = row.value;
+            this.updateStatus(dev);
+        },
+        onChangeRegion(element : any) {
+            let dev = element.item as Device;
+            dev.region = element.value;
+            this.createProfile(dev);
+            this.updateStatus(dev);
+        },
         createApplication() {
             this.applicationOption = [];
             this.chirpstackObject.getApplications().forEach( (app) => {
@@ -165,10 +238,11 @@ export default Vue.extend({
         },
         createProfile(dev : Device) {
             
+            let labelStr = this.consoleObject.getLabelById(this.consoleObject.getCurrentLabel()).name;
             let dps = this.chirpstackObject.getDevProfiles( 
                     dev.region, 
                     true, 
-                    this.consoleObject.getLabelById(this.consoleObject.getCurrentLabel()).name
+                    labelStr
             );
             let r = [] as any;
             dps.forEach ((dp) => {
@@ -179,9 +253,18 @@ export default Vue.extend({
                 r.push(o);
             });
             this.profileOption[dev.rawDevice.id] = r;
+            dev.devProfile = this.chirpstackObject.getBestProfiles(dev.region, true, labelStr).profile.id;
 
-            console.log(r);
         },
+        updateStatus(dev : Device) {
+            if ( dev.selected && dev.region != "Unknown" && this.profileOption[dev.rawDevice.id].length > 0 && this.applicationOption.length > 0 ) {
+                dev.status = 2;
+            } else if  ( dev.region != "Unknown" && this.profileOption[dev.rawDevice.id].length > 0 && this.applicationOption.length > 0 ) {
+                dev.status = 1; 
+            } else {
+                dev.status = 0;
+            }
+        }
     },
     mounted() {
         this.$root.$on("message-migration-validate-chirpstack", (msg:any) => {
@@ -189,6 +272,8 @@ export default Vue.extend({
             this.allDevices.forEach( (dev) => {
                 dev.application = this.chirpstackObject.getDefaultApplication().id;
                 this.createProfile(dev);
+                this.updateStatus(dev);
+                dev.filtered = false;
             });
             this.createRegion();
             this.createApplication();

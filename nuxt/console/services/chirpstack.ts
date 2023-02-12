@@ -225,15 +225,32 @@ export class ChirpstackService {
     getDevProfiles(zone:string, otaa:boolean, label:string) : _DeviceProfile[] {
         let r = [] as _DeviceProfile [];
         for ( var i = 0 ; i < this.deviceProfile.length ; i++ ) {
-            console.log(zone + " / " + this.deviceProfile[i].profile.name + " / " + label + " / " + otaa);
             if ( this.deviceProfile[i].profile.name == "Migration "+((otaa)?"OTAA":"ABP")+" "+label ) {
                 if ( zone == "Unknown" ) {
-                    console.log("found");
+                    r.push(this.deviceProfile[i]);
+                } else if ( this.deviceProfile[i].profile.region == zone ) r.push(this.deviceProfile[i]);
+            }
+        }
+        // Add other profiles in the same zone
+        for ( var i = 0 ; i < this.deviceProfile.length ; i++ ) {
+            if ( this.deviceProfile[i].profile.name != "Migration "+((otaa)?"OTAA":"ABP")+" "+label ) {
+                if ( zone == "Unknown" ) {
                     r.push(this.deviceProfile[i]);
                 } else if ( this.deviceProfile[i].profile.region == zone ) r.push(this.deviceProfile[i]);
             }
         }
         return r;     
+    }
+
+    getBestProfiles(zone:string, otaa:boolean, label:string) : _DeviceProfile {
+        for ( var i = 0 ; i < this.deviceProfile.length ; i++ ) {
+            if ( this.deviceProfile[i].profile.name == "Migration "+((otaa)?"OTAA":"ABP")+" "+label ) {
+                if ( zone == "Unknown" ) {
+                     return this.deviceProfile[i];
+                } else if ( this.deviceProfile[i].profile.region == zone ) return this.deviceProfile[i];
+            }
+        }
+        return this.deviceProfile[0];     
     }
 
 
