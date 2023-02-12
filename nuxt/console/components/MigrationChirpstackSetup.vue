@@ -555,12 +555,13 @@ export default Vue.extend({
         getVariant(zone:string,otaa:boolean) : string {
             let r : string = "primary";
             if ( !otaa && this.consoleObject.countInOui() == 0 ) return "secondary";
-            if ( this.chirpstackObject.countDeviceProfile(zone,otaa) > 0 ) r = "secondary";
+            if ( this.chirpstackObject.existsDevProfile(zone,otaa,this.targetLabel.name) ) return "secondary";
+            if ( this.chirpstackObject.countDeviceProfile(zone,otaa) > 0 ) r = "info";
             else {
-                if ( zone == 'EU868' && ( this.consoleObject.countEU868() == 0 && this.consoleObject.countUnknownRegion() == 0 ) ) r = "secondary"; 
-                if ( zone == 'US915' && ( this.consoleObject.countUS915() == 0 && this.consoleObject.countUnknownRegion() == 0 ) ) r = "secondary"; 
-                if ( zone == 'AS923' && ( this.consoleObject.countAS923() == 0 && this.consoleObject.countUnknownRegion() == 0 ) ) r = "secondary"; 
-                if ( zone == 'AU915' && ( this.consoleObject.countAU915() == 0 && this.consoleObject.countUnknownRegion() == 0 ) ) r = "secondary"; 
+                if ( zone == 'EU868' && ( this.consoleObject.countEU868() == 0 && this.consoleObject.countUnknownRegion() == 0 ) ) r = "info"; 
+                if ( zone == 'US915' && ( this.consoleObject.countUS915() == 0 && this.consoleObject.countUnknownRegion() == 0 ) ) r = "info"; 
+                if ( zone == 'AS923' && ( this.consoleObject.countAS923() == 0 && this.consoleObject.countUnknownRegion() == 0 ) ) r = "info"; 
+                if ( zone == 'AU915' && ( this.consoleObject.countAU915() == 0 && this.consoleObject.countUnknownRegion() == 0 ) ) r = "info"; 
             }
             return r;
         },

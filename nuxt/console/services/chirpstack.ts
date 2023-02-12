@@ -222,6 +222,21 @@ export class ChirpstackService {
         return fdest;
     }
 
+    getDevProfiles(zone:string, otaa:boolean, label:string) : _DeviceProfile[] {
+        let r = [] as _DeviceProfile [];
+        for ( var i = 0 ; i < this.deviceProfile.length ; i++ ) {
+            console.log(zone + " / " + this.deviceProfile[i].profile.name + " / " + label + " / " + otaa);
+            if ( this.deviceProfile[i].profile.name == "Migration "+((otaa)?"OTAA":"ABP")+" "+label ) {
+                if ( zone == "Unknown" ) {
+                    console.log("found");
+                    r.push(this.deviceProfile[i]);
+                } else if ( this.deviceProfile[i].profile.region == zone ) r.push(this.deviceProfile[i]);
+            }
+        }
+        return r;     
+    }
+
+
     // --------------------------------------
 
     applications : Application[];

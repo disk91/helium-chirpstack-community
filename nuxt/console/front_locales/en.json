@@ -361,5 +361,15 @@
   "mig_migration" : "Device Migration",
   "mig_cancel" : "Cancel Migration",
 
+  "mig_device_explain_1" : "The last migration step consist in <b>selecting</b> the devices to be migrated and to <b>verify</b> the proposed settings. We recommand to migrate a single device on the first time to make sure the migration has been a success and to <b>setup the integration function</b> we can't migrate automatically. The Chirpstack payload is different from the Helium payload and <b>you must adapt your backend</b>.",
+  "mig_device_t_select" : "Migrate",
+  "mig_device_t_name" : "Name",
+  "mig_device_t_deveui" : "Device EUI",
+  "mig_device_t_labels" : "Labels",
+  "mig_device_t_region" : "Region",
+  "mig_device_t_devtype" : "Dev Type",
+  "mig_device_t_application" : "Dev Application",
+  "mig_device_t_status" : "Status",
+
   "end" : "end"
 }

@@ -361,6 +361,15 @@
     "mig_migration" : "Migration des objets",
     "mig_cancel" : "Annuler la migration",
 
-
+    "mig_device_explain_1" : "La dernière étape de migration consiste à <b>sélectionner</b> les objets à migrer et à <b>vérifier</b> les paramétrages proposés. Nous recommandons de migrer une seul objet dans un premier temps pour vous assurer que la migration se soit bien passée et pour <b>configurer la fonction d'intégration</b> qui ne peut être migrée automatiquement. En effet, le format du message Chirpstack est différent de celui d'Helium et <b>vous devez adapter votre backend</b>.",
+    "mig_device_t_select" : "Migrer",
+    "mig_device_t_name" : "Nom",
+    "mig_device_t_deveui" : "Device EUI",
+    "mig_device_t_labels" : "Labels",
+    "mig_device_t_region" : "Region",
+    "mig_device_t_devtype" : "Dev Type",
+    "mig_device_t_application" : "Dev Application",
+    "mig_device_t_status" : "Status",
+  
     "end" : "fin"
 }

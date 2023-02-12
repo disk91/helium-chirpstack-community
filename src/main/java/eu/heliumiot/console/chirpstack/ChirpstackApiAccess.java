@@ -13,8 +13,10 @@ import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.HttpServerErrorException;
+import org.springframework.web.client.ResourceAccessException;
 import org.springframework.web.client.RestTemplate;
 
+import java.net.ConnectException;
 import java.util.Arrays;
 
 @Service
@@ -130,6 +132,8 @@ public class ChirpstackApiAccess {
             }
         } catch ( HttpServerErrorException x ) {
             x.printStackTrace();
+        } catch ( ResourceAccessException x ) {
+            log.error("Impossible to connect to Chirpstack");
         }
         throw new ITParseException();
     }

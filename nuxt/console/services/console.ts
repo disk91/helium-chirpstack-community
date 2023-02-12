@@ -260,6 +260,8 @@ export class HeliumConsoleService {
                             region : "Unknown",
                             isRegion : false, // false = unknonwn
                             isMultipleLabel : (deviceItf.labels.length > 1),
+                            selected : false,
+                            status : "0",
                        } as Device;
                        this.accountDevices.push(device); 
                   });
