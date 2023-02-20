@@ -253,6 +253,14 @@ export class ChirpstackService {
         return this.deviceProfile[0];     
     }
 
+    getProfileById(id: string) : _DeviceProfile {
+        for ( var i = 0 ; i < this.deviceProfile.length ; i++ ) {
+            if ( this.deviceProfile[i].profile.id == id ) {
+                return this.deviceProfile[i];
+            }
+        }
+        return this.deviceProfile[0];     
+    }
 
     // --------------------------------------
 

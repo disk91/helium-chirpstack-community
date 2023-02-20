@@ -370,6 +370,12 @@
   "mig_device_t_devtype" : "Dev Type",
   "mig_device_t_application" : "Dev Application",
   "mig_device_t_status" : "Status",
+  "mig_modal_devices" : "Migrate device confirmation",
+  "mig_modal_description" : "The migration process will disable the device on the source. Make your selection and settings are correct. This can't be reverted",
+  "mig_start_migrate_1" : "Click to migrate ",
+  "mig_start_migrate_2" : "devices",
+  "mig_stop_migrate" : "Not yet, bring me back",
+  "mig_end_migrate" : "End of migration. Close.",
 
   "end" : "end"
 }

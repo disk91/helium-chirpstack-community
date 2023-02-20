@@ -371,5 +371,12 @@
     "mig_device_t_application" : "Dev Application",
     "mig_device_t_status" : "Status",
   
+    "mig_modal_devices" : "Confirmation avant migration",
+    "mig_modal_description" : "Le processus de migration va desactiver la source. Assurez vous que votre configuration et vos settings sont corrects. Il ne sera pas possible de faire machine arrière.",
+    "mig_start_migrate_1" : "Cliquer pour migrer ",
+    "mig_start_migrate_2" : "objets",
+    "mig_stop_migrate" : "Non, pas encore, je reviens",
+    "mig_end_migrate" : "Fin de la migration. Fermer.",
+
     "end" : "fin"
 }
