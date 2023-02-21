@@ -71,4 +71,43 @@ declare module "vue/types/chirpstack" {
         }
     }
 
+    interface DeviceCreate {
+        device : {
+            applicationId: string,
+            description: string,
+            devEui: string,
+            deviceProfileId: string,
+            isDisabled: boolean,
+            name: string,
+            skipFcntCheck: boolean,
+            variables: {
+                migrated : string,
+                app_eui : string,
+                organization_id : string,
+                labels : string,
+                source_oui : string,
+            },
+        }
+    }
+
+    interface DeviceKey {
+        deviceKeys: {
+            appKey: string,
+            nwkKey: string
+        }
+    }
+
+    interface DeviceActivation {
+        deviceActivation: {
+              aFCntDown: number,
+              appSKey: string,
+              devAddr: string,
+              fCntUp: number,
+              fNwkSIntKey: string,
+              nFCntDown: number,
+              nwkSEncKey: string,
+              sNwkSIntKey: string
+        }
+    }
+
 }

@@ -71,6 +71,7 @@
                                 <b-icon v-if="row.value == 1" icon="play-circle-fill" variant="warning" font-scale="1.7"></b-icon> 
                                 <b-icon v-if="row.value == 2" @click="onClickMigrateOne(row.item)" icon="play-circle-fill" variant="primary" font-scale="1.7"></b-icon> 
                                 <b-icon v-if="row.value == 3" icon="check-lg" variant="success" font-scale="1.7"></b-icon> 
+                                <b-icon v-if="row.value == 4" icon="exclamation-lg" variant="danger" font-scale="1.7"></b-icon> 
                             </template>
                             <template #head()="data">
                                 {{ data.label }}
@@ -461,9 +462,19 @@ export default Vue.extend({
         },
         onClickMigrateOne(dev: Device) {
             if ( ! dev.filtered && dev.selected && dev.status == 2 ) {
-
-                dev.status = 3;
-                this.devicesMigrated++;
+                this.chirpstackObject.createdevice(dev)
+                .then ( (ret:string) => {
+                    if ( ret == "" ) {
+                        dev.status = 3;
+                        this.devicesMigrated++;
+                    } else {
+                        dev.status = 4;
+                        this.devicesError++;
+                    }
+                }).catch ((err:any) =>{
+                    dev.status = 4;
+                    this.devicesError++;
+                })
             }
         },
         onClickMigrateAll() {

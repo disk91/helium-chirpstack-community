@@ -1,4 +1,5 @@
-import { DeviceProfileList, DeviceProfile, DeviceProfileCreate, ApplicationList, Application, ApplicationCreate } from 'vue/types/chirpstack';
+import { DeviceProfileList, DeviceKey, DeviceCreate, DeviceActivation, DeviceProfile, DeviceProfileCreate, ApplicationList, Application, ApplicationCreate } from 'vue/types/chirpstack';
+import { Device } from 'vue/types/console';
 
 interface _DeviceProfile {
     profile: DeviceProfile,
@@ -17,6 +18,9 @@ export class ChirpstackService {
     deviceProfilePost : string = "/rest-api/api/device-profiles";
     applicationsGet : string = "/rest-api/api/applications";
     applicationsPost : string = "/rest-api/api/applications";
+    devicesPost : string = "/rest-api/api/devices";
+    devicesActivation : string = "/activate";
+    devicesKey : string = "/keys";
 
     constructor (axios:any) {
         this.apiKey = "";
@@ -142,7 +146,7 @@ export class ChirpstackService {
                 description : "Migration Profile "+zone+" for label "+label,
                 deviceStatusReqInterval : 1,
                 flushQueueOnActivate : false,
-                macVersion : "LORAWAN_1_1_0",
+                macVersion : "LORAWAN_1_0_4",
                 regParamsRevision : "B",
                 name : "Migration "+((otaa)?"OTAA":"ABP")+" "+label,
                 payloadCodecRuntime : decoder,
@@ -321,6 +325,77 @@ export class ChirpstackService {
 
     getDefaultApplication() : Application {
         return this.defaultApplication;
+    }
+
+    // ------------------------------------
+
+    createdevice(dev : Device) : Promise<string> {
+
+        let r = "" as string;
+        if ( dev.rawDevice.labels != undefined ) {
+            for ( var i = 0 ; i < dev.rawDevice.labels.length ; i++ ) {
+                r += dev.rawDevice.labels[i].name+ " ";
+            }
+        }
+
+        let body : DeviceCreate = {
+                device : {
+                    applicationId: dev.application,
+                    description: "migrated device",
+                    devEui: dev.rawDevice.dev_eui,
+                    deviceProfileId: dev.devProfile,
+                    isDisabled: false,
+                    name: dev.rawDevice.name,
+                    skipFcntCheck: true,
+                    variables: {
+                        migrated : "true",
+                        organization_id : dev.rawDevice.organization_id,
+                        labels : r,
+                        app_eui : dev.rawDevice.app_eui,
+                        source_oui : ""+dev.rawDevice.oui,
+                    },
+                }
+            }
+
+        let bodyKeys : DeviceKey = {
+            deviceKeys: {
+                appKey : "00000000000000000000000000000000",
+                nwkKey : dev.rawDevice.app_key,
+            }
+        }
+
+        return new Promise<string>((resolve) => { 
+            // create device
+            this.axios.post(this.devicesPost,body,this.getHeader())
+            .then((response : any) =>{
+                if (response.status == 200 ) {
+                    // add keys
+                    this.axios.post(this.devicesPost+'/'+dev.rawDevice.dev_eui.toLowerCase()+this.devicesKey, bodyKeys, this.getHeader())
+                    .then((response : any) => {
+                        if ( response.status == 200 ) {
+                            resolve("");
+                        } else {
+                            resolve("err_failed_add_keys");
+                        }
+                    }).catch((err : any) => {
+                        console.log("Error : "+err.response.data.message);
+                        // need to delete device
+                        this.axios.delete(this.devicesPost+'/'+dev.rawDevice.dev_eui.toLowerCase(), this.getHeader())
+                        .then((response : any) => {
+                            if ( response.status == 200 ) {
+                                console.log("Created device has been deleted");
+                            }
+                        }).catch((err : any) =>{
+                            console.log("Failed to remove created device");
+                        })
+                        resolve("err_failed_add_keys");
+                    })
+                }
+            }).catch((err : any) =>{
+                resolve("err_failed_create_device");
+                console.log("Error : "+err.response.data.message);
+            })
+        });
     }
 
 
