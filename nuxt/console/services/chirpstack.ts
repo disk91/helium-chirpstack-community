@@ -109,7 +109,7 @@ export class ChirpstackService {
     existsDevProfile(zone:string, otaa:boolean, label: string = "") : boolean {
         for ( var i = 0 ; i < this.deviceProfile.length ; i++ ) {
             //console.log(this.deviceProfile[i].profile.name);
-            if ( this.deviceProfile[i].profile.name == "Migration "+((otaa)?"OTAA":"ABP")+" "+label && this.deviceProfile[i].profile.region == zone ) return true;
+            if ( this.deviceProfile[i].profile.name == "("+zone+") Migration "+((otaa)?"OTAA":"ABP")+" "+label && this.deviceProfile[i].profile.region == zone ) return true;
         }
         return false;     
     }
@@ -148,7 +148,7 @@ export class ChirpstackService {
                 flushQueueOnActivate : false,
                 macVersion : "LORAWAN_1_0_4",
                 regParamsRevision : "B",
-                name : "Migration "+((otaa)?"OTAA":"ABP")+" "+label,
+                name : "("+zone+") Migration "+((otaa)?"OTAA":"ABP")+" "+label,
                 payloadCodecRuntime : decoder,
                 payloadCodecScript : script,
                 region : zone,
@@ -229,7 +229,7 @@ export class ChirpstackService {
     getDevProfiles(zone:string, otaa:boolean, label:string) : _DeviceProfile[] {
         let r = [] as _DeviceProfile [];
         for ( var i = 0 ; i < this.deviceProfile.length ; i++ ) {
-            if ( this.deviceProfile[i].profile.name == "Migration "+((otaa)?"OTAA":"ABP")+" "+label ) {
+            if ( this.deviceProfile[i].profile.name == "("+zone+") Migration "+((otaa)?"OTAA":"ABP")+" "+label ) {
                 if ( zone == "Unknown" ) {
                     r.push(this.deviceProfile[i]);
                 } else if ( this.deviceProfile[i].profile.region == zone ) r.push(this.deviceProfile[i]);
@@ -237,7 +237,7 @@ export class ChirpstackService {
         }
         // Add other profiles in the same zone
         for ( var i = 0 ; i < this.deviceProfile.length ; i++ ) {
-            if ( this.deviceProfile[i].profile.name != "Migration "+((otaa)?"OTAA":"ABP")+" "+label ) {
+            if ( this.deviceProfile[i].profile.name != "("+zone+") Migration "+((otaa)?"OTAA":"ABP")+" "+label ) {
                 if ( zone == "Unknown" ) {
                     r.push(this.deviceProfile[i]);
                 } else if ( this.deviceProfile[i].profile.region == zone ) r.push(this.deviceProfile[i]);
@@ -248,7 +248,7 @@ export class ChirpstackService {
 
     getBestProfiles(zone:string, otaa:boolean, label:string) : _DeviceProfile {
         for ( var i = 0 ; i < this.deviceProfile.length ; i++ ) {
-            if ( this.deviceProfile[i].profile.name == "Migration "+((otaa)?"OTAA":"ABP")+" "+label ) {
+            if ( this.deviceProfile[i].profile.name == "("+zone+") Migration "+((otaa)?"OTAA":"ABP")+" "+label ) {
                 if ( zone == "Unknown" ) {
                      return this.deviceProfile[i];
                 } else if ( this.deviceProfile[i].profile.region == zone ) return this.deviceProfile[i];

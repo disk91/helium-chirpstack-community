@@ -309,14 +309,16 @@ export default Vue.extend({
             this.regionOption = [
                 { value : "EU868", text: "EU868" },
                 { value : "US915", text: "US915" },
-                { value : "AS923_1", text: "AS923_1" },
-                { value : "AS923_1b", text: "AS923_1b" },
+                { value : "AS923", text: "AS923" },
                 { value : "AS923_2", text: "AS923_2" },
                 { value : "AS923_3", text: "AS923_3" },
                 { value : "AS923_4", text: "AS923_4" },
                 { value : "CN470", text: "CN470" },
-                { value : "AU915_1", text: "AU915_1" },
-                { value : "AU915_6", text: "AU915_6" },
+                { value : "CN779", text: "CN779" },
+                { value : "AU915", text: "AU915" },
+                { value : "IN865", text: "IN865" },
+                { value : "KR920", text: "KR920" },
+                { value : "RU864", text: "RU864" },
                 { value : "Unknown", text: "Unknown" },
             ];
         },
@@ -405,7 +407,7 @@ export default Vue.extend({
             dps.forEach ((dp) => {
                 let o = {
                     value : dp.profile.id,
-                    text : dp.profile.name + " (" + dp.profile.region + ")"
+                    text : dp.profile.name
                 };
                 r.push(o);
             });
@@ -424,7 +426,7 @@ export default Vue.extend({
             dps.forEach ((dp) => {
                 let o = {
                     value : dp.profile.id,
-                    text : dp.profile.name + " (" + dp.profile.region + ")"
+                    text : dp.profile.name
                 };
                 r.push(o);
             });
