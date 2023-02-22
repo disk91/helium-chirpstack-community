@@ -53,6 +53,7 @@ services:
       - POSTGRESQL_HOST=postgres
     ports:
       - 8080:8080
+      - 8070:8070
 
   chirpstack-gateway-bridge-eu868:
     image: chirpstack/chirpstack-gateway-bridge:4.0.3
@@ -116,3 +117,64 @@ services:
     volumes:
       - /helium/configuration/mosquitto/mosquitto.conf:/mosquitto/config/mosquitto.conf
       - /helium/mosquitto:/mosquitto/data
+
+  prometheus:
+    image: prom/prometheus
+    network_mode: host
+    restart: unless-stopped
+    volumes:
+      - /helium/configuration/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
+      - /helium/prometheus:/prometheus
+  node_exporter:
+    image: prom/node-exporter:latest
+    command:
+      - '--path.rootfs=/rootfs'
+      - '--path.procfs=/host/proc'
+      - '--path.sysfs=/host/sys'
+      - "--collector.disable-defaults"
+      - "--collector.filesystem"
+      - "--collector.filesystem.mount-points-exclude=^/(sys|proc|dev|host|etc)($$|/)"
+      - "--collector.netstat"
+      - "--collector.meminfo"
+      - "--collector.cpu"
+      - "--collector.loadavg"
+    network_mode: host
+    pid: host
+    restart: unless-stopped
+    volumes:
+      - /proc:/host/proc:ro
+      - /sys:/host/sys:ro
+      - /:/rootfs:ro
+    depends_on:
+      - prometheus
+  cadvisor:
+    image: gcr.io/cadvisor/cadvisor:latest
+    privileged: true
+    devices:
+      - /dev/kmsg:/dev/kmsg
+    volumes:
+      - /:/rootfs:ro
+      - /var/run:/var/run:ro
+      - /sys:/sys:ro
+      - /var/lib/docker/:/var/lib/docker:ro
+      - /cgroup:/cgroup:ro
+    command:
+      - '-port=8060'
+    restart: unless-stopped
+    network_mode: host
+    depends_on:
+      - prometheus
+  grafana:
+    image: grafana/grafana-oss
+    network_mode: host
+    restart: unless-stopped
+    volumes:
+      - /helium/grafana:/var/lib/grafana
+      - /helium/configuration/grafana:/etc/grafana/provisioning
+    environment:
+      - GF_SECURITY_ADMIN_USER=admin
+      - GF_SECURITY_ADMIN_PASSWORD=admin
+      - GF_USERS_ALLOW_SIGN_UP=false
+      - GF_SERVER_HTTP_PORT=8050
+    depends_on:
+      - prometheus

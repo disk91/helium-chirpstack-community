@@ -73,6 +73,7 @@ public class WebSecurityProfile {
                         .antMatchers("/swagger-doc/**").permitAll()
                         .antMatchers("/v3/api-docs/**").permitAll()
                         .antMatchers("/webjars/**").permitAll()
+                        .antMatchers("/actuator/**").permitAll()
                         .anyRequest().authenticated())
         ;
         return http.build();

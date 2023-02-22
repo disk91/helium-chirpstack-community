@@ -1,0 +1,22 @@
+global:
+  scrape_interval: 10s
+  external_labels:
+    server: chirpstack
+
+scrape_configs:
+  - job_name: console
+    metrics_path: '/actuator/prometheus'
+    scrape_interval: 5s
+    static_configs:
+      - targets: ['localhost:8081']
+  - job_name: node
+    static_configs:
+      - targets: ['localhost:9100']
+  - job_name: chirpstack
+    scrape_interval: 5s
+    static_configs:
+      - targets: ['localhost:8070']
+  - job_name: cadvisor
+    scrape_interval: 5s
+    static_configs:
+      - targets: ['localhost:8060']

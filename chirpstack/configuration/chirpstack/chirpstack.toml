@@ -111,3 +111,9 @@
 
 [gateway]
   allow_unknown_gateways=true
+
+[monitoring]
+  prometheus_endpoint=true
+  prometheus_api_timing_histogram=true
+  healthcheck_endpoint=true
+  bind="0.0.0.0:8070"
