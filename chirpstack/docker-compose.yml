@@ -128,23 +128,23 @@ services:
   node_exporter:
     image: prom/node-exporter:latest
     command:
-      - '--path.rootfs=/rootfs'
-      - '--path.procfs=/host/proc'
-      - '--path.sysfs=/host/sys'
-      - "--collector.disable-defaults"
+      - '--path.rootfs=/host'
       - "--collector.filesystem"
       - "--collector.filesystem.mount-points-exclude=^/(sys|proc|dev|host|etc)($$|/)"
       - "--collector.netstat"
       - "--collector.meminfo"
       - "--collector.cpu"
       - "--collector.loadavg"
+      - "--collector.systemd"
+      - "--collector.processes"
+      - "--collector.ethtool"
+      - "--collector.interrupts"
+      - "--collector.tcpstat"
     network_mode: host
     pid: host
     restart: unless-stopped
     volumes:
-      - /proc:/host/proc:ro
-      - /sys:/host/sys:ro
-      - /:/rootfs:ro
+      - '/:/host:ro,rslave'
     depends_on:
       - prometheus
   cadvisor:
