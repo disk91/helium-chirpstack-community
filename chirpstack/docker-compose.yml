@@ -145,8 +145,26 @@ services:
     restart: unless-stopped
     volumes:
       - '/:/host:ro,rslave'
+
+  mosquitto_exporter:
+    image: sapcc/mosquitto-exporter:latest
+    restart: unless-stopped
+    command: --endpoint tcp://mosquitto:1883
+    ports:
+      - 9101:9234
     depends_on:
-      - prometheus
+      - mosquitto
+
+  postgres_exporter:
+    image: quay.io/prometheuscommunity/postgres-exporter
+    restart: unless-stopped
+    environment:
+      - DATA_SOURCE_NAME=postgresql://postgres:root@postgres:5432/?sslmode=disable
+    ports:
+      - 9102:9187
+    depends_on:
+      - postgres
+
   cadvisor:
     image: gcr.io/cadvisor/cadvisor:latest
     privileged: true
@@ -162,8 +180,7 @@ services:
       - '-port=8060'
     restart: unless-stopped
     network_mode: host
-    depends_on:
-      - prometheus
+
   grafana:
     image: grafana/grafana-oss
     network_mode: host
