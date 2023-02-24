@@ -4,10 +4,12 @@ package eu.heliumiot.console.api;
 import eu.heliumiot.console.api.interfaces.*;
 import eu.heliumiot.console.service.HeliumTenantService;
 import eu.heliumiot.console.service.HeliumTenantSetupService;
+import eu.heliumiot.console.service.PrometeusService;
 import eu.heliumiot.console.service.UserService;
 import fr.ingeniousthings.tools.ITNotFoundException;
 import fr.ingeniousthings.tools.ITParseException;
 import fr.ingeniousthings.tools.ITRightException;
+import fr.ingeniousthings.tools.Now;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
@@ -44,6 +46,10 @@ public class TenantApi {
     @Autowired
     protected HeliumTenantSetupService heliumTenantSetupService;
 
+    @Autowired
+    protected PrometeusService prometeusService;
+
+
     @Operation(summary = "Get tenant balance",
             description = "Get balance for a given tenant",
             responses = {
@@ -60,12 +66,17 @@ public class TenantApi {
             @Parameter(required = true, name = "tenantId", description = "tenant UUID")
             @PathVariable String tenantId
     ) {
+        long startMs= Now.NowUtcMs();
         log.debug("Get tenant ID dc balance for "+request.getUserPrincipal().getName());
         try {
             TenantBalanceItf r = heliumTenantService.getTenantDcBalance(request.getUserPrincipal().getName(), tenantId);
             return new ResponseEntity<>(r, HttpStatus.OK);
         } catch (ITRightException x) {
+            prometeusService.addApiTotalError();
             return new ResponseEntity<>(ActionResult.FORBIDDEN(), HttpStatus.FORBIDDEN);
+        } finally {
+            prometeusService.addApiDcBalanceTimeMs(startMs);
+            prometeusService.addApiTotalTimeMs(startMs);
         }
     }
 
@@ -86,6 +97,7 @@ public class TenantApi {
             @Parameter(required = false, name = "notOwned", description = "get tenant including not owned, in this case balance returned will be 0")
             @RequestParam("notOwned") Optional<String> notOwned
     ) {
+        long startMs= Now.NowUtcMs();
         log.debug("Get user tenants balances for "+request.getUserPrincipal().getName());
         try {
             List<TenantBalancesItf> r;
@@ -96,7 +108,10 @@ public class TenantApi {
             }
             return new ResponseEntity<>(r, HttpStatus.OK);
         } catch (ITRightException x) {
+            prometeusService.addApiTotalError();
             return new ResponseEntity<>(ActionResult.FORBIDDEN(), HttpStatus.FORBIDDEN);
+        } finally {
+            prometeusService.addApiTotalTimeMs(startMs);
         }
     }
 
@@ -119,12 +134,16 @@ public class TenantApi {
             @PathVariable String tenantId
 
     ) {
+        long startMs= Now.NowUtcMs();
         log.debug("Get tenant setup for "+request.getUserPrincipal().getName());
         try {
             TenantSetupRespItf r = heliumTenantService.getTenantSetup(request.getUserPrincipal().getName(), tenantId);
             return new ResponseEntity<>(r, HttpStatus.OK);
         } catch (ITRightException x) {
+            prometeusService.addApiTotalError();
             return new ResponseEntity<>(ActionResult.FORBIDDEN(), HttpStatus.FORBIDDEN);
+        } finally {
+            prometeusService.addApiTotalTimeMs(startMs);
         }
     }
 
@@ -146,6 +165,7 @@ public class TenantApi {
             HttpServletRequest request,
             @RequestBody(required = true) TenantCreateReqItf tenantInfo
     ) {
+        long startMs= Now.NowUtcMs();
         log.debug("Create tenant for "+request.getUserPrincipal().getName());
         try {
             heliumTenantService.addNewTenant(request.getUserPrincipal().getName(), tenantInfo);
@@ -153,13 +173,17 @@ public class TenantApi {
             r.setErrorMessage("success");
             return new ResponseEntity<>(r, HttpStatus.OK);
         } catch (ITParseException x) {
+            prometeusService.addApiTotalError();
             TenantCreateRespItf r = new TenantCreateRespItf();
             r.setErrorMessage(x.getMessage());
             return new ResponseEntity<>(r, HttpStatus.BAD_REQUEST);
         } catch (ITRightException x) {
+            prometeusService.addApiTotalError();
             TenantCreateRespItf r = new TenantCreateRespItf();
             r.setErrorMessage(x.getMessage());
             return new ResponseEntity<>(r, HttpStatus.FORBIDDEN);
+        } finally {
+            prometeusService.addApiTotalTimeMs(startMs);
         }
     }
 
@@ -182,12 +206,16 @@ public class TenantApi {
     public ResponseEntity<?> requestTenantSetupTemplate(
             HttpServletRequest request
     ) {
+        long startMs= Now.NowUtcMs();
         log.debug("Get list of tenant setup template "+request.getUserPrincipal().getName());
         try {
             List<TenantSetupTemplateListRespItf> r = heliumTenantSetupService.getTenantSetupTemplates(request.getUserPrincipal().getName());
             return new ResponseEntity<>(r, HttpStatus.OK);
         } catch (ITRightException x) {
+            prometeusService.addApiTotalError();
             return new ResponseEntity<>(ActionResult.FORBIDDEN(), HttpStatus.FORBIDDEN);
+        } finally {
+            prometeusService.addApiTotalTimeMs(startMs);
         }
     }
 
@@ -208,12 +236,16 @@ public class TenantApi {
             HttpServletRequest request,
             @RequestBody(required = true) TenantSetupTemplateUpdateReqItf template
     ) {
+        long startMs= Now.NowUtcMs();
         log.debug("Update one tenant setup template "+request.getUserPrincipal().getName());
         try {
             heliumTenantSetupService.updateTenantSetupTemplates(request.getUserPrincipal().getName(), template);
             return new ResponseEntity<>(ActionResult.SUCESS(), HttpStatus.OK);
         } catch (ITRightException x) {
+            prometeusService.addApiTotalError();
             return new ResponseEntity<>(ActionResult.FORBIDDEN(), HttpStatus.FORBIDDEN);
+        } finally {
+            prometeusService.addApiTotalTimeMs(startMs);
         }
     }
 
@@ -234,12 +266,16 @@ public class TenantApi {
             HttpServletRequest request,
             @RequestBody(required = true) TenantSetupTemplateCreateReqItf template
     ) {
+        long startMs= Now.NowUtcMs();
         log.debug("Create one tenant setup template "+request.getUserPrincipal().getName());
         try {
             heliumTenantSetupService.createTenantSetupTemplates(request.getUserPrincipal().getName(), template);
             return new ResponseEntity<>(ActionResult.SUCESS(), HttpStatus.CREATED);
         } catch (ITRightException x) {
+            prometeusService.addApiTotalError();
             return new ResponseEntity<>(ActionResult.FORBIDDEN(), HttpStatus.FORBIDDEN);
+        } finally {
+            prometeusService.addApiTotalTimeMs(startMs);
         }
     }
 
@@ -261,12 +297,16 @@ public class TenantApi {
             @Parameter(required = true, name = "tenantId", description = "tenant Id")
             @PathVariable String tenantId
     ) {
+        long startMs= Now.NowUtcMs();
         log.debug("Delete tenant setup ("+tenantId+") by "+request.getUserPrincipal().getName());
         try {
             heliumTenantSetupService.deleteTenantSetupTemplate(request.getUserPrincipal().getName(), tenantId);
             return new ResponseEntity<>(ActionResult.SUCESS(), HttpStatus.OK);
         } catch (ITRightException x) {
+            prometeusService.addApiTotalError();
             return new ResponseEntity<>(ActionResult.FORBIDDEN(), HttpStatus.FORBIDDEN);
+        } finally {
+            prometeusService.addApiTotalTimeMs(startMs);
         }
     }
 
@@ -290,12 +330,16 @@ public class TenantApi {
             @Parameter(required = true, name = "keyword", description = "search key")
             @RequestParam("keyword") String keyword
     ) {
+        long startMs= Now.NowUtcMs();
         log.debug("Search list of tenant "+request.getUserPrincipal().getName()+" with search key "+keyword);
         try {
             List<TenantSearchRespItf> r = heliumTenantService.searchTenants(keyword);
             return new ResponseEntity<>(r, HttpStatus.OK);
         } catch (ITParseException x) {
+            prometeusService.addApiTotalError();
             return new ResponseEntity<>(ActionResult.FORBIDDEN(), HttpStatus.FORBIDDEN);
+        } finally {
+            prometeusService.addApiTotalTimeMs(startMs);
         }
     }
 
@@ -316,11 +360,17 @@ public class TenantApi {
             HttpServletRequest request,
             @RequestBody(required = true) TenantDcBalanceReqItf balance
     ) {
+        long startMs= Now.NowUtcMs();
         log.debug("Update one tenant dc balance "+request.getUserPrincipal().getName());
-        if ( heliumTenantService.processBalanceIncrease(balance.getTenantUUID(), balance.getDcs()) ){
-            return new ResponseEntity<>(ActionResult.SUCESS(), HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>(ActionResult.BADREQUEST(), HttpStatus.BAD_REQUEST);
+        try {
+            if (heliumTenantService.processBalanceIncrease(balance.getTenantUUID(), balance.getDcs())) {
+                return new ResponseEntity<>(ActionResult.SUCESS(), HttpStatus.OK);
+            } else {
+                prometeusService.addApiTotalError();
+                return new ResponseEntity<>(ActionResult.BADREQUEST(), HttpStatus.BAD_REQUEST);
+            }
+        } finally {
+            prometeusService.addApiTotalTimeMs(startMs);
         }
     }
 
@@ -339,6 +389,7 @@ public class TenantApi {
             HttpServletRequest request,
             @RequestBody(required = true) TenantDcTransferReqItf transferDcs
     ) {
+        long startMs= Now.NowUtcMs();
         log.debug("Transfer DCs between tenants "+request.getUserPrincipal().getName());
 
         /*
@@ -357,7 +408,10 @@ public class TenantApi {
             );
             return new ResponseEntity<>(r, HttpStatus.OK);
         } catch ( ITRightException x ) {
+            prometeusService.addApiTotalError();
             return new ResponseEntity<>(ActionResult.FORBIDDEN(), HttpStatus.FORBIDDEN);
+        } finally {
+            prometeusService.addApiTotalTimeMs(startMs);
         }
     }
 
@@ -382,14 +436,19 @@ public class TenantApi {
             @Parameter(required = true, name = "tenantId", description = "tenant UUID")
             @PathVariable String tenantId
     ) {
+        long startMs= Now.NowUtcMs();
         log.debug("Get tenant basic stats "+request.getUserPrincipal().getName()+" for tenant "+tenantId);
         try {
             TenantBasicStatRespItf r = heliumTenantService.getTenantBasicStat(request.getUserPrincipal().getName(),tenantId);
             return new ResponseEntity<>(r, HttpStatus.OK);
         } catch (ITParseException x) {
+            prometeusService.addApiTotalError();
             return new ResponseEntity<>(ActionResult.BADREQUEST(), HttpStatus.BAD_REQUEST);
         } catch (ITRightException x) {
+            prometeusService.addApiTotalError();
             return new ResponseEntity<>(ActionResult.FORBIDDEN(), HttpStatus.FORBIDDEN);
+        } finally {
+            prometeusService.addApiTotalTimeMs(startMs);
         }
     }
 
@@ -415,6 +474,7 @@ public class TenantApi {
             @PathVariable String tenantId
 
     ) {
+        long startMs= Now.NowUtcMs();
         log.debug("Create API key for "+request.getUserPrincipal().getName());
         try {
             if ( request.getHeader("X-Chripstack-Bearer") == null || request.getHeader("X-Chripstack-Bearer").length() < 10  ) {
@@ -424,13 +484,17 @@ public class TenantApi {
             TenantApiKeyRespItf r = heliumTenantService.getTenantApiKey(request.getUserPrincipal().getName(), tenantId,bearer);
             return new ResponseEntity<>(r, HttpStatus.OK);
         } catch (ITRightException x) {
+            prometeusService.addApiTotalError();
             ActionResult a = ActionResult.FORBIDDEN();
             a.setMessage(x.getMessage());
             return new ResponseEntity<>(a, HttpStatus.FORBIDDEN);
         } catch ( ITParseException x ) {
+            prometeusService.addApiTotalError();
             ActionResult a = ActionResult.BADREQUEST();
             a.setMessage(x.getMessage());
             return new ResponseEntity<>(a, HttpStatus.BAD_REQUEST);
+        } finally {
+            prometeusService.addApiTotalTimeMs(startMs);
         }
     }
 
@@ -452,6 +516,7 @@ public class TenantApi {
             @PathVariable String tenantId
 
     ) {
+        long startMs= Now.NowUtcMs();
         log.debug("Delete API key for "+request.getUserPrincipal().getName());
         try {
             if ( request.getHeader("X-Chripstack-Bearer") == null && request.getHeader("X-Chripstack-Bearer").length() > 10  ) {
@@ -462,13 +527,17 @@ public class TenantApi {
             heliumTenantService.clearMigrationApiKey(request.getUserPrincipal().getName(), tenantId, bearer);
             return new ResponseEntity<>(ActionResult.SUCESS(), HttpStatus.OK);
         } catch (ITRightException x) {
+            prometeusService.addApiTotalError();
             ActionResult a = ActionResult.FORBIDDEN();
             a.setMessage(x.getMessage());
             return new ResponseEntity<>(a, HttpStatus.FORBIDDEN);
         } catch ( ITParseException x ) {
+            prometeusService.addApiTotalError();
             ActionResult a = ActionResult.BADREQUEST();
             a.setMessage(x.getMessage());
             return new ResponseEntity<>(a, HttpStatus.BAD_REQUEST);
+        } finally {
+            prometeusService.addApiTotalTimeMs(startMs);
         }
     }
 

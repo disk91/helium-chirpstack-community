@@ -2,10 +2,12 @@ package eu.heliumiot.console.api;
 
 
 import eu.heliumiot.console.api.interfaces.*;
+import eu.heliumiot.console.service.PrometeusService;
 import eu.heliumiot.console.service.UserService;
 import fr.ingeniousthings.tools.ITNotFoundException;
 import fr.ingeniousthings.tools.ITParseException;
 import fr.ingeniousthings.tools.ITRightException;
+import fr.ingeniousthings.tools.Now;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -33,6 +35,9 @@ public class UserApi {
     @Autowired
     protected UserService userService;
 
+    @Autowired
+    protected PrometeusService prometeusService;
+
     @Operation(summary = "Get user login",
             description = "Get login for user executing the request",
             responses = {
@@ -48,14 +53,19 @@ public class UserApi {
     public ResponseEntity<?> requestUserLogin(
             HttpServletRequest request
     ) {
+        long startMs= Now.NowUtcMs();
         log.debug("Get user login for "+request.getUserPrincipal().getName());
         try {
             UserLoginRespItf r = userService.getUserLogin(request.getUserPrincipal().getName());
             return new ResponseEntity<>(r, HttpStatus.OK);
         } catch (ITNotFoundException x) {
+            prometeusService.addApiTotalError();
             return new ResponseEntity<>(ActionResult.FORBIDDEN(), HttpStatus.BAD_REQUEST);
         } catch (ITRightException x) {
+            prometeusService.addApiTotalError();
             return new ResponseEntity<>(ActionResult.FORBIDDEN(), HttpStatus.FORBIDDEN);
+        } finally {
+            prometeusService.addApiTotalTimeMs(startMs);
         }
     }
 
@@ -75,14 +85,19 @@ public class UserApi {
     public ResponseEntity<?> requestUserDetail(
             HttpServletRequest request
     ) {
+        long startMs= Now.NowUtcMs();
         log.debug("Get user details for "+request.getUserPrincipal().getName());
         try {
             UserDetailRespItf r = userService.getUserdetails(request.getUserPrincipal().getName());
             return new ResponseEntity<>(r, HttpStatus.OK);
         } catch (ITNotFoundException x) {
+            prometeusService.addApiTotalError();
             return new ResponseEntity<>(ActionResult.FORBIDDEN(), HttpStatus.BAD_REQUEST);
         } catch (ITRightException x) {
+            prometeusService.addApiTotalError();
             return new ResponseEntity<>(ActionResult.FORBIDDEN(), HttpStatus.FORBIDDEN);
+        } finally {
+            prometeusService.addApiTotalTimeMs(startMs);
         }
     }
 
@@ -104,14 +119,19 @@ public class UserApi {
             HttpServletRequest request,
             @RequestBody(required = true) UserDetailUpdateReqItf userInfo
     ) {
+        long startMs= Now.NowUtcMs();
         log.debug("Update user details for "+request.getUserPrincipal().getName());
         try {
             UserDetailRespItf r = userService.updateUserdetails(request.getUserPrincipal().getName(),userInfo);
             return new ResponseEntity<>(r, HttpStatus.OK);
         } catch (ITNotFoundException x) {
+            prometeusService.addApiTotalError();
             return new ResponseEntity<>(ActionResult.FORBIDDEN(), HttpStatus.BAD_REQUEST);
         } catch (ITRightException x) {
+            prometeusService.addApiTotalError();
             return new ResponseEntity<>(ActionResult.FORBIDDEN(), HttpStatus.FORBIDDEN);
+        } finally {
+            prometeusService.addApiTotalTimeMs(startMs);
         }
     }
 

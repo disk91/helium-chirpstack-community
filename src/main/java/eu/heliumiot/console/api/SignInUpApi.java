@@ -2,10 +2,12 @@ package eu.heliumiot.console.api;
 
 
 import eu.heliumiot.console.api.interfaces.*;
+import eu.heliumiot.console.service.PrometeusService;
 import eu.heliumiot.console.service.UserService;
 import fr.ingeniousthings.tools.ITNotFoundException;
 import fr.ingeniousthings.tools.ITParseException;
 import fr.ingeniousthings.tools.ITRightException;
+import fr.ingeniousthings.tools.Now;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -33,6 +35,10 @@ public class SignInUpApi {
     @Autowired
     protected UserService userService;
 
+    @Autowired
+    protected PrometeusService prometeusService;
+
+
     @Operation(summary = "Sign-in endpoint",
             description = "Authenticate on back-end and in chirpstack, get both token",
             responses = {
@@ -49,16 +55,23 @@ public class SignInUpApi {
             HttpServletRequest request,
             @RequestBody(required = true) LoginReqItf login
     ) {
+        long startMs= Now.NowUtcMs();
         log.debug("Sign in for "+login.getUsername());
         try {
             LoginRespItf r = userService.verifyUserLogin(login);
+            prometeusService.addUserTotalLogin();
             return new ResponseEntity<>(r, HttpStatus.OK);
         } catch (ITNotFoundException x) {
+            prometeusService.addApiTotalError();
             return new ResponseEntity<>(ActionResult.FORBIDDEN(), HttpStatus.FORBIDDEN);
         } catch (ITRightException x) {
+            prometeusService.addApiTotalError();
             return new ResponseEntity<>(ActionResult.FORBIDDEN(), HttpStatus.FORBIDDEN);
         } catch (ITParseException x) {
+            prometeusService.addApiTotalError();
             return new ResponseEntity<>(ActionResult.BADREQUEST(), HttpStatus.BAD_REQUEST);
+        } finally {
+            prometeusService.addApiTotalTimeMs(startMs);
         }
     }
 
@@ -78,17 +91,22 @@ public class SignInUpApi {
             HttpServletRequest request,
             @RequestBody(required = true) UserSignUpReqItf signup
     ) {
+        long startMs= Now.NowUtcMs();
         log.debug("Sign up for "+signup.getUsername());
         try {
             UserSignUpRespItf r = userService.userSignup(signup);
             return new ResponseEntity<>(r, HttpStatus.OK);
         } catch (ITNotFoundException x) {
+            prometeusService.addApiTotalError();
             return new ResponseEntity<>(ActionResult.FORBIDDEN(), HttpStatus.FORBIDDEN);
         } catch (ITParseException x) {
+            prometeusService.addApiTotalError();
             // manage errors
             UserSignUpRespItf r = new UserSignUpRespItf();
             r.setErrorMessage(x.getMessage());
             return new ResponseEntity<>(r, HttpStatus.BAD_REQUEST);
+        } finally {
+            prometeusService.addApiTotalTimeMs(startMs);
         }
     }
 
@@ -109,6 +127,7 @@ public class SignInUpApi {
             @PathVariable("confirmationId") String confirmationId
 
     ) {
+        long startMs= Now.NowUtcMs();
         log.debug("Sign up confirmation received");
         UserSignUpConfirmRespItf r = new UserSignUpConfirmRespItf();
         try {
@@ -116,10 +135,14 @@ public class SignInUpApi {
             r.setErrorMessage("success");
             return new ResponseEntity<>(r, HttpStatus.OK);
         } catch (ITNotFoundException x) {
+            prometeusService.addApiTotalError();
             return new ResponseEntity<>(ActionResult.FORBIDDEN(), HttpStatus.FORBIDDEN);
         } catch (ITParseException x) {
+            prometeusService.addApiTotalError();
             r.setErrorMessage(x.getMessage());
             return new ResponseEntity<>(r, HttpStatus.BAD_REQUEST);
+        } finally {
+            prometeusService.addApiTotalTimeMs(startMs);
         }
     }
 
@@ -139,12 +162,16 @@ public class SignInUpApi {
             HttpServletRequest request,
             @RequestBody(required = true) UserLostPassReqItf lost
     ) {
+        long startMs= Now.NowUtcMs();
         log.debug("Password lost for "+lost.getUsername());
         try {
             userService.userLostReq(lost);
             return new ResponseEntity<>(ActionResult.SUCESS(), HttpStatus.OK);
         } catch (ITParseException x) {
+            prometeusService.addApiTotalError();
             return new ResponseEntity<>(ActionResult.BADREQUEST(), HttpStatus.BAD_REQUEST);
+        } finally {
+            prometeusService.addApiTotalTimeMs(startMs);
         }
     }
 
@@ -164,6 +191,7 @@ public class SignInUpApi {
             HttpServletRequest request,
             @RequestBody(required = true) UserPassResetReqItf change
     ) {
+        long startMs= Now.NowUtcMs();
         log.debug("Password change with key "+change.getValidationKey());
         try {
             userService.userPasswordReset(change);
@@ -171,9 +199,12 @@ public class SignInUpApi {
             resp.setErrorMessage("success");
             return new ResponseEntity<>(resp, HttpStatus.OK);
         } catch (ITParseException x) {
+            prometeusService.addApiTotalError();
             UserPassChangeRespItf resp = new UserPassChangeRespItf();
             resp.setErrorMessage(x.getMessage());
             return new ResponseEntity<>(resp, HttpStatus.BAD_REQUEST);
+        } finally {
+            prometeusService.addApiTotalTimeMs(startMs);
         }
     }
 
