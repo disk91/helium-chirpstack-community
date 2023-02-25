@@ -229,12 +229,15 @@ public class MqttListener implements MqttCallback {
                 } else if ( topicName.matches("helium/device/stats/.*") ) {
                         HeliumDeviceStatItf e = mapper.readValue(message.toString(), HeliumDeviceStatItf.class);
                         heliumDeviceStatService.updateDeviceStat(e);
+                        prometeusService.delDelayedStatUpdate();
                 } else if ( topicName.matches("helium/device/deactivate/.*") ) {
                         HeliumDeviceActDeactItf e = mapper.readValue(message.toString(), HeliumDeviceActDeactItf.class);
                         heliumDeviceService.processDeviceDeactivation(e);
+                        prometeusService.delDelayedStatUpdate();
                 } else if ( topicName.matches("helium/device/activate/.*") ) {
                         HeliumDeviceActDeactItf e = mapper.readValue(message.toString(), HeliumDeviceActDeactItf.class);
                         heliumDeviceService.processDeviceReactivation(e);
+                        prometeusService.delDelayedStatUpdate();
                 } else if ( topicName.matches("helium/tenant/manage/.*") ) {
                         HeliumTenantActDeactItf e = mapper.readValue(message.toString(), HeliumTenantActDeactItf.class);
                         if( e.isActivateTenant() ) {
@@ -244,6 +247,7 @@ public class MqttListener implements MqttCallback {
                         } else {
                                 log.error("Invalid state for manage tenant request");
                         }
+                        prometeusService.delDelayedStatUpdate();
                 } else {
 // =================================================
 // OTHERS

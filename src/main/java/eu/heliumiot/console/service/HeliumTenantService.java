@@ -144,6 +144,8 @@ public class HeliumTenantService {
     // Async reporting
     // ======================================================
 
+    @Autowired
+    protected PrometeusService prometeusService;
 
     @Autowired
     protected MqttSender mqttSender;
@@ -156,7 +158,9 @@ public class HeliumTenantService {
                     mapper.writeValueAsString(i),
                     2
             );
+            this.prometeusService.addDelayedStatUpdate();
         } catch (Exception x) {
+            this.prometeusService.addMqttConnectionLoss();
             log.error("Something went wrong with publishing on MQTT");
             log.error(x.getMessage());
         }
@@ -354,7 +358,9 @@ public class HeliumTenantService {
                         mapper.writeValueAsString(i),
                         2
                 );
+                this.prometeusService.addDelayedStatUpdate();
             } catch (Exception x) {
+                this.prometeusService.addMqttConnectionLoss();
                 log.error("Something went wrong with publishing on MQTT tenant deactivation");
                 log.error(x.getMessage());
             }
@@ -410,7 +416,9 @@ public class HeliumTenantService {
                         mapper.writeValueAsString(i),
                         2
                 );
+                this.prometeusService.addDelayedStatUpdate();
             } catch (Exception x) {
+                this.prometeusService.addMqttConnectionLoss();
                 log.error("Something went wrong with publishing on MQTT tenant reactivation");
                 log.error(x.getMessage());
             }
@@ -464,7 +472,9 @@ public class HeliumTenantService {
                             mapper.writeValueAsString(i),
                             2
                     );
+                    this.prometeusService.addDelayedStatUpdate();
                 } catch (Exception x) {
+                    this.prometeusService.addMqttConnectionLoss();
                     log.error("Something went wrong with publishing on MQTT tenant reactivation");
                     log.error(x.getMessage());
                 }

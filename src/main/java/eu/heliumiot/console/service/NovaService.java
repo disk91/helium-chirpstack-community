@@ -50,6 +50,7 @@ public class NovaService {
 
     public boolean refreshDevAddrList(String devaddr) {
         // Get the list of device using this devaddr
+        long start = Now.NowUtcMs();
         List<String> deviceEUIs = redisDeviceRepository.getDevEuiByDevAddr(devaddr);
         log.debug("Refresh devAddr network keys for " + devaddr + " found " + deviceEUIs.size() + " devices");
         for (String devEUI : deviceEUIs) {
@@ -80,6 +81,7 @@ public class NovaService {
             }
 
         }
+        prometeusService.addDevAddrUpdate(start);
         return true;
     }
 

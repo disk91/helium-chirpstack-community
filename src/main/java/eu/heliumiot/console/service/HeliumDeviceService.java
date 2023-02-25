@@ -131,11 +131,16 @@ public class HeliumDeviceService {
                     mapper.writeValueAsString(i),
                     2
             );
+            this.prometeusService.addDelayedStatUpdate();
         } catch (Exception x) {
+            this.prometeusService.addMqttConnectionLoss();
             log.error("Something went wrong with publishing on MQTT (2)");
             log.error(x.getMessage());
         }
     }
+
+    @Autowired
+    protected PrometeusService prometeusService;
 
     protected void reportDeviceDeactivationOnMqtt(LoRaWanCreds cred) {
         HeliumDeviceActDeactItf i = new HeliumDeviceActDeactItf();
@@ -151,7 +156,10 @@ public class HeliumDeviceService {
                     mapper.writeValueAsString(i),
                     2
             );
+            this.prometeusService.addDelayedStatUpdate();
+
         } catch (Exception x) {
+            this.prometeusService.addMqttConnectionLoss();
             log.error("Something went wrong with publishing on MQTT (3)");
             log.error(x.getMessage());
         }
@@ -226,6 +234,7 @@ public class HeliumDeviceService {
                 // Declare on Nova Lab Router asynchronously
                 this.reportDeviceActivationOnMqtt(hdev);
 
+                prometeusService.addDeviceCreation();
                 log.info("scanNewDevicesJob - Add " + hdev.getDeviceEui());
             }
             if (lastCreated > 0) {
@@ -273,6 +282,7 @@ public class HeliumDeviceService {
                     // save this
                     heliumDeviceRepository.save(hdev);
                     log.info("scanDeletedDevicesJob - Del " + hdev.getDeviceEui());
+                    prometeusService.addDeviceDeletion();
                 }
             }
             // Call Helium API for updating
@@ -299,6 +309,7 @@ public class HeliumDeviceService {
      * @return
      */
     public List<NovaDevice> clearInvalidRouteEuis(boolean commit) {
+        long start = Now.NowUtcMs();
         ArrayList<NovaDevice> invalids = new ArrayList<>();
         List<NovaDevice> all = novaService.getAllKnownDevices();
         if ( all == null || all.size() ==  0 ) return invalids; // better do nothing that big mistake
@@ -331,6 +342,7 @@ public class HeliumDeviceService {
         if ( commit ) {
             novaService.deactivateDevices(invalids);
         }
+        prometeusService.addRouteUpdate(start);
         return invalids;
     }
 
@@ -341,6 +353,7 @@ public class HeliumDeviceService {
      * @return
      */
     public List<NovaDevice> searchMissingRouteEuis(boolean commit) {
+        long start = Now.NowUtcMs();
         ArrayList<NovaDevice> missing = new ArrayList<>();
 
         // get the devices and store in hashmap for search
@@ -381,6 +394,7 @@ public class HeliumDeviceService {
             } while (allDevices.hasNext());
         }
         if (commit) novaService.activateDevices(missing);
+        prometeusService.addRouteUpdate(start);
         return missing;
     }
 

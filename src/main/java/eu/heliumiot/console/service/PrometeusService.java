@@ -38,17 +38,19 @@ public class PrometeusService {
     // ------- internal Metrics
     private long mqttConnectionLoss = 0;        // number of MQTT disconnection - OK
     private long redisStreamReadError = 0;      // number of Redis read error - OK
-    private long internalDelayedUsageStats = 0; // number of pending stat update in the queue
-    private long routeUpdateTotalTimeMs = 0;    // time spent in processing route update
-    private long routeUpdateTotal = 0;          // count the number of route update
-    private long deviceCreationTotal = 0;       // count the device creation detection
+    private long internalDelayedUsageStats = 0; // number of pending stat update in the queue - OK
+    private long routeUpdateTotalTimeMs = 0;    // time spent in processing route update - OK
+    private long routeUpdateTotal = 0;          // count the number of route update - OK
+    private long deviceCreationTotal = 0;       // count the device creation detection - OK
+    private long deviceDeletionTotal = 0;       // count the device deletion detection - OK
+    private long devadrUpdateTotalTimeMs = 0;   // time spent in processing update in the route - OK
+    private long devadrUpdateTotal = 0;         // number of devadr filter update - OK
 
     // ------- devices stats
     private long dcTotal = 0;                   // total number of DCs in the tenants
     private long deviceTotal = 0;               // number of devices in db
     private long tenantTotal = 0;               // number of tenants
     private long userTotal = 0;                 // number of users
-
 
 
 
@@ -93,6 +95,28 @@ public class PrometeusService {
     }
 
     synchronized public void addRedisStreamError() { this.redisStreamReadError++; }
+
+    synchronized public void addDelayedStatUpdate() { this.internalDelayedUsageStats++; }
+    synchronized public void delDelayedStatUpdate() { this.internalDelayedUsageStats--; }
+
+    synchronized public void addRouteUpdate(long start) {
+        this.routeUpdateTotal++;
+        this.routeUpdateTotalTimeMs+=Now.NowUtcMs() - start;
+    }
+
+    synchronized public void addDevAddrUpdate(long start) {
+        this.devadrUpdateTotal++;
+        this.devadrUpdateTotalTimeMs+=Now.NowUtcMs() - start;
+    }
+
+    synchronized public void addDeviceCreation() {
+        this.deviceCreationTotal++;
+    }
+
+    synchronized public void addDeviceDeletion() {
+        this.deviceDeletionTotal++;
+    }
+
 
     // =============================================================
     // Prometheus interface
@@ -164,6 +188,30 @@ public class PrometeusService {
         return ()->loRaTotalDownlinkBytes;
     }
 
+    protected Supplier<Number> getDelayedStatUpdate() {
+        return ()->internalDelayedUsageStats;
+    }
+
+    protected Supplier<Number> getRouteUpdateTotalMs() {
+        return ()->routeUpdateTotalTimeMs;
+    }
+    protected Supplier<Number> getRouteUpdateTotal() {
+        return ()->routeUpdateTotal;
+    }
+    protected Supplier<Number> getDevAddrUpdateTotalMs() {
+        return ()->devadrUpdateTotalTimeMs;
+    }
+    protected Supplier<Number> getDevAddrUpdateTotal() {
+        return ()->devadrUpdateTotal;
+    }
+    protected Supplier<Number> getDeviceCreation() {
+        return ()->deviceCreationTotal;
+    }
+    protected Supplier<Number> getDeviceDeletion() {
+        return ()->deviceDeletionTotal;
+    }
+
+
     public PrometeusService(MeterRegistry registry) {
 
         Gauge.builder("cons.api.total_time_ms", getApiTotalTimeMs())
@@ -216,6 +264,27 @@ public class PrometeusService {
                 .register(registry);
         Gauge.builder("cons.lora.downlinks_bytes", getLoRaTotalBytesDownlink())
                 .description("total downlink bytes")
+                .register(registry);
+        Gauge.builder("cons.internal.delayed_stat", getDelayedStatUpdate())
+                .description("Pending delayed stat computation")
+                .register(registry);
+        Gauge.builder("cons.route.update.total_time_ms", getRouteUpdateTotalMs())
+                .description("Total time spend in updating the nova routes")
+                .register(registry);
+        Gauge.builder("cons.route.update.total", getRouteUpdateTotal())
+                .description("Total call to update the nova routes")
+                .register(registry);
+        Gauge.builder("cons.devadr.update.total_time_ms", getDevAddrUpdateTotalMs())
+                .description("Total time spend in updating the devaddr sessions")
+                .register(registry);
+        Gauge.builder("cons.devadr.update.total", getDevAddrUpdateTotal())
+                .description("Total call to update the devaddr sessions")
+                .register(registry);
+        Gauge.builder("cons.device.creation.total", getDeviceCreation())
+                .description("Number of device created")
+                .register(registry);
+        Gauge.builder("cons.device.deletion.total", getDeviceDeletion())
+                .description("Number of device deleted")
                 .register(registry);
 
     }
