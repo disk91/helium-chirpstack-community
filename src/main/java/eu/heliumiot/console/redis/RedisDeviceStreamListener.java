@@ -2,6 +2,7 @@ package eu.heliumiot.console.redis;
 
 import com.google.protobuf.InvalidProtocolBufferException;
 import eu.heliumiot.console.service.HeliumTenantService;
+import eu.heliumiot.console.service.PrometeusService;
 import fr.ingeniousthings.tools.HexaConverters;
 import fr.ingeniousthings.tools.Now;
 import io.chirpstack.api.DownlinkFrameLog;
@@ -76,6 +77,9 @@ public class RedisDeviceStreamListener {
 
     @Autowired
     protected HeliumTenantService heliumTenantService;
+
+    @Autowired
+    protected PrometeusService prometeusService;
 
     @Scheduled(fixedRateString = "${spring.redis.metaRefreshRate}", initialDelay = 2_000)
     void ListenOnRedisStreamMeta() {
@@ -162,6 +166,7 @@ public class RedisDeviceStreamListener {
                                                 dwn.getDevEui(),
                                                 downlinkSize
                                         );
+                                        prometeusService.addLoRaDownlink(downlinkSize);
                                     }
                                 } catch (InvalidProtocolBufferException x) {
                                     log.error("Impossible to parse stream type up with " + x.getMessage());
@@ -183,6 +188,7 @@ public class RedisDeviceStreamListener {
                 }
             } catch (RedisCommandExecutionException x) {
                 log.error("### Stream not existing, we should not be here ");
+                prometeusService.addRedisStreamError();
             } finally {
                 this.runningJobs--;
             }

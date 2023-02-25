@@ -23,6 +23,8 @@ import eu.heliumiot.console.jpa.db.HeliumDevice;
 import eu.heliumiot.console.jpa.repository.HeliumDeviceRepository;
 import fr.ingeniousthings.tools.Now;
 import fr.ingeniousthings.tools.ObjectCache;
+import io.micrometer.core.instrument.Gauge;
+import io.micrometer.core.instrument.MeterRegistry;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -57,6 +59,21 @@ public class HeliumDeviceCacheService {
         };
         runningJobs=0;
         serviceEnable=true;
+
+        Gauge.builder("cons.device.cache_total_time", this.heliumDeviceCache.getTotalCacheTime())
+                .description("total time device cache execution")
+                .register(registry);
+        Gauge.builder("cons.device.cache_total", this.heliumDeviceCache.getTotalCacheTry())
+                .description("total device cache try")
+                .register(registry);
+        Gauge.builder("cons.device.cache_miss", this.heliumDeviceCache.getCacheMissStat())
+                .description("total device cache miss")
+                .register(registry);
+    }
+
+    private MeterRegistry registry;
+    public HeliumDeviceCacheService(MeterRegistry registry) {
+        this.registry = registry;
     }
 
     @Scheduled(fixedRateString = "${logging.cache.fixedrate}", initialDelay = 63_000)

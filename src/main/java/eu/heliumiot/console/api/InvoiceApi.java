@@ -2,9 +2,11 @@ package eu.heliumiot.console.api;
 
 
 import eu.heliumiot.console.api.interfaces.*;
+import eu.heliumiot.console.service.PrometeusService;
 import eu.heliumiot.console.service.TransactionService;
 import fr.ingeniousthings.tools.ITParseException;
 import fr.ingeniousthings.tools.ITRightException;
+import fr.ingeniousthings.tools.Now;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
@@ -35,6 +37,9 @@ public class InvoiceApi {
     @Autowired
     protected TransactionService transactionService;
 
+    @Autowired
+    protected PrometeusService prometeusService;
+
     // =================================
     // Invoice Setup
     // =================================
@@ -54,8 +59,10 @@ public class InvoiceApi {
     public ResponseEntity<?> invoiceSetupRequest(
             HttpServletRequest request
     ) {
+        long startMs= Now.NowUtcMs();
         log.debug("Get invoice setup request "+request.getUserPrincipal().getName());
         InvoiceSetupGetRespItf r = transactionService.getInvoiceSetup();
+        prometeusService.addApiTotalTimeMs(startMs);
         return new ResponseEntity<>(r, HttpStatus.OK);
     }
 
@@ -75,14 +82,18 @@ public class InvoiceApi {
             HttpServletRequest request,
             @RequestBody(required = true) InvoiceSetupPutReqItf update
     ) {
+        long startMs= Now.NowUtcMs();
         log.debug("Put invoice setup request "+request.getUserPrincipal().getName());
         try {
             transactionService.updateInvoiceSetup(update);
             return new ResponseEntity<>(ActionResult.SUCESS(), HttpStatus.OK);
         } catch (ITParseException x) {
+            prometeusService.addApiTotalError();
             ActionResult a = ActionResult.BADREQUEST();
             a.setMessage(x.getMessage());
             return new ResponseEntity<>(a, HttpStatus.BAD_REQUEST);
+        } finally {
+            prometeusService.addApiTotalTimeMs(startMs);
         }
     }
 

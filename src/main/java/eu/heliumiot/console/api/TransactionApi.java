@@ -4,6 +4,7 @@ package eu.heliumiot.console.api;
 import eu.heliumiot.console.api.interfaces.*;
 import eu.heliumiot.console.service.HeliumTenantService;
 import eu.heliumiot.console.service.HeliumTenantSetupService;
+import eu.heliumiot.console.service.PrometeusService;
 import eu.heliumiot.console.service.TransactionService;
 import fr.ingeniousthings.tools.ITParseException;
 import fr.ingeniousthings.tools.ITRightException;
@@ -37,6 +38,9 @@ public class TransactionApi {
     private final Logger log = LoggerFactory.getLogger(this.getClass());
 
     @Autowired
+    protected PrometeusService prometeusService;
+
+    @Autowired
     protected TransactionService transactionService;
 
 
@@ -56,6 +60,7 @@ public class TransactionApi {
             HttpServletRequest request,
             @RequestBody(required = true) TransactionStripeReqItf txReq
     ) {
+        long startMs= Now.NowUtcMs();
         log.debug("Create transaction for "+request.getUserPrincipal().getName());
         try {
             TransactionStripeRespItf r = transactionService.initStripeTransaction(
@@ -65,13 +70,17 @@ public class TransactionApi {
             );
             return new ResponseEntity<>(r, HttpStatus.OK);
         } catch ( ITRightException x ) {
+            prometeusService.addApiTotalError();
             ActionResult a = ActionResult.FORBIDDEN();
             a.setMessage(x.getMessage());
             return new ResponseEntity<>(a, HttpStatus.FORBIDDEN);
         } catch ( ITParseException x ) {
+            prometeusService.addApiTotalError();
             ActionResult a = ActionResult.BADREQUEST();
             a.setMessage(x.getMessage());
             return new ResponseEntity<>(a, HttpStatus.BAD_REQUEST);
+        } finally {
+            prometeusService.addApiTotalTimeMs(startMs);
         }
 
     }
@@ -92,6 +101,7 @@ public class TransactionApi {
             @Parameter(required = true, name = "txUUID", description = "transaction Id")
             @PathVariable String txUUID
     ) {
+        long startMs= Now.NowUtcMs();
         log.debug("Refresh transaction for "+request.getUserPrincipal().getName());
         try {
             transactionService.updateStripeTransaction(
@@ -100,9 +110,12 @@ public class TransactionApi {
             );
             return new ResponseEntity<>(ActionResult.SUCESS(), HttpStatus.OK);
         } catch ( ITRightException x ) {
+            prometeusService.addApiTotalError();
             ActionResult a = ActionResult.FORBIDDEN();
             a.setMessage(x.getMessage());
             return new ResponseEntity<>(a, HttpStatus.FORBIDDEN);
+        } finally {
+            prometeusService.addApiTotalTimeMs(startMs);
         }
     }
 
@@ -124,8 +137,10 @@ public class TransactionApi {
     public ResponseEntity<?> requestUserTransactionList(
             HttpServletRequest request
     ) {
+        long startMs= Now.NowUtcMs();
         log.debug("Get transaction list for "+request.getUserPrincipal().getName());
         List<TransactionListRespItf> r = transactionService.getTransactionHistory(request.getUserPrincipal().getName());
+        prometeusService.addApiTotalTimeMs(startMs);
         return new ResponseEntity<>(r, HttpStatus.OK);
     }
 
@@ -144,8 +159,10 @@ public class TransactionApi {
     public ResponseEntity<?> requestAdminTransactionList(
             HttpServletRequest request
     ) {
+        long startMs= Now.NowUtcMs();
         log.debug("Get admin transaction list for "+request.getUserPrincipal().getName());
         List<TransactionListRespItf> r = transactionService.getPastStripeTransactions(Now.NowUtcMs()-(60*Now.ONE_FULL_DAY));
+        prometeusService.addApiTotalTimeMs(startMs);
         return new ResponseEntity<>(r, HttpStatus.OK);
     }
 
@@ -164,8 +181,10 @@ public class TransactionApi {
     public ResponseEntity<?> requestTransactionSetup(
             HttpServletRequest request
     ) {
+        long startMs= Now.NowUtcMs();
         log.debug("Get transaction setup for "+request.getUserPrincipal().getName());
         TransactionConfigRespItf r = transactionService.getTransactionSetup();
+        prometeusService.addApiTotalTimeMs(startMs);
         return new ResponseEntity<>(r, HttpStatus.OK);
     }
 
@@ -194,18 +213,23 @@ public class TransactionApi {
             @Parameter(required = true, name = "txUUID", description = "transaction Id")
             @PathVariable String txUUID
     ) {
+        long startMs= Now.NowUtcMs();
         log.debug("Get invoice "+ txUUID +" setup for "+request.getUserPrincipal().getName());
         try {
             byte [] r = transactionService.getInvoice(request.getUserPrincipal().getName(), txUUID);
             return new ResponseEntity<>(r, HttpStatus.OK);
         } catch ( ITRightException x ) {
+            prometeusService.addApiTotalError();
             ActionResult a = ActionResult.FORBIDDEN();
             a.setMessage(x.getMessage());
             return new ResponseEntity<>(a, HttpStatus.FORBIDDEN);
         } catch ( ITParseException x ) {
+            prometeusService.addApiTotalError();
             ActionResult a = ActionResult.BADREQUEST();
             a.setMessage(x.getMessage());
             return new ResponseEntity<>(a, HttpStatus.BAD_REQUEST);
+        } finally {
+            prometeusService.addApiTotalTimeMs(startMs);
         }
     }
 

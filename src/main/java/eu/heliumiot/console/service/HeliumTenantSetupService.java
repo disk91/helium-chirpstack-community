@@ -29,6 +29,8 @@ import eu.heliumiot.console.jpa.db.UserTenant;
 import eu.heliumiot.console.jpa.repository.HeliumTenantSetupRepository;
 import fr.ingeniousthings.tools.ITRightException;
 import fr.ingeniousthings.tools.ObjectCache;
+import io.micrometer.core.instrument.Gauge;
+import io.micrometer.core.instrument.MeterRegistry;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -95,7 +97,26 @@ public class HeliumTenantSetupService {
         this.heliumSetupCache.put(ts,ts.getTenantUUID());
         runningJobs=0;
         serviceEnable=true;
+
+        Gauge.builder("cons.tenant.setup.cache_total_time", this.heliumSetupCache.getTotalCacheTime())
+                .description("total time tenant setup cache execution")
+                .register(registry);
+        Gauge.builder("cons.tenant.setup.cache_total", this.heliumSetupCache.getTotalCacheTry())
+                .description("total tenant setup cache try")
+                .register(registry);
+        Gauge.builder("cons.tenant.setup.cache_miss", this.heliumSetupCache.getCacheMissStat())
+                .description("total tenant setup cache miss")
+                .register(registry);
+
     }
+
+
+    private MeterRegistry registry;
+    public HeliumTenantSetupService(MeterRegistry registry) {
+        this.registry = registry;
+    }
+
+
 
     // request to stop the service properly
     public void stopService() {

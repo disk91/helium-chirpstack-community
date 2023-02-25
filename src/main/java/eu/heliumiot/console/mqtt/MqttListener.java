@@ -31,6 +31,7 @@ import eu.heliumiot.console.mqtt.api.HeliumTenantActDeactItf;
 import eu.heliumiot.console.service.HeliumDeviceService;
 import eu.heliumiot.console.service.HeliumDeviceStatService;
 import eu.heliumiot.console.service.HeliumTenantService;
+import eu.heliumiot.console.service.PrometeusService;
 import fr.ingeniousthings.tools.DateConverters;
 import fr.ingeniousthings.tools.HexaConverters;
 import fr.ingeniousthings.tools.Now;
@@ -56,6 +57,10 @@ public class MqttListener implements MqttCallback {
 
         @Autowired
         private ConsoleConfig mqttConfig;
+
+        @Autowired
+        protected PrometeusService prometeusService;
+
 
         private MqttConnectOptions connectionOptions;
         private MemoryPersistence persistence;
@@ -108,6 +113,7 @@ public class MqttListener implements MqttCallback {
         @Override
         public void connectionLost(Throwable arg0) {
                 log.info("MQTT - Connection Lost");
+                prometeusService.addMqttConnectionLoss();
                 // @TODO ... make it working differently to reconnect
                 try {
                         this.mqttClient.connect(this.connectionOptions);
@@ -159,6 +165,10 @@ public class MqttListener implements MqttCallback {
                                         Base64.decode(up.getData()).length,
                                         up.getRxInfo().size() - 1
                                 );
+                                prometeusService.addLoRaUplink(
+                                        Now.NowUtcMs() - DateConverters.StringDateToMs(up.getTime()),
+                                        Base64.decode(up.getData()).length
+                                );
 
                         } catch (JsonProcessingException x) {
                                 log.error("MQTT - failed to parse App uplink - " + x.getMessage());
@@ -197,6 +207,12 @@ public class MqttListener implements MqttCallback {
                                         e.getDeviceInfo().getDevEui(),
                                         e.getDevAddr()
                                 );
+                                prometeusService.addLoRaJoin();
+                                prometeusService.addLoRaUplink(
+                                        Now.NowUtcMs() - DateConverters.StringDateToMs(e.getTime()),
+                                        0
+                                );
+
                         } catch (JsonProcessingException x) {
                                 log.error("MQTT - failed to parse App JOIN - " + x.getMessage());
                                 x.printStackTrace();

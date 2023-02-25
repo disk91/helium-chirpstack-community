@@ -19,11 +19,13 @@
  */
 package fr.ingeniousthings.tools;
 
+import io.micrometer.core.instrument.MeterRegistry;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.function.Supplier;
 
 public abstract class ObjectCache<K, T> {
 
@@ -107,6 +109,7 @@ public abstract class ObjectCache<K, T> {
 
     protected String name;
 
+
     // Set the max live of an element, will be regularly checked
     protected long expirationMs;
     /**
@@ -117,7 +120,7 @@ public abstract class ObjectCache<K, T> {
         this(name,maxSize,-1);
     }
 
-    public ObjectCache (String name, int maxSize, long expirationMs) {
+    public ObjectCache (String name, int maxSize, long expirationMs ) {
         this.cache = new HashMap<K,CachedObject<K,T>>(256,0.8f);
         this.maxCacheSize = maxSize;
         this.cacheMissStat = 0;
@@ -128,6 +131,7 @@ public abstract class ObjectCache<K, T> {
         this.lastGCMs = 0;
         this.name = name;
     }
+
 
     /**
      * This class defines what to do when an object is modified and removed from cache
@@ -324,5 +328,19 @@ public abstract class ObjectCache<K, T> {
         }
         log.info("--------------------------------------------------------------");
     }
+
+    // Prometheus providers
+    public Supplier<Number> getCacheMissStat() {
+        return ()->cacheMissStat;
+    }
+
+    public Supplier<Number>  getTotalCacheTime() {
+        return ()->totalCacheTime;
+    }
+
+    public Supplier<Number>  getTotalCacheTry() {
+        return ()->totalCacheTry;
+    }
+
 
 }

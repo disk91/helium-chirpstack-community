@@ -4,8 +4,10 @@ package eu.heliumiot.console.api;
 import eu.heliumiot.console.api.interfaces.*;
 import eu.heliumiot.console.service.HeliumMessageService;
 import eu.heliumiot.console.service.HeliumTicketService;
+import eu.heliumiot.console.service.PrometeusService;
 import fr.ingeniousthings.tools.ITParseException;
 import fr.ingeniousthings.tools.ITRightException;
+import fr.ingeniousthings.tools.Now;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
@@ -36,6 +38,9 @@ public class TicketApi {
     @Autowired
     protected HeliumTicketService heliumTicketService;
 
+    @Autowired
+    protected PrometeusService prometeusService;
+
     @Operation(summary = "Get ticket list",
             description = "Get my tickets or user tickets when admin, list all pending",
             responses = {
@@ -51,14 +56,18 @@ public class TicketApi {
     public ResponseEntity<?> getTickets(
             HttpServletRequest request
     ) {
+        long startMs= Now.NowUtcMs();
         log.debug("Get tickets for "+request.getUserPrincipal().getName());
         try {
             List<TicketListRespItf> r = heliumTicketService.getUserTickets(request.getUserPrincipal().getName());
             return new ResponseEntity<>(r, HttpStatus.OK);
         } catch (ITRightException x) {
+            prometeusService.addApiTotalError();
             ActionResult r = ActionResult.FORBIDDEN();
             r.setMessage(x.getMessage());
             return new ResponseEntity<>(r, HttpStatus.FORBIDDEN);
+        } finally {
+            prometeusService.addApiTotalTimeMs(startMs);
         }
     }
 
@@ -79,14 +88,18 @@ public class TicketApi {
             @PathVariable String ticketId
 
     ) {
+        long startMs= Now.NowUtcMs();
         log.debug("Get ticket details for "+request.getUserPrincipal().getName()+", id "+ticketId);
         try {
             TicketDetailRespItf r = heliumTicketService.getTicketDetails(request.getUserPrincipal().getName(), ticketId);
             return new ResponseEntity<>(r, HttpStatus.OK);
         } catch (ITRightException x) {
+            prometeusService.addApiTotalError();
             ActionResult r = ActionResult.FORBIDDEN();
             r.setMessage(x.getMessage());
             return new ResponseEntity<>(r, HttpStatus.FORBIDDEN);
+        } finally {
+            prometeusService.addApiTotalTimeMs(startMs);
         }
     }
 
@@ -107,18 +120,23 @@ public class TicketApi {
             HttpServletRequest request,
             @RequestBody(required = true) TicketCreationReqItf ticket
     ) {
+        long startMs= Now.NowUtcMs();
         log.debug("Create a ticket by "+request.getUserPrincipal().getName());
         try {
             heliumTicketService.createTicket(request.getUserPrincipal().getName(),ticket);
             return new ResponseEntity<>(ActionResult.SUCESS(), HttpStatus.CREATED);
         } catch (ITParseException x) {
+            prometeusService.addApiTotalError();
             ActionResult r =  ActionResult.BADREQUEST();
             r.setMessage(x.getMessage());
             return new ResponseEntity<>(r, HttpStatus.BAD_REQUEST);
         } catch (ITRightException x) {
+            prometeusService.addApiTotalError();
             ActionResult r =  ActionResult.FORBIDDEN();
             r.setMessage(x.getMessage());
             return new ResponseEntity<>(r, HttpStatus.FORBIDDEN);
+        } finally {
+            prometeusService.addApiTotalTimeMs(startMs);
         }
     }
 
@@ -138,18 +156,23 @@ public class TicketApi {
             HttpServletRequest request,
             @RequestBody(required = true) TicketResponseReqItf ticketResponse
     ) {
+        long startMs= Now.NowUtcMs();
         log.debug("Add ticket response by "+request.getUserPrincipal().getName());
         try {
             heliumTicketService.addResponse(request.getUserPrincipal().getName(),ticketResponse);
             return new ResponseEntity<>(ActionResult.SUCESS(), HttpStatus.CREATED);
         } catch (ITParseException x) {
+            prometeusService.addApiTotalError();
             ActionResult r =  ActionResult.BADREQUEST();
             r.setMessage(x.getMessage());
             return new ResponseEntity<>(r, HttpStatus.BAD_REQUEST);
         } catch (ITRightException x) {
+            prometeusService.addApiTotalError();
             ActionResult r =  ActionResult.FORBIDDEN();
             r.setMessage(x.getMessage());
             return new ResponseEntity<>(r, HttpStatus.FORBIDDEN);
+        } finally {
+            prometeusService.addApiTotalTimeMs(startMs);
         }
     }
 

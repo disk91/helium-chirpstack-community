@@ -22,6 +22,8 @@ package eu.heliumiot.console.api;
 import eu.heliumiot.console.ConsoleConfig;
 import eu.heliumiot.console.api.interfaces.ActionResult;
 import eu.heliumiot.console.service.ExitService;
+import eu.heliumiot.console.service.PrometeusService;
+import fr.ingeniousthings.tools.Now;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -51,6 +53,9 @@ public class MiscApi {
     @Autowired
     ConsoleConfig consoleConfig;
 
+    @Autowired
+    protected PrometeusService prometeusService;
+
     @Operation(summary = "Backend Version",
             description = "Returns the backend version",
             responses = {
@@ -63,8 +68,10 @@ public class MiscApi {
     public ResponseEntity<?> requestApplicationVersion(
             HttpServletRequest request
     ) {
+        long startMs= Now.NowUtcMs();
         ActionResult r = ActionResult.SUCESS();
         r.setMessage(consoleConfig.getVersion());
+        prometeusService.addApiTotalTimeMs(startMs);
         return new ResponseEntity<>(r, HttpStatus.OK);
     }
 
@@ -80,8 +87,10 @@ public class MiscApi {
     public ResponseEntity<?> requestRouterOui(
             HttpServletRequest request
     ) {
+        long startMs= Now.NowUtcMs();
         ActionResult r = ActionResult.SUCESS();
         r.setMessage(""+consoleConfig.getHeliumGprcOui());
+        prometeusService.addApiTotalTimeMs(startMs);
         return new ResponseEntity<>(r, HttpStatus.OK);
     }
 

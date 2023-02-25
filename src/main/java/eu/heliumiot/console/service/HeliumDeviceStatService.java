@@ -25,6 +25,8 @@ import eu.heliumiot.console.mqtt.api.HeliumDeviceStatItf;
 import eu.heliumiot.console.jpa.repository.HeliumDeviceStatsRepository;
 import fr.ingeniousthings.tools.Now;
 import fr.ingeniousthings.tools.ObjectCache;
+import io.micrometer.core.instrument.Gauge;
+import io.micrometer.core.instrument.MeterRegistry;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -64,7 +66,24 @@ public class HeliumDeviceStatService {
 
         runningJobs=0;
         serviceEnable=true;
+
+        Gauge.builder("cons.device.stat.cache_total_time", this.heliumDeviceStatCache.getTotalCacheTime())
+                .description("total time device stat cache execution")
+                .register(registry);
+        Gauge.builder("cons.device.stat.cache_total", this.heliumDeviceStatCache.getTotalCacheTry())
+                .description("total device stat cache try")
+                .register(registry);
+        Gauge.builder("cons.device.stat.cache_miss", this.heliumDeviceStatCache.getCacheMissStat())
+                .description("total device stat cache miss")
+                .register(registry);
+
     }
+
+    private MeterRegistry registry;
+    public HeliumDeviceStatService(MeterRegistry registry) {
+        this.registry = registry;
+    }
+
 
     // request to stop the service properly
     public void stopService() {

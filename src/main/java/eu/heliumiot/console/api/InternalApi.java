@@ -22,6 +22,8 @@ package eu.heliumiot.console.api;
 import eu.heliumiot.console.ConsoleConfig;
 import eu.heliumiot.console.api.interfaces.ActionResult;
 import eu.heliumiot.console.service.ExitService;
+import eu.heliumiot.console.service.PrometeusService;
+import fr.ingeniousthings.tools.Now;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -47,6 +49,9 @@ public class InternalApi {
 
     @Autowired
     private ExitService exitService;
+
+    @Autowired
+    protected PrometeusService prometeusService;
 
     @Operation(summary = "Exit the application - this API is not exposed",
             description = "Request the backend to stop processing after terminating current work.",
@@ -77,6 +82,9 @@ public class InternalApi {
     public ResponseEntity<?> requestApplicationHealth(
             HttpServletRequest request
     ) {
+        // long startMs= Now.NowUtcMs();
+        // ...
+        // prometeusService.addApiTotalTimeMs(startMs);
         return new ResponseEntity<>(ActionResult.SUCESS(), HttpStatus.OK);
     }
 

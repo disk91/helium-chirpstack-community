@@ -5,8 +5,10 @@ import eu.heliumiot.console.api.interfaces.*;
 import eu.heliumiot.console.service.HeliumMessageService;
 import eu.heliumiot.console.service.HeliumTenantService;
 import eu.heliumiot.console.service.HeliumTenantSetupService;
+import eu.heliumiot.console.service.PrometeusService;
 import fr.ingeniousthings.tools.ITParseException;
 import fr.ingeniousthings.tools.ITRightException;
+import fr.ingeniousthings.tools.Now;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
@@ -37,6 +39,9 @@ public class MessageApi {
     @Autowired
     protected HeliumMessageService heliumMessageService;
 
+    @Autowired
+    protected PrometeusService prometeusService;
+
 
     @Operation(summary = "Get public Messages for front page",
             description = "Get public message for front page",
@@ -52,7 +57,9 @@ public class MessageApi {
     public ResponseEntity<?> getPublicMessage(
             HttpServletRequest request
     ) {
+        long startMs= Now.NowUtcMs();
         List<MessagePendingRespItf> r = heliumMessageService.getHeliumMessageFrontPage();
+        prometeusService.addApiTotalTimeMs(startMs);
         return new ResponseEntity<>(r, HttpStatus.OK);
     }
 
@@ -72,12 +79,16 @@ public class MessageApi {
     public ResponseEntity<?> getPendingMessage(
             HttpServletRequest request
     ) {
+        long startMs= Now.NowUtcMs();
         log.debug("Get pending message for "+request.getUserPrincipal().getName());
         try {
             List<MessagePendingRespItf> r = heliumMessageService.getHeliumMessageForUser(request.getUserPrincipal().getName());
             return new ResponseEntity<>(r, HttpStatus.OK);
         } catch (ITRightException x) {
+            prometeusService.addApiTotalError();
             return new ResponseEntity<>(ActionResult.FORBIDDEN(), HttpStatus.FORBIDDEN);
+        } finally {
+            prometeusService.addApiTotalTimeMs(startMs);
         }
     }
 
@@ -96,12 +107,16 @@ public class MessageApi {
     public ResponseEntity<?> ackPendingMessage(
             HttpServletRequest request
     ) {
+        long startMs= Now.NowUtcMs();
         log.debug("Ack pending message for "+request.getUserPrincipal().getName());
         try {
             heliumMessageService.ackHeliumMessageForUser(request.getUserPrincipal().getName());
             return new ResponseEntity<>(ActionResult.SUCESS(), HttpStatus.OK);
         } catch (ITRightException x) {
+            prometeusService.addApiTotalError();
             return new ResponseEntity<>(ActionResult.FORBIDDEN(), HttpStatus.FORBIDDEN);
+        } finally {
+            prometeusService.addApiTotalTimeMs(startMs);
         }
     }
 
@@ -125,8 +140,10 @@ public class MessageApi {
     public ResponseEntity<?> getMessages(
             HttpServletRequest request
     ) {
+        long startMs= Now.NowUtcMs();
         log.debug("Get list of messages by admin "+request.getUserPrincipal().getName());
         List<MessageItf> r = heliumMessageService.getLastMessages(5);
+        prometeusService.addApiTotalTimeMs(startMs);
         return new ResponseEntity<>(r, HttpStatus.OK);
     }
 
@@ -148,14 +165,18 @@ public class MessageApi {
             HttpServletRequest request,
             @RequestBody(required = true) MessageItf message
     ) {
+        long startMs= Now.NowUtcMs();
         log.debug("Update one message by admin "+request.getUserPrincipal().getName());
         try {
             MessageItf r = heliumMessageService.updateMessage(message);
             return new ResponseEntity<>(r, HttpStatus.OK);
         } catch (ITParseException x) {
+            prometeusService.addApiTotalError();
             ActionResult r =  ActionResult.BADREQUEST();
             r.setMessage(x.getMessage());
             return new ResponseEntity<>(r, HttpStatus.BAD_REQUEST);
+        } finally {
+            prometeusService.addApiTotalTimeMs(startMs);
         }
     }
 
@@ -177,14 +198,18 @@ public class MessageApi {
             HttpServletRequest request,
             @RequestBody(required = true) MessageItf message
     ) {
+        long startMs= Now.NowUtcMs();
         log.debug("Create a message by admin "+request.getUserPrincipal().getName());
         try {
             MessageItf r = heliumMessageService.createMessage(message);
             return new ResponseEntity<>(r, HttpStatus.CREATED);
         } catch (ITParseException x) {
+            prometeusService.addApiTotalError();
             ActionResult r =  ActionResult.BADREQUEST();
             r.setMessage(x.getMessage());
             return new ResponseEntity<>(r, HttpStatus.BAD_REQUEST);
+        } finally {
+            prometeusService.addApiTotalTimeMs(startMs);
         }
     }
 
@@ -207,14 +232,18 @@ public class MessageApi {
             @Parameter(required = true, name = "messId", description = "message Id")
             @PathVariable String messId
     ) {
+        long startMs= Now.NowUtcMs();
         log.debug("Delete message ("+messId+") by "+request.getUserPrincipal().getName());
         try {
             heliumMessageService.deleteMessage(messId);
             return new ResponseEntity<>(ActionResult.SUCESS(), HttpStatus.OK);
         } catch (ITParseException x) {
+            prometeusService.addApiTotalError();
             ActionResult r =  ActionResult.BADREQUEST();
             r.setMessage(x.getMessage());
             return new ResponseEntity<>(r, HttpStatus.BAD_REQUEST);
+        } finally {
+            prometeusService.addApiTotalTimeMs(startMs);
         }
     }
 

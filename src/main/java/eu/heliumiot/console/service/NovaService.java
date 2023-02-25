@@ -40,6 +40,9 @@ public class NovaService {
     @Autowired
     protected HeliumDeviceCacheService heliumDeviceCacheService;
 
+    @Autowired
+    protected PrometeusService prometeusService;
+
     // ----------------------------------
     // MANAGE THE SESSIONS NwkSkey
     // ----------------------------------
@@ -383,34 +386,42 @@ public class NovaService {
 
         long start = Now.NowUtcMs();
         log.debug("GRPC Get route "+routeId);
-        ManagedChannel channel = ManagedChannelBuilder.forAddress(
-                consoleConfig.getHeliumGrpcServer(),
-                consoleConfig.getHeliumGrpcPort()
-        ).usePlaintext().build();
-        RouteGrpc.routeBlockingStub stub = RouteGrpc.newBlockingStub(channel);
+        try {
+            ManagedChannel channel = ManagedChannelBuilder.forAddress(
+                    consoleConfig.getHeliumGrpcServer(),
+                    consoleConfig.getHeliumGrpcPort()
+            ).usePlaintext().build();
+            RouteGrpc.routeBlockingStub stub = RouteGrpc.newBlockingStub(channel);
 
-        long now = Now.NowUtcMs();
-        Config.route_get_req_v1 requestToSign = Config.route_get_req_v1.newBuilder()
-                .setOwner(this.owner)
-                .setId(ByteString.copyFromUtf8(routeId))
-                .setTimestamp(now)
-                .clearSignature()
-                .build();
-        byte[] requestToSignContent = requestToSign.toByteArray();
-        this.signer.update(requestToSignContent, 0, requestToSignContent.length);
-        byte[] signature = signer.generateSignature();
+            long now = Now.NowUtcMs();
+            Config.route_get_req_v1 requestToSign = Config.route_get_req_v1.newBuilder()
+                    .setOwner(this.owner)
+                    .setId(ByteString.copyFromUtf8(routeId))
+                    .setTimestamp(now)
+                    .clearSignature()
+                    .build();
+            byte[] requestToSignContent = requestToSign.toByteArray();
+            this.signer.update(requestToSignContent, 0, requestToSignContent.length);
+            byte[] signature = signer.generateSignature();
 
-        Config.route_v1 response = stub.get(Config.route_get_req_v1.newBuilder()
-                .setOwner(this.owner)
-                .setId(ByteString.copyFromUtf8(routeId))
-                .setTimestamp(now)
-                .setSignature(ByteString.copyFrom(signature))
-                .build());
-        channel.shutdown();
-        log.debug("GPRC get route duration "+(Now.NowUtcMs()-start)+"ms");
-        log.debug("GRPC route "+response.getId().toStringUtf8()+ " has "+response.getEuisList().size()+" entries ");
+            Config.route_v1 response = stub.get(Config.route_get_req_v1.newBuilder()
+                    .setOwner(this.owner)
+                    .setId(ByteString.copyFromUtf8(routeId))
+                    .setTimestamp(now)
+                    .setSignature(ByteString.copyFrom(signature))
+                    .build());
+            channel.shutdown();
 
-        return response;
+            log.debug("GPRC get route duration " + (Now.NowUtcMs() - start) + "ms");
+            log.debug("GRPC route " + response.getId().toStringUtf8() + " has " + response.getEuisList().size() + " entries ");
+            return response;
+        } catch ( Exception x ) {
+            log.warn("GRPC get route error "+x.getMessage());
+            prometeusService.addHeliumTotalError();
+        } finally {
+            prometeusService.addHeliumApiTotalTimeMs(start);
+        }
+        return null;
     }
 
 
@@ -454,8 +465,11 @@ public class NovaService {
             }
             return response;
         } catch ( StatusRuntimeException x ) {
+            prometeusService.addHeliumTotalError();
             log.warn("Nova Backend not reachable");
             return null;
+        } finally {
+            prometeusService.addHeliumApiTotalTimeMs(start);
         }
     }
 
@@ -591,6 +605,7 @@ public class NovaService {
                 .setNonce(route.getNonce())
                 .build();
 
+        long startNova = Now.NowUtcMs();
         try {
             // push the new version
             ManagedChannel channel = ManagedChannelBuilder.forAddress(
@@ -618,9 +633,12 @@ public class NovaService {
                     .build());
             channel.shutdown();
         } catch (Exception x) {
+            prometeusService.addHeliumTotalError();
             log.error("GRPC error during route update "+x.getMessage());
             x.printStackTrace();
             return false;
+        } finally {
+            prometeusService.addHeliumApiTotalTimeMs(startNova);
         }
         log.debug("GPRC list update duration "+(Now.NowUtcMs()-start)+"ms");
         return true;
