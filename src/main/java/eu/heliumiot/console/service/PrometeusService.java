@@ -1,15 +1,30 @@
 package eu.heliumiot.console.service;
 
+import eu.heliumiot.console.ConsoleConfig;
+import eu.heliumiot.console.jpa.db.Device;
+import eu.heliumiot.console.jpa.db.SumResult;
+import eu.heliumiot.console.jpa.repository.DeviceRepository;
+import eu.heliumiot.console.jpa.repository.HeliumTenantRepository;
+import eu.heliumiot.console.jpa.repository.TenantRepository;
+import eu.heliumiot.console.jpa.repository.UserRepository;
+import fr.ingeniousthings.tools.DateConverters;
 import fr.ingeniousthings.tools.Now;
+import fr.ingeniousthings.tools.Tools;
 import io.micrometer.core.instrument.Counter;
 import io.micrometer.core.instrument.Gauge;
 import io.micrometer.core.instrument.MeterRegistry;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 import java.util.function.Supplier;
 
 @Component
 public class PrometeusService {
+
+    private final Logger log = LoggerFactory.getLogger(this.getClass());
 
     // ---- API Metrics
 
@@ -46,12 +61,19 @@ public class PrometeusService {
     private long devadrUpdateTotalTimeMs = 0;   // time spent in processing update in the route - OK
     private long devadrUpdateTotal = 0;         // number of devadr filter update - OK
 
-    // ------- devices stats
+    // ------- data stats
     private long dcTotal = 0;                   // total number of DCs in the tenants
     private long deviceTotal = 0;               // number of devices in db
     private long tenantTotal = 0;               // number of tenants
     private long userTotal = 0;                 // number of users
 
+    private long lastSeenTestDevice = 0;        // one of the device is a test device, measure last seen
+                                                // to verify if network works, for alarm generation
+
+    // -------- db info
+
+    private long queryTotalMs = 0;              // time to execute the data stats
+    private long queryTotal = 0;                // number of query execution
 
 
     // =============================================================
@@ -117,6 +139,30 @@ public class PrometeusService {
         this.deviceDeletionTotal++;
     }
 
+    public void updateDcTotal(long dcTot) {
+        this.dcTotal = dcTot;
+    }
+
+    public void updateTenantTotal(long total) {
+        this.tenantTotal = total;
+    }
+
+    public void updateDeviceTotal(long total) {
+        this.deviceTotal = total;
+    }
+
+    public void updateUserTotal(long total) {
+        this.userTotal = total;
+    }
+
+    public void setLastSeenTestDevice(long timestamp){
+        this.lastSeenTestDevice = timestamp;
+    }
+
+    public void addQueryDb(long duration) {
+        this.queryTotal++;
+        this.queryTotalMs+=duration;
+    }
 
     // =============================================================
     // Prometheus interface
@@ -210,6 +256,27 @@ public class PrometeusService {
     protected Supplier<Number> getDeviceDeletion() {
         return ()->deviceDeletionTotal;
     }
+    protected Supplier<Number> getDcTotal() {
+        return ()->dcTotal;
+    }
+    protected Supplier<Number> getDeviceTotal() {
+        return ()->deviceTotal;
+    }
+    protected Supplier<Number> getTenantTotal() {
+        return ()->tenantTotal;
+    }
+    protected Supplier<Number> getUserTotal() {
+        return ()->userTotal;
+    }
+    protected Supplier<Number> getLastSeenTestDev() {
+        return ()->(Now.NowUtcMs() - lastSeenTestDevice);
+    }
+    protected Supplier<Number> getDbQueryTotalMs() {
+        return ()->queryTotalMs;
+    }
+    protected Supplier<Number> getDbQueryTotal() {
+        return ()->queryTotal;
+    }
 
 
     public PrometeusService(MeterRegistry registry) {
@@ -286,7 +353,72 @@ public class PrometeusService {
         Gauge.builder("cons.device.deletion.total", getDeviceDeletion())
                 .description("Number of device deleted")
                 .register(registry);
+        Gauge.builder("cons.stat.device.total", getDeviceTotal())
+                .description("Number of device in the database")
+                .register(registry);
+        Gauge.builder("cons.stat.user.total", getUserTotal())
+                .description("Number of user in the database")
+                .register(registry);
+        Gauge.builder("cons.stat.tenant.total", getTenantTotal())
+                .description("Number of tenants in the database")
+                .register(registry);
+        Gauge.builder("cons.stat.dc.total", getDcTotal())
+                .description("Number of DCs in the tenants")
+                .register(registry);
+        Gauge.builder("cons.stat.test_device.last_seen", getLastSeenTestDev())
+                .description("time since receiving a message from test device")
+                .register(registry);
+        Gauge.builder("cons.stat.db.query_ms", getDbQueryTotalMs())
+                .description("total time spent in quering the Db for stat")
+                .register(registry);
+        Gauge.builder("cons.stat.db.query", getDbQueryTotal())
+                .description("total queries of Db for stat")
+                .register(registry);
 
     }
+
+    @Autowired
+    protected HeliumTenantRepository heliumTenantRepository;
+
+    @Autowired
+    protected TenantRepository tenantRepository;
+
+    @Autowired
+    protected UserRepository userRepository;
+
+    @Autowired
+    protected DeviceRepository deviceRepository;
+
+    @Autowired
+    protected ConsoleConfig consoleConfig;
+
+    @Scheduled(fixedRateString = "${helium.prometeus.scanPeriod}", initialDelay = 1_000)
+    protected void backgroundPrometeusStatsUpdate() {
+        long start = Now.NowUtcMs();
+        // collect metrics form DB and DB response time metrics for this
+        long tenants = tenantRepository.count();
+        long users = userRepository.count();
+        long devices = deviceRepository.count();
+        Long sumDc = heliumTenantRepository.selectSumOfDcs();
+
+        Device d = null;
+        if ( consoleConfig.getTestdeviceEui().length() == 16 ) {
+            d = deviceRepository.findOneDeviceByDevEui(Tools.EuiStringToByteArray(consoleConfig.getTestdeviceEui()));
+        }
+
+        this.addQueryDb(Now.NowUtcMs()-start);
+        this.updateTenantTotal(tenants);
+        this.updateUserTotal(users);
+        this.updateDeviceTotal(devices);
+        this.updateDcTotal(sumDc.longValue());
+        this.setLastSeenTestDevice(Now.NowUtcMs()); //default behavior
+        if ( d != null ) {
+            if ( d.getLastSeenAt() != null ) {
+                this.setLastSeenTestDevice(d.getLastSeenAt().getTime());
+            }
+        }
+        log.debug("backgroundPrometeusStatsUpdate execution has been "+(Now.NowUtcMs()-start)+"ms.");
+    }
+
 
 }

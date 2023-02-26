@@ -9,3 +9,4 @@ datasources:
     basicAuth: false
     isDefault: true
     editable: true
+    uid: PBFA97CFB590B2093

@@ -682,4 +682,35 @@ public class ConsoleConfig {
         return getStripeCurrencyDefault();
     }
 
+    // ==============================
+    // Monitoring
+    // ==============================
+
+    @Value ("${helium.testdevice.eui}")
+    private String testdeviceEui;
+
+    @Value ("${helium.testdevice.eui.default}")
+    private String testdeviceEuiDefault;
+
+    @Value ("${helium.stats.report.enable}")
+    private boolean statReportEnable;
+
+    public boolean isStatReportEnable() {
+        return statReportEnable;
+    }
+
+    public String getTestdeviceEuiExternal() {
+        return testdeviceEui;
+    }
+
+    public String getTestdeviceEuiDefault() {
+        return testdeviceEuiDefault;
+    }
+
+    public String getTestdeviceEui() {
+        if (this.getTestdeviceEuiExternal().length() > 0) return this.getTestdeviceEuiExternal();
+        return getTestdeviceEuiDefault();
+    }
+
+
 }

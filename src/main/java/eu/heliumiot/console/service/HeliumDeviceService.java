@@ -632,7 +632,7 @@ public class HeliumDeviceService {
         } finally {
             this.runningJobs--;
         }
-        log.info("deviceActivityJob - processed in " + (Now.NowUtcMs() - start) + "ms");
+        log.debug("deviceActivityJob - processed in " + (Now.NowUtcMs() - start) + "ms");
 
     }
 

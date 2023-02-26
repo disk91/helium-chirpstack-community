@@ -20,6 +20,8 @@
 package eu.heliumiot.console.jpa.repository;
 
 import eu.heliumiot.console.jpa.db.HeliumTenant;
+import eu.heliumiot.console.jpa.db.SumResult;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
@@ -32,5 +34,9 @@ public interface HeliumTenantRepository extends CrudRepository<HeliumTenant, UUI
     public HeliumTenant findOneHeliumTenantByTenantUUID(String id);
 
     public List<HeliumTenant> findHeliumTenantByState(HeliumTenant.TenantState state);
+
+    @Query(value = "SELECT SUM(dc_balance) FROM helium_tenant",nativeQuery = true)
+    public Long selectSumOfDcs();
+
 
 }
