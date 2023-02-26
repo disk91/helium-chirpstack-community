@@ -432,24 +432,24 @@ public class NovaService {
 
         long start = Now.NowUtcMs();
         log.debug("GRPC List routes ");
-        ManagedChannel channel = ManagedChannelBuilder.forAddress(
-                consoleConfig.getHeliumGrpcServer(),
-                consoleConfig.getHeliumGrpcPort()
-        ).usePlaintext().build();
-        RouteGrpc.routeBlockingStub stub = RouteGrpc.newBlockingStub(channel);
-
-        long now = Now.NowUtcMs();
-        Config.route_list_req_v1 requestToSign = Config.route_list_req_v1.newBuilder()
-                .setOwner(this.owner)
-                .setOui(consoleConfig.getHeliumGprcOui())
-                .setTimestamp(now)
-                .clearSignature()
-                .build();
-        byte[] requestToSignContent = requestToSign.toByteArray();
-        this.signer.update(requestToSignContent, 0, requestToSignContent.length);
-        byte[] signature = signer.generateSignature();
-
         try {
+            ManagedChannel channel = ManagedChannelBuilder.forAddress(
+                    consoleConfig.getHeliumGrpcServer(),
+                    consoleConfig.getHeliumGrpcPort()
+            ).usePlaintext().build();
+            RouteGrpc.routeBlockingStub stub = RouteGrpc.newBlockingStub(channel);
+
+            long now = Now.NowUtcMs();
+            Config.route_list_req_v1 requestToSign = Config.route_list_req_v1.newBuilder()
+                    .setOwner(this.owner)
+                    .setOui(consoleConfig.getHeliumGprcOui())
+                    .setTimestamp(now)
+                    .clearSignature()
+                    .build();
+            byte[] requestToSignContent = requestToSign.toByteArray();
+            this.signer.update(requestToSignContent, 0, requestToSignContent.length);
+            byte[] signature = signer.generateSignature();
+
             Config.route_list_res_v1 response = stub.list(Config.route_list_req_v1.newBuilder()
                     .setOwner(this.owner)
                     .setOui(consoleConfig.getHeliumGprcOui())
@@ -457,12 +457,12 @@ public class NovaService {
                     .setSignature(ByteString.copyFrom(signature))
                     .build());
             channel.shutdown();
-            log.debug("GPRC list route duration "+(Now.NowUtcMs()-start)+"ms");
-            log.debug("GRPC routes ("+response.getRoutesCount()+ ")");
-            for ( Config.route_v1 route : response.getRoutesList() ) {
-                log.debug("GRPC route id "+route.getId().toStringUtf8()+ " with "+route.getEuisList().size()+" euis");
-                for ( Config.eui_v1 eui : route.getEuisList() ) {
-                    log.debug("GRPC contains route for "+Tools.EuiStringFromLong(eui.getDevEui())+" / "+Tools.EuiStringFromLong(eui.getAppEui()));
+            log.debug("GPRC list route duration " + (Now.NowUtcMs() - start) + "ms");
+            log.debug("GRPC routes (" + response.getRoutesCount() + ")");
+            for (Config.route_v1 route : response.getRoutesList()) {
+                log.debug("GRPC route id " + route.getId().toStringUtf8() + " with " + route.getEuisList().size() + " euis");
+                for (Config.eui_v1 eui : route.getEuisList()) {
+                    log.debug("GRPC contains route for " + Tools.EuiStringFromLong(eui.getDevEui()) + " / " + Tools.EuiStringFromLong(eui.getAppEui()));
                 }
             }
             return response;

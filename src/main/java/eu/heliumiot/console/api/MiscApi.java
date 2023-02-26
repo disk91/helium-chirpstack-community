@@ -19,8 +19,15 @@
  */
 package eu.heliumiot.console.api;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
 import eu.heliumiot.console.ConsoleConfig;
 import eu.heliumiot.console.api.interfaces.ActionResult;
+import eu.heliumiot.console.api.interfaces.ServerLogItf;
+import eu.heliumiot.console.api.interfaces.UserSignUpReqItf;
+import eu.heliumiot.console.jpa.db.HeliumLogs;
+import eu.heliumiot.console.jpa.repository.HeliumLogsRepository;
 import eu.heliumiot.console.service.ExitService;
 import eu.heliumiot.console.service.PrometeusService;
 import fr.ingeniousthings.tools.Now;
@@ -35,10 +42,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -94,6 +98,42 @@ public class MiscApi {
         return new ResponseEntity<>(r, HttpStatus.OK);
     }
 
+    @Autowired
+    protected HeliumLogsRepository heliumLogsRepository;
+
+    @Operation(summary = "Record a log",
+            description = "Record a log",
+            responses = {
+                    @ApiResponse(responseCode = "200", description= "Done", content = @Content(schema = @Schema(implementation = ActionResult.class)))
+            }
+    )
+    @RequestMapping(value="/logs",
+            produces = MediaType.APPLICATION_JSON_VALUE,
+            method= RequestMethod.POST)
+    public ResponseEntity<?> recordConsoleLog(
+            HttpServletRequest request,
+            @RequestBody(required = true) String log
+    ) {
+        if ( ! consoleConfig.isStatReportEnable() ) {
+            if (log.length() < 1500) {
+                ObjectMapper mapper = new ObjectMapper();
+                mapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
+                mapper.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
+                mapper.configure(SerializationFeature.FAIL_ON_SELF_REFERENCES, false);
+                try {
+                    ServerLogItf sl = mapper.readValue(log, ServerLogItf.class);
+                    HeliumLogs hl = new HeliumLogs();
+                    hl.setInsertTime(Now.NowUtcMs());
+                    hl.setInfo(log);
+                    //@Todo - protect against too many attempt
+                    heliumLogsRepository.save(hl);
+                } catch (Exception x) {
+                }
+            }
+        }
+        ActionResult r = ActionResult.SUCESS();
+        return new ResponseEntity<>(r, HttpStatus.OK);
+    }
 
 }
 

@@ -692,11 +692,17 @@ public class ConsoleConfig {
     @Value ("${helium.testdevice.eui.default}")
     private String testdeviceEuiDefault;
 
+    @Value ("${helium.stats.report.enable.default}")
+    private boolean statReportEnableDefault;
+
     @Value ("${helium.stats.report.enable}")
-    private boolean statReportEnable;
+    private String statReportEnable;
 
     public boolean isStatReportEnable() {
-        return statReportEnable;
+        if ( statReportEnable.length() > 0 ) {
+            if ( statReportEnable.compareToIgnoreCase("true") == 0 ) return true;
+            return false;
+        } else return statReportEnableDefault;
     }
 
     public String getTestdeviceEuiExternal() {

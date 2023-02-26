@@ -1,12 +1,15 @@
 package eu.heliumiot.console.service;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
 import eu.heliumiot.console.ConsoleConfig;
+import eu.heliumiot.console.api.interfaces.ServerLogItf;
 import eu.heliumiot.console.jpa.db.Device;
+import eu.heliumiot.console.jpa.db.HeliumLogs;
 import eu.heliumiot.console.jpa.db.SumResult;
-import eu.heliumiot.console.jpa.repository.DeviceRepository;
-import eu.heliumiot.console.jpa.repository.HeliumTenantRepository;
-import eu.heliumiot.console.jpa.repository.TenantRepository;
-import eu.heliumiot.console.jpa.repository.UserRepository;
+import eu.heliumiot.console.jpa.repository.*;
 import fr.ingeniousthings.tools.DateConverters;
 import fr.ingeniousthings.tools.Now;
 import fr.ingeniousthings.tools.Tools;
@@ -16,9 +19,12 @@ import io.micrometer.core.instrument.MeterRegistry;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.*;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
+import org.springframework.web.client.RestTemplate;
 
+import java.util.ArrayList;
 import java.util.function.Supplier;
 
 @Component
@@ -269,7 +275,7 @@ public class PrometeusService {
         return ()->userTotal;
     }
     protected Supplier<Number> getLastSeenTestDev() {
-        return ()->(Now.NowUtcMs() - lastSeenTestDevice);
+        return ()->((lastSeenTestDevice >0)?(Now.NowUtcMs() - lastSeenTestDevice):0);
     }
     protected Supplier<Number> getDbQueryTotalMs() {
         return ()->queryTotalMs;
@@ -420,5 +426,52 @@ public class PrometeusService {
         log.debug("backgroundPrometeusStatsUpdate execution has been "+(Now.NowUtcMs()-start)+"ms.");
     }
 
+    @Autowired
+    protected HeliumLogsRepository heliumLogsRepository;
+    @Scheduled(fixedRateString = "${helium.prometeus.logPeriod}", initialDelay = 30_000)
+    protected void backgroundLogStatsUpdate() {
+        long tenants = tenantRepository.count();
+        long users = userRepository.count();
+        long devices = deviceRepository.count();
 
+        ServerLogItf sl = new ServerLogItf();
+        sl.setServerName(consoleConfig.getHeliumConsoleName());
+        sl.setServerUrl(consoleConfig.getHeliumConsoleUrl());
+        sl.setServerVersion(consoleConfig.getVersion());
+        sl.setTenantNumber(tenants);
+        sl.setUserNumber(users);
+        sl.setDeviceNumber(devices);
+
+        ObjectMapper mapper = new ObjectMapper();
+        mapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
+        mapper.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
+        mapper.configure(SerializationFeature.FAIL_ON_SELF_REFERENCES, false);
+
+        HeliumLogs hl = new HeliumLogs();
+        hl.setInsertTime(Now.NowUtcMs());
+        try {
+            hl.setInfo(mapper.writeValueAsString(sl));
+            heliumLogsRepository.save(hl);
+
+            if ( consoleConfig.isStatReportEnable() ) {
+                HttpHeaders headers = new HttpHeaders();
+                ArrayList<MediaType> accept = new ArrayList<>();
+                accept.add(MediaType.APPLICATION_JSON);
+                headers.setAccept(accept);
+                headers.add(HttpHeaders.USER_AGENT, "helium_chirp/1.0");
+                RestTemplate restTemplate = new RestTemplate();
+                HttpEntity<String> requestEntity = new HttpEntity<String>(hl.getInfo(), headers);
+                ResponseEntity<String> responseEntity =
+                        restTemplate.exchange(
+                                "https://stat.helium-iot.xyz/console/1.0/misc/logs",
+                                HttpMethod.POST,
+                                requestEntity,
+                                String.class
+                        );
+            }
+        } catch (JsonProcessingException x) {
+        } catch (Exception x){
+        }
+
+    }
 }
