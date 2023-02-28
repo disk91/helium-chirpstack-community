@@ -18,8 +18,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
-import xyz.nova.grpc.Config;
-import xyz.nova.grpc.RouteGrpc;
+import xyz.nova.grpc.*;
 
 import javax.annotation.PostConstruct;
 import java.io.FileInputStream;
@@ -27,6 +26,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 
 @Service
@@ -383,7 +383,7 @@ public class NovaService {
      * @param routeId
      * @return
      */
-    private Config.route_v1 grpcGetOneRoute(String routeId) {
+    private route_v1 grpcGetOneRoute(String routeId) {
         if ( ! this.grpcInitOk ) return null;
 
         long start = Now.NowUtcMs();
@@ -393,12 +393,11 @@ public class NovaService {
                     consoleConfig.getHeliumGrpcServer(),
                     consoleConfig.getHeliumGrpcPort()
             ).usePlaintext().build();
-            RouteGrpc.routeBlockingStub stub = RouteGrpc.newBlockingStub(channel);
+            routeGrpc.routeBlockingStub stub = routeGrpc.newBlockingStub(channel);
 
             long now = Now.NowUtcMs();
-            Config.route_get_req_v1 requestToSign = Config.route_get_req_v1.newBuilder()
-                    .setOwner(this.owner)
-                    .setId(ByteString.copyFromUtf8(routeId))
+            route_get_req_v1 requestToSign = route_get_req_v1.newBuilder()
+                    .setId(routeId)
                     .setTimestamp(now)
                     .clearSignature()
                     .build();
@@ -406,16 +405,15 @@ public class NovaService {
             this.signer.update(requestToSignContent, 0, requestToSignContent.length);
             byte[] signature = signer.generateSignature();
 
-            Config.route_v1 response = stub.get(Config.route_get_req_v1.newBuilder()
-                    .setOwner(this.owner)
-                    .setId(ByteString.copyFromUtf8(routeId))
+            route_v1 response = stub.get(route_get_req_v1.newBuilder()
+                    .setId(routeId)
                     .setTimestamp(now)
                     .setSignature(ByteString.copyFrom(signature))
                     .build());
             channel.shutdown();
 
             log.debug("GPRC get route duration " + (Now.NowUtcMs() - start) + "ms");
-            log.debug("GRPC route " + response.getId().toStringUtf8() + " has " + response.getEuisList().size() + " entries ");
+            log.debug("GRPC route " + response.getId());
             return response;
         } catch ( Exception x ) {
             log.warn("GRPC get route error "+x.getMessage());
@@ -426,8 +424,54 @@ public class NovaService {
         return null;
     }
 
+    private List<eui_pair_v1> grpcGetEuiFromRoute(String routeId) {
+        if ( ! this.grpcInitOk ) return null;
 
-    private Config.route_list_res_v1 grpcListRoutes() {
+        long start = Now.NowUtcMs();
+        log.debug("GRPC Get route Euis "+routeId);
+        try {
+            ManagedChannel channel = ManagedChannelBuilder.forAddress(
+                    consoleConfig.getHeliumGrpcServer(),
+                    consoleConfig.getHeliumGrpcPort()
+            ).usePlaintext().build();
+            routeGrpc.routeBlockingStub stub = routeGrpc.newBlockingStub(channel);
+
+            long now = Now.NowUtcMs();
+            route_get_euis_req_v1 requestToSign = route_get_euis_req_v1.newBuilder()
+                    .setRouteId(routeId)
+                    .setTimestamp(now)
+                    .clearSignature()
+                    .build();
+            byte[] requestToSignContent = requestToSign.toByteArray();
+            this.signer.update(requestToSignContent, 0, requestToSignContent.length);
+            byte[] signature = signer.generateSignature();
+
+            Iterator<eui_pair_v1> response = stub.getEuis(route_get_euis_req_v1.newBuilder()
+                    .setRouteId(routeId)
+                    .setTimestamp(now)
+                    .setSignature(ByteString.copyFrom(signature))
+                    .build());
+            channel.shutdown();
+            ArrayList<eui_pair_v1> rl = new ArrayList<>();
+            while (response.hasNext()) {
+                rl.add(response.next());
+            }
+
+            log.debug("GPRC get route EUIs duration " + (Now.NowUtcMs() - start) + "ms");
+            log.debug("GRPC route " + routeId + " has " + rl.size() + " entries ");
+            return rl;
+        } catch ( Exception x ) {
+            log.warn("GRPC get route EUIs error "+x.getMessage());
+            prometeusService.addHeliumTotalError();
+        } finally {
+            prometeusService.addHeliumApiTotalTimeMs(start);
+        }
+        return null;
+    }
+
+
+
+    private route_list_res_v1 grpcListRoutes() {
         if ( ! this.grpcInitOk ) return null;
 
         long start = Now.NowUtcMs();
@@ -437,11 +481,10 @@ public class NovaService {
                     consoleConfig.getHeliumGrpcServer(),
                     consoleConfig.getHeliumGrpcPort()
             ).usePlaintext().build();
-            RouteGrpc.routeBlockingStub stub = RouteGrpc.newBlockingStub(channel);
+            routeGrpc.routeBlockingStub stub = routeGrpc.newBlockingStub(channel);
 
             long now = Now.NowUtcMs();
-            Config.route_list_req_v1 requestToSign = Config.route_list_req_v1.newBuilder()
-                    .setOwner(this.owner)
+            route_list_req_v1 requestToSign = route_list_req_v1.newBuilder()
                     .setOui(consoleConfig.getHeliumGprcOui())
                     .setTimestamp(now)
                     .clearSignature()
@@ -450,8 +493,7 @@ public class NovaService {
             this.signer.update(requestToSignContent, 0, requestToSignContent.length);
             byte[] signature = signer.generateSignature();
 
-            Config.route_list_res_v1 response = stub.list(Config.route_list_req_v1.newBuilder()
-                    .setOwner(this.owner)
+            route_list_res_v1 response = stub.list(route_list_req_v1.newBuilder()
                     .setOui(consoleConfig.getHeliumGprcOui())
                     .setTimestamp(now)
                     .setSignature(ByteString.copyFrom(signature))
@@ -459,8 +501,8 @@ public class NovaService {
             channel.shutdown();
             log.debug("GPRC list route duration " + (Now.NowUtcMs() - start) + "ms");
             log.debug("GRPC routes (" + response.getRoutesCount() + ")");
-            for (Config.route_v1 route : response.getRoutesList()) {
-                log.debug("GRPC route id " + route.getId().toStringUtf8() + " with " + route.getEuisList().size() + " euis");
+            for (route_v1 route : response.getRoutesList()) {
+                log.debug("GRPC route id " + route.getId() + " with " + route.getEuisList().size() + " euis");
                 for (Config.eui_v1 eui : route.getEuisList()) {
                     log.debug("GRPC contains route for " + Tools.EuiStringFromLong(eui.getDevEui()) + " / " + Tools.EuiStringFromLong(eui.getAppEui()));
                 }
@@ -479,7 +521,7 @@ public class NovaService {
     public List<NovaDevice> getAllKnownDevices() {
         ArrayList<NovaDevice> ret = new ArrayList<>();
 
-        Config.route_list_res_v1 routes = this.grpcListRoutes();
+        route_list_res_v1 routes = this.grpcListRoutes();
         if( routes == null || routes.getRoutesCount() == 0 || routes.getRoutesCount() > 1) {
             // @TODO keep it simple currently, only one route is supported
             // means the route must be initialized previously
@@ -493,7 +535,7 @@ public class NovaService {
                 log.error("GRPC impossible to get the routes");
             }
         } else {
-            Config.route_v1 route = routes.getRoutes(0);
+            route_v1 route = routes.getRoutes(0);
             for ( Config.eui_v1 eui : route.getEuisList() ) {
                 NovaDevice n = new NovaDevice();
                 n.devEui = Tools.EuiStringFromLong(eui.getDevEui());
@@ -519,7 +561,7 @@ public class NovaService {
             log.debug("GRPC Remove routes ("+devices.size()+")");
         }
 
-        Config.route_list_res_v1 routes = this.grpcListRoutes();
+        route_list_res_v1 routes = this.grpcListRoutes();
         if( routes == null || routes.getRoutesCount() == 0 || routes.getRoutesCount() > 1) {
             // @TODO keep it simple currently, only one route is supported
             // means the route must be initialized previously
@@ -534,7 +576,7 @@ public class NovaService {
             }
             return false;
         }
-        Config.route_v1 route = routes.getRoutes(0);
+        route_v1 route = routes.getRoutes(0);
 
         HashMap<String, NovaDevice> allDevices = new HashMap<>();
         // add existing devices
@@ -596,7 +638,7 @@ public class NovaService {
         }
 
         // Clone the route
-        Config.route_v1 newRoute = Config.route_v1.newBuilder()
+        route_v1 newRoute = route_v1.newBuilder()
                 .setId(route.getId())
                 .setServer(route.getServer())
                 .setOui(route.getOui())
@@ -614,10 +656,10 @@ public class NovaService {
                     consoleConfig.getHeliumGrpcServer(),
                     consoleConfig.getHeliumGrpcPort()
             ).usePlaintext().build();
-            RouteGrpc.routeBlockingStub stub = RouteGrpc.newBlockingStub(channel);
+            routeGrpc.routeBlockingStub stub = routeGrpc.newBlockingStub(channel);
 
             long now = Now.NowUtcMs();
-            Config.route_update_req_v1 requestToSign = Config.route_update_req_v1.newBuilder()
+            route_update_req_v1 requestToSign = route_update_req_v1.newBuilder()
                     .setOwner(this.owner)
                     .setRoute(newRoute)
                     .setTimestamp(now)
@@ -627,7 +669,7 @@ public class NovaService {
             this.signer.update(requestToSignContent, 0, requestToSignContent.length);
             byte[] signature = signer.generateSignature();
 
-            Config.route_v1 response = stub.update(Config.route_update_req_v1.newBuilder()
+            route_v1 response = stub.update(route_update_req_v1.newBuilder()
                     .setOwner(this.owner)
                     .setRoute(newRoute)
                     .setTimestamp(now)
