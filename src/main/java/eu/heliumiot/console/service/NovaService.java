@@ -11,6 +11,7 @@ import io.chirpstack.api.internal.Internal;
 import io.grpc.ManagedChannel;
 import io.grpc.ManagedChannelBuilder;
 import io.grpc.StatusRuntimeException;
+import io.grpc.stub.StreamObserver;
 import org.bouncycastle.crypto.params.Ed25519PrivateKeyParameters;
 import org.bouncycastle.crypto.signers.Ed25519Signer;
 import org.slf4j.Logger;
@@ -501,12 +502,14 @@ public class NovaService {
             channel.shutdown();
             log.debug("GPRC list route duration " + (Now.NowUtcMs() - start) + "ms");
             log.debug("GRPC routes (" + response.getRoutesCount() + ")");
+            /*
             for (route_v1 route : response.getRoutesList()) {
                 log.debug("GRPC route id " + route.getId() + " with " + route.getEuisList().size() + " euis");
                 for (Config.eui_v1 eui : route.getEuisList()) {
                     log.debug("GRPC contains route for " + Tools.EuiStringFromLong(eui.getDevEui()) + " / " + Tools.EuiStringFromLong(eui.getAppEui()));
                 }
             }
+            */
             return response;
         } catch ( StatusRuntimeException x ) {
             prometeusService.addHeliumTotalError();
@@ -536,7 +539,8 @@ public class NovaService {
             }
         } else {
             route_v1 route = routes.getRoutes(0);
-            for ( Config.eui_v1 eui : route.getEuisList() ) {
+            List<eui_pair_v1> euis = grpcGetEuiFromRoute(route.getId());
+            for ( eui_pair_v1 eui : euis ) {
                 NovaDevice n = new NovaDevice();
                 n.devEui = Tools.EuiStringFromLong(eui.getDevEui());
                 n.appEui = Tools.EuiStringFromLong(eui.getAppEui());
@@ -546,6 +550,8 @@ public class NovaService {
         return ret;
     }
 
+
+
     /**
      * Update an existing route by adding or removing EUIs in this route
      * boolean to select add (true) or removal (false)
@@ -553,6 +559,25 @@ public class NovaService {
      * @param add
      */
     public boolean grpcAddRemoveInRoutes(List<NovaDevice> devices, boolean add) {
+
+        StreamObserver<route_euis_res_v1> responseObserver = new StreamObserver<route_euis_res_v1>() {
+            @Override
+            public void onNext(route_euis_res_v1 value) {
+                log.debug("Eui Updated");
+            }
+
+            @Override
+            public void onError(Throwable t) {
+                log.debug("Eui update failed");
+            }
+
+            @Override
+            public void onCompleted() {
+                log.debug("End of Eui updates");
+            }
+        };
+
+
         if ( ! this.grpcInitOk ) return false;
         long start = Now.NowUtcMs();
         if ( add ) {
@@ -576,19 +601,97 @@ public class NovaService {
             }
             return false;
         }
-        route_v1 route = routes.getRoutes(0);
 
+        route_v1 route = routes.getRoutes(0);
+        String routeId = route.getId();
+        ManagedChannel channel = ManagedChannelBuilder.forAddress(
+                consoleConfig.getHeliumGrpcServer(),
+                consoleConfig.getHeliumGrpcPort()
+        ).usePlaintext().build();
+        routeGrpc.routeStub stub = routeGrpc.newStub(channel);
+
+        long now = Now.NowUtcMs();
+        ArrayList<route_update_euis_req_v1> requests = new ArrayList<>();
+        for( NovaDevice device : devices) {
+            eui_pair_v1 eui = eui_pair_v1.newBuilder()
+                    .setDevEui(Tools.EuiStringToLong(device.devEui))
+                    .setAppEui(Tools.EuiStringToLong(device.appEui))
+                    .setRouteId(routeId)
+                    .build();
+
+            route_update_euis_req_v1 requestToSign = route_update_euis_req_v1.newBuilder()
+                    .setTimestamp(now)
+                    .setActionValue(((add)?action_v1.add_VALUE:action_v1.remove_VALUE))
+                    .setEuiPair(eui)
+                    .clearSignature()
+                    .build();
+            byte[] requestToSignContent = requestToSign.toByteArray();
+            this.signer.update(requestToSignContent, 0, requestToSignContent.length);
+            byte[] signature = signer.generateSignature();
+
+            route_update_euis_req_v1 request = route_update_euis_req_v1.newBuilder()
+                    .setTimestamp(now)
+                    .setActionValue(((add)?action_v1.add_VALUE:action_v1.remove_VALUE))
+                    .setEuiPair(eui)
+                    .setSignature(ByteString.copyFrom(signature))
+                    .build();
+
+            requests.add(request);
+        }
+
+        long startNova = Now.NowUtcMs();
+        StreamObserver<route_update_euis_req_v1> reqObserver = stub.updateEuis(responseObserver);
+        try {
+            for ( route_update_euis_req_v1 req : requests ) {
+                reqObserver.onNext(req);
+            }
+            reqObserver.onCompleted();
+        } catch ( RuntimeException x ) {
+            reqObserver.onError(x);
+            prometeusService.addHeliumTotalError();
+            log.error("GRPC error during route update "+x.getMessage());
+            x.printStackTrace();
+            return false;
+        } finally {
+            prometeusService.addHeliumApiTotalTimeMs(startNova);
+        }
+        return true;
+
+
+
+        /*
+
+        route_list_res_v1 routes = this.grpcListRoutes();
+        if( routes == null || routes.getRoutesCount() == 0 || routes.getRoutesCount() > 1) {
+            // @TODO keep it simple currently, only one route is supported
+            // means the route must be initialized previously
+            // and no more than one is supported
+            // we will later manage multi-route solution
+            // route can be saved in the config
+            // @TODO also manage route cache in memory to reduce the read impact ..
+            if ( routes != null ) {
+                log.error("GRPC currently supporting configuration with one route created, not more/less");
+            } else {
+                log.error("GRPC impossible to get the routes");
+            }
+            return false;
+        }
+        route_v1 route = routes.getRoutes(0);
+        List<eui_pair_v1> euis = grpcGetEuiFromRoute(route.getId());
+
+        ArrayList<eui_pair_v1> toremoveList = new ArrayList<>();
         HashMap<String, NovaDevice> allDevices = new HashMap<>();
         // add existing devices
-        for ( Config.eui_v1 euis : route.getEuisList() ) {
+        for ( eui_pair_v1 eui : euis ) {
             if ( add ) {
                 NovaDevice nd = new NovaDevice();
-                nd.devEui = Tools.EuiStringFromLong(euis.getDevEui());
-                nd.appEui = Tools.EuiStringFromLong(euis.getAppEui());
+                nd.devEui = Tools.EuiStringFromLong(eui.getDevEui());
+                nd.appEui = Tools.EuiStringFromLong(eui.getAppEui());
+                nd.euiPair = eui;
                 allDevices.put(nd.devEui + nd.appEui, nd);
             } else {
-                String _devEui = Tools.EuiStringFromLong(euis.getDevEui());
-                String _appEui = Tools.EuiStringFromLong(euis.getAppEui());
+                String _devEui = Tools.EuiStringFromLong(eui.getDevEui());
+                String _appEui = Tools.EuiStringFromLong(eui.getAppEui());
                 boolean found = false;
                 for ( NovaDevice device : devices ) {
                     //log.debug("Compared "+device.devEui+" / "+device.appEui);
@@ -603,39 +706,46 @@ public class NovaService {
                     NovaDevice nd = new NovaDevice();
                     nd.devEui = _devEui;
                     nd.appEui = _appEui;
+                    nd.euiPair = eui;
                     allDevices.put(nd.devEui + nd.appEui, nd);
                     log.debug("Device "+nd.devEui+" / "+nd.appEui+" not to be removed");
                 } else {
                     log.debug("Device "+_devEui+" / "+_appEui+" to be removed");
+                    toremoveList.add(eui);
                 }
             }
         }
 
         // find devices to be added and do this
+        ArrayList<eui_pair_v1> toaddList = new ArrayList<>();
         if ( add ) {
             for (NovaDevice device : devices) {
                 if (allDevices.get(device.devEui + device.appEui) == null) {
                     allDevices.put(device.devEui + device.appEui, device);
+                    toaddList.add()
                 }
             }
         }
 
         // Update list of route
-        ArrayList<Config.eui_v1> updatedList = new ArrayList<>();
+        ArrayList<eui_pair_v1> updatedList = new ArrayList<>();
         for ( NovaDevice device : allDevices.values() ) {
-            Config.eui_v1 n = Config.eui_v1.newBuilder()
+            eui_pair_v1 n = eui_pair_v1.newBuilder()
                     .setDevEui(Tools.EuiStringToLong(device.devEui))
                     .setAppEui(Tools.EuiStringToLong(device.appEui))
                     .build();
-
             updatedList.add(n);
         }
 
         // debug
         log.debug("New device list");
-        for ( Config.eui_v1 e : updatedList ) {
+        for ( eui_pair_v1 e : updatedList ) {
             log.debug("Eui : "+Tools.EuiStringFromLong(e.getDevEui())+" / "+Tools.EuiStringFromLong(e.getAppEui()));
         }
+
+        // update the list of euis
+
+
 
         // Clone the route
         route_v1 newRoute = route_v1.newBuilder()
@@ -686,6 +796,7 @@ public class NovaService {
         }
         log.debug("GPRC list update duration "+(Now.NowUtcMs()-start)+"ms");
         return true;
+         */
     }
 
 
