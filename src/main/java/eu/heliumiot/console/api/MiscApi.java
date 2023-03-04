@@ -93,7 +93,7 @@ public class MiscApi {
     ) {
         long startMs= Now.NowUtcMs();
         ActionResult r = ActionResult.SUCESS();
-        r.setMessage(""+consoleConfig.getHeliumGprcOui());
+        r.setMessage(""+consoleConfig.getHeliumRouteOui());
         prometeusService.addApiTotalTimeMs(startMs);
         return new ResponseEntity<>(r, HttpStatus.OK);
     }

@@ -20,19 +20,24 @@
 package eu.heliumiot.console.jpa.repository;
 
 import eu.heliumiot.console.jpa.db.HeliumTenantSetup;
-import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.UUID;
 
 @Repository
-public interface HeliumTenantSetupRepository extends CrudRepository<HeliumTenantSetup, UUID> {
+public interface HeliumTenantSetupRepository extends PagingAndSortingRepository<HeliumTenantSetup, UUID> {
 
     public HeliumTenantSetup findOneHeliumTenantSetupByTenantUUID(String id);
 
     public HeliumTenantSetup findOneHeliumTenantSetupById(UUID id);
 
     public List<HeliumTenantSetup> findHeliumTenantSetupByTemplate(boolean template);
+
+    public List<HeliumTenantSetup> findHeliumTenantSetupByRouteId(String routeId);
+
+    public List<HeliumTenantSetup> findAllByTemplate(boolean template, Pageable pageable);
 
 }

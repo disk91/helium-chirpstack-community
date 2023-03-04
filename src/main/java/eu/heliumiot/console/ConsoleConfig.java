@@ -496,12 +496,39 @@ public class ConsoleConfig {
     @Value ("${helium.grpc.public.key}")
     private String heliumGprcPublicKey;
 
-    @Value ("${helium.grpc.oui}")
-    private int heliumGprcOui;
+    @Value ("${helium.route.oui}")
+    private int heliumRouteOui;
 
+    @Value ("${helium.route.netid}")
+    private String heliumRouteNetid;
 
-    public int getHeliumGprcOui() {
-        return heliumGprcOui;
+    @Value ("${helium.route.host}")
+    private String heliumRouteHost;
+
+    @Value ("${helium.route.regions}")
+    private String heliumRouteRegions;
+
+    @Value ("${helium.route.maxcopy}")
+    private int heliumRouteMaxCopy;
+
+    public int getHeliumRouteMaxCopy() {
+        return heliumRouteMaxCopy;
+    }
+
+    public String getHeliumRouteRegions() {
+        return heliumRouteRegions;
+    }
+
+    public String getHeliumRouteNetid() {
+        return heliumRouteNetid;
+    }
+
+    public String getHeliumRouteHost() {
+        return heliumRouteHost;
+    }
+
+    public int getHeliumRouteOui() {
+        return heliumRouteOui;
     }
 
     public String getHeliumGprcPublicKey() {

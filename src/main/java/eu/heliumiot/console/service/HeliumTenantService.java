@@ -53,7 +53,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
-import java.util.concurrent.ExecutionException;
 
 @Service
 public class HeliumTenantService {
@@ -130,12 +129,60 @@ public class HeliumTenantService {
         t.setTenantUUID(tenantUUID);
         t.setDcBalance(ts.getFreeTenantDc());
         t.setState(HeliumTenant.TenantState.NORMAL);
+        t.setMaxCopy(ts.getMaxCopy());
         return heliumTenantRepository.save(t);
     }
 
     public eu.heliumiot.console.jpa.db.Tenant getTenant(UUID tenantId) {
         eu.heliumiot.console.jpa.db.Tenant t = tenantRepository.findOneTenantById(tenantId);
         return t;
+    }
+
+    // ===============================================
+    // Async route management
+    // Here to not have cycle integration with tenantSetupService
+    // Bad ..
+    // ===============================================
+
+    @Autowired
+    private HeliumTenantSetupRepository heliumTenantSetupRepository;
+
+    @Scheduled(fixedRateString = "${helium.tenant.routeregistration.scanPeriod}", initialDelay = 15_000)
+    protected void asyncRouteRegistration() {
+        if ( ! this.serviceEnable ) return;
+        this.runningJobs++;
+        try {
+
+            // find all the tenant w/o route created
+            List<HeliumTenantSetup> tss = heliumTenantSetupRepository.findHeliumTenantSetupByRouteId(null);
+            if ( tss != null ) {
+                for ( HeliumTenantSetup ts : tss ) {
+                    if ( ! ts.isTemplate() && ts.getRouteId() == null ) {
+                        // find tenant to update the max_copy in case of
+                        HeliumTenant ht = this.getHeliumTenant(ts.getTenantUUID());
+                        int mc = ts.getMaxCopy();
+                        if ( ht.getMaxCopy() > 0 ) mc = ht.getMaxCopy();
+                        String rId = novaService.immediateRouteCreation(
+                                ts.getTenantUUID(),
+                                mc
+                        );
+                        if ( rId != null ) {
+                            ts.setRouteId(rId);
+                            heliumTenantSetupRepository.save(ts);
+                            // update the cache
+                            ts = heliumTenantSetupService.getHeliumTenantSetup(ts.getTenantUUID());
+                            log.debug("Route for tenant "+ts.getTenantUUID()+" created with id "+ts.getRouteId());
+                        }
+                    }
+                }
+            }
+
+        } catch (Exception x) {
+            log.error("Failure in asyncRouteRegistration "+x.getMessage());
+            x.printStackTrace();
+        } finally {
+            this.runningJobs--;
+        }
     }
 
 

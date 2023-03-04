@@ -57,6 +57,9 @@ public class HeliumTenantSetupService {
     @Autowired
     private HeliumTenantSetupRepository heliumTenantSetupRepository;
 
+    @Autowired
+    private NovaService novaService;
+
     private ObjectCache<String,HeliumTenantSetup> heliumSetupCache;
     @PostConstruct
     private void initHeliumTenantSetupService() {
@@ -91,6 +94,8 @@ public class HeliumTenantSetupService {
             ts.setDcPrice(consoleConfig.getHeliumBillingDcPrice());
             ts.setDcMin(consoleConfig.getHeliumBillingDcMinAmount());
             ts.setSignupAllowed(consoleConfig.isHeliumAllowsSignup());
+            ts.setMaxCopy(consoleConfig.getHeliumRouteMaxCopy());
+            ts.setRouteId("N/A");
             ts.setTemplate(true);
             heliumTenantSetupRepository.save(ts);
         }
@@ -203,10 +208,13 @@ public class HeliumTenantSetupService {
         ts.setDcPrice(def.getDcPrice());
         ts.setDcMin(def.getDcMin());
         ts.setSignupAllowed(def.isSignupAllowed());
+        ts.setMaxCopy(def.getMaxCopy());
+        ts.setRouteId(null);
         ts.setTemplate(false);
         heliumTenantSetupRepository.save(ts);
         return ts;
     }
+
 
     // ===============================================
     // API
@@ -247,6 +255,7 @@ public class HeliumTenantSetupService {
             ts.setDcPrice(def.getDcPrice());
             ts.setDcMin(def.getDcMin());
             ts.setSignupAllowed(def.isSignupAllowed());
+            ts.setMaxCopy(def.getMaxCopy());
             r.add(ts);
         }
 
@@ -287,6 +296,7 @@ public class HeliumTenantSetupService {
         ts.setDcPrice(def.getDcPrice());
         ts.setDcMin(def.getDcMin());
         ts.setSignupAllowed(def.isSignupAllowed());
+        ts.setMaxCopy(def.getMaxCopy());
 
         heliumTenantSetupRepository.save(ts);
         this.heliumSetupCache.remove(ts.getTenantUUID(),false);
@@ -309,7 +319,13 @@ public class HeliumTenantSetupService {
         if ( ts != null ) throw new ITRightException();
 
         ts = new HeliumTenantSetup();
-        ts.setTemplate((def.getTenantUUID().length() < 30));
+        if ( def.getTenantUUID().length() < 30 ) {
+            ts.setTemplate(true);
+            ts.setRouteId("N/A");
+        } else {
+            ts.setTemplate(false);
+            ts.setRouteId(null);
+        }
         ts.setTenantUUID(def.getTenantUUID());
         ts.setDcBalanceStop(def.getDcBalanceStop());
         ts.setFreeTenantDc(def.getFreeTenantDc());
@@ -329,6 +345,7 @@ public class HeliumTenantSetupService {
         ts.setDcPrice(def.getDcPrice());
         ts.setDcMin(def.getDcMin());
         ts.setSignupAllowed(def.isSignupAllowed());
+        ts.setMaxCopy(def.getMaxCopy());
         heliumTenantSetupRepository.save(ts);
     }
 
@@ -347,6 +364,11 @@ public class HeliumTenantSetupService {
         // can't delete default
         if ( ts.getTenantUUID().compareToIgnoreCase(HELIUM_TENANT_SETUP_DEFAULT) == 0 ) {
             throw new ITRightException();
+        }
+
+        if ( ! ts.isTemplate() && ts.getRouteId() != null ) {
+            // we need to delete the associated route
+            novaService.addDelayedRouteRemoval(ts.getRouteId());
         }
 
         this.heliumSetupCache.remove(ts.getTenantUUID(),false);

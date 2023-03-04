@@ -97,6 +97,13 @@ public class HeliumTenantSetup {
     // true when this is a template
     private boolean template = false;
 
+    @Column(name = "max_copy", columnDefinition = "int4 default 3")
+    private int maxCopy = 3;
+
+    @Column(name = "route_id")
+    private String routeId;
+
+
     // ---
 
     public UUID getId() {
@@ -265,5 +272,21 @@ public class HeliumTenantSetup {
 
     public void setTemplate(boolean template) {
         this.template = template;
+    }
+
+    public int getMaxCopy() {
+        return maxCopy;
+    }
+
+    public void setMaxCopy(int maxCopy) {
+        this.maxCopy = maxCopy;
+    }
+
+    public String getRouteId() {
+        return routeId;
+    }
+
+    public void setRouteId(String routeId) {
+        this.routeId = routeId;
     }
 }

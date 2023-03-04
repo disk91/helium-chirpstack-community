@@ -33,6 +33,7 @@ public class HeliumDeviceActDeactItf {
     // @ApiModelProperty(notes = "tenantId", required = false)
     protected String tenantId;
 
+
     // @ApiModelProperty(notes = "time of the request", required = false)
     protected long time = 0;
 

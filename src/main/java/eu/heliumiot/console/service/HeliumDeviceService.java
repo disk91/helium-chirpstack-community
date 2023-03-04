@@ -26,6 +26,7 @@ import eu.heliumiot.console.jpa.db.*;
 import eu.heliumiot.console.jpa.repository.ApplicationRepository;
 import eu.heliumiot.console.jpa.repository.DeviceRepository;
 import eu.heliumiot.console.jpa.repository.HeliumDeviceRepository;
+import eu.heliumiot.console.jpa.repository.HeliumTenantSetupRepository;
 import eu.heliumiot.console.mqtt.MqttSender;
 import eu.heliumiot.console.mqtt.api.HeliumDeviceActDeactItf;
 import eu.heliumiot.console.mqtt.api.HeliumDeviceStatItf;
@@ -35,7 +36,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
@@ -308,10 +311,10 @@ public class HeliumDeviceService {
      * @param commit
      * @return
      */
-    public List<NovaDevice> clearInvalidRouteEuis(boolean commit) {
+    public List<NovaDevice> clearInvalidRouteEuis(String routeId, boolean commit) {
         long start = Now.NowUtcMs();
         ArrayList<NovaDevice> invalids = new ArrayList<>();
-        List<NovaDevice> all = novaService.getAllKnownDevices();
+        List<NovaDevice> all = novaService.getAllKnownDevices(routeId);
         if ( all == null || all.size() ==  0 ) return invalids; // better do nothing that big mistake
 
         for ( NovaDevice dev : all ) {
@@ -352,12 +355,12 @@ public class HeliumDeviceService {
      * @param commit
      * @return
      */
-    public List<NovaDevice> searchMissingRouteEuis(boolean commit) {
+    public List<NovaDevice> searchMissingRouteEuis(String tenantId, String routeId, boolean commit) {
         long start = Now.NowUtcMs();
         ArrayList<NovaDevice> missing = new ArrayList<>();
 
         // get the devices and store in hashmap for search
-        List<NovaDevice> all = novaService.getAllKnownDevices();
+        List<NovaDevice> all = novaService.getAllKnownDevices(routeId);
         if ( all == null || all.size() ==  0 ) return missing; // better do nothing that big mistake
 
         HashMap<String,NovaDevice> all_= new HashMap<>();
@@ -365,7 +368,7 @@ public class HeliumDeviceService {
             all_.put((""+n.devEui+n.appEui).toLowerCase(),n);
         }
 
-        Slice<HeliumDevice> allDevices = heliumDeviceRepository.findAll(PageRequest.of(0, 100));
+        Slice<HeliumDevice> allDevices = heliumDeviceRepository.findHeliumDeviceByTenantUUID(tenantId, PageRequest.of(0, 100));
         if ( allDevices != null ) {
             do {
                 for ( HeliumDevice d : allDevices ) {
@@ -377,6 +380,7 @@ public class HeliumDeviceService {
                                 NovaDevice n = new NovaDevice();
                                 n.devEui= d.getDeviceEui();
                                 n.appEui= d.getApplicationEui();
+                                n.routeId= routeId;
                                 missing.add(n);
                                 log.debug("Device "+n.devEui+" / "+ n.appEui+" should be added");
                             }
@@ -390,7 +394,7 @@ public class HeliumDeviceService {
                     }
 
                 }
-                allDevices = heliumDeviceRepository.findAll(allDevices.nextPageable());
+                allDevices = heliumDeviceRepository.findHeliumDeviceByTenantUUID(tenantId,allDevices.nextPageable());
             } while (allDevices.hasNext());
         }
         if (commit) novaService.activateDevices(missing);
@@ -400,14 +404,29 @@ public class HeliumDeviceService {
 
     // On Start Schedule a route cleaning process
     private boolean recycled = false;
+
+    @Autowired
+    private HeliumTenantSetupRepository heliumTenantSetupRepository;
+
     @Scheduled(fixedRate = 3600_000, initialDelay = 45_000)
     private void resyncOnce() {
         if (recycled) return;
         long start = Now.NowUtcMs();
         log.info("resyncOnce - start db & helium route resync");
 
-        this.clearInvalidRouteEuis(true);
-        this.searchMissingRouteEuis(true);
+        // Scan all Helium tenants
+        int i = 0;
+        List<HeliumTenantSetup> htss = null;
+        do {
+            htss = heliumTenantSetupRepository.findAllByTemplate(false,PageRequest.of(i,50));
+            for ( HeliumTenantSetup hts : htss ) {
+                if ( hts.getRouteId() != null && !hts.isTemplate() ) {
+                    this.clearInvalidRouteEuis(hts.getRouteId(), true);
+                    this.searchMissingRouteEuis(hts.getTenantUUID(),hts.getRouteId(),true);
+                }
+            }
+            i++;
+        } while ( htss != null && htss.size() > 0 );
 
         recycled = true;
         log.info("resyncOnce - processed in " + (Now.NowUtcMs() - start) + "ms");
@@ -650,6 +669,7 @@ public class HeliumDeviceService {
         ArrayList<NovaDevice> toDeactivate = new ArrayList<>();
         synchronized (this) {
             List<HeliumDevice> devices = heliumDeviceRepository.findHeliumDeviceByTenantUUID(tenantID);
+            HeliumTenantSetup hts = heliumTenantSetupService.getHeliumTenantSetup(tenantID);
             for ( HeliumDevice d : devices ) {
 
                 if (
@@ -665,6 +685,7 @@ public class HeliumDeviceService {
                     NovaDevice n = new NovaDevice();
                     n.devEui = d.getDeviceEui();
                     n.appEui = d.getApplicationEui();
+                    n.routeId = hts.getRouteId();
                     toDeactivate.add(n);
 
                 }
@@ -680,6 +701,7 @@ public class HeliumDeviceService {
         log.debug("Start tenant reactivation for "+tenantID);
         long start = Now.NowUtcMs();
 
+        HeliumTenantSetup hts = heliumTenantSetupService.getHeliumTenantSetup(tenantID);
         ArrayList<NovaDevice> toReactivate = new ArrayList<>();
         synchronized (this) {
             // @todo optimisation by searching only the concerned devices
@@ -699,6 +721,7 @@ public class HeliumDeviceService {
                     NovaDevice n = new NovaDevice();
                     n.devEui = d.getDeviceEui();
                     n.appEui = d.getApplicationEui();
+                    n.routeId = hts.getRouteId();
                     toReactivate.add(n);
 
                 }
@@ -716,10 +739,13 @@ public class HeliumDeviceService {
         long start = Now.NowUtcMs();
 
         ArrayList<NovaDevice> toDeactivate = new ArrayList<>();
+        HeliumTenantSetup hts = heliumTenantSetupService.getHeliumTenantSetup(creds.getTenantId());
+
 
         NovaDevice n = new NovaDevice();
         n.devEui = creds.getDeviceId();
         n.appEui = creds.getAppEui();
+        n.routeId = hts.getRouteId();
         toDeactivate.add(n);
 
         novaService.deactivateDevices(toDeactivate);
@@ -730,10 +756,12 @@ public class HeliumDeviceService {
         long start = Now.NowUtcMs();
 
         ArrayList<NovaDevice> toReactivate = new ArrayList<>();
+        HeliumTenantSetup hts = heliumTenantSetupService.getHeliumTenantSetup(creds.getTenantId());
 
         NovaDevice n = new NovaDevice();
         n.devEui = creds.getDeviceId();
         n.appEui = creds.getAppEui();
+        n.routeId = hts.getRouteId();
         toReactivate.add(n);
 
         novaService.activateDevices(toReactivate);

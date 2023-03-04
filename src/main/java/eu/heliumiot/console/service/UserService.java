@@ -445,10 +445,12 @@ public class UserService {
         t.setTenantUUID(tenantId);
         t.setDcBalance(hts.getFreeTenantDc());
         t.setState(HeliumTenant.TenantState.NORMAL);
+        t.setMaxCopy(hts.getMaxCopy());
         heliumTenantRepository.save(t);
 
         // delete validation code
         heliumPendingUserRepository.delete(hpe);
+
     }
 
 

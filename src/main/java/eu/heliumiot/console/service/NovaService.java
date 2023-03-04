@@ -195,6 +195,20 @@ public class NovaService {
     // MANAGE THE EUIs Route update
     // ---------------------------------------
 
+    // Manage asynchronous interface with route
+    protected ArrayList<String> delayedRouteRemoval = new ArrayList<>();
+
+    public void addDelayedRouteRemoval(String routeId) {
+        synchronized (delayedRouteRemoval) {
+            this.delayedRouteRemoval.add(routeId);
+        }
+    }
+
+    public String immediateRouteCreation(String tenantId, int maxCopy) {
+        route_v1 r = grpcCreateNewRoute(tenantId,maxCopy);
+        if ( r != null ) return r.getId();
+        return null;
+    }
 
     // List of deviceEUI we want the add / remove in the list
     protected ArrayList<NovaDevice> delayedEuisRefreshAddition = new ArrayList<>();
@@ -214,7 +228,7 @@ public class NovaService {
 
     private boolean flushDelayedEuisUpdateRunning = false;
     /**
-     * On regular basis we update the route on Nova backend based on the movement made on the devices
+     * On regular basis we update the route on Nova backend based on the movement made on the device
      * deletion, creation, deactivation, reactivation ...
      */
     @Scheduled(fixedRateString = "${helium.nova.publish.delayed.scanPeriod}", initialDelay = 15_000)
@@ -225,48 +239,82 @@ public class NovaService {
         long start = Now.NowUtcMs();
         try {
 
+            // First delete the route mark as to be deleted
+            ArrayList<String> routeRemoval = new ArrayList<>();
+            synchronized (delayedRouteRemoval) {
+                for ( String routeId : delayedRouteRemoval ) {
+                    routeRemoval.add(routeId);
+                }
+                this.delayedRouteRemoval.clear();
+            }
+            for ( String routeId : routeRemoval ) {
+                if ( ! grpcDeleteRoute(routeId) ) {
+                    this.addDelayedRouteRemoval(routeId);   // in case of problem, retry later
+                }
+            }
+
+
             // Compute the real list (priority on removal)
             // Add = Add - Remove
             // Remove = Remove
-            ArrayList<NovaDevice> toRemove = new ArrayList<>();
+            HashMap<String,ArrayList<NovaDevice>> toRemove = new HashMap<>();
             synchronized (delayedEuisRefreshRemoval) {
                 for ( NovaDevice n : delayedEuisRefreshRemoval ) {
-                    toRemove.add(n);
+                    ArrayList<NovaDevice> trh = toRemove.get(n.routeId);
+                    if ( trh == null ) {
+                        trh = new ArrayList<NovaDevice>();
+                        toRemove.put(n.routeId,trh);
+                    }
+                    trh.add(n);
                 }
                 this.delayedEuisRefreshRemoval.clear();
             }
 
-            ArrayList<NovaDevice> toAdd = new ArrayList<>();
+            HashMap<String,ArrayList<NovaDevice>> toAdd = new HashMap<>();
             synchronized (delayedEuisRefreshAddition) {
                 for ( NovaDevice n : delayedEuisRefreshAddition ) {
                     boolean found = false;
-                    for ( NovaDevice r : toRemove ) {
-                        if ( n.devEui.compareToIgnoreCase(r.devEui) == 0
-                        && n.appEui.compareToIgnoreCase(r.appEui) == 0 ) {
-                            found = true;
-                            break;
+                    ArrayList<NovaDevice> _toremove = toRemove.get(n.routeId);
+                    if ( _toremove != null ) {
+                        for (NovaDevice r : _toremove) {
+                            if (n.devEui.compareToIgnoreCase(r.devEui) == 0
+                                    && n.appEui.compareToIgnoreCase(r.appEui) == 0) {
+                                found = true;
+                                break;
+                            }
                         }
                     }
                     if (!found) {
-                        toAdd.add(n);
+                        ArrayList<NovaDevice> _toAdd = toAdd.get(n.routeId);
+                        if ( _toAdd == null ) {
+                            _toAdd = new ArrayList<NovaDevice>();
+                            toAdd.put(n.routeId,_toAdd);
+                        }
+                        _toAdd.add(n);
                     }
                 }
                 this.delayedEuisRefreshAddition.clear();
             }
 
             if ( toRemove.size() > 0 ) {
-                if ( ! grpcAddRemoveInRoutes(toRemove, false) ) {
-                    // restore the removal for next pass
-                    for ( NovaDevice d : toRemove ) {
-                        this.addDelayedEuisRefreshRemoval(d);
+                for ( String routeId: toRemove.keySet() ) {
+                    ArrayList<NovaDevice> _toRemove = toRemove.get(routeId);
+                    if ( ! grpcAddRemoveInRoutes(_toRemove,routeId, false) ) {
+                        // restore the removal for next pass
+                        for ( NovaDevice d : _toRemove ) {
+                            this.addDelayedEuisRefreshRemoval(d);
+                        }
                     }
                 }
             }
             if ( toAdd.size() > 0 ) {
-                if ( ! grpcAddRemoveInRoutes(toAdd, true) ) {
-                    // restore the removal for next pass
-                    for ( NovaDevice d : toAdd ) {
-                        this.addDelayedEuisRefreshAddition(d);
+                for ( String routeId: toAdd.keySet() ) {
+                    ArrayList<NovaDevice> _toAdd = toAdd.get(routeId);
+                    if (!grpcAddRemoveInRoutes(_toAdd, routeId,true)) {
+                        // restore the removal for next pass
+                        for (NovaDevice d : _toAdd) {
+                            this.addDelayedEuisRefreshAddition(d);
+                        }
                     }
                 }
             }
@@ -308,10 +356,19 @@ public class NovaService {
     @Autowired
     protected ConsoleConfig consoleConfig;
 
+    protected class RegionSupported {
+        public String regionString;
+        public region regionValue;
+        public int port;
+    }
+
     private byte[] privateKey;
     private ByteString owner;
     private Ed25519Signer signer;
     protected boolean grpcInitOk = false;
+
+    private int netIdValue = 0;
+    private ArrayList<RegionSupported> regionsSupported;
 
     @PostConstruct
     private void loadKey() {
@@ -376,8 +433,196 @@ public class NovaService {
         Ed25519PrivateKeyParameters secretKeyParameters = new Ed25519PrivateKeyParameters(this.privateKey, 0);
         signer = new Ed25519Signer();
         signer.init(true, secretKeyParameters);
+
+        // Verify the rest of the configuration
+        String _netId = consoleConfig.getHeliumRouteNetid();
+        if ( _netId != null && _netId.length() > 0 ) {
+            netIdValue = Stuff.hexStrToInt(_netId);
+        }
+
+        regionsSupported = new ArrayList<>();
+        if ( consoleConfig.getHeliumRouteRegions().length() > 0 ) {
+            for ( String reg : consoleConfig.getHeliumRouteRegions().split(",") ) {
+                RegionSupported r = new RegionSupported();
+                String[] regionData = reg.split(":");
+                if ( regionData.length == 2 ) {
+                    r.regionString = regionData[0];
+                    try {
+                        r.port = Integer.parseInt(regionData[1]);
+                    } catch ( NumberFormatException x) {
+                        log.error("Invalid port format for region "+r.regionString);
+                        r.port = 0;
+                    }
+                    //## accepted regions : US915,EU868,EU433,CN470,CN779,AU915,AS923_1,KR920,IN865,AS923_2,AS923_3,AS923_4,AS923_1B,
+                    //##                    CD900_1A,RU864,EU868_A,EU868_B,EU868_C,EU868_D,EU868_E,EU868_F,AU915_SB1,AU915_SB2,
+                    //##                    AS923_1A,AS923_1C,AS923_1D,AS923_1E,AS923_1F
+                    switch (regionData[0]) {
+                        case "US915": r.regionValue = region.US915; break;
+                        case "EU868": r.regionValue = region.EU868; break;
+                        case "CN470": r.regionValue = region.CN470; break;
+                        case "AU915": r.regionValue = region.AU915; break;
+                        case "AS923_1": r.regionValue = region.AS923_1; break;
+                        case "KR920": r.regionValue = region.KR920; break;
+                        case "IN865": r.regionValue = region.IN865; break;
+                        case "AS923_2": r.regionValue = region.AS923_2; break;
+                        case "AS923_3": r.regionValue = region.AS923_3; break;
+                        case "AS923_4": r.regionValue = region.AS923_4; break;
+                        case "AS923_1B": r.regionValue = region.AS923_1B; break;
+                        case "CD900_1A": r.regionValue = region.CD900_1A; break;
+                        case "RU864": r.regionValue = region.RU864; break;
+                        case "EU868_A": r.regionValue = region.EU868_A; break;
+                        case "EU868_B": r.regionValue = region.EU868_B; break;
+                        case "EU868_C": r.regionValue = region.EU868_C; break;
+                        case "EU868_D": r.regionValue = region.EU868_D; break;
+                        case "EU868_E": r.regionValue = region.EU868_E; break;
+                        case "EU868_F": r.regionValue = region.EU868_F; break;
+                        case "AU915_SB1": r.regionValue = region.AU915_SB1; break;
+                        case "AU915_SB2": r.regionValue = region.AU915_SB2; break;
+                        case "AS923_1A": r.regionValue = region.AS923_1A; break;
+                        case "AS923_1C": r.regionValue = region.AS923_1C; break;
+                        case "AS923_1D": r.regionValue = region.AS923_1D; break;
+                        case "AS923_1E": r.regionValue = region.AS923_1E; break;
+                        case "AS923_1F": r.regionValue = region.AS923_1F; break;
+                        default:
+                            log.error("Unsupported Region "+r.regionString);
+                            r.port = 0;
+                            break;
+                    }
+                    if ( r.port != 0 ) regionsSupported.add(r);
+                }
+            }
+        }
+
+        if (   netIdValue == 0
+            || consoleConfig.getHeliumRouteOui() == 0
+            || consoleConfig.getHeliumRouteHost().length() == 0
+            || regionsSupported.size() == 0
+        ) {
+            log.error("Impossible to start GRPC - propertie file is not correctly setup");
+            return;
+        }
+
         this.grpcInitOk = true;
     }
+
+    private boolean grpcDeleteRoute(String routeId) {
+        if ( ! this.grpcInitOk ) return false;
+
+        long start = Now.NowUtcMs();
+        log.debug("GRPC delete route "+routeId);
+
+        ManagedChannel channel = null;
+        try {
+            channel = ManagedChannelBuilder.forAddress(
+                    consoleConfig.getHeliumGrpcServer(),
+                    consoleConfig.getHeliumGrpcPort()
+            ).usePlaintext().build();
+            routeGrpc.routeBlockingStub stub = routeGrpc.newBlockingStub(channel);
+
+            route_delete_req_v1 delToSign = route_delete_req_v1.newBuilder()
+                    .setId(routeId)
+                    .setTimestamp(start)
+                    .clearSignature()
+                    .build();
+            byte[] requestToSignContent = delToSign.toByteArray();
+            this.signer.update(requestToSignContent, 0, requestToSignContent.length);
+            byte[] signature = signer.generateSignature();
+
+            route_v1 response = stub.delete(route_delete_req_v1.newBuilder()
+                    .setId(routeId)
+                    .setTimestamp(start)
+                    .setSignature(ByteString.copyFrom(signature))
+                    .build());
+
+            log.debug("GPRC route deletion duration " + (Now.NowUtcMs() - start) + "ms");
+            log.debug("GRPC deletion " + response.getId());
+            return true;
+        } catch ( Exception x ) {
+            log.error("GRPC route deletion error for route "+routeId+" with message "+x.getMessage());
+            prometeusService.addHeliumTotalError();
+        } finally {
+            if ( channel != null ) channel.shutdown();
+            prometeusService.addHeliumApiTotalTimeMs(start);
+        }
+        return false;
+    }
+
+
+    private route_v1 grpcCreateNewRoute(String tenantId, int max_copy) {
+
+        if ( ! this.grpcInitOk ) return null;
+
+        long start = Now.NowUtcMs();
+        log.debug("GRPC Create route for tenant "+tenantId);
+        ManagedChannel channel = null;
+        try {
+            channel = ManagedChannelBuilder.forAddress(
+                    consoleConfig.getHeliumGrpcServer(),
+                    consoleConfig.getHeliumGrpcPort()
+            ).usePlaintext().build();
+            routeGrpc.routeBlockingStub stub = routeGrpc.newBlockingStub(channel);
+
+
+            ArrayList<protocol_gwmp_mapping_v1> regions = new ArrayList<>();
+            for ( RegionSupported r : this.regionsSupported ) {
+                protocol_gwmp_mapping_v1 gwmpm = protocol_gwmp_mapping_v1.newBuilder()
+                        .setRegion(r.regionValue)
+                        .setPort(r.port)
+                        .build();
+                regions.add(gwmpm);
+            }
+
+            protocol_gwmp_v1 gwmp = protocol_gwmp_v1.newBuilder()
+                    .addAllMapping(regions)
+                    .build();
+
+            server_v1 server = server_v1.newBuilder()
+                    .setHost(consoleConfig.getHeliumRouteHost()) // https:://
+                    .setPort(this.regionsSupported.get(0).port)
+                    .setGwmp(gwmp)
+                    .build();
+
+            route_v1 route = route_v1.newBuilder()
+                    .setNetId(netIdValue)
+                    .setOui(consoleConfig.getHeliumRouteOui())
+                    .setMaxCopies(max_copy)
+                    .setActive(true) // something I can set true / false to lock an entire route
+                    .setLocked(false) // defined by the router when our of DC
+                    .setServer(server)
+                    .build();
+
+            route_create_req_v1 createToSign = route_create_req_v1.newBuilder()
+                    .setOui(consoleConfig.getHeliumRouteOui())
+                    .setTimestamp(start)
+                    .setRoute(route)
+                    .clearSignature()
+                    .build();
+
+            byte[] requestToSignContent = createToSign.toByteArray();
+            this.signer.update(requestToSignContent, 0, requestToSignContent.length);
+            byte[] signature = signer.generateSignature();
+
+            route_v1 response = stub.create(route_create_req_v1.newBuilder()
+                    .setOui(consoleConfig.getHeliumRouteOui())
+                    .setTimestamp(start)
+                    .setRoute(route)
+                    .setSignature(ByteString.copyFrom(signature))
+                    .build());
+
+            log.debug("GPRC route creation duration " + (Now.NowUtcMs() - start) + "ms");
+            log.debug("GRPC route " + response.getId());
+            return response;
+        } catch ( Exception x ) {
+            log.warn("GRPC create route error "+x.getMessage());
+            prometeusService.addHeliumTotalError();
+        } finally {
+            if ( channel != null ) channel.shutdown();
+            prometeusService.addHeliumApiTotalTimeMs(start);
+        }
+        return null;
+
+    }
+
 
     /**
      * Get a single route with all the deveuis inside it
@@ -486,7 +731,7 @@ public class NovaService {
 
             long now = Now.NowUtcMs();
             route_list_req_v1 requestToSign = route_list_req_v1.newBuilder()
-                    .setOui(consoleConfig.getHeliumGprcOui())
+                    .setOui(consoleConfig.getHeliumRouteOui())
                     .setTimestamp(now)
                     .clearSignature()
                     .build();
@@ -495,7 +740,7 @@ public class NovaService {
             byte[] signature = signer.generateSignature();
 
             route_list_res_v1 response = stub.list(route_list_req_v1.newBuilder()
-                    .setOui(consoleConfig.getHeliumGprcOui())
+                    .setOui(consoleConfig.getHeliumRouteOui())
                     .setTimestamp(now)
                     .setSignature(ByteString.copyFrom(signature))
                     .build());
@@ -521,31 +766,15 @@ public class NovaService {
     }
 
 
-    public List<NovaDevice> getAllKnownDevices() {
+    public List<NovaDevice> getAllKnownDevices(String routeId) {
         ArrayList<NovaDevice> ret = new ArrayList<>();
-
-        route_list_res_v1 routes = this.grpcListRoutes();
-        if( routes == null || routes.getRoutesCount() == 0 || routes.getRoutesCount() > 1) {
-            // @TODO keep it simple currently, only one route is supported
-            // means the route must be initialized previously
-            // and no more than one is supported
-            // we will later manage multi-route solution
-            // route can be saved in the config
-            // @TODO also manage route cache in memory to reduce the read impact ..
-            if ( routes != null ) {
-                log.error("GRPC currently supporting configuration with one route created, not more/less");
-            } else {
-                log.error("GRPC impossible to get the routes");
-            }
-        } else {
-            route_v1 route = routes.getRoutes(0);
-            List<eui_pair_v1> euis = grpcGetEuiFromRoute(route.getId());
-            for ( eui_pair_v1 eui : euis ) {
-                NovaDevice n = new NovaDevice();
-                n.devEui = Tools.EuiStringFromLong(eui.getDevEui());
-                n.appEui = Tools.EuiStringFromLong(eui.getAppEui());
-                ret.add(n);
-            }
+        List<eui_pair_v1> euis = grpcGetEuiFromRoute(routeId);
+        for ( eui_pair_v1 eui : euis ) {
+            NovaDevice n = new NovaDevice();
+            n.devEui = Tools.EuiStringFromLong(eui.getDevEui());
+            n.appEui = Tools.EuiStringFromLong(eui.getAppEui());
+            n.routeId = eui.getRouteId();
+            ret.add(n);
         }
         return ret;
     }
@@ -558,7 +787,7 @@ public class NovaService {
      * @param devices
      * @param add
      */
-    public boolean grpcAddRemoveInRoutes(List<NovaDevice> devices, boolean add) {
+    public boolean grpcAddRemoveInRoutes(List<NovaDevice> devices, String routeId, boolean add) {
 
         StreamObserver<route_euis_res_v1> responseObserver = new StreamObserver<route_euis_res_v1>() {
             @Override
@@ -581,29 +810,11 @@ public class NovaService {
         if ( ! this.grpcInitOk ) return false;
         long start = Now.NowUtcMs();
         if ( add ) {
-            log.debug("GRPC Add routes");
+            log.debug("GRPC Add routes ("+devices.size()+") in "+routeId);
         } else {
-            log.debug("GRPC Remove routes ("+devices.size()+")");
+            log.debug("GRPC Remove routes ("+devices.size()+") in "+routeId);
         }
 
-        route_list_res_v1 routes = this.grpcListRoutes();
-        if( routes == null || routes.getRoutesCount() == 0 || routes.getRoutesCount() > 1) {
-            // @TODO keep it simple currently, only one route is supported
-            // means the route must be initialized previously
-            // and no more than one is supported
-            // we will later manage multi-route solution
-            // route can be saved in the config
-            // @TODO also manage route cache in memory to reduce the read impact ..
-            if ( routes != null ) {
-                log.error("GRPC currently supporting configuration with one route created, not more/less");
-            } else {
-                log.error("GRPC impossible to get the routes");
-            }
-            return false;
-        }
-
-        route_v1 route = routes.getRoutes(0);
-        String routeId = route.getId();
         ManagedChannel channel = ManagedChannelBuilder.forAddress(
                 consoleConfig.getHeliumGrpcServer(),
                 consoleConfig.getHeliumGrpcPort()
@@ -613,6 +824,7 @@ public class NovaService {
         long now = Now.NowUtcMs();
         ArrayList<route_update_euis_req_v1> requests = new ArrayList<>();
         for( NovaDevice device : devices) {
+            log.debug("  Process DevEUI "+device.devEui);
             eui_pair_v1 eui = eui_pair_v1.newBuilder()
                     .setDevEui(Tools.EuiStringToLong(device.devEui))
                     .setAppEui(Tools.EuiStringToLong(device.appEui))
@@ -656,147 +868,6 @@ public class NovaService {
             prometeusService.addHeliumApiTotalTimeMs(startNova);
         }
         return true;
-
-
-
-        /*
-
-        route_list_res_v1 routes = this.grpcListRoutes();
-        if( routes == null || routes.getRoutesCount() == 0 || routes.getRoutesCount() > 1) {
-            // @TODO keep it simple currently, only one route is supported
-            // means the route must be initialized previously
-            // and no more than one is supported
-            // we will later manage multi-route solution
-            // route can be saved in the config
-            // @TODO also manage route cache in memory to reduce the read impact ..
-            if ( routes != null ) {
-                log.error("GRPC currently supporting configuration with one route created, not more/less");
-            } else {
-                log.error("GRPC impossible to get the routes");
-            }
-            return false;
-        }
-        route_v1 route = routes.getRoutes(0);
-        List<eui_pair_v1> euis = grpcGetEuiFromRoute(route.getId());
-
-        ArrayList<eui_pair_v1> toremoveList = new ArrayList<>();
-        HashMap<String, NovaDevice> allDevices = new HashMap<>();
-        // add existing devices
-        for ( eui_pair_v1 eui : euis ) {
-            if ( add ) {
-                NovaDevice nd = new NovaDevice();
-                nd.devEui = Tools.EuiStringFromLong(eui.getDevEui());
-                nd.appEui = Tools.EuiStringFromLong(eui.getAppEui());
-                nd.euiPair = eui;
-                allDevices.put(nd.devEui + nd.appEui, nd);
-            } else {
-                String _devEui = Tools.EuiStringFromLong(eui.getDevEui());
-                String _appEui = Tools.EuiStringFromLong(eui.getAppEui());
-                boolean found = false;
-                for ( NovaDevice device : devices ) {
-                    //log.debug("Compared "+device.devEui+" / "+device.appEui);
-                    if (  device.devEui.compareToIgnoreCase(_devEui) == 0
-                       && device.appEui.compareToIgnoreCase(_appEui) == 0
-                    ) {
-                        found = true;
-                        break;
-                    }
-                }
-                if ( !found ) {
-                    NovaDevice nd = new NovaDevice();
-                    nd.devEui = _devEui;
-                    nd.appEui = _appEui;
-                    nd.euiPair = eui;
-                    allDevices.put(nd.devEui + nd.appEui, nd);
-                    log.debug("Device "+nd.devEui+" / "+nd.appEui+" not to be removed");
-                } else {
-                    log.debug("Device "+_devEui+" / "+_appEui+" to be removed");
-                    toremoveList.add(eui);
-                }
-            }
-        }
-
-        // find devices to be added and do this
-        ArrayList<eui_pair_v1> toaddList = new ArrayList<>();
-        if ( add ) {
-            for (NovaDevice device : devices) {
-                if (allDevices.get(device.devEui + device.appEui) == null) {
-                    allDevices.put(device.devEui + device.appEui, device);
-                    toaddList.add()
-                }
-            }
-        }
-
-        // Update list of route
-        ArrayList<eui_pair_v1> updatedList = new ArrayList<>();
-        for ( NovaDevice device : allDevices.values() ) {
-            eui_pair_v1 n = eui_pair_v1.newBuilder()
-                    .setDevEui(Tools.EuiStringToLong(device.devEui))
-                    .setAppEui(Tools.EuiStringToLong(device.appEui))
-                    .build();
-            updatedList.add(n);
-        }
-
-        // debug
-        log.debug("New device list");
-        for ( eui_pair_v1 e : updatedList ) {
-            log.debug("Eui : "+Tools.EuiStringFromLong(e.getDevEui())+" / "+Tools.EuiStringFromLong(e.getAppEui()));
-        }
-
-        // update the list of euis
-
-
-
-        // Clone the route
-        route_v1 newRoute = route_v1.newBuilder()
-                .setId(route.getId())
-                .setServer(route.getServer())
-                .setOui(route.getOui())
-                .setNetId(route.getNetId())
-                .setMaxCopies(route.getMaxCopies())
-                .addAllDevaddrRanges(route.getDevaddrRangesList())
-                .addAllEuis(updatedList)
-                .setNonce(route.getNonce())
-                .build();
-
-        long startNova = Now.NowUtcMs();
-        try {
-            // push the new version
-            ManagedChannel channel = ManagedChannelBuilder.forAddress(
-                    consoleConfig.getHeliumGrpcServer(),
-                    consoleConfig.getHeliumGrpcPort()
-            ).usePlaintext().build();
-            routeGrpc.routeBlockingStub stub = routeGrpc.newBlockingStub(channel);
-
-            long now = Now.NowUtcMs();
-            route_update_req_v1 requestToSign = route_update_req_v1.newBuilder()
-                    .setOwner(this.owner)
-                    .setRoute(newRoute)
-                    .setTimestamp(now)
-                    .clearSignature()
-                    .build();
-            byte[] requestToSignContent = requestToSign.toByteArray();
-            this.signer.update(requestToSignContent, 0, requestToSignContent.length);
-            byte[] signature = signer.generateSignature();
-
-            route_v1 response = stub.update(route_update_req_v1.newBuilder()
-                    .setOwner(this.owner)
-                    .setRoute(newRoute)
-                    .setTimestamp(now)
-                    .setSignature(ByteString.copyFrom(signature))
-                    .build());
-            channel.shutdown();
-        } catch (Exception x) {
-            prometeusService.addHeliumTotalError();
-            log.error("GRPC error during route update "+x.getMessage());
-            x.printStackTrace();
-            return false;
-        } finally {
-            prometeusService.addHeliumApiTotalTimeMs(startNova);
-        }
-        log.debug("GPRC list update duration "+(Now.NowUtcMs()-start)+"ms");
-        return true;
-         */
     }
 
 

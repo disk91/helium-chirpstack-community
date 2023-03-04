@@ -20,8 +20,6 @@
 package eu.heliumiot.console.jpa.repository;
 
 import eu.heliumiot.console.jpa.db.HeliumDcTransaction;
-import eu.heliumiot.console.jpa.db.HeliumDevice;
-import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.stereotype.Repository;
 

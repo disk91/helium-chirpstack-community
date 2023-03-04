@@ -50,6 +50,8 @@ public class HeliumTenant {
     // tenant state
     private TenantState state;
 
+    @Column(name = "max_copy")
+    private int maxCopy = 0;    // max number of DC purchased by message for this tenant
 
     // ---
 
@@ -85,5 +87,13 @@ public class HeliumTenant {
 
     public void setState(TenantState state) {
         this.state = state;
+    }
+
+    public int getMaxCopy() {
+        return maxCopy;
+    }
+
+    public void setMaxCopy(int maxCopy) {
+        this.maxCopy = maxCopy;
     }
 }

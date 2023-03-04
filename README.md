@@ -82,3 +82,16 @@ with this software you have two options:
 Specific licences 
 can be obtained by contacting the Author. Any reuse of this code-source needs to be indicated and modifications/addition need to 
 be publicly published, even when small pieces of code or architecture are reused.
+
+## Misc
+- Nova service GRPC proto can be found on - https://github.com/helium/proto/blob/master/src/service/iot_config.proto
+- Protoc - https://github.com/protocolbuffers/protobuf
+- Stub pluggin - https://github.com/grpc/grpc-java/releases
+- Download Stub pluggin - https://repo.maven.apache.org/maven2/io/grpc/protoc-gen-grpc-java/1.53.0/
+- Command lines
+```agsl
+./protoc/bin/protoc --plugin=protoc-gen-grpc-java=.../protoc-gen-grpc-java-1.53.0-osx-x86_64.exe --java_out=... \
+                    --grpc-java_out=...same... --proto_path=.../proto/src/ service/iot_config.proto
+./protoc/bin/protoc --java_out=... --proto_path=.../proto/src/ region.proto
+./protoc/bin/protoc --java_out=... --proto_path=.../proto/src/ blockchain_region_param_v1.proto
+```

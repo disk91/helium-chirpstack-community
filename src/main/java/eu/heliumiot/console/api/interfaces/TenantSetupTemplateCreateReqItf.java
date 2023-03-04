@@ -162,6 +162,14 @@ public class TenantSetupTemplateCreateReqItf {
     )
     private boolean signupAllowed;
 
+    @Schema(
+            description = "Max number of Frames purchased by router from different hotpost ",
+            example = "2",
+            requiredMode = Schema.RequiredMode.REQUIRED
+    )
+    private int maxCopy;
+
+
     // ---
 
 
@@ -317,5 +325,11 @@ public class TenantSetupTemplateCreateReqItf {
         this.signupAllowed = signupAllowed;
     }
 
+    public int getMaxCopy() {
+        return maxCopy;
+    }
 
+    public void setMaxCopy(int maxCopy) {
+        this.maxCopy = maxCopy;
+    }
 }
