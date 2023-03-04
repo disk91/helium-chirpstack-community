@@ -633,9 +633,10 @@ public class NovaService {
         if ( ! this.grpcInitOk ) return null;
 
         long start = Now.NowUtcMs();
-        log.debug("GRPC Get route "+routeId);
+        log.debug("GRPC GET route "+routeId);
+        ManagedChannel channel = null;
         try {
-            ManagedChannel channel = ManagedChannelBuilder.forAddress(
+            channel = ManagedChannelBuilder.forAddress(
                     consoleConfig.getHeliumGrpcServer(),
                     consoleConfig.getHeliumGrpcPort()
             ).usePlaintext().build();
@@ -656,15 +657,16 @@ public class NovaService {
                     .setTimestamp(now)
                     .setSignature(ByteString.copyFrom(signature))
                     .build());
-            channel.shutdown();
 
-            log.debug("GPRC get route duration " + (Now.NowUtcMs() - start) + "ms");
+            log.debug("GPRC GET route duration " + (Now.NowUtcMs() - start) + "ms");
             log.debug("GRPC route " + response.getId());
             return response;
         } catch ( Exception x ) {
-            log.warn("GRPC get route error "+x.getMessage());
+            log.warn("GRPC GET route error "+x.getMessage());
+            x.printStackTrace();
             prometeusService.addHeliumTotalError();
         } finally {
+            if ( channel != null ) channel.shutdown();
             prometeusService.addHeliumApiTotalTimeMs(start);
         }
         return null;
@@ -674,9 +676,10 @@ public class NovaService {
         if ( ! this.grpcInitOk ) return null;
 
         long start = Now.NowUtcMs();
-        log.debug("GRPC Get route Euis "+routeId);
+        log.debug("GRPC GET route EUIs "+routeId);
+        ManagedChannel channel = null;
         try {
-            ManagedChannel channel = ManagedChannelBuilder.forAddress(
+            channel = ManagedChannelBuilder.forAddress(
                     consoleConfig.getHeliumGrpcServer(),
                     consoleConfig.getHeliumGrpcPort()
             ).usePlaintext().build();
@@ -697,19 +700,20 @@ public class NovaService {
                     .setTimestamp(now)
                     .setSignature(ByteString.copyFrom(signature))
                     .build());
-            channel.shutdown();
             ArrayList<eui_pair_v1> rl = new ArrayList<>();
             while (response.hasNext()) {
                 rl.add(response.next());
             }
 
-            log.debug("GPRC get route EUIs duration " + (Now.NowUtcMs() - start) + "ms");
+            log.debug("GPRC GET route EUIs duration " + (Now.NowUtcMs() - start) + "ms");
             log.debug("GRPC route " + routeId + " has " + rl.size() + " entries ");
             return rl;
         } catch ( Exception x ) {
-            log.warn("GRPC get route EUIs error "+x.getMessage());
+            log.warn("GRPC GET route EUIs error "+x.getMessage());
             prometeusService.addHeliumTotalError();
+            x.printStackTrace();
         } finally {
+            if ( channel != null ) channel.shutdown();
             prometeusService.addHeliumApiTotalTimeMs(start);
         }
         return null;
@@ -722,8 +726,9 @@ public class NovaService {
 
         long start = Now.NowUtcMs();
         log.debug("GRPC List routes ");
+        ManagedChannel channel = null;
         try {
-            ManagedChannel channel = ManagedChannelBuilder.forAddress(
+            channel = ManagedChannelBuilder.forAddress(
                     consoleConfig.getHeliumGrpcServer(),
                     consoleConfig.getHeliumGrpcPort()
             ).usePlaintext().build();
@@ -744,7 +749,6 @@ public class NovaService {
                     .setTimestamp(now)
                     .setSignature(ByteString.copyFrom(signature))
                     .build());
-            channel.shutdown();
             log.debug("GPRC list route duration " + (Now.NowUtcMs() - start) + "ms");
             log.debug("GRPC routes (" + response.getRoutesCount() + ")");
             /*
@@ -761,6 +765,7 @@ public class NovaService {
             log.warn("Nova Backend not reachable");
             return null;
         } finally {
+            if ( channel != null ) channel.shutdown();
             prometeusService.addHeliumApiTotalTimeMs(start);
         }
     }
@@ -769,14 +774,17 @@ public class NovaService {
     public List<NovaDevice> getAllKnownDevices(String routeId) {
         ArrayList<NovaDevice> ret = new ArrayList<>();
         List<eui_pair_v1> euis = grpcGetEuiFromRoute(routeId);
-        for ( eui_pair_v1 eui : euis ) {
-            NovaDevice n = new NovaDevice();
-            n.devEui = Tools.EuiStringFromLong(eui.getDevEui());
-            n.appEui = Tools.EuiStringFromLong(eui.getAppEui());
-            n.routeId = eui.getRouteId();
-            ret.add(n);
+        if ( euis != null ) {
+            for (eui_pair_v1 eui : euis) {
+                NovaDevice n = new NovaDevice();
+                n.devEui = Tools.EuiStringFromLong(eui.getDevEui());
+                n.appEui = Tools.EuiStringFromLong(eui.getAppEui());
+                n.routeId = eui.getRouteId();
+                ret.add(n);
+            }
+            return ret;
         }
-        return ret;
+        return null;
     }
 
 
@@ -865,6 +873,7 @@ public class NovaService {
             x.printStackTrace();
             return false;
         } finally {
+            if ( channel != null ) channel.shutdown();
             prometeusService.addHeliumApiTotalTimeMs(startNova);
         }
         return true;

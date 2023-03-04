@@ -315,7 +315,7 @@ public class HeliumDeviceService {
         long start = Now.NowUtcMs();
         ArrayList<NovaDevice> invalids = new ArrayList<>();
         List<NovaDevice> all = novaService.getAllKnownDevices(routeId);
-        if ( all == null || all.size() ==  0 ) return invalids; // better do nothing that big mistake
+        if ( all == null || all.size() ==  0 ) return invalids; // better do nothing that big mistake & nothing to remove
 
         for ( NovaDevice dev : all ) {
 
@@ -361,7 +361,7 @@ public class HeliumDeviceService {
 
         // get the devices and store in hashmap for search
         List<NovaDevice> all = novaService.getAllKnownDevices(routeId);
-        if ( all == null || all.size() ==  0 ) return missing; // better do nothing that big mistake
+        if ( all == null ) return missing; // better do nothing that big mistake
 
         HashMap<String,NovaDevice> all_= new HashMap<>();
         for ( NovaDevice n : all ) {

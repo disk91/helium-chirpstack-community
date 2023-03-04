@@ -58,7 +58,6 @@ public class TenantSetupRespItf {
 
     // ------------------------------------
 
-
     public String getTenantUUID() {
         return tenantUUID;
     }
