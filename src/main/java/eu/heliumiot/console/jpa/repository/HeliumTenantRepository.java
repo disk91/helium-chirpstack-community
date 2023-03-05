@@ -19,6 +19,7 @@
  */
 package eu.heliumiot.console.jpa.repository;
 
+import eu.heliumiot.console.jpa.db.HeliumDevice;
 import eu.heliumiot.console.jpa.db.HeliumTenant;
 import eu.heliumiot.console.jpa.db.SumResult;
 import org.springframework.data.jpa.repository.Query;
@@ -37,6 +38,9 @@ public interface HeliumTenantRepository extends CrudRepository<HeliumTenant, UUI
 
     @Query(value = "SELECT SUM(dc_balance) FROM helium_tenant",nativeQuery = true)
     public Long selectSumOfDcs();
+
+    @Query(value = "SELECT * FROM helium_tenant LEFT JOIN tenant ON tenant.id = uuid(helium_tenant.tenantuuid) WHERE tenant.id is null AND helium_tenant.state <> 3", nativeQuery = true)
+    public List<HeliumTenant> findDeletedTenant();
 
 
 }

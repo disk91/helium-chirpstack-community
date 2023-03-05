@@ -363,6 +363,8 @@ public class HeliumDeviceService {
         List<NovaDevice> all = novaService.getAllKnownDevices(routeId);
         if ( all == null ) return missing; // better do nothing that big mistake
 
+        log.debug("searchMissingRouteEuis - Processing route : "+routeId);
+        log.debug("searchMissingRouteEuis - Exising "+all.size()+" euis in the route");
         HashMap<String,NovaDevice> all_= new HashMap<>();
         for ( NovaDevice n : all ) {
             all_.put((""+n.devEui+n.appEui).toLowerCase(),n);
@@ -408,6 +410,7 @@ public class HeliumDeviceService {
     @Autowired
     private HeliumTenantSetupRepository heliumTenantSetupRepository;
 
+    // resync the devices in the route
     @Scheduled(fixedRate = 3600_000, initialDelay = 45_000)
     private void resyncOnce() {
         if (recycled) return;
@@ -445,6 +448,7 @@ public class HeliumDeviceService {
     @Value("${helium.device.activation.scanPeriod}")
     private long activationScanPeriod;
 
+    // Manage the device Activity
     @Scheduled(fixedRateString = "${helium.device.activation.scanPeriod}", initialDelay = 120_000)
     private void deviceActivityJob() {
         if ( ! this.serviceEnable ) return;

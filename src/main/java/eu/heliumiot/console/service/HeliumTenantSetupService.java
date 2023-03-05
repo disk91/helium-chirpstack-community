@@ -366,15 +366,19 @@ public class HeliumTenantSetupService {
             throw new ITRightException();
         }
 
+        this.deleteTenantSetupTemplateUnsecured(ts);
+    }
+
+    public void deleteTenantSetupTemplateUnsecured (
+            HeliumTenantSetup ts
+    ) {
         if ( ! ts.isTemplate() && ts.getRouteId() != null ) {
             // we need to delete the associated route
             novaService.addDelayedRouteRemoval(ts.getRouteId());
         }
-
         this.heliumSetupCache.remove(ts.getTenantUUID(),false);
         heliumTenantSetupRepository.delete(ts);
     }
-
 
 
 }

@@ -186,6 +186,36 @@ public class HeliumTenantService {
     }
 
 
+    // Background cleaning of the HeliumTenant and associated HeliumTenantSetup and routes
+    @Scheduled(fixedRateString = "${helium.tenant.removedeleted.scanPeriod}", initialDelay = 15_000)
+    protected void asyncTenantDeletion() {
+        if ( ! this.serviceEnable ) return;
+        this.runningJobs++;
+        try {
+
+            // find all the Helium tenant without associated Tenant
+            List<HeliumTenant> hts = heliumTenantRepository.findDeletedTenant();
+            if ( hts != null ) {
+                for ( HeliumTenant ht : hts ) {
+                    // Mark HeliumTenant deleted
+                    ht.setState(HeliumTenant.TenantState.DELETED);
+                    heliumTenantRepository.save(ht);
+
+                    // Find the associated HeliumTenant Setup, clear route and HTS
+                    HeliumTenantSetup tsetup = heliumTenantSetupService.getHeliumTenantSetup(ht.getTenantUUID());
+                    heliumTenantSetupService.deleteTenantSetupTemplateUnsecured(tsetup);
+                }
+            }
+
+        } catch (Exception x) {
+            log.error("Failure in asyncTenantDeletion "+x.getMessage());
+            x.printStackTrace();
+        } finally {
+            this.runningJobs--;
+        }
+    }
+
+
 
     // ======================================================
     // Async reporting
