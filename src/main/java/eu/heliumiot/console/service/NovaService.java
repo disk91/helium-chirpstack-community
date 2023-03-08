@@ -505,6 +505,47 @@ public class NovaService {
         this.grpcInitOk = true;
     }
 
+    private ArrayList<devaddr_constraint_v1> addresses = null;
+    private ArrayList<devaddr_constraint_v1> getAddresses() {
+        if ( addresses != null ) return addresses;
+
+        long start = Now.NowUtcMs();
+        log.debug("GRPC get addresses ");
+
+        ManagedChannel channel = null;
+        try {
+            channel = ManagedChannelBuilder.forAddress(
+                    consoleConfig.getHeliumGrpcServer(),
+                    consoleConfig.getHeliumGrpcPort()
+            ).usePlaintext().build();
+            orgGrpc.orgBlockingStub stub = orgGrpc.newBlockingStub(channel);
+
+            org_get_req_v1 getToSign = org_get_req_v1.newBuilder()
+                    .setOui(consoleConfig.getHeliumRouteOui())
+                    .build();
+
+            org_res_v1 response = stub.get(getToSign);
+            if ( response != null && response.getDevaddrConstraintsCount() > 0) {
+                this.addresses = new ArrayList<>();
+                for ( devaddr_constraint_v1 adr : response.getDevaddrConstraintsList()) {
+                    addresses.add(adr);
+                }
+                log.debug("GPRC found "+addresses.size()+"adresses range");
+                log.debug("GPRC get addresses duration " + (Now.NowUtcMs() - start) + "ms");
+                return addresses;
+            }
+        } catch ( Exception x ) {
+            log.error("GRPC get adresses error with message "+x.getMessage());
+            prometeusService.addHeliumTotalError();
+        } finally {
+            if ( channel != null ) channel.shutdown();
+            prometeusService.addHeliumApiTotalTimeMs(start);
+        }
+        return null;
+    }
+
+
+
     private boolean grpcDeleteRoute(String routeId) {
         if ( ! this.grpcInitOk ) return false;
 
@@ -552,15 +593,46 @@ public class NovaService {
 
         if ( ! this.grpcInitOk ) return null;
 
+
+        StreamObserver<route_devaddr_ranges_res_v1> responseObserver = new StreamObserver<route_devaddr_ranges_res_v1>() {
+            @Override
+            public void onNext(route_devaddr_ranges_res_v1 value) {
+                log.debug("DevAddr Updated");
+            }
+
+            @Override
+            public void onError(Throwable t) {
+                log.warn("DevAddr update failed");
+                log.error(t.getMessage());
+                throw new RuntimeException();
+            }
+
+            @Override
+            public void onCompleted() {
+                log.debug("End of DevAddr updates");
+            }
+
+        };
+
+
         long start = Now.NowUtcMs();
         log.debug("GRPC Create route for tenant "+tenantId);
         ManagedChannel channel = null;
+
+        List<devaddr_constraint_v1> addrs = this.getAddresses();
+        if ( addrs == null ) {
+            log.error("Cant create route due to problem on getting devaddr list");
+            return null;
+        }
+
         try {
             channel = ManagedChannelBuilder.forAddress(
                     consoleConfig.getHeliumGrpcServer(),
                     consoleConfig.getHeliumGrpcPort()
             ).usePlaintext().build();
             routeGrpc.routeBlockingStub stub = routeGrpc.newBlockingStub(channel);
+            routeGrpc.routeStub stubAdr = routeGrpc.newStub(channel);
+
 
 
             ArrayList<protocol_gwmp_mapping_v1> regions = new ArrayList<>();
@@ -609,6 +681,52 @@ public class NovaService {
                     .setSignature(ByteString.copyFrom(signature))
                     .build());
 
+            if ( response != null ) {
+                // now we nee to add the devaddr to the route
+                ArrayList<route_update_devaddr_ranges_req_v1> requests = new ArrayList<>();
+                long now = Now.NowUtcMs();
+                for( devaddr_constraint_v1 addr : addrs) {
+                    devaddr_range_v1 range = devaddr_range_v1.newBuilder()
+                            .setRouteId(response.getId())
+                            .setStartAddr(addr.getStartAddr())
+                            .setEndAddr(addr.getEndAddr())
+                            .build();
+
+                    log.info("Add devAddr Range : "+String.format("0x%04X",addr.getStartAddr())+" / "+String.format("0x%04X",addr.getEndAddr()));
+
+                    route_update_devaddr_ranges_req_v1 addrToSign = route_update_devaddr_ranges_req_v1.newBuilder()
+                            .setAction(action_v1.add)
+                            .setTimestamp(now)
+                            .setDevaddrRange(range)
+                            .clearSignature()
+                            .build();
+
+                    byte[] addrToSignContent = addrToSign.toByteArray();
+                    this.signer.update(addrToSignContent, 0, addrToSignContent.length);
+                    byte[] sign = signer.generateSignature();
+
+                    route_update_devaddr_ranges_req_v1 request = route_update_devaddr_ranges_req_v1.newBuilder()
+                            .setAction(action_v1.add)
+                            .setTimestamp(now)
+                            .setDevaddrRange(range)
+                            .setSignature(ByteString.copyFrom(sign))
+                            .build();
+                    requests.add(request);
+                }
+
+                StreamObserver<route_update_devaddr_ranges_req_v1> reqObserver = stubAdr.updateDevaddrRanges(responseObserver);
+                try {
+                    for (route_update_devaddr_ranges_req_v1 req : requests) {
+                        reqObserver.onNext(req);
+                    }
+                    reqObserver.onCompleted();
+                } catch ( RuntimeException x) {
+                    // rollback route
+                    grpcDeleteRoute(response.getId());
+                    prometeusService.addHeliumTotalError();
+                    return null;
+                }
+            }
             log.debug("GPRC route creation duration " + (Now.NowUtcMs() - start) + "ms");
             log.debug("GRPC route " + response.getId());
             return response;
@@ -701,7 +819,7 @@ public class NovaService {
                     .setSignature(ByteString.copyFrom(signature))
                     .build());
             ArrayList<eui_pair_v1> rl = new ArrayList<>();
-            while (response.hasNext()) {
+            while (response != null && response.hasNext()) {
                 rl.add(response.next());
             }
 

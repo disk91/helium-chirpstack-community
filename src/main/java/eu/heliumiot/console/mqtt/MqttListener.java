@@ -257,7 +257,7 @@ public class MqttListener implements MqttCallback {
                         log.info("MQTT - MessageArrived on "+topicName);
                         log.info("MQTT - message "+message);
                 }
-                log.debug("MQTT processing time "+(Now.NowUtcMs()-start)+"ms");
+                log.debug("MQTT processing time "+(Now.NowUtcMs()-start)+"ms for "+topicName);
         }
 
 
