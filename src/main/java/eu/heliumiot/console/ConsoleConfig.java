@@ -478,6 +478,11 @@ public class ConsoleConfig {
     // =============================
     // GPRC / Nova API
     // =============================
+
+
+    @Value ("${helium.grpc.enable}")
+    private boolean heliumGrpcEnable;
+
     @Value ("${helium.grpc.private.keyfile.path}")
     private String heliumGrpcPrivateKeyfilePath;
 
@@ -510,6 +515,10 @@ public class ConsoleConfig {
 
     @Value ("${helium.route.maxcopy}")
     private int heliumRouteMaxCopy;
+
+    public boolean isHeliumGrpcEnable() {
+        return heliumGrpcEnable;
+    }
 
     public int getHeliumRouteMaxCopy() {
         return heliumRouteMaxCopy;

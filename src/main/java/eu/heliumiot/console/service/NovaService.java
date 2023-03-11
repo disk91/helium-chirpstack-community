@@ -54,6 +54,20 @@ public class NovaService {
         long start = Now.NowUtcMs();
         List<String> deviceEUIs = redisDeviceRepository.getDevEuiByDevAddr(devaddr);
         log.debug("Refresh devAddr network keys for " + devaddr + " found " + deviceEUIs.size() + " devices");
+        int iDevAddr = Stuff.hexStrToInt(devaddr);
+
+        List<session_key_filter_v1> sessions = grpcListSessionsByDevaddr(iDevAddr);
+        log.debug("We have " + sessions.size() + " sessions active ");
+
+        HashMap<ByteString,session_key_filter_v1> hashSession = new HashMap<>();
+        for ( session_key_filter_v1 session : sessions ) {
+            hashSession.put(session.getSessionKey(),session);
+        }
+
+        HashMap<ByteString,ByteString> sessionsToAdd = new HashMap<>();
+        HashMap<ByteString,ByteString> sessionsToKeep = new HashMap<>();
+        ArrayList<ByteString> sessionsToRemove = new ArrayList<>();
+
         for (String devEUI : deviceEUIs) {
             // verify state from cache, is that an active device...
             HeliumDevice hd = heliumDeviceCacheService.getHeliumDevice(devEUI);
@@ -64,11 +78,13 @@ public class NovaService {
                     // get all NwkSKey
                     Internal.DeviceSession ds = redisDeviceRepository.getDeviceDetails(devEUI);
                     if (ds != null && ds.getNwkSEncKey() != null && ds.getNwkSEncKey().size() > 4) {
-
-                        // add to the list later call Nova API
-                        // @Todo call Nova Api
-                        String nwkSKey = HexaConverters.byteToHexString(ds.getNwkSEncKey().toByteArray());
-                        log.debug("Add Network encrypted Key " + nwkSKey);
+                        boolean sessionExist = ( hashSession.get(ds.getNwkSEncKey()) != null );
+                        if ( ! sessionExist ) {
+                            sessionsToAdd.put(ds.getNwkSEncKey(),ds.getNwkSEncKey());
+                        } else {
+                            sessionsToKeep.put(ds.getNwkSEncKey(),ds.getNwkSEncKey());
+                        }
+                        log.debug("Add Network encrypted Key " + HexaConverters.byteToHexString(ds.getNwkSEncKey().toByteArray()));
                     }
                     if (ds == null) {
                         log.warn("Impossible to get detailed info on "+devEUI);
@@ -82,8 +98,22 @@ public class NovaService {
             }
 
         }
+        // Now identify the sessions to be removed
+        for ( session_key_filter_v1 session : sessions ) {
+            if ( sessionsToKeep.get(session.getSessionKey()) == null ) {
+                sessionsToRemove.add(session.getSessionKey());
+            }
+        }
+
+        // Call the nova update
+        boolean ret = grpcUpdateSessions(
+                new ArrayList<ByteString>(sessionsToAdd.values()),
+                sessionsToRemove,
+                iDevAddr
+        );
+
         prometeusService.addDevAddrUpdate(start);
-        return true;
+        return ret;
     }
 
 
@@ -118,7 +148,7 @@ public class NovaService {
      * deletion, creation, deactivation, reactivation ...
      * Start managing this after the first global refresh (avoid conflict if doing it in parallel)
      */
-    @Scheduled(fixedRateString = "${helium.nova.publish.delayed.scanPeriod}", initialDelay = 120_000)
+    @Scheduled(fixedDelayString = "${helium.nova.publish.delayed.scanPeriod}", initialDelay = 120_000)
     protected void flushDelayedSessionUpdate() {
         if (!this.serviceEnable || !this.initialSessionRefreshDone) return;
         this.runningJobs++;
@@ -166,6 +196,9 @@ public class NovaService {
     /**
      * When starting the application, it's better to refresh all the sessions on Nova Backend
      * to avoid synchronization problems dur to chirpstack action executed when the console was down
+     * @Todo - we could imagine to rerun this on every day to make a full resync
+     *         not mandatory as we manage delta and delta refresh the whole devaddr
+     *         but it could a interesting sometime. let see the real life
      */
     protected boolean initialSessionRefreshDone = false;
 
@@ -373,6 +406,15 @@ public class NovaService {
     @PostConstruct
     private void loadKey() {
         log.info("Init Nova GRPC setup");
+
+        // For some demo environments it can be good to not pollute with route update
+        // like for testing the migrations of devices.
+        if ( ! consoleConfig.isHeliumGrpcEnable() ) {
+            log.warn("Nova GRPC service is disabled, no route will be created");
+            this.grpcInitOk=false;
+            return;
+        }
+
         // Load Private key
         this.privateKey = new byte[64];
         try {
@@ -692,7 +734,7 @@ public class NovaService {
                             .setEndAddr(addr.getEndAddr())
                             .build();
 
-                    log.info("Add devAddr Range : "+String.format("0x%04X",addr.getStartAddr())+" / "+String.format("0x%04X",addr.getEndAddr()));
+                    log.info("Add devAddr Range : "+String.format("0x%08X",addr.getStartAddr())+" / "+String.format("0x%08X",addr.getEndAddr()));
 
                     route_update_devaddr_ranges_req_v1 addrToSign = route_update_devaddr_ranges_req_v1.newBuilder()
                             .setAction(action_v1.add)
@@ -995,6 +1037,172 @@ public class NovaService {
             prometeusService.addHeliumApiTotalTimeMs(startNova);
         }
         return true;
+    }
+
+    // ==============================================
+    // Manage devices sessions
+    // ==============================================
+
+
+    private List<session_key_filter_v1> grpcListSessionsByDevaddr(int devAddr) {
+        if ( ! this.grpcInitOk ) return null;
+
+        long start = Now.NowUtcMs();
+        log.debug("GRPC List sessions for "+String.format("0x%08X",devAddr));
+        ManagedChannel channel = null;
+        try {
+            channel = ManagedChannelBuilder.forAddress(
+                    consoleConfig.getHeliumGrpcServer(),
+                    consoleConfig.getHeliumGrpcPort()
+            ).usePlaintext().build();
+            session_key_filterGrpc.session_key_filterBlockingStub stub = session_key_filterGrpc.newBlockingStub(channel);
+
+            long now = Now.NowUtcMs();
+            session_key_filter_get_req_v1 requestToSign = session_key_filter_get_req_v1.newBuilder()
+                    .setOui(consoleConfig.getHeliumRouteOui())
+                    .setDevaddr(devAddr)
+                    .setTimestamp(now)
+                    .clearSignature()
+                    .build();
+            byte[] requestToSignContent = requestToSign.toByteArray();
+            this.signer.update(requestToSignContent, 0, requestToSignContent.length);
+            byte[] signature = signer.generateSignature();
+
+            Iterator<session_key_filter_v1> response = stub.get(session_key_filter_get_req_v1.newBuilder()
+                    .setOui(consoleConfig.getHeliumRouteOui())
+                    .setDevaddr(devAddr)
+                    .setTimestamp(now)
+                    .setSignature(ByteString.copyFrom(signature))
+                    .build());
+            ArrayList<session_key_filter_v1> rl = new ArrayList<>();
+            while (response != null && response.hasNext()) {
+                rl.add(response.next());
+            }
+            log.debug("GPRC session list duration " + (Now.NowUtcMs() - start) + "ms");
+            log.debug("GRPC session found "+rl.size()+" entries");
+            return rl;
+        } catch ( StatusRuntimeException x ) {
+            prometeusService.addHeliumTotalError();
+            log.warn("Nova Backend not reachable");
+            return null;
+        } finally {
+            if ( channel != null ) channel.shutdown();
+            prometeusService.addHeliumApiTotalTimeMs(start);
+        }
+    }
+
+    private boolean grpcUpdateSessions(
+            List<ByteString> toAddSession,
+            List<ByteString> toRemoveSession,
+            int devAddr
+    ) {
+
+        StreamObserver<session_key_filter_update_res_v1> responseObserver = new StreamObserver<session_key_filter_update_res_v1>() {
+            @Override
+            public void onNext(session_key_filter_update_res_v1 value) {
+                log.debug("Session Updated");
+            }
+
+            @Override
+            public void onError(Throwable t) {
+                log.debug("Session update failed");
+            }
+
+            @Override
+            public void onCompleted() {
+                log.debug("End of Session updates");
+            }
+        };
+
+        if ( ! this.grpcInitOk ) return false;
+        long start = Now.NowUtcMs();
+        log.debug("GRPC Session Update Add:"+toAddSession.size()+" Del:"+toRemoveSession.size()+" for "+String.format("0x%08X",devAddr));
+
+        ManagedChannel channel = ManagedChannelBuilder.forAddress(
+                consoleConfig.getHeliumGrpcServer(),
+                consoleConfig.getHeliumGrpcPort()
+        ).usePlaintext().build();
+        session_key_filterGrpc.session_key_filterStub stub = session_key_filterGrpc.newStub(channel);
+
+        long now = Now.NowUtcMs();
+        ArrayList<session_key_filter_update_req_v1> requests = new ArrayList<>();
+        for( ByteString session : toAddSession) {
+
+            session_key_filter_v1 filter = session_key_filter_v1.newBuilder()
+                    .setOui(consoleConfig.getHeliumRouteOui())
+                    .setDevaddr(devAddr)
+                    .setSessionKey(session)
+                    .build();
+
+            session_key_filter_update_req_v1 requestToSign = session_key_filter_update_req_v1.newBuilder()
+                    .setAction(action_v1.add)
+                    .setFilter(filter)
+                    .setTimestamp(now)
+                    .clearSignature()
+                    .build();
+
+            byte[] requestToSignContent = requestToSign.toByteArray();
+            this.signer.update(requestToSignContent, 0, requestToSignContent.length);
+            byte[] signature = signer.generateSignature();
+
+            session_key_filter_update_req_v1 request = session_key_filter_update_req_v1.newBuilder()
+                    .setAction(action_v1.add)
+                    .setFilter(filter)
+                    .setTimestamp(now)
+                    .setSignature(ByteString.copyFrom(signature))
+                    .build();
+
+            requests.add(request);
+        }
+
+        for( ByteString session : toRemoveSession) {
+
+            session_key_filter_v1 filter = session_key_filter_v1.newBuilder()
+                    .setOui(consoleConfig.getHeliumRouteOui())
+                    .setDevaddr(devAddr)
+                    .setSessionKey(session)
+                    .build();
+
+            session_key_filter_update_req_v1 requestToSign = session_key_filter_update_req_v1.newBuilder()
+                    .setAction(action_v1.remove)
+                    .setFilter(filter)
+                    .setTimestamp(now)
+                    .clearSignature()
+                    .build();
+
+            byte[] requestToSignContent = requestToSign.toByteArray();
+            this.signer.update(requestToSignContent, 0, requestToSignContent.length);
+            byte[] signature = signer.generateSignature();
+
+            session_key_filter_update_req_v1 request = session_key_filter_update_req_v1.newBuilder()
+                    .setAction(action_v1.remove)
+                    .setFilter(filter)
+                    .setTimestamp(now)
+                    .setSignature(ByteString.copyFrom(signature))
+                    .build();
+
+            requests.add(request);
+        }
+
+        long startNova = Now.NowUtcMs();
+        StreamObserver<session_key_filter_update_req_v1> reqObserver = stub.update(responseObserver);
+        try {
+            for ( session_key_filter_update_req_v1 req : requests ) {
+                reqObserver.onNext(req);
+            }
+            reqObserver.onCompleted();
+        } catch ( RuntimeException x ) {
+            reqObserver.onError(x);
+            prometeusService.addHeliumTotalError();
+            log.error("GRPC error during session update "+x.getMessage());
+            x.printStackTrace();
+            return false;
+        } finally {
+            if ( channel != null ) channel.shutdown();
+            prometeusService.addHeliumApiTotalTimeMs(startNova);
+        }
+        return true;
+
     }
 
 
