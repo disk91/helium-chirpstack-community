@@ -56,8 +56,8 @@
   
     "menu_add_tenant" : "Créer un tenant",
     "menu_sign_out" : "Deconnexion",
-    "menu_chirpstack" : "Chripstack",
-    "menu_user_stats" : "Statistiques",
+    "menu_chirpstack" : "Chirpstack",
+    "menu_user_stats" : "Info Tenant",
     "menu_purchase_dc": "Acheter des Data Credits",
     "menu_admin_profiles" : "Adm profils",
     "menu_edit_profile" : "Mes informations",  
@@ -378,5 +378,12 @@
     "mig_stop_migrate" : "Non, pas encore, je reviens",
     "mig_end_migrate" : "Fin de la migration. Fermer.",
 
+    "bcopy_card_title" : "Achats multiples / copie de messages",
+    "bcopy_parameter" : "Paramètre", 
+    "bcopy_curvalue" : "Valeur actuelle", 
+    "bcopy_newvalue" : "Nouvelle Valeur", 
+    "bcopy_name" : "Max copy",
+    "bcopy_desc" : "Nombre de paquet acheté au maximum pour chaque messages",
+  
     "end" : "fin"
 }

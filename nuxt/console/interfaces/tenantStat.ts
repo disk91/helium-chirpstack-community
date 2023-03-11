@@ -32,5 +32,6 @@ declare module "vue/types/tenantStat" {
         downlinkDc : bigint,
         inactivityDc : bigint,
         activityDc : bigint,
+        maxCopy: number,
     }
 }

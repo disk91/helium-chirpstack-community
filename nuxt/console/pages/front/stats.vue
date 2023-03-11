@@ -1,8 +1,9 @@
 <template>
     <div>
       <Navbar/>
-      <BasicStat/>
       <AddTenant/>
+      <b-card-text class="m-4"><h5>{{$t('menu_user_stats')}}</h5></b-card-text>
+      <BasicStat/>
     </div>
   </template>
   

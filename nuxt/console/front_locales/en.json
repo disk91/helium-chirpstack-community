@@ -57,8 +57,8 @@
 
   "menu_add_tenant" : "Add new tenant",
   "menu_sign_out" : "Sign out",
-  "menu_chirpstack" : "Chripstack",
-  "menu_user_stats" : "Usage Statistics",
+  "menu_chirpstack" : "Chirpstack",
+  "menu_user_stats" : "Tenant details",
   "menu_purchase_dc": "Purchase Data Credits",
   "menu_admin_profiles" : "Adm profiles",
   "menu_edit_profile" : "My profile",
@@ -376,6 +376,13 @@
   "mig_start_migrate_2" : "devices",
   "mig_stop_migrate" : "Not yet, bring me back",
   "mig_end_migrate" : "End of migration. Close.",
+
+  "bcopy_card_title" : "Multi-buy / frame copy",
+  "bcopy_parameter" : "Parameter", 
+  "bcopy_curvalue" : "Curent Value", 
+  "bcopy_newvalue" : "New Value", 
+  "bcopy_name" : "Max copy",
+  "bcopy_desc" : "Max quantity of packet purchased for each messages",
 
   "end" : "end"
 }

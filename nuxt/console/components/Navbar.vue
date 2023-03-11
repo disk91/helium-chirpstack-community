@@ -209,7 +209,7 @@ export default Vue.extend({
           } else {
             this.tenantName = "NA";
           }
-		    } , 3000)
+		    } , 1000)
 	    },
       addTenantAction() {
         this.$root.$emit("message-display-add-tenant", "");
