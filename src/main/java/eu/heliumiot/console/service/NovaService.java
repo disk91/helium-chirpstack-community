@@ -832,6 +832,63 @@ public class NovaService {
         return null;
     }
 
+    public route_v1 grpcUpdateOneRoute(String routeId, int maxCopy) {
+        if ( ! this.grpcInitOk ) return null;
+
+        long start = Now.NowUtcMs();
+        log.debug("GRPC UPDATE route (maxcopy)"+routeId);
+
+        route_v1 oldRoute = grpcGetOneRoute(routeId);
+        if ( oldRoute == null ) return null;
+
+        ManagedChannel channel = null;
+        try {
+            channel = ManagedChannelBuilder.forAddress(
+                    consoleConfig.getHeliumGrpcServer(),
+                    consoleConfig.getHeliumGrpcPort()
+            ).usePlaintext().build();
+            routeGrpc.routeBlockingStub stub = routeGrpc.newBlockingStub(channel);
+
+            long now = Now.NowUtcMs();
+            route_v1 newRoute = route_v1.newBuilder()
+                    .setId(oldRoute.getId())
+                    .setNetId(oldRoute.getNetId())
+                    .setOui(oldRoute.getOui())
+                    .setServer(oldRoute.getServer())
+                    .setMaxCopies(maxCopy)
+                    .setActive(oldRoute.getActive())
+                    .setLocked(oldRoute.getLocked())
+                    .build();
+
+            route_update_req_v1 requestToSign = route_update_req_v1.newBuilder()
+                    .setRoute(newRoute)
+                    .setTimestamp(now)
+                    .clearSignature()
+                    .build();
+            byte[] requestToSignContent = requestToSign.toByteArray();
+            this.signer.update(requestToSignContent, 0, requestToSignContent.length);
+            byte[] signature = signer.generateSignature();
+
+            route_v1 response = stub.update(route_update_req_v1.newBuilder()
+                    .setRoute(newRoute)
+                    .setTimestamp(now)
+                    .setSignature(ByteString.copyFrom(signature))
+                    .build());
+
+            log.debug("GPRC UPDATE route duration " + (Now.NowUtcMs() - start) + "ms");
+            return response;
+        } catch ( Exception x ) {
+            log.warn("GRPC UPDATE route error "+x.getMessage());
+            x.printStackTrace();
+            prometeusService.addHeliumTotalError();
+        } finally {
+            if ( channel != null ) channel.shutdown();
+            prometeusService.addHeliumApiTotalTimeMs(start);
+        }
+        return null;
+    }
+
+
     private List<eui_pair_v1> grpcGetEuiFromRoute(String routeId) {
         if ( ! this.grpcInitOk ) return null;
 

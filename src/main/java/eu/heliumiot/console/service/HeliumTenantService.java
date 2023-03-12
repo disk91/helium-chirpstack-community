@@ -46,6 +46,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
+import xyz.nova.grpc.route_v1;
 
 import javax.annotation.PostConstruct;
 import java.sql.Timestamp;
@@ -1205,7 +1206,49 @@ public class HeliumTenantService {
 
     }
 
+    /**
+     * update the Max Copy param for a given tenant / route
+     * this is the number of frame the router can purchase for a sigle packet
+     * @param userUUID
+     * @param req
+     * @throws ITRightException
+     */
+    public void updateMaxCopyValue(String userUUID, TenantUpdateMaxCopyReqItf req)
+    throws ITRightException, ITParseException {
+        UserCacheService.UserCacheElement user = userCacheService.getUserById(userUUID);
+        if (user == null) throw new ITRightException("tenant_right");
 
+        // Check value
+        if ( req.getNewMaxCopy() <= 0 || req.getNewMaxCopy() > consoleConfig.getHeliumRouteMaxCopy() )
+            throw new ITParseException("tenant_mc_value");
+
+        // check ownership
+        if (! user.user.isAdmin() ) {
+            UserTenant ts = userTenantRepository.findOneUserByUserIdAndTenantId(UUID.fromString(userUUID), UUID.fromString(req.getTenantId()));
+            if (ts == null || ts.isAdmin() == false) {
+                log.warn("updteMaxCopyValue - attempt to update by non tenant owner / try by " + userUUID);
+                throw new ITRightException("tenant_right");
+            }
+        }
+
+        // Now we need to update the route
+        HeliumTenantSetup hts = heliumTenantSetupService.getHeliumTenantSetup(req.getTenantId());
+        if ( hts == null ) throw new ITRightException("tenant_notfound");
+        route_v1 resp = novaService.grpcUpdateOneRoute(hts.getRouteId(),req.getNewMaxCopy());
+        if ( resp != null ) {
+            // Ok, update it
+            synchronized (this) {
+                HeliumTenant ht = getHeliumTenant(req.getTenantId());
+                ht.setMaxCopy(req.getNewMaxCopy());
+                flushHeliumTenant(ht);
+            }
+            hts.setMaxCopy(req.getNewMaxCopy());
+            heliumTenantSetupService.flushTenantSetup(hts);
+        } else {
+            throw new ITParseException("nova_failure");
+        }
+
+    }
 
 
 }

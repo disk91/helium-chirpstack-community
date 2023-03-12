@@ -513,8 +513,12 @@ public class ConsoleConfig {
     @Value ("${helium.route.regions}")
     private String heliumRouteRegions;
 
-    @Value ("${helium.route.maxcopy}")
+    @Value ("${helium.route.copy.max}")
     private int heliumRouteMaxCopy;
+
+    @Value ("${helium.route.copy.default}")
+    private int heliumRouteDefaultCopy;
+
 
     public boolean isHeliumGrpcEnable() {
         return heliumGrpcEnable;
@@ -522,6 +526,10 @@ public class ConsoleConfig {
 
     public int getHeliumRouteMaxCopy() {
         return heliumRouteMaxCopy;
+    }
+
+    public int getHeliumRouteDefaultCopy() {
+        return heliumRouteDefaultCopy;
     }
 
     public String getHeliumRouteRegions() {

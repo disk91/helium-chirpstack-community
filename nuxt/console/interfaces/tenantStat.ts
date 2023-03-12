@@ -34,4 +34,8 @@ declare module "vue/types/tenantStat" {
         activityDc : bigint,
         maxCopy: number,
     }
+    interface TenantUpdateMaxCopyReqItf {
+        tenantId : string,
+        newMaxCopy : number,
+    }
 }

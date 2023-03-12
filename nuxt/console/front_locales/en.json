@@ -383,6 +383,9 @@
   "bcopy_newvalue" : "New Value", 
   "bcopy_name" : "Max copy",
   "bcopy_desc" : "Max quantity of packet purchased for each messages",
+  "bcopy_update" : "Update Max copy",
+  "bcopy_success" : "Max copy update success",
+  "bcopy_error" : "Error during max copy update, please try later",
 
   "end" : "end"
 }

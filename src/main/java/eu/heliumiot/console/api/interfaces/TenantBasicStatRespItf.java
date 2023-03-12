@@ -23,8 +23,6 @@ package eu.heliumiot.console.api.interfaces;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.tags.Tag;
 
-import java.util.UUID;
-
 @Tag(name = "Tenant configuration & usage statistics", description = "Information about tenant configuration and usage statistics")
 public class TenantBasicStatRespItf {
 
@@ -247,6 +245,14 @@ public class TenantBasicStatRespItf {
             requiredMode = Schema.RequiredMode.REQUIRED
     )
     private int activityDc;
+
+    @Schema(
+            description = "Maximum number of duplicates purchased by router",
+            example = "15",
+            requiredMode = Schema.RequiredMode.REQUIRED
+    )
+    private int maxCopy;
+
 
 
     // ------------------------------------
@@ -498,5 +504,13 @@ public class TenantBasicStatRespItf {
 
     public void setTenantName(String tenantName) {
         this.tenantName = tenantName;
+    }
+
+    public int getMaxCopy() {
+        return maxCopy;
+    }
+
+    public void setMaxCopy(int maxCopy) {
+        this.maxCopy = maxCopy;
     }
 }

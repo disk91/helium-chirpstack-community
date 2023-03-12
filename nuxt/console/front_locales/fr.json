@@ -384,6 +384,9 @@
     "bcopy_newvalue" : "Nouvelle Valeur", 
     "bcopy_name" : "Max copy",
     "bcopy_desc" : "Nombre de paquet acheté au maximum pour chaque messages",
-  
+    "bcopy_update" : "Changer le nombre de copies",
+    "bcopy_success" : "Mise à jour de Max Copy réussie",
+    "bcopy_error" : "Problème durant la mise à jour de Max Copy, réessayez plus tard",
+
     "end" : "fin"
 }

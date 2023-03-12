@@ -541,5 +541,48 @@ public class TenantApi {
         }
     }
 
+    // --------------------------------------
+    // Update Max Copy
+
+
+    @Operation(summary = "Update Max Copy for a tenant ",
+            description = "Update Max Copy for a tenant, update the associted route param",
+            responses = {
+                    @ApiResponse(responseCode = "200", description= "Ok", content = @Content(schema = @Schema(implementation = ActionResult.class))),
+                    @ApiResponse(responseCode = "403", description= "Forbidden", content = @Content(schema = @Schema(implementation = ActionResult.class))),
+                    @ApiResponse(responseCode = "400", description= "Bad request", content = @Content(schema = @Schema(implementation = ActionResult.class))),
+            }
+    )
+    @RequestMapping(value="/maxcopy",
+            produces = MediaType.APPLICATION_JSON_VALUE,
+            method= RequestMethod.PUT)
+    @PreAuthorize("hasAnyRole('ROLE_USER')")
+    public ResponseEntity<?> updateMaxCopy(
+            HttpServletRequest request,
+            @RequestBody(required = true) TenantUpdateMaxCopyReqItf maxCopyItf
+    ) {
+        long startMs= Now.NowUtcMs();
+        log.debug("Update Max copy for tenants "+request.getUserPrincipal().getName());
+
+        try {
+            heliumTenantService.updateMaxCopyValue(
+                    request.getUserPrincipal().getName(),
+                    maxCopyItf
+            );
+            return new ResponseEntity<>(ActionResult.SUCESS(), HttpStatus.OK);
+        } catch ( ITRightException x ) {
+            ActionResult err = ActionResult.FORBIDDEN();
+            err.setMessage(x.getMessage());
+            prometeusService.addApiTotalError();
+            return new ResponseEntity<>(err, HttpStatus.FORBIDDEN);
+        } catch ( ITParseException x ) {
+            ActionResult err = ActionResult.FAILED();
+            err.setMessage(x.getMessage());
+            prometeusService.addApiTotalError();
+            return new ResponseEntity<>(err, HttpStatus.BAD_REQUEST);
+        } finally {
+            prometeusService.addApiTotalTimeMs(startMs);
+        }
+    }
 
 }

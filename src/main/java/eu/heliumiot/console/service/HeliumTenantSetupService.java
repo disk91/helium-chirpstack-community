@@ -94,7 +94,7 @@ public class HeliumTenantSetupService {
             ts.setDcPrice(consoleConfig.getHeliumBillingDcPrice());
             ts.setDcMin(consoleConfig.getHeliumBillingDcMinAmount());
             ts.setSignupAllowed(consoleConfig.isHeliumAllowsSignup());
-            ts.setMaxCopy(consoleConfig.getHeliumRouteMaxCopy());
+            ts.setMaxCopy(consoleConfig.getHeliumRouteDefaultCopy());
             ts.setRouteId("N/A");
             ts.setTemplate(true);
             heliumTenantSetupRepository.save(ts);
@@ -182,6 +182,11 @@ public class HeliumTenantSetupService {
             }
         }
         return ts;
+    }
+
+    public void flushTenantSetup(HeliumTenantSetup ts) {
+        heliumTenantSetupRepository.save(ts);
+        this.heliumSetupCache.remove(ts.getTenantUUID(),false);
     }
 
     /**

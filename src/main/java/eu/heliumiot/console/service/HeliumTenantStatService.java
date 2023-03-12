@@ -84,6 +84,7 @@ public class HeliumTenantStatService {
         r.setMaxDevices(hts.getMaxDevices());
         r.setDcPrice(hts.getDcPrice());
         r.setDcMin(hts.getDcMin());
+        r.setMaxCopy(hts.getMaxCopy());
 
         // get name
         Tenant t = tenantRepository.findOneTenantById(UUID.fromString(tenantUUID));

@@ -28,6 +28,7 @@ export default {
     tenantBasicStat:(process.env.API_HOST || '')+'/console/1.0/tenant',
     tenantKeyCreate:(process.env.API_HOST || '')+'/console/1.0/tenant/key',
     tenantKeyDelete:(process.env.API_HOST || '')+'/console/1.0/tenant/key',
+    tenantMaxCopyUpdate:(process.env.API_HOST || '')+'/console/1.0/tenant/maxcopy',
     messageAdmGet:(process.env.API_HOST || '')+'/console/1.0/message/admin',
     messageAdmUpd:(process.env.API_HOST || '')+'/console/1.0/message/admin',
     messageAdmNew:(process.env.API_HOST || '')+'/console/1.0/message/admin',
@@ -54,7 +55,7 @@ export default {
     proxyGet:(process.env.API_HOST || '')+'/console/1.0/proxy/getter',
     ouiGet:(process.env.API_HOST || '')+'/console/1.0/misc/oui',
     termAndUse:process.env.CONSOLE_TERMS || '/',
-    frontVersion:'0.4.0'
+    frontVersion:'1.0.0'
   },
 
   // env variables loaded accessible on the server side

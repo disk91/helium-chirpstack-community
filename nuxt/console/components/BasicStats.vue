@@ -235,9 +235,30 @@
                                             <span class="text-dark p-0" style="font-size:0.8rem; ">{{ $t('bcopy_name') }}</span><br/>
                                             <span class="text-black-50 p-0" style="font-size:0.6rem;">{{ $t('bcopy_desc') }}</span>
                                         </div>
-                                        <div class="col-md-3 text-dark p-2" style="font-size:0.8rem; text-align:right; vertical-align: middle;"> {{ basicStat.maxCopy }}</div>
+                                        <div class="col-md-3 text-dark p-2 mt-2" style="font-size:0.8rem; text-align:right; vertical-align: middle;">
+                                             {{ basicStat.maxCopy }}
+                                        </div>
                                         <div class="col-md-5 text-dark p-2" style="font-size:0.8rem; text-align:right; vertical-align: middle;">
-                                        
+                                            <b-form-input v-model.number="newMaxCopy"
+                                                        type="number" 
+                                                        class="mb-2"
+                                                        size="sm"
+                                            ></b-form-input>
+                                            <b-button block
+                                                variant="outline-dark"
+                                                size="sm"
+                                                @click="updateMaxCopy()"
+                                                style="text-align: left;font-size:0.8rem;"
+                                            >
+                                                {{ $t('bcopy_update') }}
+                                                <b-icon icon="pencil-square" variant="secondary"></b-icon>
+                                            </b-button>
+                                            <b-card-text v-if="updateSuccess != ''" class="small mb-2 text-success">
+                                                {{ $t(updateSuccess) }}   
+                                            </b-card-text>
+                                            <b-card-text  v-if="updateError != ''" class="small mb-2 text-danger">
+                                                {{ $t(updateError) }}
+                                            </b-card-text>
                                         </div>
                                     </div>
                                 </b-list-group-item>
@@ -270,7 +291,7 @@
 
 <script lang="ts">
     import Vue from 'vue'
-    import { TenantBasicStat } from 'vue/types/tenantStat';
+    import { TenantBasicStat, TenantUpdateMaxCopyReqItf } from 'vue/types/tenantStat';
   
     interface data {
         basicStat : TenantBasicStat,
@@ -278,6 +299,9 @@
         loadBasicStatSuccess : boolean,
         errorMessage : string,
         isBusy : boolean,
+        newMaxCopy : number,
+        updateError : string,
+        updateSuccess : string,
     }
 
     export default Vue.extend({
@@ -289,6 +313,9 @@
           loadBasicStatSuccess : false,
           errorMessage: '',
           isBusy : true,
+          newMaxCopy : 0,
+          updateError : '',
+          updateSuccess: '',
         }
       },
       async fetch() {
@@ -311,6 +338,7 @@
                 if (response.status == 200 ) {
                   this.basicStat = response.data;
                   this.tenantTitle = '' + this.basicStat.tenantName + ' ('+ this.basicStat.tenantUUID +')';
+                  this.newMaxCopy = this.basicStat.maxCopy;
                   this.isBusy = false;
                   this.loadBasicStatSuccess = true;
                 }
@@ -318,19 +346,40 @@
                this.basicStat = {} as TenantBasicStat;
                this.errorMessage = 'error_load_basicstat';
                this.loadBasicStatSuccess = false;
-/*
-               this.$bvToast.toast(`test`,{
-                title: `test`,
-                toaster: 'b-toaster-top-full',
-                solid : true,
-                variant : 'danger',
-               })
-               */
             })
       },
       methods: {
         getTenantTitle() : string {
             return this.tenantTitle;
+        },
+        updateMaxCopy() {
+
+            let config = {
+                headers: {
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer '+this.$store.state.consoleBearer,  
+                }
+            };
+            let body : TenantUpdateMaxCopyReqItf = {
+                tenantId: this.basicStat.tenantUUID,
+                newMaxCopy: ~~this.newMaxCopy
+            }
+            this.updateError='';
+            this.updateSuccess='';
+
+            this.$axios.put(this.$config.tenantMaxCopyUpdate,body,config)
+                    .then((response) =>{
+                        if ( response.status == 200 ) {
+                            this.updateSuccess='bcopy_success';
+                            this.$fetch();
+                        } else {
+                            this.updateError='bcopy_error';
+                        }
+                    })
+                    .catch((err) => {
+                        this.updateError='bcopy_error';
+                    })
+
         }
       },
     });
