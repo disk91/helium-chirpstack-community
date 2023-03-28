@@ -74,6 +74,7 @@ public class WebSecurityProfile {
                         .antMatchers("/swagger-doc/**").permitAll()
                         .antMatchers("/v3/api-docs/**").permitAll()
                         .antMatchers("/webjars/**").permitAll()
+                        // prometheus
                         .antMatchers("/actuator/**").permitAll()
                         .anyRequest().authenticated())
         ;

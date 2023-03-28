@@ -19,6 +19,7 @@
  */
 package eu.heliumiot.console.jpa.db;
 
+import fr.ingeniousthings.tools.ClonnableObject;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
@@ -31,7 +32,7 @@ import java.util.UUID;
                 @Index(name="tenantIndex", columnList = "tenantUUID")
         }
 )
-public class HeliumDevice {
+public class HeliumDevice implements ClonnableObject<HeliumDevice> {
 
     // Warning, do not change the order - it will impact the BDD values
     public enum DeviceState { INSERTED, ACTIVE, INACTIVE, DEACTIVATED, OUTOFDCS, DELETED }
@@ -94,6 +95,14 @@ public class HeliumDevice {
     // DCs for current day (this value is not fix in the database and comes from cache for best value)
     @Column(name = "todaydcs")
     private long todayDCs;
+
+    // ---
+
+    public HeliumDevice clone() {
+        System.out.println("### HeliumDevice clone not implemented");
+        return null;
+    }
+
 
     // ---
 

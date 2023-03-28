@@ -19,6 +19,7 @@
  */
 package eu.heliumiot.console.jpa.db;
 
+import fr.ingeniousthings.tools.ClonnableObject;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
@@ -31,7 +32,7 @@ import java.util.UUID;
                 @Index(name="dailyTenantIndex", columnList = "day,tenantUUID")
         }
 )
-public class HeliumDeviceStat {
+public class HeliumDeviceStat implements ClonnableObject<HeliumDeviceStat> {
 
     @Id
     @GenericGenerator(name = "UUIDGenerator", strategy = "uuid2")
@@ -68,6 +69,12 @@ public class HeliumDeviceStat {
 
     // ---
 
+    public HeliumDeviceStat clone() {
+        System.out.println("### UserCacheElement clone not implemented");
+        return null;
+    }
+
+    // ---
 
     public UUID getId() {
         return id;

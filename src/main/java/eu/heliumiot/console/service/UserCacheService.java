@@ -30,6 +30,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
+import java.util.List;
 import java.util.UUID;
 
 import static eu.heliumiot.console.service.UserService.HUPROFILE_STATUS_CREATED;
@@ -49,10 +50,16 @@ public class UserCacheService {
     // ===================================================
     // Cache Management
     // ===================================================
-    public class UserCacheElement {
+    public class UserCacheElement implements ClonnableObject<UserCacheElement> {
         public User user;
         public HeliumUser heliumUser;
+
+        public UserCacheElement clone() {
+            log.error("### UserCacheElement clone not implemented");
+            return null;
+        }
     }
+
 
     private ObjectCache<String, UserCacheElement> userCache;
     @PostConstruct
@@ -62,6 +69,11 @@ public class UserCacheService {
             @Override
             public void onCacheRemoval(String key, UserCacheElement obj) {
                 // nothing to do, readOnly
+            }
+
+            @Override
+            public void bulkCacheUpdate(List<UserCacheElement> objects) {
+
             }
         };
     }

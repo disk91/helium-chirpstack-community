@@ -32,6 +32,7 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
+import java.util.List;
 
 // Main purpose is to not have a circular inclusion and optimize device access with inMemory storage
 @Service
@@ -56,6 +57,12 @@ public class HeliumDeviceCacheService {
             @Override
             public void onCacheRemoval(String key, HeliumDevice obj) {
             }
+
+            @Override
+            public void bulkCacheUpdate(List<HeliumDevice> objects) {
+
+            }
+
         };
         runningJobs=0;
         serviceEnable=true;

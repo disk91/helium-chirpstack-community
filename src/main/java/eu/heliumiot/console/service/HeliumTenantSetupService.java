@@ -69,6 +69,12 @@ public class HeliumTenantSetupService {
             public void onCacheRemoval(String key, HeliumTenantSetup obj) {
                 log.info("Removal of helium setup "+key+" previously updated");
             }
+
+            @Override
+            public void bulkCacheUpdate(List<HeliumTenantSetup> objects) {
+
+            }
+
         };
 
         // search for default entry

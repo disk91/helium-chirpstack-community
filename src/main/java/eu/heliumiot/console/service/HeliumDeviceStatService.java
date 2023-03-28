@@ -62,6 +62,12 @@ public class HeliumDeviceStatService {
                 obj.setLastCommit(Now.NowUtcMs());
                 heliumDeviceStatsRepository.save(obj);
             }
+
+            @Override
+            public void bulkCacheUpdate(List<HeliumDeviceStat> objects) {
+
+            }
+
         };
 
         runningJobs=0;

@@ -19,6 +19,7 @@
  */
 package eu.heliumiot.console.jpa.db;
 
+import fr.ingeniousthings.tools.ClonnableObject;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
@@ -30,7 +31,7 @@ import java.util.UUID;
           @Index(name="uniqueTenantSetupIndex", columnList = "tenantUUID", unique = true)
         }
 )
-public class HeliumTenantSetup {
+public class HeliumTenantSetup implements ClonnableObject<HeliumTenantSetup> {
 
     @Id
     @GenericGenerator(name = "UUIDGenerator", strategy = "uuid2")
@@ -102,6 +103,12 @@ public class HeliumTenantSetup {
 
     @Column(name = "route_id")
     private String routeId;
+
+    // ---
+    public HeliumTenantSetup clone() {
+        System.out.println("### HeliumTenantSetup clone not implemented");
+        return null;
+    }
 
 
     // ---

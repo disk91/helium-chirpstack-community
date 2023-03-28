@@ -1,6 +1,6 @@
 plugins {
 	id 'java'
-	id 'org.springframework.boot' version '2.7.5'
+	id 'org.springframework.boot' version '2.7.10'
 	id 'io.spring.dependency-management' version '1.0.15.RELEASE'
 }
 
@@ -38,9 +38,9 @@ dependencies {
 	implementation group: 'org.postgresql', name: 'postgresql', version: '42.5.1'
 	implementation group: 'redis.clients', name: 'jedis', version: '4.3.1'
 	implementation group: 'com.google.protobuf', name: 'protobuf-java-util', version: '3.21.9'
-	implementation group: 'io.grpc', name: 'grpc-okhttp', version: '1.51.0'
 	implementation group: 'org.springdoc', name: 'springdoc-openapi-ui', version: '1.6.13'
 	implementation group: 'javax.xml.bind', name: 'jaxb-api', version: '2.3.1'
+	implementation group: 'io.grpc', name: 'grpc-okhttp', version: '1.53.0'
 	implementation group: 'io.grpc', name: 'grpc-netty', version:'1.53.0'
 	implementation group: 'io.grpc', name: 'grpc-protobuf', version:'1.53.0'
 	implementation group: 'io.grpc', name: 'grpc-stub', version:'1.53.0'

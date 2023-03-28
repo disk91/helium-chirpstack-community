@@ -20,11 +20,12 @@
 
 package eu.heliumiot.console.api.interfaces;
 
+import fr.ingeniousthings.tools.ClonnableObject;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.tags.Tag;
 
 @Tag(name = "Tenant configuration & usage statistics", description = "Information about tenant configuration and usage statistics")
-public class TenantBasicStatRespItf {
+public class TenantBasicStatRespItf implements ClonnableObject<TenantBasicStatRespItf>  {
 
 
     @Schema(
@@ -252,6 +253,13 @@ public class TenantBasicStatRespItf {
             requiredMode = Schema.RequiredMode.REQUIRED
     )
     private int maxCopy;
+
+    // ----
+
+    public TenantBasicStatRespItf clone() {
+        System.out.println("### TenantBasicStatRespItf clone not implemented");
+        return null;
+    }
 
 
 
