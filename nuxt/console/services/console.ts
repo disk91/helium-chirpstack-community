@@ -139,6 +139,18 @@ export class HeliumConsoleService {
         return r;
     }
 
+    countEU433(label:string = "") : number {
+        let r = 0;
+        this.accountDevices.forEach( (device) => {
+            if ( label == "no_label" && device.rawDevice.labels.length  == 0 )
+                if ( device.isEU433 ) r++;
+            if ( label == "" || device.rawDevice.labels.length > 0 && device.rawDevice.labels[0].id == label )
+               if ( device.isEU433 ) r++;
+        })
+        return r;
+    }
+
+
     countUS915(label:string = "") : number {
         let r = 0;
         this.accountDevices.forEach( (device) => {
@@ -154,7 +166,7 @@ export class HeliumConsoleService {
         let r = 0;
         this.accountDevices.forEach( (device) => {
             if ( label == "no_label" && device.rawDevice.labels.length  == 0 )
-                if ( device.isAU915_1 ) r++;
+               if ( device.isAU915_1 ) r++;
             if ( label == "" || device.rawDevice.labels.length > 0 && device.rawDevice.labels[0].id == label )
                if ( device.isAU915_1 ) r++;
         })
@@ -247,23 +259,35 @@ export class HeliumConsoleService {
                             isActive : deviceItf.active,
                             isInactive : (!deviceItf.active || lastConnected < 10000 || !deviceItf.in_xor_filter || deviceItf.dc_usage == 0 ), 
                             isNeverSeen : ( deviceItf.dc_usage == 0 || lastConnected < 10000 ) && (deviceItf.active && deviceItf.in_xor_filter),
-                            isEU868 : false,
-                            isUS915 : false,
-                            isAS923_1 : false,
-                            isAS923_1B : false,
-                            isAS923_2 : false,
-                            isAS923_3 : false,
-                            isAS923_4 : false,
-                            isCN470 : false,
-                            isAU915_1 : false,
-                            isAU915_6 : false,
-                            region : "Unknown",
+                            isEU868 : (deviceItf.region=="EU868"),
+                            isEU433 : (deviceItf.region=="EU433"),
+                            isUS915 : (deviceItf.region=="US915"),
+                            isAS923_1 : (deviceItf.region=="AS923_1"),
+                            isAS923_1B : (deviceItf.region=="AS923_1B"),
+                            isAS923_2 : (deviceItf.region=="AS923_2"),
+                            isAS923_3 : (deviceItf.region=="AS923_3"),
+                            isAS923_4 : (deviceItf.region=="AS923_4"),
+                            isCN470 : (deviceItf.region=="CN470"),
+                            isAU915_1 : (deviceItf.region=="AU915_1"),
+                            isAU915_SB1 : (deviceItf.region=="AU915_SB1"),
+                            isAU915_6 : (deviceItf.region=="AU915_6"),
+                            isIN865 : (deviceItf.region=="IN865"),
+                            isCD900_1A : (deviceItf.region=="CD900_1A"),
+                            isKR920 : (deviceItf.region=="KR920"),
+                            region : deviceItf.region,
                             isRegion : false, // false = unknonwn
                             isMultipleLabel : (deviceItf.labels.length > 1),
                             selected : false,
                             status : 0,
                             filtered : false,
                        } as Device;
+                       if ( device.isEU868 || device.isEU868 || device.isUS915 || device.isAS923_1 || device.isAS923_1B 
+                        || device.isAS923_2 || device.isAS923_3 || device.isAS923_4 || device.isCN470 || device.isAU915_1 
+                        || device.isAU915_SB1 || device.isAU915_6 || device.isIN865 || device.isCD900_1A || device.isKR920 ) {
+                            device.isRegion = true;
+                        } else {
+                            console.log(">>> "+deviceItf.region);
+                        }
                        this.accountDevices.push(device); 
                   });
                   resolve("");

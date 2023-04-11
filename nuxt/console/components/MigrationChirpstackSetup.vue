@@ -138,62 +138,209 @@
                     </b-col>
                 </b-row>
 
-                <b-row v-if="consoleObject.countInOui() != 0" class="mt-2 mb-1">
+                <b-row v-if="consoleObject.countInOui() != 0 && false" class="mt-2 mb-1">
                     <b-col cols="12">
                         <div v-html="$t('mig_setup_devprofexplained_2')"></div>
                     </b-col>
                 </b-row>
-                <b-row v-if="consoleObject.countInOui() != 0">
-                    <b-col cols="2">
+                <b-row v-if="consoleObject.countInOui() != 0 && false" class="mb-1">
+                    <b-col cols="2"> <!-- EU868-->
                         <b-button block
                             :variant="getVariant('EU868',false)"
                             size="sm"
                             @click="createDevProfile('EU868', false)"
-                            style="text-align: center;font-size:0.8rem;"
+                            style="text-align: center;font-size:0.6rem;"
                             class=""
                             :disabled="existDevProfile('EU868',false)"
                         >
-                            <b-icon icon="plus-circle-dotted" variant="white" style="font-size:0.8rem;"></b-icon>
+                            <b-icon icon="plus-circle-dotted" variant="white" style="font-size:0.6rem;"></b-icon>
                             ABP - EU868
                         </b-button>
                     </b-col>
-                    <b-col cols="2">
+                    <b-col cols="2"> <!-- EU433-->
+                        <b-button block
+                            :variant="getVariant('EU433',false)"
+                            size="sm"
+                            @click="createDevProfile('EU433', false)"
+                            style="text-align: center;font-size:0.6rem;"
+                            class=""
+                            :disabled="existDevProfile('EU433',false)"
+                        >
+                            <b-icon icon="plus-circle-dotted" variant="white" style="font-size:0.6rem;"></b-icon>
+                            ABP - EU433
+                        </b-button>
+                    </b-col>
+                    <b-col cols="2"> <!-- US915-->
                         <b-button block
                             :variant="getVariant('US915',false)"
                             size="sm"
                             @click="createDevProfile('US915', false)"
-                            style="text-align: center;font-size:0.8rem;"
+                            style="text-align: center;font-size:0.6rem;"
                             class=""
                             :disabled="existDevProfile('US915',false)"
                         >
-                        <b-icon icon="plus-circle-dotted" variant="white" style="font-size:0.8rem;"></b-icon>
+                        <b-icon icon="plus-circle-dotted" variant="white" style="font-size:0.6rem;"></b-icon>
                             ABP - US915
                         </b-button>
                     </b-col>
-                    <b-col cols="2">
+                    <b-col cols="2"> <!-- AU915-->
                         <b-button block
                             :variant="getVariant('AU915',false)"
                             size="sm"
                             @click="createDevProfile('AU915', false)"
-                            style="text-align: center;font-size:0.8rem;"
+                            style="text-align: center;font-size:0.6rem;"
                             class=""
                             :disabled="existDevProfile('AU915',false)"
                         >
-                            <b-icon icon="plus-circle-dotted" variant="white" style="font-size:0.8rem;"></b-icon>
+                            <b-icon icon="plus-circle-dotted" variant="white" style="font-size:0.6rem;"></b-icon>
                             ABP - AU915
                         </b-button>
                     </b-col>
-                    <b-col cols="2">
+                    <b-col cols="2"> <!-- AU915_SB1 -->
                         <b-button block
-                            :variant="getVariant('AS923',false)"
+                            :variant="getVariant('AU915_SB1',false)"
                             size="sm"
-                            @click="createDevProfile('AS923', false)"
-                            style="text-align: center;font-size:0.8rem;"
+                            @click="createDevProfile('AU915_SB1', false)"
+                            style="text-align: center;font-size:0.6rem;"
                             class=""
-                            :disabled="existDevProfile('AS923',false)"
+                            :disabled="existDevProfile('AU915_SB1',false)"
                         >
-                            <b-icon icon="plus-circle-dotted" variant="white" style="font-size:0.8rem;"></b-icon>
-                            ABP - AS923
+                            <b-icon icon="plus-circle-dotted" variant="white" style="font-size:0.6rem;"></b-icon>
+                            ABP - AU915_SB1
+                        </b-button>
+                    </b-col>
+                    <b-col cols="2"> <!-- AU915_SB2 -->
+                        <b-button block
+                            :variant="getVariant('AU915_SB2',false)"
+                            size="sm"
+                            @click="createDevProfile('AU915_SB2', false)"
+                            style="text-align: center;font-size:0.6rem;"
+                            class=""
+                            :disabled="existDevProfile('AU915_SB2',false)"
+                        >
+                            <b-icon icon="plus-circle-dotted" variant="white" style="font-size:0.6rem;"></b-icon>
+                            ABP - AU915_SB2
+                        </b-button>
+                    </b-col>
+                </b-row>
+                <b-row v-if="consoleObject.countInOui() != 0 && false"  class="mb-1">
+                    <b-col cols="2"> <!-- CN470 -->
+                        <b-button block
+                            :variant="getVariant('CN470',false)"
+                            size="sm"
+                            @click="createDevProfile('CN470', false)"
+                            style="text-align: center;font-size:0.6rem;"
+                            class=""
+                            :disabled="existDevProfile('CN470',false)"
+                        >
+                        <b-icon icon="plus-circle-dotted" variant="white" style="font-size:0.6rem;"></b-icon>
+                            ABP - CN470
+                        </b-button>
+                    </b-col>
+                    <b-col cols="2"> <!-- AS923_1 -->
+                        <b-button block
+                            :variant="getVariant('AS923_1',false)"
+                            size="sm"
+                            @click="createDevProfile('AS923_1', false)"
+                            style="text-align: center;font-size:0.6rem;"
+                            class=""
+                            :disabled="existDevProfile('AS923_1',false)"
+                        >
+                        <b-icon icon="plus-circle-dotted" variant="white" style="font-size:0.6rem;"></b-icon>
+                            ABP - AS923_1
+                        </b-button>
+                    </b-col>
+                    <b-col cols="2"> <!-- AS923_2 -->
+                        <b-button block
+                            :variant="getVariant('AS923_2',false)"
+                            size="sm"
+                            @click="createDevProfile('AS923_2', false)"
+                            style="text-align: center;font-size:0.6rem;"
+                            class=""
+                            :disabled="existDevProfile('AS923_2',false)"
+                        >
+                            <b-icon icon="plus-circle-dotted" variant="white" style="font-size:0.6rem;"></b-icon>
+                            ABP - AS923_2
+                        </b-button>
+                    </b-col>
+                    <b-col cols="2"> <!-- AS923_3 -->
+                        <b-button block
+                            :variant="getVariant('AS923_3',false)"
+                            size="sm"
+                            @click="createDevProfile('AS923_3', false)"
+                            style="text-align: center;font-size:0.6rem;"
+                            class=""
+                            :disabled="existDevProfile('AS923_3',false)"
+                        >
+                            <b-icon icon="plus-circle-dotted" variant="white" style="font-size:0.6rem;"></b-icon>
+                            ABP - AS923_3
+                        </b-button>
+                    </b-col>
+                    <b-col cols="2"> <!-- AS923_4 -->
+                        <b-button block
+                            :variant="getVariant('AS923_4',false)"
+                            size="sm"
+                            @click="createDevProfile('AS923_4', false)"
+                            style="text-align: center;font-size:0.6rem;"
+                            class=""
+                            :disabled="existDevProfile('AS923_4',false)"
+                        >
+                            <b-icon icon="plus-circle-dotted" variant="white" style="font-size:0.6rem;"></b-icon>
+                            ABP - AS923_4
+                        </b-button>
+                    </b-col>
+                    <b-col cols="2"> <!-- AS923_1B -->
+                        <b-button block
+                            :variant="getVariant('AS923_1B',false)"
+                            size="sm"
+                            @click="createDevProfile('AS923_1B', false)"
+                            style="text-align: center;font-size:0.6rem;"
+                            class=""
+                            :disabled="existDevProfile('AS923_1B',false)"
+                        >
+                            <b-icon icon="plus-circle-dotted" variant="white" style="font-size:0.6rem;"></b-icon>
+                            ABP - AS923_1B
+                        </b-button>
+                    </b-col>
+                </b-row>
+                <b-row v-if="consoleObject.countInOui() != 0 && false" class="mb-1">
+                    <b-col cols="2"> <!-- IN865 -->
+                        <b-button block
+                            :variant="getVariant('IN865',false)"
+                            size="sm"
+                            @click="createDevProfile('IN865', false)"
+                            style="text-align: center;font-size:0.6rem;"
+                            class=""
+                            :disabled="existDevProfile('IN865',false)"
+                        >
+                            <b-icon icon="plus-circle-dotted" variant="white" style="font-size:0.6rem;"></b-icon>
+                            ABP - IN865
+                        </b-button>
+                    </b-col>
+                    <b-col cols="2"> <!-- KR920-->
+                        <b-button block
+                            :variant="getVariant('KR920',false)"
+                            size="sm"
+                            @click="createDevProfile('KR920', false)"
+                            style="text-align: center;font-size:0.6rem;"
+                            class=""
+                            :disabled="existDevProfile('KR920',false)"
+                        >
+                            <b-icon icon="plus-circle-dotted" variant="white" style="font-size:0.6rem;"></b-icon>
+                            ABP - KR920
+                        </b-button>
+                    </b-col>
+                    <b-col cols="2"> <!-- CD900_1A -->
+                        <b-button block
+                            :variant="getVariant('CD900_1A',false)"
+                            size="sm"
+                            @click="createDevProfile('CD900_1A', false)"
+                            style="text-align: center;font-size:0.6rem;"
+                            class=""
+                            :disabled="existDevProfile('CD900_1A',false)"
+                        >
+                            <b-icon icon="plus-circle-dotted" variant="white" style="font-size:0.6rem;"></b-icon>
+                            ABP - CD900_1A
                         </b-button>
                     </b-col>
                 </b-row>
@@ -203,62 +350,207 @@
                         <div v-html="$t('mig_setup_devprofexplained_3')"></div>
                     </b-col>
                 </b-row>
-                <b-row>
-                    <b-col cols="2">
+                <b-row class="mb-1">
+                    <b-col cols="2"> <!-- EU868-->
                         <b-button block
                             :variant="getVariant('EU868',true)"
                             size="sm"
-                            @click="createDevProfile('EU868', true)""
-                            style="text-align: center;font-size:0.8rem;"
+                            @click="createDevProfile('EU868', true)"
+                            style="text-align: center;font-size:0.6rem;"
                             class=""
                             :disabled="existDevProfile('EU868',true)"
                         >
-                            <b-icon icon="plus-circle-dotted" variant="white" style="font-size:0.8rem;"></b-icon>
+                            <b-icon icon="plus-circle-dotted" variant="white" style="font-size:0.6rem;"></b-icon>
                             OTAA - EU868
                         </b-button>
                     </b-col>
-                    <b-col cols="2">
+                    <b-col cols="2"> <!-- EU433-->
+                        <b-button block
+                            :variant="getVariant('EU433',true)"
+                            size="sm"
+                            @click="createDevProfile('EU433', true)"
+                            style="text-align: center;font-size:0.6rem;"
+                            class=""
+                            :disabled="existDevProfile('EU433',true)"
+                        >
+                            <b-icon icon="plus-circle-dotted" variant="white" style="font-size:0.6rem;"></b-icon>
+                            OTAA - EU433
+                        </b-button>
+                    </b-col>
+                    <b-col cols="2"> <!-- US915-->
                         <b-button block
                             :variant="getVariant('US915',true)"
                             size="sm"
-                            @click="createDevProfile('US915', true)""
-                            style="text-align: center;font-size:0.8rem;"
+                            @click="createDevProfile('US915', true)"
+                            style="text-align: center;font-size:0.6rem;"
                             class=""
                             :disabled="existDevProfile('US915',true)"
                         >
-                        <b-icon icon="plus-circle-dotted" variant="white" style="font-size:0.8rem;"></b-icon>
+                        <b-icon icon="plus-circle-dotted" variant="white" style="font-size:0.6rem;"></b-icon>
                             OTAA - US915
                         </b-button>
                     </b-col>
-                    <b-col cols="2">
+                    <b-col cols="2"> <!-- AU915-->
                         <b-button block
                             :variant="getVariant('AU915',true)"
                             size="sm"
                             @click="createDevProfile('AU915', true)"
-                            style="text-align: center;font-size:0.8rem;"
+                            style="text-align: center;font-size:0.6rem;"
                             class=""
                             :disabled="existDevProfile('AU915',true)"
                         >
-                            <b-icon icon="plus-circle-dotted" variant="white" style="font-size:0.8rem;"></b-icon>
+                            <b-icon icon="plus-circle-dotted" variant="white" style="font-size:0.6rem;"></b-icon>
                             OTAA - AU915
                         </b-button>
                     </b-col>
-                    <b-col cols="2">
+                    <b-col cols="2"> <!-- AU915_SB1 -->
                         <b-button block
-                            :variant="getVariant('AS923',true)"
+                            :variant="getVariant('AU915_SB1',true)"
                             size="sm"
-                            @click="createDevProfile('AS923', true)"
-                            style="text-align: center;font-size:0.8rem;"
+                            @click="createDevProfile('AU915_SB1', true)"
+                            style="text-align: center;font-size:0.6rem;"
                             class=""
-                            :disabled="existDevProfile('AS923',true)"
+                            :disabled="existDevProfile('AU915_SB1',true)"
                         >
-                            <b-icon icon="plus-circle-dotted" variant="white" style="font-size:0.8rem;"></b-icon>
-                            OTAA - AS923
+                            <b-icon icon="plus-circle-dotted" variant="white" style="font-size:0.6rem;"></b-icon>
+                            OTAA - AU915_SB1
+                        </b-button>
+                    </b-col>
+                    <b-col cols="2"> <!-- AU915_SB2 -->
+                        <b-button block
+                            :variant="getVariant('AU915_SB2',true)"
+                            size="sm"
+                            @click="createDevProfile('AU915_SB2', true)"
+                            style="text-align: center;font-size:0.6rem;"
+                            class=""
+                            :disabled="existDevProfile('AU915_SB2',true)"
+                        >
+                            <b-icon icon="plus-circle-dotted" variant="white" style="font-size:0.6rem;"></b-icon>
+                            OTAA - AU915_SB2
                         </b-button>
                     </b-col>
                 </b-row>
-
-
+                <b-row class="mb-1">
+                    <b-col cols="2"> <!-- CN470 -->
+                        <b-button block
+                            :variant="getVariant('CN470',true)"
+                            size="sm"
+                            @click="createDevProfile('CN470', true)"
+                            style="text-align: center;font-size:0.6rem;"
+                            class=""
+                            :disabled="existDevProfile('CN470',true)"
+                        >
+                        <b-icon icon="plus-circle-dotted" variant="white" style="font-size:0.6rem;"></b-icon>
+                            OTAA - CN470
+                        </b-button>
+                    </b-col>
+                    <b-col cols="2"> <!-- AS923_1 -->
+                        <b-button block
+                            :variant="getVariant('AS923_1',true)"
+                            size="sm"
+                            @click="createDevProfile('AS923_1', true)"
+                            style="text-align: center;font-size:0.6rem;"
+                            class=""
+                            :disabled="existDevProfile('AS923_1',true)"
+                        >
+                        <b-icon icon="plus-circle-dotted" variant="white" style="font-size:0.6rem;"></b-icon>
+                            OTAA - AS923_1
+                        </b-button>
+                    </b-col>
+                    <b-col cols="2"> <!-- AS923_2 -->
+                        <b-button block
+                            :variant="getVariant('AS923_2',true)"
+                            size="sm"
+                            @click="createDevProfile('AS923_2', true)"
+                            style="text-align: center;font-size:0.6rem;"
+                            class=""
+                            :disabled="existDevProfile('AS923_2',true)"
+                        >
+                            <b-icon icon="plus-circle-dotted" variant="white" style="font-size:0.6rem;"></b-icon>
+                            OTAA - AS923_2
+                        </b-button>
+                    </b-col>
+                    <b-col cols="2"> <!-- AS923_3 -->
+                        <b-button block
+                            :variant="getVariant('AS923_3',true)"
+                            size="sm"
+                            @click="createDevProfile('AS923_3', true)"
+                            style="text-align: center;font-size:0.6rem;"
+                            class=""
+                            :disabled="existDevProfile('AS923_3',true)"
+                        >
+                            <b-icon icon="plus-circle-dotted" variant="white" style="font-size:0.6rem;"></b-icon>
+                            OTAA - AS923_3
+                        </b-button>
+                    </b-col>
+                    <b-col cols="2"> <!-- AS923_4 -->
+                        <b-button block
+                            :variant="getVariant('AS923_4',true)"
+                            size="sm"
+                            @click="createDevProfile('AS923_4', true)"
+                            style="text-align: center;font-size:0.6rem;"
+                            class=""
+                            :disabled="existDevProfile('AS923_4',true)"
+                        >
+                            <b-icon icon="plus-circle-dotted" variant="white" style="font-size:0.6rem;"></b-icon>
+                            OTAA - AS923_4
+                        </b-button>
+                    </b-col>
+                    <b-col cols="2"> <!-- AS923_1B -->
+                        <b-button block
+                            :variant="getVariant('AS923_1B',true)"
+                            size="sm"
+                            @click="createDevProfile('AS923_1B', true)"
+                            style="text-align: center;font-size:0.6rem;"
+                            class=""
+                            :disabled="existDevProfile('AS923_1B',true)"
+                        >
+                            <b-icon icon="plus-circle-dotted" variant="white" style="font-size:0.6rem;"></b-icon>
+                            OTAA - AS923_1B
+                        </b-button>
+                    </b-col>
+                </b-row>
+                <b-row class="mb-1">
+                    <b-col cols="2"> <!-- IN865 -->
+                        <b-button block
+                            :variant="getVariant('IN865',true)"
+                            size="sm"
+                            @click="createDevProfile('IN865', true)"
+                            style="text-align: center;font-size:0.6rem;"
+                            class=""
+                            :disabled="existDevProfile('IN865',true)"
+                        >
+                            <b-icon icon="plus-circle-dotted" variant="white" style="font-size:0.6rem;"></b-icon>
+                            OTAA - IN865
+                        </b-button>
+                    </b-col>
+                    <b-col cols="2"> <!-- KR920-->
+                        <b-button block
+                            :variant="getVariant('KR920',true)"
+                            size="sm"
+                            @click="createDevProfile('KR920', true)"
+                            style="text-align: center;font-size:0.6rem;"
+                            class=""
+                            :disabled="existDevProfile('KR920',true)"
+                        >
+                            <b-icon icon="plus-circle-dotted" variant="white" style="font-size:0.6rem;"></b-icon>
+                            OTAA - KR920
+                        </b-button>
+                    </b-col>
+                    <b-col cols="2"> <!-- CD900_1A -->
+                        <b-button block
+                            :variant="getVariant('CD900_1A',true)"
+                            size="sm"
+                            @click="createDevProfile('CD900_1A', true)"
+                            style="text-align: center;font-size:0.6rem;"
+                            class=""
+                            :disabled="existDevProfile('CD900_1A',true)"
+                        >
+                            <b-icon icon="plus-circle-dotted" variant="white" style="font-size:0.6rem;"></b-icon>
+                            OTAA - CD900_1A
+                        </b-button>
+                    </b-col>
+                </b-row>
             </b-col>
         </b-row>
 
@@ -558,10 +850,11 @@ export default Vue.extend({
             if ( this.chirpstackObject.existsDevProfile(zone,otaa,this.targetLabel.name) ) return "secondary";
             if ( this.chirpstackObject.countDeviceProfile(zone,otaa) > 0 ) r = "info";
             else {
-                if ( zone == 'EU868' && ( this.consoleObject.countEU868() == 0 && this.consoleObject.countUnknownRegion() == 0 ) ) r = "info"; 
-                if ( zone == 'US915' && ( this.consoleObject.countUS915() == 0 && this.consoleObject.countUnknownRegion() == 0 ) ) r = "info"; 
-                if ( zone == 'AS923' && ( this.consoleObject.countAS923() == 0 && this.consoleObject.countUnknownRegion() == 0 ) ) r = "info"; 
-                if ( zone == 'AU915' && ( this.consoleObject.countAU915() == 0 && this.consoleObject.countUnknownRegion() == 0 ) ) r = "info"; 
+                if ( zone == 'EU868' && ( this.consoleObject.countEU868() == 0 ) ) r = "info"; 
+                if ( zone == 'EU433' && ( this.consoleObject.countEU433() == 0 ) ) r = "info"; 
+                if ( zone == 'US915' && ( this.consoleObject.countUS915() == 0 ) ) r = "info"; 
+                if ( zone == 'AS923_1' && ( this.consoleObject.countAS923() == 0 ) ) r = "info"; 
+                if ( zone == 'AU915' && ( this.consoleObject.countAU915() == 0 ) ) r = "info"; 
             }
             return r;
         },
