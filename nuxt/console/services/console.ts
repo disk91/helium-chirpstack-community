@@ -128,6 +128,35 @@ export class HeliumConsoleService {
         return r;
     }
 
+    countZone(zone:string, label:string = "" ) : number {
+        let r = 0;
+        this.accountDevices.forEach( (device) => {
+            if ( ( label == "no_label" && device.rawDevice.labels.length  == 0 )
+                ||  ( label == "" || device.rawDevice.labels.length > 0 && device.rawDevice.labels[0].id == label )
+            ) {
+                switch (zone) {
+                    case "EU868" : if ( device.isEU868 ) r++; break;
+                    case "US915" : if ( device.isUS915 ) r++; break;
+                    case "EU433" : if ( device.isEU433 ) r++; break;
+                    case "AS923_1" : if ( device.isAS923_1 ) r++; break;
+                    case "AS923_1B" : if ( device.isAS923_1B ) r++; break;
+                    case "AS923_2" : if ( device.isAS923_2 ) r++; break;
+                    case "AS923_3" : if ( device.isAS923_3 ) r++; break;
+                    case "AS923_4" : if ( device.isAS923_4 ) r++; break;
+                    case "CN470" : if ( device.isCN470 ) r++; break;
+                    case "AU915_1" : if ( device.isAU915_1 ) r++; break;
+                    case "AU915_SB1" : if ( device.isAU915_SB1 ) r++; break;
+                    case "AU915_6" : if ( device.isAU915_6 ) r++; break;
+                    case "IN865" : if ( device.isIN865 ) r++; break;
+                    case "CD900_1A" : if ( device.isCD900_1A ) r++; break;
+                    default:
+                }
+            }
+        })
+        return r;
+    }
+
+    /*
     countEU868(label:string = "") : number {
         let r = 0;
         this.accountDevices.forEach( (device) => {
@@ -183,6 +212,7 @@ export class HeliumConsoleService {
         })
         return r;
     }
+    */
 
     countUnknownRegion(label:string = "") : number {
         let r = 0;

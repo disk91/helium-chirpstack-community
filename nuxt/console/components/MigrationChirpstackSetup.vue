@@ -10,18 +10,18 @@
                 <b-col cols="2" class="text-primary">{{ targetLabel.name }}</b-col>
 
                 <b-col cols="2">{{ $t('mig_loaded_eu868') }}</b-col>
-                <b-col cols="2" class="text-primary">{{ consoleObject.countEU868(targetLabel.id) }}</b-col>
+                <b-col cols="2" class="text-primary">{{ consoleObject.countZone("EU868",targetLabel.id) }}</b-col>
                 <b-col cols="2">{{ $t('mig_loaded_au915') }}</b-col>
-                <b-col cols="2" class="text-primary">{{ consoleObject.countAU915(targetLabel.id) }}</b-col>
+                <b-col cols="2" class="text-primary">{{ consoleObject.countZone("AU915_1",targetLabel.id) }}</b-col>
             </b-row>
             <b-row>
                 <b-col cols="2">{{ $t('mig_loaded_devices') }}</b-col>
                 <b-col cols="2" class="text-primary">{{ consoleObject.countDevices(targetLabel.id) }}</b-col>
 
                 <b-col cols="2">{{ $t('mig_loaded_us915') }}</b-col>
-                <b-col cols="2" class="text-primary">{{ consoleObject.countUS915(targetLabel.id) }}</b-col>
+                <b-col cols="2" class="text-primary">{{ consoleObject.countZone("US915",targetLabel.id) }}</b-col>
                 <b-col cols="2">{{ $t('mig_loaded_as923') }}</b-col>
-                <b-col cols="2" class="text-primary">{{ consoleObject.countAS923(targetLabel.id) }}</b-col>
+                <b-col cols="2" class="text-primary">{{ consoleObject.countZone("AS923",targetLabel.id) }}</b-col>
             </b-row>
             <b-row>
                 <b-col cols="2">{{ $t('mig_loaded_active') }}</b-col>
@@ -850,11 +850,7 @@ export default Vue.extend({
             if ( this.chirpstackObject.existsDevProfile(zone,otaa,this.targetLabel.name) ) return "secondary";
             if ( this.chirpstackObject.countDeviceProfile(zone,otaa) > 0 ) r = "info";
             else {
-                if ( zone == 'EU868' && ( this.consoleObject.countEU868() == 0 ) ) r = "info"; 
-                if ( zone == 'EU433' && ( this.consoleObject.countEU433() == 0 ) ) r = "info"; 
-                if ( zone == 'US915' && ( this.consoleObject.countUS915() == 0 ) ) r = "info"; 
-                if ( zone == 'AS923_1' && ( this.consoleObject.countAS923() == 0 ) ) r = "info"; 
-                if ( zone == 'AU915' && ( this.consoleObject.countAU915() == 0 ) ) r = "info"; 
+                if ( this.consoleObject.countZone(zone) == 0 ) r = "info"; 
             }
             return r;
         },

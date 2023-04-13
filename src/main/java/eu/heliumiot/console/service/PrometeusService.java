@@ -406,6 +406,7 @@ public class PrometeusService {
         long users = userRepository.count();
         long devices = deviceRepository.count();
         Long sumDc = heliumTenantRepository.selectSumOfDcs();
+        if ( sumDc == null ) sumDc = Long.valueOf(0);
 
         Device d = null;
         if ( consoleConfig.getTestdeviceEui().length() == 16 ) {

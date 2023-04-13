@@ -211,7 +211,6 @@ export default Vue.extend({
             sourceFunction : [] as any,
             targetFunction : "" as string,
             selectFunctionDisabled : false as boolean,
-
         };
     },
     methods : {

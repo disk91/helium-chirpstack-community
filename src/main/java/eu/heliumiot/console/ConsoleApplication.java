@@ -45,6 +45,7 @@ public class ConsoleApplication implements CommandLineRunner, ExitCodeGenerator 
 
 	public static void main(String[] args) {
 		context = SpringApplication.run(ConsoleApplication.class, args);
+		if (ConsoleApplication.requestingExitForStartupFailure) exit();
 	}
 
 
@@ -52,14 +53,10 @@ public class ConsoleApplication implements CommandLineRunner, ExitCodeGenerator 
 	public void run(String... args) throws Exception {
 		long pid = ProcessHandle.current().pid();
 		System.out.println("-------------- GO ("+pid+")--------------");
-
-		if (ConsoleApplication.requestingExitForStartupFailure) exit();
-
-
 	}
 
 	public static void exit() {
-		int exitCode = SpringApplication.exit(context,new ExitCodeGenerator() {
+		int exitCode = SpringApplication.exit(context, new ExitCodeGenerator() {
 			@Override
 			public int getExitCode() {
 				return 0;
