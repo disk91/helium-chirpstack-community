@@ -15,6 +15,7 @@ init: .FORCE
 	cp -R chirpstack/* $(CONSOLE_DIR)/
 	if [ -d $(CONSOLE_DIR)/prometheus ] ; then chown nobody:nogroup $(CONSOLE_DIR)/prometheus; fi
 	if [ -d $(CONSOLE_DIR)/grafana ] ; then chown 472:root $(CONSOLE_DIR)/grafana ; fi
+	if [ -d $(CONSOLE_DIR)/postgresql ] ; then rm $(CONSOLE_DIR)/.not_empty ; fi
 
 front: .FORCE
 	export CONSOLE_NAME=$(CONSOLE_NAME) ; export CONSOLE_TERMS=$(CONSOLE_TERMS) ; \
