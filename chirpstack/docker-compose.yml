@@ -50,7 +50,7 @@ services:
     environment:
       - MQTT_BROKER_HOST=mosquitto
       - REDIS_HOST=redis
-      - POSTGRESQL_HOST=postgres
+      - POSTGRESQL_HOST=helium-postgres-1
     ports:
       - 8080:8080
       - 8070:8070
