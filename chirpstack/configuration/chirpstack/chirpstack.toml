@@ -58,7 +58,7 @@
 [network]
 
   # Network identifier (NetID, 3 bytes) encoded as HEX (e.g. 010203).
-  net_id="C00053"
+  net_id="000024"
 
   # List devAddr range you own
   #dev_addr_prefixes=["FC014C30/28","FC014C50/28","FC014C10/29"]
