@@ -519,6 +519,12 @@ public class ConsoleConfig {
     @Value ("${helium.route.copy.default}")
     private int heliumRouteDefaultCopy;
 
+    @Value ("${helium.grpc.skf.enable}")
+    private boolean heliumGrpcSkfEnable;
+
+    public boolean isHeliumGrpcSkfEnable() {
+        return heliumGrpcSkfEnable;
+    }
 
     public boolean isHeliumGrpcEnable() {
         return heliumGrpcEnable;

@@ -46,7 +46,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
-import xyz.nova.grpc.route_v1;
+import com.helium.grpc.route_v1;
 
 import javax.annotation.PostConstruct;
 import java.sql.Timestamp;
@@ -405,7 +405,9 @@ public class HeliumTenantService {
                 }
             }
         }
-        novaService.refreshDevAddrList(devAddr);
+        if ( consoleConfig.isHeliumGrpcSkfEnable() ) {
+            novaService.refreshDevAddrList(devAddr);
+        }
         log.debug("Process JOIN in "+(Now.NowUtcMs()-start)+"ms");
     }
 

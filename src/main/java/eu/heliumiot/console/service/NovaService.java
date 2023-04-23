@@ -19,7 +19,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
-import xyz.nova.grpc.*;
+import com.helium.grpc.*;
 
 import javax.annotation.PostConstruct;
 import java.io.FileInputStream;
@@ -57,16 +57,18 @@ public class NovaService {
         int iDevAddr = Stuff.hexStrToInt(devaddr);
 
         List<session_key_filter_v1> sessions = grpcListSessionsByDevaddr(iDevAddr);
+        if ( sessions == null ) return false;
+
         log.debug("We have " + sessions.size() + " sessions active ");
 
-        HashMap<ByteString,session_key_filter_v1> hashSession = new HashMap<>();
+        HashMap<String,session_key_filter_v1> hashSession = new HashMap<>();
         for ( session_key_filter_v1 session : sessions ) {
             hashSession.put(session.getSessionKey(),session);
         }
 
-        HashMap<ByteString,ByteString> sessionsToAdd = new HashMap<>();
-        HashMap<ByteString,ByteString> sessionsToKeep = new HashMap<>();
-        ArrayList<ByteString> sessionsToRemove = new ArrayList<>();
+        HashMap<String,String> sessionsToAdd = new HashMap<>();
+        HashMap<String,String> sessionsToKeep = new HashMap<>();
+        ArrayList<String> sessionsToRemove = new ArrayList<>();
 
         for (String devEUI : deviceEUIs) {
             // verify state from cache, is that an active device...
@@ -78,13 +80,15 @@ public class NovaService {
                     // get all NwkSKey
                     Internal.DeviceSession ds = redisDeviceRepository.getDeviceDetails(devEUI);
                     if (ds != null && ds.getNwkSEncKey() != null && ds.getNwkSEncKey().size() > 4) {
-                        boolean sessionExist = ( hashSession.get(ds.getNwkSEncKey()) != null );
+
+                        String ntwSEncKey = HexaConverters.byteToHexString(ds.getNwkSEncKey().toByteArray());
+                        boolean sessionExist = ( hashSession.get(ntwSEncKey) != null );
                         if ( ! sessionExist ) {
-                            sessionsToAdd.put(ds.getNwkSEncKey(),ds.getNwkSEncKey());
+                            sessionsToAdd.put(ntwSEncKey,ntwSEncKey);
                         } else {
-                            sessionsToKeep.put(ds.getNwkSEncKey(),ds.getNwkSEncKey());
+                            sessionsToKeep.put(ntwSEncKey,ntwSEncKey);
                         }
-                        log.debug("Add Network encrypted Key " + HexaConverters.byteToHexString(ds.getNwkSEncKey().toByteArray()));
+                        log.debug("Add Network encrypted Key " + ntwSEncKey);
                     }
                     if (ds == null) {
                         log.warn("Impossible to get detailed info on "+devEUI);
@@ -107,7 +111,7 @@ public class NovaService {
 
         // Call the nova update
         boolean ret = grpcUpdateSessions(
-                new ArrayList<ByteString>(sessionsToAdd.values()),
+                new ArrayList<>(sessionsToAdd.values()),
                 sessionsToRemove,
                 iDevAddr
         );
@@ -130,12 +134,12 @@ public class NovaService {
 
     // return true when the service has stopped all the running jobs
     public boolean hasStopped() {
-        return (this.serviceEnable == false && this.runningJobs == 0);
+        return (!this.serviceEnable  && this.runningJobs == 0);
     }
     // -----
 
     // List of deviceEUI we want the associated devAddr to be refreshed
-    protected ArrayList<String> delayedSessionRefresh = new ArrayList<>();
+    protected final ArrayList<String> delayedSessionRefresh = new ArrayList<>();
 
     protected void addDelayedSessionRefresh(String devEUI) {
         synchronized (delayedSessionRefresh) {
@@ -151,6 +155,8 @@ public class NovaService {
     @Scheduled(fixedDelayString = "${helium.nova.publish.delayed.scanPeriod}", initialDelay = 120_000)
     protected void flushDelayedSessionUpdate() {
         if (!this.serviceEnable || !this.initialSessionRefreshDone) return;
+        if (!consoleConfig.isHeliumGrpcSkfEnable()) return;
+
         this.runningJobs++;
         long start = Now.NowUtcMs();
         try {
@@ -160,9 +166,7 @@ public class NovaService {
 
                 // get all the pending device to be updated
                 synchronized (delayedSessionRefresh) {
-                    for (String devEUI : delayedSessionRefresh) {
-                        toRefresh.add(devEUI);
-                    }
+                    toRefresh.addAll(delayedSessionRefresh);
                     delayedSessionRefresh.clear();
                 }
 
@@ -204,6 +208,7 @@ public class NovaService {
 
     @Scheduled(fixedDelay = 3600_000, initialDelay = 180_000)
     protected void initialNovaSessionRefresh() {
+        if (!consoleConfig.isHeliumGrpcSkfEnable()) return;
         if (!initialSessionRefreshDone) {
             if (!this.serviceEnable) return;
             this.runningJobs++;
@@ -229,7 +234,7 @@ public class NovaService {
     // ---------------------------------------
 
     // Manage asynchronous interface with route
-    protected ArrayList<String> delayedRouteRemoval = new ArrayList<>();
+    protected final ArrayList<String> delayedRouteRemoval = new ArrayList<>();
 
     public void addDelayedRouteRemoval(String routeId) {
         synchronized (delayedRouteRemoval) {
@@ -244,8 +249,8 @@ public class NovaService {
     }
 
     // List of deviceEUI we want the add / remove in the list
-    protected ArrayList<NovaDevice> delayedEuisRefreshAddition = new ArrayList<>();
-    protected ArrayList<NovaDevice> delayedEuisRefreshRemoval = new ArrayList<>();
+    protected final ArrayList<NovaDevice> delayedEuisRefreshAddition = new ArrayList<>();
+    protected final ArrayList<NovaDevice> delayedEuisRefreshRemoval = new ArrayList<>();
 
     protected void addDelayedEuisRefreshAddition(NovaDevice dev) {
         synchronized (delayedEuisRefreshAddition) {
@@ -275,9 +280,7 @@ public class NovaService {
             // First delete the route mark as to be deleted
             ArrayList<String> routeRemoval = new ArrayList<>();
             synchronized (delayedRouteRemoval) {
-                for ( String routeId : delayedRouteRemoval ) {
-                    routeRemoval.add(routeId);
-                }
+                routeRemoval.addAll(delayedRouteRemoval);
                 this.delayedRouteRemoval.clear();
             }
             for ( String routeId : routeRemoval ) {
@@ -295,7 +298,7 @@ public class NovaService {
                 for ( NovaDevice n : delayedEuisRefreshRemoval ) {
                     ArrayList<NovaDevice> trh = toRemove.get(n.routeId);
                     if ( trh == null ) {
-                        trh = new ArrayList<NovaDevice>();
+                        trh = new ArrayList<>();
                         toRemove.put(n.routeId,trh);
                     }
                     trh.add(n);
@@ -320,7 +323,7 @@ public class NovaService {
                     if (!found) {
                         ArrayList<NovaDevice> _toAdd = toAdd.get(n.routeId);
                         if ( _toAdd == null ) {
-                            _toAdd = new ArrayList<NovaDevice>();
+                            _toAdd = new ArrayList<>();
                             toAdd.put(n.routeId,_toAdd);
                         }
                         _toAdd.add(n);
@@ -389,7 +392,7 @@ public class NovaService {
     @Autowired
     protected ConsoleConfig consoleConfig;
 
-    protected class RegionSupported {
+    protected static class RegionSupported {
         public String regionString;
         public region regionValue;
         public int port;
@@ -420,7 +423,7 @@ public class NovaService {
         try {
             InputStream inputStream = new FileInputStream(consoleConfig.getHeliumGrpcPrivateKeyfilePath());
 
-            int b = -1;
+            int b;
             int k = 0;
             while ((b = inputStream.read()) != -1) {
                 // verifiy key header should be 1 for type of key
@@ -569,15 +572,13 @@ public class NovaService {
             org_res_v1 response = stub.get(getToSign);
             if ( response != null && response.getDevaddrConstraintsCount() > 0) {
                 this.addresses = new ArrayList<>();
-                for ( devaddr_constraint_v1 adr : response.getDevaddrConstraintsList()) {
-                    addresses.add(adr);
-                }
-                log.debug("GPRC found "+addresses.size()+"adresses range");
+                addresses.addAll(response.getDevaddrConstraintsList());
+                log.debug("GPRC found "+addresses.size()+"addresses range");
                 log.debug("GPRC get addresses duration " + (Now.NowUtcMs() - start) + "ms");
                 return addresses;
             }
         } catch ( Exception x ) {
-            log.error("GRPC get adresses error with message "+x.getMessage());
+            log.error("GRPC get addresses error with message "+x.getMessage());
             prometeusService.addHeliumTotalError();
         } finally {
             if ( channel != null ) channel.shutdown();
@@ -605,20 +606,22 @@ public class NovaService {
             route_delete_req_v1 delToSign = route_delete_req_v1.newBuilder()
                     .setId(routeId)
                     .setTimestamp(start)
+                    .setSigner(this.owner)
                     .clearSignature()
                     .build();
             byte[] requestToSignContent = delToSign.toByteArray();
             this.signer.update(requestToSignContent, 0, requestToSignContent.length);
             byte[] signature = signer.generateSignature();
 
-            route_v1 response = stub.delete(route_delete_req_v1.newBuilder()
+            route_res_v1 response = stub.delete(route_delete_req_v1.newBuilder()
                     .setId(routeId)
                     .setTimestamp(start)
+                    .setSigner(this.owner)
                     .setSignature(ByteString.copyFrom(signature))
                     .build());
 
             log.debug("GPRC route deletion duration " + (Now.NowUtcMs() - start) + "ms");
-            log.debug("GRPC deletion " + response.getId());
+            log.debug("GRPC deletion " + response.getRoute().getId());
             return true;
         } catch ( Exception x ) {
             log.error("GRPC route deletion error for route "+routeId+" with message "+x.getMessage());
@@ -636,7 +639,7 @@ public class NovaService {
         if ( ! this.grpcInitOk ) return null;
 
 
-        StreamObserver<route_devaddr_ranges_res_v1> responseObserver = new StreamObserver<route_devaddr_ranges_res_v1>() {
+        StreamObserver<route_devaddr_ranges_res_v1> responseObserver = new StreamObserver<>() {
             @Override
             public void onNext(route_devaddr_ranges_res_v1 value) {
                 log.debug("DevAddr Updated");
@@ -675,8 +678,6 @@ public class NovaService {
             routeGrpc.routeBlockingStub stub = routeGrpc.newBlockingStub(channel);
             routeGrpc.routeStub stubAdr = routeGrpc.newStub(channel);
 
-
-
             ArrayList<protocol_gwmp_mapping_v1> regions = new ArrayList<>();
             for ( RegionSupported r : this.regionsSupported ) {
                 protocol_gwmp_mapping_v1 gwmpm = protocol_gwmp_mapping_v1.newBuilder()
@@ -709,6 +710,7 @@ public class NovaService {
                     .setOui(consoleConfig.getHeliumRouteOui())
                     .setTimestamp(start)
                     .setRoute(route)
+                    .setSigner(this.owner)
                     .clearSignature()
                     .build();
 
@@ -716,20 +718,21 @@ public class NovaService {
             this.signer.update(requestToSignContent, 0, requestToSignContent.length);
             byte[] signature = signer.generateSignature();
 
-            route_v1 response = stub.create(route_create_req_v1.newBuilder()
+            route_res_v1 response = stub.create(route_create_req_v1.newBuilder()
                     .setOui(consoleConfig.getHeliumRouteOui())
                     .setTimestamp(start)
                     .setRoute(route)
+                    .setSigner(this.owner)
                     .setSignature(ByteString.copyFrom(signature))
                     .build());
 
             if ( response != null ) {
-                // now we nee to add the devaddr to the route
+                // now we need to add the devaddr to the route
                 ArrayList<route_update_devaddr_ranges_req_v1> requests = new ArrayList<>();
                 long now = Now.NowUtcMs();
                 for( devaddr_constraint_v1 addr : addrs) {
                     devaddr_range_v1 range = devaddr_range_v1.newBuilder()
-                            .setRouteId(response.getId())
+                            .setRouteId(response.getRoute().getId())
                             .setStartAddr(addr.getStartAddr())
                             .setEndAddr(addr.getEndAddr())
                             .build();
@@ -740,6 +743,7 @@ public class NovaService {
                             .setAction(action_v1.add)
                             .setTimestamp(now)
                             .setDevaddrRange(range)
+                            .setSigner(this.owner)
                             .clearSignature()
                             .build();
 
@@ -751,6 +755,7 @@ public class NovaService {
                             .setAction(action_v1.add)
                             .setTimestamp(now)
                             .setDevaddrRange(range)
+                            .setSigner(this.owner)
                             .setSignature(ByteString.copyFrom(sign))
                             .build();
                     requests.add(request);
@@ -764,14 +769,14 @@ public class NovaService {
                     reqObserver.onCompleted();
                 } catch ( RuntimeException x) {
                     // rollback route
-                    grpcDeleteRoute(response.getId());
+                    grpcDeleteRoute(response.getRoute().getId());
                     prometeusService.addHeliumTotalError();
                     return null;
                 }
             }
             log.debug("GPRC route creation duration " + (Now.NowUtcMs() - start) + "ms");
-            log.debug("GRPC route " + response.getId());
-            return response;
+            log.debug("GRPC route " + response.getRoute().getId());
+            return response.getRoute();
         } catch ( Exception x ) {
             log.warn("GRPC create route error "+x.getMessage());
             prometeusService.addHeliumTotalError();
@@ -806,21 +811,23 @@ public class NovaService {
             route_get_req_v1 requestToSign = route_get_req_v1.newBuilder()
                     .setId(routeId)
                     .setTimestamp(now)
+                    .setSigner(this.owner)
                     .clearSignature()
                     .build();
             byte[] requestToSignContent = requestToSign.toByteArray();
             this.signer.update(requestToSignContent, 0, requestToSignContent.length);
             byte[] signature = signer.generateSignature();
 
-            route_v1 response = stub.get(route_get_req_v1.newBuilder()
+            route_res_v1 response = stub.get(route_get_req_v1.newBuilder()
                     .setId(routeId)
                     .setTimestamp(now)
+                    .setSigner(this.owner)
                     .setSignature(ByteString.copyFrom(signature))
                     .build());
 
             log.debug("GPRC GET route duration " + (Now.NowUtcMs() - start) + "ms");
-            log.debug("GRPC route " + response.getId());
-            return response;
+            log.debug("GRPC route " + response.getRoute().getId());
+            return response.getRoute();
         } catch ( Exception x ) {
             log.warn("GRPC GET route error "+x.getMessage());
             x.printStackTrace();
@@ -864,19 +871,21 @@ public class NovaService {
                     .setRoute(newRoute)
                     .setTimestamp(now)
                     .clearSignature()
+                    .setSigner(this.owner)
                     .build();
             byte[] requestToSignContent = requestToSign.toByteArray();
             this.signer.update(requestToSignContent, 0, requestToSignContent.length);
             byte[] signature = signer.generateSignature();
 
-            route_v1 response = stub.update(route_update_req_v1.newBuilder()
+            route_res_v1 response = stub.update(route_update_req_v1.newBuilder()
                     .setRoute(newRoute)
                     .setTimestamp(now)
                     .setSignature(ByteString.copyFrom(signature))
+                    .setSigner(this.owner)
                     .build());
 
             log.debug("GPRC UPDATE route duration " + (Now.NowUtcMs() - start) + "ms");
-            return response;
+            return response.getRoute();
         } catch ( Exception x ) {
             log.warn("GRPC UPDATE route error "+x.getMessage());
             x.printStackTrace();
@@ -906,6 +915,7 @@ public class NovaService {
             route_get_euis_req_v1 requestToSign = route_get_euis_req_v1.newBuilder()
                     .setRouteId(routeId)
                     .setTimestamp(now)
+                    .setSigner(this.owner)
                     .clearSignature()
                     .build();
             byte[] requestToSignContent = requestToSign.toByteArray();
@@ -915,6 +925,7 @@ public class NovaService {
             Iterator<eui_pair_v1> response = stub.getEuis(route_get_euis_req_v1.newBuilder()
                     .setRouteId(routeId)
                     .setTimestamp(now)
+                    .setSigner(this.owner)
                     .setSignature(ByteString.copyFrom(signature))
                     .build());
             ArrayList<eui_pair_v1> rl = new ArrayList<>();
@@ -955,6 +966,7 @@ public class NovaService {
             route_list_req_v1 requestToSign = route_list_req_v1.newBuilder()
                     .setOui(consoleConfig.getHeliumRouteOui())
                     .setTimestamp(now)
+                    .setSigner(this.owner)
                     .clearSignature()
                     .build();
             byte[] requestToSignContent = requestToSign.toByteArray();
@@ -964,6 +976,7 @@ public class NovaService {
             route_list_res_v1 response = stub.list(route_list_req_v1.newBuilder()
                     .setOui(consoleConfig.getHeliumRouteOui())
                     .setTimestamp(now)
+                    .setSigner(this.owner)
                     .setSignature(ByteString.copyFrom(signature))
                     .build());
             log.debug("GPRC list route duration " + (Now.NowUtcMs() - start) + "ms");
@@ -1060,6 +1073,7 @@ public class NovaService {
                     .setTimestamp(now)
                     .setActionValue(((add)?action_v1.add_VALUE:action_v1.remove_VALUE))
                     .setEuiPair(eui)
+                    .setSigner(this.owner)
                     .clearSignature()
                     .build();
             byte[] requestToSignContent = requestToSign.toByteArray();
@@ -1070,6 +1084,7 @@ public class NovaService {
                     .setTimestamp(now)
                     .setActionValue(((add)?action_v1.add_VALUE:action_v1.remove_VALUE))
                     .setEuiPair(eui)
+                    .setSigner(this.owner)
                     .setSignature(ByteString.copyFrom(signature))
                     .build();
 
@@ -1119,6 +1134,7 @@ public class NovaService {
                     .setOui(consoleConfig.getHeliumRouteOui())
                     .setDevaddr(devAddr)
                     .setTimestamp(now)
+                    .setSigner(this.owner)
                     .clearSignature()
                     .build();
             byte[] requestToSignContent = requestToSign.toByteArray();
@@ -1129,6 +1145,7 @@ public class NovaService {
                     .setOui(consoleConfig.getHeliumRouteOui())
                     .setDevaddr(devAddr)
                     .setTimestamp(now)
+                    .setSigner(this.owner)
                     .setSignature(ByteString.copyFrom(signature))
                     .build());
             ArrayList<session_key_filter_v1> rl = new ArrayList<>();
@@ -1149,8 +1166,8 @@ public class NovaService {
     }
 
     private boolean grpcUpdateSessions(
-            List<ByteString> toAddSession,
-            List<ByteString> toRemoveSession,
+            List<String> toAddSession,
+            List<String> toRemoveSession,
             int devAddr
     ) {
 
@@ -1183,7 +1200,7 @@ public class NovaService {
 
         long now = Now.NowUtcMs();
         ArrayList<session_key_filter_update_req_v1> requests = new ArrayList<>();
-        for( ByteString session : toAddSession) {
+        for( String session : toAddSession) {
 
             session_key_filter_v1 filter = session_key_filter_v1.newBuilder()
                     .setOui(consoleConfig.getHeliumRouteOui())
@@ -1195,6 +1212,7 @@ public class NovaService {
                     .setAction(action_v1.add)
                     .setFilter(filter)
                     .setTimestamp(now)
+                    .setSigner(this.owner)
                     .clearSignature()
                     .build();
 
@@ -1206,13 +1224,14 @@ public class NovaService {
                     .setAction(action_v1.add)
                     .setFilter(filter)
                     .setTimestamp(now)
+                    .setSigner(this.owner)
                     .setSignature(ByteString.copyFrom(signature))
                     .build();
 
             requests.add(request);
         }
 
-        for( ByteString session : toRemoveSession) {
+        for( String session : toRemoveSession) {
 
             session_key_filter_v1 filter = session_key_filter_v1.newBuilder()
                     .setOui(consoleConfig.getHeliumRouteOui())
@@ -1224,6 +1243,7 @@ public class NovaService {
                     .setAction(action_v1.remove)
                     .setFilter(filter)
                     .setTimestamp(now)
+                    .setSigner(this.owner)
                     .clearSignature()
                     .build();
 
@@ -1235,6 +1255,7 @@ public class NovaService {
                     .setAction(action_v1.remove)
                     .setFilter(filter)
                     .setTimestamp(now)
+                    .setSigner(this.owner)
                     .setSignature(ByteString.copyFrom(signature))
                     .build();
 
@@ -1259,7 +1280,6 @@ public class NovaService {
             prometeusService.addHeliumApiTotalTimeMs(startNova);
         }
         return true;
-
     }
 
 
