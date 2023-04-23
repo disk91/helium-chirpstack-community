@@ -6,8 +6,15 @@ CONSOLE_NAME=Helium-Console
 CONSOLE_TERMS=https://...
 API_HOST=
 CHIRPSTACK_HOST=
+CONSOLE_DIR=/helium
 
 .FORCE:
+
+init: .FORCE
+	if [ ! -d $(CONSOLE_DIR) ] ; then mkdir $(CONSOLE_DIR) ; fi
+	cp -R chirpstack/* $(CONSOLE_DIR)/
+	if [ ! -d $(CONSOLE_DIR)/prometheus ] ; then chown nobody:nogroup $(CONSOLE_DIR)/prometheus; fi
+	if [ ! -d $(CONSOLE_DIR)/grafana ] ; then chown 472:root $(CONSOLE_DIR)/grafana ; fi
 
 front: .FORCE
 	export CONSOLE_NAME=$(CONSOLE_NAME) ; export CONSOLE_TERMS=$(CONSOLE_TERMS) ; \
