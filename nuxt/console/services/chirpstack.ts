@@ -19,6 +19,7 @@ export class ChirpstackService {
     applicationsGet : string = "/rest-api/api/applications";
     applicationsPost : string = "/rest-api/api/applications";
     devicesPost : string = "/rest-api/api/devices";
+    devicesDelete : string = "/rest-api/api/devices";
     devicesActivation : string = "/activate";
     devicesKey : string = "/keys";
 
@@ -398,6 +399,19 @@ export class ChirpstackService {
         });
     }
 
+    deletedevice (dev : Device) : Promise<string> {
+        return new Promise<string>((resolve) => { 
+            this.axios.delete(this.devicesPost+'/'+dev.rawDevice.dev_eui.toLowerCase(), this.getHeader())
+            .then((response : any) => {
+                if ( response.status == 200 ) {
+                    console.log("Created device has been deleted");
+                    resolve("");
+                }
+            }).catch((err : any) =>{
+                console.log("Failed to remove created device");
+            })
+            resolve("err_failed_add_keys");
+        })
+    }
 
-
-  }
+}

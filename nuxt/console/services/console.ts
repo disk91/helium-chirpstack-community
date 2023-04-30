@@ -1,4 +1,4 @@
-import { ProxyConfig, ProxyGetReqItf, LabelItf, DeviceItf, FunctionItf, FlowItf } from 'vue/types/proxy';
+import { ProxyConfig, ProxyGetReqItf, LabelItf, DeviceItf, FunctionItf, FlowItf, ProxyDeactivateDeviceReqItf } from 'vue/types/proxy';
 import { Device } from 'vue/types/console';
 
 
@@ -20,8 +20,9 @@ export class HeliumConsoleService {
 
     labelsGet : string = "v1/labels";
     devicesGet : string = "v1/devices";
-    functionGet : string = "v1/functions"
-    flowGet : string = "v1/flows"
+    functionGet : string = "v1/functions";
+    flowGet : string = "v1/flows";
+    DeactivatePut : string = "v1/devices";
 
     constructor (axios:any, proxyConfig:ProxyConfig) {
         this.proxyConfig = proxyConfig;
@@ -341,11 +342,11 @@ export class HeliumConsoleService {
     getSelectedDevices() : Device[] {
         let r = [] as Device[];
         this.accountDevices.forEach( (dev) => {
-            if ( this.currentLabel == "no_label" && dev.rawDevice.labels.length  == 0 ) {
+            if ( this.currentLabel == "no_label" && dev.rawDevice.labels.length  == 0 && dev.isActive) {
                 r.push(dev);
             } else if ( dev.rawDevice.labels.length > 0 ) {
                 for ( var l = 0 ; l < dev.rawDevice.labels.length ; l++ ) {
-                    if ( dev.rawDevice.labels[l].id == this.currentLabel ) {
+                    if ( dev.rawDevice.labels[l].id == this.currentLabel && dev.isActive ) {
                         r.push(dev);
                     }
                 }
@@ -382,6 +383,29 @@ export class HeliumConsoleService {
             if ( this.accountFunctions[i].id == funcId ) return this.accountFunctions[i]; 
         }
         return undefined as any;
+    }
+
+    /**
+     * Desactivate a device on the Helium console site
+     */
+    async deactivateDevice(dev : Device) : Promise<string> {
+        this.isBusy = true;
+        let body : ProxyDeactivateDeviceReqItf = {
+            endpoint: this.apiUrl+this.DeactivatePut,
+            key:this.apiKey,
+            deviceId:dev.rawDevice.id
+        };
+
+        return new Promise<string>((resolve) => {
+            this.axios.post(this.proxyConfig.deactivaterUrl,body,this.getHeader())
+            .then((response : any) =>{
+                if ( response.status == 200 ) {
+                    resolve("");
+                } else resolve(response.data.message);
+            }).catch((err : any) =>{
+                if ( err != undefined ) resolve(err.response.data.message);
+            })    
+        });
     }
 
     async getFlows() : Promise<string> {

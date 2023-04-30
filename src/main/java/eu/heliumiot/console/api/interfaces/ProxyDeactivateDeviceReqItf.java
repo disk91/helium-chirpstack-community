@@ -23,14 +23,21 @@ package eu.heliumiot.console.api.interfaces;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.tags.Tag;
 
-@Tag(name = "Api Proxy Getter Request", description = "Api Proxy Getter Request")
-public class ProxyGetReqItf {
+@Tag(name = "Api Proxy Deactivate Device Request", description = "Api Proxy to deactivate a device")
+public class ProxyDeactivateDeviceReqItf {
+
 
     @Schema(
             description = "Endpoint URL for GET",
             requiredMode = Schema.RequiredMode.REQUIRED
     )
     protected String endpoint;
+
+    @Schema(
+            description = "Device Id",
+            requiredMode = Schema.RequiredMode.REQUIRED
+    )
+    protected String deviceId;
 
 
     @Schema(
@@ -58,4 +65,11 @@ public class ProxyGetReqItf {
         this.key = key;
     }
 
+    public String getDeviceId() {
+        return deviceId;
+    }
+
+    public void setDeviceId(String deviceId) {
+        this.deviceId = deviceId;
+    }
 }

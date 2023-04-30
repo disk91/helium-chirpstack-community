@@ -3,9 +3,15 @@ declare module "vue/types/proxy" {
         endpoint : string,
         key : string,
     }
+    interface ProxyDeactivateDeviceReqItf {
+        endpoint : string,
+        key : string,
+        deviceId : string,
+    }
     interface ProxyConfig {
         bearer : string,
         getterUrl : string,
+        deactivaterUrl : string,
     }
     interface LabelItf {
         adr_allowed : boolean,

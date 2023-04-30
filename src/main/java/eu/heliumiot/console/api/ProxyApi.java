@@ -19,8 +19,8 @@
  */
 package eu.heliumiot.console.api;
 
-import eu.heliumiot.console.ConsoleConfig;
 import eu.heliumiot.console.api.interfaces.ActionResult;
+import eu.heliumiot.console.api.interfaces.ProxyDeactivateDeviceReqItf;
 import eu.heliumiot.console.api.interfaces.ProxyGetReqItf;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -29,7 +29,6 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.*;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -123,6 +122,78 @@ public class ProxyApi {
         }
         return new ResponseEntity<>(r, HttpStatus.BAD_REQUEST);
     }
+
+
+    @Operation(summary = "Proxy Deactivater",
+            description = "Perform a Put from a helium console API and deactivate a device",
+            responses = {
+                    @ApiResponse(responseCode = "200", description= "OK", content = @Content(schema = @Schema(implementation = String.class))),
+                    @ApiResponse(responseCode = "400", description= "BAD REQUEST", content = @Content(schema = @Schema(implementation = ActionResult.class))),
+            }
+    )
+    @RequestMapping(value="/deactivate",
+            produces = MediaType.APPLICATION_JSON_VALUE,
+            method= RequestMethod.POST)
+    @PreAuthorize("hasAnyRole('ROLE_USER')")
+    public ResponseEntity<?> proxyDeactivater(
+            HttpServletRequest request,
+            @RequestBody(required = true) ProxyDeactivateDeviceReqItf reqItf
+    ) {
+        // @TODO - rate limiter could be implemented
+
+        // check the requested url pattern
+        ActionResult r = ActionResult.MALFORMED();
+        try {
+            URL u = new URL(reqItf.getEndpoint());
+            URI uri = u.toURI();
+
+            if ( reqItf.getKey() != null && reqItf.getKey().length() > 0 ) {
+                // test authorized URL
+                if (!reqItf.getEndpoint().contains("&") && !reqItf.getEndpoint().contains("?")) {
+                    if ( reqItf.getEndpoint().endsWith("/v1/devices")) {
+                        // Accepted URL
+                        HttpHeaders headers = new HttpHeaders();
+                        ArrayList<MediaType> accept = new ArrayList<>();
+                        accept.add(MediaType.APPLICATION_JSON);
+                        headers.setAccept(accept);
+                        headers.add(HttpHeaders.USER_AGENT, "helium_chirp/1.0");
+                        headers.add(HttpHeaders.CONTENT_TYPE, "application/json");
+                        headers.add("KEY", reqItf.getKey());
+
+                        RestTemplate restTemplate = new RestTemplate();
+                        HttpEntity<String> requestEntity = new HttpEntity<String>("{ \"active\":false }", headers);
+                        ResponseEntity<String> responseEntity =
+                                restTemplate.exchange(
+                                        reqItf.getEndpoint()+'/'+reqItf.getDeviceId(),
+                                        HttpMethod.PUT,
+                                        requestEntity,
+                                        String.class
+                                );
+
+                        if (responseEntity.getStatusCode() == HttpStatus.OK) {
+                            return new ResponseEntity<>(responseEntity.getBody(), HttpStatus.OK);
+                        } else {
+                            r.setMessage("console_response");
+                        }
+                    }
+                }
+                r.setMessage("unsupported_endpoint");
+            } else {
+                r.setMessage("invalid_key");
+            }
+        } catch ( MalformedURLException x ) {
+            r.setMessage("malformed_endpoint");
+        } catch ( URISyntaxException x ) {
+            r.setMessage("malformed_endpoint");
+        } catch ( HttpClientErrorException x ) {
+            r.setMessage("client_error");
+        } catch ( HttpServerErrorException x ) {
+            r.setMessage("server_error");
+        }
+        return new ResponseEntity<>(r, HttpStatus.BAD_REQUEST);
+    }
+
+
 
 }
 

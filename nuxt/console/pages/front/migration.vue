@@ -98,6 +98,7 @@
           heliumConsoleService : new HeliumConsoleService(this.$axios, { 
             bearer: this.$store.state.consoleBearer,
             getterUrl: this.$config.proxyGet,
+            deactivaterUrl : this.$config.proxyDeact,
           } as ProxyConfig),
           chirpstackService : new ChirpstackService(this.$axios),
           tabIndex: 0,
