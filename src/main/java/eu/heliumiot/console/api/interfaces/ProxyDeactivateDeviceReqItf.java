@@ -39,6 +39,11 @@ public class ProxyDeactivateDeviceReqItf {
     )
     protected String deviceId;
 
+    @Schema(
+            description = "Expected status, true for deactivating",
+            requiredMode = Schema.RequiredMode.REQUIRED
+    )
+    protected boolean deactivate;
 
     @Schema(
             description = "Authentication Key",
@@ -71,5 +76,13 @@ public class ProxyDeactivateDeviceReqItf {
 
     public void setDeviceId(String deviceId) {
         this.deviceId = deviceId;
+    }
+
+    public boolean isDeactivate() {
+        return deactivate;
+    }
+
+    public void setDeactivate(boolean deactivate) {
+        this.deactivate = deactivate;
     }
 }

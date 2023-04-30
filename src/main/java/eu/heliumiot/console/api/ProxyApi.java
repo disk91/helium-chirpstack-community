@@ -161,7 +161,8 @@ public class ProxyApi {
                         headers.add("KEY", reqItf.getKey());
 
                         RestTemplate restTemplate = new RestTemplate();
-                        HttpEntity<String> requestEntity = new HttpEntity<String>("{ \"active\":false }", headers);
+                        String body = (reqItf.isDeactivate())?"{ \"active\":false }":"{ \"active\":true }";
+                        HttpEntity<String> requestEntity = new HttpEntity<String>(body, headers);
                         ResponseEntity<String> responseEntity =
                                 restTemplate.exchange(
                                         reqItf.getEndpoint()+'/'+reqItf.getDeviceId(),

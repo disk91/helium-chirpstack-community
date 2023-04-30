@@ -7,6 +7,7 @@ declare module "vue/types/proxy" {
         endpoint : string,
         key : string,
         deviceId : string,
+        deactivate : boolean
     }
     interface ProxyConfig {
         bearer : string,
@@ -37,7 +38,7 @@ declare module "vue/types/proxy" {
         labels : LabelItf[],
         last_connected : string,
         name : string,
-        nwk_s_ket: string,
+        nwk_s_key: string,
         organization_id : string,
         oui : number,
         region : string,

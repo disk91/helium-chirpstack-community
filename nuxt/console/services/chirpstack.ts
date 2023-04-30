@@ -399,6 +399,52 @@ export class ChirpstackService {
         });
     }
 
+    activatedevice (dev : Device) : Promise<string> {
+        let body : DeviceActivation = {
+            deviceActivation : {
+                aFCntDown : 0,
+                nFCntDown: 0,
+                fCntUp : 0,
+                appSKey : dev.rawDevice.app_s_key,
+                devAddr : dev.rawDevice.devaddr,
+                fNwkSIntKey : dev.rawDevice.nwk_s_key,
+                nwkSEncKey: dev.rawDevice.nwk_s_key,
+                sNwkSIntKey : dev.rawDevice.nwk_s_key,
+            }
+        }
+        return new Promise<string>((resolve) => { 
+            // create device
+            this.axios.post(this.devicesPost+'/'+dev.rawDevice.dev_eui+this.devicesActivation,body,this.getHeader())
+            .then((response : any) =>{
+                if (response.status == 200 ) {
+                    resolve("");
+                } else {
+                    console.log("Failed to activate device with code "+response.status);
+                    resolve('err_failed_activation');
+                }
+            }).catch((err : any) =>{
+                console.log("Failed to activate device");
+                resolve('err_failed_activation');
+            })
+        })
+    }
+
+/*
+"deviceActivation": {
+    "devEui": "239f4b02b699cd01",
+    "devAddr": "4800053e",
+    "appSKey": "04c66da22c010d9b726fc477110b7893",
+    "nwkSEncKey": "26ab9a866cd86fd2b22f0923072b4201",
+    "sNwkSIntKey": "26ab9a866cd86fd2b22f0923072b4201",
+    "fNwkSIntKey": "26ab9a866cd86fd2b22f0923072b4201",
+    "fCntUp": 23,
+    "nFCntDown": 2,
+    "aFCntDown": 0
+  }
+
+*/
+    
+
     deletedevice (dev : Device) : Promise<string> {
         return new Promise<string>((resolve) => { 
             this.axios.delete(this.devicesPost+'/'+dev.rawDevice.dev_eui.toLowerCase(), this.getHeader())

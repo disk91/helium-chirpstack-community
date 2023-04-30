@@ -22,6 +22,7 @@ package eu.heliumiot.console.service;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
+import eu.heliumiot.console.ConsoleConfig;
 import eu.heliumiot.console.jpa.db.*;
 import eu.heliumiot.console.jpa.repository.ApplicationRepository;
 import eu.heliumiot.console.jpa.repository.DeviceRepository;
@@ -169,6 +170,8 @@ public class HeliumDeviceService {
     }
 
 
+    @Autowired
+    protected ConsoleConfig consoleConfig;
 
     /**
      * Search for new device added into the device table
@@ -179,21 +182,49 @@ public class HeliumDeviceService {
         this.runningJobs++;
         long start = Now.NowUtcMs();
         try {
-
             log.debug("Running scanNewDevicesJob");
             HeliumParameter p = heliumParameterService.getParameter(HeliumParameterService.PARAM_DEVICE_LASTSCAN_TIME);
-            List<Device> devs = deviceRepository.findDeviceByCreatedAtGreaterThanOrderByCreatedAtAsc(new Timestamp(p.getLongValue()-125_000));
+            List<Device> devs = deviceRepository.findDeviceByCreatedAtGreaterThanOrderByCreatedAtAsc(
+                    new Timestamp(p.getLongValue()-(    // as we can have 2 loops of NewScan and a loop for deleted = max
+                            consoleConfig.getHeliumDeviceNewScanPeriod()+
+                            consoleConfig.getHeliumDeviceDeletedScanPeriod()+
+                            10_000
+                    )));
             long lastCreated = 0;
             for (Device dev : devs) {
                 String devEui = HexaConverters.byteToHexString(dev.getDevEui());
                 // verify
                 HeliumDevice hdev = heliumDeviceRepository.findOneHeliumDeviceByDeviceEui(devEui);
                 if ( hdev != null ) {
-                    if ( hdev.getState() != HeliumDevice.DeviceState.DELETED ) continue;
-
-                    // basically a kind of reactivation
-                    // make sure other cleaning activities are done
-                    if ( (Now.NowUtcMs() - hdev.getDeletedAt()) < 120_000 ) continue;
+                    // this device already exist
+                    if ( hdev.getState() != HeliumDevice.DeviceState.DELETED ) {
+                        // make sure this device is not older than the one created
+                        if ( (dev.getCreatedAt().getTime() - hdev.getCreatedAt() ) > 20_000 ) {
+                            // Helium device has been created before Chirp device
+                            // this is a device not yet removed... do it
+                            synchronized (this) {
+                                hdev.setState(HeliumDevice.DeviceState.DELETED);
+                                hdev.setToUpdate(false);
+                                hdev.setDeletedAt(Now.NowUtcMs());
+                                LoRaWanCreds c = new LoRaWanCreds(
+                                        hdev.getDeviceEui(),
+                                        hdev.getApplicationEui(),
+                                        hdev.getTenantUUID()
+                                );
+                                this.reportDeviceDeactivationOnMqtt(c);
+                                // save this
+                                heliumDeviceRepository.save(hdev);
+                            }
+                            log.debug("scanNewDevicesJob - Force Del " + hdev.getDeviceEui());
+                            prometeusService.addDeviceDeletion();
+                        } else continue;
+                    } else {
+                        // this device is deleted, is that a reactivation ?
+                        // make sure other cleaning activities are done
+                        // let the cleaner job to pass
+                        if ((Now.NowUtcMs() - hdev.getDeletedAt()) < consoleConfig.getHeliumDeviceDeletedScanPeriod())
+                            continue;
+                    }
 
                     // remove that previous device
                     hdev.setDeviceEui(hdev.getDeviceEui()+"_del_"+Now.NowUtcS());
@@ -616,10 +647,10 @@ public class HeliumDeviceService {
                             }
                         }
                         // Update the device DC limitation per period
-                        if ((hdev.getState() == HeliumDevice.DeviceState.ACTIVE ||
-                                hdev.getState() == HeliumDevice.DeviceState.INSERTED
-                        ) &&
-                                hts.getLimitDcRatePeriodMs() > 0 && hts.getLimitDcRatePerDevice() > 0
+                        if (    ( hdev.getState() == HeliumDevice.DeviceState.ACTIVE ||
+                                  hdev.getState() == HeliumDevice.DeviceState.INSERTED
+                                ) &&
+                                  hts.getLimitDcRatePeriodMs() > 0 && hts.getLimitDcRatePerDevice() > 0
                         ) {
 
                             // calculate how many DCs stat we need for computing this
@@ -645,7 +676,7 @@ public class HeliumDeviceService {
                                     sumDcs += e.getRegistrationDc();
                                 }
                                 if (sumDcs > hts.getLimitDcRatePerDevice()) {
-                                    log.debug("deviceActivityJob - deactivate device (limitDCs) " + hdev.getDeviceEui());
+                                    log.debug("deviceActivityJob - deactivate device (limitDCs) " + hdev.getDeviceEui() + " consumed "+sumDcs);
                                     hdev.setState(HeliumDevice.DeviceState.DEACTIVATED);
                                     hdev.setToUpdate(false);
                                     // Call Nova Api to deactivate the device asynchronously

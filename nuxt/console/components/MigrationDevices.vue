@@ -468,11 +468,24 @@ export default Vue.extend({
                 .then ( (ret:string) => {
                     if ( ret == "" ) {
                         // deactivate in the console
-                        this.consoleObject.deactivateDevice(dev)
+                        this.consoleObject.deactivateDevice(dev,true)
                         .then ((ret:string) =>{
                             if ( ret == "" ) {
-                                dev.status = 3;
-                                this.devicesMigrated++;
+                                // activate device on chirpstack
+                                this.chirpstackObject.activatedevice(dev)
+                                .then ( (ret:string) => {
+                                    if ( ret == "" ) {
+                                        dev.status = 3;
+                                        this.devicesMigrated++;
+                                    } else {
+                                        // remove device
+                                        this.chirpstackObject.deletedevice(dev)
+                                        // reactivate on console
+                                        this.consoleObject.deactivateDevice(dev,false)
+                                        dev.status = 4;
+                                        this.devicesError++;
+                                    }
+                                })
                             } else {
                                 // remove device
                                 this.chirpstackObject.deletedevice(dev)

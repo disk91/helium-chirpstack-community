@@ -388,12 +388,13 @@ export class HeliumConsoleService {
     /**
      * Desactivate a device on the Helium console site
      */
-    async deactivateDevice(dev : Device) : Promise<string> {
+    async deactivateDevice(dev : Device, deactivate : boolean) : Promise<string> {
         this.isBusy = true;
         let body : ProxyDeactivateDeviceReqItf = {
             endpoint: this.apiUrl+this.DeactivatePut,
             key:this.apiKey,
-            deviceId:dev.rawDevice.id
+            deviceId:dev.rawDevice.id,
+            deactivate: deactivate
         };
 
         return new Promise<string>((resolve) => {
