@@ -1,7 +1,5 @@
 # Helium / Chirpstack integration
 
-__/!\ MVP3 ready for HIP70 beta testers only__
-
 ![screenshot](homepage.png)
 
 - Follow progress and roadmap on the [project board](https://github.com/users/disk91/projects/1/views/1)
@@ -30,6 +28,8 @@ __/!\ MVP3 ready for HIP70 beta testers only__
 - Manage Service Request between customer and admin
 - Manage Communication to users
 - Manage Invoice generation
+- Manage device migration from console
+- Manage device live migration from console
 
 
 #### MVP1 - terminated
@@ -48,7 +48,7 @@ The MVP3 aim to provide the payment solution for increasing the tenant DC balanc
 for payment. Crypto payment will be developed once migrated to Solana, when the environment will be in place to test this.
 It includes invoice generation for customers and Ticketing solution. It also allows to transfer DCs between tenants.
 
-### MVP4 - in progress
+### MVP4 - terminated (tag V1.0.0)
 The MVP4 aim to allow user to migrate devices from a legacy console to the new chirpstack / helium environment based on a wizard.
 It allows to migrate one or many devices from one environment to another.
 
@@ -57,7 +57,7 @@ The MVP4 aime to provide the user screen to manage all the specific situation li
 consumption statistics... It also includes the users/customer communication solutions for the platform administrator.
 
 #### MVP6 - pending
-The MVP5 may address some specific program support like university program to offer a free access to Helium network for
+The MVP6 may address some specific program support like university program to offer a free access to Helium network for
 universities. Support of coupons will allow larger program solution including devkit including communications ...
 
 
@@ -74,7 +74,7 @@ The full installation, including the Chirpstack configuration is detailed on (di
 This program is distributed according to [GPLv3](https://www.gnu.org/licenses/gpl-3.0.en.html) licence for any private 
 IoT device fleet purpose, without restriction.
 
-In case you provide a public service with this software, even free for user, or in case you manage a service for a third party 
+In case you provide a public operator service with this software, even free for user, or in case you manage a such service for a third party 
 with this software you have two options:
 - having a minimum Uplink cost of $0.00010 per Uplink x 24 Bytes
 - request for a specific license w/o pricing limitation by contacting the author
