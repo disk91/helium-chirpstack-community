@@ -114,7 +114,7 @@ public abstract class ObjectCache<K, T extends ClonnableObject<T>> {
     protected long total100CacheTime;
     protected long total100CacheTry;
     protected boolean tooLong;    // true when the cache performance is really bad
-    private boolean inClean;        // clean operation in progress
+    private volatile boolean inClean;        // clean operation in progress
 
     protected boolean inAsyncSync;  // true when an async sync process has ben started
 
@@ -172,7 +172,7 @@ public abstract class ObjectCache<K, T extends ClonnableObject<T>> {
      * @param obj
      * @param key
      */
-    public abstract void onCacheRemoval(K key,T obj);
+    public abstract void onCacheRemoval(K key,T obj, boolean batch, boolean last);
 
     // bulk update on a list of updated objects
     // call by commit with bulk option
@@ -210,14 +210,21 @@ public abstract class ObjectCache<K, T extends ClonnableObject<T>> {
             if ( ! inClean ) {
                 this.total100CacheTry++;
                 if (this.total100CacheTry >= 100) this.total100CacheTime += (Now.NanoTime() - start);
-                if (this.total100CacheTry >= 1000) {
+                if (this.total100CacheTry >= 5_000) {
                     // average situation... when above 2ms, better not use the cache !
                     // forget the 100 first request as the creation can be really long
                     // and get bad stats
-                    if ((this.total100CacheTime / (total100CacheTry - 100)) > 2_000_000) {
+                    double avg = (this.total100CacheTime / (total100CacheTry - 100));
+                    if ( avg > 2_000_000) {
                         this.tooLong = true;
                     }
-                    log.info(this.name + " avg cache tm : " + (this.total100CacheTime / (total100CacheTry - 100)) + "ns");
+
+                    if (this.tooLong || avg > 500_000) {
+                        log.info(this.name + " avg cache tm : " + (this.total100CacheTime / (total100CacheTry - 100)) + "ns");
+                    }
+
+                    if ( avg < 50_000 ) this.tooLong = false;
+
                     // go to next verification
                     this.total100CacheTry = 0;
                     this.total100CacheTime = 0;
@@ -307,7 +314,7 @@ public abstract class ObjectCache<K, T extends ClonnableObject<T>> {
         CachedObject<K,T> c = this.cache.get(key);
         if  ( c != null ) {
             if ( c.isUpdated() && callAction ) {
-                this.onCacheRemoval(key,c.getObj());
+                this.onCacheRemoval(key,c.getObj(),false,true);
             }
             this.cache.remove(key);
             this.cacheSize--;
@@ -362,8 +369,9 @@ public abstract class ObjectCache<K, T extends ClonnableObject<T>> {
         // Update action on object before removal
         for ( K key : keysToBeUpdated ) {
             CachedObject<K,T> o = this.cache.get(key);
-            if ( o != null ) onCacheRemoval(key,o.getObj());
+            if ( o != null ) onCacheRemoval(key,o.getObj(),true,false);
         }
+        onCacheRemoval(null,null,true,true);
 
         // clear entries
         for ( K key : keysToBeRemoved ) {
@@ -400,7 +408,7 @@ public abstract class ObjectCache<K, T extends ClonnableObject<T>> {
             progress++;
             boolean expired = (c.expirationTime >  0 && c.expirationTime < Now.NowUtcMs() );
             if ( c.isUpdated() || expired ) {
-                onCacheRemoval(c.getKey(),c.getObj());
+                onCacheRemoval(c.getKey(),c.getObj(),true,false);
                 c.setUpdated(false);
             }
             if ( expired ) toRemove.add(c.getKey());
@@ -411,6 +419,7 @@ public abstract class ObjectCache<K, T extends ClonnableObject<T>> {
             }
 
         }
+        onCacheRemoval(null,null,true,true);
         for ( K key : toRemove ) {
             this.cache.remove(key);
             this.cacheSize--;
@@ -420,9 +429,10 @@ public abstract class ObjectCache<K, T extends ClonnableObject<T>> {
     public void deleteCache() {
         for (CachedObject<K,T> c : this.cache.values() ) {
             if ( c.isUpdated() ) {
-                onCacheRemoval(c.getKey(),c.getObj());
+                onCacheRemoval(c.getKey(),c.getObj(),true,false);
             }
         }
+        onCacheRemoval(null,null,true,true);
         this.cache.clear();
     }
 
@@ -431,7 +441,7 @@ public abstract class ObjectCache<K, T extends ClonnableObject<T>> {
     // we clone element and it a lot of memory (use -1 for infinite)
     // return number of element to be updated (can be > max)
     // We take as a priority the old hotspot
-    public long commit(boolean bulk, int max) {
+    public synchronized long commit(boolean bulk, int max) {
         long toUpdate = 0;
         long lastLog=Now.NowUtcMs();
         long progress=0;
@@ -470,7 +480,7 @@ public abstract class ObjectCache<K, T extends ClonnableObject<T>> {
                 progress++;
                 if (c.isUpdated()) {
                     toUpdate++;
-                    onCacheRemoval(c.getKey(), c.getObj());
+                    onCacheRemoval(c.getKey(), c.getObj(),true,false);
                     c.setUpdated(false);
                     if ((Now.NowUtcMs() - lastLog) > 10_000) {
                         lastLog = Now.NowUtcMs();
@@ -478,6 +488,7 @@ public abstract class ObjectCache<K, T extends ClonnableObject<T>> {
                     }
                 }
             }
+            onCacheRemoval(null,null,true,true);
         }
         return toUpdate;
     }

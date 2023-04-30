@@ -58,14 +58,24 @@ public class HeliumDeviceStatService {
                 2*Now.ONE_HOUR
         ) {
             @Override
-            public void onCacheRemoval(String key, HeliumDeviceStat obj) {
-                obj.setLastCommit(Now.NowUtcMs());
-                heliumDeviceStatsRepository.save(obj);
+            public void onCacheRemoval(String key, HeliumDeviceStat obj, boolean batch, boolean last) {
+                if ( batch ) {
+                    if ( obj != null ) {
+                        obj.setLastCommit(Now.NowUtcMs());
+                        heliumDeviceStatsRepository.save(obj);
+                    }
+                } else {
+                    obj.setLastCommit(Now.NowUtcMs());
+                    heliumDeviceStatsRepository.save(obj);
+                }
             }
 
             @Override
             public void bulkCacheUpdate(List<HeliumDeviceStat> objects) {
-
+                for (HeliumDeviceStat obj : objects ) {
+                    obj.setLastCommit(Now.NowUtcMs());
+                    heliumDeviceStatsRepository.save(obj);
+                }
             }
 
         };

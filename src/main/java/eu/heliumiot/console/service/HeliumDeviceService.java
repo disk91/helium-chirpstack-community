@@ -182,13 +182,23 @@ public class HeliumDeviceService {
 
             log.debug("Running scanNewDevicesJob");
             HeliumParameter p = heliumParameterService.getParameter(HeliumParameterService.PARAM_DEVICE_LASTSCAN_TIME);
-            List<Device> devs = deviceRepository.findDeviceByCreatedAtGreaterThanOrderByCreatedAtAsc(new Timestamp(p.getLongValue()));
+            List<Device> devs = deviceRepository.findDeviceByCreatedAtGreaterThanOrderByCreatedAtAsc(new Timestamp(p.getLongValue()-125_000));
             long lastCreated = 0;
             for (Device dev : devs) {
                 String devEui = HexaConverters.byteToHexString(dev.getDevEui());
                 // verify
                 HeliumDevice hdev = heliumDeviceRepository.findOneHeliumDeviceByDeviceEui(devEui);
-                if (hdev != null) continue;
+                if ( hdev != null ) {
+                    if ( hdev.getState() != HeliumDevice.DeviceState.DELETED ) continue;
+
+                    // basically a kind of reactivation
+                    // make sure other cleaning activities are done
+                    if ( (Now.NowUtcMs() - hdev.getDeletedAt()) < 120_000 ) continue;
+
+                    // remove that previous device
+                    hdev.setDeviceEui(hdev.getDeviceEui()+"_del_"+Now.NowUtcS());
+                    heliumDeviceRepository.save(hdev);
+                }
 
                 // new devices
                 hdev = new HeliumDevice();
@@ -396,7 +406,9 @@ public class HeliumDeviceService {
                     }
 
                 }
-                allDevices = heliumDeviceRepository.findHeliumDeviceByTenantUUID(tenantId,allDevices.nextPageable());
+                if ( allDevices.hasNext() ) {
+                    allDevices = heliumDeviceRepository.findHeliumDeviceByTenantUUID(tenantId, allDevices.nextPageable());
+                }
             } while (allDevices.hasNext());
         }
         if (commit) novaService.activateDevices(missing);

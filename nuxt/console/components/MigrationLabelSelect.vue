@@ -316,11 +316,6 @@ export default Vue.extend({
                     this.sourceLabel.push(o);
                 }
             });
-            let o = {
-                    value : "no_label",
-                    text : "Without label",
-            };
-            this.sourceLabel.push(o);
             if ( this.sourceLabel.length > 0 ) {
                 this.targetLabel = this.sourceLabel[0].value;
             }

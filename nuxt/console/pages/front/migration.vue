@@ -158,10 +158,8 @@
         this.$axios.get(this.$config.ouiGet,config)
         .then((response) =>{
           if (response.status == 200 ) {
-            this.heliumConsoleService.setOui(6);
-            this.chirpstackService.setOui(6);
-//            this.chirpstackService.setOui(response.data.message);
-//            this.heliumConsoleService.setOui(response.data.message)
+            this.chirpstackService.setOui(response.data.message);
+            this.heliumConsoleService.setOui(response.data.message)
           }
         }).catch((err) =>{
             this.chirpstackService.setOui(-1);

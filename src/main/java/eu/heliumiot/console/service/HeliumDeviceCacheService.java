@@ -55,7 +55,7 @@ public class HeliumDeviceCacheService {
                  Now.ONE_HOUR
         ) {
             @Override
-            public void onCacheRemoval(String key, HeliumDevice obj) {
+            public void onCacheRemoval(String key, HeliumDevice obj, boolean batch, boolean last) {
             }
 
             @Override

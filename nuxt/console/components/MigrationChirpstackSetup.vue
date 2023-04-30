@@ -5,34 +5,62 @@
             <b-row><b-col cols="12" class="mb-2" style="font-weight: 600;">
                 {{ $t('mig_data_select')}}
             </b-col></b-row>
-            <b-row>
+            <b-row style="font-size:0.7rem;">
                 <b-col cols="2">{{ $t('mig_loaded_labels') }}</b-col>
                 <b-col cols="2" class="text-primary">{{ targetLabel.name }}</b-col>
-
-                <b-col cols="2">{{ $t('mig_loaded_eu868') }}</b-col>
-                <b-col cols="2" class="text-primary">{{ consoleObject.countZone("EU868",targetLabel.id) }}</b-col>
-                <b-col cols="2">{{ $t('mig_loaded_au915') }}</b-col>
-                <b-col cols="2" class="text-primary">{{ consoleObject.countZone("AU915_1",targetLabel.id) }}</b-col>
+                <b-col cols="1">{{ $t('mig_loaded_eu868') }}</b-col>
+                <b-col cols="1" class="text-primary">{{ consoleObject.countZone("EU868",targetLabel.id) }}</b-col>
+                <b-col cols="1">{{ $t('mig_loaded_eu433') }}</b-col>
+                <b-col cols="1" class="text-primary">{{ consoleObject.countZone("EU433",targetLabel.id) }}</b-col>
+                <b-col cols="1">{{ $t('mig_loaded_us915') }}</b-col>
+                <b-col cols="1" class="text-primary">{{ consoleObject.countZone("US915",targetLabel.id) }}</b-col>
+                <b-col cols="1">{{ $t('mig_loaded_as923_1') }}</b-col>
+                <b-col cols="1" class="text-primary">{{ consoleObject.countZone("AS923_1",targetLabel.id) }}</b-col>
             </b-row>
-            <b-row>
+            <b-row style="font-size:0.7rem;">
                 <b-col cols="2">{{ $t('mig_loaded_devices') }}</b-col>
                 <b-col cols="2" class="text-primary">{{ consoleObject.countDevices(targetLabel.id) }}</b-col>
 
-                <b-col cols="2">{{ $t('mig_loaded_us915') }}</b-col>
-                <b-col cols="2" class="text-primary">{{ consoleObject.countZone("US915",targetLabel.id) }}</b-col>
-                <b-col cols="2">{{ $t('mig_loaded_as923') }}</b-col>
-                <b-col cols="2" class="text-primary">{{ consoleObject.countZone("AS923",targetLabel.id) }}</b-col>
+                <b-col cols="1">{{ $t('mig_loaded_as923_1B') }}</b-col>
+                <b-col cols="1" class="text-primary">{{ consoleObject.countZone("AS923_1B",targetLabel.id) }}</b-col>
+                <b-col cols="1">{{ $t('mig_loaded_as923_2') }}</b-col>
+                <b-col cols="1" class="text-primary">{{ consoleObject.countZone("AS923_2",targetLabel.id) }}</b-col>
+                <b-col cols="1">{{ $t('mig_loaded_as923_3') }}</b-col>
+                <b-col cols="1" class="text-primary">{{ consoleObject.countZone("AS923_3",targetLabel.id) }}</b-col>
+                <b-col cols="1">{{ $t('mig_loaded_as923_4') }}</b-col>
+                <b-col cols="1" class="text-primary">{{ consoleObject.countZone("AS923_4",targetLabel.id) }}</b-col>
             </b-row>
-            <b-row>
+            <b-row style="font-size:0.7rem;">
                 <b-col cols="2">{{ $t('mig_loaded_active') }}</b-col>
                 <b-col cols="2" class="text-primary">{{ consoleObject.countActive(targetLabel.id) }}</b-col>
+
+                <b-col cols="1">{{ $t('mig_loaded_cn470') }}</b-col>
+                <b-col cols="1" class="text-primary">{{ consoleObject.countZone("CN470",targetLabel.id) }}</b-col>
+                <b-col cols="1">{{ $t('mig_loaded_au915_1') }}</b-col>
+                <b-col cols="1" class="text-primary">{{ consoleObject.countZone("AU915_1",targetLabel.id) }}</b-col>
+                <b-col cols="1">{{ $t('mig_loaded_au915_sb1') }}</b-col>
+                <b-col cols="1" class="text-primary">{{ consoleObject.countZone("AU915_SB1",targetLabel.id) }}</b-col>
+                <b-col cols="1">{{ $t('mig_loaded_au915_6') }}</b-col>
+                <b-col cols="1" class="text-primary">{{ consoleObject.countZone("AU915_6",targetLabel.id) }}</b-col>
             </b-row>
-            <b-row>
+            <b-row style="font-size:0.7rem;">
                 <b-col cols="2">{{ $t('mig_loaded_live') }}</b-col>
                 <b-col cols="2" class="text-success">{{ consoleObject.countInOui(targetLabel.id) }}</b-col>
+
+                <b-col cols="1">{{ $t('mig_loaded_in865') }}</b-col>
+                <b-col cols="1" class="text-primary">{{ consoleObject.countZone("IN865",targetLabel.id) }}</b-col>
+                <b-col cols="1">{{ $t('mig_loaded_cd900') }}</b-col>
+                <b-col cols="1" class="text-primary">{{ consoleObject.countZone("CD900_1A",targetLabel.id) }}</b-col>
+                <b-col cols="1">{{ $t('mig_loaded_kr920') }}</b-col>
+                <b-col cols="1" class="text-primary">{{ consoleObject.countZone("KR920",targetLabel.id) }}</b-col>
+
+            </b-row>
+            <b-row style="font-size:0.7rem;">
                 <b-col cols="2">{{ $t('mig_loaded_impact') }}</b-col>
                 <b-col v-if="consoleObject.countIncompatible(targetLabel.id) > 0" cols="2" class="text-danger">{{ consoleObject.countIncompatible(targetLabel.id) }}</b-col>
                 <b-col v-if="consoleObject.countIncompatible(targetLabel.id) == 0" cols="2" class="text-success">{{ consoleObject.countIncompatible(targetLabel.id) }}</b-col>
+            </b-row>
+            <b-row style="font-size:0.7rem;">
                 <b-col cols="2">{{ $t('mig_loaded_uregion') }}</b-col>
                 <b-col v-if="consoleObject.countUnknownRegion(targetLabel.id) > 0" cols="2" class="text-warning">{{ consoleObject.countUnknownRegion(targetLabel.id) }}</b-col>
                 <b-col v-if="consoleObject.countUnknownRegion(targetLabel.id) == 0" cols="2" class="text-success">{{ consoleObject.countUnknownRegion(targetLabel.id) }}</b-col>
@@ -94,35 +122,50 @@
             <b-row><b-col cols="12" class="mb-2" style="font-weight: 600;">
                 {{ $t('mig_loaded_chirpdata')}}
             </b-col></b-row>
-            <b-row>
+            <b-row style="font-size:0.7rem;">
                 <b-col cols="2">{{ $t('mig_loaded_devprofile') }}</b-col>
                 <b-col cols="2" class="text-primary">{{ chirpstackObject.countDeviceProfile("",false) }}</b-col>
 
                 <b-col cols="1">{{ $t('mig_loaded_eu868') }}</b-col>
-                <b-col cols="2" class="text-primary">
-                    <span class="text-dark">OTAA</span> {{ chirpstackObject.countDeviceProfile("EU868", true) }} /
-                    <span class="text-dark">ABP</span>  {{ chirpstackObject.countDeviceProfile("EU868", false) }} 
-                </b-col>
-                <b-col cols="1">{{ $t('mig_loaded_au915') }}</b-col>
-                <b-col cols="2" class="text-primary">
-                    <span class="text-dark">OTAA</span>  {{ chirpstackObject.countDeviceProfile("AU915", true) }} /
-                    <span class="text-dark">ABP</span> {{ chirpstackObject.countDeviceProfile("AU915", false) }} 
-                </b-col>
+                <b-col cols="1" class="text-primary"><span class="text-dark">OTAA</span> {{ chirpstackObject.countDeviceProfile("EU868", true) }}</b-col>
+                <b-col cols="1">{{ $t('mig_loaded_eu433') }}</b-col>
+                <b-col cols="1" class="text-primary"><span class="text-dark">OTAA</span> {{ chirpstackObject.countDeviceProfile("EU433", true) }}</b-col>
+                <b-col cols="1">{{ $t('mig_loaded_us915') }}</b-col>
+                <b-col cols="1" class="text-primary"><span class="text-dark">OTAA</span> {{ chirpstackObject.countDeviceProfile("US915", true) }}</b-col>
+                <b-col cols="1">{{ $t('mig_loaded_as923_1') }}</b-col>
+                <b-col cols="1" class="text-primary"><span class="text-dark">OTAA</span> {{ chirpstackObject.countDeviceProfile("AS923", true) }}</b-col>
             </b-row>
-            <b-row>
+            <b-row style="font-size:0.7rem;">
                 <b-col cols="2"></b-col>
                 <b-col cols="2" class="text-primary"></b-col>
 
-                <b-col cols="1">{{ $t('mig_loaded_us915') }}</b-col>
-                <b-col cols="2" class="text-primary">
-                    <span class="text-dark">OTAA</span>  {{ chirpstackObject.countDeviceProfile("US915", true) }} /
-                    <span class="text-dark">ABP</span> {{ chirpstackObject.countDeviceProfile("US915", false) }} 
-                </b-col>
-                <b-col cols="1">{{ $t('mig_loaded_as923') }}</b-col>
-                <b-col cols="2" class="text-primary">
-                    <span class="text-dark">OTAA</span>  {{ chirpstackObject.countDeviceProfile("AS923", true) }} /
-                    <span class="text-dark">ABP</span> {{ chirpstackObject.countDeviceProfile("AS923", false) }} 
-                </b-col>
+                <b-col cols="1">{{ $t('mig_loaded_as923_2') }}</b-col>
+                <b-col cols="1" class="text-primary"><span class="text-dark">OTAA</span> {{ chirpstackObject.countDeviceProfile("AS923_2", true) }}</b-col>
+                <b-col cols="1">{{ $t('mig_loaded_as923_3') }}</b-col>
+                <b-col cols="1" class="text-primary"><span class="text-dark">OTAA</span> {{ chirpstackObject.countDeviceProfile("AS923_3", true) }}</b-col>
+                <b-col cols="1">{{ $t('mig_loaded_as923_4') }}</b-col>
+                <b-col cols="1" class="text-primary"><span class="text-dark">OTAA</span> {{ chirpstackObject.countDeviceProfile("AS923_4", true) }}</b-col>
+            </b-row>
+
+            <b-row style="font-size:0.7rem;">
+                <b-col cols="2"></b-col>
+                <b-col cols="2" class="text-primary"></b-col>
+
+                <b-col cols="1">{{ $t('mig_loaded_cn470') }}</b-col>
+                <b-col cols="1" class="text-primary"><span class="text-dark">OTAA</span> {{ chirpstackObject.countDeviceProfile("CN470", true) }}</b-col>
+                <b-col cols="1">{{ $t('mig_loaded_au915_1') }}</b-col>
+                <b-col cols="1" class="text-primary"><span class="text-dark">OTAA</span> {{ chirpstackObject.countDeviceProfile("AU915", true) }}</b-col>
+            </b-row>
+
+            <b-row style="font-size:0.7rem;">
+                <b-col cols="2"></b-col>
+                <b-col cols="2" class="text-primary"></b-col>
+
+                <b-col cols="1">{{ $t('mig_loaded_in865') }}</b-col>
+                <b-col cols="1" class="text-primary"><span class="text-dark">OTAA</span> {{ chirpstackObject.countDeviceProfile("IN865", true) }}</b-col>
+                <b-col cols="2"></b-col>
+                <b-col cols="1">{{ $t('mig_loaded_kr920') }}</b-col>
+                <b-col cols="1" class="text-primary"><span class="text-dark">OTAA</span> {{ chirpstackObject.countDeviceProfile("KR920", true) }}</b-col>
             </b-row>
 
         </b-card>
@@ -351,6 +394,18 @@
                     </b-col>
                 </b-row>
                 <b-row class="mb-1">
+                    <b-col cols="2">
+                        <b-button block
+                            variant="primary"
+                            size="sm"
+                            style="text-align: center;font-size:0.6rem;"
+                            class=""
+                            disabled=true
+                        >
+                         {{ $t('mig_setup_shouldbecreated') }}
+                        </b-button>
+                    </b-col>
+                    <b-col cols="2"></b-col>
                     <b-col cols="2"> <!-- EU868-->
                         <b-button block
                             :variant="getVariant('EU868',true)"
@@ -390,73 +445,33 @@
                             OTAA - US915
                         </b-button>
                     </b-col>
-                    <b-col cols="2"> <!-- AU915-->
+                    <b-col cols="2"> <!-- AS923_1 -->
                         <b-button block
-                            :variant="getVariant('AU915',true)"
+                            :variant="getVariant('AS923',true)"
                             size="sm"
-                            @click="createDevProfile('AU915', true)"
+                            @click="createDevProfile('AS923', true)"
                             style="text-align: center;font-size:0.6rem;"
                             class=""
-                            :disabled="existDevProfile('AU915',true)"
+                            :disabled="existDevProfile('AS923',true)"
                         >
-                            <b-icon icon="plus-circle-dotted" variant="white" style="font-size:0.6rem;"></b-icon>
-                            OTAA - AU915
-                        </b-button>
-                    </b-col>
-                    <b-col cols="2"> <!-- AU915_SB1 -->
-                        <b-button block
-                            :variant="getVariant('AU915_SB1',true)"
-                            size="sm"
-                            @click="createDevProfile('AU915_SB1', true)"
-                            style="text-align: center;font-size:0.6rem;"
-                            class=""
-                            :disabled="existDevProfile('AU915_SB1',true)"
-                        >
-                            <b-icon icon="plus-circle-dotted" variant="white" style="font-size:0.6rem;"></b-icon>
-                            OTAA - AU915_SB1
-                        </b-button>
-                    </b-col>
-                    <b-col cols="2"> <!-- AU915_SB2 -->
-                        <b-button block
-                            :variant="getVariant('AU915_SB2',true)"
-                            size="sm"
-                            @click="createDevProfile('AU915_SB2', true)"
-                            style="text-align: center;font-size:0.6rem;"
-                            class=""
-                            :disabled="existDevProfile('AU915_SB2',true)"
-                        >
-                            <b-icon icon="plus-circle-dotted" variant="white" style="font-size:0.6rem;"></b-icon>
-                            OTAA - AU915_SB2
+                        <b-icon icon="plus-circle-dotted" variant="white" style="font-size:0.6rem;"></b-icon>
+                            OTAA - AS923
                         </b-button>
                     </b-col>
                 </b-row>
                 <b-row class="mb-1">
-                    <b-col cols="2"> <!-- CN470 -->
+                    <b-col cols="2">
                         <b-button block
-                            :variant="getVariant('CN470',true)"
+                            variant="info"
                             size="sm"
-                            @click="createDevProfile('CN470', true)"
                             style="text-align: center;font-size:0.6rem;"
                             class=""
-                            :disabled="existDevProfile('CN470',true)"
+                            disabled=true
                         >
-                        <b-icon icon="plus-circle-dotted" variant="white" style="font-size:0.6rem;"></b-icon>
-                            OTAA - CN470
+                         {{ $t('mig_setup_canbecreated') }}
                         </b-button>
                     </b-col>
-                    <b-col cols="2"> <!-- AS923_1 -->
-                        <b-button block
-                            :variant="getVariant('AS923_1',true)"
-                            size="sm"
-                            @click="createDevProfile('AS923_1', true)"
-                            style="text-align: center;font-size:0.6rem;"
-                            class=""
-                            :disabled="existDevProfile('AS923_1',true)"
-                        >
-                        <b-icon icon="plus-circle-dotted" variant="white" style="font-size:0.6rem;"></b-icon>
-                            OTAA - AS923_1
-                        </b-button>
-                    </b-col>
+                    <b-col cols="2"></b-col>
                     <b-col cols="2"> <!-- AS923_2 -->
                         <b-button block
                             :variant="getVariant('AS923_2',true)"
@@ -496,21 +511,50 @@
                             OTAA - AS923_4
                         </b-button>
                     </b-col>
-                    <b-col cols="2"> <!-- AS923_1B -->
+                    <b-col cols="2"></b-col>
+                </b-row>
+                <b-row class="mb-1">
+                    <b-col cols="2">
                         <b-button block
-                            :variant="getVariant('AS923_1B',true)"
+                            variant="secondary"
                             size="sm"
-                            @click="createDevProfile('AS923_1B', true)"
                             style="text-align: center;font-size:0.6rem;"
                             class=""
-                            :disabled="existDevProfile('AS923_1B',true)"
+                            disabled=true
+                        >
+                         {{ $t('mig_setup_allreadyexist') }}
+                        </b-button>
+                    </b-col>
+                    <b-col cols="2"></b-col>
+                    <b-col cols="2"> <!-- CN470 -->
+                        <b-button block
+                            :variant="getVariant('CN470',true)"
+                            size="sm"
+                            @click="createDevProfile('CN470', true)"
+                            style="text-align: center;font-size:0.6rem;"
+                            class=""
+                            :disabled="existDevProfile('CN470',true)"
+                        >
+                        <b-icon icon="plus-circle-dotted" variant="white" style="font-size:0.6rem;"></b-icon>
+                            OTAA - CN470
+                        </b-button>
+                    </b-col>
+                    <b-col cols="2"> <!-- AU915-->
+                        <b-button block
+                            :variant="getVariant('AU915',true)"
+                            size="sm"
+                            @click="createDevProfile('AU915', true)"
+                            style="text-align: center;font-size:0.6rem;"
+                            class=""
+                            :disabled="existDevProfile('AU915',true)"
                         >
                             <b-icon icon="plus-circle-dotted" variant="white" style="font-size:0.6rem;"></b-icon>
-                            OTAA - AS923_1B
+                            OTAA - AU915
                         </b-button>
                     </b-col>
                 </b-row>
                 <b-row class="mb-1">
+                    <b-col cols="4"></b-col>
                     <b-col cols="2"> <!-- IN865 -->
                         <b-button block
                             :variant="getVariant('IN865',true)"
@@ -524,6 +568,7 @@
                             OTAA - IN865
                         </b-button>
                     </b-col>
+                    <b-col cols="2"></b-col>
                     <b-col cols="2"> <!-- KR920-->
                         <b-button block
                             :variant="getVariant('KR920',true)"
@@ -535,19 +580,6 @@
                         >
                             <b-icon icon="plus-circle-dotted" variant="white" style="font-size:0.6rem;"></b-icon>
                             OTAA - KR920
-                        </b-button>
-                    </b-col>
-                    <b-col cols="2"> <!-- CD900_1A -->
-                        <b-button block
-                            :variant="getVariant('CD900_1A',true)"
-                            size="sm"
-                            @click="createDevProfile('CD900_1A', true)"
-                            style="text-align: center;font-size:0.6rem;"
-                            class=""
-                            :disabled="existDevProfile('CD900_1A',true)"
-                        >
-                            <b-icon icon="plus-circle-dotted" variant="white" style="font-size:0.6rem;"></b-icon>
-                            OTAA - CD900_1A
                         </b-button>
                     </b-col>
                 </b-row>

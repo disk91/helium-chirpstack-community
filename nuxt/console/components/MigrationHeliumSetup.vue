@@ -149,6 +149,9 @@ export default Vue.extend({
                 value : "https://console-vip.helium.com/api/",
                 text : "Vip Console"
               },
+              { value : "https://helium-console-dev.herokuapp.com/api/",
+                text : "Helium Testnet Console"
+              },
               {
                 value : "",
                 text : "Other"

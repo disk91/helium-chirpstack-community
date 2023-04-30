@@ -359,7 +359,7 @@ public class NovaService {
             this.runningJobs--;
             this.flushDelayedEuisUpdateRunning = false;
         }
-        log.debug("End Running flushDelayedSessionUpdate - duration " + (Now.NowUtcMs() - start) + "ms");
+        log.debug("End Running flushDelayedEuisUpdate - duration " + (Now.NowUtcMs() - start) + "ms");
 
     }
 

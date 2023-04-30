@@ -115,4 +115,6 @@ public class Now {
     public static long ONE_FULL_DAY = 24*3600*1000;
     public static long ONE_HOUR = 1*3600*1000;
 
+    public static long ONE_MINUTE = 60*1000;
+
 }

@@ -28,7 +28,7 @@ public class HeliumTenantStatService {
         log.info("initHeliumTenantStatCacheService initialization");
         this.tenantStatCache = new ObjectCache<String, TenantBasicStatRespItf>("TenantStatCache", 5000) {
             @Override
-            public void onCacheRemoval(String key, TenantBasicStatRespItf obj) {
+            public void onCacheRemoval(String key, TenantBasicStatRespItf obj, boolean batch, boolean last) {
                 // nothing to do, readOnly
             }
 

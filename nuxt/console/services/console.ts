@@ -85,6 +85,14 @@ export class HeliumConsoleService {
                   (response.data as LabelItf[]).forEach ( (label)=> {
                        this.accountLabels.push(label); 
                   });
+                  this.accountLabels.push({
+                    adr_allowed : true,
+                    cf_list_enabled : true,
+                    config_profile_id : "",
+                    id : "no_label",
+                    name : "Without label",
+                    rx_delay : 1
+                  } as LabelItf)
                   resolve("");
                 } else resolve(response.data.message);
             }).catch((err : any) =>{
@@ -316,7 +324,9 @@ export class HeliumConsoleService {
                         || device.isAU915_SB1 || device.isAU915_6 || device.isIN865 || device.isCD900_1A || device.isKR920 ) {
                             device.isRegion = true;
                         } else {
-                            console.log(">>> "+deviceItf.region);
+                            if ( deviceItf.region != null ) {
+                                console.log(">>> "+deviceItf.region);
+                            }
                         }
                        this.accountDevices.push(device); 
                   });

@@ -67,7 +67,7 @@ public class UserCacheService {
         log.info("initUserCacheService initialization");
         this.userCache = new ObjectCache<String, UserCacheElement>("UserCache", 2000) {
             @Override
-            public void onCacheRemoval(String key, UserCacheElement obj) {
+            public void onCacheRemoval(String key, UserCacheElement obj, boolean batch, boolean last) {
                 // nothing to do, readOnly
             }
 
