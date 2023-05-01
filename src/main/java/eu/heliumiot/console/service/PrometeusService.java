@@ -81,6 +81,10 @@ public class PrometeusService {
     private long queryTotalMs = 0;              // time to execute the data stats
     private long queryTotal = 0;                // number of query execution
 
+    // -------- dc amount
+
+    private long dcAmount = 0;                  // router wallet dc amount
+
 
     // =============================================================
     // Stat updaters
@@ -169,6 +173,8 @@ public class PrometeusService {
         this.queryTotal++;
         this.queryTotalMs+=duration;
     }
+
+    public void setDcAmount(long dcAmount) { this.dcAmount = dcAmount; }
 
     // =============================================================
     // Prometheus interface
@@ -284,6 +290,10 @@ public class PrometeusService {
         return ()->queryTotal;
     }
 
+    protected Supplier<Number> getDcAmount() {
+        return ()->dcAmount;
+    }
+
 
     public PrometeusService(MeterRegistry registry) {
 
@@ -380,7 +390,9 @@ public class PrometeusService {
         Gauge.builder("cons.stat.db.query", getDbQueryTotal())
                 .description("total queries of Db for stat")
                 .register(registry);
-
+        Gauge.builder("cons.router.dcbalance", getDcAmount())
+                .description("current router wallet DCs")
+                .register(registry);
     }
 
     @Autowired

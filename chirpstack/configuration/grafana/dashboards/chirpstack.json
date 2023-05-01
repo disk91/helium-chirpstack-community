@@ -1055,8 +1055,8 @@
         "overrides": []
       },
       "gridPos": {
-        "h": 6,
-        "w": 24,
+        "h": 5,
+        "w": 18,
         "x": 0,
         "y": 13
       },
@@ -1093,12 +1093,106 @@
       "type": "timeseries"
     },
     {
-      "collapsed": true,
+      "datasource": {
+        "type": "prometheus",
+        "uid": "PBFA97CFB590B2093"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 17,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "dashed"
+            }
+          },
+          "mappings": [],
+          "min": -4,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 4000000
+              }
+            ]
+          },
+          "unit": "none"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 5,
+        "w": 6,
+        "x": 18,
+        "y": 13
+      },
+      "id": 82,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": false
+        },
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "PBFA97CFB590B2093"
+          },
+          "editorMode": "code",
+          "expr": "cons_router_dcbalance",
+          "legendFormat": "__auto",
+          "range": true,
+          "refId": "A"
+        }
+      ],
+      "title": "Router DC Balance",
+      "type": "timeseries"
+    },
+    {
+      "collapsed": false,
       "gridPos": {
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 19
+        "y": 18
       },
       "id": 24,
       "panels": [],
@@ -1167,7 +1261,7 @@
         "h": 7,
         "w": 9,
         "x": 0,
-        "y": 20
+        "y": 19
       },
       "id": 26,
       "options": {
@@ -1273,7 +1367,7 @@
         "h": 3,
         "w": 5,
         "x": 9,
-        "y": 20
+        "y": 19
       },
       "id": 28,
       "options": {
@@ -1365,7 +1459,7 @@
         "h": 4,
         "w": 5,
         "x": 9,
-        "y": 23
+        "y": 22
       },
       "id": 30,
       "options": {
@@ -1402,7 +1496,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 27
+        "y": 26
       },
       "id": 41,
       "panels": [],
@@ -1472,7 +1566,7 @@
         "h": 4,
         "w": 9,
         "x": 0,
-        "y": 28
+        "y": 27
       },
       "id": 43,
       "options": {
@@ -1556,7 +1650,7 @@
         "h": 4,
         "w": 5,
         "x": 9,
-        "y": 28
+        "y": 27
       },
       "id": 45,
       "options": {
@@ -1689,7 +1783,7 @@
         "h": 8,
         "w": 10,
         "x": 14,
-        "y": 28
+        "y": 27
       },
       "id": 66,
       "options": {
@@ -1793,7 +1887,7 @@
         "h": 4,
         "w": 7,
         "x": 0,
-        "y": 32
+        "y": 31
       },
       "id": 68,
       "options": {
@@ -1885,7 +1979,7 @@
         "h": 4,
         "w": 7,
         "x": 7,
-        "y": 32
+        "y": 31
       },
       "id": 69,
       "options": {
@@ -1922,7 +2016,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 36
+        "y": 35
       },
       "id": 32,
       "panels": [],
@@ -1991,7 +2085,7 @@
         "h": 4,
         "w": 8,
         "x": 0,
-        "y": 37
+        "y": 36
       },
       "id": 34,
       "options": {
@@ -2084,7 +2178,7 @@
         "h": 4,
         "w": 8,
         "x": 8,
-        "y": 37
+        "y": 36
       },
       "id": 36,
       "options": {
@@ -2177,7 +2271,7 @@
         "h": 4,
         "w": 8,
         "x": 16,
-        "y": 37
+        "y": 36
       },
       "id": 37,
       "options": {
@@ -2253,8 +2347,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -2270,7 +2363,7 @@
         "h": 4,
         "w": 8,
         "x": 0,
-        "y": 41
+        "y": 40
       },
       "id": 35,
       "options": {
@@ -2346,8 +2439,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -2363,7 +2455,7 @@
         "h": 4,
         "w": 8,
         "x": 8,
-        "y": 41
+        "y": 40
       },
       "id": 38,
       "options": {
@@ -2439,8 +2531,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -2456,7 +2547,7 @@
         "h": 4,
         "w": 8,
         "x": 16,
-        "y": 41
+        "y": 40
       },
       "id": 39,
       "options": {
@@ -2532,8 +2623,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "semi-dark-orange",
-                "value": null
+                "color": "semi-dark-orange"
               },
               {
                 "color": "red",
@@ -2548,7 +2638,7 @@
         "h": 4,
         "w": 8,
         "x": 0,
-        "y": 45
+        "y": 44
       },
       "id": 61,
       "options": {
@@ -2614,8 +2704,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "semi-dark-orange",
-                "value": null
+                "color": "semi-dark-orange"
               },
               {
                 "color": "red",
@@ -2630,7 +2719,7 @@
         "h": 4,
         "w": 8,
         "x": 8,
-        "y": 45
+        "y": 44
       },
       "id": 62,
       "options": {
@@ -2716,8 +2805,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "semi-dark-orange",
@@ -2737,7 +2825,7 @@
         "h": 4,
         "w": 5,
         "x": 16,
-        "y": 45
+        "y": 44
       },
       "id": 76,
       "options": {
@@ -2783,8 +2871,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "#EAB839",
@@ -2804,7 +2891,7 @@
         "h": 4,
         "w": 3,
         "x": 21,
-        "y": 45
+        "y": 44
       },
       "id": 78,
       "options": {
@@ -2844,7 +2931,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 49
+        "y": 48
       },
       "id": 6,
       "panels": [],
@@ -2896,8 +2983,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -2913,7 +2999,7 @@
         "h": 7,
         "w": 24,
         "x": 0,
-        "y": 50
+        "y": 49
       },
       "id": 4,
       "options": {
@@ -2993,8 +3079,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -3009,7 +3094,7 @@
         "h": 7,
         "w": 24,
         "x": 0,
-        "y": 57
+        "y": 56
       },
       "id": 2,
       "options": {
@@ -3051,7 +3136,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 64
+        "y": 63
       },
       "id": 8,
       "panels": [],
@@ -3103,8 +3188,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -3119,7 +3203,7 @@
         "h": 8,
         "w": 10,
         "x": 0,
-        "y": 65
+        "y": 64
       },
       "id": 10,
       "options": {
@@ -3216,8 +3300,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -3232,7 +3315,7 @@
         "h": 5,
         "w": 3,
         "x": 10,
-        "y": 65
+        "y": 64
       },
       "id": 12,
       "options": {
@@ -3286,8 +3369,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -3303,7 +3385,7 @@
         "h": 3,
         "w": 3,
         "x": 13,
-        "y": 65
+        "y": 64
       },
       "id": 20,
       "options": {
@@ -3380,8 +3462,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -3397,7 +3478,7 @@
         "h": 8,
         "w": 8,
         "x": 16,
-        "y": 65
+        "y": 64
       },
       "id": 16,
       "options": {
@@ -3455,8 +3536,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -3472,7 +3552,7 @@
         "h": 3,
         "w": 3,
         "x": 13,
-        "y": 68
+        "y": 67
       },
       "id": 22,
       "options": {
@@ -3519,8 +3599,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -3535,7 +3614,7 @@
         "h": 3,
         "w": 3,
         "x": 10,
-        "y": 70
+        "y": 69
       },
       "id": 14,
       "options": {
@@ -3584,8 +3663,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -3601,7 +3679,7 @@
         "h": 2,
         "w": 3,
         "x": 13,
-        "y": 71
+        "y": 70
       },
       "id": 18,
       "options": {
@@ -3636,7 +3714,7 @@
       "type": "stat"
     }
   ],
-  "refresh": "1h",
+  "refresh": "10s",
   "schemaVersion": 37,
   "style": "dark",
   "tags": [],
@@ -3651,6 +3729,6 @@
   "timezone": "",
   "title": "Chirpstack",
   "uid": "6pIR3ibVz",
-  "version": 20,
+  "version": 21,
   "weekStart": ""
 }

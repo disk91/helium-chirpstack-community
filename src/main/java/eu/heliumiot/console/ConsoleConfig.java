@@ -54,6 +54,8 @@ public class ConsoleConfig {
     @Value ("${helium.device.deleted.scanPeriod}")
     private long heliumDeviceDeletedScanPeriod;
 
+    @Value ("${helium.oui.data.server}")
+    private String heliumOuiDataServer;
 
     public String getVersion() {
         return version;
@@ -82,6 +84,10 @@ public class ConsoleConfig {
 
     public long getHeliumDeviceDeletedScanPeriod() {
         return heliumDeviceDeletedScanPeriod;
+    }
+
+    public String getHeliumOuiDataServer() {
+        return heliumOuiDataServer;
     }
 
     // =====================================
