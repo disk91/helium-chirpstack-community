@@ -110,7 +110,11 @@ export class HeliumConsoleService {
         let r = 0;
         this.accountDevices.forEach( (device) => {
             if ( label == "no_label" && device.rawDevice.labels.length  == 0 ) r++;
-            if ( label == "" || device.rawDevice.labels.length > 0 && device.rawDevice.labels[0].id == label ) r++;
+            if ( label == "" || device.rawDevice.labels.length > 0 ) {
+                device.rawDevice.labels.forEach( (devLabel) => {
+                    if ( devLabel.id == label ) r++;
+                })
+            }
         })
         return r;
     }
@@ -120,8 +124,11 @@ export class HeliumConsoleService {
         this.accountDevices.forEach( (device) => {
             if ( label == "no_label" && device.rawDevice.labels.length  == 0 )
                 if ( device.isActive ) r++;
-            if ( label == "" || device.rawDevice.labels.length > 0 && device.rawDevice.labels[0].id == label )
-               if ( device.isActive ) r++;
+            if ( label == "" || device.rawDevice.labels.length > 0 ) {
+                device.rawDevice.labels.forEach( (devLabel) => {
+                   if ( devLabel.id == label && device.isActive ) r++;
+                })
+            }
         })
         return r;
     }
@@ -131,8 +138,11 @@ export class HeliumConsoleService {
         this.accountDevices.forEach( (device) => {
             if ( label == "no_label" && device.rawDevice.labels.length  == 0 )
                 if ( device.isMultipleLabel ) r++;
-            if ( label == "" || device.rawDevice.labels.length > 0 && device.rawDevice.labels[0].id == label )
-               if ( device.isMultipleLabel ) r++;
+            if ( label == "" || device.rawDevice.labels.length > 0 ) {
+                device.rawDevice.labels.forEach( (devLabel) => {
+                    if ( devLabel.id == label && device.isMultipleLabel ) r++;
+                })
+            }
         })
         return r;
     }
@@ -140,8 +150,15 @@ export class HeliumConsoleService {
     countZone(zone:string, label:string = "" ) : number {
         let r = 0;
         this.accountDevices.forEach( (device) => {
+            let isRightLabel = false;
+            if ( label == "" || device.rawDevice.labels.length > 0 ) {
+                device.rawDevice.labels.forEach( (devLabel) => {
+                    isRightLabel = true;
+                })
+            }    
+
             if ( ( label == "no_label" && device.rawDevice.labels.length  == 0 )
-                ||  ( label == "" || device.rawDevice.labels.length > 0 && device.rawDevice.labels[0].id == label )
+                ||  ( label == "" || isRightLabel )
             ) {
                 switch (zone) {
                     case "EU868" : if ( device.isEU868 ) r++; break;
@@ -165,71 +182,17 @@ export class HeliumConsoleService {
         return r;
     }
 
-    /*
-    countEU868(label:string = "") : number {
-        let r = 0;
-        this.accountDevices.forEach( (device) => {
-            if ( label == "no_label" && device.rawDevice.labels.length  == 0 )
-                if ( device.isEU868 ) r++;
-            if ( label == "" || device.rawDevice.labels.length > 0 && device.rawDevice.labels[0].id == label )
-               if ( device.isEU868 ) r++;
-        })
-        return r;
-    }
-
-    countEU433(label:string = "") : number {
-        let r = 0;
-        this.accountDevices.forEach( (device) => {
-            if ( label == "no_label" && device.rawDevice.labels.length  == 0 )
-                if ( device.isEU433 ) r++;
-            if ( label == "" || device.rawDevice.labels.length > 0 && device.rawDevice.labels[0].id == label )
-               if ( device.isEU433 ) r++;
-        })
-        return r;
-    }
-
-
-    countUS915(label:string = "") : number {
-        let r = 0;
-        this.accountDevices.forEach( (device) => {
-            if ( label == "no_label" && device.rawDevice.labels.length  == 0 )
-                if ( device.isUS915 ) r++;
-            if ( label == "" || device.rawDevice.labels.length > 0 && device.rawDevice.labels[0].id == label )
-               if ( device.isUS915 ) r++;
-        })
-        return r;
-    }
-
-    countAU915(label:string = "") : number {
-        let r = 0;
-        this.accountDevices.forEach( (device) => {
-            if ( label == "no_label" && device.rawDevice.labels.length  == 0 )
-               if ( device.isAU915_1 ) r++;
-            if ( label == "" || device.rawDevice.labels.length > 0 && device.rawDevice.labels[0].id == label )
-               if ( device.isAU915_1 ) r++;
-        })
-        return r;
-    }
-
-    countAS923(label:string = "") : number {
-        let r = 0;
-        this.accountDevices.forEach( (device) => {
-            if ( label == "no_label" && device.rawDevice.labels.length  == 0 )
-                if ( device.isAS923_1 ) r++;
-            if ( label == "" || device.rawDevice.labels.length > 0 && device.rawDevice.labels[0].id == label )
-               if ( device.isAS923_1 ) r++;
-        })
-        return r;
-    }
-    */
-
     countUnknownRegion(label:string = "") : number {
         let r = 0;
         this.accountDevices.forEach( (device) => {
             if ( label == "no_label" && device.rawDevice.labels.length  == 0 )
                 if ( !device.isRegion ) r++;
-            if ( label == "" || device.rawDevice.labels.length > 0 && device.rawDevice.labels[0].id == label )
-               if ( !device.isRegion ) r++;
+
+            if ( label == "" || device.rawDevice.labels.length > 0 ) {
+                device.rawDevice.labels.forEach( (devLabel) => {
+                    if ( devLabel.id == label && !device.isRegion ) r++;
+                })
+            }    
         })
         return r;
     }
@@ -239,8 +202,12 @@ export class HeliumConsoleService {
         this.accountDevices.forEach( (device) => {
             if ( label == "no_label" && device.rawDevice.labels.length  == 0 )
                 if ( device.rawDevice.oui == this.oui ) r++;
-            if ( label == "" || device.rawDevice.labels.length > 0 && device.rawDevice.labels[0].id == label )
-               if ( device.rawDevice.oui == this.oui ) r++;
+
+            if ( label == "" || device.rawDevice.labels.length > 0 ) {
+                device.rawDevice.labels.forEach( (devLabel) => {
+                    if ( devLabel.id == label && device.rawDevice.oui == this.oui ) r++;
+                })
+            }    
         })
         return r;
     }
