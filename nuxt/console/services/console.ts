@@ -156,7 +156,7 @@ export class HeliumConsoleService {
             let isRightLabel = false;
             if ( device.rawDevice.labels.length > 0 ) {
                 device.rawDevice.labels.forEach( (devLabel) => {
-                    isRightLabel = true;
+                    if ( devLabel.id == label ) isRightLabel = true;
                 })
             }    
 
