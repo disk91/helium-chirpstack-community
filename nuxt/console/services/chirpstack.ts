@@ -100,6 +100,13 @@ export class ChirpstackService {
         return r;
     }
 
+    /**
+     * Return false when no device profiles have been found on the tenant
+     */
+    haveDeviceProfile() : boolean {
+        return (this.deviceProfile.length > 0);
+    }
+
 
     /**
      * Returns true when the device profile already exists on the backend

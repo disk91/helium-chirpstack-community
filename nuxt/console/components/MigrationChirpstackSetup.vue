@@ -947,7 +947,8 @@ export default Vue.extend({
         },
         gotoMigrationDisabled() : boolean {
             return ! (   this.selectApplicationDisabled && this.applicationOption.length > 0 
-                      && this.selectTenantDisabled && this.sourceOption.length > 0 );
+                      && this.selectTenantDisabled && this.sourceOption.length > 0 
+                      && this.chirpstackObject.haveDeviceProfile() );
         },
         gotoMigration() {
             this.$root.$emit("message-migration-validate-chirpstack", "");
