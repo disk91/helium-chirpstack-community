@@ -255,14 +255,20 @@ export class ChirpstackService {
     }
 
     getBestProfiles(zone:string, otaa:boolean, label:string) : _DeviceProfile {
+        if ( zone == "Unknown" ) return this.deviceProfile[0];
+        // search profile created during the previous step for this label
         for ( var i = 0 ; i < this.deviceProfile.length ; i++ ) {
             if ( this.deviceProfile[i].profile.name == "("+zone+") Migration "+((otaa)?"OTAA":"ABP")+" "+label ) {
-                if ( zone == "Unknown" ) {
-                     return this.deviceProfile[i];
-                } else if ( this.deviceProfile[i].profile.region == zone ) return this.deviceProfile[i];
+                if ( this.deviceProfile[i].profile.region == zone ) return this.deviceProfile[i];
             }
         }
-        return this.deviceProfile[0];     
+        // if not found, find a profile with the correct zone
+        for ( var i = 0 ; i < this.deviceProfile.length ; i++ ) {
+            if ( this.deviceProfile[i].profile.region == zone ) return this.deviceProfile[i];
+        }
+
+        // if not found return undefined
+        return undefined as any;     
     }
 
     getProfileById(id: string) : _DeviceProfile {

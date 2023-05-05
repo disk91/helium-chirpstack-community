@@ -431,8 +431,8 @@ export default Vue.extend({
                 r.push(o);
             });
             this.profileOption[dev.rawDevice.id] = r;
-            dev.devProfile = this.chirpstackObject.getBestProfiles(dev.region, true, labelStr).profile.id;
-
+            let p = this.chirpstackObject.getBestProfiles(dev.region, true, labelStr);
+            dev.devProfile = (p!=undefined)?p.profile.id:"";
         },
         onChangeProfile(dev : Device) {
             dev.region = this.chirpstackObject.getProfileById(dev.devProfile).profile.region;
