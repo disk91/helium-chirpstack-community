@@ -4,7 +4,11 @@ import com.google.protobuf.ByteString;
 import eu.heliumiot.console.ConsoleApplication;
 import eu.heliumiot.console.ConsoleConfig;
 import eu.heliumiot.console.jpa.db.HeliumDevice;
+import eu.heliumiot.console.jpa.db.HeliumTenant;
+import eu.heliumiot.console.jpa.db.HeliumTenantSetup;
 import eu.heliumiot.console.jpa.db.NovaDevice;
+import eu.heliumiot.console.jpa.repository.HeliumDeviceRepository;
+import eu.heliumiot.console.jpa.repository.HeliumTenantSetupRepository;
 import eu.heliumiot.console.redis.RedisDeviceRepository;
 import fr.ingeniousthings.tools.*;
 import io.chirpstack.api.internal.Internal;
@@ -17,6 +21,8 @@ import org.bouncycastle.crypto.signers.Ed25519Signer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Slice;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import com.helium.grpc.*;
@@ -25,10 +31,7 @@ import javax.annotation.PostConstruct;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 
 @Service
 public class NovaService {
@@ -42,6 +45,9 @@ public class NovaService {
     protected HeliumDeviceCacheService heliumDeviceCacheService;
 
     @Autowired
+    protected HeliumTenantSetupService heliumTenantSetupService;
+
+    @Autowired
     protected PrometeusService prometeusService;
 
     // ----------------------------------
@@ -49,26 +55,40 @@ public class NovaService {
     // ----------------------------------
 
 
-    public boolean refreshDevAddrList(String devaddr) {
+    /*
+
+    public boolean refreshDevAddrList(String devaddr, String route_id) {
         // Get the list of device using this devaddr
         long start = Now.NowUtcMs();
-        List<String> deviceEUIs = redisDeviceRepository.getDevEuiByDevAddr(devaddr);
+        // @ TODO FILTER by Tenant ID would be better
+        // @TODO basically a device join is a full refresh and we need to store the previous devaddr
+        List<String> deviceAllEUIs = redisDeviceRepository.getDevEuiByDevAddr(devaddr);
+        // filter based on route
+        ArrayList<String> deviceEUIs = new ArrayList<>();
+        for ( String eui : deviceAllEUIs) {
+            // @TODO - need a cache
+            String routeId =  heliumTenantSetupService.getRouteIdFromEui(eui);
+            if ( routeId != null && routeId.compareTo(route_id) == 0 ) {
+                deviceEUIs.add(eui);
+            }
+        }
+
         log.debug("Refresh devAddr network keys for " + devaddr + " found " + deviceEUIs.size() + " devices");
         int iDevAddr = Stuff.hexStrToInt(devaddr);
 
-        List<session_key_filter_v1> sessions = grpcListSessionsByDevaddr(iDevAddr);
+        List<skf_v1> sessions = grpcListSessionsByDevaddr(iDevAddr, route_id);
         if ( sessions == null ) return false;
 
         log.debug("We have " + sessions.size() + " sessions active ");
 
-        HashMap<String,session_key_filter_v1> hashSession = new HashMap<>();
-        for ( session_key_filter_v1 session : sessions ) {
+        HashMap<String,skf_v1> hashSession = new HashMap<>();
+        for ( skf_v1 session : sessions ) {
             hashSession.put(session.getSessionKey(),session);
         }
 
-        HashMap<String,String> sessionsToAdd = new HashMap<>();
         HashMap<String,String> sessionsToKeep = new HashMap<>();
-        ArrayList<String> sessionsToRemove = new ArrayList<>();
+        LinkedList<String> sessionsToAdd = new LinkedList<>();
+        LinkedList<String> sessionsToRemove = new LinkedList<>();
 
         for (String devEUI : deviceEUIs) {
             // verify state from cache, is that an active device...
@@ -84,7 +104,7 @@ public class NovaService {
                         String ntwSEncKey = HexaConverters.byteToHexString(ds.getNwkSEncKey().toByteArray());
                         boolean sessionExist = ( hashSession.get(ntwSEncKey) != null );
                         if ( ! sessionExist ) {
-                            sessionsToAdd.put(ntwSEncKey,ntwSEncKey);
+                            sessionsToAdd.add(ntwSEncKey);
                         } else {
                             sessionsToKeep.put(ntwSEncKey,ntwSEncKey);
                         }
@@ -103,7 +123,7 @@ public class NovaService {
 
         }
         // Now identify the sessions to be removed
-        for ( session_key_filter_v1 session : sessions ) {
+        for ( skf_v1 session : sessions ) {
             if ( sessionsToKeep.get(session.getSessionKey()) == null ) {
                 sessionsToRemove.add(session.getSessionKey());
             }
@@ -111,15 +131,16 @@ public class NovaService {
 
         // Call the nova update
         boolean ret = grpcUpdateSessions(
-                new ArrayList<>(sessionsToAdd.values()),
+                sessionsToAdd,
                 sessionsToRemove,
-                iDevAddr
+                iDevAddr,
+                route_id
         );
 
         prometeusService.addDevAddrUpdate(start);
         return ret;
     }
-
+*/
 
     protected int runningJobs = 0;
     protected boolean serviceEnable = true; // false to stop the services
@@ -141,11 +162,18 @@ public class NovaService {
     // List of deviceEUI we want the associated devAddr to be refreshed
     protected final ArrayList<String> delayedSessionRefresh = new ArrayList<>();
 
+    protected class RouteEui {
+        public String route;
+        public HashMap<String,String> devaddr = new HashMap<>();
+    }
+
     protected void addDelayedSessionRefresh(String devEUI) {
         synchronized (delayedSessionRefresh) {
             this.delayedSessionRefresh.add(devEUI);
         }
     }
+
+
 
     /**
      * On regular basis we update the sessions on Nova backend based on the movement made on the devices
@@ -170,23 +198,15 @@ public class NovaService {
                     delayedSessionRefresh.clear();
                 }
 
-                // get the list of devaddr associated to these devices
-                HashMap<String, String> devAddr = new HashMap<>();
+                HashMap<String,String> routes = new HashMap<>();
                 for (String devEUI : toRefresh) {
-                    Internal.DeviceSession ds = redisDeviceRepository.getDeviceDetails(devEUI);
-                    if ( ds != null && ds.getDevAddr() != null ) {
-                        String devad = HexaConverters.byteToHexString(ds.getDevAddr().toByteArray());
-                        if (devAddr.get(devad) == null) {
-                            devAddr.put(devad, devad);
-                        }
-                    } else {
-                        log.debug("Device "+devEUI+" does not have data in redis / no recent activity");
-                    }
+                    // get routeId to be refreshed
+                    String routeId = heliumTenantSetupService.getRouteIdFromEui(devEUI);
+                    if ( routes.get(routeId) == null ) routes.put(routeId,routeId);
                 }
 
-                // Update the devAddr
-                for (String devAd : devAddr.values()) {
-                    this.refreshDevAddrList(devAd);
+                for ( String route : routes.values() ) {
+                    this.refreshOneRouteSkf(route);
                 }
 
             }
@@ -206,26 +226,159 @@ public class NovaService {
      */
     protected boolean initialSessionRefreshDone = false;
 
+    @Autowired
+    protected HeliumTenantSetupRepository heliumTenantSetupRepository;
+
     @Scheduled(fixedDelay = 3600_000, initialDelay = 180_000)
-    protected void initialNovaSessionRefresh() {
-        if (!consoleConfig.isHeliumGrpcSkfEnable()) return;
+    protected void initialRouteAndSessionRefresh() {
         if (!initialSessionRefreshDone) {
             if (!this.serviceEnable) return;
             this.runningJobs++;
             long start = Now.NowUtcMs();
             try {
-                log.info("initialRefresh - refresh all the sessions");
-                List<String> devAddrs = redisDeviceRepository.getAllDevAddr();
-                for (String devAddr : devAddrs) {
-                    log.debug("initialRefresh - refresh devAddr " + devAddr);
-                    this.refreshDevAddrList(devAddr);
-                }
+                log.info("Initial Route Refresh");
+
+                // process all routes
+                int i = 0;
+                List<HeliumTenantSetup> htss = null;
+                do {
+                    htss = heliumTenantSetupRepository.findAllByTemplate(false, PageRequest.of(i,50));
+                    for ( HeliumTenantSetup hts : htss ) {
+                        if ( hts.getRouteId() != null && !hts.isTemplate() ) {
+                            // process one route
+                            log.info("["+i+"] Refreshing tenant "+hts.getTenantUUID()+ " route "+hts.getRouteId());
+                            // search the route
+                            route_v1 r = grpcGetOneRoute(hts.getRouteId());
+                            if ( r == null ) { log.error("A known route does not exist"); continue; }
+
+                            // verify if route server are ok
+                            boolean toBeUpdated = false;
+                            if ( r.getServer().getHost().compareTo(consoleConfig.getHeliumRouteHost()) != 0 ) {
+                                toBeUpdated = true;
+                            } else {
+                                for (RegionSupported reg : regionsSupported) {
+                                    for (protocol_gwmp_mapping_v1 gwp : r.getServer().getGwmp().getMappingList()) {
+                                        if (gwp.getRegion() != reg.regionValue || gwp.getPort() != reg.port) {
+                                            toBeUpdated = true;
+                                            break;
+                                        }
+                                    }
+                                    if ( toBeUpdated ) break;
+                                }
+                            }
+                            if ( toBeUpdated ) grpcUpdateOneRoute(hts.getRouteId(),hts.getMaxCopy(),true);
+
+                            // now check the sessions
+                            if (!consoleConfig.isHeliumGrpcSkfEnable()) continue;
+                            this.refreshOneRouteSkf(hts.getRouteId());
+                        }
+                    }
+                    i++;
+                } while ( htss != null && htss.size() > 0 );
+
             } finally {
                 this.runningJobs--;
             }
             log.debug("End Running initialNovaSessionRefresh - duration " + (Now.NowUtcMs() - start) + "ms");
         }
         this.initialSessionRefreshDone = true;
+    }
+
+
+    @Autowired
+    protected HeliumDeviceRepository heliumDeviceRepository;
+
+
+    protected synchronized void refreshOneRouteSkf(String routeId) {
+        // get the route SKF entries
+        List<skf_v1> inRouteSkfs =  grpcListSessionsByDevaddr(0,routeId);
+        if ( inRouteSkfs == null ) inRouteSkfs = new ArrayList<>();
+
+        ArrayList<skf_v1> toAdd = new ArrayList<>();
+        ArrayList<skf_v1> toRem = new ArrayList<>();
+        ArrayList<skf_v1> toKep = new ArrayList<>();
+
+        // get the active sessions
+        HeliumTenantSetup hts = heliumTenantSetupService.getHTSByRouteId(routeId);
+        if ( hts == null ) {
+            log.error("Try to refresh a route but the route does not exists in database");
+        }
+        // get associated devices
+        Slice<HeliumDevice> devices = heliumDeviceRepository.findHeliumDeviceByTenantUUID(hts.getTenantUUID(), PageRequest.of(0, 500));
+        boolean quit = false;
+        do {
+            for ( HeliumDevice hd : devices.getContent() ) {
+                switch (hd.getState()) {
+                    case INSERTED:
+                    case ACTIVE:
+                    case INACTIVE:
+                        Internal.DeviceSession s = redisDeviceRepository.getDeviceDetails(hd.getDeviceEui());
+                        String ntwSEncKey = HexaConverters.byteToHexString(s.getNwkSEncKey().toByteArray());
+                        String devaddr = HexaConverters.byteToHexString(s.getDevAddr().toByteArray());
+                        int iDevAddr = Stuff.hexStrToInt(devaddr);
+                        boolean keep = false;
+                        for (skf_v1 skf : inRouteSkfs) {
+                            if (skf.getDevaddr() == iDevAddr && skf.getSessionKey().compareToIgnoreCase(ntwSEncKey) == 0) {
+                                // found
+                                toKep.add(skf);
+                                keep = true;
+                                break;
+                            }
+                        }
+                        if (!keep) {
+                            // missing entry
+                            skf_v1 sa = skf_v1.newBuilder()
+                                    .setDevaddr(iDevAddr)
+                                    .setSessionKey(ntwSEncKey)
+                                    .setRouteId(routeId)
+                                    .build();
+                            toAdd.add(sa);
+                        }
+                        break;
+                    default:
+                    case DEACTIVATED:
+                    case OUTOFDCS:
+                    case DELETED:
+                        break;
+                }
+            }
+            if ( devices.hasNext() ) {
+                devices = heliumDeviceRepository.findHeliumDeviceByTenantUUID(hts.getTenantUUID(), devices.nextPageable());
+            } else {
+                quit = true;
+            }
+        } while ( devices != null && !quit );
+
+        // search for session to be removed
+        for ( skf_v1 skf : inRouteSkfs ) {
+            boolean found = false;
+            for ( skf_v1 keep : toKep ) {
+                if ( skf == keep ) {
+                    found = true;
+                    break;
+                }
+            }
+            if ( ! found ) {
+                toRem.add(skf);
+            }
+        }
+
+        // package this for update function
+        LinkedList<SkfUpdate> skfToAdd = new LinkedList<>();
+        for ( skf_v1 s : toAdd ) {
+            SkfUpdate su = new SkfUpdate();
+            su.devAddr = s.getDevaddr();
+            su.session = s.getSessionKey();
+            skfToAdd.add(su);
+        }
+        LinkedList<SkfUpdate> skfToRem = new LinkedList<>();
+        for ( skf_v1 s : toRem ) {
+            SkfUpdate su = new SkfUpdate();
+            su.devAddr = s.getDevaddr();
+            su.session = s.getSessionKey();
+            skfToRem.add(su);
+        }
+        grpcUpdateSessions(skfToAdd,skfToRem,routeId);
     }
 
 
@@ -839,7 +992,12 @@ public class NovaService {
         return null;
     }
 
+
     public route_v1 grpcUpdateOneRoute(String routeId, int maxCopy) {
+        return grpcUpdateOneRoute(routeId,maxCopy,false);
+    }
+
+    public route_v1 grpcUpdateOneRoute(String routeId, int maxCopy, boolean updServer) {
         if ( ! this.grpcInitOk ) return null;
 
         long start = Now.NowUtcMs();
@@ -856,12 +1014,33 @@ public class NovaService {
             ).usePlaintext().build();
             routeGrpc.routeBlockingStub stub = routeGrpc.newBlockingStub(channel);
 
+            server_v1 server = oldRoute.getServer();
+            if ( updServer ) {
+                ArrayList<protocol_gwmp_mapping_v1> regions = new ArrayList<>();
+                for ( RegionSupported r : this.regionsSupported ) {
+                    protocol_gwmp_mapping_v1 gwmpm = protocol_gwmp_mapping_v1.newBuilder()
+                            .setRegion(r.regionValue)
+                            .setPort(r.port)
+                            .build();
+                    regions.add(gwmpm);
+                }
+                protocol_gwmp_v1 gwmp = protocol_gwmp_v1.newBuilder()
+                        .addAllMapping(regions)
+                        .build();
+                server = server_v1.newBuilder()
+                        .setHost(consoleConfig.getHeliumRouteHost()) // https:://
+                        .setPort(this.regionsSupported.get(0).port)
+                        .setGwmp(gwmp)
+                        .build();
+                if ( maxCopy == -1 ) maxCopy = oldRoute.getMaxCopies();
+            }
+
             long now = Now.NowUtcMs();
             route_v1 newRoute = route_v1.newBuilder()
                     .setId(oldRoute.getId())
                     .setNetId(oldRoute.getNetId())
                     .setOui(oldRoute.getOui())
-                    .setServer(oldRoute.getServer())
+                    .setServer(server)
                     .setMaxCopies(maxCopy)
                     .setActive(oldRoute.getActive())
                     .setLocked(oldRoute.getLocked())
@@ -1116,45 +1295,77 @@ public class NovaService {
     // ==============================================
 
 
-    private List<session_key_filter_v1> grpcListSessionsByDevaddr(int devAddr) {
+    private List<skf_v1> grpcListSessionsByDevaddr(int devAddr, String routeId) {
+
         if ( ! this.grpcInitOk ) return null;
 
         long start = Now.NowUtcMs();
-        log.debug("GRPC List sessions for "+String.format("0x%08X",devAddr));
+        log.debug("GRPC List sessions for "+String.format("0x%08X",devAddr)+ "in route "+routeId);
         ManagedChannel channel = null;
         try {
             channel = ManagedChannelBuilder.forAddress(
                     consoleConfig.getHeliumGrpcServer(),
                     consoleConfig.getHeliumGrpcPort()
             ).usePlaintext().build();
-            session_key_filterGrpc.session_key_filterBlockingStub stub = session_key_filterGrpc.newBlockingStub(channel);
+            routeGrpc.routeBlockingStub stub = routeGrpc.newBlockingStub(channel);
 
             long now = Now.NowUtcMs();
-            session_key_filter_get_req_v1 requestToSign = session_key_filter_get_req_v1.newBuilder()
-                    .setOui(consoleConfig.getHeliumRouteOui())
-                    .setDevaddr(devAddr)
-                    .setTimestamp(now)
-                    .setSigner(this.owner)
-                    .clearSignature()
-                    .build();
-            byte[] requestToSignContent = requestToSign.toByteArray();
-            this.signer.update(requestToSignContent, 0, requestToSignContent.length);
-            byte[] signature = signer.generateSignature();
+            Iterator<skf_v1> response;
+            if ( devAddr != 0 ) {
+                // get the list of skf for a route + device
 
-            Iterator<session_key_filter_v1> response = stub.get(session_key_filter_get_req_v1.newBuilder()
-                    .setOui(consoleConfig.getHeliumRouteOui())
-                    .setDevaddr(devAddr)
-                    .setTimestamp(now)
-                    .setSigner(this.owner)
-                    .setSignature(ByteString.copyFrom(signature))
-                    .build());
-            ArrayList<session_key_filter_v1> rl = new ArrayList<>();
-            while (response != null && response.hasNext()) {
-                rl.add(response.next());
+                route_skf_get_req_v1 requestToSign = route_skf_get_req_v1.newBuilder()
+                        .setRouteId(routeId)
+                        .setDevaddr(devAddr)
+                        .setTimestamp(now)
+                        .setSigner(this.owner)
+                        .clearSignature()
+                        .build();
+                byte[] requestToSignContent = requestToSign.toByteArray();
+                this.signer.update(requestToSignContent, 0, requestToSignContent.length);
+                byte[] signature = signer.generateSignature();
+
+                route_skf_get_req_v1 request = route_skf_get_req_v1.newBuilder()
+                            .setRouteId(routeId)
+                            .setDevaddr(devAddr)
+                            .setTimestamp(now)
+                            .setSigner(this.owner)
+                            .setSignature(ByteString.copyFrom(signature))
+                            .build();
+
+                response = stub.getSkfs(request);
+
+            } else {
+                // get for a route (all devaddr)
+                route_skf_list_req_v1 requestToSign = route_skf_list_req_v1.newBuilder()
+                        .setRouteId(routeId)
+                        .setTimestamp(now)
+                        .setSigner(this.owner)
+                        .clearSignature()
+                        .build();
+
+                byte[] requestToSignContent = requestToSign.toByteArray();
+                this.signer.update(requestToSignContent, 0, requestToSignContent.length);
+                byte[] signature = signer.generateSignature();
+
+                route_skf_list_req_v1 request = route_skf_list_req_v1.newBuilder()
+                        .setRouteId(routeId)
+                        .setTimestamp(now)
+                        .setSigner(this.owner)
+                        .setSignature(ByteString.copyFrom(signature))
+                        .build();
+
+                response = stub.listSkfs(request);
+
             }
-            log.debug("GPRC session list duration " + (Now.NowUtcMs() - start) + "ms");
-            log.debug("GRPC session found "+rl.size()+" entries");
-            return rl;
+            ArrayList<skf_v1> ret = new ArrayList<>();
+            while (response != null && response.hasNext()) {
+                ret.add(response.next());
+            }
+
+            log.debug("GPRC skf list duration " + (Now.NowUtcMs() - start) + "ms");
+            log.debug("GRPC skf found "+ret.size()+" entries");
+            return ret;
         } catch ( StatusRuntimeException x ) {
             prometeusService.addHeliumTotalError();
             log.warn("Nova Backend not reachable");
@@ -1163,125 +1374,91 @@ public class NovaService {
             if ( channel != null ) channel.shutdown();
             prometeusService.addHeliumApiTotalTimeMs(start);
         }
+
     }
 
+    protected class SkfUpdate {
+        public int devAddr;
+        public String session;
+    }
+
+
     private boolean grpcUpdateSessions(
-            List<String> toAddSession,
-            List<String> toRemoveSession,
-            int devAddr
+            LinkedList<SkfUpdate> toAddSession,
+            LinkedList<SkfUpdate> toRemoveSession,
+            String routeId
     ) {
-
-        StreamObserver<session_key_filter_update_res_v1> responseObserver = new StreamObserver<session_key_filter_update_res_v1>() {
-            @Override
-            public void onNext(session_key_filter_update_res_v1 value) {
-                log.debug("Session Updated");
-            }
-
-            @Override
-            public void onError(Throwable t) {
-                log.debug("Session update failed");
-            }
-
-            @Override
-            public void onCompleted() {
-                log.debug("End of Session updates");
-            }
-        };
 
         if ( ! this.grpcInitOk ) return false;
         long start = Now.NowUtcMs();
-        log.debug("GRPC Session Update Add:"+toAddSession.size()+" Del:"+toRemoveSession.size()+" for "+String.format("0x%08X",devAddr));
+        log.debug("GRPC Session Update Add:"+toAddSession.size()+" Del:"+toRemoveSession.size()+" for "+routeId);
 
         ManagedChannel channel = ManagedChannelBuilder.forAddress(
                 consoleConfig.getHeliumGrpcServer(),
                 consoleConfig.getHeliumGrpcPort()
         ).usePlaintext().build();
-        session_key_filterGrpc.session_key_filterStub stub = session_key_filterGrpc.newStub(channel);
-
-        long now = Now.NowUtcMs();
-        ArrayList<session_key_filter_update_req_v1> requests = new ArrayList<>();
-        for( String session : toAddSession) {
-
-            session_key_filter_v1 filter = session_key_filter_v1.newBuilder()
-                    .setOui(consoleConfig.getHeliumRouteOui())
-                    .setDevaddr(devAddr)
-                    .setSessionKey(session)
-                    .build();
-
-            session_key_filter_update_req_v1 requestToSign = session_key_filter_update_req_v1.newBuilder()
-                    .setAction(action_v1.add)
-                    .setFilter(filter)
-                    .setTimestamp(now)
-                    .setSigner(this.owner)
-                    .clearSignature()
-                    .build();
-
-            byte[] requestToSignContent = requestToSign.toByteArray();
-            this.signer.update(requestToSignContent, 0, requestToSignContent.length);
-            byte[] signature = signer.generateSignature();
-
-            session_key_filter_update_req_v1 request = session_key_filter_update_req_v1.newBuilder()
-                    .setAction(action_v1.add)
-                    .setFilter(filter)
-                    .setTimestamp(now)
-                    .setSigner(this.owner)
-                    .setSignature(ByteString.copyFrom(signature))
-                    .build();
-
-            requests.add(request);
-        }
-
-        for( String session : toRemoveSession) {
-
-            session_key_filter_v1 filter = session_key_filter_v1.newBuilder()
-                    .setOui(consoleConfig.getHeliumRouteOui())
-                    .setDevaddr(devAddr)
-                    .setSessionKey(session)
-                    .build();
-
-            session_key_filter_update_req_v1 requestToSign = session_key_filter_update_req_v1.newBuilder()
-                    .setAction(action_v1.remove)
-                    .setFilter(filter)
-                    .setTimestamp(now)
-                    .setSigner(this.owner)
-                    .clearSignature()
-                    .build();
-
-            byte[] requestToSignContent = requestToSign.toByteArray();
-            this.signer.update(requestToSignContent, 0, requestToSignContent.length);
-            byte[] signature = signer.generateSignature();
-
-            session_key_filter_update_req_v1 request = session_key_filter_update_req_v1.newBuilder()
-                    .setAction(action_v1.remove)
-                    .setFilter(filter)
-                    .setTimestamp(now)
-                    .setSigner(this.owner)
-                    .setSignature(ByteString.copyFrom(signature))
-                    .build();
-
-            requests.add(request);
-        }
-
-        long startNova = Now.NowUtcMs();
-        StreamObserver<session_key_filter_update_req_v1> reqObserver = stub.update(responseObserver);
+        routeGrpc.routeBlockingStub stub = routeGrpc.newBlockingStub(channel);
         try {
-            for ( session_key_filter_update_req_v1 req : requests ) {
-                reqObserver.onNext(req);
+
+            long now = Now.NowUtcMs();
+            int actions = 0; // max 50 actions at a time
+            while (toAddSession.size() > 0 || toRemoveSession.size() > 0) {
+                ArrayList<route_skf_update_req_v1.route_skf_update_v1> updates = new ArrayList<>();
+                while (toAddSession.size() > 0 && actions < 50) {
+                    SkfUpdate session = toAddSession.poll();
+                    route_skf_update_req_v1.route_skf_update_v1 update = route_skf_update_req_v1.route_skf_update_v1.newBuilder()
+                            .setAction(action_v1.add)
+                            .setDevaddr(session.devAddr)
+                            .setSessionKey(session.session)
+                            .build();
+                    updates.add(update);
+                    actions++;
+                }
+                while (toRemoveSession.size() > 0 && actions < 50) {
+                    SkfUpdate session = toRemoveSession.poll();
+                    route_skf_update_req_v1.route_skf_update_v1 update = route_skf_update_req_v1.route_skf_update_v1.newBuilder()
+                            .setAction(action_v1.remove)
+                            .setDevaddr(session.devAddr)
+                            .setSessionKey(session.session)
+                            .build();
+                    updates.add(update);
+                    actions++;
+                }
+                // execute
+                route_skf_update_req_v1 requestToSign = route_skf_update_req_v1.newBuilder()
+                        .setRouteId(routeId)
+                        .addAllUpdates(updates)
+                        .setTimestamp(now)
+                        .setSigner(this.owner)
+                        .clearSignature()
+                        .build();
+
+                byte[] requestToSignContent = requestToSign.toByteArray();
+                this.signer.update(requestToSignContent, 0, requestToSignContent.length);
+                byte[] signature = signer.generateSignature();
+
+                route_skf_update_req_v1 request = route_skf_update_req_v1.newBuilder()
+                        .setRouteId(routeId)
+                        .addAllUpdates(updates)
+                        .setTimestamp(now)
+                        .setSigner(this.owner)
+                        .setSignature(ByteString.copyFrom(signature))
+                        .build();
+
+                route_skf_update_res_v1 response = stub.updateSkfs(request);
+                actions = 0;
             }
-            reqObserver.onCompleted();
-        } catch ( RuntimeException x ) {
-            reqObserver.onError(x);
+            log.debug("GPRC skf update duration " + (Now.NowUtcMs() - start) + "ms");
+            return true;
+        } catch ( StatusRuntimeException x ) {
             prometeusService.addHeliumTotalError();
-            log.error("GRPC error during session update "+x.getMessage());
-            x.printStackTrace();
+            log.warn("SKf Update Nova Backend not reachable");
             return false;
         } finally {
             if ( channel != null ) channel.shutdown();
-            prometeusService.addHeliumApiTotalTimeMs(startNova);
+            prometeusService.addHeliumApiTotalTimeMs(start);
         }
-        return true;
     }
-
 
 }
 

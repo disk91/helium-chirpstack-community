@@ -67,4 +67,24 @@ public interface protocol_http_roaming_v1OrBuilder extends
    */
   com.google.protobuf.ByteString
       getAuthHeaderBytes();
+
+  /**
+   * <pre>
+   * Receiver NSID
+   * </pre>
+   *
+   * <code>string receiver_nsid = 5;</code>
+   * @return The receiverNsid.
+   */
+  String getReceiverNsid();
+  /**
+   * <pre>
+   * Receiver NSID
+   * </pre>
+   *
+   * <code>string receiver_nsid = 5;</code>
+   * @return The bytes for receiverNsid.
+   */
+  com.google.protobuf.ByteString
+      getReceiverNsidBytes();
 }

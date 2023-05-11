@@ -11,7 +11,7 @@ public interface route_skf_get_req_v1OrBuilder extends
    * <code>string route_id = 1;</code>
    * @return The routeId.
    */
-  java.lang.String getRouteId();
+  String getRouteId();
   /**
    * <code>string route_id = 1;</code>
    * @return The bytes for routeId.

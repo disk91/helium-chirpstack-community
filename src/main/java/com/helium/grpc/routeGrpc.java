@@ -170,6 +170,37 @@ public final class routeGrpc {
     return getDeleteMethod;
   }
 
+  private static volatile io.grpc.MethodDescriptor<route_stream_req_v1,
+      route_stream_res_v1> getStreamMethod;
+
+  @io.grpc.stub.annotations.RpcMethod(
+      fullMethodName = SERVICE_NAME + '/' + "stream",
+      requestType = route_stream_req_v1.class,
+      responseType = route_stream_res_v1.class,
+      methodType = io.grpc.MethodDescriptor.MethodType.SERVER_STREAMING)
+  public static io.grpc.MethodDescriptor<route_stream_req_v1,
+      route_stream_res_v1> getStreamMethod() {
+    io.grpc.MethodDescriptor<route_stream_req_v1, route_stream_res_v1> getStreamMethod;
+    if ((getStreamMethod = routeGrpc.getStreamMethod) == null) {
+      synchronized (routeGrpc.class) {
+        if ((getStreamMethod = routeGrpc.getStreamMethod) == null) {
+          routeGrpc.getStreamMethod = getStreamMethod =
+              io.grpc.MethodDescriptor.<route_stream_req_v1, route_stream_res_v1>newBuilder()
+              .setType(io.grpc.MethodDescriptor.MethodType.SERVER_STREAMING)
+              .setFullMethodName(generateFullMethodName(SERVICE_NAME, "stream"))
+              .setSampledToLocalTracing(true)
+              .setRequestMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
+                  route_stream_req_v1.getDefaultInstance()))
+              .setResponseMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
+                  route_stream_res_v1.getDefaultInstance()))
+              .setSchemaDescriptor(new routeMethodDescriptorSupplier("stream"))
+              .build();
+        }
+      }
+    }
+    return getStreamMethod;
+  }
+
   private static volatile io.grpc.MethodDescriptor<route_get_euis_req_v1,
       eui_pair_v1> getGetEuisMethod;
 
@@ -294,35 +325,97 @@ public final class routeGrpc {
     return getUpdateDevaddrRangesMethod;
   }
 
-  private static volatile io.grpc.MethodDescriptor<route_stream_req_v1,
-      route_stream_res_v1> getStreamMethod;
+  private static volatile io.grpc.MethodDescriptor<route_skf_list_req_v1,
+      skf_v1> getListSkfsMethod;
 
   @io.grpc.stub.annotations.RpcMethod(
-      fullMethodName = SERVICE_NAME + '/' + "stream",
-      requestType = route_stream_req_v1.class,
-      responseType = route_stream_res_v1.class,
+      fullMethodName = SERVICE_NAME + '/' + "list_skfs",
+      requestType = route_skf_list_req_v1.class,
+      responseType = skf_v1.class,
       methodType = io.grpc.MethodDescriptor.MethodType.SERVER_STREAMING)
-  public static io.grpc.MethodDescriptor<route_stream_req_v1,
-      route_stream_res_v1> getStreamMethod() {
-    io.grpc.MethodDescriptor<route_stream_req_v1, route_stream_res_v1> getStreamMethod;
-    if ((getStreamMethod = routeGrpc.getStreamMethod) == null) {
+  public static io.grpc.MethodDescriptor<route_skf_list_req_v1,
+      skf_v1> getListSkfsMethod() {
+    io.grpc.MethodDescriptor<route_skf_list_req_v1, skf_v1> getListSkfsMethod;
+    if ((getListSkfsMethod = routeGrpc.getListSkfsMethod) == null) {
       synchronized (routeGrpc.class) {
-        if ((getStreamMethod = routeGrpc.getStreamMethod) == null) {
-          routeGrpc.getStreamMethod = getStreamMethod =
-              io.grpc.MethodDescriptor.<route_stream_req_v1, route_stream_res_v1>newBuilder()
+        if ((getListSkfsMethod = routeGrpc.getListSkfsMethod) == null) {
+          routeGrpc.getListSkfsMethod = getListSkfsMethod =
+              io.grpc.MethodDescriptor.<route_skf_list_req_v1, skf_v1>newBuilder()
               .setType(io.grpc.MethodDescriptor.MethodType.SERVER_STREAMING)
-              .setFullMethodName(generateFullMethodName(SERVICE_NAME, "stream"))
+              .setFullMethodName(generateFullMethodName(SERVICE_NAME, "list_skfs"))
               .setSampledToLocalTracing(true)
               .setRequestMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
-                  route_stream_req_v1.getDefaultInstance()))
+                  route_skf_list_req_v1.getDefaultInstance()))
               .setResponseMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
-                  route_stream_res_v1.getDefaultInstance()))
-              .setSchemaDescriptor(new routeMethodDescriptorSupplier("stream"))
+                  skf_v1.getDefaultInstance()))
+              .setSchemaDescriptor(new routeMethodDescriptorSupplier("list_skfs"))
               .build();
         }
       }
     }
-    return getStreamMethod;
+    return getListSkfsMethod;
+  }
+
+  private static volatile io.grpc.MethodDescriptor<route_skf_get_req_v1,
+      skf_v1> getGetSkfsMethod;
+
+  @io.grpc.stub.annotations.RpcMethod(
+      fullMethodName = SERVICE_NAME + '/' + "get_skfs",
+      requestType = route_skf_get_req_v1.class,
+      responseType = skf_v1.class,
+      methodType = io.grpc.MethodDescriptor.MethodType.SERVER_STREAMING)
+  public static io.grpc.MethodDescriptor<route_skf_get_req_v1,
+      skf_v1> getGetSkfsMethod() {
+    io.grpc.MethodDescriptor<route_skf_get_req_v1, skf_v1> getGetSkfsMethod;
+    if ((getGetSkfsMethod = routeGrpc.getGetSkfsMethod) == null) {
+      synchronized (routeGrpc.class) {
+        if ((getGetSkfsMethod = routeGrpc.getGetSkfsMethod) == null) {
+          routeGrpc.getGetSkfsMethod = getGetSkfsMethod =
+              io.grpc.MethodDescriptor.<route_skf_get_req_v1, skf_v1>newBuilder()
+              .setType(io.grpc.MethodDescriptor.MethodType.SERVER_STREAMING)
+              .setFullMethodName(generateFullMethodName(SERVICE_NAME, "get_skfs"))
+              .setSampledToLocalTracing(true)
+              .setRequestMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
+                  route_skf_get_req_v1.getDefaultInstance()))
+              .setResponseMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
+                  skf_v1.getDefaultInstance()))
+              .setSchemaDescriptor(new routeMethodDescriptorSupplier("get_skfs"))
+              .build();
+        }
+      }
+    }
+    return getGetSkfsMethod;
+  }
+
+  private static volatile io.grpc.MethodDescriptor<route_skf_update_req_v1,
+      route_skf_update_res_v1> getUpdateSkfsMethod;
+
+  @io.grpc.stub.annotations.RpcMethod(
+      fullMethodName = SERVICE_NAME + '/' + "update_skfs",
+      requestType = route_skf_update_req_v1.class,
+      responseType = route_skf_update_res_v1.class,
+      methodType = io.grpc.MethodDescriptor.MethodType.UNARY)
+  public static io.grpc.MethodDescriptor<route_skf_update_req_v1,
+      route_skf_update_res_v1> getUpdateSkfsMethod() {
+    io.grpc.MethodDescriptor<route_skf_update_req_v1, route_skf_update_res_v1> getUpdateSkfsMethod;
+    if ((getUpdateSkfsMethod = routeGrpc.getUpdateSkfsMethod) == null) {
+      synchronized (routeGrpc.class) {
+        if ((getUpdateSkfsMethod = routeGrpc.getUpdateSkfsMethod) == null) {
+          routeGrpc.getUpdateSkfsMethod = getUpdateSkfsMethod =
+              io.grpc.MethodDescriptor.<route_skf_update_req_v1, route_skf_update_res_v1>newBuilder()
+              .setType(io.grpc.MethodDescriptor.MethodType.UNARY)
+              .setFullMethodName(generateFullMethodName(SERVICE_NAME, "update_skfs"))
+              .setSampledToLocalTracing(true)
+              .setRequestMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
+                  route_skf_update_req_v1.getDefaultInstance()))
+              .setResponseMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
+                  route_skf_update_res_v1.getDefaultInstance()))
+              .setSchemaDescriptor(new routeMethodDescriptorSupplier("update_skfs"))
+              .build();
+        }
+      }
+    }
+    return getUpdateSkfsMethod;
   }
 
   /**
@@ -425,6 +518,16 @@ public final class routeGrpc {
 
     /**
      * <pre>
+     * Stream Routes update (auth admin only)
+     * </pre>
+     */
+    public void stream(route_stream_req_v1 request,
+                       io.grpc.stub.StreamObserver<route_stream_res_v1> responseObserver) {
+      io.grpc.stub.ServerCalls.asyncUnimplementedUnaryCall(getStreamMethod(), responseObserver);
+    }
+
+    /**
+     * <pre>
      * Get EUIs for a Route (auth delegate_keys/owner/admin)
      * </pre>
      */
@@ -467,12 +570,32 @@ public final class routeGrpc {
 
     /**
      * <pre>
-     * Stream Routes update (auth admin only)
+     * List Filters for a Route (auth delegate_keys/owner/admin)
      * </pre>
      */
-    public void stream(route_stream_req_v1 request,
-                       io.grpc.stub.StreamObserver<route_stream_res_v1> responseObserver) {
-      io.grpc.stub.ServerCalls.asyncUnimplementedUnaryCall(getStreamMethod(), responseObserver);
+    public void listSkfs(route_skf_list_req_v1 request,
+                         io.grpc.stub.StreamObserver<skf_v1> responseObserver) {
+      io.grpc.stub.ServerCalls.asyncUnimplementedUnaryCall(getListSkfsMethod(), responseObserver);
+    }
+
+    /**
+     * <pre>
+     * List Filters for a DevAddr (auth delegate_keys/owner/admin
+     * </pre>
+     */
+    public void getSkfs(route_skf_get_req_v1 request,
+                        io.grpc.stub.StreamObserver<skf_v1> responseObserver) {
+      io.grpc.stub.ServerCalls.asyncUnimplementedUnaryCall(getGetSkfsMethod(), responseObserver);
+    }
+
+    /**
+     * <pre>
+     * Update Filters for an Org (auth delegate_keys/owner/admin)
+     * </pre>
+     */
+    public void updateSkfs(route_skf_update_req_v1 request,
+                           io.grpc.stub.StreamObserver<route_skf_update_res_v1> responseObserver) {
+      io.grpc.stub.ServerCalls.asyncUnimplementedUnaryCall(getUpdateSkfsMethod(), responseObserver);
     }
 
     @Override public final io.grpc.ServerServiceDefinition bindService() {
@@ -513,6 +636,13 @@ public final class routeGrpc {
                 route_res_v1>(
                   this, METHODID_DELETE)))
           .addMethod(
+            getStreamMethod(),
+            io.grpc.stub.ServerCalls.asyncServerStreamingCall(
+              new MethodHandlers<
+                route_stream_req_v1,
+                route_stream_res_v1>(
+                  this, METHODID_STREAM)))
+          .addMethod(
             getGetEuisMethod(),
             io.grpc.stub.ServerCalls.asyncServerStreamingCall(
               new MethodHandlers<
@@ -541,12 +671,26 @@ public final class routeGrpc {
                 route_devaddr_ranges_res_v1>(
                   this, METHODID_UPDATE_DEVADDR_RANGES)))
           .addMethod(
-            getStreamMethod(),
+            getListSkfsMethod(),
             io.grpc.stub.ServerCalls.asyncServerStreamingCall(
               new MethodHandlers<
-                route_stream_req_v1,
-                route_stream_res_v1>(
-                  this, METHODID_STREAM)))
+                route_skf_list_req_v1,
+                skf_v1>(
+                  this, METHODID_LIST_SKFS)))
+          .addMethod(
+            getGetSkfsMethod(),
+            io.grpc.stub.ServerCalls.asyncServerStreamingCall(
+              new MethodHandlers<
+                route_skf_get_req_v1,
+                skf_v1>(
+                  this, METHODID_GET_SKFS)))
+          .addMethod(
+            getUpdateSkfsMethod(),
+            io.grpc.stub.ServerCalls.asyncUnaryCall(
+              new MethodHandlers<
+                route_skf_update_req_v1,
+                route_skf_update_res_v1>(
+                  this, METHODID_UPDATE_SKFS)))
           .build();
     }
   }
@@ -622,6 +766,17 @@ public final class routeGrpc {
 
     /**
      * <pre>
+     * Stream Routes update (auth admin only)
+     * </pre>
+     */
+    public void stream(route_stream_req_v1 request,
+                       io.grpc.stub.StreamObserver<route_stream_res_v1> responseObserver) {
+      io.grpc.stub.ClientCalls.asyncServerStreamingCall(
+          getChannel().newCall(getStreamMethod(), getCallOptions()), request, responseObserver);
+    }
+
+    /**
+     * <pre>
      * Get EUIs for a Route (auth delegate_keys/owner/admin)
      * </pre>
      */
@@ -668,13 +823,35 @@ public final class routeGrpc {
 
     /**
      * <pre>
-     * Stream Routes update (auth admin only)
+     * List Filters for a Route (auth delegate_keys/owner/admin)
      * </pre>
      */
-    public void stream(route_stream_req_v1 request,
-                       io.grpc.stub.StreamObserver<route_stream_res_v1> responseObserver) {
+    public void listSkfs(route_skf_list_req_v1 request,
+                         io.grpc.stub.StreamObserver<skf_v1> responseObserver) {
       io.grpc.stub.ClientCalls.asyncServerStreamingCall(
-          getChannel().newCall(getStreamMethod(), getCallOptions()), request, responseObserver);
+          getChannel().newCall(getListSkfsMethod(), getCallOptions()), request, responseObserver);
+    }
+
+    /**
+     * <pre>
+     * List Filters for a DevAddr (auth delegate_keys/owner/admin
+     * </pre>
+     */
+    public void getSkfs(route_skf_get_req_v1 request,
+                        io.grpc.stub.StreamObserver<skf_v1> responseObserver) {
+      io.grpc.stub.ClientCalls.asyncServerStreamingCall(
+          getChannel().newCall(getGetSkfsMethod(), getCallOptions()), request, responseObserver);
+    }
+
+    /**
+     * <pre>
+     * Update Filters for an Org (auth delegate_keys/owner/admin)
+     * </pre>
+     */
+    public void updateSkfs(route_skf_update_req_v1 request,
+                           io.grpc.stub.StreamObserver<route_skf_update_res_v1> responseObserver) {
+      io.grpc.stub.ClientCalls.asyncUnaryCall(
+          getChannel().newCall(getUpdateSkfsMethod(), getCallOptions()), request, responseObserver);
     }
   }
 
@@ -744,6 +921,17 @@ public final class routeGrpc {
 
     /**
      * <pre>
+     * Stream Routes update (auth admin only)
+     * </pre>
+     */
+    public java.util.Iterator<route_stream_res_v1> stream(
+        route_stream_req_v1 request) {
+      return io.grpc.stub.ClientCalls.blockingServerStreamingCall(
+          getChannel(), getStreamMethod(), getCallOptions(), request);
+    }
+
+    /**
+     * <pre>
      * Get EUIs for a Route (auth delegate_keys/owner/admin)
      * </pre>
      */
@@ -766,13 +954,34 @@ public final class routeGrpc {
 
     /**
      * <pre>
-     * Stream Routes update (auth admin only)
+     * List Filters for a Route (auth delegate_keys/owner/admin)
      * </pre>
      */
-    public java.util.Iterator<route_stream_res_v1> stream(
-        route_stream_req_v1 request) {
+    public java.util.Iterator<skf_v1> listSkfs(
+        route_skf_list_req_v1 request) {
       return io.grpc.stub.ClientCalls.blockingServerStreamingCall(
-          getChannel(), getStreamMethod(), getCallOptions(), request);
+          getChannel(), getListSkfsMethod(), getCallOptions(), request);
+    }
+
+    /**
+     * <pre>
+     * List Filters for a DevAddr (auth delegate_keys/owner/admin
+     * </pre>
+     */
+    public java.util.Iterator<skf_v1> getSkfs(
+        route_skf_get_req_v1 request) {
+      return io.grpc.stub.ClientCalls.blockingServerStreamingCall(
+          getChannel(), getGetSkfsMethod(), getCallOptions(), request);
+    }
+
+    /**
+     * <pre>
+     * Update Filters for an Org (auth delegate_keys/owner/admin)
+     * </pre>
+     */
+    public route_skf_update_res_v1 updateSkfs(route_skf_update_req_v1 request) {
+      return io.grpc.stub.ClientCalls.blockingUnaryCall(
+          getChannel(), getUpdateSkfsMethod(), getCallOptions(), request);
     }
   }
 
@@ -844,6 +1053,17 @@ public final class routeGrpc {
       return io.grpc.stub.ClientCalls.futureUnaryCall(
           getChannel().newCall(getDeleteMethod(), getCallOptions()), request);
     }
+
+    /**
+     * <pre>
+     * Update Filters for an Org (auth delegate_keys/owner/admin)
+     * </pre>
+     */
+    public com.google.common.util.concurrent.ListenableFuture<route_skf_update_res_v1> updateSkfs(
+        route_skf_update_req_v1 request) {
+      return io.grpc.stub.ClientCalls.futureUnaryCall(
+          getChannel().newCall(getUpdateSkfsMethod(), getCallOptions()), request);
+    }
   }
 
   private static final int METHODID_LIST = 0;
@@ -851,11 +1071,14 @@ public final class routeGrpc {
   private static final int METHODID_CREATE = 2;
   private static final int METHODID_UPDATE = 3;
   private static final int METHODID_DELETE = 4;
-  private static final int METHODID_GET_EUIS = 5;
-  private static final int METHODID_GET_DEVADDR_RANGES = 6;
-  private static final int METHODID_STREAM = 7;
-  private static final int METHODID_UPDATE_EUIS = 8;
-  private static final int METHODID_UPDATE_DEVADDR_RANGES = 9;
+  private static final int METHODID_STREAM = 5;
+  private static final int METHODID_GET_EUIS = 6;
+  private static final int METHODID_GET_DEVADDR_RANGES = 7;
+  private static final int METHODID_LIST_SKFS = 8;
+  private static final int METHODID_GET_SKFS = 9;
+  private static final int METHODID_UPDATE_SKFS = 10;
+  private static final int METHODID_UPDATE_EUIS = 11;
+  private static final int METHODID_UPDATE_DEVADDR_RANGES = 12;
 
   private static final class MethodHandlers<Req, Resp> implements
       io.grpc.stub.ServerCalls.UnaryMethod<Req, Resp>,
@@ -894,6 +1117,10 @@ public final class routeGrpc {
           serviceImpl.delete((route_delete_req_v1) request,
               (io.grpc.stub.StreamObserver<route_res_v1>) responseObserver);
           break;
+        case METHODID_STREAM:
+          serviceImpl.stream((route_stream_req_v1) request,
+              (io.grpc.stub.StreamObserver<route_stream_res_v1>) responseObserver);
+          break;
         case METHODID_GET_EUIS:
           serviceImpl.getEuis((route_get_euis_req_v1) request,
               (io.grpc.stub.StreamObserver<eui_pair_v1>) responseObserver);
@@ -902,9 +1129,17 @@ public final class routeGrpc {
           serviceImpl.getDevaddrRanges((route_get_devaddr_ranges_req_v1) request,
               (io.grpc.stub.StreamObserver<devaddr_range_v1>) responseObserver);
           break;
-        case METHODID_STREAM:
-          serviceImpl.stream((route_stream_req_v1) request,
-              (io.grpc.stub.StreamObserver<route_stream_res_v1>) responseObserver);
+        case METHODID_LIST_SKFS:
+          serviceImpl.listSkfs((route_skf_list_req_v1) request,
+              (io.grpc.stub.StreamObserver<skf_v1>) responseObserver);
+          break;
+        case METHODID_GET_SKFS:
+          serviceImpl.getSkfs((route_skf_get_req_v1) request,
+              (io.grpc.stub.StreamObserver<skf_v1>) responseObserver);
+          break;
+        case METHODID_UPDATE_SKFS:
+          serviceImpl.updateSkfs((route_skf_update_req_v1) request,
+              (io.grpc.stub.StreamObserver<route_skf_update_res_v1>) responseObserver);
           break;
         default:
           throw new AssertionError();
@@ -978,11 +1213,14 @@ public final class routeGrpc {
               .addMethod(getCreateMethod())
               .addMethod(getUpdateMethod())
               .addMethod(getDeleteMethod())
+              .addMethod(getStreamMethod())
               .addMethod(getGetEuisMethod())
               .addMethod(getUpdateEuisMethod())
               .addMethod(getGetDevaddrRangesMethod())
               .addMethod(getUpdateDevaddrRangesMethod())
-              .addMethod(getStreamMethod())
+              .addMethod(getListSkfsMethod())
+              .addMethod(getGetSkfsMethod())
+              .addMethod(getUpdateSkfsMethod())
               .build();
         }
       }

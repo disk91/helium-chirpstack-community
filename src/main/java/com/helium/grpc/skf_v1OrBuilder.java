@@ -11,7 +11,7 @@ public interface skf_v1OrBuilder extends
    * <code>string route_id = 1;</code>
    * @return The routeId.
    */
-  java.lang.String getRouteId();
+  String getRouteId();
   /**
    * <code>string route_id = 1;</code>
    * @return The bytes for routeId.
@@ -33,7 +33,7 @@ public interface skf_v1OrBuilder extends
    * <code>string session_key = 3;</code>
    * @return The sessionKey.
    */
-  java.lang.String getSessionKey();
+  String getSessionKey();
   /**
    * <pre>
    * the hex-encoded string of the binary session key

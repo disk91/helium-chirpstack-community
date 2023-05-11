@@ -159,6 +159,27 @@ public class HeliumTenantSetupService {
         return getHeliumTenantSetup(tenantUUID,true,100);
     }
 
+    public HeliumTenantSetup getHTSByRouteId(String routeId) {
+        List<HeliumTenantSetup> tss = heliumTenantSetupRepository.findHeliumTenantSetupByRouteId(routeId);
+        if ( tss == null || tss.size() == 0 ) return null;
+        else return tss.get(0);
+    }
+
+    @Autowired
+    protected HeliumDeviceCacheService heliumDeviceCacheService;
+    public String getRouteIdFromEui(String eui) {
+        String tenantId = heliumDeviceCacheService.getTenantId(eui);
+        if ( tenantId != null ) {
+            HeliumTenantSetup ht = this.getHeliumTenantSetup(tenantId);
+            if (ht != null) {
+                return ht.getRouteId();
+            } else {
+                log.error("Tenant with id " + tenantId + " does not exist");
+            }
+        }
+        return null;
+    }
+
     // Get an element from cache, if failed, get it from DB, the tenant will be cached only if
     // we want to add in cache and cache is under the given limit
     protected HeliumTenantSetup getHeliumTenantSetup(String tenantUUID, boolean addInCache, int cacheLimit) {

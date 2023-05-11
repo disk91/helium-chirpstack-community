@@ -16,9 +16,9 @@ private static final long serialVersionUID = 0L;
     super(builder);
   }
   private route_stream_res_v1() {
-    action_ = 0;
     signer_ = com.google.protobuf.ByteString.EMPTY;
     signature_ = com.google.protobuf.ByteString.EMPTY;
+    action_ = 0;
   }
 
   @Override
@@ -47,9 +47,10 @@ private static final long serialVersionUID = 0L;
   public enum DataCase
       implements com.google.protobuf.Internal.EnumLite,
           InternalOneOfEnum {
-    ROUTE(2),
-    EUI_PAIR(3),
-    DEVADDR_RANGE(4),
+    ROUTE(5),
+    EUI_PAIR(6),
+    DEVADDR_RANGE(7),
+    SKF(8),
     DATA_NOT_SET(0);
     private final int value;
     private DataCase(int value) {
@@ -67,9 +68,10 @@ private static final long serialVersionUID = 0L;
 
     public static DataCase forNumber(int value) {
       switch (value) {
-        case 2: return ROUTE;
-        case 3: return EUI_PAIR;
-        case 4: return DEVADDR_RANGE;
+        case 5: return ROUTE;
+        case 6: return EUI_PAIR;
+        case 7: return DEVADDR_RANGE;
+        case 8: return SKF;
         case 0: return DATA_NOT_SET;
         default: return null;
       }
@@ -85,125 +87,14 @@ private static final long serialVersionUID = 0L;
         dataCase_);
   }
 
-  public static final int ACTION_FIELD_NUMBER = 1;
-  private int action_ = 0;
-  /**
-   * <code>.helium.iot_config.action_v1 action = 1;</code>
-   * @return The enum numeric value on the wire for action.
-   */
-  @Override public int getActionValue() {
-    return action_;
-  }
-  /**
-   * <code>.helium.iot_config.action_v1 action = 1;</code>
-   * @return The action.
-   */
-  @Override public action_v1 getAction() {
-    action_v1 result = action_v1.forNumber(action_);
-    return result == null ? action_v1.UNRECOGNIZED : result;
-  }
-
-  public static final int ROUTE_FIELD_NUMBER = 2;
-  /**
-   * <code>.helium.iot_config.route_v1 route = 2;</code>
-   * @return Whether the route field is set.
-   */
-  @Override
-  public boolean hasRoute() {
-    return dataCase_ == 2;
-  }
-  /**
-   * <code>.helium.iot_config.route_v1 route = 2;</code>
-   * @return The route.
-   */
-  @Override
-  public route_v1 getRoute() {
-    if (dataCase_ == 2) {
-       return (route_v1) data_;
-    }
-    return route_v1.getDefaultInstance();
-  }
-  /**
-   * <code>.helium.iot_config.route_v1 route = 2;</code>
-   */
-  @Override
-  public route_v1OrBuilder getRouteOrBuilder() {
-    if (dataCase_ == 2) {
-       return (route_v1) data_;
-    }
-    return route_v1.getDefaultInstance();
-  }
-
-  public static final int EUI_PAIR_FIELD_NUMBER = 3;
-  /**
-   * <code>.helium.iot_config.eui_pair_v1 eui_pair = 3;</code>
-   * @return Whether the euiPair field is set.
-   */
-  @Override
-  public boolean hasEuiPair() {
-    return dataCase_ == 3;
-  }
-  /**
-   * <code>.helium.iot_config.eui_pair_v1 eui_pair = 3;</code>
-   * @return The euiPair.
-   */
-  @Override
-  public eui_pair_v1 getEuiPair() {
-    if (dataCase_ == 3) {
-       return (eui_pair_v1) data_;
-    }
-    return eui_pair_v1.getDefaultInstance();
-  }
-  /**
-   * <code>.helium.iot_config.eui_pair_v1 eui_pair = 3;</code>
-   */
-  @Override
-  public eui_pair_v1OrBuilder getEuiPairOrBuilder() {
-    if (dataCase_ == 3) {
-       return (eui_pair_v1) data_;
-    }
-    return eui_pair_v1.getDefaultInstance();
-  }
-
-  public static final int DEVADDR_RANGE_FIELD_NUMBER = 4;
-  /**
-   * <code>.helium.iot_config.devaddr_range_v1 devaddr_range = 4;</code>
-   * @return Whether the devaddrRange field is set.
-   */
-  @Override
-  public boolean hasDevaddrRange() {
-    return dataCase_ == 4;
-  }
-  /**
-   * <code>.helium.iot_config.devaddr_range_v1 devaddr_range = 4;</code>
-   * @return The devaddrRange.
-   */
-  @Override
-  public devaddr_range_v1 getDevaddrRange() {
-    if (dataCase_ == 4) {
-       return (devaddr_range_v1) data_;
-    }
-    return devaddr_range_v1.getDefaultInstance();
-  }
-  /**
-   * <code>.helium.iot_config.devaddr_range_v1 devaddr_range = 4;</code>
-   */
-  @Override
-  public devaddr_range_v1OrBuilder getDevaddrRangeOrBuilder() {
-    if (dataCase_ == 4) {
-       return (devaddr_range_v1) data_;
-    }
-    return devaddr_range_v1.getDefaultInstance();
-  }
-
-  public static final int TIMESTAMP_FIELD_NUMBER = 5;
+  public static final int TIMESTAMP_FIELD_NUMBER = 1;
   private long timestamp_ = 0L;
   /**
    * <pre>
    * unix epoch timestamp in seconds
    * </pre>
    *
-   * <code>uint64 timestamp = 5;</code>
+   * <code>uint64 timestamp = 1;</code>
    * @return The timestamp.
    */
   @Override
@@ -211,14 +102,14 @@ private static final long serialVersionUID = 0L;
     return timestamp_;
   }
 
-  public static final int SIGNER_FIELD_NUMBER = 6;
+  public static final int SIGNER_FIELD_NUMBER = 2;
   private com.google.protobuf.ByteString signer_ = com.google.protobuf.ByteString.EMPTY;
   /**
    * <pre>
    * pubkey binary of the signing keypair
    * </pre>
    *
-   * <code>bytes signer = 6;</code>
+   * <code>bytes signer = 2;</code>
    * @return The signer.
    */
   @Override
@@ -226,19 +117,161 @@ private static final long serialVersionUID = 0L;
     return signer_;
   }
 
-  public static final int SIGNATURE_FIELD_NUMBER = 7;
+  public static final int SIGNATURE_FIELD_NUMBER = 3;
   private com.google.protobuf.ByteString signature_ = com.google.protobuf.ByteString.EMPTY;
   /**
    * <pre>
    * Signature over the response by the config service
    * </pre>
    *
-   * <code>bytes signature = 7;</code>
+   * <code>bytes signature = 3;</code>
    * @return The signature.
    */
   @Override
   public com.google.protobuf.ByteString getSignature() {
     return signature_;
+  }
+
+  public static final int ACTION_FIELD_NUMBER = 4;
+  private int action_ = 0;
+  /**
+   * <code>.helium.iot_config.action_v1 action = 4;</code>
+   * @return The enum numeric value on the wire for action.
+   */
+  @Override public int getActionValue() {
+    return action_;
+  }
+  /**
+   * <code>.helium.iot_config.action_v1 action = 4;</code>
+   * @return The action.
+   */
+  @Override public action_v1 getAction() {
+    action_v1 result = action_v1.forNumber(action_);
+    return result == null ? action_v1.UNRECOGNIZED : result;
+  }
+
+  public static final int ROUTE_FIELD_NUMBER = 5;
+  /**
+   * <code>.helium.iot_config.route_v1 route = 5;</code>
+   * @return Whether the route field is set.
+   */
+  @Override
+  public boolean hasRoute() {
+    return dataCase_ == 5;
+  }
+  /**
+   * <code>.helium.iot_config.route_v1 route = 5;</code>
+   * @return The route.
+   */
+  @Override
+  public route_v1 getRoute() {
+    if (dataCase_ == 5) {
+       return (route_v1) data_;
+    }
+    return route_v1.getDefaultInstance();
+  }
+  /**
+   * <code>.helium.iot_config.route_v1 route = 5;</code>
+   */
+  @Override
+  public route_v1OrBuilder getRouteOrBuilder() {
+    if (dataCase_ == 5) {
+       return (route_v1) data_;
+    }
+    return route_v1.getDefaultInstance();
+  }
+
+  public static final int EUI_PAIR_FIELD_NUMBER = 6;
+  /**
+   * <code>.helium.iot_config.eui_pair_v1 eui_pair = 6;</code>
+   * @return Whether the euiPair field is set.
+   */
+  @Override
+  public boolean hasEuiPair() {
+    return dataCase_ == 6;
+  }
+  /**
+   * <code>.helium.iot_config.eui_pair_v1 eui_pair = 6;</code>
+   * @return The euiPair.
+   */
+  @Override
+  public eui_pair_v1 getEuiPair() {
+    if (dataCase_ == 6) {
+       return (eui_pair_v1) data_;
+    }
+    return eui_pair_v1.getDefaultInstance();
+  }
+  /**
+   * <code>.helium.iot_config.eui_pair_v1 eui_pair = 6;</code>
+   */
+  @Override
+  public eui_pair_v1OrBuilder getEuiPairOrBuilder() {
+    if (dataCase_ == 6) {
+       return (eui_pair_v1) data_;
+    }
+    return eui_pair_v1.getDefaultInstance();
+  }
+
+  public static final int DEVADDR_RANGE_FIELD_NUMBER = 7;
+  /**
+   * <code>.helium.iot_config.devaddr_range_v1 devaddr_range = 7;</code>
+   * @return Whether the devaddrRange field is set.
+   */
+  @Override
+  public boolean hasDevaddrRange() {
+    return dataCase_ == 7;
+  }
+  /**
+   * <code>.helium.iot_config.devaddr_range_v1 devaddr_range = 7;</code>
+   * @return The devaddrRange.
+   */
+  @Override
+  public devaddr_range_v1 getDevaddrRange() {
+    if (dataCase_ == 7) {
+       return (devaddr_range_v1) data_;
+    }
+    return devaddr_range_v1.getDefaultInstance();
+  }
+  /**
+   * <code>.helium.iot_config.devaddr_range_v1 devaddr_range = 7;</code>
+   */
+  @Override
+  public devaddr_range_v1OrBuilder getDevaddrRangeOrBuilder() {
+    if (dataCase_ == 7) {
+       return (devaddr_range_v1) data_;
+    }
+    return devaddr_range_v1.getDefaultInstance();
+  }
+
+  public static final int SKF_FIELD_NUMBER = 8;
+  /**
+   * <code>.helium.iot_config.skf_v1 skf = 8;</code>
+   * @return Whether the skf field is set.
+   */
+  @Override
+  public boolean hasSkf() {
+    return dataCase_ == 8;
+  }
+  /**
+   * <code>.helium.iot_config.skf_v1 skf = 8;</code>
+   * @return The skf.
+   */
+  @Override
+  public skf_v1 getSkf() {
+    if (dataCase_ == 8) {
+       return (skf_v1) data_;
+    }
+    return skf_v1.getDefaultInstance();
+  }
+  /**
+   * <code>.helium.iot_config.skf_v1 skf = 8;</code>
+   */
+  @Override
+  public skf_v1OrBuilder getSkfOrBuilder() {
+    if (dataCase_ == 8) {
+       return (skf_v1) data_;
+    }
+    return skf_v1.getDefaultInstance();
   }
 
   private byte memoizedIsInitialized = -1;
@@ -255,26 +288,29 @@ private static final long serialVersionUID = 0L;
   @Override
   public void writeTo(com.google.protobuf.CodedOutputStream output)
                       throws java.io.IOException {
-    if (action_ != action_v1.add.getNumber()) {
-      output.writeEnum(1, action_);
-    }
-    if (dataCase_ == 2) {
-      output.writeMessage(2, (route_v1) data_);
-    }
-    if (dataCase_ == 3) {
-      output.writeMessage(3, (eui_pair_v1) data_);
-    }
-    if (dataCase_ == 4) {
-      output.writeMessage(4, (devaddr_range_v1) data_);
-    }
     if (timestamp_ != 0L) {
-      output.writeUInt64(5, timestamp_);
+      output.writeUInt64(1, timestamp_);
     }
     if (!signer_.isEmpty()) {
-      output.writeBytes(6, signer_);
+      output.writeBytes(2, signer_);
     }
     if (!signature_.isEmpty()) {
-      output.writeBytes(7, signature_);
+      output.writeBytes(3, signature_);
+    }
+    if (action_ != action_v1.add.getNumber()) {
+      output.writeEnum(4, action_);
+    }
+    if (dataCase_ == 5) {
+      output.writeMessage(5, (route_v1) data_);
+    }
+    if (dataCase_ == 6) {
+      output.writeMessage(6, (eui_pair_v1) data_);
+    }
+    if (dataCase_ == 7) {
+      output.writeMessage(7, (devaddr_range_v1) data_);
+    }
+    if (dataCase_ == 8) {
+      output.writeMessage(8, (skf_v1) data_);
     }
     getUnknownFields().writeTo(output);
   }
@@ -285,33 +321,37 @@ private static final long serialVersionUID = 0L;
     if (size != -1) return size;
 
     size = 0;
-    if (action_ != action_v1.add.getNumber()) {
-      size += com.google.protobuf.CodedOutputStream
-        .computeEnumSize(1, action_);
-    }
-    if (dataCase_ == 2) {
-      size += com.google.protobuf.CodedOutputStream
-        .computeMessageSize(2, (route_v1) data_);
-    }
-    if (dataCase_ == 3) {
-      size += com.google.protobuf.CodedOutputStream
-        .computeMessageSize(3, (eui_pair_v1) data_);
-    }
-    if (dataCase_ == 4) {
-      size += com.google.protobuf.CodedOutputStream
-        .computeMessageSize(4, (devaddr_range_v1) data_);
-    }
     if (timestamp_ != 0L) {
       size += com.google.protobuf.CodedOutputStream
-        .computeUInt64Size(5, timestamp_);
+        .computeUInt64Size(1, timestamp_);
     }
     if (!signer_.isEmpty()) {
       size += com.google.protobuf.CodedOutputStream
-        .computeBytesSize(6, signer_);
+        .computeBytesSize(2, signer_);
     }
     if (!signature_.isEmpty()) {
       size += com.google.protobuf.CodedOutputStream
-        .computeBytesSize(7, signature_);
+        .computeBytesSize(3, signature_);
+    }
+    if (action_ != action_v1.add.getNumber()) {
+      size += com.google.protobuf.CodedOutputStream
+        .computeEnumSize(4, action_);
+    }
+    if (dataCase_ == 5) {
+      size += com.google.protobuf.CodedOutputStream
+        .computeMessageSize(5, (route_v1) data_);
+    }
+    if (dataCase_ == 6) {
+      size += com.google.protobuf.CodedOutputStream
+        .computeMessageSize(6, (eui_pair_v1) data_);
+    }
+    if (dataCase_ == 7) {
+      size += com.google.protobuf.CodedOutputStream
+        .computeMessageSize(7, (devaddr_range_v1) data_);
+    }
+    if (dataCase_ == 8) {
+      size += com.google.protobuf.CodedOutputStream
+        .computeMessageSize(8, (skf_v1) data_);
     }
     size += getUnknownFields().getSerializedSize();
     memoizedSize = size;
@@ -328,26 +368,30 @@ private static final long serialVersionUID = 0L;
     }
     route_stream_res_v1 other = (route_stream_res_v1) obj;
 
-    if (action_ != other.action_) return false;
     if (getTimestamp()
         != other.getTimestamp()) return false;
     if (!getSigner()
         .equals(other.getSigner())) return false;
     if (!getSignature()
         .equals(other.getSignature())) return false;
+    if (action_ != other.action_) return false;
     if (!getDataCase().equals(other.getDataCase())) return false;
     switch (dataCase_) {
-      case 2:
+      case 5:
         if (!getRoute()
             .equals(other.getRoute())) return false;
         break;
-      case 3:
+      case 6:
         if (!getEuiPair()
             .equals(other.getEuiPair())) return false;
         break;
-      case 4:
+      case 7:
         if (!getDevaddrRange()
             .equals(other.getDevaddrRange())) return false;
+        break;
+      case 8:
+        if (!getSkf()
+            .equals(other.getSkf())) return false;
         break;
       case 0:
       default:
@@ -363,8 +407,6 @@ private static final long serialVersionUID = 0L;
     }
     int hash = 41;
     hash = (19 * hash) + getDescriptor().hashCode();
-    hash = (37 * hash) + ACTION_FIELD_NUMBER;
-    hash = (53 * hash) + action_;
     hash = (37 * hash) + TIMESTAMP_FIELD_NUMBER;
     hash = (53 * hash) + com.google.protobuf.Internal.hashLong(
         getTimestamp());
@@ -372,18 +414,24 @@ private static final long serialVersionUID = 0L;
     hash = (53 * hash) + getSigner().hashCode();
     hash = (37 * hash) + SIGNATURE_FIELD_NUMBER;
     hash = (53 * hash) + getSignature().hashCode();
+    hash = (37 * hash) + ACTION_FIELD_NUMBER;
+    hash = (53 * hash) + action_;
     switch (dataCase_) {
-      case 2:
+      case 5:
         hash = (37 * hash) + ROUTE_FIELD_NUMBER;
         hash = (53 * hash) + getRoute().hashCode();
         break;
-      case 3:
+      case 6:
         hash = (37 * hash) + EUI_PAIR_FIELD_NUMBER;
         hash = (53 * hash) + getEuiPair().hashCode();
         break;
-      case 4:
+      case 7:
         hash = (37 * hash) + DEVADDR_RANGE_FIELD_NUMBER;
         hash = (53 * hash) + getDevaddrRange().hashCode();
+        break;
+      case 8:
+        hash = (37 * hash) + SKF_FIELD_NUMBER;
+        hash = (53 * hash) + getSkf().hashCode();
         break;
       case 0:
       default:
@@ -517,6 +565,9 @@ private static final long serialVersionUID = 0L;
     public Builder clear() {
       super.clear();
       bitField0_ = 0;
+      timestamp_ = 0L;
+      signer_ = com.google.protobuf.ByteString.EMPTY;
+      signature_ = com.google.protobuf.ByteString.EMPTY;
       action_ = 0;
       if (routeBuilder_ != null) {
         routeBuilder_.clear();
@@ -527,9 +578,9 @@ private static final long serialVersionUID = 0L;
       if (devaddrRangeBuilder_ != null) {
         devaddrRangeBuilder_.clear();
       }
-      timestamp_ = 0L;
-      signer_ = com.google.protobuf.ByteString.EMPTY;
-      signature_ = com.google.protobuf.ByteString.EMPTY;
+      if (skfBuilder_ != null) {
+        skfBuilder_.clear();
+      }
       dataCase_ = 0;
       data_ = null;
       return this;
@@ -567,33 +618,37 @@ private static final long serialVersionUID = 0L;
     private void buildPartial0(route_stream_res_v1 result) {
       int from_bitField0_ = bitField0_;
       if (((from_bitField0_ & 0x00000001) != 0)) {
-        result.action_ = action_;
-      }
-      if (((from_bitField0_ & 0x00000010) != 0)) {
         result.timestamp_ = timestamp_;
       }
-      if (((from_bitField0_ & 0x00000020) != 0)) {
+      if (((from_bitField0_ & 0x00000002) != 0)) {
         result.signer_ = signer_;
       }
-      if (((from_bitField0_ & 0x00000040) != 0)) {
+      if (((from_bitField0_ & 0x00000004) != 0)) {
         result.signature_ = signature_;
+      }
+      if (((from_bitField0_ & 0x00000008) != 0)) {
+        result.action_ = action_;
       }
     }
 
     private void buildPartialOneofs(route_stream_res_v1 result) {
       result.dataCase_ = dataCase_;
       result.data_ = this.data_;
-      if (dataCase_ == 2 &&
+      if (dataCase_ == 5 &&
           routeBuilder_ != null) {
         result.data_ = routeBuilder_.build();
       }
-      if (dataCase_ == 3 &&
+      if (dataCase_ == 6 &&
           euiPairBuilder_ != null) {
         result.data_ = euiPairBuilder_.build();
       }
-      if (dataCase_ == 4 &&
+      if (dataCase_ == 7 &&
           devaddrRangeBuilder_ != null) {
         result.data_ = devaddrRangeBuilder_.build();
+      }
+      if (dataCase_ == 8 &&
+          skfBuilder_ != null) {
+        result.data_ = skfBuilder_.build();
       }
     }
 
@@ -609,9 +664,6 @@ private static final long serialVersionUID = 0L;
 
     public Builder mergeFrom(route_stream_res_v1 other) {
       if (other == route_stream_res_v1.getDefaultInstance()) return this;
-      if (other.action_ != 0) {
-        setActionValue(other.getActionValue());
-      }
       if (other.getTimestamp() != 0L) {
         setTimestamp(other.getTimestamp());
       }
@@ -620,6 +672,9 @@ private static final long serialVersionUID = 0L;
       }
       if (other.getSignature() != com.google.protobuf.ByteString.EMPTY) {
         setSignature(other.getSignature());
+      }
+      if (other.action_ != 0) {
+        setActionValue(other.getActionValue());
       }
       switch (other.getDataCase()) {
         case ROUTE: {
@@ -632,6 +687,10 @@ private static final long serialVersionUID = 0L;
         }
         case DEVADDR_RANGE: {
           mergeDevaddrRange(other.getDevaddrRange());
+          break;
+        }
+        case SKF: {
+          mergeSkf(other.getSkf());
           break;
         }
         case DATA_NOT_SET: {
@@ -665,46 +724,53 @@ private static final long serialVersionUID = 0L;
               done = true;
               break;
             case 8: {
-              action_ = input.readEnum();
+              timestamp_ = input.readUInt64();
               bitField0_ |= 0x00000001;
               break;
             } // case 8
             case 18: {
-              input.readMessage(
-                  getRouteFieldBuilder().getBuilder(),
-                  extensionRegistry);
-              dataCase_ = 2;
+              signer_ = input.readBytes();
+              bitField0_ |= 0x00000002;
               break;
             } // case 18
             case 26: {
+              signature_ = input.readBytes();
+              bitField0_ |= 0x00000004;
+              break;
+            } // case 26
+            case 32: {
+              action_ = input.readEnum();
+              bitField0_ |= 0x00000008;
+              break;
+            } // case 32
+            case 42: {
+              input.readMessage(
+                  getRouteFieldBuilder().getBuilder(),
+                  extensionRegistry);
+              dataCase_ = 5;
+              break;
+            } // case 42
+            case 50: {
               input.readMessage(
                   getEuiPairFieldBuilder().getBuilder(),
                   extensionRegistry);
-              dataCase_ = 3;
-              break;
-            } // case 26
-            case 34: {
-              input.readMessage(
-                  getDevaddrRangeFieldBuilder().getBuilder(),
-                  extensionRegistry);
-              dataCase_ = 4;
-              break;
-            } // case 34
-            case 40: {
-              timestamp_ = input.readUInt64();
-              bitField0_ |= 0x00000010;
-              break;
-            } // case 40
-            case 50: {
-              signer_ = input.readBytes();
-              bitField0_ |= 0x00000020;
+              dataCase_ = 6;
               break;
             } // case 50
             case 58: {
-              signature_ = input.readBytes();
-              bitField0_ |= 0x00000040;
+              input.readMessage(
+                  getDevaddrRangeFieldBuilder().getBuilder(),
+                  extensionRegistry);
+              dataCase_ = 7;
               break;
             } // case 58
+            case 66: {
+              input.readMessage(
+                  getSkfFieldBuilder().getBuilder(),
+                  extensionRegistry);
+              dataCase_ = 8;
+              break;
+            } // case 66
             default: {
               if (!super.parseUnknownField(input, extensionRegistry, tag)) {
                 done = true; // was an endgroup tag
@@ -737,492 +803,13 @@ private static final long serialVersionUID = 0L;
 
     private int bitField0_;
 
-    private int action_ = 0;
-    /**
-     * <code>.helium.iot_config.action_v1 action = 1;</code>
-     * @return The enum numeric value on the wire for action.
-     */
-    @Override public int getActionValue() {
-      return action_;
-    }
-    /**
-     * <code>.helium.iot_config.action_v1 action = 1;</code>
-     * @param value The enum numeric value on the wire for action to set.
-     * @return This builder for chaining.
-     */
-    public Builder setActionValue(int value) {
-      action_ = value;
-      bitField0_ |= 0x00000001;
-      onChanged();
-      return this;
-    }
-    /**
-     * <code>.helium.iot_config.action_v1 action = 1;</code>
-     * @return The action.
-     */
-    @Override
-    public action_v1 getAction() {
-      action_v1 result = action_v1.forNumber(action_);
-      return result == null ? action_v1.UNRECOGNIZED : result;
-    }
-    /**
-     * <code>.helium.iot_config.action_v1 action = 1;</code>
-     * @param value The action to set.
-     * @return This builder for chaining.
-     */
-    public Builder setAction(action_v1 value) {
-      if (value == null) {
-        throw new NullPointerException();
-      }
-      bitField0_ |= 0x00000001;
-      action_ = value.getNumber();
-      onChanged();
-      return this;
-    }
-    /**
-     * <code>.helium.iot_config.action_v1 action = 1;</code>
-     * @return This builder for chaining.
-     */
-    public Builder clearAction() {
-      bitField0_ = (bitField0_ & ~0x00000001);
-      action_ = 0;
-      onChanged();
-      return this;
-    }
-
-    private com.google.protobuf.SingleFieldBuilderV3<
-        route_v1, route_v1.Builder, route_v1OrBuilder> routeBuilder_;
-    /**
-     * <code>.helium.iot_config.route_v1 route = 2;</code>
-     * @return Whether the route field is set.
-     */
-    @Override
-    public boolean hasRoute() {
-      return dataCase_ == 2;
-    }
-    /**
-     * <code>.helium.iot_config.route_v1 route = 2;</code>
-     * @return The route.
-     */
-    @Override
-    public route_v1 getRoute() {
-      if (routeBuilder_ == null) {
-        if (dataCase_ == 2) {
-          return (route_v1) data_;
-        }
-        return route_v1.getDefaultInstance();
-      } else {
-        if (dataCase_ == 2) {
-          return routeBuilder_.getMessage();
-        }
-        return route_v1.getDefaultInstance();
-      }
-    }
-    /**
-     * <code>.helium.iot_config.route_v1 route = 2;</code>
-     */
-    public Builder setRoute(route_v1 value) {
-      if (routeBuilder_ == null) {
-        if (value == null) {
-          throw new NullPointerException();
-        }
-        data_ = value;
-        onChanged();
-      } else {
-        routeBuilder_.setMessage(value);
-      }
-      dataCase_ = 2;
-      return this;
-    }
-    /**
-     * <code>.helium.iot_config.route_v1 route = 2;</code>
-     */
-    public Builder setRoute(
-        route_v1.Builder builderForValue) {
-      if (routeBuilder_ == null) {
-        data_ = builderForValue.build();
-        onChanged();
-      } else {
-        routeBuilder_.setMessage(builderForValue.build());
-      }
-      dataCase_ = 2;
-      return this;
-    }
-    /**
-     * <code>.helium.iot_config.route_v1 route = 2;</code>
-     */
-    public Builder mergeRoute(route_v1 value) {
-      if (routeBuilder_ == null) {
-        if (dataCase_ == 2 &&
-            data_ != route_v1.getDefaultInstance()) {
-          data_ = route_v1.newBuilder((route_v1) data_)
-              .mergeFrom(value).buildPartial();
-        } else {
-          data_ = value;
-        }
-        onChanged();
-      } else {
-        if (dataCase_ == 2) {
-          routeBuilder_.mergeFrom(value);
-        } else {
-          routeBuilder_.setMessage(value);
-        }
-      }
-      dataCase_ = 2;
-      return this;
-    }
-    /**
-     * <code>.helium.iot_config.route_v1 route = 2;</code>
-     */
-    public Builder clearRoute() {
-      if (routeBuilder_ == null) {
-        if (dataCase_ == 2) {
-          dataCase_ = 0;
-          data_ = null;
-          onChanged();
-        }
-      } else {
-        if (dataCase_ == 2) {
-          dataCase_ = 0;
-          data_ = null;
-        }
-        routeBuilder_.clear();
-      }
-      return this;
-    }
-    /**
-     * <code>.helium.iot_config.route_v1 route = 2;</code>
-     */
-    public route_v1.Builder getRouteBuilder() {
-      return getRouteFieldBuilder().getBuilder();
-    }
-    /**
-     * <code>.helium.iot_config.route_v1 route = 2;</code>
-     */
-    @Override
-    public route_v1OrBuilder getRouteOrBuilder() {
-      if ((dataCase_ == 2) && (routeBuilder_ != null)) {
-        return routeBuilder_.getMessageOrBuilder();
-      } else {
-        if (dataCase_ == 2) {
-          return (route_v1) data_;
-        }
-        return route_v1.getDefaultInstance();
-      }
-    }
-    /**
-     * <code>.helium.iot_config.route_v1 route = 2;</code>
-     */
-    private com.google.protobuf.SingleFieldBuilderV3<
-        route_v1, route_v1.Builder, route_v1OrBuilder>
-        getRouteFieldBuilder() {
-      if (routeBuilder_ == null) {
-        if (!(dataCase_ == 2)) {
-          data_ = route_v1.getDefaultInstance();
-        }
-        routeBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
-            route_v1, route_v1.Builder, route_v1OrBuilder>(
-                (route_v1) data_,
-                getParentForChildren(),
-                isClean());
-        data_ = null;
-      }
-      dataCase_ = 2;
-      onChanged();
-      return routeBuilder_;
-    }
-
-    private com.google.protobuf.SingleFieldBuilderV3<
-        eui_pair_v1, eui_pair_v1.Builder, eui_pair_v1OrBuilder> euiPairBuilder_;
-    /**
-     * <code>.helium.iot_config.eui_pair_v1 eui_pair = 3;</code>
-     * @return Whether the euiPair field is set.
-     */
-    @Override
-    public boolean hasEuiPair() {
-      return dataCase_ == 3;
-    }
-    /**
-     * <code>.helium.iot_config.eui_pair_v1 eui_pair = 3;</code>
-     * @return The euiPair.
-     */
-    @Override
-    public eui_pair_v1 getEuiPair() {
-      if (euiPairBuilder_ == null) {
-        if (dataCase_ == 3) {
-          return (eui_pair_v1) data_;
-        }
-        return eui_pair_v1.getDefaultInstance();
-      } else {
-        if (dataCase_ == 3) {
-          return euiPairBuilder_.getMessage();
-        }
-        return eui_pair_v1.getDefaultInstance();
-      }
-    }
-    /**
-     * <code>.helium.iot_config.eui_pair_v1 eui_pair = 3;</code>
-     */
-    public Builder setEuiPair(eui_pair_v1 value) {
-      if (euiPairBuilder_ == null) {
-        if (value == null) {
-          throw new NullPointerException();
-        }
-        data_ = value;
-        onChanged();
-      } else {
-        euiPairBuilder_.setMessage(value);
-      }
-      dataCase_ = 3;
-      return this;
-    }
-    /**
-     * <code>.helium.iot_config.eui_pair_v1 eui_pair = 3;</code>
-     */
-    public Builder setEuiPair(
-        eui_pair_v1.Builder builderForValue) {
-      if (euiPairBuilder_ == null) {
-        data_ = builderForValue.build();
-        onChanged();
-      } else {
-        euiPairBuilder_.setMessage(builderForValue.build());
-      }
-      dataCase_ = 3;
-      return this;
-    }
-    /**
-     * <code>.helium.iot_config.eui_pair_v1 eui_pair = 3;</code>
-     */
-    public Builder mergeEuiPair(eui_pair_v1 value) {
-      if (euiPairBuilder_ == null) {
-        if (dataCase_ == 3 &&
-            data_ != eui_pair_v1.getDefaultInstance()) {
-          data_ = eui_pair_v1.newBuilder((eui_pair_v1) data_)
-              .mergeFrom(value).buildPartial();
-        } else {
-          data_ = value;
-        }
-        onChanged();
-      } else {
-        if (dataCase_ == 3) {
-          euiPairBuilder_.mergeFrom(value);
-        } else {
-          euiPairBuilder_.setMessage(value);
-        }
-      }
-      dataCase_ = 3;
-      return this;
-    }
-    /**
-     * <code>.helium.iot_config.eui_pair_v1 eui_pair = 3;</code>
-     */
-    public Builder clearEuiPair() {
-      if (euiPairBuilder_ == null) {
-        if (dataCase_ == 3) {
-          dataCase_ = 0;
-          data_ = null;
-          onChanged();
-        }
-      } else {
-        if (dataCase_ == 3) {
-          dataCase_ = 0;
-          data_ = null;
-        }
-        euiPairBuilder_.clear();
-      }
-      return this;
-    }
-    /**
-     * <code>.helium.iot_config.eui_pair_v1 eui_pair = 3;</code>
-     */
-    public eui_pair_v1.Builder getEuiPairBuilder() {
-      return getEuiPairFieldBuilder().getBuilder();
-    }
-    /**
-     * <code>.helium.iot_config.eui_pair_v1 eui_pair = 3;</code>
-     */
-    @Override
-    public eui_pair_v1OrBuilder getEuiPairOrBuilder() {
-      if ((dataCase_ == 3) && (euiPairBuilder_ != null)) {
-        return euiPairBuilder_.getMessageOrBuilder();
-      } else {
-        if (dataCase_ == 3) {
-          return (eui_pair_v1) data_;
-        }
-        return eui_pair_v1.getDefaultInstance();
-      }
-    }
-    /**
-     * <code>.helium.iot_config.eui_pair_v1 eui_pair = 3;</code>
-     */
-    private com.google.protobuf.SingleFieldBuilderV3<
-        eui_pair_v1, eui_pair_v1.Builder, eui_pair_v1OrBuilder>
-        getEuiPairFieldBuilder() {
-      if (euiPairBuilder_ == null) {
-        if (!(dataCase_ == 3)) {
-          data_ = eui_pair_v1.getDefaultInstance();
-        }
-        euiPairBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
-            eui_pair_v1, eui_pair_v1.Builder, eui_pair_v1OrBuilder>(
-                (eui_pair_v1) data_,
-                getParentForChildren(),
-                isClean());
-        data_ = null;
-      }
-      dataCase_ = 3;
-      onChanged();
-      return euiPairBuilder_;
-    }
-
-    private com.google.protobuf.SingleFieldBuilderV3<
-        devaddr_range_v1, devaddr_range_v1.Builder, devaddr_range_v1OrBuilder> devaddrRangeBuilder_;
-    /**
-     * <code>.helium.iot_config.devaddr_range_v1 devaddr_range = 4;</code>
-     * @return Whether the devaddrRange field is set.
-     */
-    @Override
-    public boolean hasDevaddrRange() {
-      return dataCase_ == 4;
-    }
-    /**
-     * <code>.helium.iot_config.devaddr_range_v1 devaddr_range = 4;</code>
-     * @return The devaddrRange.
-     */
-    @Override
-    public devaddr_range_v1 getDevaddrRange() {
-      if (devaddrRangeBuilder_ == null) {
-        if (dataCase_ == 4) {
-          return (devaddr_range_v1) data_;
-        }
-        return devaddr_range_v1.getDefaultInstance();
-      } else {
-        if (dataCase_ == 4) {
-          return devaddrRangeBuilder_.getMessage();
-        }
-        return devaddr_range_v1.getDefaultInstance();
-      }
-    }
-    /**
-     * <code>.helium.iot_config.devaddr_range_v1 devaddr_range = 4;</code>
-     */
-    public Builder setDevaddrRange(devaddr_range_v1 value) {
-      if (devaddrRangeBuilder_ == null) {
-        if (value == null) {
-          throw new NullPointerException();
-        }
-        data_ = value;
-        onChanged();
-      } else {
-        devaddrRangeBuilder_.setMessage(value);
-      }
-      dataCase_ = 4;
-      return this;
-    }
-    /**
-     * <code>.helium.iot_config.devaddr_range_v1 devaddr_range = 4;</code>
-     */
-    public Builder setDevaddrRange(
-        devaddr_range_v1.Builder builderForValue) {
-      if (devaddrRangeBuilder_ == null) {
-        data_ = builderForValue.build();
-        onChanged();
-      } else {
-        devaddrRangeBuilder_.setMessage(builderForValue.build());
-      }
-      dataCase_ = 4;
-      return this;
-    }
-    /**
-     * <code>.helium.iot_config.devaddr_range_v1 devaddr_range = 4;</code>
-     */
-    public Builder mergeDevaddrRange(devaddr_range_v1 value) {
-      if (devaddrRangeBuilder_ == null) {
-        if (dataCase_ == 4 &&
-            data_ != devaddr_range_v1.getDefaultInstance()) {
-          data_ = devaddr_range_v1.newBuilder((devaddr_range_v1) data_)
-              .mergeFrom(value).buildPartial();
-        } else {
-          data_ = value;
-        }
-        onChanged();
-      } else {
-        if (dataCase_ == 4) {
-          devaddrRangeBuilder_.mergeFrom(value);
-        } else {
-          devaddrRangeBuilder_.setMessage(value);
-        }
-      }
-      dataCase_ = 4;
-      return this;
-    }
-    /**
-     * <code>.helium.iot_config.devaddr_range_v1 devaddr_range = 4;</code>
-     */
-    public Builder clearDevaddrRange() {
-      if (devaddrRangeBuilder_ == null) {
-        if (dataCase_ == 4) {
-          dataCase_ = 0;
-          data_ = null;
-          onChanged();
-        }
-      } else {
-        if (dataCase_ == 4) {
-          dataCase_ = 0;
-          data_ = null;
-        }
-        devaddrRangeBuilder_.clear();
-      }
-      return this;
-    }
-    /**
-     * <code>.helium.iot_config.devaddr_range_v1 devaddr_range = 4;</code>
-     */
-    public devaddr_range_v1.Builder getDevaddrRangeBuilder() {
-      return getDevaddrRangeFieldBuilder().getBuilder();
-    }
-    /**
-     * <code>.helium.iot_config.devaddr_range_v1 devaddr_range = 4;</code>
-     */
-    @Override
-    public devaddr_range_v1OrBuilder getDevaddrRangeOrBuilder() {
-      if ((dataCase_ == 4) && (devaddrRangeBuilder_ != null)) {
-        return devaddrRangeBuilder_.getMessageOrBuilder();
-      } else {
-        if (dataCase_ == 4) {
-          return (devaddr_range_v1) data_;
-        }
-        return devaddr_range_v1.getDefaultInstance();
-      }
-    }
-    /**
-     * <code>.helium.iot_config.devaddr_range_v1 devaddr_range = 4;</code>
-     */
-    private com.google.protobuf.SingleFieldBuilderV3<
-        devaddr_range_v1, devaddr_range_v1.Builder, devaddr_range_v1OrBuilder>
-        getDevaddrRangeFieldBuilder() {
-      if (devaddrRangeBuilder_ == null) {
-        if (!(dataCase_ == 4)) {
-          data_ = devaddr_range_v1.getDefaultInstance();
-        }
-        devaddrRangeBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
-            devaddr_range_v1, devaddr_range_v1.Builder, devaddr_range_v1OrBuilder>(
-                (devaddr_range_v1) data_,
-                getParentForChildren(),
-                isClean());
-        data_ = null;
-      }
-      dataCase_ = 4;
-      onChanged();
-      return devaddrRangeBuilder_;
-    }
-
     private long timestamp_ ;
     /**
      * <pre>
      * unix epoch timestamp in seconds
      * </pre>
      *
-     * <code>uint64 timestamp = 5;</code>
+     * <code>uint64 timestamp = 1;</code>
      * @return The timestamp.
      */
     @Override
@@ -1234,14 +821,14 @@ private static final long serialVersionUID = 0L;
      * unix epoch timestamp in seconds
      * </pre>
      *
-     * <code>uint64 timestamp = 5;</code>
+     * <code>uint64 timestamp = 1;</code>
      * @param value The timestamp to set.
      * @return This builder for chaining.
      */
     public Builder setTimestamp(long value) {
 
       timestamp_ = value;
-      bitField0_ |= 0x00000010;
+      bitField0_ |= 0x00000001;
       onChanged();
       return this;
     }
@@ -1250,11 +837,11 @@ private static final long serialVersionUID = 0L;
      * unix epoch timestamp in seconds
      * </pre>
      *
-     * <code>uint64 timestamp = 5;</code>
+     * <code>uint64 timestamp = 1;</code>
      * @return This builder for chaining.
      */
     public Builder clearTimestamp() {
-      bitField0_ = (bitField0_ & ~0x00000010);
+      bitField0_ = (bitField0_ & ~0x00000001);
       timestamp_ = 0L;
       onChanged();
       return this;
@@ -1266,7 +853,7 @@ private static final long serialVersionUID = 0L;
      * pubkey binary of the signing keypair
      * </pre>
      *
-     * <code>bytes signer = 6;</code>
+     * <code>bytes signer = 2;</code>
      * @return The signer.
      */
     @Override
@@ -1278,14 +865,14 @@ private static final long serialVersionUID = 0L;
      * pubkey binary of the signing keypair
      * </pre>
      *
-     * <code>bytes signer = 6;</code>
+     * <code>bytes signer = 2;</code>
      * @param value The signer to set.
      * @return This builder for chaining.
      */
     public Builder setSigner(com.google.protobuf.ByteString value) {
       if (value == null) { throw new NullPointerException(); }
       signer_ = value;
-      bitField0_ |= 0x00000020;
+      bitField0_ |= 0x00000002;
       onChanged();
       return this;
     }
@@ -1294,11 +881,11 @@ private static final long serialVersionUID = 0L;
      * pubkey binary of the signing keypair
      * </pre>
      *
-     * <code>bytes signer = 6;</code>
+     * <code>bytes signer = 2;</code>
      * @return This builder for chaining.
      */
     public Builder clearSigner() {
-      bitField0_ = (bitField0_ & ~0x00000020);
+      bitField0_ = (bitField0_ & ~0x00000002);
       signer_ = getDefaultInstance().getSigner();
       onChanged();
       return this;
@@ -1310,7 +897,7 @@ private static final long serialVersionUID = 0L;
      * Signature over the response by the config service
      * </pre>
      *
-     * <code>bytes signature = 7;</code>
+     * <code>bytes signature = 3;</code>
      * @return The signature.
      */
     @Override
@@ -1322,14 +909,14 @@ private static final long serialVersionUID = 0L;
      * Signature over the response by the config service
      * </pre>
      *
-     * <code>bytes signature = 7;</code>
+     * <code>bytes signature = 3;</code>
      * @param value The signature to set.
      * @return This builder for chaining.
      */
     public Builder setSignature(com.google.protobuf.ByteString value) {
       if (value == null) { throw new NullPointerException(); }
       signature_ = value;
-      bitField0_ |= 0x00000040;
+      bitField0_ |= 0x00000004;
       onChanged();
       return this;
     }
@@ -1338,14 +925,635 @@ private static final long serialVersionUID = 0L;
      * Signature over the response by the config service
      * </pre>
      *
-     * <code>bytes signature = 7;</code>
+     * <code>bytes signature = 3;</code>
      * @return This builder for chaining.
      */
     public Builder clearSignature() {
-      bitField0_ = (bitField0_ & ~0x00000040);
+      bitField0_ = (bitField0_ & ~0x00000004);
       signature_ = getDefaultInstance().getSignature();
       onChanged();
       return this;
+    }
+
+    private int action_ = 0;
+    /**
+     * <code>.helium.iot_config.action_v1 action = 4;</code>
+     * @return The enum numeric value on the wire for action.
+     */
+    @Override public int getActionValue() {
+      return action_;
+    }
+    /**
+     * <code>.helium.iot_config.action_v1 action = 4;</code>
+     * @param value The enum numeric value on the wire for action to set.
+     * @return This builder for chaining.
+     */
+    public Builder setActionValue(int value) {
+      action_ = value;
+      bitField0_ |= 0x00000008;
+      onChanged();
+      return this;
+    }
+    /**
+     * <code>.helium.iot_config.action_v1 action = 4;</code>
+     * @return The action.
+     */
+    @Override
+    public action_v1 getAction() {
+      action_v1 result = action_v1.forNumber(action_);
+      return result == null ? action_v1.UNRECOGNIZED : result;
+    }
+    /**
+     * <code>.helium.iot_config.action_v1 action = 4;</code>
+     * @param value The action to set.
+     * @return This builder for chaining.
+     */
+    public Builder setAction(action_v1 value) {
+      if (value == null) {
+        throw new NullPointerException();
+      }
+      bitField0_ |= 0x00000008;
+      action_ = value.getNumber();
+      onChanged();
+      return this;
+    }
+    /**
+     * <code>.helium.iot_config.action_v1 action = 4;</code>
+     * @return This builder for chaining.
+     */
+    public Builder clearAction() {
+      bitField0_ = (bitField0_ & ~0x00000008);
+      action_ = 0;
+      onChanged();
+      return this;
+    }
+
+    private com.google.protobuf.SingleFieldBuilderV3<
+        route_v1, route_v1.Builder, route_v1OrBuilder> routeBuilder_;
+    /**
+     * <code>.helium.iot_config.route_v1 route = 5;</code>
+     * @return Whether the route field is set.
+     */
+    @Override
+    public boolean hasRoute() {
+      return dataCase_ == 5;
+    }
+    /**
+     * <code>.helium.iot_config.route_v1 route = 5;</code>
+     * @return The route.
+     */
+    @Override
+    public route_v1 getRoute() {
+      if (routeBuilder_ == null) {
+        if (dataCase_ == 5) {
+          return (route_v1) data_;
+        }
+        return route_v1.getDefaultInstance();
+      } else {
+        if (dataCase_ == 5) {
+          return routeBuilder_.getMessage();
+        }
+        return route_v1.getDefaultInstance();
+      }
+    }
+    /**
+     * <code>.helium.iot_config.route_v1 route = 5;</code>
+     */
+    public Builder setRoute(route_v1 value) {
+      if (routeBuilder_ == null) {
+        if (value == null) {
+          throw new NullPointerException();
+        }
+        data_ = value;
+        onChanged();
+      } else {
+        routeBuilder_.setMessage(value);
+      }
+      dataCase_ = 5;
+      return this;
+    }
+    /**
+     * <code>.helium.iot_config.route_v1 route = 5;</code>
+     */
+    public Builder setRoute(
+        route_v1.Builder builderForValue) {
+      if (routeBuilder_ == null) {
+        data_ = builderForValue.build();
+        onChanged();
+      } else {
+        routeBuilder_.setMessage(builderForValue.build());
+      }
+      dataCase_ = 5;
+      return this;
+    }
+    /**
+     * <code>.helium.iot_config.route_v1 route = 5;</code>
+     */
+    public Builder mergeRoute(route_v1 value) {
+      if (routeBuilder_ == null) {
+        if (dataCase_ == 5 &&
+            data_ != route_v1.getDefaultInstance()) {
+          data_ = route_v1.newBuilder((route_v1) data_)
+              .mergeFrom(value).buildPartial();
+        } else {
+          data_ = value;
+        }
+        onChanged();
+      } else {
+        if (dataCase_ == 5) {
+          routeBuilder_.mergeFrom(value);
+        } else {
+          routeBuilder_.setMessage(value);
+        }
+      }
+      dataCase_ = 5;
+      return this;
+    }
+    /**
+     * <code>.helium.iot_config.route_v1 route = 5;</code>
+     */
+    public Builder clearRoute() {
+      if (routeBuilder_ == null) {
+        if (dataCase_ == 5) {
+          dataCase_ = 0;
+          data_ = null;
+          onChanged();
+        }
+      } else {
+        if (dataCase_ == 5) {
+          dataCase_ = 0;
+          data_ = null;
+        }
+        routeBuilder_.clear();
+      }
+      return this;
+    }
+    /**
+     * <code>.helium.iot_config.route_v1 route = 5;</code>
+     */
+    public route_v1.Builder getRouteBuilder() {
+      return getRouteFieldBuilder().getBuilder();
+    }
+    /**
+     * <code>.helium.iot_config.route_v1 route = 5;</code>
+     */
+    @Override
+    public route_v1OrBuilder getRouteOrBuilder() {
+      if ((dataCase_ == 5) && (routeBuilder_ != null)) {
+        return routeBuilder_.getMessageOrBuilder();
+      } else {
+        if (dataCase_ == 5) {
+          return (route_v1) data_;
+        }
+        return route_v1.getDefaultInstance();
+      }
+    }
+    /**
+     * <code>.helium.iot_config.route_v1 route = 5;</code>
+     */
+    private com.google.protobuf.SingleFieldBuilderV3<
+        route_v1, route_v1.Builder, route_v1OrBuilder>
+        getRouteFieldBuilder() {
+      if (routeBuilder_ == null) {
+        if (!(dataCase_ == 5)) {
+          data_ = route_v1.getDefaultInstance();
+        }
+        routeBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
+            route_v1, route_v1.Builder, route_v1OrBuilder>(
+                (route_v1) data_,
+                getParentForChildren(),
+                isClean());
+        data_ = null;
+      }
+      dataCase_ = 5;
+      onChanged();
+      return routeBuilder_;
+    }
+
+    private com.google.protobuf.SingleFieldBuilderV3<
+        eui_pair_v1, eui_pair_v1.Builder, eui_pair_v1OrBuilder> euiPairBuilder_;
+    /**
+     * <code>.helium.iot_config.eui_pair_v1 eui_pair = 6;</code>
+     * @return Whether the euiPair field is set.
+     */
+    @Override
+    public boolean hasEuiPair() {
+      return dataCase_ == 6;
+    }
+    /**
+     * <code>.helium.iot_config.eui_pair_v1 eui_pair = 6;</code>
+     * @return The euiPair.
+     */
+    @Override
+    public eui_pair_v1 getEuiPair() {
+      if (euiPairBuilder_ == null) {
+        if (dataCase_ == 6) {
+          return (eui_pair_v1) data_;
+        }
+        return eui_pair_v1.getDefaultInstance();
+      } else {
+        if (dataCase_ == 6) {
+          return euiPairBuilder_.getMessage();
+        }
+        return eui_pair_v1.getDefaultInstance();
+      }
+    }
+    /**
+     * <code>.helium.iot_config.eui_pair_v1 eui_pair = 6;</code>
+     */
+    public Builder setEuiPair(eui_pair_v1 value) {
+      if (euiPairBuilder_ == null) {
+        if (value == null) {
+          throw new NullPointerException();
+        }
+        data_ = value;
+        onChanged();
+      } else {
+        euiPairBuilder_.setMessage(value);
+      }
+      dataCase_ = 6;
+      return this;
+    }
+    /**
+     * <code>.helium.iot_config.eui_pair_v1 eui_pair = 6;</code>
+     */
+    public Builder setEuiPair(
+        eui_pair_v1.Builder builderForValue) {
+      if (euiPairBuilder_ == null) {
+        data_ = builderForValue.build();
+        onChanged();
+      } else {
+        euiPairBuilder_.setMessage(builderForValue.build());
+      }
+      dataCase_ = 6;
+      return this;
+    }
+    /**
+     * <code>.helium.iot_config.eui_pair_v1 eui_pair = 6;</code>
+     */
+    public Builder mergeEuiPair(eui_pair_v1 value) {
+      if (euiPairBuilder_ == null) {
+        if (dataCase_ == 6 &&
+            data_ != eui_pair_v1.getDefaultInstance()) {
+          data_ = eui_pair_v1.newBuilder((eui_pair_v1) data_)
+              .mergeFrom(value).buildPartial();
+        } else {
+          data_ = value;
+        }
+        onChanged();
+      } else {
+        if (dataCase_ == 6) {
+          euiPairBuilder_.mergeFrom(value);
+        } else {
+          euiPairBuilder_.setMessage(value);
+        }
+      }
+      dataCase_ = 6;
+      return this;
+    }
+    /**
+     * <code>.helium.iot_config.eui_pair_v1 eui_pair = 6;</code>
+     */
+    public Builder clearEuiPair() {
+      if (euiPairBuilder_ == null) {
+        if (dataCase_ == 6) {
+          dataCase_ = 0;
+          data_ = null;
+          onChanged();
+        }
+      } else {
+        if (dataCase_ == 6) {
+          dataCase_ = 0;
+          data_ = null;
+        }
+        euiPairBuilder_.clear();
+      }
+      return this;
+    }
+    /**
+     * <code>.helium.iot_config.eui_pair_v1 eui_pair = 6;</code>
+     */
+    public eui_pair_v1.Builder getEuiPairBuilder() {
+      return getEuiPairFieldBuilder().getBuilder();
+    }
+    /**
+     * <code>.helium.iot_config.eui_pair_v1 eui_pair = 6;</code>
+     */
+    @Override
+    public eui_pair_v1OrBuilder getEuiPairOrBuilder() {
+      if ((dataCase_ == 6) && (euiPairBuilder_ != null)) {
+        return euiPairBuilder_.getMessageOrBuilder();
+      } else {
+        if (dataCase_ == 6) {
+          return (eui_pair_v1) data_;
+        }
+        return eui_pair_v1.getDefaultInstance();
+      }
+    }
+    /**
+     * <code>.helium.iot_config.eui_pair_v1 eui_pair = 6;</code>
+     */
+    private com.google.protobuf.SingleFieldBuilderV3<
+        eui_pair_v1, eui_pair_v1.Builder, eui_pair_v1OrBuilder>
+        getEuiPairFieldBuilder() {
+      if (euiPairBuilder_ == null) {
+        if (!(dataCase_ == 6)) {
+          data_ = eui_pair_v1.getDefaultInstance();
+        }
+        euiPairBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
+            eui_pair_v1, eui_pair_v1.Builder, eui_pair_v1OrBuilder>(
+                (eui_pair_v1) data_,
+                getParentForChildren(),
+                isClean());
+        data_ = null;
+      }
+      dataCase_ = 6;
+      onChanged();
+      return euiPairBuilder_;
+    }
+
+    private com.google.protobuf.SingleFieldBuilderV3<
+        devaddr_range_v1, devaddr_range_v1.Builder, devaddr_range_v1OrBuilder> devaddrRangeBuilder_;
+    /**
+     * <code>.helium.iot_config.devaddr_range_v1 devaddr_range = 7;</code>
+     * @return Whether the devaddrRange field is set.
+     */
+    @Override
+    public boolean hasDevaddrRange() {
+      return dataCase_ == 7;
+    }
+    /**
+     * <code>.helium.iot_config.devaddr_range_v1 devaddr_range = 7;</code>
+     * @return The devaddrRange.
+     */
+    @Override
+    public devaddr_range_v1 getDevaddrRange() {
+      if (devaddrRangeBuilder_ == null) {
+        if (dataCase_ == 7) {
+          return (devaddr_range_v1) data_;
+        }
+        return devaddr_range_v1.getDefaultInstance();
+      } else {
+        if (dataCase_ == 7) {
+          return devaddrRangeBuilder_.getMessage();
+        }
+        return devaddr_range_v1.getDefaultInstance();
+      }
+    }
+    /**
+     * <code>.helium.iot_config.devaddr_range_v1 devaddr_range = 7;</code>
+     */
+    public Builder setDevaddrRange(devaddr_range_v1 value) {
+      if (devaddrRangeBuilder_ == null) {
+        if (value == null) {
+          throw new NullPointerException();
+        }
+        data_ = value;
+        onChanged();
+      } else {
+        devaddrRangeBuilder_.setMessage(value);
+      }
+      dataCase_ = 7;
+      return this;
+    }
+    /**
+     * <code>.helium.iot_config.devaddr_range_v1 devaddr_range = 7;</code>
+     */
+    public Builder setDevaddrRange(
+        devaddr_range_v1.Builder builderForValue) {
+      if (devaddrRangeBuilder_ == null) {
+        data_ = builderForValue.build();
+        onChanged();
+      } else {
+        devaddrRangeBuilder_.setMessage(builderForValue.build());
+      }
+      dataCase_ = 7;
+      return this;
+    }
+    /**
+     * <code>.helium.iot_config.devaddr_range_v1 devaddr_range = 7;</code>
+     */
+    public Builder mergeDevaddrRange(devaddr_range_v1 value) {
+      if (devaddrRangeBuilder_ == null) {
+        if (dataCase_ == 7 &&
+            data_ != devaddr_range_v1.getDefaultInstance()) {
+          data_ = devaddr_range_v1.newBuilder((devaddr_range_v1) data_)
+              .mergeFrom(value).buildPartial();
+        } else {
+          data_ = value;
+        }
+        onChanged();
+      } else {
+        if (dataCase_ == 7) {
+          devaddrRangeBuilder_.mergeFrom(value);
+        } else {
+          devaddrRangeBuilder_.setMessage(value);
+        }
+      }
+      dataCase_ = 7;
+      return this;
+    }
+    /**
+     * <code>.helium.iot_config.devaddr_range_v1 devaddr_range = 7;</code>
+     */
+    public Builder clearDevaddrRange() {
+      if (devaddrRangeBuilder_ == null) {
+        if (dataCase_ == 7) {
+          dataCase_ = 0;
+          data_ = null;
+          onChanged();
+        }
+      } else {
+        if (dataCase_ == 7) {
+          dataCase_ = 0;
+          data_ = null;
+        }
+        devaddrRangeBuilder_.clear();
+      }
+      return this;
+    }
+    /**
+     * <code>.helium.iot_config.devaddr_range_v1 devaddr_range = 7;</code>
+     */
+    public devaddr_range_v1.Builder getDevaddrRangeBuilder() {
+      return getDevaddrRangeFieldBuilder().getBuilder();
+    }
+    /**
+     * <code>.helium.iot_config.devaddr_range_v1 devaddr_range = 7;</code>
+     */
+    @Override
+    public devaddr_range_v1OrBuilder getDevaddrRangeOrBuilder() {
+      if ((dataCase_ == 7) && (devaddrRangeBuilder_ != null)) {
+        return devaddrRangeBuilder_.getMessageOrBuilder();
+      } else {
+        if (dataCase_ == 7) {
+          return (devaddr_range_v1) data_;
+        }
+        return devaddr_range_v1.getDefaultInstance();
+      }
+    }
+    /**
+     * <code>.helium.iot_config.devaddr_range_v1 devaddr_range = 7;</code>
+     */
+    private com.google.protobuf.SingleFieldBuilderV3<
+        devaddr_range_v1, devaddr_range_v1.Builder, devaddr_range_v1OrBuilder>
+        getDevaddrRangeFieldBuilder() {
+      if (devaddrRangeBuilder_ == null) {
+        if (!(dataCase_ == 7)) {
+          data_ = devaddr_range_v1.getDefaultInstance();
+        }
+        devaddrRangeBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
+            devaddr_range_v1, devaddr_range_v1.Builder, devaddr_range_v1OrBuilder>(
+                (devaddr_range_v1) data_,
+                getParentForChildren(),
+                isClean());
+        data_ = null;
+      }
+      dataCase_ = 7;
+      onChanged();
+      return devaddrRangeBuilder_;
+    }
+
+    private com.google.protobuf.SingleFieldBuilderV3<
+        skf_v1, skf_v1.Builder, skf_v1OrBuilder> skfBuilder_;
+    /**
+     * <code>.helium.iot_config.skf_v1 skf = 8;</code>
+     * @return Whether the skf field is set.
+     */
+    @Override
+    public boolean hasSkf() {
+      return dataCase_ == 8;
+    }
+    /**
+     * <code>.helium.iot_config.skf_v1 skf = 8;</code>
+     * @return The skf.
+     */
+    @Override
+    public skf_v1 getSkf() {
+      if (skfBuilder_ == null) {
+        if (dataCase_ == 8) {
+          return (skf_v1) data_;
+        }
+        return skf_v1.getDefaultInstance();
+      } else {
+        if (dataCase_ == 8) {
+          return skfBuilder_.getMessage();
+        }
+        return skf_v1.getDefaultInstance();
+      }
+    }
+    /**
+     * <code>.helium.iot_config.skf_v1 skf = 8;</code>
+     */
+    public Builder setSkf(skf_v1 value) {
+      if (skfBuilder_ == null) {
+        if (value == null) {
+          throw new NullPointerException();
+        }
+        data_ = value;
+        onChanged();
+      } else {
+        skfBuilder_.setMessage(value);
+      }
+      dataCase_ = 8;
+      return this;
+    }
+    /**
+     * <code>.helium.iot_config.skf_v1 skf = 8;</code>
+     */
+    public Builder setSkf(
+        skf_v1.Builder builderForValue) {
+      if (skfBuilder_ == null) {
+        data_ = builderForValue.build();
+        onChanged();
+      } else {
+        skfBuilder_.setMessage(builderForValue.build());
+      }
+      dataCase_ = 8;
+      return this;
+    }
+    /**
+     * <code>.helium.iot_config.skf_v1 skf = 8;</code>
+     */
+    public Builder mergeSkf(skf_v1 value) {
+      if (skfBuilder_ == null) {
+        if (dataCase_ == 8 &&
+            data_ != skf_v1.getDefaultInstance()) {
+          data_ = skf_v1.newBuilder((skf_v1) data_)
+              .mergeFrom(value).buildPartial();
+        } else {
+          data_ = value;
+        }
+        onChanged();
+      } else {
+        if (dataCase_ == 8) {
+          skfBuilder_.mergeFrom(value);
+        } else {
+          skfBuilder_.setMessage(value);
+        }
+      }
+      dataCase_ = 8;
+      return this;
+    }
+    /**
+     * <code>.helium.iot_config.skf_v1 skf = 8;</code>
+     */
+    public Builder clearSkf() {
+      if (skfBuilder_ == null) {
+        if (dataCase_ == 8) {
+          dataCase_ = 0;
+          data_ = null;
+          onChanged();
+        }
+      } else {
+        if (dataCase_ == 8) {
+          dataCase_ = 0;
+          data_ = null;
+        }
+        skfBuilder_.clear();
+      }
+      return this;
+    }
+    /**
+     * <code>.helium.iot_config.skf_v1 skf = 8;</code>
+     */
+    public skf_v1.Builder getSkfBuilder() {
+      return getSkfFieldBuilder().getBuilder();
+    }
+    /**
+     * <code>.helium.iot_config.skf_v1 skf = 8;</code>
+     */
+    @Override
+    public skf_v1OrBuilder getSkfOrBuilder() {
+      if ((dataCase_ == 8) && (skfBuilder_ != null)) {
+        return skfBuilder_.getMessageOrBuilder();
+      } else {
+        if (dataCase_ == 8) {
+          return (skf_v1) data_;
+        }
+        return skf_v1.getDefaultInstance();
+      }
+    }
+    /**
+     * <code>.helium.iot_config.skf_v1 skf = 8;</code>
+     */
+    private com.google.protobuf.SingleFieldBuilderV3<
+        skf_v1, skf_v1.Builder, skf_v1OrBuilder>
+        getSkfFieldBuilder() {
+      if (skfBuilder_ == null) {
+        if (!(dataCase_ == 8)) {
+          data_ = skf_v1.getDefaultInstance();
+        }
+        skfBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
+            skf_v1, skf_v1.Builder, skf_v1OrBuilder>(
+                (skf_v1) data_,
+                getParentForChildren(),
+                isClean());
+        data_ = null;
+      }
+      dataCase_ = 8;
+      onChanged();
+      return skfBuilder_;
     }
     @Override
     public final Builder setUnknownFields(

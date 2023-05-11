@@ -190,40 +190,35 @@ public final class IotConfig {
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
       internal_static_helium_iot_config_route_stream_res_v1_fieldAccessorTable;
   static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_helium_iot_config_session_key_filter_v1_descriptor;
+    internal_static_helium_iot_config_skf_v1_descriptor;
   static final 
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
-      internal_static_helium_iot_config_session_key_filter_v1_fieldAccessorTable;
+      internal_static_helium_iot_config_skf_v1_fieldAccessorTable;
   static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_helium_iot_config_session_key_filter_list_req_v1_descriptor;
+    internal_static_helium_iot_config_route_skf_list_req_v1_descriptor;
   static final 
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
-      internal_static_helium_iot_config_session_key_filter_list_req_v1_fieldAccessorTable;
+      internal_static_helium_iot_config_route_skf_list_req_v1_fieldAccessorTable;
   static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_helium_iot_config_session_key_filter_get_req_v1_descriptor;
+    internal_static_helium_iot_config_route_skf_get_req_v1_descriptor;
   static final 
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
-      internal_static_helium_iot_config_session_key_filter_get_req_v1_fieldAccessorTable;
+      internal_static_helium_iot_config_route_skf_get_req_v1_fieldAccessorTable;
   static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_helium_iot_config_session_key_filter_update_req_v1_descriptor;
+    internal_static_helium_iot_config_route_skf_update_req_v1_descriptor;
   static final 
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
-      internal_static_helium_iot_config_session_key_filter_update_req_v1_fieldAccessorTable;
+      internal_static_helium_iot_config_route_skf_update_req_v1_fieldAccessorTable;
   static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_helium_iot_config_session_key_filter_update_res_v1_descriptor;
+    internal_static_helium_iot_config_route_skf_update_req_v1_route_skf_update_v1_descriptor;
   static final 
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
-      internal_static_helium_iot_config_session_key_filter_update_res_v1_fieldAccessorTable;
+      internal_static_helium_iot_config_route_skf_update_req_v1_route_skf_update_v1_fieldAccessorTable;
   static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_helium_iot_config_session_key_filter_stream_req_v1_descriptor;
+    internal_static_helium_iot_config_route_skf_update_res_v1_descriptor;
   static final 
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
-      internal_static_helium_iot_config_session_key_filter_stream_req_v1_fieldAccessorTable;
-  static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_helium_iot_config_session_key_filter_stream_res_v1_descriptor;
-  static final 
-    com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
-      internal_static_helium_iot_config_session_key_filter_stream_res_v1_fieldAccessorTable;
+      internal_static_helium_iot_config_route_skf_update_res_v1_fieldAccessorTable;
   static final com.google.protobuf.Descriptors.Descriptor
     internal_static_helium_iot_config_gateway_region_params_req_v1_descriptor;
   static final 
@@ -332,236 +327,227 @@ public final class IotConfig {
       "pping_v1\022\036\n\006region\030\001 \001(\0162\016.helium.region" +
       "\022\014\n\004port\030\002 \001(\r\"P\n\020protocol_gwmp_v1\022<\n\007ma" +
       "pping\030\001 \003(\0132+.helium.iot_config.protocol" +
-      "_gwmp_mapping_v1\"\307\001\n\030protocol_http_roami" +
+      "_gwmp_mapping_v1\"\336\001\n\030protocol_http_roami" +
       "ng_v1\022K\n\tflow_type\030\001 \001(\01628.helium.iot_co" +
       "nfig.protocol_http_roaming_v1.flow_type_" +
       "v1\022\026\n\016dedupe_timeout\030\002 \001(\r\022\014\n\004path\030\003 \001(\t" +
-      "\022\023\n\013auth_header\030\004 \001(\t\"#\n\014flow_type_v1\022\010\n" +
-      "\004sync\020\000\022\t\n\005async\020\001\"\364\001\n\tserver_v1\022\014\n\004host" +
-      "\030\001 \001(\t\022\014\n\004port\030\002 \001(\r\022E\n\rpacket_router\030\003 " +
-      "\001(\0132,.helium.iot_config.protocol_packet_" +
-      "router_v1H\000\0223\n\004gwmp\030\004 \001(\0132#.helium.iot_c" +
-      "onfig.protocol_gwmp_v1H\000\022C\n\014http_roaming" +
-      "\030\005 \001(\0132+.helium.iot_config.protocol_http" +
-      "_roaming_v1H\000B\n\n\010protocol\"\225\001\n\010route_v1\022\n" +
-      "\n\002id\030\001 \001(\t\022\016\n\006net_id\030\002 \001(\r\022\013\n\003oui\030\003 \001(\004\022" +
-      ",\n\006server\030\004 \001(\0132\034.helium.iot_config.serv" +
-      "er_v1\022\022\n\nmax_copies\030\005 \001(\r\022\016\n\006active\030\006 \001(" +
-      "\010\022\016\n\006locked\030\007 \001(\010\"\021\n\017org_list_req_v1\"p\n\017" +
-      "org_list_res_v1\022\'\n\004orgs\030\001 \003(\0132\031.helium.i" +
-      "ot_config.org_v1\022\021\n\ttimestamp\030\002 \001(\004\022\016\n\006s" +
-      "igner\030\003 \001(\014\022\021\n\tsignature\030\004 \001(\014\"\035\n\016org_ge" +
-      "t_req_v1\022\013\n\003oui\030\001 \001(\004\"\227\001\n\030org_create_hel" +
-      "ium_req_v1\022\r\n\005owner\030\001 \001(\014\022\r\n\005payer\030\002 \001(\014" +
-      "\022\020\n\010devaddrs\030\003 \001(\004\022\021\n\ttimestamp\030\004 \001(\004\022\021\n" +
-      "\tsignature\030\005 \001(\014\022\025\n\rdelegate_keys\030\006 \003(\014\022" +
-      "\016\n\006signer\030\007 \001(\014\"\225\001\n\030org_create_roamer_re" +
-      "q_v1\022\r\n\005owner\030\001 \001(\014\022\r\n\005payer\030\002 \001(\014\022\016\n\006ne" +
-      "t_id\030\003 \001(\r\022\021\n\ttimestamp\030\004 \001(\004\022\021\n\tsignatu" +
-      "re\030\005 \001(\014\022\025\n\rdelegate_keys\030\006 \003(\014\022\016\n\006signe" +
-      "r\030\007 \001(\014\"\301\001\n\norg_res_v1\022&\n\003org\030\001 \001(\0132\031.he" +
-      "lium.iot_config.org_v1\022\016\n\006net_id\030\002 \001(\r\022E" +
-      "\n\023devaddr_constraints\030\003 \003(\0132(.helium.iot" +
-      "_config.devaddr_constraint_v1\022\021\n\ttimesta" +
-      "mp\030\004 \001(\004\022\016\n\006signer\030\005 \001(\014\022\021\n\tsignature\030\006 " +
-      "\001(\014\"W\n\022org_disable_req_v1\022\013\n\003oui\030\001 \001(\004\022\021" +
+      "\022\023\n\013auth_header\030\004 \001(\t\022\025\n\rreceiver_nsid\030\005" +
+      " \001(\t\"#\n\014flow_type_v1\022\010\n\004sync\020\000\022\t\n\005async\020" +
+      "\001\"\364\001\n\tserver_v1\022\014\n\004host\030\001 \001(\t\022\014\n\004port\030\002 " +
+      "\001(\r\022E\n\rpacket_router\030\003 \001(\0132,.helium.iot_" +
+      "config.protocol_packet_router_v1H\000\0223\n\004gw" +
+      "mp\030\004 \001(\0132#.helium.iot_config.protocol_gw" +
+      "mp_v1H\000\022C\n\014http_roaming\030\005 \001(\0132+.helium.i" +
+      "ot_config.protocol_http_roaming_v1H\000B\n\n\010" +
+      "protocol\"\225\001\n\010route_v1\022\n\n\002id\030\001 \001(\t\022\016\n\006net" +
+      "_id\030\002 \001(\r\022\013\n\003oui\030\003 \001(\004\022,\n\006server\030\004 \001(\0132\034" +
+      ".helium.iot_config.server_v1\022\022\n\nmax_copi" +
+      "es\030\005 \001(\r\022\016\n\006active\030\006 \001(\010\022\016\n\006locked\030\007 \001(\010" +
+      "\"\021\n\017org_list_req_v1\"p\n\017org_list_res_v1\022\'" +
+      "\n\004orgs\030\001 \003(\0132\031.helium.iot_config.org_v1\022" +
+      "\021\n\ttimestamp\030\002 \001(\004\022\016\n\006signer\030\003 \001(\014\022\021\n\tsi" +
+      "gnature\030\004 \001(\014\"\035\n\016org_get_req_v1\022\013\n\003oui\030\001" +
+      " \001(\004\"\227\001\n\030org_create_helium_req_v1\022\r\n\005own" +
+      "er\030\001 \001(\014\022\r\n\005payer\030\002 \001(\014\022\020\n\010devaddrs\030\003 \001(" +
+      "\004\022\021\n\ttimestamp\030\004 \001(\004\022\021\n\tsignature\030\005 \001(\014\022" +
+      "\025\n\rdelegate_keys\030\006 \003(\014\022\016\n\006signer\030\007 \001(\014\"\225" +
+      "\001\n\030org_create_roamer_req_v1\022\r\n\005owner\030\001 \001" +
+      "(\014\022\r\n\005payer\030\002 \001(\014\022\016\n\006net_id\030\003 \001(\r\022\021\n\ttim" +
+      "estamp\030\004 \001(\004\022\021\n\tsignature\030\005 \001(\014\022\025\n\rdeleg" +
+      "ate_keys\030\006 \003(\014\022\016\n\006signer\030\007 \001(\014\"\301\001\n\norg_r" +
+      "es_v1\022&\n\003org\030\001 \001(\0132\031.helium.iot_config.o" +
+      "rg_v1\022\016\n\006net_id\030\002 \001(\r\022E\n\023devaddr_constra" +
+      "ints\030\003 \003(\0132(.helium.iot_config.devaddr_c" +
+      "onstraint_v1\022\021\n\ttimestamp\030\004 \001(\004\022\016\n\006signe" +
+      "r\030\005 \001(\014\022\021\n\tsignature\030\006 \001(\014\"W\n\022org_disabl" +
+      "e_req_v1\022\013\n\003oui\030\001 \001(\004\022\021\n\ttimestamp\030\002 \001(\004" +
+      "\022\021\n\tsignature\030\003 \001(\014\022\016\n\006signer\030\004 \001(\014\"W\n\022o" +
+      "rg_disable_res_v1\022\013\n\003oui\030\001 \001(\004\022\021\n\ttimest" +
+      "amp\030\002 \001(\004\022\016\n\006signer\030\003 \001(\014\022\021\n\tsignature\030\004" +
+      " \001(\014\"V\n\021org_enable_req_v1\022\013\n\003oui\030\001 \001(\004\022\021" +
       "\n\ttimestamp\030\002 \001(\004\022\021\n\tsignature\030\003 \001(\014\022\016\n\006" +
-      "signer\030\004 \001(\014\"W\n\022org_disable_res_v1\022\013\n\003ou" +
-      "i\030\001 \001(\004\022\021\n\ttimestamp\030\002 \001(\004\022\016\n\006signer\030\003 \001" +
-      "(\014\022\021\n\tsignature\030\004 \001(\014\"V\n\021org_enable_req_" +
-      "v1\022\013\n\003oui\030\001 \001(\004\022\021\n\ttimestamp\030\002 \001(\004\022\021\n\tsi" +
-      "gnature\030\003 \001(\014\022\016\n\006signer\030\004 \001(\014\"V\n\021org_ena" +
-      "ble_res_v1\022\013\n\003oui\030\001 \001(\004\022\021\n\ttimestamp\030\002 \001" +
-      "(\004\022\016\n\006signer\030\003 \001(\014\022\021\n\tsignature\030\004 \001(\014\"V\n" +
-      "\021route_list_req_v1\022\013\n\003oui\030\001 \001(\004\022\021\n\ttimes" +
-      "tamp\030\002 \001(\004\022\021\n\tsignature\030\003 \001(\014\022\016\n\006signer\030" +
-      "\004 \001(\014\"v\n\021route_list_res_v1\022+\n\006routes\030\001 \003" +
-      "(\0132\033.helium.iot_config.route_v1\022\021\n\ttimes" +
-      "tamp\030\002 \001(\004\022\016\n\006signer\030\003 \001(\014\022\021\n\tsignature\030" +
-      "\004 \001(\014\"T\n\020route_get_req_v1\022\n\n\002id\030\001 \001(\t\022\021\n" +
-      "\ttimestamp\030\002 \001(\004\022\021\n\tsignature\030\003 \001(\014\022\016\n\006s" +
-      "igner\030\004 \001(\014\"\204\001\n\023route_create_req_v1\022\013\n\003o" +
-      "ui\030\001 \001(\004\022*\n\005route\030\002 \001(\0132\033.helium.iot_con" +
-      "fig.route_v1\022\021\n\ttimestamp\030\003 \001(\004\022\021\n\tsigna" +
-      "ture\030\004 \001(\014\022\016\n\006signer\030\005 \001(\014\"w\n\023route_upda" +
-      "te_req_v1\022*\n\005route\030\001 \001(\0132\033.helium.iot_co" +
-      "nfig.route_v1\022\021\n\ttimestamp\030\002 \001(\004\022\021\n\tsign" +
-      "ature\030\003 \001(\014\022\016\n\006signer\030\004 \001(\014\"W\n\023route_del" +
-      "ete_req_v1\022\n\n\002id\030\001 \001(\t\022\021\n\ttimestamp\030\002 \001(" +
-      "\004\022\021\n\tsignature\030\003 \001(\014\022\016\n\006signer\030\004 \001(\014\"p\n\014" +
-      "route_res_v1\022*\n\005route\030\001 \001(\0132\033.helium.iot" +
-      "_config.route_v1\022\021\n\ttimestamp\030\002 \001(\004\022\016\n\006s" +
-      "igner\030\003 \001(\014\022\021\n\tsignature\030\004 \001(\014\"_\n\025route_" +
-      "get_euis_req_v1\022\020\n\010route_id\030\001 \001(\t\022\021\n\ttim" +
-      "estamp\030\002 \001(\004\022\021\n\tsignature\030\003 \001(\014\022\016\n\006signe" +
-      "r\030\004 \001(\014\"\260\001\n\030route_update_euis_req_v1\022,\n\006" +
-      "action\030\001 \001(\0162\034.helium.iot_config.action_" +
-      "v1\0220\n\010eui_pair\030\002 \001(\0132\036.helium.iot_config" +
-      ".eui_pair_v1\022\021\n\ttimestamp\030\003 \001(\004\022\021\n\tsigna" +
-      "ture\030\004 \001(\014\022\016\n\006signer\030\005 \001(\014\"I\n\021route_euis" +
-      "_res_v1\022\021\n\ttimestamp\030\001 \001(\004\022\016\n\006signer\030\002 \001" +
-      "(\014\022\021\n\tsignature\030\003 \001(\014\"i\n\037route_get_devad" +
-      "dr_ranges_req_v1\022\020\n\010route_id\030\001 \001(\t\022\021\n\tti" +
-      "mestamp\030\002 \001(\004\022\021\n\tsignature\030\003 \001(\014\022\016\n\006sign" +
-      "er\030\004 \001(\014\"\304\001\n\"route_update_devaddr_ranges" +
-      "_req_v1\022,\n\006action\030\001 \001(\0162\034.helium.iot_con" +
-      "fig.action_v1\022:\n\rdevaddr_range\030\002 \001(\0132#.h" +
-      "elium.iot_config.devaddr_range_v1\022\021\n\ttim" +
-      "estamp\030\003 \001(\004\022\021\n\tsignature\030\004 \001(\014\022\016\n\006signe" +
-      "r\030\005 \001(\014\"S\n\033route_devaddr_ranges_res_v1\022\021" +
-      "\n\ttimestamp\030\001 \001(\004\022\016\n\006signer\030\002 \001(\014\022\021\n\tsig" +
-      "nature\030\003 \001(\014\"K\n\023route_stream_req_v1\022\021\n\tt" +
-      "imestamp\030\001 \001(\004\022\021\n\tsignature\030\002 \001(\014\022\016\n\006sig" +
-      "ner\030\003 \001(\014\"\241\002\n\023route_stream_res_v1\022,\n\006act" +
-      "ion\030\001 \001(\0162\034.helium.iot_config.action_v1\022" +
-      ",\n\005route\030\002 \001(\0132\033.helium.iot_config.route" +
-      "_v1H\000\0222\n\010eui_pair\030\003 \001(\0132\036.helium.iot_con" +
-      "fig.eui_pair_v1H\000\022<\n\rdevaddr_range\030\004 \001(\013" +
-      "2#.helium.iot_config.devaddr_range_v1H\000\022" +
-      "\021\n\ttimestamp\030\005 \001(\004\022\016\n\006signer\030\006 \001(\014\022\021\n\tsi" +
-      "gnature\030\007 \001(\014B\006\n\004data\"J\n\025session_key_fil" +
-      "ter_v1\022\013\n\003oui\030\001 \001(\004\022\017\n\007devaddr\030\002 \001(\r\022\023\n\013" +
-      "session_key\030\003 \001(\t\"c\n\036session_key_filter_" +
-      "list_req_v1\022\013\n\003oui\030\001 \001(\004\022\021\n\ttimestamp\030\002 " +
-      "\001(\004\022\021\n\tsignature\030\003 \001(\014\022\016\n\006signer\030\004 \001(\014\"s" +
-      "\n\035session_key_filter_get_req_v1\022\013\n\003oui\030\001" +
-      " \001(\004\022\017\n\007devaddr\030\002 \001(\r\022\021\n\ttimestamp\030\003 \001(\004" +
-      "\022\021\n\tsignature\030\004 \001(\014\022\016\n\006signer\030\005 \001(\014\"\300\001\n " +
-      "session_key_filter_update_req_v1\022,\n\006acti" +
-      "on\030\001 \001(\0162\034.helium.iot_config.action_v1\0228" +
-      "\n\006filter\030\002 \001(\0132(.helium.iot_config.sessi" +
-      "on_key_filter_v1\022\021\n\ttimestamp\030\003 \001(\004\022\021\n\ts" +
-      "ignature\030\004 \001(\014\022\016\n\006signer\030\005 \001(\014\"X\n sessio" +
-      "n_key_filter_update_res_v1\022\021\n\ttimestamp\030" +
-      "\001 \001(\004\022\016\n\006signer\030\002 \001(\014\022\021\n\tsignature\030\003 \001(\014" +
-      "\"X\n session_key_filter_stream_req_v1\022\021\n\t" +
-      "timestamp\030\001 \001(\004\022\021\n\tsignature\030\002 \001(\014\022\016\n\006si" +
-      "gner\030\003 \001(\014\"\300\001\n session_key_filter_stream" +
-      "_res_v1\022,\n\006action\030\001 \001(\0162\034.helium.iot_con" +
-      "fig.action_v1\0228\n\006filter\030\002 \001(\0132(.helium.i" +
-      "ot_config.session_key_filter_v1\022\021\n\ttimes" +
-      "tamp\030\003 \001(\004\022\016\n\006signer\030\004 \001(\014\022\021\n\tsignature\030" +
-      "\005 \001(\014\"b\n\034gateway_region_params_req_v1\022\036\n" +
-      "\006region\030\001 \001(\0162\016.helium.region\022\017\n\007address" +
-      "\030\002 \001(\014\022\021\n\tsignature\030\003 \001(\014\"\267\001\n\034gateway_re" +
-      "gion_params_res_v1\022\036\n\006region\030\001 \001(\0162\016.hel" +
-      "ium.region\0223\n\006params\030\002 \001(\0132#.helium.bloc" +
-      "kchain_region_params_v1\022\014\n\004gain\030\003 \001(\004\022\021\n" +
-      "\tsignature\030\004 \001(\014\022\021\n\ttimestamp\030\005 \001(\004\022\016\n\006s" +
-      "igner\030\006 \001(\014\"M\n\027gateway_location_req_v1\022\017" +
-      "\n\007gateway\030\001 \001(\014\022\021\n\tsignature\030\002 \001(\014\022\016\n\006si" +
-      "gner\030\003 \001(\014\"a\n\027gateway_location_res_v1\022\020\n" +
-      "\010location\030\001 \001(\t\022\021\n\ttimestamp\030\002 \001(\004\022\016\n\006si" +
-      "gner\030\003 \001(\014\022\021\n\tsignature\030\004 \001(\014\"\247\001\n\030admin_" +
-      "load_region_req_v1\022\036\n\006region\030\001 \001(\0162\016.hel" +
-      "ium.region\0223\n\006params\030\002 \001(\0132#.helium.bloc" +
-      "kchain_region_params_v1\022\023\n\013hex_indexes\030\003" +
-      " \001(\014\022\021\n\tsignature\030\004 \001(\014\022\016\n\006signer\030\005 \001(\014\"" +
-      "P\n\030admin_load_region_res_v1\022\021\n\ttimestamp" +
-      "\030\001 \001(\004\022\016\n\006signer\030\002 \001(\014\022\021\n\tsignature\030\003 \001(" +
-      "\014\"\321\001\n\024admin_add_key_req_v1\022\016\n\006pubkey\030\001 \001" +
-      "(\014\022E\n\010key_type\030\002 \001(\01623.helium.iot_config" +
-      ".admin_add_key_req_v1.key_type_v1\022\021\n\tsig" +
-      "nature\030\003 \001(\014\022\016\n\006signer\030\004 \001(\014\"?\n\013key_type" +
-      "_v1\022\021\n\radministrator\020\000\022\021\n\rpacket_router\020" +
-      "\001\022\n\n\006oracle\020\002\"L\n\027admin_remove_key_req_v1" +
-      "\022\016\n\006pubkey\030\001 \001(\014\022\021\n\tsignature\030\002 \001(\014\022\016\n\006s" +
-      "igner\030\003 \001(\014\"H\n\020admin_key_res_v1\022\021\n\ttimes" +
-      "tamp\030\001 \001(\004\022\016\n\006signer\030\002 \001(\014\022\021\n\tsignature\030" +
-      "\003 \001(\014\"e\n\020gateway_metadata\022\020\n\010location\030\001 " +
-      "\001(\t\022\036\n\006region\030\002 \001(\0162\016.helium.region\022\014\n\004g" +
-      "ain\030\003 \001(\005\022\021\n\televation\030\004 \001(\005\"o\n\014gateway_" +
-      "info\022\017\n\007address\030\001 \001(\014\022\027\n\017is_full_hotspot" +
-      "\030\002 \001(\010\0225\n\010metadata\030\003 \001(\0132#.helium.iot_co" +
-      "nfig.gateway_metadata\"I\n\023gateway_info_re" +
-      "q_v1\022\017\n\007address\030\001 \001(\014\022\021\n\tsignature\030\002 \001(\014" +
-      "\022\016\n\006signer\030\003 \001(\014\"z\n\023gateway_info_res_v1\022" +
-      "\021\n\ttimestamp\030\001 \001(\004\022-\n\004info\030\002 \001(\0132\037.heliu" +
-      "m.iot_config.gateway_info\022\021\n\tsignature\030\003" +
-      " \001(\014\022\016\n\006signer\030\004 \001(\014\"S\n\032gateway_info_str" +
-      "eam_req_v1\022\022\n\nbatch_size\030\001 \001(\r\022\021\n\tsignat" +
-      "ure\030\002 \001(\014\022\016\n\006signer\030\003 \001(\014\"\205\001\n\032gateway_in" +
-      "fo_stream_res_v1\022\021\n\ttimestamp\030\001 \001(\004\0221\n\010g" +
-      "ateways\030\002 \003(\0132\037.helium.iot_config.gatewa" +
-      "y_info\022\021\n\tsignature\030\003 \001(\014\022\016\n\006signer\030\004 \001(" +
-      "\014\"Y\n\024region_params_req_v1\022\036\n\006region\030\001 \001(" +
-      "\0162\016.helium.region\022\021\n\tsignature\030\002 \001(\014\022\016\n\006" +
-      "signer\030\003 \001(\014\"\241\001\n\024region_params_res_v1\022\036\n" +
-      "\006region\030\001 \001(\0162\016.helium.region\0223\n\006params\030" +
-      "\002 \001(\0132#.helium.blockchain_region_params_" +
-      "v1\022\021\n\tsignature\030\003 \001(\014\022\016\n\006signer\030\004 \001(\014\022\021\n" +
-      "\ttimestamp\030\005 \001(\004* \n\taction_v1\022\007\n\003add\020\000\022\n" +
-      "\n\006remove\020\0012\207\004\n\003org\022N\n\004list\022\".helium.iot_" +
-      "config.org_list_req_v1\032\".helium.iot_conf" +
-      "ig.org_list_res_v1\022G\n\003get\022!.helium.iot_c" +
-      "onfig.org_get_req_v1\032\035.helium.iot_config" +
-      ".org_res_v1\022[\n\rcreate_helium\022+.helium.io" +
-      "t_config.org_create_helium_req_v1\032\035.heli" +
-      "um.iot_config.org_res_v1\022[\n\rcreate_roame" +
-      "r\022+.helium.iot_config.org_create_roamer_" +
-      "req_v1\032\035.helium.iot_config.org_res_v1\022W\n" +
-      "\007disable\022%.helium.iot_config.org_disable" +
-      "_req_v1\032%.helium.iot_config.org_disable_" +
-      "res_v1\022T\n\006enable\022$.helium.iot_config.org" +
-      "_enable_req_v1\032$.helium.iot_config.org_e" +
-      "nable_res_v12\255\007\n\005route\022R\n\004list\022$.helium." +
-      "iot_config.route_list_req_v1\032$.helium.io" +
-      "t_config.route_list_res_v1\022K\n\003get\022#.heli" +
-      "um.iot_config.route_get_req_v1\032\037.helium." +
-      "iot_config.route_res_v1\022Q\n\006create\022&.heli" +
-      "um.iot_config.route_create_req_v1\032\037.heli" +
-      "um.iot_config.route_res_v1\022Q\n\006update\022&.h" +
-      "elium.iot_config.route_update_req_v1\032\037.h" +
-      "elium.iot_config.route_res_v1\022Q\n\006delete\022" +
-      "&.helium.iot_config.route_delete_req_v1\032" +
-      "\037.helium.iot_config.route_res_v1\022V\n\010get_" +
-      "euis\022(.helium.iot_config.route_get_euis_" +
-      "req_v1\032\036.helium.iot_config.eui_pair_v10\001" +
-      "\022b\n\013update_euis\022+.helium.iot_config.rout" +
-      "e_update_euis_req_v1\032$.helium.iot_config" +
-      ".route_euis_res_v1(\001\022o\n\022get_devaddr_rang" +
-      "es\0222.helium.iot_config.route_get_devaddr" +
-      "_ranges_req_v1\032#.helium.iot_config.devad" +
-      "dr_range_v10\001\022\200\001\n\025update_devaddr_ranges\022" +
-      "5.helium.iot_config.route_update_devaddr" +
-      "_ranges_req_v1\032..helium.iot_config.route" +
-      "_devaddr_ranges_res_v1(\001\022Z\n\006stream\022&.hel" +
-      "ium.iot_config.route_stream_req_v1\032&.hel" +
-      "ium.iot_config.route_stream_res_v10\0012\314\003\n" +
-      "\022session_key_filter\022e\n\004list\0221.helium.iot" +
-      "_config.session_key_filter_list_req_v1\032(" +
-      ".helium.iot_config.session_key_filter_v1" +
-      "0\001\022c\n\003get\0220.helium.iot_config.session_ke" +
-      "y_filter_get_req_v1\032(.helium.iot_config." +
-      "session_key_filter_v10\001\022t\n\006update\0223.heli" +
-      "um.iot_config.session_key_filter_update_" +
-      "req_v1\0323.helium.iot_config.session_key_f" +
-      "ilter_update_res_v1(\001\022t\n\006stream\0223.helium" +
-      ".iot_config.session_key_filter_stream_re" +
-      "q_v1\0323.helium.iot_config.session_key_fil" +
-      "ter_stream_res_v10\0012\247\003\n\007gateway\022q\n\rregio" +
-      "n_params\022/.helium.iot_config.gateway_reg" +
-      "ion_params_req_v1\032/.helium.iot_config.ga" +
-      "teway_region_params_res_v1\022b\n\010location\022*" +
-      ".helium.iot_config.gateway_location_req_" +
-      "v1\032*.helium.iot_config.gateway_location_" +
-      "res_v1\022V\n\004info\022&.helium.iot_config.gatew" +
-      "ay_info_req_v1\032&.helium.iot_config.gatew" +
-      "ay_info_res_v1\022m\n\013info_stream\022-.helium.i" +
-      "ot_config.gateway_info_stream_req_v1\032-.h" +
-      "elium.iot_config.gateway_info_stream_res" +
-      "_v10\0012\213\003\n\005admin\022W\n\007add_key\022\'.helium.iot_" +
-      "config.admin_add_key_req_v1\032#.helium.iot" +
-      "_config.admin_key_res_v1\022]\n\nremove_key\022*" +
-      ".helium.iot_config.admin_remove_key_req_" +
-      "v1\032#.helium.iot_config.admin_key_res_v1\022" +
-      "g\n\013load_region\022+.helium.iot_config.admin" +
-      "_load_region_req_v1\032+.helium.iot_config." +
-      "admin_load_region_res_v1\022a\n\rregion_param" +
-      "s\022\'.helium.iot_config.region_params_req_" +
-      "v1\032\'.helium.iot_config.region_params_res" +
-      "_v1B\036\n\017com.helium.grpcB\tIotConfigP\001b\006pro" +
-      "to3"
+      "signer\030\004 \001(\014\"V\n\021org_enable_res_v1\022\013\n\003oui" +
+      "\030\001 \001(\004\022\021\n\ttimestamp\030\002 \001(\004\022\016\n\006signer\030\003 \001(" +
+      "\014\022\021\n\tsignature\030\004 \001(\014\"V\n\021route_list_req_v" +
+      "1\022\013\n\003oui\030\001 \001(\004\022\021\n\ttimestamp\030\002 \001(\004\022\021\n\tsig" +
+      "nature\030\003 \001(\014\022\016\n\006signer\030\004 \001(\014\"v\n\021route_li" +
+      "st_res_v1\022+\n\006routes\030\001 \003(\0132\033.helium.iot_c" +
+      "onfig.route_v1\022\021\n\ttimestamp\030\002 \001(\004\022\016\n\006sig" +
+      "ner\030\003 \001(\014\022\021\n\tsignature\030\004 \001(\014\"T\n\020route_ge" +
+      "t_req_v1\022\n\n\002id\030\001 \001(\t\022\021\n\ttimestamp\030\002 \001(\004\022" +
+      "\021\n\tsignature\030\003 \001(\014\022\016\n\006signer\030\004 \001(\014\"\204\001\n\023r" +
+      "oute_create_req_v1\022\013\n\003oui\030\001 \001(\004\022*\n\005route" +
+      "\030\002 \001(\0132\033.helium.iot_config.route_v1\022\021\n\tt" +
+      "imestamp\030\003 \001(\004\022\021\n\tsignature\030\004 \001(\014\022\016\n\006sig" +
+      "ner\030\005 \001(\014\"w\n\023route_update_req_v1\022*\n\005rout" +
+      "e\030\001 \001(\0132\033.helium.iot_config.route_v1\022\021\n\t" +
+      "timestamp\030\002 \001(\004\022\021\n\tsignature\030\003 \001(\014\022\016\n\006si" +
+      "gner\030\004 \001(\014\"W\n\023route_delete_req_v1\022\n\n\002id\030" +
+      "\001 \001(\t\022\021\n\ttimestamp\030\002 \001(\004\022\021\n\tsignature\030\003 " +
+      "\001(\014\022\016\n\006signer\030\004 \001(\014\"p\n\014route_res_v1\022*\n\005r" +
+      "oute\030\001 \001(\0132\033.helium.iot_config.route_v1\022" +
+      "\021\n\ttimestamp\030\002 \001(\004\022\016\n\006signer\030\003 \001(\014\022\021\n\tsi" +
+      "gnature\030\004 \001(\014\"_\n\025route_get_euis_req_v1\022\020" +
+      "\n\010route_id\030\001 \001(\t\022\021\n\ttimestamp\030\002 \001(\004\022\021\n\ts" +
+      "ignature\030\003 \001(\014\022\016\n\006signer\030\004 \001(\014\"\260\001\n\030route" +
+      "_update_euis_req_v1\022,\n\006action\030\001 \001(\0162\034.he" +
+      "lium.iot_config.action_v1\0220\n\010eui_pair\030\002 " +
+      "\001(\0132\036.helium.iot_config.eui_pair_v1\022\021\n\tt" +
+      "imestamp\030\003 \001(\004\022\021\n\tsignature\030\004 \001(\014\022\016\n\006sig" +
+      "ner\030\005 \001(\014\"I\n\021route_euis_res_v1\022\021\n\ttimest" +
+      "amp\030\001 \001(\004\022\016\n\006signer\030\002 \001(\014\022\021\n\tsignature\030\003" +
+      " \001(\014\"i\n\037route_get_devaddr_ranges_req_v1\022" +
+      "\020\n\010route_id\030\001 \001(\t\022\021\n\ttimestamp\030\002 \001(\004\022\021\n\t" +
+      "signature\030\003 \001(\014\022\016\n\006signer\030\004 \001(\014\"\304\001\n\"rout" +
+      "e_update_devaddr_ranges_req_v1\022,\n\006action" +
+      "\030\001 \001(\0162\034.helium.iot_config.action_v1\022:\n\r" +
+      "devaddr_range\030\002 \001(\0132#.helium.iot_config." +
+      "devaddr_range_v1\022\021\n\ttimestamp\030\003 \001(\004\022\021\n\ts" +
+      "ignature\030\004 \001(\014\022\016\n\006signer\030\005 \001(\014\"S\n\033route_" +
+      "devaddr_ranges_res_v1\022\021\n\ttimestamp\030\001 \001(\004" +
+      "\022\016\n\006signer\030\002 \001(\014\022\021\n\tsignature\030\003 \001(\014\"K\n\023r" +
+      "oute_stream_req_v1\022\021\n\ttimestamp\030\001 \001(\004\022\021\n" +
+      "\tsignature\030\002 \001(\014\022\016\n\006signer\030\003 \001(\014\"\313\002\n\023rou" +
+      "te_stream_res_v1\022\021\n\ttimestamp\030\001 \001(\004\022\016\n\006s" +
+      "igner\030\002 \001(\014\022\021\n\tsignature\030\003 \001(\014\022,\n\006action" +
+      "\030\004 \001(\0162\034.helium.iot_config.action_v1\022,\n\005" +
+      "route\030\005 \001(\0132\033.helium.iot_config.route_v1" +
+      "H\000\0222\n\010eui_pair\030\006 \001(\0132\036.helium.iot_config" +
+      ".eui_pair_v1H\000\022<\n\rdevaddr_range\030\007 \001(\0132#." +
+      "helium.iot_config.devaddr_range_v1H\000\022(\n\003" +
+      "skf\030\010 \001(\0132\031.helium.iot_config.skf_v1H\000B\006" +
+      "\n\004data\"@\n\006skf_v1\022\020\n\010route_id\030\001 \001(\t\022\017\n\007de" +
+      "vaddr\030\002 \001(\r\022\023\n\013session_key\030\003 \001(\t\"_\n\025rout" +
+      "e_skf_list_req_v1\022\020\n\010route_id\030\001 \001(\t\022\021\n\tt" +
+      "imestamp\030\002 \001(\004\022\021\n\tsignature\030\003 \001(\014\022\016\n\006sig" +
+      "ner\030\004 \001(\014\"o\n\024route_skf_get_req_v1\022\020\n\010rou" +
+      "te_id\030\001 \001(\t\022\017\n\007devaddr\030\002 \001(\r\022\021\n\ttimestam" +
+      "p\030\003 \001(\004\022\021\n\tsignature\030\004 \001(\014\022\016\n\006signer\030\005 \001" +
+      "(\014\"\235\002\n\027route_skf_update_req_v1\022\020\n\010route_" +
+      "id\030\001 \001(\t\022O\n\007updates\030\002 \003(\0132>.helium.iot_c" +
+      "onfig.route_skf_update_req_v1.route_skf_" +
+      "update_v1\022\021\n\ttimestamp\030\003 \001(\004\022\021\n\tsignatur" +
+      "e\030\004 \001(\014\022\016\n\006signer\030\005 \001(\014\032i\n\023route_skf_upd" +
+      "ate_v1\022\017\n\007devaddr\030\001 \001(\r\022\023\n\013session_key\030\002" +
+      " \001(\t\022,\n\006action\030\003 \001(\0162\034.helium.iot_config" +
+      ".action_v1\"O\n\027route_skf_update_res_v1\022\021\n" +
+      "\ttimestamp\030\001 \001(\004\022\016\n\006signer\030\002 \001(\014\022\021\n\tsign" +
+      "ature\030\003 \001(\014\"b\n\034gateway_region_params_req" +
+      "_v1\022\036\n\006region\030\001 \001(\0162\016.helium.region\022\017\n\007a" +
+      "ddress\030\002 \001(\014\022\021\n\tsignature\030\003 \001(\014\"\267\001\n\034gate" +
+      "way_region_params_res_v1\022\036\n\006region\030\001 \001(\016" +
+      "2\016.helium.region\0223\n\006params\030\002 \001(\0132#.heliu" +
+      "m.blockchain_region_params_v1\022\014\n\004gain\030\003 " +
+      "\001(\004\022\021\n\tsignature\030\004 \001(\014\022\021\n\ttimestamp\030\005 \001(" +
+      "\004\022\016\n\006signer\030\006 \001(\014\"M\n\027gateway_location_re" +
+      "q_v1\022\017\n\007gateway\030\001 \001(\014\022\021\n\tsignature\030\002 \001(\014" +
+      "\022\016\n\006signer\030\003 \001(\014\"a\n\027gateway_location_res" +
+      "_v1\022\020\n\010location\030\001 \001(\t\022\021\n\ttimestamp\030\002 \001(\004" +
+      "\022\016\n\006signer\030\003 \001(\014\022\021\n\tsignature\030\004 \001(\014\"\247\001\n\030" +
+      "admin_load_region_req_v1\022\036\n\006region\030\001 \001(\016" +
+      "2\016.helium.region\0223\n\006params\030\002 \001(\0132#.heliu" +
+      "m.blockchain_region_params_v1\022\023\n\013hex_ind" +
+      "exes\030\003 \001(\014\022\021\n\tsignature\030\004 \001(\014\022\016\n\006signer\030" +
+      "\005 \001(\014\"P\n\030admin_load_region_res_v1\022\021\n\ttim" +
+      "estamp\030\001 \001(\004\022\016\n\006signer\030\002 \001(\014\022\021\n\tsignatur" +
+      "e\030\003 \001(\014\"\321\001\n\024admin_add_key_req_v1\022\016\n\006pubk" +
+      "ey\030\001 \001(\014\022E\n\010key_type\030\002 \001(\01623.helium.iot_" +
+      "config.admin_add_key_req_v1.key_type_v1\022" +
+      "\021\n\tsignature\030\003 \001(\014\022\016\n\006signer\030\004 \001(\014\"?\n\013ke" +
+      "y_type_v1\022\021\n\radministrator\020\000\022\021\n\rpacket_r" +
+      "outer\020\001\022\n\n\006oracle\020\002\"L\n\027admin_remove_key_" +
+      "req_v1\022\016\n\006pubkey\030\001 \001(\014\022\021\n\tsignature\030\002 \001(" +
+      "\014\022\016\n\006signer\030\003 \001(\014\"H\n\020admin_key_res_v1\022\021\n" +
+      "\ttimestamp\030\001 \001(\004\022\016\n\006signer\030\002 \001(\014\022\021\n\tsign" +
+      "ature\030\003 \001(\014\"e\n\020gateway_metadata\022\020\n\010locat" +
+      "ion\030\001 \001(\t\022\036\n\006region\030\002 \001(\0162\016.helium.regio" +
+      "n\022\014\n\004gain\030\003 \001(\005\022\021\n\televation\030\004 \001(\005\"o\n\014ga" +
+      "teway_info\022\017\n\007address\030\001 \001(\014\022\027\n\017is_full_h" +
+      "otspot\030\002 \001(\010\0225\n\010metadata\030\003 \001(\0132#.helium." +
+      "iot_config.gateway_metadata\"I\n\023gateway_i" +
+      "nfo_req_v1\022\017\n\007address\030\001 \001(\014\022\021\n\tsignature" +
+      "\030\002 \001(\014\022\016\n\006signer\030\003 \001(\014\"z\n\023gateway_info_r" +
+      "es_v1\022\021\n\ttimestamp\030\001 \001(\004\022-\n\004info\030\002 \001(\0132\037" +
+      ".helium.iot_config.gateway_info\022\021\n\tsigna" +
+      "ture\030\003 \001(\014\022\016\n\006signer\030\004 \001(\014\"S\n\032gateway_in" +
+      "fo_stream_req_v1\022\022\n\nbatch_size\030\001 \001(\r\022\021\n\t" +
+      "signature\030\002 \001(\014\022\016\n\006signer\030\003 \001(\014\"\205\001\n\032gate" +
+      "way_info_stream_res_v1\022\021\n\ttimestamp\030\001 \001(" +
+      "\004\0221\n\010gateways\030\002 \003(\0132\037.helium.iot_config." +
+      "gateway_info\022\021\n\tsignature\030\003 \001(\014\022\016\n\006signe" +
+      "r\030\004 \001(\014\"Y\n\024region_params_req_v1\022\036\n\006regio" +
+      "n\030\001 \001(\0162\016.helium.region\022\021\n\tsignature\030\002 \001" +
+      "(\014\022\016\n\006signer\030\003 \001(\014\"\241\001\n\024region_params_res" +
+      "_v1\022\036\n\006region\030\001 \001(\0162\016.helium.region\0223\n\006p" +
+      "arams\030\002 \001(\0132#.helium.blockchain_region_p" +
+      "arams_v1\022\021\n\tsignature\030\003 \001(\014\022\016\n\006signer\030\004 " +
+      "\001(\014\022\021\n\ttimestamp\030\005 \001(\004* \n\taction_v1\022\007\n\003a" +
+      "dd\020\000\022\n\n\006remove\020\0012\207\004\n\003org\022N\n\004list\022\".heliu" +
+      "m.iot_config.org_list_req_v1\032\".helium.io" +
+      "t_config.org_list_res_v1\022G\n\003get\022!.helium" +
+      ".iot_config.org_get_req_v1\032\035.helium.iot_" +
+      "config.org_res_v1\022[\n\rcreate_helium\022+.hel" +
+      "ium.iot_config.org_create_helium_req_v1\032" +
+      "\035.helium.iot_config.org_res_v1\022[\n\rcreate" +
+      "_roamer\022+.helium.iot_config.org_create_r" +
+      "oamer_req_v1\032\035.helium.iot_config.org_res" +
+      "_v1\022W\n\007disable\022%.helium.iot_config.org_d" +
+      "isable_req_v1\032%.helium.iot_config.org_di" +
+      "sable_res_v1\022T\n\006enable\022$.helium.iot_conf" +
+      "ig.org_enable_req_v1\032$.helium.iot_config" +
+      ".org_enable_res_v12\272\t\n\005route\022R\n\004list\022$.h" +
+      "elium.iot_config.route_list_req_v1\032$.hel" +
+      "ium.iot_config.route_list_res_v1\022K\n\003get\022" +
+      "#.helium.iot_config.route_get_req_v1\032\037.h" +
+      "elium.iot_config.route_res_v1\022Q\n\006create\022" +
+      "&.helium.iot_config.route_create_req_v1\032" +
+      "\037.helium.iot_config.route_res_v1\022Q\n\006upda" +
+      "te\022&.helium.iot_config.route_update_req_" +
+      "v1\032\037.helium.iot_config.route_res_v1\022Q\n\006d" +
+      "elete\022&.helium.iot_config.route_delete_r" +
+      "eq_v1\032\037.helium.iot_config.route_res_v1\022Z" +
+      "\n\006stream\022&.helium.iot_config.route_strea" +
+      "m_req_v1\032&.helium.iot_config.route_strea" +
+      "m_res_v10\001\022V\n\010get_euis\022(.helium.iot_conf" +
+      "ig.route_get_euis_req_v1\032\036.helium.iot_co" +
+      "nfig.eui_pair_v10\001\022b\n\013update_euis\022+.heli" +
+      "um.iot_config.route_update_euis_req_v1\032$" +
+      ".helium.iot_config.route_euis_res_v1(\001\022o" +
+      "\n\022get_devaddr_ranges\0222.helium.iot_config" +
+      ".route_get_devaddr_ranges_req_v1\032#.heliu" +
+      "m.iot_config.devaddr_range_v10\001\022\200\001\n\025upda" +
+      "te_devaddr_ranges\0225.helium.iot_config.ro" +
+      "ute_update_devaddr_ranges_req_v1\032..heliu" +
+      "m.iot_config.route_devaddr_ranges_res_v1" +
+      "(\001\022R\n\tlist_skfs\022(.helium.iot_config.rout" +
+      "e_skf_list_req_v1\032\031.helium.iot_config.sk" +
+      "f_v10\001\022P\n\010get_skfs\022\'.helium.iot_config.r" +
+      "oute_skf_get_req_v1\032\031.helium.iot_config." +
+      "skf_v10\001\022e\n\013update_skfs\022*.helium.iot_con" +
+      "fig.route_skf_update_req_v1\032*.helium.iot" +
+      "_config.route_skf_update_res_v12\247\003\n\007gate" +
+      "way\022q\n\rregion_params\022/.helium.iot_config" +
+      ".gateway_region_params_req_v1\032/.helium.i" +
+      "ot_config.gateway_region_params_res_v1\022b" +
+      "\n\010location\022*.helium.iot_config.gateway_l" +
+      "ocation_req_v1\032*.helium.iot_config.gatew" +
+      "ay_location_res_v1\022V\n\004info\022&.helium.iot_" +
+      "config.gateway_info_req_v1\032&.helium.iot_" +
+      "config.gateway_info_res_v1\022m\n\013info_strea" +
+      "m\022-.helium.iot_config.gateway_info_strea" +
+      "m_req_v1\032-.helium.iot_config.gateway_inf" +
+      "o_stream_res_v10\0012\213\003\n\005admin\022W\n\007add_key\022\'" +
+      ".helium.iot_config.admin_add_key_req_v1\032" +
+      "#.helium.iot_config.admin_key_res_v1\022]\n\n" +
+      "remove_key\022*.helium.iot_config.admin_rem" +
+      "ove_key_req_v1\032#.helium.iot_config.admin" +
+      "_key_res_v1\022g\n\013load_region\022+.helium.iot_" +
+      "config.admin_load_region_req_v1\032+.helium" +
+      ".iot_config.admin_load_region_res_v1\022a\n\r" +
+      "region_params\022\'.helium.iot_config.region" +
+      "_params_req_v1\032\'.helium.iot_config.regio" +
+      "n_params_res_v1B\036\n\017com.helium.grpcB\tIotC" +
+      "onfigP\001b\006proto3"
     };
     descriptor = com.google.protobuf.Descriptors.FileDescriptor
       .internalBuildGeneratedFileFrom(descriptorData,
@@ -616,7 +602,7 @@ public final class IotConfig {
     internal_static_helium_iot_config_protocol_http_roaming_v1_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_helium_iot_config_protocol_http_roaming_v1_descriptor,
-        new String[] { "FlowType", "DedupeTimeout", "Path", "AuthHeader", });
+        new String[] { "FlowType", "DedupeTimeout", "Path", "AuthHeader", "ReceiverNsid", });
     internal_static_helium_iot_config_server_v1_descriptor =
       getDescriptor().getMessageTypes().get(8);
     internal_static_helium_iot_config_server_v1_fieldAccessorTable = new
@@ -778,147 +764,141 @@ public final class IotConfig {
     internal_static_helium_iot_config_route_stream_res_v1_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_helium_iot_config_route_stream_res_v1_descriptor,
-        new String[] { "Action", "Route", "EuiPair", "DevaddrRange", "Timestamp", "Signer", "Signature", "Data", });
-    internal_static_helium_iot_config_session_key_filter_v1_descriptor =
+        new String[] { "Timestamp", "Signer", "Signature", "Action", "Route", "EuiPair", "DevaddrRange", "Skf", "Data", });
+    internal_static_helium_iot_config_skf_v1_descriptor =
       getDescriptor().getMessageTypes().get(35);
-    internal_static_helium_iot_config_session_key_filter_v1_fieldAccessorTable = new
+    internal_static_helium_iot_config_skf_v1_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
-        internal_static_helium_iot_config_session_key_filter_v1_descriptor,
-        new String[] { "Oui", "Devaddr", "SessionKey", });
-    internal_static_helium_iot_config_session_key_filter_list_req_v1_descriptor =
+        internal_static_helium_iot_config_skf_v1_descriptor,
+        new String[] { "RouteId", "Devaddr", "SessionKey", });
+    internal_static_helium_iot_config_route_skf_list_req_v1_descriptor =
       getDescriptor().getMessageTypes().get(36);
-    internal_static_helium_iot_config_session_key_filter_list_req_v1_fieldAccessorTable = new
+    internal_static_helium_iot_config_route_skf_list_req_v1_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
-        internal_static_helium_iot_config_session_key_filter_list_req_v1_descriptor,
-        new String[] { "Oui", "Timestamp", "Signature", "Signer", });
-    internal_static_helium_iot_config_session_key_filter_get_req_v1_descriptor =
+        internal_static_helium_iot_config_route_skf_list_req_v1_descriptor,
+        new String[] { "RouteId", "Timestamp", "Signature", "Signer", });
+    internal_static_helium_iot_config_route_skf_get_req_v1_descriptor =
       getDescriptor().getMessageTypes().get(37);
-    internal_static_helium_iot_config_session_key_filter_get_req_v1_fieldAccessorTable = new
+    internal_static_helium_iot_config_route_skf_get_req_v1_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
-        internal_static_helium_iot_config_session_key_filter_get_req_v1_descriptor,
-        new String[] { "Oui", "Devaddr", "Timestamp", "Signature", "Signer", });
-    internal_static_helium_iot_config_session_key_filter_update_req_v1_descriptor =
+        internal_static_helium_iot_config_route_skf_get_req_v1_descriptor,
+        new String[] { "RouteId", "Devaddr", "Timestamp", "Signature", "Signer", });
+    internal_static_helium_iot_config_route_skf_update_req_v1_descriptor =
       getDescriptor().getMessageTypes().get(38);
-    internal_static_helium_iot_config_session_key_filter_update_req_v1_fieldAccessorTable = new
+    internal_static_helium_iot_config_route_skf_update_req_v1_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
-        internal_static_helium_iot_config_session_key_filter_update_req_v1_descriptor,
-        new String[] { "Action", "Filter", "Timestamp", "Signature", "Signer", });
-    internal_static_helium_iot_config_session_key_filter_update_res_v1_descriptor =
+        internal_static_helium_iot_config_route_skf_update_req_v1_descriptor,
+        new String[] { "RouteId", "Updates", "Timestamp", "Signature", "Signer", });
+    internal_static_helium_iot_config_route_skf_update_req_v1_route_skf_update_v1_descriptor =
+      internal_static_helium_iot_config_route_skf_update_req_v1_descriptor.getNestedTypes().get(0);
+    internal_static_helium_iot_config_route_skf_update_req_v1_route_skf_update_v1_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
+        internal_static_helium_iot_config_route_skf_update_req_v1_route_skf_update_v1_descriptor,
+        new String[] { "Devaddr", "SessionKey", "Action", });
+    internal_static_helium_iot_config_route_skf_update_res_v1_descriptor =
       getDescriptor().getMessageTypes().get(39);
-    internal_static_helium_iot_config_session_key_filter_update_res_v1_fieldAccessorTable = new
+    internal_static_helium_iot_config_route_skf_update_res_v1_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
-        internal_static_helium_iot_config_session_key_filter_update_res_v1_descriptor,
+        internal_static_helium_iot_config_route_skf_update_res_v1_descriptor,
         new String[] { "Timestamp", "Signer", "Signature", });
-    internal_static_helium_iot_config_session_key_filter_stream_req_v1_descriptor =
-      getDescriptor().getMessageTypes().get(40);
-    internal_static_helium_iot_config_session_key_filter_stream_req_v1_fieldAccessorTable = new
-      com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
-        internal_static_helium_iot_config_session_key_filter_stream_req_v1_descriptor,
-        new String[] { "Timestamp", "Signature", "Signer", });
-    internal_static_helium_iot_config_session_key_filter_stream_res_v1_descriptor =
-      getDescriptor().getMessageTypes().get(41);
-    internal_static_helium_iot_config_session_key_filter_stream_res_v1_fieldAccessorTable = new
-      com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
-        internal_static_helium_iot_config_session_key_filter_stream_res_v1_descriptor,
-        new String[] { "Action", "Filter", "Timestamp", "Signer", "Signature", });
     internal_static_helium_iot_config_gateway_region_params_req_v1_descriptor =
-      getDescriptor().getMessageTypes().get(42);
+      getDescriptor().getMessageTypes().get(40);
     internal_static_helium_iot_config_gateway_region_params_req_v1_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_helium_iot_config_gateway_region_params_req_v1_descriptor,
         new String[] { "Region", "Address", "Signature", });
     internal_static_helium_iot_config_gateway_region_params_res_v1_descriptor =
-      getDescriptor().getMessageTypes().get(43);
+      getDescriptor().getMessageTypes().get(41);
     internal_static_helium_iot_config_gateway_region_params_res_v1_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_helium_iot_config_gateway_region_params_res_v1_descriptor,
         new String[] { "Region", "Params", "Gain", "Signature", "Timestamp", "Signer", });
     internal_static_helium_iot_config_gateway_location_req_v1_descriptor =
-      getDescriptor().getMessageTypes().get(44);
+      getDescriptor().getMessageTypes().get(42);
     internal_static_helium_iot_config_gateway_location_req_v1_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_helium_iot_config_gateway_location_req_v1_descriptor,
         new String[] { "Gateway", "Signature", "Signer", });
     internal_static_helium_iot_config_gateway_location_res_v1_descriptor =
-      getDescriptor().getMessageTypes().get(45);
+      getDescriptor().getMessageTypes().get(43);
     internal_static_helium_iot_config_gateway_location_res_v1_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_helium_iot_config_gateway_location_res_v1_descriptor,
         new String[] { "Location", "Timestamp", "Signer", "Signature", });
     internal_static_helium_iot_config_admin_load_region_req_v1_descriptor =
-      getDescriptor().getMessageTypes().get(46);
+      getDescriptor().getMessageTypes().get(44);
     internal_static_helium_iot_config_admin_load_region_req_v1_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_helium_iot_config_admin_load_region_req_v1_descriptor,
         new String[] { "Region", "Params", "HexIndexes", "Signature", "Signer", });
     internal_static_helium_iot_config_admin_load_region_res_v1_descriptor =
-      getDescriptor().getMessageTypes().get(47);
+      getDescriptor().getMessageTypes().get(45);
     internal_static_helium_iot_config_admin_load_region_res_v1_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_helium_iot_config_admin_load_region_res_v1_descriptor,
         new String[] { "Timestamp", "Signer", "Signature", });
     internal_static_helium_iot_config_admin_add_key_req_v1_descriptor =
-      getDescriptor().getMessageTypes().get(48);
+      getDescriptor().getMessageTypes().get(46);
     internal_static_helium_iot_config_admin_add_key_req_v1_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_helium_iot_config_admin_add_key_req_v1_descriptor,
         new String[] { "Pubkey", "KeyType", "Signature", "Signer", });
     internal_static_helium_iot_config_admin_remove_key_req_v1_descriptor =
-      getDescriptor().getMessageTypes().get(49);
+      getDescriptor().getMessageTypes().get(47);
     internal_static_helium_iot_config_admin_remove_key_req_v1_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_helium_iot_config_admin_remove_key_req_v1_descriptor,
         new String[] { "Pubkey", "Signature", "Signer", });
     internal_static_helium_iot_config_admin_key_res_v1_descriptor =
-      getDescriptor().getMessageTypes().get(50);
+      getDescriptor().getMessageTypes().get(48);
     internal_static_helium_iot_config_admin_key_res_v1_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_helium_iot_config_admin_key_res_v1_descriptor,
         new String[] { "Timestamp", "Signer", "Signature", });
     internal_static_helium_iot_config_gateway_metadata_descriptor =
-      getDescriptor().getMessageTypes().get(51);
+      getDescriptor().getMessageTypes().get(49);
     internal_static_helium_iot_config_gateway_metadata_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_helium_iot_config_gateway_metadata_descriptor,
         new String[] { "Location", "Region", "Gain", "Elevation", });
     internal_static_helium_iot_config_gateway_info_descriptor =
-      getDescriptor().getMessageTypes().get(52);
+      getDescriptor().getMessageTypes().get(50);
     internal_static_helium_iot_config_gateway_info_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_helium_iot_config_gateway_info_descriptor,
         new String[] { "Address", "IsFullHotspot", "Metadata", });
     internal_static_helium_iot_config_gateway_info_req_v1_descriptor =
-      getDescriptor().getMessageTypes().get(53);
+      getDescriptor().getMessageTypes().get(51);
     internal_static_helium_iot_config_gateway_info_req_v1_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_helium_iot_config_gateway_info_req_v1_descriptor,
         new String[] { "Address", "Signature", "Signer", });
     internal_static_helium_iot_config_gateway_info_res_v1_descriptor =
-      getDescriptor().getMessageTypes().get(54);
+      getDescriptor().getMessageTypes().get(52);
     internal_static_helium_iot_config_gateway_info_res_v1_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_helium_iot_config_gateway_info_res_v1_descriptor,
         new String[] { "Timestamp", "Info", "Signature", "Signer", });
     internal_static_helium_iot_config_gateway_info_stream_req_v1_descriptor =
-      getDescriptor().getMessageTypes().get(55);
+      getDescriptor().getMessageTypes().get(53);
     internal_static_helium_iot_config_gateway_info_stream_req_v1_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_helium_iot_config_gateway_info_stream_req_v1_descriptor,
         new String[] { "BatchSize", "Signature", "Signer", });
     internal_static_helium_iot_config_gateway_info_stream_res_v1_descriptor =
-      getDescriptor().getMessageTypes().get(56);
+      getDescriptor().getMessageTypes().get(54);
     internal_static_helium_iot_config_gateway_info_stream_res_v1_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_helium_iot_config_gateway_info_stream_res_v1_descriptor,
         new String[] { "Timestamp", "Gateways", "Signature", "Signer", });
     internal_static_helium_iot_config_region_params_req_v1_descriptor =
-      getDescriptor().getMessageTypes().get(57);
+      getDescriptor().getMessageTypes().get(55);
     internal_static_helium_iot_config_region_params_req_v1_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_helium_iot_config_region_params_req_v1_descriptor,
         new String[] { "Region", "Signature", "Signer", });
     internal_static_helium_iot_config_region_params_res_v1_descriptor =
-      getDescriptor().getMessageTypes().get(58);
+      getDescriptor().getMessageTypes().get(56);
     internal_static_helium_iot_config_region_params_res_v1_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_helium_iot_config_region_params_res_v1_descriptor,

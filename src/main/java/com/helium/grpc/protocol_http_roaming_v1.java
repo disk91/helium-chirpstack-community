@@ -23,6 +23,7 @@ private static final long serialVersionUID = 0L;
     flowType_ = 0;
     path_ = "";
     authHeader_ = "";
+    receiverNsid_ = "";
   }
 
   @Override
@@ -280,6 +281,53 @@ private static final long serialVersionUID = 0L;
     }
   }
 
+  public static final int RECEIVER_NSID_FIELD_NUMBER = 5;
+  @SuppressWarnings("serial")
+  private volatile Object receiverNsid_ = "";
+  /**
+   * <pre>
+   * Receiver NSID
+   * </pre>
+   *
+   * <code>string receiver_nsid = 5;</code>
+   * @return The receiverNsid.
+   */
+  @Override
+  public String getReceiverNsid() {
+    Object ref = receiverNsid_;
+    if (ref instanceof String) {
+      return (String) ref;
+    } else {
+      com.google.protobuf.ByteString bs = 
+          (com.google.protobuf.ByteString) ref;
+      String s = bs.toStringUtf8();
+      receiverNsid_ = s;
+      return s;
+    }
+  }
+  /**
+   * <pre>
+   * Receiver NSID
+   * </pre>
+   *
+   * <code>string receiver_nsid = 5;</code>
+   * @return The bytes for receiverNsid.
+   */
+  @Override
+  public com.google.protobuf.ByteString
+      getReceiverNsidBytes() {
+    Object ref = receiverNsid_;
+    if (ref instanceof String) {
+      com.google.protobuf.ByteString b = 
+          com.google.protobuf.ByteString.copyFromUtf8(
+              (String) ref);
+      receiverNsid_ = b;
+      return b;
+    } else {
+      return (com.google.protobuf.ByteString) ref;
+    }
+  }
+
   private byte memoizedIsInitialized = -1;
   @Override
   public final boolean isInitialized() {
@@ -306,6 +354,9 @@ private static final long serialVersionUID = 0L;
     if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(authHeader_)) {
       com.google.protobuf.GeneratedMessageV3.writeString(output, 4, authHeader_);
     }
+    if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(receiverNsid_)) {
+      com.google.protobuf.GeneratedMessageV3.writeString(output, 5, receiverNsid_);
+    }
     getUnknownFields().writeTo(output);
   }
 
@@ -329,6 +380,9 @@ private static final long serialVersionUID = 0L;
     if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(authHeader_)) {
       size += com.google.protobuf.GeneratedMessageV3.computeStringSize(4, authHeader_);
     }
+    if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(receiverNsid_)) {
+      size += com.google.protobuf.GeneratedMessageV3.computeStringSize(5, receiverNsid_);
+    }
     size += getUnknownFields().getSerializedSize();
     memoizedSize = size;
     return size;
@@ -351,6 +405,8 @@ private static final long serialVersionUID = 0L;
         .equals(other.getPath())) return false;
     if (!getAuthHeader()
         .equals(other.getAuthHeader())) return false;
+    if (!getReceiverNsid()
+        .equals(other.getReceiverNsid())) return false;
     if (!getUnknownFields().equals(other.getUnknownFields())) return false;
     return true;
   }
@@ -370,6 +426,8 @@ private static final long serialVersionUID = 0L;
     hash = (53 * hash) + getPath().hashCode();
     hash = (37 * hash) + AUTH_HEADER_FIELD_NUMBER;
     hash = (53 * hash) + getAuthHeader().hashCode();
+    hash = (37 * hash) + RECEIVER_NSID_FIELD_NUMBER;
+    hash = (53 * hash) + getReceiverNsid().hashCode();
     hash = (29 * hash) + getUnknownFields().hashCode();
     memoizedHashCode = hash;
     return hash;
@@ -507,6 +565,7 @@ private static final long serialVersionUID = 0L;
       dedupeTimeout_ = 0;
       path_ = "";
       authHeader_ = "";
+      receiverNsid_ = "";
       return this;
     }
 
@@ -552,6 +611,9 @@ private static final long serialVersionUID = 0L;
       if (((from_bitField0_ & 0x00000008) != 0)) {
         result.authHeader_ = authHeader_;
       }
+      if (((from_bitField0_ & 0x00000010) != 0)) {
+        result.receiverNsid_ = receiverNsid_;
+      }
     }
 
     @Override
@@ -580,6 +642,11 @@ private static final long serialVersionUID = 0L;
       if (!other.getAuthHeader().isEmpty()) {
         authHeader_ = other.authHeader_;
         bitField0_ |= 0x00000008;
+        onChanged();
+      }
+      if (!other.getReceiverNsid().isEmpty()) {
+        receiverNsid_ = other.receiverNsid_;
+        bitField0_ |= 0x00000010;
         onChanged();
       }
       this.mergeUnknownFields(other.getUnknownFields());
@@ -628,6 +695,11 @@ private static final long serialVersionUID = 0L;
               bitField0_ |= 0x00000008;
               break;
             } // case 34
+            case 42: {
+              receiverNsid_ = input.readStringRequireUtf8();
+              bitField0_ |= 0x00000010;
+              break;
+            } // case 42
             default: {
               if (!super.parseUnknownField(input, extensionRegistry, tag)) {
                 done = true; // was an endgroup tag
@@ -922,6 +994,98 @@ private static final long serialVersionUID = 0L;
       checkByteStringIsUtf8(value);
       authHeader_ = value;
       bitField0_ |= 0x00000008;
+      onChanged();
+      return this;
+    }
+
+    private Object receiverNsid_ = "";
+    /**
+     * <pre>
+     * Receiver NSID
+     * </pre>
+     *
+     * <code>string receiver_nsid = 5;</code>
+     * @return The receiverNsid.
+     */
+    public String getReceiverNsid() {
+      Object ref = receiverNsid_;
+      if (!(ref instanceof String)) {
+        com.google.protobuf.ByteString bs =
+            (com.google.protobuf.ByteString) ref;
+        String s = bs.toStringUtf8();
+        receiverNsid_ = s;
+        return s;
+      } else {
+        return (String) ref;
+      }
+    }
+    /**
+     * <pre>
+     * Receiver NSID
+     * </pre>
+     *
+     * <code>string receiver_nsid = 5;</code>
+     * @return The bytes for receiverNsid.
+     */
+    public com.google.protobuf.ByteString
+        getReceiverNsidBytes() {
+      Object ref = receiverNsid_;
+      if (ref instanceof String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (String) ref);
+        receiverNsid_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+    /**
+     * <pre>
+     * Receiver NSID
+     * </pre>
+     *
+     * <code>string receiver_nsid = 5;</code>
+     * @param value The receiverNsid to set.
+     * @return This builder for chaining.
+     */
+    public Builder setReceiverNsid(
+        String value) {
+      if (value == null) { throw new NullPointerException(); }
+      receiverNsid_ = value;
+      bitField0_ |= 0x00000010;
+      onChanged();
+      return this;
+    }
+    /**
+     * <pre>
+     * Receiver NSID
+     * </pre>
+     *
+     * <code>string receiver_nsid = 5;</code>
+     * @return This builder for chaining.
+     */
+    public Builder clearReceiverNsid() {
+      receiverNsid_ = getDefaultInstance().getReceiverNsid();
+      bitField0_ = (bitField0_ & ~0x00000010);
+      onChanged();
+      return this;
+    }
+    /**
+     * <pre>
+     * Receiver NSID
+     * </pre>
+     *
+     * <code>string receiver_nsid = 5;</code>
+     * @param value The bytes for receiverNsid to set.
+     * @return This builder for chaining.
+     */
+    public Builder setReceiverNsidBytes(
+        com.google.protobuf.ByteString value) {
+      if (value == null) { throw new NullPointerException(); }
+      checkByteStringIsUtf8(value);
+      receiverNsid_ = value;
+      bitField0_ |= 0x00000010;
       onChanged();
       return this;
     }

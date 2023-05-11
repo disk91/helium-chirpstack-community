@@ -11,7 +11,7 @@ public interface route_skf_update_req_v1OrBuilder extends
    * <code>string route_id = 1;</code>
    * @return The routeId.
    */
-  java.lang.String getRouteId();
+  String getRouteId();
   /**
    * <code>string route_id = 1;</code>
    * @return The bytes for routeId.
@@ -26,7 +26,7 @@ public interface route_skf_update_req_v1OrBuilder extends
    *
    * <code>repeated .helium.iot_config.route_skf_update_req_v1.route_skf_update_v1 updates = 2;</code>
    */
-  java.util.List<com.helium.grpc.route_skf_update_req_v1.route_skf_update_v1> 
+  java.util.List<route_skf_update_req_v1.route_skf_update_v1>
       getUpdatesList();
   /**
    * <pre>
@@ -35,7 +35,7 @@ public interface route_skf_update_req_v1OrBuilder extends
    *
    * <code>repeated .helium.iot_config.route_skf_update_req_v1.route_skf_update_v1 updates = 2;</code>
    */
-  com.helium.grpc.route_skf_update_req_v1.route_skf_update_v1 getUpdates(int index);
+  route_skf_update_req_v1.route_skf_update_v1 getUpdates(int index);
   /**
    * <pre>
    * WARNING: this will limited to 100 updates per req
@@ -51,7 +51,7 @@ public interface route_skf_update_req_v1OrBuilder extends
    *
    * <code>repeated .helium.iot_config.route_skf_update_req_v1.route_skf_update_v1 updates = 2;</code>
    */
-  java.util.List<? extends com.helium.grpc.route_skf_update_req_v1.route_skf_update_v1OrBuilder> 
+  java.util.List<? extends route_skf_update_req_v1.route_skf_update_v1OrBuilder>
       getUpdatesOrBuilderList();
   /**
    * <pre>
@@ -60,7 +60,7 @@ public interface route_skf_update_req_v1OrBuilder extends
    *
    * <code>repeated .helium.iot_config.route_skf_update_req_v1.route_skf_update_v1 updates = 2;</code>
    */
-  com.helium.grpc.route_skf_update_req_v1.route_skf_update_v1OrBuilder getUpdatesOrBuilder(
+  route_skf_update_req_v1.route_skf_update_v1OrBuilder getUpdatesOrBuilder(
       int index);
 
   /**

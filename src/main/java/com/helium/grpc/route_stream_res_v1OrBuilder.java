@@ -8,67 +8,11 @@ public interface route_stream_res_v1OrBuilder extends
     com.google.protobuf.MessageOrBuilder {
 
   /**
-   * <code>.helium.iot_config.action_v1 action = 1;</code>
-   * @return The enum numeric value on the wire for action.
-   */
-  int getActionValue();
-  /**
-   * <code>.helium.iot_config.action_v1 action = 1;</code>
-   * @return The action.
-   */
-  action_v1 getAction();
-
-  /**
-   * <code>.helium.iot_config.route_v1 route = 2;</code>
-   * @return Whether the route field is set.
-   */
-  boolean hasRoute();
-  /**
-   * <code>.helium.iot_config.route_v1 route = 2;</code>
-   * @return The route.
-   */
-  route_v1 getRoute();
-  /**
-   * <code>.helium.iot_config.route_v1 route = 2;</code>
-   */
-  route_v1OrBuilder getRouteOrBuilder();
-
-  /**
-   * <code>.helium.iot_config.eui_pair_v1 eui_pair = 3;</code>
-   * @return Whether the euiPair field is set.
-   */
-  boolean hasEuiPair();
-  /**
-   * <code>.helium.iot_config.eui_pair_v1 eui_pair = 3;</code>
-   * @return The euiPair.
-   */
-  eui_pair_v1 getEuiPair();
-  /**
-   * <code>.helium.iot_config.eui_pair_v1 eui_pair = 3;</code>
-   */
-  eui_pair_v1OrBuilder getEuiPairOrBuilder();
-
-  /**
-   * <code>.helium.iot_config.devaddr_range_v1 devaddr_range = 4;</code>
-   * @return Whether the devaddrRange field is set.
-   */
-  boolean hasDevaddrRange();
-  /**
-   * <code>.helium.iot_config.devaddr_range_v1 devaddr_range = 4;</code>
-   * @return The devaddrRange.
-   */
-  devaddr_range_v1 getDevaddrRange();
-  /**
-   * <code>.helium.iot_config.devaddr_range_v1 devaddr_range = 4;</code>
-   */
-  devaddr_range_v1OrBuilder getDevaddrRangeOrBuilder();
-
-  /**
    * <pre>
    * unix epoch timestamp in seconds
    * </pre>
    *
-   * <code>uint64 timestamp = 5;</code>
+   * <code>uint64 timestamp = 1;</code>
    * @return The timestamp.
    */
   long getTimestamp();
@@ -78,7 +22,7 @@ public interface route_stream_res_v1OrBuilder extends
    * pubkey binary of the signing keypair
    * </pre>
    *
-   * <code>bytes signer = 6;</code>
+   * <code>bytes signer = 2;</code>
    * @return The signer.
    */
   com.google.protobuf.ByteString getSigner();
@@ -88,10 +32,81 @@ public interface route_stream_res_v1OrBuilder extends
    * Signature over the response by the config service
    * </pre>
    *
-   * <code>bytes signature = 7;</code>
+   * <code>bytes signature = 3;</code>
    * @return The signature.
    */
   com.google.protobuf.ByteString getSignature();
+
+  /**
+   * <code>.helium.iot_config.action_v1 action = 4;</code>
+   * @return The enum numeric value on the wire for action.
+   */
+  int getActionValue();
+  /**
+   * <code>.helium.iot_config.action_v1 action = 4;</code>
+   * @return The action.
+   */
+  action_v1 getAction();
+
+  /**
+   * <code>.helium.iot_config.route_v1 route = 5;</code>
+   * @return Whether the route field is set.
+   */
+  boolean hasRoute();
+  /**
+   * <code>.helium.iot_config.route_v1 route = 5;</code>
+   * @return The route.
+   */
+  route_v1 getRoute();
+  /**
+   * <code>.helium.iot_config.route_v1 route = 5;</code>
+   */
+  route_v1OrBuilder getRouteOrBuilder();
+
+  /**
+   * <code>.helium.iot_config.eui_pair_v1 eui_pair = 6;</code>
+   * @return Whether the euiPair field is set.
+   */
+  boolean hasEuiPair();
+  /**
+   * <code>.helium.iot_config.eui_pair_v1 eui_pair = 6;</code>
+   * @return The euiPair.
+   */
+  eui_pair_v1 getEuiPair();
+  /**
+   * <code>.helium.iot_config.eui_pair_v1 eui_pair = 6;</code>
+   */
+  eui_pair_v1OrBuilder getEuiPairOrBuilder();
+
+  /**
+   * <code>.helium.iot_config.devaddr_range_v1 devaddr_range = 7;</code>
+   * @return Whether the devaddrRange field is set.
+   */
+  boolean hasDevaddrRange();
+  /**
+   * <code>.helium.iot_config.devaddr_range_v1 devaddr_range = 7;</code>
+   * @return The devaddrRange.
+   */
+  devaddr_range_v1 getDevaddrRange();
+  /**
+   * <code>.helium.iot_config.devaddr_range_v1 devaddr_range = 7;</code>
+   */
+  devaddr_range_v1OrBuilder getDevaddrRangeOrBuilder();
+
+  /**
+   * <code>.helium.iot_config.skf_v1 skf = 8;</code>
+   * @return Whether the skf field is set.
+   */
+  boolean hasSkf();
+  /**
+   * <code>.helium.iot_config.skf_v1 skf = 8;</code>
+   * @return The skf.
+   */
+  skf_v1 getSkf();
+  /**
+   * <code>.helium.iot_config.skf_v1 skf = 8;</code>
+   */
+  skf_v1OrBuilder getSkfOrBuilder();
 
   route_stream_res_v1.DataCase getDataCase();
 }
