@@ -1,0 +1,59 @@
+upstream backend {
+   server helium:8081;
+}
+upstream chirpstack {
+   server chirpstack:8080;
+}
+upstream chirpstack-api {
+   server chirpstack-rest-api:8090;
+}
+map $arg_override $override {
+   true chirpstack;
+   default front;
+}
+
+server {
+    listen 80;
+    listen [::]:80;
+
+    server_name xx.xx.xx.xx;
+
+    location ~ ^(/console/) {
+         proxy_pass http://backend$request_uri;
+         proxy_redirect  off;
+         proxy_set_header        X-Real-IP $remote_addr;
+         proxy_set_header        X-Forwarded-For $proxy_add_x_forwarded_for;
+         proxy_set_header        Host $http_host;
+    }
+
+    location ~ ^(/front/|/_nuxt/|/_loading/|/__webpack_hmr/|/static/front/) {
+         root /var/www/front;
+    }
+
+    location = / {
+         if ( $override = "front" ) { return 301 /front/; }
+         proxy_pass http://chirpstack$request_uri;
+         proxy_redirect  off;
+         proxy_set_header        X-Real-IP $remote_addr;
+         proxy_set_header        X-Forwarded-For $proxy_add_x_forwarded_for;
+         proxy_set_header        Host $http_host;
+    }
+
+    location / {
+         proxy_pass http://chirpstack$request_uri;
+         proxy_redirect  off;
+         proxy_set_header        X-Real-IP $remote_addr;
+         proxy_set_header        X-Forwarded-For $proxy_add_x_forwarded_for;
+         proxy_set_header        Host $http_host;
+    }
+
+    location ~ ^/rest-api/ {
+         rewrite ^/rest-api/(.*) /$1 break;
+         proxy_pass http://chirpstack-api;
+         proxy_redirect  off;
+         proxy_set_header        X-Real-IP $remote_addr;
+         proxy_set_header        X-Forwarded-For $proxy_add_x_forwarded_for;
+         proxy_set_header        Host $http_host;
+    }
+
+}
