@@ -41,10 +41,7 @@ public class NovaService {
     protected RedisDeviceRepository redisDeviceRepository;
 
     @Autowired
-    protected HeliumDeviceCacheService heliumDeviceCacheService;
-
-    @Autowired
-    protected HeliumTenantSetupService heliumTenantSetupService;
+    protected HeliumTStoNovaProxyService heliumTStoNovaProxyService;
 
     @Autowired
     protected PrometeusService prometeusService;
@@ -107,7 +104,7 @@ public class NovaService {
                 HashMap<String,String> routes = new HashMap<>();
                 for (String devEUI : toRefresh) {
                     // get routeId to be refreshed
-                    String routeId = heliumTenantSetupService.getRouteIdFromEui(devEUI);
+                    String routeId = heliumTStoNovaProxyService.getRouteIdFromEui(devEUI);
                     if ( routes.get(routeId) == null ) routes.put(routeId,routeId);
                 }
 
@@ -272,7 +269,7 @@ public class NovaService {
         ArrayList<skf_v1> toKep = new ArrayList<>();
 
         // get the active sessions
-        HeliumTenantSetup hts = heliumTenantSetupService.getHTSByRouteId(routeId);
+        HeliumTenantSetup hts = heliumTStoNovaProxyService.getHTSByRouteId(routeId);
         if ( hts == null ) {
             log.error("Try to refresh a route but the route does not exists in database");
         }

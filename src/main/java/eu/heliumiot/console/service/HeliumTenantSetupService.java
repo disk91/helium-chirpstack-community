@@ -20,12 +20,10 @@
 package eu.heliumiot.console.service;
 
 import eu.heliumiot.console.ConsoleConfig;
-import eu.heliumiot.console.api.interfaces.TenantSetupRespItf;
 import eu.heliumiot.console.api.interfaces.TenantSetupTemplateCreateReqItf;
 import eu.heliumiot.console.api.interfaces.TenantSetupTemplateListRespItf;
 import eu.heliumiot.console.api.interfaces.TenantSetupTemplateUpdateReqItf;
 import eu.heliumiot.console.jpa.db.HeliumTenantSetup;
-import eu.heliumiot.console.jpa.db.UserTenant;
 import eu.heliumiot.console.jpa.repository.HeliumTenantSetupRepository;
 import fr.ingeniousthings.tools.ITRightException;
 import fr.ingeniousthings.tools.ObjectCache;
@@ -157,27 +155,6 @@ public class HeliumTenantSetupService {
     // Get One element from cache, if failed, get it from DB and add it to cache
     protected HeliumTenantSetup getHeliumTenantSetup(String tenantUUID) {
         return getHeliumTenantSetup(tenantUUID,true,100);
-    }
-
-    public HeliumTenantSetup getHTSByRouteId(String routeId) {
-        List<HeliumTenantSetup> tss = heliumTenantSetupRepository.findHeliumTenantSetupByRouteId(routeId);
-        if ( tss == null || tss.size() == 0 ) return null;
-        else return tss.get(0);
-    }
-
-    @Autowired
-    protected HeliumDeviceCacheService heliumDeviceCacheService;
-    public String getRouteIdFromEui(String eui) {
-        String tenantId = heliumDeviceCacheService.getTenantId(eui);
-        if ( tenantId != null ) {
-            HeliumTenantSetup ht = this.getHeliumTenantSetup(tenantId);
-            if (ht != null) {
-                return ht.getRouteId();
-            } else {
-                log.error("Tenant with id " + tenantId + " does not exist");
-            }
-        }
-        return null;
     }
 
     // Get an element from cache, if failed, get it from DB, the tenant will be cached only if
@@ -406,6 +383,7 @@ public class HeliumTenantSetupService {
     ) {
         if ( ! ts.isTemplate() && ts.getRouteId() != null ) {
             // we need to delete the associated route
+
             novaService.addDelayedRouteRemoval(ts.getRouteId());
         }
         this.heliumSetupCache.remove(ts.getTenantUUID(),false);

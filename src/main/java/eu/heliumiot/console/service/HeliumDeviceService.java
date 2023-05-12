@@ -405,7 +405,7 @@ public class HeliumDeviceService {
         if ( all == null ) return missing; // better do nothing that big mistake
 
         log.debug("searchMissingRouteEuis - Processing route : "+routeId);
-        log.debug("searchMissingRouteEuis - Exising "+all.size()+" euis in the route");
+        log.debug("searchMissingRouteEuis - Existing "+all.size()+" euis in the route");
         HashMap<String,NovaDevice> all_= new HashMap<>();
         for ( NovaDevice n : all ) {
             all_.put((""+n.devEui+n.appEui).toLowerCase(),n);
