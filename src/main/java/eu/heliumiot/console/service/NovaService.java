@@ -211,7 +211,7 @@ public class NovaService {
      * @param eui
      */
     public synchronized void refreshOneEuiSkf(String routeId, String eui) {
-        eui = eui.toUpperCase();
+        eui = eui.toLowerCase();
         SkfRoute r = skfCache.get(routeId);
         if ( r != null && (Now.NowUtcMs() - r.refreshTime) < 2*Now.ONE_HOUR ) {
             // get new information about this EUI
