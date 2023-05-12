@@ -406,7 +406,7 @@ public class HeliumTenantService {
             }
         }
         if ( consoleConfig.isHeliumGrpcSkfEnable() ) {
-            novaService.refreshDevAddrList(devAddr,ts.getRouteId());
+            novaService.refreshOneEuiSkf(ts.getRouteId(),deviceUUID);
         }
         log.debug("Process JOIN in "+(Now.NowUtcMs()-start)+"ms");
     }

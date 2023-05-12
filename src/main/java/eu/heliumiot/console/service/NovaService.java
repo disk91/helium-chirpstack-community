@@ -4,7 +4,6 @@ import com.google.protobuf.ByteString;
 import eu.heliumiot.console.ConsoleApplication;
 import eu.heliumiot.console.ConsoleConfig;
 import eu.heliumiot.console.jpa.db.HeliumDevice;
-import eu.heliumiot.console.jpa.db.HeliumTenant;
 import eu.heliumiot.console.jpa.db.HeliumTenantSetup;
 import eu.heliumiot.console.jpa.db.NovaDevice;
 import eu.heliumiot.console.jpa.repository.HeliumDeviceRepository;
@@ -54,94 +53,6 @@ public class NovaService {
     // MANAGE THE SESSIONS NwkSkey
     // ----------------------------------
 
-
-    /*
-
-    public boolean refreshDevAddrList(String devaddr, String route_id) {
-        // Get the list of device using this devaddr
-        long start = Now.NowUtcMs();
-        // @ TODO FILTER by Tenant ID would be better
-        // @TODO basically a device join is a full refresh and we need to store the previous devaddr
-        List<String> deviceAllEUIs = redisDeviceRepository.getDevEuiByDevAddr(devaddr);
-        // filter based on route
-        ArrayList<String> deviceEUIs = new ArrayList<>();
-        for ( String eui : deviceAllEUIs) {
-            // @TODO - need a cache
-            String routeId =  heliumTenantSetupService.getRouteIdFromEui(eui);
-            if ( routeId != null && routeId.compareTo(route_id) == 0 ) {
-                deviceEUIs.add(eui);
-            }
-        }
-
-        log.debug("Refresh devAddr network keys for " + devaddr + " found " + deviceEUIs.size() + " devices");
-        int iDevAddr = Stuff.hexStrToInt(devaddr);
-
-        List<skf_v1> sessions = grpcListSessionsByDevaddr(iDevAddr, route_id);
-        if ( sessions == null ) return false;
-
-        log.debug("We have " + sessions.size() + " sessions active ");
-
-        HashMap<String,skf_v1> hashSession = new HashMap<>();
-        for ( skf_v1 session : sessions ) {
-            hashSession.put(session.getSessionKey(),session);
-        }
-
-        HashMap<String,String> sessionsToKeep = new HashMap<>();
-        LinkedList<String> sessionsToAdd = new LinkedList<>();
-        LinkedList<String> sessionsToRemove = new LinkedList<>();
-
-        for (String devEUI : deviceEUIs) {
-            // verify state from cache, is that an active device...
-            HeliumDevice hd = heliumDeviceCacheService.getHeliumDevice(devEUI);
-            switch (hd.getState()) {
-                case INSERTED:
-                case ACTIVE:
-                case INACTIVE:
-                    // get all NwkSKey
-                    Internal.DeviceSession ds = redisDeviceRepository.getDeviceDetails(devEUI);
-                    if (ds != null && ds.getNwkSEncKey() != null && ds.getNwkSEncKey().size() > 4) {
-
-                        String ntwSEncKey = HexaConverters.byteToHexString(ds.getNwkSEncKey().toByteArray());
-                        boolean sessionExist = ( hashSession.get(ntwSEncKey) != null );
-                        if ( ! sessionExist ) {
-                            sessionsToAdd.add(ntwSEncKey);
-                        } else {
-                            sessionsToKeep.put(ntwSEncKey,ntwSEncKey);
-                        }
-                        log.debug("Add Network encrypted Key " + ntwSEncKey);
-                    }
-                    if (ds == null) {
-                        log.warn("Impossible to get detailed info on "+devEUI);
-                    }
-                    break;
-                default:
-                case DEACTIVATED:
-                case OUTOFDCS:
-                case DELETED:
-                    break;
-            }
-
-        }
-        // Now identify the sessions to be removed
-        for ( skf_v1 session : sessions ) {
-            if ( sessionsToKeep.get(session.getSessionKey()) == null ) {
-                sessionsToRemove.add(session.getSessionKey());
-            }
-        }
-
-        // Call the nova update
-        boolean ret = grpcUpdateSessions(
-                sessionsToAdd,
-                sessionsToRemove,
-                iDevAddr,
-                route_id
-        );
-
-        prometeusService.addDevAddrUpdate(start);
-        return ret;
-    }
-*/
-
     protected int runningJobs = 0;
     protected boolean serviceEnable = true; // false to stop the services
 
@@ -161,11 +72,6 @@ public class NovaService {
 
     // List of deviceEUI we want the associated devAddr to be refreshed
     protected final ArrayList<String> delayedSessionRefresh = new ArrayList<>();
-
-    protected class RouteEui {
-        public String route;
-        public HashMap<String,String> devaddr = new HashMap<>();
-    }
 
     protected void addDelayedSessionRefresh(String devEUI) {
         synchronized (delayedSessionRefresh) {
@@ -257,9 +163,10 @@ public class NovaService {
                                 toBeUpdated = true;
                             } else {
                                 for (RegionSupported reg : regionsSupported) {
+                                    toBeUpdated = true;
                                     for (protocol_gwmp_mapping_v1 gwp : r.getServer().getGwmp().getMappingList()) {
-                                        if (gwp.getRegion() != reg.regionValue || gwp.getPort() != reg.port) {
-                                            toBeUpdated = true;
+                                        if (gwp.getRegion() == reg.regionValue && gwp.getPort() == reg.port) {
+                                            toBeUpdated = false;
                                             break;
                                         }
                                     }
@@ -289,10 +196,76 @@ public class NovaService {
     protected HeliumDeviceRepository heliumDeviceRepository;
 
 
-    protected synchronized void refreshOneRouteSkf(String routeId) {
+    // Cache the skf by route & eui locally
+    protected class SkfRoute {
+        public String routeId;
+        public HashMap<String,skf_v1> skfsByEui;
+        public long refreshTime;        // Last full refresh
+    }
+
+    // cache skf by route
+    private HashMap<String,SkfRoute> skfCache = new HashMap<>();
+
+
+    /**
+     * Optimize SKF route by considering an EUI update instead of a full route update
+     * when it's possible to do it.
+     * @param routeId
+     * @param eui
+     */
+    public synchronized void refreshOneEuiSkf(String routeId, String eui) {
+        SkfRoute r = skfCache.get(routeId);
+        if ( r != null && (Now.NowUtcMs() - r.refreshTime) < 2*Now.ONE_HOUR ) {
+            // get new information about this EUI
+            Internal.DeviceSession s = redisDeviceRepository.getDeviceDetails(eui);
+            String ntwSEncKey = HexaConverters.byteToHexString(s.getNwkSEncKey().toByteArray());
+            String devaddr = HexaConverters.byteToHexString(s.getDevAddr().toByteArray());
+            int iDevAddr = Stuff.hexStrToInt(devaddr);
+
+            LinkedList<SkfUpdate> skfToRem = new LinkedList<>();
+            // find the previous one and remove it
+            skf_v1 old = r.skfsByEui.get(eui);
+            if ( old != null) {
+                SkfUpdate su = new SkfUpdate();
+                su.devAddr = old.getDevaddr();
+                su.session = old.getSessionKey();
+                skfToRem.add(su);
+                // upate the previous entry in cache
+                r.skfsByEui.remove(eui);
+            }
+
+            LinkedList<SkfUpdate> skfToAdd = new LinkedList<>();
+            SkfUpdate su = new SkfUpdate();
+            su.devAddr = iDevAddr;
+            su.session = ntwSEncKey;
+            skfToAdd.add(su);
+            grpcUpdateSessions(skfToAdd,skfToRem,routeId);
+
+            skf_v1 n = skf_v1.newBuilder()
+                    .setDevaddr(iDevAddr)
+                    .setRouteId(routeId)
+                    .setSessionKey(ntwSEncKey)
+                    .build();
+            r.skfsByEui.put(eui,n);
+        } else {
+            this.refreshOneRouteSkf(routeId);
+        }
+    }
+
+
+    public synchronized void refreshOneRouteSkf(String routeId) {
+
         // get the route SKF entries
         List<skf_v1> inRouteSkfs =  grpcListSessionsByDevaddr(0,routeId);
         if ( inRouteSkfs == null ) inRouteSkfs = new ArrayList<>();
+
+        // create cache entry for the next pass
+        SkfRoute r = skfCache.get(routeId);
+        if ( r != null ) skfCache.remove(routeId);
+        r = new SkfRoute();
+        r.refreshTime = Now.NowUtcMs();
+        r.routeId = routeId;
+        r.skfsByEui = new HashMap<>();
 
         ArrayList<skf_v1> toAdd = new ArrayList<>();
         ArrayList<skf_v1> toRem = new ArrayList<>();
@@ -321,6 +294,7 @@ public class NovaService {
                             if (skf.getDevaddr() == iDevAddr && skf.getSessionKey().compareToIgnoreCase(ntwSEncKey) == 0) {
                                 // found
                                 toKep.add(skf);
+                                r.skfsByEui.put(hd.getDeviceEui(),skf);
                                 keep = true;
                                 break;
                             }
@@ -333,6 +307,7 @@ public class NovaService {
                                     .setRouteId(routeId)
                                     .build();
                             toAdd.add(sa);
+                            r.skfsByEui.put(hd.getDeviceEui(),sa);
                         }
                         break;
                     default:
@@ -362,6 +337,9 @@ public class NovaService {
                 toRem.add(skf);
             }
         }
+
+        // store in cache the updated skfs
+        skfCache.put(routeId,r);
 
         // package this for update function
         LinkedList<SkfUpdate> skfToAdd = new LinkedList<>();
