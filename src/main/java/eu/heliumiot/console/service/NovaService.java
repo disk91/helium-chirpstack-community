@@ -142,14 +142,14 @@ public class NovaService {
                 log.info("Initial Route Refresh");
 
                 // process all routes
-                int i = 0;
+                int _i = 0, _j = 0;
                 List<HeliumTenantSetup> htss = null;
                 do {
-                    htss = heliumTenantSetupRepository.findAllByTemplate(false, PageRequest.of(i,50));
+                    htss = heliumTenantSetupRepository.findAllByTemplate(false, PageRequest.of(_i,50));
                     for ( HeliumTenantSetup hts : htss ) {
                         if ( hts.getRouteId() != null && !hts.isTemplate() ) {
                             // process one route
-                            log.info("["+i+"] Refreshing tenant "+hts.getTenantUUID()+ " route "+hts.getRouteId());
+                            log.info("["+_i+"/"+_j+"] Refreshing tenant "+hts.getTenantUUID()+ " route "+hts.getRouteId()); _j++;
                             // search the route
                             route_v1 r = grpcGetOneRoute(hts.getRouteId());
                             if ( r == null ) { log.error("A known route does not exist"); continue; }
@@ -177,7 +177,7 @@ public class NovaService {
                             this.refreshOneRouteSkf(hts.getRouteId());
                         }
                     }
-                    i++;
+                    _i++;
                 } while ( htss != null && htss.size() > 0 );
 
             } finally {
@@ -211,9 +211,11 @@ public class NovaService {
      * @param eui
      */
     public synchronized void refreshOneEuiSkf(String routeId, String eui) {
+        eui = eui.toUpperCase();
         SkfRoute r = skfCache.get(routeId);
         if ( r != null && (Now.NowUtcMs() - r.refreshTime) < 2*Now.ONE_HOUR ) {
             // get new information about this EUI
+            log.debug("refreshOneEuiSkf - use cache for "+eui);
             Internal.DeviceSession s = redisDeviceRepository.getDeviceDetails(eui);
             String ntwSEncKey = HexaConverters.byteToHexString(s.getNwkSEncKey().toByteArray());
             String devaddr = HexaConverters.byteToHexString(s.getDevAddr().toByteArray());
@@ -223,12 +225,18 @@ public class NovaService {
             // find the previous one and remove it
             skf_v1 old = r.skfsByEui.get(eui);
             if ( old != null) {
+                log.debug("Key "+old.getSessionKey()+" found for deletion");
                 SkfUpdate su = new SkfUpdate();
                 su.devAddr = old.getDevaddr();
                 su.session = old.getSessionKey();
                 skfToRem.add(su);
-                // upate the previous entry in cache
+                // update the previous entry in cache
                 r.skfsByEui.remove(eui);
+            } else {
+                // debug
+                for ( String _eui : r.skfsByEui.keySet() ) {
+                    log.debug("> "+_eui);
+                }
             }
 
             LinkedList<SkfUpdate> skfToAdd = new LinkedList<>();
@@ -236,6 +244,7 @@ public class NovaService {
             su.devAddr = iDevAddr;
             su.session = ntwSEncKey;
             skfToAdd.add(su);
+            log.debug("Key "+ntwSEncKey+" to be added");
             grpcUpdateSessions(skfToAdd,skfToRem,routeId);
 
             skf_v1 n = skf_v1.newBuilder()
@@ -291,7 +300,7 @@ public class NovaService {
                             if (skf.getDevaddr() == iDevAddr && skf.getSessionKey().compareToIgnoreCase(ntwSEncKey) == 0) {
                                 // found
                                 toKep.add(skf);
-                                r.skfsByEui.put(hd.getDeviceEui(),skf);
+                                r.skfsByEui.put(hd.getDeviceEui().toLowerCase(),skf);
                                 keep = true;
                                 break;
                             }
@@ -304,7 +313,7 @@ public class NovaService {
                                     .setRouteId(routeId)
                                     .build();
                             toAdd.add(sa);
-                            r.skfsByEui.put(hd.getDeviceEui(),sa);
+                            r.skfsByEui.put(hd.getDeviceEui().toLowerCase(),sa);
                         }
                         break;
                     default:
@@ -1275,7 +1284,7 @@ public class NovaService {
         if ( ! this.grpcInitOk ) return null;
 
         long start = Now.NowUtcMs();
-        log.debug("GRPC List sessions for "+String.format("0x%08X",devAddr)+ "in route "+routeId);
+        log.debug("GRPC List sessions for "+String.format("0x%08X",devAddr)+ " in route "+routeId);
         ManagedChannel channel = null;
         try {
             channel = ManagedChannelBuilder.forAddress(
