@@ -70,16 +70,12 @@
   # the 'name' parameter of the region configuration in '[[regions]]'.
   enabled_regions=[
     "eu868",
-    "eu433",
     "us915_0",
     "as923",
     "as923_2",
     "as923_3",
     "as923_4",
-    "cn470_0",
     "au915_1",
-    "au915_2",
-    "au915_6",
     "in865",
     "kr920",
   ]

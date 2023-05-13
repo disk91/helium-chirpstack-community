@@ -7,6 +7,6 @@ username=""
 password=""
 
 [integration.mqtt]
-event_topic_template="au915/gateway/{{ .GatewayID }}/event/{{ .EventType }}"
-state_topic_template="au915/gateway/{{ .GatewayID }}/state/{{ .StateType }}"
-command_topic_template="au915/gateway/{{ .GatewayID }}/command/#"
+event_topic_template="au915_1/gateway/{{ .GatewayID }}/event/{{ .EventType }}"
+state_topic_template="au915_1/gateway/{{ .GatewayID }}/state/{{ .StateType }}"
+command_topic_template="au915_1/gateway/{{ .GatewayID }}/command/#"

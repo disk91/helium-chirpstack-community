@@ -75,13 +75,13 @@ services:
     depends_on:
       - mosquitto
 
-  chirpstack-gateway-bridge-au915:
+  chirpstack-gateway-bridge-au915-1:
     image: chirpstack/chirpstack-gateway-bridge:4.0.3
     restart: unless-stopped
     ports:
       - 1702:1700/udp
     volumes:
-      - /helium/configuration/chirpstack-gateway-bridge-au915:/etc/chirpstack-gateway-bridge
+      - /helium/configuration/chirpstack-gateway-bridge-au915-1:/etc/chirpstack-gateway-bridge
     depends_on:
       - mosquitto
 
