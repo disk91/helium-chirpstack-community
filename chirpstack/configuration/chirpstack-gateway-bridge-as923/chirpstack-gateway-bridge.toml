@@ -1,0 +1,12 @@
+# See https://www.chirpstack.io/gateway-bridge/install/config/ for a full
+# configuration example and documentation.
+
+[integration.mqtt.auth.generic]
+servers=["tcp://mosquitto:1883"]
+username=""
+password=""
+
+[integration.mqtt]
+event_topic_template="as923/gateway/{{ .GatewayID }}/event/{{ .EventType }}"
+state_topic_template="as923/gateway/{{ .GatewayID }}/state/{{ .StateType }}"
+command_topic_template="as923/gateway/{{ .GatewayID }}/command/#"

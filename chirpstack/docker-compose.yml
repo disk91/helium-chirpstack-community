@@ -85,6 +85,66 @@ services:
     depends_on:
       - mosquitto
 
+  chirpstack-gateway-bridge-as923:
+    image: chirpstack/chirpstack-gateway-bridge:4.0.3
+    restart: unless-stopped
+    ports:
+      - 1703:1700/udp
+    volumes:
+      - /helium/configuration/chirpstack-gateway-bridge-as923:/etc/chirpstack-gateway-bridge
+    depends_on:
+      - mosquitto
+
+  chirpstack-gateway-bridge-as923-2:
+    image: chirpstack/chirpstack-gateway-bridge:4.0.3
+    restart: unless-stopped
+    ports:
+      - 1704:1700/udp
+    volumes:
+      - /helium/configuration/chirpstack-gateway-bridge-as923-2:/etc/chirpstack-gateway-bridge
+    depends_on:
+      - mosquitto
+
+  chirpstack-gateway-bridge-as923-3:
+    image: chirpstack/chirpstack-gateway-bridge:4.0.3
+    restart: unless-stopped
+    ports:
+      - 1705:1700/udp
+    volumes:
+      - /helium/configuration/chirpstack-gateway-bridge-as923-3:/etc/chirpstack-gateway-bridge
+    depends_on:
+      - mosquitto
+
+  chirpstack-gateway-bridge-as923-4:
+    image: chirpstack/chirpstack-gateway-bridge:4.0.3
+    restart: unless-stopped
+    ports:
+      - 1706:1700/udp
+    volumes:
+      - /helium/configuration/chirpstack-gateway-bridge-as923-4:/etc/chirpstack-gateway-bridge
+    depends_on:
+      - mosquitto
+
+  chirpstack-gateway-bridge-in865:
+    image: chirpstack/chirpstack-gateway-bridge:4.0.3
+    restart: unless-stopped
+    ports:
+      - 1707:1700/udp
+    volumes:
+      - /helium/configuration/chirpstack-gateway-bridge-in865:/etc/chirpstack-gateway-bridge
+    depends_on:
+      - mosquitto
+
+  chirpstack-gateway-bridge-kr920:
+    image: chirpstack/chirpstack-gateway-bridge:4.0.3
+    restart: unless-stopped
+    ports:
+      - 1708:1700/udp
+    volumes:
+      - /helium/configuration/chirpstack-gateway-bridge-kr920:/etc/chirpstack-gateway-bridge
+    depends_on:
+      - mosquitto
+
   chirpstack-rest-api:
     image: chirpstack/chirpstack-rest-api:4.1.1
     restart: unless-stopped
