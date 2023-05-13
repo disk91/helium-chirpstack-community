@@ -27,17 +27,5 @@ back: .FORCE
 
 build: front back
 
-start:
-	-docker stop console
-	-docker rm console
-	docker run --name console \
-	           --restart always \
-	           --expose 8081 \
-               --mount type=bind,source=$(KEYFILE),target=/etc/helium/pkey.bin \
-               --network=$(NETWORK) \
-	           --add-host postgres:$(POSTGRESIP) \
-               --add-host redis:$(REDISIP) \
-               --add-host mosquitto:$(MQTTIP) \
-       	       -d disk91/console
 
 
