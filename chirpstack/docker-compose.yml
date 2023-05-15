@@ -1,5 +1,5 @@
 version: "3"
-
+name: helium
 services:
   nginx:
     image: nginx:latest
@@ -27,7 +27,7 @@ services:
     image: disk91/console
     restart: unless-stopped
     volumes:
-      - /helium/cli/key.bin:/etc/helium/pkey.bin
+      - /helium/cli/keypair.bin:/etc/helium/pkey.bin
       - /helium/configuration/helium/configuration.properties:/configuration.properties
     depends_on:
       - postgres

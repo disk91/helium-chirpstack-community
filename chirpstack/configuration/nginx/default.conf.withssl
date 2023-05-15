@@ -23,7 +23,7 @@ server {
     }
 
     location / {
-        return 301 https://www.foo.bar$request_uri;
+        return 301 https://console.foo.bar$request_uri;
     }
 }
 
@@ -33,8 +33,8 @@ server {
 
     server_name console.foo.bar;
 
-    ssl_certificate /etc/nginx/ssl/live/foo.bar/fullchain.pem;
-    ssl_certificate_key /etc/nginx/ssl/live/foo.bar/privkey.pem;
+    ssl_certificate /etc/nginx/ssl/live/console.foo.bar/fullchain.pem;
+    ssl_certificate_key /etc/nginx/ssl/live/console.foo.bar/privkey.pem;
     
     location ~ ^(/console/) {
          proxy_pass http://backend$request_uri;
