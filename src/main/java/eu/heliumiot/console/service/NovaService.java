@@ -292,6 +292,10 @@ public class NovaService {
                     case ACTIVE:
                     case INACTIVE:
                         Internal.DeviceSession s = redisDeviceRepository.getDeviceDetails(hd.getDeviceEui());
+                        if ( s == null ) {
+                            // no session yet for that device (just inserted)
+                            continue;
+                        }
                         String ntwSEncKey = HexaConverters.byteToHexString(s.getNwkSEncKey().toByteArray());
                         String devaddr = HexaConverters.byteToHexString(s.getDevAddr().toByteArray());
                         int iDevAddr = Stuff.hexStrToInt(devaddr);
