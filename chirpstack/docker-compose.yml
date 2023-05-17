@@ -253,5 +253,10 @@ services:
       - GF_SECURITY_ADMIN_PASSWORD=admin
       - GF_USERS_ALLOW_SIGN_UP=false
       - GF_SERVER_HTTP_PORT=8050
+      - GF_SMTP_ENABLE=false
+      - GF_SMTP_HOST=smtp.sendgrid.net:25
+      - GF_SMTP_USER=apikey
+      - GF_SMTP_PASSWORD=SG....
+      - GF_SMTP_FROM_ADDRESS=alert@foo.bar
     depends_on:
       - prometheus
