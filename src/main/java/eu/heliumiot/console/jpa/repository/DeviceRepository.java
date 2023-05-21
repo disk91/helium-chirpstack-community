@@ -20,6 +20,8 @@
 package eu.heliumiot.console.jpa.repository;
 
 import eu.heliumiot.console.jpa.db.Device;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
@@ -33,5 +35,8 @@ public interface DeviceRepository extends CrudRepository<Device, byte[]> {
     public Device findOneDeviceByDevEui(byte[] id);
 
     public List<Device> findDeviceByCreatedAtGreaterThanOrderByCreatedAtAsc(Timestamp from);
+
+    public Slice<Device> findDeviceBy(Pageable pageable);
+
 
 }

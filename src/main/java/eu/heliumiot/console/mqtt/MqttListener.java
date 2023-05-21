@@ -222,7 +222,7 @@ public class MqttListener implements MqttCallback {
                 } else if ( topicName.matches("application/.*/event/log$") ) {
                         // just do nothing for this one
 
- // =================================================
+// =================================================
 // INTERNAL ASYNCHRONOUS MESSAGES
 // =================================================
 

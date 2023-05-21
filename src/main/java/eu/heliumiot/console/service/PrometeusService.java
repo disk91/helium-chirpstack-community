@@ -410,7 +410,7 @@ public class PrometeusService {
     @Autowired
     protected ConsoleConfig consoleConfig;
 
-    @Scheduled(fixedRateString = "${helium.prometeus.scanPeriod}", initialDelay = 1_000)
+    @Scheduled(fixedRateString = "${helium.prometeus.scanPeriod}", initialDelay = 1_000) // default 1m
     protected void backgroundPrometeusStatsUpdate() {
         long start = Now.NowUtcMs();
         // collect metrics form DB and DB response time metrics for this
@@ -424,17 +424,15 @@ public class PrometeusService {
         if ( consoleConfig.getTestdeviceEui().length() == 16 ) {
             d = deviceRepository.findOneDeviceByDevEui(Tools.EuiStringToByteArray(consoleConfig.getTestdeviceEui()));
         }
-
         this.addQueryDb(Now.NowUtcMs()-start);
         this.updateTenantTotal(tenants);
         this.updateUserTotal(users);
         this.updateDeviceTotal(devices);
         this.updateDcTotal(sumDc.longValue());
-        this.setLastSeenTestDevice(Now.NowUtcMs()); //default behavior
-        if ( d != null ) {
-            if ( d.getLastSeenAt() != null ) {
-                this.setLastSeenTestDevice(d.getLastSeenAt().getTime());
-            }
+        if ( d != null && d.getLastSeenAt() != null ) {
+            this.setLastSeenTestDevice(d.getLastSeenAt().getTime());
+        } else {
+            this.setLastSeenTestDevice(Now.NowUtcMs()); //default behavior
         }
         log.debug("backgroundPrometeusStatsUpdate execution has been "+(Now.NowUtcMs()-start)+"ms.");
     }

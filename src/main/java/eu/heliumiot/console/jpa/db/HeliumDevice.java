@@ -103,7 +103,6 @@ public class HeliumDevice implements ClonnableObject<HeliumDevice> {
         return null;
     }
 
-
     // ---
 
     public UUID getId() {

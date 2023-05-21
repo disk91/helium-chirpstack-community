@@ -234,7 +234,9 @@ public class HeliumDeviceService {
                 // new devices
                 hdev = new HeliumDevice();
                 hdev.setDeviceUUID(dev.getDevEui());
+                String appEui = dev.getAppEui();
                 hdev.setApplicationEui("");
+                if ( appEui != null ) hdev.setApplicationEui(appEui);
                 hdev.setDeviceEui(devEui);
                 lastCreated = dev.getCreatedAt().getTime();
                 hdev.setCreatedAt(lastCreated);
@@ -353,6 +355,7 @@ public class HeliumDeviceService {
      * @return
      */
     public List<NovaDevice> clearInvalidRouteEuis(String routeId, boolean commit) {
+        log.debug("clearInvalidRouteEuis - Processing route "+routeId);
         long start = Now.NowUtcMs();
         ArrayList<NovaDevice> invalids = new ArrayList<>();
         List<NovaDevice> all = novaService.getAllKnownDevices(routeId);
@@ -366,19 +369,24 @@ public class HeliumDeviceService {
                 log.debug("Device "+dev.devEui+" / "+ dev.appEui+" can be cleared");
                 invalids.add(dev);
             } else  {
-                switch ( hd.getState() ) {
-                    default:
-                    case INSERTED:
-                    case ACTIVE:
-                    case INACTIVE:
-                        break;
+                if ( dev.appEui.compareToIgnoreCase(hd.getApplicationEui()) != 0 ) {
+                    log.debug("Device "+dev.devEui+" exists but with wrong appEUI, removing it");
+                    invalids.add(dev);
+                } else {
+                    switch (hd.getState()) {
+                        default:
+                        case INSERTED:
+                        case ACTIVE:
+                        case INACTIVE:
+                            break;
 
-                    case DEACTIVATED:
-                    case OUTOFDCS:
-                    case DELETED:
-                        log.debug("Device "+dev.devEui+" / "+ dev.appEui+" can be cleared");
-                        invalids.add(dev);
-                        break;
+                        case DEACTIVATED:
+                        case OUTOFDCS:
+                        case DELETED:
+                            log.debug("Device " + dev.devEui + " / " + dev.appEui + " can be cleared");
+                            invalids.add(dev);
+                            break;
+                    }
                 }
             }
 
@@ -412,6 +420,7 @@ public class HeliumDeviceService {
         }
 
         Slice<HeliumDevice> allDevices = heliumDeviceRepository.findHeliumDeviceByTenantUUID(tenantId, PageRequest.of(0, 100));
+        boolean nextPage = false;
         if ( allDevices != null ) {
             do {
                 for ( HeliumDevice d : allDevices ) {
@@ -439,8 +448,9 @@ public class HeliumDeviceService {
                 }
                 if ( allDevices.hasNext() ) {
                     allDevices = heliumDeviceRepository.findHeliumDeviceByTenantUUID(tenantId, allDevices.nextPageable());
-                }
-            } while (allDevices.hasNext());
+                    nextPage = true;
+                } else nextPage = false;
+            } while (nextPage);
         }
         if (commit) novaService.activateDevices(missing);
         prometeusService.addRouteUpdate(start);
@@ -448,7 +458,7 @@ public class HeliumDeviceService {
     }
 
     // On Start Schedule a route cleaning process
-    private boolean recycled = false;
+    private boolean resynced = false;
 
     @Autowired
     private HeliumTenantSetupRepository heliumTenantSetupRepository;
@@ -456,9 +466,38 @@ public class HeliumDeviceService {
     // resync the devices in the route
     @Scheduled(fixedRate = 3600_000, initialDelay = 45_000)
     private void resyncOnce() {
-        if (recycled) return;
+        if (resynced) return;
         long start = Now.NowUtcMs();
         log.info("resyncOnce - start db & helium route resync");
+
+        // scan all Devices (to sync appEui when needed)
+        Slice<Device> allDevices = deviceRepository.findDeviceBy(PageRequest.of(0, 100));
+        boolean nextPage = false;
+        if ( allDevices != null ) {
+            do {
+                for (Device d : allDevices) {
+                    log.debug("device : "+d.getName());
+                    String appEui = d.getAppEui();
+                    if ( appEui != null ) {
+                        log.debug("App eui "+appEui);
+                        String devEui = HexaConverters.byteToHexString(d.getDevEui());
+                        HeliumDevice hdev = heliumDeviceCacheService.getHeliumDevice(devEui,false);
+                        if ( hdev != null ) {
+                            if ( hdev.getApplicationEui().compareTo(appEui) != 0) {
+                                log.info("Found an appEui to update : "+devEui +" ("+appEui+")");
+                                hdev.setApplicationEui(appEui);
+                                heliumDeviceRepository.save(hdev);
+                            }
+                        }
+                    }
+                }
+                if ( allDevices.hasNext() ) {
+                    allDevices = deviceRepository.findDeviceBy(allDevices.nextPageable());
+                    nextPage = true;
+                } else nextPage = false;
+            } while (nextPage);
+        }
+
 
         // Scan all Helium tenants
         int i = 0;
@@ -474,7 +513,7 @@ public class HeliumDeviceService {
             i++;
         } while ( htss != null && htss.size() > 0 );
 
-        recycled = true;
+        resynced = true;
         log.info("resyncOnce - processed in " + (Now.NowUtcMs() - start) + "ms");
     }
 

@@ -48,6 +48,33 @@ public class Device {
     @Column(name = "application_id")
     private UUID applicationId;
 
+    @Column(name = "variables")
+    private String variables;       // contains tags
+
+    // --
+    public String getAppEui() {
+        if ( this.variables != null ) {
+            String v = this.variables.strip();
+            if ( v.startsWith("{") && v.endsWith("}") ) {
+                v = v.substring(1,v.length()-1);
+                String vs [] =  v.split(",");
+                for ( String _v : vs ) {
+                    _v = _v.strip();
+                    if ( _v.startsWith("\"app_eui\":") ) {
+                        String ae = _v.split(":")[1];
+                        ae = ae.strip();
+                        ae = ae.substring(1,ae.length()-1);
+                        return ae;
+                    }
+                }
+            }
+        }
+        return null;
+    }
+
+
+
+
     // ---
 
 
@@ -113,5 +140,13 @@ public class Device {
 
     public void setApplicationId(UUID applicationId) {
         this.applicationId = applicationId;
+    }
+
+    public String getVariables() {
+        return variables;
+    }
+
+    public void setVariables(String variables) {
+        this.variables = variables;
     }
 }
