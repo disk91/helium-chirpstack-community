@@ -476,10 +476,8 @@ public class HeliumDeviceService {
         if ( allDevices != null ) {
             do {
                 for (Device d : allDevices) {
-                    log.debug("device : "+d.getName());
                     String appEui = d.getAppEui();
                     if ( appEui != null ) {
-                        log.debug("App eui "+appEui);
                         String devEui = HexaConverters.byteToHexString(d.getDevEui());
                         HeliumDevice hdev = heliumDeviceCacheService.getHeliumDevice(devEui,false);
                         if ( hdev != null ) {
