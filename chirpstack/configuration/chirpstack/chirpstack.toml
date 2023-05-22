@@ -80,6 +80,13 @@
     "kr920",
   ]
 
+  # Time to wait for uplink de-duplication.
+  #
+  # This is the time that ChirpStack will wait for other gateways to receive
+  # the same uplink frame. Please note that this value affects the
+  # roundtrip time. The total roundtrip time (which includes network latency)
+  # must be less than the (first) receive-window.
+  deduplication_delay="200ms"
 
 # API interface configuration.
 [api]
@@ -97,11 +104,9 @@
 
 
 [integration]
-  enabled=["mqtt"]
+  enabled=[
+  ]
 
-  [integration.mqtt]
-    server="tcp://$MQTT_BROKER_HOST:1883/"
-    json=true
 
 [gateway]
   allow_unknown_gateways=true
