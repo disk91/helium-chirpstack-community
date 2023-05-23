@@ -104,6 +104,12 @@ public class JWTAuthorizationFilter extends GenericFilterBean {
                     .build()
                     .parseClaimsJws(authHeader.replace("Bearer ",""));
 
+            if ( jws.getHeader().getAlgorithm().compareToIgnoreCase("HS512") != 0 ) {
+                log.error("### Bearer is signed with invalid algo !!! ");
+                chain.doFilter(request, response);
+                return;
+            }
+
             Claims claims = jws.getBody();
             ArrayList<String> roles = (ArrayList<String>) claims.get("roles");
             ArrayList<MyGrantedAuthority> list = new ArrayList<>();
@@ -115,6 +121,15 @@ public class JWTAuthorizationFilter extends GenericFilterBean {
             }
             String user = claims.getSubject();
             UserCacheService.UserCacheElement u = userCacheService.getUserById(user);
+            if ( ! u.user.isAdmin() ) {
+                for ( String role : roles ) {
+                    if ( role.compareToIgnoreCase("ROLE_ADMIN") == 0 ) {
+                        log.error("### A simple user try to be identified as an admin !!! ");
+                        chain.doFilter(request, response);
+                        return;
+                    }
+                }
+            }
             if ( u != null && u.user.isActive() /* todo ... more test */ ) {
                 // accept the authentication
                 SecurityContextHolder
