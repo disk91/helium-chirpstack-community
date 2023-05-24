@@ -176,7 +176,7 @@ public class HeliumDeviceService {
     /**
      * Search for new device added into the device table
      */
-    @Scheduled(fixedRateString = "${helium.device.new.scanPeriod}", initialDelay = 5_000)
+    @Scheduled(fixedRateString = "${helium.device.new.scanPeriod}", initialDelay = 5_000) // default : 30s
     private void scanNewDevicesJob() {
         if ( ! this.serviceEnable ) return;
         this.runningJobs++;
@@ -287,6 +287,43 @@ public class HeliumDeviceService {
                 p.setLongValue(lastCreated - 1); // 1 ms before to make sure
                 heliumParameterService.flushParameter(p);
             }
+
+            // Search for updated device to check the appEUI updates
+            List<Device> udevs = deviceRepository.findDeviceByUpdatedAtGreaterThanOrderByUpdatedAtAsc(
+                    new Timestamp(p.getLongValue()-(consoleConfig.getHeliumDeviceNewScanPeriod()+10_000)));
+            for (Device udev : udevs) {
+                String devEui = HexaConverters.byteToHexString(udev.getDevEui());
+                // verify
+                HeliumDevice hdev = heliumDeviceRepository.findOneHeliumDeviceByDeviceEui(devEui);
+                if (hdev != null) {
+                    String appEui = udev.getAppEui();
+                    if ( appEui != null && hdev.getApplicationEui().compareToIgnoreCase(appEui) != 0 ) {
+                        // appEUI updated
+                        log.debug("Device "+udev.getName()+" have a new appEUI "+appEui);
+                        HeliumTenantSetup ts = heliumTenantSetupService.getHeliumTenantSetup(hdev.getTenantUUID());
+
+                        // update the route - remove previous one
+                        NovaDevice nd = new NovaDevice();
+                        nd.devEui=hdev.getDeviceEui();
+                        nd.appEui=hdev.getApplicationEui();
+                        nd.routeId=ts.getRouteId();
+                        novaService.addDelayedEuisRefreshRemoval(nd);
+
+                        // update the device information
+                        hdev.setApplicationEui(appEui);
+                        heliumDeviceRepository.save(hdev);
+                        heliumDeviceCacheService.removeFromCache(hdev.getDeviceEui());
+
+                        // update the route
+                        NovaDevice na = new NovaDevice();
+                        na.devEui=hdev.getDeviceEui();
+                        na.appEui=hdev.getApplicationEui();
+                        na.routeId=ts.getRouteId();
+                        novaService.addDelayedEuisRefreshAddition(na);
+                    }
+                }
+            }
+
         } finally {
             this.runningJobs--;
         }

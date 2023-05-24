@@ -36,6 +36,8 @@ public interface DeviceRepository extends CrudRepository<Device, byte[]> {
 
     public List<Device> findDeviceByCreatedAtGreaterThanOrderByCreatedAtAsc(Timestamp from);
 
+    public List<Device> findDeviceByUpdatedAtGreaterThanOrderByUpdatedAtAsc(Timestamp from);
+
     public Slice<Device> findDeviceBy(Pageable pageable);
 
 

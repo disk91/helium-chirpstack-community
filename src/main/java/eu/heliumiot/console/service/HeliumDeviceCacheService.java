@@ -123,6 +123,11 @@ public class HeliumDeviceCacheService {
         return dev;
     }
 
+    public void removeFromCache(String deviceEui) {
+        deviceEui = deviceEui.toUpperCase();
+        heliumDeviceCache.remove(deviceEui,false);
+    }
+
     /**
      * Get the tenant ID with a device EUI
      * @param deviceEui

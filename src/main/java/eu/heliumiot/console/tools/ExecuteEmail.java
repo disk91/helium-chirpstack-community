@@ -20,6 +20,7 @@
 
 package eu.heliumiot.console.tools;
 
+import com.sun.mail.smtp.SMTPSenderFailedException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -51,6 +52,8 @@ public class ExecuteEmail {
             helper.setText(text);
             helper.setSubject(subject);
             sender.send(message);
+        } catch ( SMTPSenderFailedException x) {
+            log.error("Failed to send email, bad setting - "+x.getMessage());
         } catch (MessagingException e) {
             log.error("Impossible to send an email to ("+to+")");
         }
