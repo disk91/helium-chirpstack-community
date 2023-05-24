@@ -335,6 +335,7 @@ public class NovaService {
         } while ( devices != null && !quit );
 
         // search for session to be removed
+        boolean hasNonEmpty = false;
         for ( skf_v1 skf : inRouteSkfs ) {
             boolean found = false;
             for ( skf_v1 keep : toKep ) {
@@ -344,7 +345,9 @@ public class NovaService {
                 }
             }
             if ( ! found ) {
-                toRem.add(skf);
+                if ( !this.isRandomSkf(skf.getDevaddr(),skf.getSessionKey(),routeId) ) {
+                    toRem.add(skf);
+                } else hasNonEmpty = true;
             }
         }
 
@@ -367,6 +370,13 @@ public class NovaService {
             skfToRem.add(su);
         }
         grpcUpdateSessions(skfToAdd,skfToRem,routeId);
+
+        // fix the route with non empty skf missing
+        if ( ! hasNonEmpty ) {
+            log.warn("We found a route without the non empty skf entry");
+            this.grpcAddRandomSkf(routeId,this.addresses.get(0).getStartAddr());
+        }
+
     }
 
 
@@ -915,6 +925,10 @@ public class NovaService {
                     return null;
                 }
             }
+            // add a random skf for making sure we have skf enabled
+            // we can identify it with the size : 30 chars
+            this.grpcAddRandomSkf(response.getRoute().getId(),this.addresses.get(0).getStartAddr());
+
             log.debug("GPRC route creation duration " + (Now.NowUtcMs() - start) + "ms");
             log.debug("GRPC route " + response.getRoute().getId());
             return response.getRoute();
@@ -1281,6 +1295,20 @@ public class NovaService {
     // ==============================================
     // Manage devices sessions
     // ==============================================
+
+    public void grpcAddRandomSkf(String routeId, int addr) {
+        LinkedList<SkfUpdate> add = new LinkedList<>();
+        LinkedList<SkfUpdate> del = new LinkedList<>();
+        SkfUpdate skf = new SkfUpdate();
+        skf.devAddr = addr;
+        skf.session = RandomString.getRandomHexString(30);
+        add.add(skf);
+        this.grpcUpdateSessions(add,del,routeId);
+    }
+
+    public boolean isRandomSkf(int addr, String session, String routeId) {
+        return (session.length() == 30);
+    }
 
 
     private List<skf_v1> grpcListSessionsByDevaddr(int devAddr, String routeId) {
