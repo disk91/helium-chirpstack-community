@@ -405,5 +405,7 @@
     "bcopy_success" : "Mise à jour de Max Copy réussie",
     "bcopy_error" : "Problème durant la mise à jour de Max Copy, réessayez plus tard",
 
+    "mig_setup_auth_data_tx" : "En saisissant votre clef API, vous acceptez de transférer les meta-données de vos objets, leurs clefs, et autres données vers ce service.",
+
     "end" : "fin"
 }

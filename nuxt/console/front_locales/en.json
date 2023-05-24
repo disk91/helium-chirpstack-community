@@ -404,5 +404,7 @@
   "bcopy_success" : "Max copy update success",
   "bcopy_error" : "Error during max copy update, please try later",
 
+  "mig_setup_auth_data_tx" : "By entering your API key, you accept to transfer device meta-data, credentials and other needed information to this service.",
+
   "end" : "end"
 }

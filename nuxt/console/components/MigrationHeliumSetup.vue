@@ -83,7 +83,8 @@
                 </b-col>
             </b-row>
             <b-row>
-                <b-col cols="9"></b-col>
+                <b-col cols="5" style="font-size:0.7rem; color:rgb(139, 114, 31)">{{ $t('mig_setup_auth_data_tx') }}</b-col>
+                <b-col cols="4"></b-col>
                 <b-col cols="3">
                     <b-card-text class="text-danger" style="text-align:left;font-size:0.8rem;margin-top:-10px;" >
                         {{ $t(errorMessage)}} 
