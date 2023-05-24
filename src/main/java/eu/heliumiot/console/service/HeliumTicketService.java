@@ -19,11 +19,13 @@
  */
 package eu.heliumiot.console.service;
 
+import eu.heliumiot.console.ConsoleConfig;
 import eu.heliumiot.console.api.interfaces.*;
 import eu.heliumiot.console.jpa.db.HeliumTicket;
 import eu.heliumiot.console.jpa.db.HeliumTicketResponse;
 import eu.heliumiot.console.jpa.repository.HeliumTicketRepository;
 import eu.heliumiot.console.jpa.repository.HeliumTicketResponseRepository;
+import eu.heliumiot.console.tools.ExecuteEmail;
 import fr.ingeniousthings.tools.ITParseException;
 import fr.ingeniousthings.tools.ITRightException;
 import fr.ingeniousthings.tools.Now;
@@ -55,6 +57,12 @@ public class HeliumTicketService {
     @Autowired
     protected UserCacheService userCacheService;
 
+    @Autowired
+    protected ExecuteEmail executeEmail;
+
+    @Autowired
+    protected ConsoleConfig consoleConfig;
+
     // create a new ticket
     public void createTicket(String userUUID, TicketCreationReqItf tc)
     throws ITParseException, ITRightException {
@@ -80,6 +88,14 @@ public class HeliumTicketService {
         t.setDetail(tc.getDetails());
 
         heliumTicketRepository.save(t);
+
+        // fire an email
+        executeEmail.execute(
+                consoleConfig.getHeliumMailFrom(),
+                "A new service request has been created with topic :"+tc.getTopic(),
+                "["+consoleConfig.getHeliumConsoleName()+"] New Service Request",
+                consoleConfig.getHeliumMailFrom()
+        );
     }
 
     // List user ticket
