@@ -883,8 +883,10 @@ public class HeliumTenantService {
         ArrayList<TenantSearchRespItf> r = new ArrayList<>();
         for ( String tId : tenantsId.values() ) {
             HeliumTenant ht = this.getHeliumTenant(tId);
+            HeliumTenantSetup hts = heliumTenantSetupService.getHeliumTenantSetup(tId);
             TenantSearchRespItf k = new TenantSearchRespItf();
             k.setTenantUUID(ht.getTenantUUID());
+            k.setRouteId(((hts != null && hts.getRouteId() != null)?hts.getRouteId():"N/A"));
             k.setDcBalance(ht.getDcBalance());
             eu.heliumiot.console.jpa.db.Tenant t = this.getTenant(UUID.fromString(tId));
             if ( t == null ) continue;

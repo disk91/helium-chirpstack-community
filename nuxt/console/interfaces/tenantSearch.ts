@@ -1,6 +1,7 @@
 declare module "vue/types/tenantSearch" {
     interface TenantSearchResponse {
         tenantUUID : string,
+        routeId: string,
         ownerEmail : string,
         tenantName : string,
         dcBalance : bigint

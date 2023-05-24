@@ -34,6 +34,13 @@ public class TenantSearchRespItf {
     protected String tenantUUID;
 
     @Schema(
+            description = "Route Id",
+            requiredMode = Schema.RequiredMode.REQUIRED
+    )
+    protected String routeId;
+
+
+    @Schema(
             description = "Tenant owner or actor",
             requiredMode = Schema.RequiredMode.REQUIRED
     )
@@ -85,5 +92,13 @@ public class TenantSearchRespItf {
 
     public void setDcBalance(long dcBalance) {
         this.dcBalance = dcBalance;
+    }
+
+    public String getRouteId() {
+        return routeId;
+    }
+
+    public void setRouteId(String routeId) {
+        this.routeId = routeId;
     }
 }

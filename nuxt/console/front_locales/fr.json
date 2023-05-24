@@ -66,6 +66,7 @@
     "addtenant_vmessage_success" : "Le tenant a bien été créé",
 
     "tsl_tenantUUID" : "Nom",
+    "tsl_routeId" : "Route",
     "tsl_dcBalanceStop" : "Min Dc",
     "tsl_dcPer24BMessage" : "Uplink",
     "tsl_dcPer24BDownlink" : "Downlink",

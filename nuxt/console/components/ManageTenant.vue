@@ -117,6 +117,7 @@ export default Vue.extend({
                 {key: 'ownerEmail', sortable: false, label : this.$t('tsl_ownerEmail')},
                 {key: 'dcBalance', sortable: false, label : this.$t('tsl_dcBalance')},
                 {key: 'tenantUUID', sortable: false, label : this.$t('tsl_tenantID')},
+                {key: 'routeId', sortable: false, label : this.$t('tsl_routeId')},
             ],
             isBusy : false,
             showModal : false,
