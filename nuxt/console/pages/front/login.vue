@@ -45,6 +45,7 @@
                               {{ $t('submit') }}</b-button>
               </form> 
               <b-button block 
+                        v-if="status.openForRegistration"
                         variant="outline-primary"
                         @click="redirectToSignup()"
                         >{{ $t('signup_message') }}</b-button>
@@ -73,7 +74,7 @@
 import Vue from 'vue'
 import { Store } from 'vuex/types/index';
 import { UserMessage } from 'vue/types/message';
-
+import { ConsoleStatusRespItf } from 'vue/types/misc';
 
 interface data {
     messages : UserMessage[],
@@ -87,6 +88,7 @@ interface data {
           content : string,
     },
     errorMessage : string,
+    status : ConsoleStatusRespItf,
 }
 
 export default Vue.extend({
@@ -105,6 +107,9 @@ export default Vue.extend({
                 content : '',
             },
             errorMessage : '',
+            status : {
+                openForRegistration : true
+            },
         }
     },
     async fetch() {
@@ -123,6 +128,14 @@ export default Vue.extend({
             }).catch((err) =>{
             })
             this.$data.messages = [];
+        this.$axios.get(this.$config.statusGet,config)
+            .then((response) => {
+                if ( response.status == 200 ) {
+                    this.$data.status = response.data;
+                }
+            }).catch((err) => {
+                this.$router.push('/front/failed');
+            })
     },
     methods: {
         async displayMessages() {

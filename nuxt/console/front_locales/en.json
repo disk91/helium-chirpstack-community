@@ -3,6 +3,7 @@
   "password" : "password",
   "login_error" : "Invalid email/password",
   "welcome_message" : "Submit your credentials to access the console",
+  "failure_message" : "Due to a technical problem, the console is currenlty not accessible, please hold on or try it later.",
   "submit" : "Submit",
   "signup_message" : "No account ? signup !",
   "lost_password" : "Password lost",

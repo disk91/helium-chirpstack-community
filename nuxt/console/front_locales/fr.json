@@ -3,6 +3,7 @@
     "password" : "mot de passe",
     "login_error" : "email/mot de passe invalides",
     "welcome_message" : "Saisissez vos identifiants pour acceder à la console",
+    "failure_message" : "En raison d'un problème technique, la plateforme n'est actuellement pas accessible, veuillez patienter ou essayer de nouveau ulterieurement.",
     "submit" : "Envoyer",
     "signup_message" : "Pas de compte ? inscrivez-vous !",
     "lost_password" : "Mod de passe oublié",

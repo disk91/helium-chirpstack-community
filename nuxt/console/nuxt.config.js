@@ -46,6 +46,7 @@ export default {
     transactionInvoice:(process.env.API_HOST || '')+'/console/1.0/transaction/invoice',
     transactionAdmList:(process.env.API_HOST || '')+'/console/1.0/transaction/completed',
     backVersionGet:(process.env.API_HOST || '')+'/console/1.0/misc/version',
+    statusGet:(process.env.API_HOST || '')+'/console/1.0/misc/status',
     invoiceSetupGet:(process.env.API_HOST || '')+'/console/1.0/invoice/setup',
     invoiceSetupUpd:(process.env.API_HOST || '')+'/console/1.0/invoice/setup',
     ticketListGet:(process.env.API_HOST || '')+'/console/1.0/ticket/',

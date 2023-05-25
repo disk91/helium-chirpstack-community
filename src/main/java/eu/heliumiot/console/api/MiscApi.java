@@ -24,6 +24,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import eu.heliumiot.console.ConsoleConfig;
 import eu.heliumiot.console.api.interfaces.ActionResult;
+import eu.heliumiot.console.api.interfaces.ConsoleStatusRespItf;
 import eu.heliumiot.console.api.interfaces.ServerLogItf;
 import eu.heliumiot.console.api.interfaces.UserSignUpReqItf;
 import eu.heliumiot.console.jpa.db.HeliumLogs;
@@ -42,6 +43,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
@@ -69,6 +71,7 @@ public class MiscApi {
     @RequestMapping(value="/version",
             produces = MediaType.APPLICATION_JSON_VALUE,
             method= RequestMethod.GET)
+    @PreAuthorize("hasAnyRole('ROLE_USER')")
     public ResponseEntity<?> requestApplicationVersion(
             HttpServletRequest request
     ) {
@@ -79,6 +82,26 @@ public class MiscApi {
         return new ResponseEntity<>(r, HttpStatus.OK);
     }
 
+    @Operation(summary = "Backend misc status",
+            description = "Returns misc status information to display on site",
+            responses = {
+                    @ApiResponse(responseCode = "200", description= "Done", content = @Content(schema = @Schema(implementation = ActionResult.class)))
+            }
+    )
+    @RequestMapping(value="/status",
+            produces = MediaType.APPLICATION_JSON_VALUE,
+            method= RequestMethod.GET)
+    public ResponseEntity<?> requestApplicationStatus(
+            HttpServletRequest request
+    ) {
+        long startMs= Now.NowUtcMs();
+        ConsoleStatusRespItf r = new ConsoleStatusRespItf();
+        r.setOpenForRegistration(consoleConfig.isHeliumAllowsSignup());
+        prometeusService.addApiTotalTimeMs(startMs);
+        return new ResponseEntity<>(r, HttpStatus.OK);
+    }
+
+
     @Operation(summary = "Router oui",
             description = "Returns the router oui",
             responses = {
@@ -88,6 +111,7 @@ public class MiscApi {
     @RequestMapping(value="/oui",
             produces = MediaType.APPLICATION_JSON_VALUE,
             method= RequestMethod.GET)
+    @PreAuthorize("hasAnyRole('ROLE_USER')")
     public ResponseEntity<?> requestRouterOui(
             HttpServletRequest request
     ) {
