@@ -56,6 +56,7 @@
     "page_home" : "Le mieux est de retourner dans un lieu sûr : l'acceuil",
   
     "menu_add_tenant" : "Créer un tenant",
+    "menu_documentation" : "Documentation",
     "menu_sign_out" : "Deconnexion",
     "menu_chirpstack" : "Chirpstack",
     "menu_user_stats" : "Info Tenant",

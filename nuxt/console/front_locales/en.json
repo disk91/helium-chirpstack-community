@@ -57,6 +57,7 @@
   "page_home" : "Let's try a safe place, nothing better than home",
 
   "menu_add_tenant" : "Add new tenant",
+  "menu_documentation" : "Documentation",
   "menu_sign_out" : "Sign out",
   "menu_chirpstack" : "Chirpstack",
   "menu_user_stats" : "Tenant details",
