@@ -405,12 +405,14 @@ public class NovaService {
 
     protected void addDelayedEuisRefreshAddition(NovaDevice dev) {
         synchronized (delayedEuisRefreshAddition) {
+            log.debug("To be added "+dev.devEui+" ("+dev.appEui+") "+dev.routeId);
             this.delayedEuisRefreshAddition.add(dev);
         }
     }
 
     protected void addDelayedEuisRefreshRemoval(NovaDevice dev) {
         synchronized (delayedEuisRefreshRemoval) {
+            log.debug("To be deleted "+dev.devEui+" ("+dev.appEui+") "+dev.routeId);
             this.delayedEuisRefreshRemoval.add(dev);
         }
     }
@@ -1216,7 +1218,7 @@ public class NovaService {
 
             @Override
             public void onError(Throwable t) {
-                log.debug("Eui update failed");
+                log.debug("Eui update failed "+t.getMessage());
             }
 
             @Override

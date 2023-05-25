@@ -19,6 +19,7 @@
  */
 package eu.heliumiot.console.jpa.db;
 
+import fr.ingeniousthings.tools.HexaConverters;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Immutable;
 
@@ -64,7 +65,11 @@ public class Device {
                         String ae = _v.split(":")[1];
                         ae = ae.strip();
                         ae = ae.substring(1,ae.length()-1);
-                        return ae;
+                        if ( ae.length() == 16 && HexaConverters.isHexString(ae) ) {
+                            return ae;
+                        } else {
+                            return null;
+                        }
                     }
                 }
             }

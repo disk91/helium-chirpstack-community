@@ -299,14 +299,14 @@ public class HeliumDeviceService {
                     String appEui = udev.getAppEui();
                     if ( appEui != null && hdev.getApplicationEui().compareToIgnoreCase(appEui) != 0 ) {
                         // appEUI updated
-                        log.debug("Device "+udev.getName()+" have a new appEUI "+appEui);
+                        log.debug("Device " + udev.getName() + " have a new appEUI " + appEui);
                         HeliumTenantSetup ts = heliumTenantSetupService.getHeliumTenantSetup(hdev.getTenantUUID());
 
                         // update the route - remove previous one
                         NovaDevice nd = new NovaDevice();
-                        nd.devEui=hdev.getDeviceEui();
-                        nd.appEui=hdev.getApplicationEui();
-                        nd.routeId=ts.getRouteId();
+                        nd.devEui = hdev.getDeviceEui();
+                        nd.appEui = hdev.getApplicationEui();
+                        nd.routeId = ts.getRouteId();
                         novaService.addDelayedEuisRefreshRemoval(nd);
 
                         // update the device information
@@ -316,9 +316,9 @@ public class HeliumDeviceService {
 
                         // update the route
                         NovaDevice na = new NovaDevice();
-                        na.devEui=hdev.getDeviceEui();
-                        na.appEui=hdev.getApplicationEui();
-                        na.routeId=ts.getRouteId();
+                        na.devEui = hdev.getDeviceEui();
+                        na.appEui = hdev.getApplicationEui();
+                        na.routeId = ts.getRouteId();
                         novaService.addDelayedEuisRefreshAddition(na);
                     }
                 }

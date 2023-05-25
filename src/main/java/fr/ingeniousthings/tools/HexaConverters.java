@@ -22,6 +22,10 @@ package fr.ingeniousthings.tools;
 
 public class HexaConverters {
 
+    public static boolean isHexString(String s) {
+        return s.toUpperCase().matches("^[A-F0-9]+$");
+    }
+
     public static String byteToHexString(byte b[]) {
         String r = "";
         for ( int j = 0; j < b.length; j++ ) {
