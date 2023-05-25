@@ -166,7 +166,7 @@ public class TransactionService {
         }
 
         // check amounts
-        HeliumTenantSetup ts = heliumTenantSetupService.getHeliumTenantSetup(req.getTenantUUID());
+        HeliumTenantSetup ts = heliumTenantSetupService.getHeliumTenantSetup(req.getTenantUUID(),true);
         if (Math.round((req.getDcs() * ts.getDcPrice()) * 100.0) != Math.round(req.getCost() * 100.0)) {
             log.warn("PurchaseDC - attempt to send a wrong amount :" + (Math.round((req.getDcs() * ts.getDcPrice()) * 100.0)) + " vs " + (Math.round(req.getCost() * 100.0)));
             throw new ITParseException("stripe_invalid_amount");

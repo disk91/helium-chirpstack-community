@@ -152,11 +152,6 @@ public class HeliumTenantSetupService {
         }
     }
 
-    // Get One element from cache, if failed, get it from DB and add it to cache
-    protected HeliumTenantSetup getHeliumTenantSetup(String tenantUUID) {
-        return getHeliumTenantSetup(tenantUUID,true,true,100);
-    }
-
     // Search but not create if not exists
     protected HeliumTenantSetup getHeliumTenantSetup(String tenantUUID, boolean create) {
         return getHeliumTenantSetup(tenantUUID,create,true,100);

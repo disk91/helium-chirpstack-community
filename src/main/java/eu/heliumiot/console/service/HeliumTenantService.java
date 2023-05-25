@@ -109,13 +109,13 @@ public class HeliumTenantService {
      * @param tenantUUID
      * @return
      */
-    protected HeliumTenant getHeliumTenant(String tenantUUID){
+    protected HeliumTenant getHeliumTenant(String tenantUUID, boolean autoCreate){
         // @TODO - on peut optimiser en cachant le resultat tant qu'il n'a pas changé
         //         de cette facon on ne fait pas un appel a chaque fois
         HeliumTenant t = heliumTenantRepository.findOneHeliumTenantByTenantUUID(tenantUUID);
-        if ( t == null ) {
+        if ( t == null && autoCreate ) {
             // create it
-            HeliumTenantSetup ts = heliumTenantSetupService.getHeliumTenantSetup(tenantUUID);
+            HeliumTenantSetup ts = heliumTenantSetupService.getHeliumTenantSetup(tenantUUID,true);
             return this.createNewHeliumTenant(tenantUUID,ts);
         } else return t;
     }
@@ -160,7 +160,7 @@ public class HeliumTenantService {
                 for ( HeliumTenantSetup ts : tss ) {
                     if ( ! ts.isTemplate() && ts.getRouteId() == null ) {
                         // find tenant to update the max_copy in case of
-                        HeliumTenant ht = this.getHeliumTenant(ts.getTenantUUID());
+                        HeliumTenant ht = this.getHeliumTenant(ts.getTenantUUID(),true);
                         int mc = ts.getMaxCopy();
                         if ( ht.getMaxCopy() > 0 ) mc = ht.getMaxCopy();
                         String rId = novaService.immediateRouteCreation(
@@ -171,7 +171,7 @@ public class HeliumTenantService {
                             ts.setRouteId(rId);
                             heliumTenantSetupRepository.save(ts);
                             // update the cache
-                            ts = heliumTenantSetupService.getHeliumTenantSetup(ts.getTenantUUID());
+                            ts = heliumTenantSetupService.getHeliumTenantSetup(ts.getTenantUUID(),true);
                             log.debug("Route for tenant "+ts.getTenantUUID()+" created with id "+ts.getRouteId());
                         }
                     }
@@ -266,7 +266,7 @@ public class HeliumTenantService {
         i.setTenantId(tenantUUID);
         HeliumTenantSetup ts = heliumTenantSetupService.getHeliumTenantSetup(tenantUUID,false);
         if ( ts == null ) {
-            HeliumTenant t = this.getHeliumTenant(tenantUUID);
+            HeliumTenant t = this.getHeliumTenant(tenantUUID,true);
             ts = heliumTenantSetupService.getHeliumTenantSetup(tenantUUID,false);
             if ( ts == null ) {
                 log.error("Should not be  here ... (1)");
@@ -274,7 +274,7 @@ public class HeliumTenantService {
             }
         }
         synchronized (this) {
-            HeliumTenant t = this.getHeliumTenant(tenantUUID);
+            HeliumTenant t = this.getHeliumTenant(tenantUUID,false);
             if (t != null) {
                 payloadSize = (payloadSize / 24) + 1;
                 int uplinkDc = payloadSize * ts.getDcPer24BMessage();
@@ -314,7 +314,7 @@ public class HeliumTenantService {
         i.setTenantId(tenantUUID);
         HeliumTenantSetup ts = heliumTenantSetupService.getHeliumTenantSetup(tenantUUID,false);
         if ( ts == null ) {
-            HeliumTenant t = this.getHeliumTenant(tenantUUID);
+            HeliumTenant t = this.getHeliumTenant(tenantUUID,true);
             ts = heliumTenantSetupService.getHeliumTenantSetup(tenantUUID,false);
             if ( ts == null ) {
                 log.error("Should not be  here ... (1a)");
@@ -322,7 +322,7 @@ public class HeliumTenantService {
             }
         }
         synchronized (this) {
-            HeliumTenant t = this.getHeliumTenant(tenantUUID);
+            HeliumTenant t = this.getHeliumTenant(tenantUUID,false);
             if (t != null) {
                 payloadSize = (payloadSize / 24) + 1;
                 int downlinkDc = payloadSize * ts.getDcPer24BDownlink();
@@ -348,7 +348,7 @@ public class HeliumTenantService {
     public void processDeviceInsertionActivityInactivity(HeliumDeviceStatItf infos) {
         long start = Now.NowUtcMs();
         synchronized (this) {
-            HeliumTenant t = this.getHeliumTenant(infos.getTenantId());
+            HeliumTenant t = this.getHeliumTenant(infos.getTenantId(),false);
             if (t != null) {
                 t.setDcBalance(t.getDcBalance() - infos.getActivityDc());
                 t.setDcBalance(t.getDcBalance() - infos.getInactivityDc());
@@ -376,7 +376,7 @@ public class HeliumTenantService {
         i.setTenantId(tenantUUID);
         HeliumTenantSetup ts = heliumTenantSetupService.getHeliumTenantSetup(tenantUUID,false);
         if ( ts == null ) {
-            HeliumTenant t = this.getHeliumTenant(tenantUUID);
+            HeliumTenant t = this.getHeliumTenant(tenantUUID,true);
             ts = heliumTenantSetupService.getHeliumTenantSetup(tenantUUID,false);
             if ( ts == null ) {
                 log.error("Should not be  here ... (2)");
@@ -384,7 +384,7 @@ public class HeliumTenantService {
             }
         }
         synchronized (this) {
-            HeliumTenant t = this.getHeliumTenant(tenantUUID);
+            HeliumTenant t = this.getHeliumTenant(tenantUUID,false);
             if (t != null) {
                 int uplinkDc = ts.getDcPer24BMessage();
                 int downlinkDc = ts.getDcPer24BDownlink();
@@ -468,7 +468,7 @@ public class HeliumTenantService {
         long initialBalance = 0;
         boolean toReactivate = false;
         synchronized (this) {
-            HeliumTenant t = this.getHeliumTenant(tenantUUID);
+            HeliumTenant t = this.getHeliumTenant(tenantUUID,false);
             if (t != null && ts != null) {
                 initialBalance = t.getDcBalance();
                 t.setDcBalance(initialBalance + amount);
@@ -512,7 +512,7 @@ public class HeliumTenantService {
      */
     public void commitTenantDeactivation(String tenantUUID) {
         synchronized (this) {
-            HeliumTenant t = this.getHeliumTenant(tenantUUID);
+            HeliumTenant t = this.getHeliumTenant(tenantUUID,false);
             if (t != null) {
                 t.setState(HeliumTenant.TenantState.DEACTIVATED);
                 this.flushHeliumTenant(t);
@@ -522,7 +522,7 @@ public class HeliumTenantService {
 
     public void commitTenantReactivation(String tenantUUID) {
         synchronized (this) {
-            HeliumTenant t = this.getHeliumTenant(tenantUUID);
+            HeliumTenant t = this.getHeliumTenant(tenantUUID,false);
             if (t != null) {
                 t.setState(HeliumTenant.TenantState.NORMAL);
                 this.flushHeliumTenant(t);
@@ -594,8 +594,8 @@ public class HeliumTenantService {
             if ( uts == null || uts.size() == 0 ) throw new ITRightException();
 
             for ( UserTenant ut : uts ) {
-                HeliumTenant ht = this.getHeliumTenant(ut.getTenantId().toString());
-                HeliumTenantSetup hts = heliumTenantSetupService.getHeliumTenantSetup(ut.getTenantId().toString());
+                HeliumTenant ht = this.getHeliumTenant(ut.getTenantId().toString(),true);
+                HeliumTenantSetup hts = heliumTenantSetupService.getHeliumTenantSetup(ut.getTenantId().toString(),true);
                 eu.heliumiot.console.jpa.db.Tenant t = this.getTenant(ut.getTenantId());
                 TenantBalancesItf r = new TenantBalancesItf();
                 r.setTenantUUID(ut.getTenantId().toString());
@@ -663,8 +663,8 @@ public class HeliumTenantService {
         }
 
         // Here we are the right to get the DC Balance info
-        HeliumTenant ht = this.getHeliumTenant(tenantId);
-        HeliumTenantSetup hts = heliumTenantSetupService.getHeliumTenantSetup(tenantId);
+        HeliumTenant ht = this.getHeliumTenant(tenantId,true);
+        HeliumTenantSetup hts = heliumTenantSetupService.getHeliumTenantSetup(tenantId,true);
         eu.heliumiot.console.jpa.db.Tenant t = this.getTenant(UUID.fromString(ht.getTenantUUID()));
 
         TenantBalanceItf r = new TenantBalanceItf();
@@ -882,8 +882,8 @@ public class HeliumTenantService {
         // Build the output based on this
         ArrayList<TenantSearchRespItf> r = new ArrayList<>();
         for ( String tId : tenantsId.values() ) {
-            HeliumTenant ht = this.getHeliumTenant(tId);
-            HeliumTenantSetup hts = heliumTenantSetupService.getHeliumTenantSetup(tId);
+            HeliumTenant ht = this.getHeliumTenant(tId,true);
+            HeliumTenantSetup hts = heliumTenantSetupService.getHeliumTenantSetup(tId,true);
             TenantSearchRespItf k = new TenantSearchRespItf();
             k.setTenantUUID(ht.getTenantUUID());
             k.setRouteId(((hts != null && hts.getRouteId() != null)?hts.getRouteId():"N/A"));
@@ -1010,7 +1010,7 @@ public class HeliumTenantService {
         // Execute transaction
         long realDc = 0;
         synchronized (this) {
-            HeliumTenant src = this.getHeliumTenant(req.getTenantSrcUUID());
+            HeliumTenant src = this.getHeliumTenant(req.getTenantSrcUUID(),false);
             if (src != null) {
                 if ( src.getDcBalance() >= req.getDcs() ) {
                     src.setDcBalance(src.getDcBalance()-req.getDcs());
@@ -1033,7 +1033,7 @@ public class HeliumTenantService {
             // rollback
             log.error("RollBack in transaction, Template messaging... strange");
             synchronized (this) {
-                HeliumTenant src = this.getHeliumTenant(req.getTenantSrcUUID());
+                HeliumTenant src = this.getHeliumTenant(req.getTenantSrcUUID(),false);
                 if (src != null ) {
                         src.setDcBalance(src.getDcBalance()+realDc);
                 }
@@ -1242,7 +1242,7 @@ public class HeliumTenantService {
         if ( resp != null ) {
             // Ok, update it
             synchronized (this) {
-                HeliumTenant ht = getHeliumTenant(req.getTenantId());
+                HeliumTenant ht = getHeliumTenant(req.getTenantId(),false);
                 ht.setMaxCopy(req.getNewMaxCopy());
                 flushHeliumTenant(ht);
             }
