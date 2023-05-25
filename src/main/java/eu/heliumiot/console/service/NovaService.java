@@ -1300,17 +1300,21 @@ public class NovaService {
     // ==============================================
 
     public void grpcAddRandomSkf(String routeId, int addr) {
+        // RandomSkf patter is
+        // 91919191xxxxxxxxxxxxxxxxxxDEVADDR
         LinkedList<SkfUpdate> add = new LinkedList<>();
         LinkedList<SkfUpdate> del = new LinkedList<>();
         SkfUpdate skf = new SkfUpdate();
         skf.devAddr = addr;
-        skf.session = RandomString.getRandomHexString(30);
+        String random = RandomString.getRandomHexString(16);
+        String devAddr = String.format("%08X",addr);
+        skf.session = "91919191"+random+""+devAddr;
         add.add(skf);
         this.grpcUpdateSessions(add,del,routeId);
     }
 
     public boolean isRandomSkf(int addr, String session, String routeId) {
-        return (session.length() == 30);
+        return (session.length() == 32 && session.startsWith("91919191") && session.endsWith(String.format("%08X",addr)));
     }
 
 
