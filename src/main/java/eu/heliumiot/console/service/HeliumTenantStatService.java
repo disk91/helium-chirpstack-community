@@ -70,7 +70,7 @@ public class HeliumTenantStatService {
         r = new TenantBasicStatRespItf();
 
         // Get the tenant configuration
-        HeliumTenantSetup hts = heliumTenantSetupService.getHeliumTenantSetup(tenantUUID);
+        HeliumTenantSetup hts = heliumTenantSetupService.getHeliumTenantSetup(tenantUUID,false);
         if ( hts == null ) throw new ITParseException();
 
         r.setTenantUUID(hts.getTenantUUID());

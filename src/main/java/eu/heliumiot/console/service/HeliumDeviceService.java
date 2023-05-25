@@ -268,7 +268,7 @@ public class HeliumDeviceService {
                 heliumDeviceRepository.save(hdev);
 
                 // need to process stats and invoicing
-                HeliumTenantSetup ts = heliumTenantSetupService.getHeliumTenantSetup(hdev.getTenantUUID());
+                HeliumTenantSetup ts = heliumTenantSetupService.getHeliumTenantSetup(hdev.getTenantUUID(),false);
                 if (ts != null) {
                     HeliumDeviceStatItf i = new HeliumDeviceStatItf();
                     i.setTenantId(hdev.getTenantUUID());
@@ -300,7 +300,11 @@ public class HeliumDeviceService {
                     if ( appEui != null && hdev.getApplicationEui().compareToIgnoreCase(appEui) != 0 ) {
                         // appEUI updated
                         log.debug("Device " + udev.getName() + " have a new appEUI " + appEui);
-                        HeliumTenantSetup ts = heliumTenantSetupService.getHeliumTenantSetup(hdev.getTenantUUID());
+                        HeliumTenantSetup ts = heliumTenantSetupService.getHeliumTenantSetup(hdev.getTenantUUID(),false);
+                        if (ts == null) {
+                            log.error("Find a device with invalid tenantUUID "+hdev.getDeviceEui()+ " / "+hdev.getTenantUUID());
+                            continue;
+                        }
 
                         // update the route - remove previous one
                         NovaDevice nd = new NovaDevice();
@@ -608,7 +612,7 @@ public class HeliumDeviceService {
                         if (lastSeenDevice == 0) lastSeenDevice = dev.getCreatedAt().getTime();
 
                         HeliumTenantSetup hts = heliumTenantSetupService.getHeliumTenantSetup(
-                                hdev.getTenantUUID(), true, 50
+                                hdev.getTenantUUID(), true,true, 100
                         );
 
                         if (hts.getInactivityBillingPeriodMs() > 0) {
@@ -790,7 +794,10 @@ public class HeliumDeviceService {
         ArrayList<NovaDevice> toDeactivate = new ArrayList<>();
         synchronized (this) {
             List<HeliumDevice> devices = heliumDeviceRepository.findHeliumDeviceByTenantUUID(tenantID);
-            HeliumTenantSetup hts = heliumTenantSetupService.getHeliumTenantSetup(tenantID);
+            HeliumTenantSetup hts = heliumTenantSetupService.getHeliumTenantSetup(tenantID,false);
+            if ( hts == null ) {
+                log.error("Found a tenant w/o tenantSTemplate "+tenantID);
+            }
             for ( HeliumDevice d : devices ) {
 
                 if (
@@ -803,11 +810,13 @@ public class HeliumDeviceService {
                     d.setToUpdate(false);
                     heliumDeviceRepository.save(d);
 
-                    NovaDevice n = new NovaDevice();
-                    n.devEui = d.getDeviceEui();
-                    n.appEui = d.getApplicationEui();
-                    n.routeId = hts.getRouteId();
-                    toDeactivate.add(n);
+                    if ( hts != null ) {
+                        NovaDevice n = new NovaDevice();
+                        n.devEui = d.getDeviceEui();
+                        n.appEui = d.getApplicationEui();
+                        n.routeId = hts.getRouteId();
+                        toDeactivate.add(n);
+                    }
 
                 }
             }
@@ -822,7 +831,12 @@ public class HeliumDeviceService {
         log.debug("Start tenant reactivation for "+tenantID);
         long start = Now.NowUtcMs();
 
-        HeliumTenantSetup hts = heliumTenantSetupService.getHeliumTenantSetup(tenantID);
+        HeliumTenantSetup hts = heliumTenantSetupService.getHeliumTenantSetup(tenantID,false);
+        if ( hts == null ) {
+            log.error("Found a tenant w/o tenantSTemplate "+tenantID);
+            return;
+        }
+
         ArrayList<NovaDevice> toReactivate = new ArrayList<>();
         synchronized (this) {
             // @todo optimisation by searching only the concerned devices
@@ -860,7 +874,11 @@ public class HeliumDeviceService {
         long start = Now.NowUtcMs();
 
         ArrayList<NovaDevice> toDeactivate = new ArrayList<>();
-        HeliumTenantSetup hts = heliumTenantSetupService.getHeliumTenantSetup(creds.getTenantId());
+        HeliumTenantSetup hts = heliumTenantSetupService.getHeliumTenantSetup(creds.getTenantId(),false);
+        if ( hts == null ) {
+            log.error("Found a tenant w/o tenantSTemplate "+creds.getTenantId());
+            return;
+        }
 
 
         NovaDevice n = new NovaDevice();
@@ -877,7 +895,11 @@ public class HeliumDeviceService {
         long start = Now.NowUtcMs();
 
         ArrayList<NovaDevice> toReactivate = new ArrayList<>();
-        HeliumTenantSetup hts = heliumTenantSetupService.getHeliumTenantSetup(creds.getTenantId());
+        HeliumTenantSetup hts = heliumTenantSetupService.getHeliumTenantSetup(creds.getTenantId(),false);
+        if ( hts == null ) {
+            log.error("Found a tenant w/o tenantSTemplate "+creds.getTenantId());
+            return;
+        }
 
         NovaDevice n = new NovaDevice();
         n.devEui = creds.getDeviceId();

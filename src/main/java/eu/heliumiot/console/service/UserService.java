@@ -180,8 +180,9 @@ public class UserService {
             // process verification ...
             // set profile based on the invitation code verification
         }
+
         // is signup allowed
-        HeliumTenantSetup hts = heliumTenantSetupService.getHeliumTenantSetup(profile);
+        HeliumTenantSetup hts = heliumTenantSetupService.getHeliumTenantSetup(profile,false);
         if( hts == null || ! hts.isSignupAllowed() ) {
             throw new ITParseException("error_signupclose");
         }
@@ -312,7 +313,7 @@ public class UserService {
             throw new ITParseException("error_timeout");
         }
 
-        HeliumTenantSetup hts = heliumTenantSetupService.getHeliumTenantSetup(hpe.getOfferName());
+        HeliumTenantSetup hts = heliumTenantSetupService.getHeliumTenantSetup(hpe.getOfferName(),false);
         if ( hts == null || ! hts.isSignupAllowed() ) {
             throw new ITParseException("error_signupclose");
         }

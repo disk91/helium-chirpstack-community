@@ -203,8 +203,8 @@ public class HeliumTenantService {
                     heliumTenantRepository.save(ht);
 
                     // Find the associated HeliumTenant Setup, clear route and HTS
-                    HeliumTenantSetup tsetup = heliumTenantSetupService.getHeliumTenantSetup(ht.getTenantUUID());
-                    heliumTenantSetupService.deleteTenantSetupTemplateUnsecured(tsetup);
+                    HeliumTenantSetup tsetup = heliumTenantSetupService.getHeliumTenantSetup(ht.getTenantUUID(),false);
+                    if ( tsetup != null ) heliumTenantSetupService.deleteTenantSetupTemplateUnsecured(tsetup);
                 }
             }
 
@@ -264,10 +264,10 @@ public class HeliumTenantService {
         HeliumDeviceStatItf i = new HeliumDeviceStatItf();
         i.setDeviceId(deviceUUID);
         i.setTenantId(tenantUUID);
-        HeliumTenantSetup ts = heliumTenantSetupService.getHeliumTenantSetup(tenantUUID);
+        HeliumTenantSetup ts = heliumTenantSetupService.getHeliumTenantSetup(tenantUUID,false);
         if ( ts == null ) {
             HeliumTenant t = this.getHeliumTenant(tenantUUID);
-            ts = heliumTenantSetupService.getHeliumTenantSetup(tenantUUID);
+            ts = heliumTenantSetupService.getHeliumTenantSetup(tenantUUID,false);
             if ( ts == null ) {
                 log.error("Should not be  here ... (1)");
                 return;
@@ -312,10 +312,10 @@ public class HeliumTenantService {
         HeliumDeviceStatItf i = new HeliumDeviceStatItf();
         i.setDeviceId(deviceUUID);
         i.setTenantId(tenantUUID);
-        HeliumTenantSetup ts = heliumTenantSetupService.getHeliumTenantSetup(tenantUUID);
+        HeliumTenantSetup ts = heliumTenantSetupService.getHeliumTenantSetup(tenantUUID,false);
         if ( ts == null ) {
             HeliumTenant t = this.getHeliumTenant(tenantUUID);
-            ts = heliumTenantSetupService.getHeliumTenantSetup(tenantUUID);
+            ts = heliumTenantSetupService.getHeliumTenantSetup(tenantUUID,false);
             if ( ts == null ) {
                 log.error("Should not be  here ... (1a)");
                 return;
@@ -355,7 +355,7 @@ public class HeliumTenantService {
                 t.setDcBalance(t.getDcBalance() - infos.getRegistrationDc());
                 this.flushHeliumTenant(t);
 
-                HeliumTenantSetup ts = heliumTenantSetupService.getHeliumTenantSetup(infos.getTenantId());
+                HeliumTenantSetup ts = heliumTenantSetupService.getHeliumTenantSetup(infos.getTenantId(),false);
                 if ( ts != null ) {
                     if ( !processBalance(ts,t) ) {
                         this.flushHeliumTenant(t);
@@ -374,10 +374,10 @@ public class HeliumTenantService {
         HeliumDeviceStatItf i = new HeliumDeviceStatItf();
         i.setDeviceId(deviceUUID);
         i.setTenantId(tenantUUID);
-        HeliumTenantSetup ts = heliumTenantSetupService.getHeliumTenantSetup(tenantUUID);
+        HeliumTenantSetup ts = heliumTenantSetupService.getHeliumTenantSetup(tenantUUID,false);
         if ( ts == null ) {
             HeliumTenant t = this.getHeliumTenant(tenantUUID);
-            ts = heliumTenantSetupService.getHeliumTenantSetup(tenantUUID);
+            ts = heliumTenantSetupService.getHeliumTenantSetup(tenantUUID,false);
             if ( ts == null ) {
                 log.error("Should not be  here ... (2)");
                 return;
@@ -459,7 +459,7 @@ public class HeliumTenantService {
      * @return
      */
     public boolean processBalanceIncrease(String tenantUUID, long amount) {
-        HeliumTenantSetup ts = heliumTenantSetupService.getHeliumTenantSetup(tenantUUID);
+        HeliumTenantSetup ts = heliumTenantSetupService.getHeliumTenantSetup(tenantUUID,false);
         if ( ts == null ) {
             log.error("Impossible to find tenant setup for "+tenantUUID);
             return false;
@@ -537,7 +537,7 @@ public class HeliumTenantService {
         log.info("running backgroundTenantReactivation");
         List<HeliumTenant> ts = heliumTenantRepository.findHeliumTenantByState(HeliumTenant.TenantState.DEACTIVATED);
         for ( HeliumTenant t : ts ) {
-            HeliumTenantSetup s = heliumTenantSetupService.getHeliumTenantSetup(t.getTenantUUID());
+            HeliumTenantSetup s = heliumTenantSetupService.getHeliumTenantSetup(t.getTenantUUID(),false);
             if ( s != null && s.getDcBalanceStop() < t.getDcBalance() ) {
                 // we have a candidate to be restored
                 log.warn("Tenant "+t.getTenantUUID()+" was deactivated with valid DC Balance "+t.getDcBalance()+" / "+s.getDcBalanceStop());
@@ -708,7 +708,7 @@ public class HeliumTenantService {
             // set profile based on the invitation code verification
         }
         // is signup allowed
-        HeliumTenantSetup hts = heliumTenantSetupService.getHeliumTenantSetup(profile);
+        HeliumTenantSetup hts = heliumTenantSetupService.getHeliumTenantSetup(profile,false);
         if( hts == null ) {
             throw new ITParseException("error_invalidcoupon");
         }
@@ -956,7 +956,7 @@ public class HeliumTenantService {
                 throw new ITRightException();
             }
         }
-        HeliumTenantSetup ts = heliumTenantSetupService.getHeliumTenantSetup(tenantId);
+        HeliumTenantSetup ts = heliumTenantSetupService.getHeliumTenantSetup(tenantId,false);
         if ( ts == null ) throw new ITRightException();
 
         r.setTenantUUID(tenantId);
@@ -1236,7 +1236,7 @@ public class HeliumTenantService {
         }
 
         // Now we need to update the route
-        HeliumTenantSetup hts = heliumTenantSetupService.getHeliumTenantSetup(req.getTenantId());
+        HeliumTenantSetup hts = heliumTenantSetupService.getHeliumTenantSetup(req.getTenantId(),false);
         if ( hts == null ) throw new ITRightException("tenant_notfound");
         route_v1 resp = novaService.grpcUpdateOneRoute(hts.getRouteId(),req.getNewMaxCopy());
         if ( resp != null ) {

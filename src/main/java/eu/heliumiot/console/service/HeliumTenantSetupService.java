@@ -154,12 +154,22 @@ public class HeliumTenantSetupService {
 
     // Get One element from cache, if failed, get it from DB and add it to cache
     protected HeliumTenantSetup getHeliumTenantSetup(String tenantUUID) {
-        return getHeliumTenantSetup(tenantUUID,true,100);
+        return getHeliumTenantSetup(tenantUUID,true,true,100);
     }
 
-    // Get an element from cache, if failed, get it from DB, the tenant will be cached only if
-    // we want to add in cache and cache is under the given limit
+    // Search but not create if not exists
+    protected HeliumTenantSetup getHeliumTenantSetup(String tenantUUID, boolean create) {
+        return getHeliumTenantSetup(tenantUUID,create,true,100);
+    }
+
     protected HeliumTenantSetup getHeliumTenantSetup(String tenantUUID, boolean addInCache, int cacheLimit) {
+        return getHeliumTenantSetup(tenantUUID,true,addInCache,cacheLimit);
+    }
+
+
+        // Get an element from cache, if failed, get it from DB, the tenant will be cached only if
+    // we want to add in cache and cache is under the given limit
+    protected HeliumTenantSetup getHeliumTenantSetup(String tenantUUID, boolean create, boolean addInCache, int cacheLimit) {
         HeliumTenantSetup ts = heliumSetupCache.get(tenantUUID);
         if (ts == null) {
             ts = heliumTenantSetupRepository.findOneHeliumTenantSetupByTenantUUID(tenantUUID);
@@ -168,20 +178,24 @@ public class HeliumTenantSetupService {
                   heliumSetupCache.put(ts,tenantUUID);
               }
             } else {
-                // create the tenant with the default setup
-                HeliumTenantSetup def = heliumSetupCache.get(HELIUM_TENANT_SETUP_DEFAULT);
-                if ( def == null  ) {
-                    def = heliumTenantSetupRepository.findOneHeliumTenantSetupByTenantUUID(HELIUM_TENANT_SETUP_DEFAULT);
-                    if ( def == null ) {
-                        log.error("can't find default tenant settings");
-                        return null;
-                    }
-                    heliumSetupCache.put(def,HELIUM_TENANT_SETUP_DEFAULT);
+                if ( create ) {
+                    // create the tenant with the default setup
+                    HeliumTenantSetup def = heliumSetupCache.get(HELIUM_TENANT_SETUP_DEFAULT);
+                    if (def == null) {
+                        def = heliumTenantSetupRepository.findOneHeliumTenantSetupByTenantUUID(HELIUM_TENANT_SETUP_DEFAULT);
+                        if (def == null) {
+                            log.error("can't find default tenant settings");
+                            return null;
+                        }
+                        heliumSetupCache.put(def, HELIUM_TENANT_SETUP_DEFAULT);
 
-                }
-                ts = this.createAndSave(def,tenantUUID);
-                if ( addInCache && heliumSetupCache.cacheUsage() <= cacheLimit ) {
-                    heliumSetupCache.put(ts,tenantUUID.toString());
+                    }
+                    ts = this.createAndSave(def, tenantUUID);
+                    if (addInCache && heliumSetupCache.cacheUsage() <= cacheLimit) {
+                        heliumSetupCache.put(ts, tenantUUID.toString());
+                    }
+                } else {
+                    return null;
                 }
             }
         }
@@ -284,7 +298,7 @@ public class HeliumTenantSetupService {
         UserCacheService.UserCacheElement u = userCacheService.getUserById(user);
         if ( u == null || ! u.user.isAdmin() ) throw new ITRightException();
 
-        HeliumTenantSetup ts = this.getHeliumTenantSetup(def.getTenantUUID(),false,100);
+        HeliumTenantSetup ts = this.getHeliumTenantSetup(def.getTenantUUID(),false,false,100);
         if ( ts == null ) throw new ITRightException();
 
         ts.setDcBalanceStop(def.getDcBalanceStop());
