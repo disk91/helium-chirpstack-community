@@ -19,6 +19,8 @@
  */
 package eu.heliumiot.console;
 
+import org.apache.commons.validator.routines.EmailValidator;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.ExitCodeGenerator;
 import org.springframework.boot.SpringApplication;
@@ -39,13 +41,18 @@ import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 @EnableRedisRepositories(basePackages = "eu.heliumiot.console.redis", enableKeyspaceEvents = RedisKeyValueAdapter.EnableKeyspaceEvents.ON_STARTUP)
 public class ConsoleApplication implements CommandLineRunner, ExitCodeGenerator {
 
+	@Autowired
+	protected ConsoleConfig consoleConfig;
+
 	public static boolean requestingExitForStartupFailure = false;
 
 	public static ApplicationContext context;
 
 	public static void main(String[] args) {
 		context = SpringApplication.run(ConsoleApplication.class, args);
-		if (ConsoleApplication.requestingExitForStartupFailure) exit();
+		if (ConsoleApplication.requestingExitForStartupFailure) {
+			exit();
+		}
 	}
 
 
@@ -53,9 +60,14 @@ public class ConsoleApplication implements CommandLineRunner, ExitCodeGenerator 
 	public void run(String... args) throws Exception {
 		long pid = ProcessHandle.current().pid();
 		System.out.println("-------------- GO ("+pid+")--------------");
+		if ( ! EmailValidator.getInstance().isValid(consoleConfig.getHeliumMailFrom()) ) {
+			System.err.println("#### Contact email must be setup");
+			exit();
+		}
 	}
 
 	public static void exit() {
+
 		int exitCode = SpringApplication.exit(context, new ExitCodeGenerator() {
 			@Override
 			public int getExitCode() {
