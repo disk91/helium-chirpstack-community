@@ -374,7 +374,8 @@ public class NovaService {
         // fix the route with non empty skf missing
         if ( ! hasNonEmpty ) {
             log.warn("We found a route without the non empty skf entry");
-            this.grpcAddRandomSkf(routeId,this.addresses.get(0).getStartAddr());
+
+            this.grpcAddRandomSkf(routeId,this.getAddresses().get(0).getStartAddr());
         }
 
     }
@@ -929,7 +930,7 @@ public class NovaService {
             }
             // add a random skf for making sure we have skf enabled
             // we can identify it with the size : 30 chars
-            this.grpcAddRandomSkf(response.getRoute().getId(),this.addresses.get(0).getStartAddr());
+            this.grpcAddRandomSkf(response.getRoute().getId(),this.getAddresses().get(0).getStartAddr());
 
             log.debug("GPRC route creation duration " + (Now.NowUtcMs() - start) + "ms");
             log.debug("GRPC route " + response.getRoute().getId());
