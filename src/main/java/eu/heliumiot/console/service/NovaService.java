@@ -335,7 +335,11 @@ public class NovaService {
         } while ( devices != null && !quit );
 
         // search for session to be removed
-        boolean hasNonEmpty = false;
+        boolean hasNonEmpty = false;            // search & make sure this route have the dummy session keys
+                                                // @Todo - to manage devaddr increase, we should cound the dummy skf
+                                                //         verify the number with devaddr size and rebuild the dummy
+                                                //          skf based on this.
+        int dummySkfs = 0;
         for ( skf_v1 skf : inRouteSkfs ) {
             boolean found = false;
             for ( skf_v1 keep : toKep ) {
@@ -347,7 +351,10 @@ public class NovaService {
             if ( ! found ) {
                 if ( !this.isRandomSkf(skf.getDevaddr(),skf.getSessionKey(),routeId) ) {
                     toRem.add(skf);
-                } else hasNonEmpty = true;
+                } else {
+                    hasNonEmpty = true;
+                    dummySkfs++;
+                }
             }
         }
 
@@ -374,8 +381,7 @@ public class NovaService {
         // fix the route with non empty skf missing
         if ( ! hasNonEmpty ) {
             log.warn("We found a route without the non empty skf entry");
-
-            this.grpcAddRandomSkf(routeId,this.getAddresses().get(0).getStartAddr());
+            this.grpcAddRandomSkf(routeId);
         }
 
     }
@@ -930,7 +936,7 @@ public class NovaService {
             }
             // add a random skf for making sure we have skf enabled
             // we can identify it with the size : 30 chars
-            this.grpcAddRandomSkf(response.getRoute().getId(),this.getAddresses().get(0).getStartAddr());
+            this.grpcAddRandomSkf(response.getRoute().getId());
 
             log.debug("GPRC route creation duration " + (Now.NowUtcMs() - start) + "ms");
             log.debug("GRPC route " + response.getRoute().getId());
@@ -1299,22 +1305,37 @@ public class NovaService {
     // Manage devices sessions
     // ==============================================
 
-    public void grpcAddRandomSkf(String routeId, int addr) {
-        // RandomSkf patter is
-        // 91919191xxxxxxxxxxxxxxxxxxDEVADDR
+
+    /**
+     * The Session Key Filter is only activated when you have,
+     * for a given route, at least one SKF registered for each devAddr
+     * (sounds a bit complex to not say stupid but that is the current implementation)
+     * To avoid having uplinks repeated for every empty tenant on a given devaddr and
+     * avoid DCs drain, we need to secure this with one dummy session key on every
+     * route / devaddr. and we need to maintain that entry when the data are consolidated
+     * @param routeId
+     * @param addr
+     */
+    public void grpcAddRandomSkf(String routeId) {
+        // RandomSkf pattern is
+        // 91919192xxxxxxxxxxxxxxxxxxDEVADDR
         LinkedList<SkfUpdate> add = new LinkedList<>();
         LinkedList<SkfUpdate> del = new LinkedList<>();
-        SkfUpdate skf = new SkfUpdate();
-        skf.devAddr = addr;
-        String random = RandomString.getRandomHexString(16);
-        String devAddr = String.format("%08X",addr);
-        skf.session = "91919191"+random+""+devAddr;
-        add.add(skf);
+        for ( devaddr_constraint_v1 addr : this.getAddresses() ) {
+            for ( int a = addr.getStartAddr() ; a < addr.getEndAddr() ; a++){
+                SkfUpdate skf = new SkfUpdate();
+                skf.devAddr = a;
+                String random = RandomString.getRandomHexString(16);
+                String devAddr = String.format("%08X", a);
+                skf.session = "91919192" + random + "" + devAddr;
+                add.add(skf);
+            }
+        }
         this.grpcUpdateSessions(add,del,routeId);
     }
 
     public boolean isRandomSkf(int addr, String session, String routeId) {
-        return (session.length() == 32 && session.startsWith("91919191") && session.endsWith(String.format("%08X",addr)));
+        return (session.length() == 32 && session.startsWith("91919192") && session.endsWith(String.format("%08X",addr)));
     }
 
 
