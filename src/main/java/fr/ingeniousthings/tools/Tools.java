@@ -2,6 +2,11 @@ package fr.ingeniousthings.tools;
 
 public class Tools {
 
+    public static boolean isValidEmailSyntax(String email) {
+        return email.matches("^(?=.{1,64}@)[A-Za-z0-9_-]+(\\.[A-Za-z0-9_-]+)*@"
+                + "[^-][A-Za-z0-9-]+(\\.[A-Za-z0-9-]+)*(\\.[A-Za-z]{2,})$");
+    }
+
     public static String EuiStringFromLong(long v) {
         String out = "";
         for ( int i = 0; i < 8 ; i++) {

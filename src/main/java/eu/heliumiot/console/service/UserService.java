@@ -195,11 +195,17 @@ public class UserService {
         }
 
         // verify email
+        if ( ! Tools.isValidEmailSyntax(req.getUsername()) ) {
+            throw new ITParseException("error_invalid_email");
+        }
+
+        /* Emil validator is obsolete not supporting new TLDS
         if ( ! EmailValidator.getInstance().isValid(req.getUsername()) ) {
             // bypass for helium.foundation not recognized by EmailValidator
             if ( ! req.getUsername().matches("^[A-Z0-9._%+-]+@helium.foundation") )
-               throw new ITParseException("error_invalid_email");
         }
+        */
+
 
         // verify password
         if ( req.getPassword().length() < 12 ) {
