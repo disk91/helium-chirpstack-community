@@ -173,6 +173,8 @@ public class UserService {
     public UserSignUpRespItf userSignup(UserSignUpReqItf req)
     throws ITNotFoundException,ITParseException
     {
+        // Make sure the property file allow signup as a global setting
+        if ( ! consoleConfig.isHeliumAllowsSignup() ) throw new ITParseException("error_signupclose");
 
         // @todo verify the invitation code
         String profile = HELIUM_TENANT_SETUP_DEFAULT;
@@ -182,8 +184,8 @@ public class UserService {
         }
 
         // is signup allowed
-        HeliumTenantSetup hts = heliumTenantSetupService.getHeliumTenantSetup(profile,false);
-        if( hts == null || ! hts.isSignupAllowed() ) {
+        HeliumTenantSetup hts = heliumTenantSetupService.getHeliumTenantSetup(profile, false);
+        if (hts == null || !hts.isSignupAllowed()) {
             throw new ITParseException("error_signupclose");
         }
 
@@ -213,7 +215,7 @@ public class UserService {
         }
 
         // verify tenantName
-        if ( req.getTenantName().length() < 3 ) {
+        if ( req.getTenantName().length() < 3 || req.getTenantName().length() > 32 ) {
             throw new ITParseException("error_tenant_size");
         }
 
@@ -290,6 +292,10 @@ public class UserService {
     public void userSignupConfirmation(String registrationCode)
             throws ITNotFoundException,ITParseException
     {
+
+        // Make sure the property file allow signup as a global setting
+        if ( ! consoleConfig.isHeliumAllowsSignup() ) throw new ITParseException("error_signupclose");
+
         // check input
         if ( registrationCode.length() != 80 ) {
             log.warn("Getting invalid registration code");
@@ -366,8 +372,6 @@ public class UserService {
         }
 
         if ( tenantId == null ) throw new ITParseException("error_internal");
-
-
 
         // We got it, let's create the user and the tenant
         String userId = null;

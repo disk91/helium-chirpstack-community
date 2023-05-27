@@ -76,7 +76,10 @@ public class ProxyApi {
 
             if ( reqItf.getKey() != null && reqItf.getKey().length() > 0 ) {
                 // test authorized URL
-                if (!reqItf.getEndpoint().contains("&") && !reqItf.getEndpoint().contains("?")) {
+                if (    !reqItf.getEndpoint().contains("&")
+                     && !reqItf.getEndpoint().contains("?")
+                     && !reqItf.getEndpoint().contains("#")
+                ) {
                     if ( reqItf.getEndpoint().endsWith("/v1/labels")
                       || reqItf.getEndpoint().endsWith("/v1/devices")
                       || reqItf.getEndpoint().endsWith("/v1/functions")
@@ -99,7 +102,6 @@ public class ProxyApi {
                                         requestEntity,
                                         String.class
                                 );
-
                         if (responseEntity.getStatusCode() == HttpStatus.OK) {
                             return new ResponseEntity<>(responseEntity.getBody(), HttpStatus.OK);
                         } else {

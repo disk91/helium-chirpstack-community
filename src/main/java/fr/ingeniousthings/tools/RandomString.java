@@ -20,12 +20,13 @@
 
 package fr.ingeniousthings.tools;
 
+import java.security.SecureRandom;
 import java.util.Random;
 
 public class RandomString {
 
     public static String getRandomString(int size) {
-        Random r = new Random();
+        SecureRandom r = new SecureRandom();
         String s = "";
         int a = "a".getBytes()[0];
         int zero = "0".getBytes()[0];
@@ -45,7 +46,8 @@ public class RandomString {
     }
 
     public static String getRandomAZString(int size) {
-        Random r = new Random();
+        SecureRandom r = new SecureRandom();
+
         String s = "";
         int A = "A".getBytes()[0];
 
@@ -60,7 +62,7 @@ public class RandomString {
     }
 
     public static String getRandomHexString(int size) {
-        Random r = new Random();
+        SecureRandom r = new SecureRandom();
         String all = "0123456789ABCDEF";
         String s = "";
 
