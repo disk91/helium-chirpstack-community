@@ -42,6 +42,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 @Tag( name = "proxy api", description = "Helium console api proxy" )
 @CrossOrigin
@@ -50,6 +51,72 @@ import java.util.ArrayList;
 public class ProxyApi {
 
     private final Logger log = LoggerFactory.getLogger(this.getClass());
+
+    private HashMap<String,Integer> endpointState = new HashMap<>();
+
+    private void updateState(Integer b, String domain, int v, String user) {
+        if (b == null) {
+            b = Integer.valueOf(v);
+            endpointState.put(domain, b);
+        } else {
+            if ( v == 0 ) b = 0;
+            else b += v;
+            if ( b == 5 ) {
+                log.warn("Locking domain "+domain+" by user "+user);
+            }
+            endpointState.replace(domain, b);
+        }
+
+    }
+
+    private boolean verifyEndpoint(String endPoint,String user) {
+
+        // @TODO - rate limiter could be implemented
+
+        if (endPoint.matches("^[A-Za-z0-9_./:-]+$")
+                && (endPoint.startsWith("http://") || endPoint.startsWith("https://"))
+                && (!endPoint.matches("/v1/.*/v1/"))
+        ) {
+            // test url with a known endpoint
+            String domain = endPoint.substring(0, endPoint.indexOf("/v1/"));
+            Integer b = endpointState.get(domain);
+            if (b == null || b < 5) {
+                try {
+                    // verify endpoint
+                    HttpHeaders headers = new HttpHeaders();
+                    ArrayList<MediaType> accept = new ArrayList<>();
+                    accept.add(MediaType.APPLICATION_JSON);
+                    headers.setAccept(accept);
+                    headers.add(HttpHeaders.USER_AGENT, "helium_chirp/1.0");
+
+                    RestTemplate restTemplate = new RestTemplate();
+                    HttpEntity<String> requestEntity = new HttpEntity<String>(headers);
+                    ResponseEntity<String> responseEntity =
+                            restTemplate.exchange(
+                                    domain + "/v1/organization",
+                                    HttpMethod.GET,
+                                    requestEntity,
+                                    String.class
+                            );
+                    updateState(b,domain,1,user);
+                } catch ( HttpClientErrorException x ) {
+                    if ( x.getMessage().contains("401 Unauthorized:") && x.getMessage().contains("message") && x.getMessage().contains("invalid_api_key") ) {
+                        // assume a valid domain
+                        updateState(b,domain,0,user);
+                        return true;
+                    } else {
+                        updateState(b,domain,1,user);
+                    }
+                } catch ( HttpServerErrorException x ) {
+                    // 5xx not impacting
+                } catch ( Exception x ) {
+                    updateState(b,domain,1,user);
+                }
+            }
+        }
+        return false;
+    }
+
 
     @Operation(summary = "Proxy Getter",
             description = "Perform a Get from a helium console API and retrieve result as a json string",
@@ -66,50 +133,49 @@ public class ProxyApi {
             HttpServletRequest request,
             @RequestBody(required = true) ProxyGetReqItf reqItf
     ) {
-        // @TODO - rate limiter could be implemented
 
-        // check the requested url pattern
         ActionResult r = ActionResult.MALFORMED();
         try {
+            // check the requested url pattern
             URL u = new URL(reqItf.getEndpoint());
             URI uri = u.toURI();
+            log.debug(uri.getHost()); // force to use uri.
 
             if ( reqItf.getKey() != null && reqItf.getKey().length() > 0 ) {
                 // test authorized URL
-                if (    !reqItf.getEndpoint().contains("&")
-                     && !reqItf.getEndpoint().contains("?")
-                     && !reqItf.getEndpoint().contains("#")
-                ) {
-                    if ( reqItf.getEndpoint().endsWith("/v1/labels")
-                      || reqItf.getEndpoint().endsWith("/v1/devices")
-                      || reqItf.getEndpoint().endsWith("/v1/functions")
-                      || reqItf.getEndpoint().endsWith("/v1/flows")
-                    ) {
-                        // Accepted URL
-                        HttpHeaders headers = new HttpHeaders();
-                        ArrayList<MediaType> accept = new ArrayList<>();
-                        accept.add(MediaType.APPLICATION_JSON);
-                        headers.setAccept(accept);
-                        headers.add(HttpHeaders.USER_AGENT, "helium_chirp/1.0");
-                        headers.add("KEY", reqItf.getKey());
-
-                        RestTemplate restTemplate = new RestTemplate();
-                        HttpEntity<String> requestEntity = new HttpEntity<String>(headers);
-                        ResponseEntity<String> responseEntity =
-                                restTemplate.exchange(
-                                        reqItf.getEndpoint(),
-                                        HttpMethod.GET,
-                                        requestEntity,
-                                        String.class
-                                );
-                        if (responseEntity.getStatusCode() == HttpStatus.OK) {
-                            return new ResponseEntity<>(responseEntity.getBody(), HttpStatus.OK);
-                        } else {
-                            r.setMessage("console_response");
-                        }
-                    }
+                if ( ! verifyEndpoint(reqItf.getEndpoint(), request.getUserPrincipal().getName() ) ) {
+                    r.setMessage("console_response");
+                    return new ResponseEntity<>(r, HttpStatus.BAD_REQUEST);
                 }
-                r.setMessage("unsupported_endpoint");
+
+                if ( reqItf.getEndpoint().endsWith("/v1/labels")
+                        || reqItf.getEndpoint().endsWith("/v1/devices")
+                        || reqItf.getEndpoint().endsWith("/v1/functions")
+                        || reqItf.getEndpoint().endsWith("/v1/flows")
+                ) {
+                    // Accepted URL
+                    HttpHeaders headers = new HttpHeaders();
+                    ArrayList<MediaType> accept = new ArrayList<>();
+                    accept.add(MediaType.APPLICATION_JSON);
+                    headers.setAccept(accept);
+                    headers.add(HttpHeaders.USER_AGENT, "helium_chirp/1.0");
+                    headers.add("KEY", reqItf.getKey());
+
+                    RestTemplate restTemplate = new RestTemplate();
+                    HttpEntity<String> requestEntity = new HttpEntity<String>(headers);
+                    ResponseEntity<String> responseEntity =
+                            restTemplate.exchange(
+                                    reqItf.getEndpoint(),
+                                    HttpMethod.GET,
+                                    requestEntity,
+                                    String.class
+                            );
+                    if (responseEntity.getStatusCode() == HttpStatus.OK) {
+                        return new ResponseEntity<>(responseEntity.getBody(), HttpStatus.OK);
+                    } else {
+                        r.setMessage("console_response");
+                    }
+                } else r.setMessage("unsupported_endpoint");
             } else {
                 r.setMessage("invalid_key");
             }
@@ -141,46 +207,47 @@ public class ProxyApi {
             HttpServletRequest request,
             @RequestBody(required = true) ProxyDeactivateDeviceReqItf reqItf
     ) {
-        // @TODO - rate limiter could be implemented
 
         // check the requested url pattern
         ActionResult r = ActionResult.MALFORMED();
         try {
             URL u = new URL(reqItf.getEndpoint());
             URI uri = u.toURI();
+            log.debug(uri.getHost()); // force to use uri.
 
             if ( reqItf.getKey() != null && reqItf.getKey().length() > 0 ) {
                 // test authorized URL
-                if (!reqItf.getEndpoint().contains("&") && !reqItf.getEndpoint().contains("?")) {
-                    if ( reqItf.getEndpoint().endsWith("/v1/devices")) {
-                        // Accepted URL
-                        HttpHeaders headers = new HttpHeaders();
-                        ArrayList<MediaType> accept = new ArrayList<>();
-                        accept.add(MediaType.APPLICATION_JSON);
-                        headers.setAccept(accept);
-                        headers.add(HttpHeaders.USER_AGENT, "helium_chirp/1.0");
-                        headers.add(HttpHeaders.CONTENT_TYPE, "application/json");
-                        headers.add("KEY", reqItf.getKey());
-
-                        RestTemplate restTemplate = new RestTemplate();
-                        String body = (reqItf.isDeactivate())?"{ \"active\":false }":"{ \"active\":true }";
-                        HttpEntity<String> requestEntity = new HttpEntity<String>(body, headers);
-                        ResponseEntity<String> responseEntity =
-                                restTemplate.exchange(
-                                        reqItf.getEndpoint()+'/'+reqItf.getDeviceId(),
-                                        HttpMethod.PUT,
-                                        requestEntity,
-                                        String.class
-                                );
-
-                        if (responseEntity.getStatusCode() == HttpStatus.OK) {
-                            return new ResponseEntity<>(responseEntity.getBody(), HttpStatus.OK);
-                        } else {
-                            r.setMessage("console_response");
-                        }
-                    }
+                if ( ! verifyEndpoint(reqItf.getEndpoint(),request.getUserPrincipal().getName()) ) {
+                    r.setMessage("console_response");
+                    return new ResponseEntity<>(r, HttpStatus.BAD_REQUEST);
                 }
-                r.setMessage("unsupported_endpoint");
+                if ( reqItf.getEndpoint().endsWith("/v1/devices")) {
+                    // Accepted URL
+                    HttpHeaders headers = new HttpHeaders();
+                    ArrayList<MediaType> accept = new ArrayList<>();
+                    accept.add(MediaType.APPLICATION_JSON);
+                    headers.setAccept(accept);
+                    headers.add(HttpHeaders.USER_AGENT, "helium_chirp/1.0");
+                    headers.add(HttpHeaders.CONTENT_TYPE, "application/json");
+                    headers.add("KEY", reqItf.getKey());
+
+                    RestTemplate restTemplate = new RestTemplate();
+                    String body = (reqItf.isDeactivate())?"{ \"active\":false }":"{ \"active\":true }";
+                    HttpEntity<String> requestEntity = new HttpEntity<String>(body, headers);
+                    ResponseEntity<String> responseEntity =
+                            restTemplate.exchange(
+                                    reqItf.getEndpoint()+'/'+reqItf.getDeviceId(),
+                                    HttpMethod.PUT,
+                                    requestEntity,
+                                    String.class
+                            );
+
+                    if (responseEntity.getStatusCode() == HttpStatus.OK) {
+                        return new ResponseEntity<>(responseEntity.getBody(), HttpStatus.OK);
+                    } else {
+                        r.setMessage("console_response");
+                    }
+                } else r.setMessage("unsupported_endpoint");
             } else {
                 r.setMessage("invalid_key");
             }
