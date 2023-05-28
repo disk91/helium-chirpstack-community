@@ -488,7 +488,7 @@ public class HeliumTenantSetupService {
 
         // check if in the period of availability
         long now = Now.NowUtcMs();
-        if ( ( c.getStart() > 0 && c.getStart() < now ) || ( c.getStop() > 0 && c.getStop() > now )  ) return null;
+        if ( ( c.getStart() > 0 && c.getStart() > now ) || ( c.getStop() > 0 && c.getStop() < now )  ) return null;
 
         // Get the coupon
         c.setInUse(c.getInUse()+1);
