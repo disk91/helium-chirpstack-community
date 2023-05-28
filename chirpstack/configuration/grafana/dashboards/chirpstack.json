@@ -1056,7 +1056,7 @@
       },
       "gridPos": {
         "h": 5,
-        "w": 18,
+        "w": 14,
         "x": 0,
         "y": 13
       },
@@ -1089,6 +1089,103 @@
         }
       ],
       "timeFrom": "24h",
+      "title": "Test Device Communications (when setup or dummy)",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "PBFA97CFB590B2093"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "bars",
+            "fillOpacity": 67,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "area"
+            }
+          },
+          "mappings": [],
+          "min": 0,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 600000
+              }
+            ]
+          },
+          "unit": "ms"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 5,
+        "w": 4,
+        "x": 14,
+        "y": 13
+      },
+      "hideTimeOverride": false,
+      "id": 83,
+      "interval": "5m",
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": false
+        },
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "PBFA97CFB590B2093"
+          },
+          "editorMode": "builder",
+          "expr": "cons_stat_test_device_last_seen",
+          "legendFormat": "__auto",
+          "range": true,
+          "refId": "A"
+        }
+      ],
+      "timeFrom": "1h",
       "title": "Test Device Communications (when setup or dummy)",
       "type": "timeseries"
     },
@@ -1147,7 +1244,7 @@
               }
             ]
           },
-          "unit": "none"
+          "unit": "currencyUSD"
         },
         "overrides": []
       },
@@ -1177,7 +1274,7 @@
             "uid": "PBFA97CFB590B2093"
           },
           "editorMode": "code",
-          "expr": "cons_router_dcbalance",
+          "expr": "cons_router_dcbalance / 100000",
           "legendFormat": "__auto",
           "range": true,
           "refId": "A"
@@ -2347,7 +2444,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": null
               },
               {
                 "color": "red",
@@ -2439,7 +2537,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": null
               },
               {
                 "color": "red",
@@ -2531,7 +2630,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": null
               },
               {
                 "color": "red",
@@ -2623,7 +2723,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "semi-dark-orange"
+                "color": "semi-dark-orange",
+                "value": null
               },
               {
                 "color": "red",
@@ -2704,7 +2805,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "semi-dark-orange"
+                "color": "semi-dark-orange",
+                "value": null
               },
               {
                 "color": "red",
@@ -2805,7 +2907,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": null
               },
               {
                 "color": "semi-dark-orange",
@@ -2871,7 +2974,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": null
               },
               {
                 "color": "#EAB839",
@@ -3729,6 +3833,6 @@
   "timezone": "",
   "title": "Chirpstack",
   "uid": "6pIR3ibVz",
-  "version": 21,
+  "version": 24,
   "weekStart": ""
 }
