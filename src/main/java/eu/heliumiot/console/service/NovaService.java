@@ -1322,12 +1322,12 @@ public class NovaService {
         LinkedList<SkfUpdate> add = new LinkedList<>();
         LinkedList<SkfUpdate> del = new LinkedList<>();
         for ( devaddr_constraint_v1 addr : this.getAddresses() ) {
-            for ( int a = addr.getStartAddr() ; a < addr.getEndAddr() ; a++){
+            for ( int a = addr.getStartAddr() ; a <= addr.getEndAddr() ; a++){
                 SkfUpdate skf = new SkfUpdate();
                 skf.devAddr = a;
                 String random = RandomString.getRandomHexString(16);
                 String devAddr = String.format("%08X", a);
-                skf.session = "91919192" + random + "" + devAddr;
+                skf.session = "91919193" + random + "" + devAddr;
                 add.add(skf);
             }
         }
@@ -1335,7 +1335,7 @@ public class NovaService {
     }
 
     public boolean isRandomSkf(int addr, String session, String routeId) {
-        return (session.length() == 32 && session.startsWith("91919192") && session.endsWith(String.format("%08X",addr)));
+        return (session.length() == 32 && session.startsWith("91919193") && session.endsWith(String.format("%08X",addr)));
     }
 
 
