@@ -26,6 +26,7 @@ import eu.heliumiot.console.ConsoleConfig;
 import eu.heliumiot.console.api.interfaces.*;
 import eu.heliumiot.console.chirpstack.ChirpstackApiAccess;
 import eu.heliumiot.console.jpa.db.*;
+import eu.heliumiot.console.jpa.repository.HeliumCouponRepository;
 import eu.heliumiot.console.jpa.repository.HeliumPendingUserRepository;
 import eu.heliumiot.console.jpa.repository.HeliumTenantRepository;
 import eu.heliumiot.console.jpa.repository.HeliumUserRepository;
@@ -38,7 +39,6 @@ import io.chirpstack.restapi.Tenant;
 import io.chirpstack.restapi.UserTenant;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
-import org.apache.commons.validator.routines.EmailValidator;
 import org.postgresql.shaded.com.ongres.scram.common.bouncycastle.base64.Base64;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -162,6 +162,7 @@ public class UserService {
     @Autowired
     protected HeliumTenantSetupService heliumTenantSetupService;
 
+
     /**
      * Create a user account with email validation, the user creation in chirpstack is really created once the email validation
      * has been made
@@ -176,11 +177,17 @@ public class UserService {
         // Make sure the property file allow signup as a global setting
         if ( ! consoleConfig.isHeliumAllowsSignup() ) throw new ITParseException("error_signupclose");
 
-        // @todo verify the invitation code
+        // verify invitation code
         String profile = HELIUM_TENANT_SETUP_DEFAULT;
         if  (req.getInviteCode().length() > 0) {
             // process verification ...
             // set profile based on the invitation code verification
+            String uuid = heliumTenantSetupService.acquiresCoupon(req.getInviteCode());
+            if ( uuid != null ) {
+                profile = uuid;
+            } else {
+                throw new ITParseException("error_signupclose");
+            }
         }
 
         // is signup allowed

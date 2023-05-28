@@ -20,18 +20,19 @@
 package eu.heliumiot.console.service;
 
 import eu.heliumiot.console.ConsoleConfig;
-import eu.heliumiot.console.api.interfaces.TenantSetupTemplateCreateReqItf;
-import eu.heliumiot.console.api.interfaces.TenantSetupTemplateListRespItf;
-import eu.heliumiot.console.api.interfaces.TenantSetupTemplateUpdateReqItf;
+import eu.heliumiot.console.api.interfaces.*;
+import eu.heliumiot.console.jpa.db.HeliumCoupon;
 import eu.heliumiot.console.jpa.db.HeliumTenantSetup;
+import eu.heliumiot.console.jpa.repository.HeliumCouponRepository;
 import eu.heliumiot.console.jpa.repository.HeliumTenantSetupRepository;
-import fr.ingeniousthings.tools.ITRightException;
-import fr.ingeniousthings.tools.ObjectCache;
+import fr.ingeniousthings.tools.*;
 import io.micrometer.core.instrument.Gauge;
 import io.micrometer.core.instrument.MeterRegistry;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Slice;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
@@ -363,7 +364,7 @@ public class HeliumTenantSetupService {
         ts.setDcPrice(def.getDcPrice());
         ts.setDcMin(def.getDcMin());
         ts.setSignupAllowed(def.isSignupAllowed());
-        ts.setMaxCopy(def.getMaxCopy());
+        ts.setMaxCopy(( (def.getMaxCopy() > 0 )? def.getMaxCopy() : 1));
         heliumTenantSetupRepository.save(ts);
     }
 
@@ -397,6 +398,104 @@ public class HeliumTenantSetupService {
         }
         this.heliumSetupCache.remove(ts.getTenantUUID(),false);
         heliumTenantSetupRepository.delete(ts);
+    }
+
+    // =======================================================================
+    // MANAGE COUPONS
+    // =======================================================================
+
+    @Autowired
+    protected HeliumCouponRepository heliumCouponRepository;
+
+    public List<TenantSetupTemplateCouponRespItf> createTenantSetupTemplatesCoupon(
+            String user,
+            TenantSetupTemplateCouponReqItf req
+    ) throws ITRightException, ITParseException {
+
+        long now = Now.NowUtcMs();
+
+        UserCacheService.UserCacheElement u = userCacheService.getUserById(user);
+        if ( u == null || ! u.user.isAdmin() ) throw new ITRightException();
+
+        HeliumTenantSetup ts = heliumTenantSetupRepository.findOneHeliumTenantSetupByTenantUUID(req.getTenantUUID());
+        if ( ts == null ) throw new ITRightException();
+        if ( ! ts.isTemplate() ) throw new ITRightException();
+        if ( ts.getTenantUUID().compareTo(HELIUM_TENANT_SETUP_DEFAULT) == 0 ) throw new ITRightException();
+
+        if ( req.getToCreate() > 50 || (req.getStop() > 0 && req.getStop() < now) ) throw new ITParseException();
+
+        ArrayList<TenantSetupTemplateCouponRespItf> ret = new ArrayList<>();
+        if ( req.getPrefix().length() > 16 ) req.setPrefix(req.getPrefix().substring(0,16));
+        for ( int i = 0 ; i < req.getToCreate() ; i++ ) {
+            String couponId = req.getPrefix() + "-" + RandomString.getRandomAZString(6) + "-" + RandomString.getRandomHexString(6);
+            HeliumCoupon c = new HeliumCoupon();
+            c.setCouponState(HeliumCoupon.CouponState.ACTIVE);
+            c.setInUse(0);
+            c.setMaxUse(req.getMaxUse());
+            c.setStart(req.getStart());
+            c.setStop(req.getStop());
+            c.setTenantUUID(ts.getTenantUUID());
+            c.setCouponID(couponId);
+            heliumCouponRepository.save(c);
+            TenantSetupTemplateCouponRespItf _r = new TenantSetupTemplateCouponRespItf();
+            _r.setCouponID(c.getCouponID());
+            _r.setTenantUUID(c.getTenantUUID());
+            ret.add(_r);
+        }
+        return ret;
+    }
+
+    public List<CouponListRespItf> listTenantSetupTemplatesCoupon(
+            String user,
+            boolean filterInactive
+    ) throws ITRightException {
+
+        long now = Now.NowUtcMs();
+
+        UserCacheService.UserCacheElement u = userCacheService.getUserById(user);
+        if (u == null || !u.user.isAdmin()) throw new ITRightException();
+
+        ArrayList<CouponListRespItf> ret = new ArrayList<>();
+        heliumCouponRepository.findAll().forEach(coupon -> {
+            if (
+                 ! filterInactive ||
+                 (
+                       coupon.getCouponState() == HeliumCoupon.CouponState.ACTIVE
+                    && (coupon.getStart() == 0 || coupon.getStart() >= now )
+                    && (coupon.getStop() == 0 || coupon.getStop() < now )
+                    && coupon.getInUse() < coupon.getMaxUse()
+                 )
+            ) {
+                CouponListRespItf _r = new CouponListRespItf();
+                _r.setCouponID(coupon.getCouponID());
+                _r.setTenantUUID(coupon.getTenantUUID());
+                _r.setInUse(coupon.getInUse());
+                _r.setMaxUse(coupon.getMaxUse());
+                _r.setStop(coupon.getStop());
+                _r.setStart(coupon.getStart());
+                ret.add(_r);
+            }
+        });
+        return ret;
+    }
+
+
+    public synchronized String acquiresCoupon(String couponId) {
+
+        // check if exist & valid
+        HeliumCoupon c = heliumCouponRepository.findOneHeliumTenantByCouponID(couponId);
+        if ( c == null || c.getCouponState() == HeliumCoupon.CouponState.CLEARED ) return null;
+
+        // check if in the period of availability
+        long now = Now.NowUtcMs();
+        if ( ( c.getStart() > 0 && c.getStart() < now ) || ( c.getStop() > 0 && c.getStop() > now )  ) return null;
+
+        // Get the coupon
+        c.setInUse(c.getInUse()+1);
+        if ( c.getInUse() >= c.getMaxUse() ) c.setCouponState(HeliumCoupon.CouponState.CLEARED);
+        heliumCouponRepository.save(c);
+        return c.getTenantUUID();
+
     }
 
 

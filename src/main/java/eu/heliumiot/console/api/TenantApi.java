@@ -312,6 +312,73 @@ public class TenantApi {
 
     // #####################
 
+    @Operation(summary = "Create coupon codes",
+            description = "Create coupon codes for using a specific registration profile",
+            responses = {
+                    @ApiResponse(responseCode = "201", description= "Created",
+                            content = @Content(array = @ArraySchema(schema = @Schema( implementation = TenantSetupTemplateCouponRespItf.class)))),
+                    @ApiResponse(responseCode = "403", description= "Forbidden", content = @Content(schema = @Schema(implementation = ActionResult.class))),
+                    @ApiResponse(responseCode = "400", description= "Bad Request", content = @Content(schema = @Schema(implementation = ActionResult.class))),
+            }
+    )
+    @RequestMapping(value="/coupon",
+            produces = MediaType.APPLICATION_JSON_VALUE,
+            method= RequestMethod.POST)
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
+    public ResponseEntity<?> createCouponCode(
+            HttpServletRequest request,
+            @RequestBody(required = true) TenantSetupTemplateCouponReqItf couponReq
+    ) {
+        long startMs= Now.NowUtcMs();
+        log.debug("Create coupon for "+request.getUserPrincipal().getName());
+        try {
+            List<TenantSetupTemplateCouponRespItf> r = heliumTenantSetupService.createTenantSetupTemplatesCoupon(request.getUserPrincipal().getName(), couponReq);
+            return new ResponseEntity<>(r, HttpStatus.CREATED);
+        } catch (ITRightException x) {
+            prometeusService.addApiTotalError();
+            return new ResponseEntity<>(ActionResult.FORBIDDEN(), HttpStatus.FORBIDDEN);
+        } catch (ITParseException x) {
+            prometeusService.addApiTotalError();
+            return new ResponseEntity<>(ActionResult.BADREQUEST(), HttpStatus.BAD_REQUEST);
+        } finally {
+            prometeusService.addApiTotalTimeMs(startMs);
+        }
+    }
+
+    @Operation(summary = "List coupon codes",
+            description = "List coupon codes for using a specific registration profile",
+            responses = {
+                    @ApiResponse(responseCode = "200", description= "OK",
+                            content = @Content(array = @ArraySchema(schema = @Schema( implementation = CouponListRespItf.class)))),
+                    @ApiResponse(responseCode = "403", description= "Forbidden", content = @Content(schema = @Schema(implementation = ActionResult.class))),
+            }
+    )
+    @RequestMapping(value="/coupon/{active}/",
+            produces = MediaType.APPLICATION_JSON_VALUE,
+            method= RequestMethod.GET)
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
+    public ResponseEntity<?> listAllCouponCode(
+            HttpServletRequest request,
+            @Parameter(required = true, name = "active", description = "1 to get only the active coupons")
+            @PathVariable int active
+    ) {
+        long startMs= Now.NowUtcMs();
+        log.debug("List coupon for "+request.getUserPrincipal().getName());
+        try {
+            boolean filter = (active == 1);
+            List<CouponListRespItf> r = heliumTenantSetupService.listTenantSetupTemplatesCoupon(request.getUserPrincipal().getName(), filter);
+            return new ResponseEntity<>(r, HttpStatus.OK);
+        } catch (ITRightException x) {
+            prometeusService.addApiTotalError();
+            return new ResponseEntity<>(ActionResult.FORBIDDEN(), HttpStatus.FORBIDDEN);
+        } finally {
+            prometeusService.addApiTotalTimeMs(startMs);
+        }
+    }
+
+
+    // #####################
+
     @Operation(summary = "Search tenants based on keyword",
             description = "get about 10-20 tenants based on keyword. Look at UUIDs, Name and email." +
                     "The search key is any string from 3 to 15 chars.",

@@ -701,12 +701,18 @@ public class HeliumTenantService {
         if ( user == null ) throw new ITRightException();
 
         // check profile
-        // @todo verify the invitation code
         String profile = HELIUM_TENANT_SETUP_DEFAULT;
         if  (req.getCouponCode().length() > 0) {
             // process verification ...
             // set profile based on the invitation code verification
+            String uuid = heliumTenantSetupService.acquiresCoupon(req.getCouponCode());
+            if ( uuid != null ) {
+                profile = uuid;
+            } else {
+                throw new ITParseException("error_invalidcoupon");
+            }
         }
+
         // is signup allowed
         HeliumTenantSetup hts = heliumTenantSetupService.getHeliumTenantSetup(profile,false);
         if( hts == null ) {
