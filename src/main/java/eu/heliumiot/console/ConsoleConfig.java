@@ -48,6 +48,12 @@ public class ConsoleConfig {
     @Value ("${helium.allows.signup}")
     private String heliumAllowsSignupExternal;
 
+    @Value ("${helium.allows.activation.default}")
+    private String heliumAllowsActivationDefault;
+
+    @Value ("${helium.allows.activation:}")     // if not existing (: = default value)
+    private String heliumAllowsActivationExternal;
+
     @Value ("${helium.device.new.scanPeriod}")
     private long heliumDeviceNewScanPeriod;
 
@@ -77,6 +83,20 @@ public class ConsoleConfig {
         if ( getHeliumAllowsSignupExternal().length() > 0 ) return Boolean.parseBoolean(getHeliumAllowsSignupExternal());
         return Boolean.parseBoolean(getHeliumAllowsSignupDefault());
     }
+
+    public String getHeliumAllowsActivationDefault() {
+        return heliumAllowsActivationDefault;
+    }
+
+    public String getHeliumAllowsActivationExternal() {
+        return heliumAllowsActivationExternal;
+    }
+
+    public boolean isHeliumAllowsActivation() {
+        if ( getHeliumAllowsActivationExternal().length() > 0 ) return Boolean.parseBoolean(getHeliumAllowsActivationExternal());
+        return Boolean.parseBoolean(getHeliumAllowsActivationDefault());
+    }
+
 
     public long getHeliumDeviceNewScanPeriod() {
         return heliumDeviceNewScanPeriod;

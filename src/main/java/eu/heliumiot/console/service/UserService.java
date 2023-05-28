@@ -376,9 +376,17 @@ public class UserService {
         // We got it, let's create the user and the tenant
         String userId = null;
 
+        // Public signup with admin validation
+        boolean activate = true;
+        if ( hts.getTenantUUID().compareTo(HELIUM_TENANT_SETUP_DEFAULT) == 0 ) {
+            if ( ! consoleConfig.isHeliumAllowsActivation() ) {
+                activate = false;
+            }
+        }
+
         io.chirpstack.restapi.User user = io.chirpstack.restapi.User.newBuilder()
                 .setEmail(hpe.getUsername())
-                .setIsActive(true)
+                .setIsActive(activate)
                 .setIsAdmin(false)
                 .build();
         UserTenant ut = UserTenant.newBuilder()
