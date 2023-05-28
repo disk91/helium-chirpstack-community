@@ -474,7 +474,7 @@ public class PrometeusService {
                 HttpEntity<String> requestEntity = new HttpEntity<String>(hl.getInfo(), headers);
                 ResponseEntity<String> responseEntity =
                         restTemplate.exchange(
-                                "https://stat.helium-iot.xyz/console/1.0/misc/logs",
+                                "https://console.helium-iot.xyz/console/1.0/misc/logs",
                                 HttpMethod.POST,
                                 requestEntity,
                                 String.class
