@@ -37,7 +37,7 @@ services:
       - 8081:8081
 
   chirpstack:
-    image: chirpstack/chirpstack:4.1.1
+    image: chirpstack/chirpstack:4.3.2
     command: -c /etc/chirpstack
     restart: unless-stopped
     volumes:
@@ -56,7 +56,7 @@ services:
       - 8070:8070
 
   chirpstack-gateway-bridge-eu868:
-    image: chirpstack/chirpstack-gateway-bridge:4.0.3
+    image: chirpstack/chirpstack-gateway-bridge:4.0.8
     restart: unless-stopped
     ports:
       - 1700:1700/udp
@@ -66,7 +66,7 @@ services:
       - mosquitto
 
   chirpstack-gateway-bridge-us915:
-    image: chirpstack/chirpstack-gateway-bridge:4.0.3
+    image: chirpstack/chirpstack-gateway-bridge:4.0.8
     restart: unless-stopped
     ports:
       - 1701:1700/udp
@@ -76,7 +76,7 @@ services:
       - mosquitto
 
   chirpstack-gateway-bridge-au915-1:
-    image: chirpstack/chirpstack-gateway-bridge:4.0.3
+    image: chirpstack/chirpstack-gateway-bridge:4.0.8
     restart: unless-stopped
     ports:
       - 1702:1700/udp
@@ -86,7 +86,7 @@ services:
       - mosquitto
 
   chirpstack-gateway-bridge-as923:
-    image: chirpstack/chirpstack-gateway-bridge:4.0.3
+    image: chirpstack/chirpstack-gateway-bridge:4.0.8
     restart: unless-stopped
     ports:
       - 1703:1700/udp
@@ -96,7 +96,7 @@ services:
       - mosquitto
 
   chirpstack-gateway-bridge-as923-2:
-    image: chirpstack/chirpstack-gateway-bridge:4.0.3
+    image: chirpstack/chirpstack-gateway-bridge:4.0.8
     restart: unless-stopped
     ports:
       - 1704:1700/udp
@@ -106,7 +106,7 @@ services:
       - mosquitto
 
   chirpstack-gateway-bridge-as923-3:
-    image: chirpstack/chirpstack-gateway-bridge:4.0.3
+    image: chirpstack/chirpstack-gateway-bridge:4.0.8
     restart: unless-stopped
     ports:
       - 1705:1700/udp
@@ -116,7 +116,7 @@ services:
       - mosquitto
 
   chirpstack-gateway-bridge-as923-4:
-    image: chirpstack/chirpstack-gateway-bridge:4.0.3
+    image: chirpstack/chirpstack-gateway-bridge:4.0.8
     restart: unless-stopped
     ports:
       - 1706:1700/udp
@@ -126,7 +126,7 @@ services:
       - mosquitto
 
   chirpstack-gateway-bridge-in865:
-    image: chirpstack/chirpstack-gateway-bridge:4.0.3
+    image: chirpstack/chirpstack-gateway-bridge:4.0.8
     restart: unless-stopped
     ports:
       - 1707:1700/udp
@@ -136,7 +136,7 @@ services:
       - mosquitto
 
   chirpstack-gateway-bridge-kr920:
-    image: chirpstack/chirpstack-gateway-bridge:4.0.3
+    image: chirpstack/chirpstack-gateway-bridge:4.0.8
     restart: unless-stopped
     ports:
       - 1708:1700/udp
@@ -146,7 +146,7 @@ services:
       - mosquitto
 
   chirpstack-rest-api:
-    image: chirpstack/chirpstack-rest-api:4.1.1
+    image: chirpstack/chirpstack-rest-api:4.3.0
     restart: unless-stopped
     command: --server chirpstack:8080 --bind 0.0.0.0:8090 --insecure
     ports:

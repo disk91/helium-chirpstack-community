@@ -49,6 +49,12 @@ public class Device {
     @Column(name = "application_id")
     private UUID applicationId;
 
+    @GenericGenerator(name = "UUIDGenerator", strategy = "uuid2")
+    @Column(name = "device_profile_id")
+    private UUID deviceProfileId;
+
+    private String description;
+
     @Column(name = "variables")
     private String variables;       // contains tags
 

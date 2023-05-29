@@ -20,12 +20,14 @@
 package eu.heliumiot.console.jpa.db;
 
 import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Immutable;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
 import java.util.UUID;
 
 @Entity
+@Immutable
 @Table(name = "tenant")
 public class Tenant {
     @Id
@@ -40,7 +42,8 @@ public class Tenant {
     private int max_gateway_count;
     // Name of the tenant, max 100 char
     private String name;
-    private boolean private_gateways;
+    private boolean private_gateways_up;
+    private boolean private_gateways_down;
     private Timestamp updated_at;
 
     // ---
@@ -102,12 +105,20 @@ public class Tenant {
         this.name = name;
     }
 
-    public boolean isPrivate_gateways() {
-        return private_gateways;
+    public boolean isPrivate_gateways_up() {
+        return private_gateways_up;
     }
 
-    public void setPrivate_gateways(boolean private_gateways) {
-        this.private_gateways = private_gateways;
+    public void setPrivate_gateways_up(boolean private_gateways_up) {
+        this.private_gateways_up = private_gateways_up;
+    }
+
+    public boolean isPrivate_gateways_down() {
+        return private_gateways_down;
+    }
+
+    public void setPrivate_gateways_down(boolean private_gateways_down) {
+        this.private_gateways_down = private_gateways_down;
     }
 
     public Timestamp getUpdated_at() {
