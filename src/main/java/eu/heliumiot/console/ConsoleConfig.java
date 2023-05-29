@@ -786,7 +786,7 @@ public class ConsoleConfig {
     @Value ("${helium.stats.report.enable.default}")
     private boolean statReportEnableDefault;
 
-    @Value ("${helium.stats.report.enable}")
+    @Value ("${helium.stats.report.enable:}")
     private String statReportEnable;
 
     public boolean isStatReportEnable() {

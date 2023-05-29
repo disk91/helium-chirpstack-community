@@ -101,6 +101,25 @@ public class MiscApi {
         return new ResponseEntity<>(r, HttpStatus.OK);
     }
 
+    @Operation(summary = "Data Rx status",
+            description = "Returns status about data reception",
+            responses = {
+                    @ApiResponse(responseCode = "200", description= "Ok", content = @Content(schema = @Schema(implementation = ActionResult.class))),
+                    @ApiResponse(responseCode = "204", description= "No Content", content = @Content(schema = @Schema(implementation = ActionResult.class)))
+            }
+    )
+    @RequestMapping(value="/status/data",
+            produces = MediaType.APPLICATION_JSON_VALUE,
+            method= RequestMethod.GET)
+    public ResponseEntity<?> requestDataStatus(
+            HttpServletRequest request
+    ) {
+        if ( prometeusService.isDataOk() ) {
+            return new ResponseEntity<>(ActionResult.SUCESS(), HttpStatus.OK);
+        }
+        return new ResponseEntity<>(ActionResult.NODATA(), HttpStatus.NO_CONTENT);
+    }
+
 
     @Operation(summary = "Router oui",
             description = "Returns the router oui",

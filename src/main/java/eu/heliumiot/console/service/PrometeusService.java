@@ -53,6 +53,7 @@ public class PrometeusService {
     private long loRaDownlinkCount = 0;         // number of downlink messages - OK
     private long loRaTotalUplinkBytes = 0;      // number of bytes transfered in Uplink - OK
     private long loRaTotalDownlinkBytes = 0;    // number of bytes transfered in Downlink - OK
+    private long loRaLastSeen = 0;              // last time we seen data
 
     private long loRaJoinCount = 0;             // number of Join request - OK
 
@@ -117,6 +118,7 @@ public class PrometeusService {
         this.loRaUplinkCount ++;
         this.loRaTotalUplinkBytes += bytes;
         this.loRaTotalTravelTimeMs += travelTime;
+        this.loRaLastSeen = Now.NowUtcMs();
     }
 
     synchronized public void addLoRaJoin() { this.loRaJoinCount++; }
@@ -483,6 +485,12 @@ public class PrometeusService {
         } catch (JsonProcessingException x) {
         } catch (Exception x){
         }
-
     }
+
+    // ====================
+    // Data Status
+    public boolean isDataOk() {
+        return ( ( Now.NowUtcMs() - loRaLastSeen ) < 2*Now.ONE_MINUTE );
+    }
+
 }
