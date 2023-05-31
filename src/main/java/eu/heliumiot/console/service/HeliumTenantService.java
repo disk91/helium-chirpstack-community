@@ -654,10 +654,20 @@ public class HeliumTenantService {
 
             if ( ut == null ) throw new ITRightException();
             // when non admin we just return 0, only admin can see DC balance
+            // be we can add an information with a color code under 1000 DCs
+            // Here we are the right to get the DC Balance info
             if ( ! ut.isAdmin() ) {
+                HeliumTenant ht = this.getHeliumTenant(tenantId,true);
+                HeliumTenantSetup hts = heliumTenantSetupService.getHeliumTenantSetup(tenantId,true);
+                eu.heliumiot.console.jpa.db.Tenant t = this.getTenant(UUID.fromString(ht.getTenantUUID()));
                 TenantBalanceItf r = new TenantBalanceItf();
                 r.setDcBalance(0);
                 r.setMinBalance(0);
+                r.setBalanceOk((ht.getDcBalance()-hts.getDcBalanceStop()) > 1000);
+                r.setOwnerMode(false);
+                if ( t != null ) {
+                    r.setTenantName(t.getName());
+                }
                 return r;
             }
         }
@@ -670,6 +680,8 @@ public class HeliumTenantService {
         TenantBalanceItf r = new TenantBalanceItf();
         r.setDcBalance(ht.getDcBalance());
         r.setMinBalance(hts.getDcBalanceStop());
+        r.setOwnerMode(true);
+        r.setBalanceOk((ht.getDcBalance()-hts.getDcBalanceStop()) > 1000);
         if ( t != null ) {
             r.setTenantName(t.getName());
         }

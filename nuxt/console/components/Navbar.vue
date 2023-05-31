@@ -203,9 +203,17 @@ export default Vue.extend({
                 this.dc = dcb.dcBalance;
                 this.formatedDc = this.dc.toLocaleString("en-US");
                 this.mindc = dcb.minBalance;
-                if (( this.dc - this.mindc ) > 5000 ) this.color="secondary"
-                else if (( this.dc - this.mindc ) > 1000 ) this.color="warning"
-                else this.color = "danger";
+                this.ownerMode = dcb.ownerMode;
+                this.balanceOk = dcb.balanceOk;
+                if (this.ownerMode ) {
+                  if (( this.dc - this.mindc ) > 5000 ) this.color="secondary"
+                  else if (( this.dc - this.mindc ) > 1000 ) this.color="warning"
+                  else this.color = "danger";
+                } else {
+                  this.formatedDc = "NA";
+                  if ( this.balanceOk ) this.color="secondary";
+                  else this.color = "danger";
+                }
             })
           } else {
             this.tenantName = "NA";

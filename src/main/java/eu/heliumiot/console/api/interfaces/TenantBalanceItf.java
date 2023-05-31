@@ -45,6 +45,17 @@ public class TenantBalanceItf {
     )
     protected long minBalance;
 
+    @Schema(
+            description = "When true, the balance margin is > 1000DCs",
+            requiredMode = Schema.RequiredMode.REQUIRED
+    )
+    protected boolean balanceOk;
+
+    @Schema(
+            description = "When false, value forced to 0 due to ownership",
+            requiredMode = Schema.RequiredMode.REQUIRED
+    )
+    protected boolean ownerMode;
 
 
     // ------------------------------------
@@ -72,5 +83,21 @@ public class TenantBalanceItf {
 
     public void setTenantName(String tenantName) {
         this.tenantName = tenantName;
+    }
+
+    public boolean isBalanceOk() {
+        return balanceOk;
+    }
+
+    public void setBalanceOk(boolean balanceOk) {
+        this.balanceOk = balanceOk;
+    }
+
+    public boolean isOwnerMode() {
+        return ownerMode;
+    }
+
+    public void setOwnerMode(boolean ownerMode) {
+        this.ownerMode = ownerMode;
     }
 }
