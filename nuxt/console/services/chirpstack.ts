@@ -206,6 +206,8 @@ export class ChirpstackService {
         +"   var uplink_info = {};\n"
         +"   // Initial code imported, if you were using \n"
         +"   // uplink_info, you really need to review your function \n"
+        +"   // If you need to preserve your app_eui, add as part of the data the following entry \n"
+        +"   // appeui: input.variables.app_eui "
         );
         
         const reg3 = /return[^;{]*({[^}]*})/g
