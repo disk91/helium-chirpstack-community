@@ -672,7 +672,7 @@ public class UserService {
             try {
                 Thread.sleep((Math.abs(new Random().nextInt()) % 40));
             }catch (InterruptedException x){};
-            throw new ITParseException();
+            return;
         }
 
         HeliumPendingUser hpe = heliumPendingUserRepository.findOneHeliumPendingUserByUsernameAndType(
