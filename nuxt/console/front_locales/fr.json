@@ -398,6 +398,8 @@
     "mig_stop_migrate" : "Non, pas encore, je reviens",
     "mig_end_migrate" : "Fin de la migration. Fermer.",
 
+    "mig_loaded_integration" : "Integrations",
+
     "bcopy_card_title" : "Achats multiples / copie de messages",
     "bcopy_parameter" : "Paramètre", 
     "bcopy_curvalue" : "Valeur actuelle", 

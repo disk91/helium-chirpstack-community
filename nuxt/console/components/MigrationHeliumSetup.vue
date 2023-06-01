@@ -217,9 +217,17 @@ export default Vue.extend({
                                         .then ((result:string) => {
                                             self.loadDevices = false;
                                             if ( result == "" ) {
-                                                self.loadDevices = false;
-                                                self.$root.$emit("message-migration-validate-api", "");
-                                                self.$root.$emit("message-migration-next-tab", "");
+                                                this.consoleObject.getIntegration()
+                                                .then ((result:string) => {
+                                                    if ( result == "" ) {
+                                                        self.loadDevices = false;
+                                                        self.$root.$emit("message-migration-validate-api", "");
+                                                        self.$root.$emit("message-migration-next-tab", "");
+                                                    } else {
+                                                        self.errorMessage = 'mig_err_'+result;
+                                                        self.cnxState = 2;
+                                                    }
+                                                });
                                             } else {
                                                 self.errorMessage = 'mig_err_'+result;
                                                 self.cnxState = 2;

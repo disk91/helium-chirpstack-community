@@ -26,6 +26,10 @@
                 <b-col cols="2">{{ $t('mig_loaded_live') }}</b-col>
                 <b-col cols="2" class="text-success">{{ consoleObject.countInOui() }}</b-col>
             </b-row>
+            <b-row>
+                <b-col cols="2">{{ $t('mig_loaded_integration') }}</b-col>
+                <b-col cols="2" class="text-success">{{ consoleObject.accountIntegration.length }}</b-col>
+            </b-row>
 
         </b-card>
 

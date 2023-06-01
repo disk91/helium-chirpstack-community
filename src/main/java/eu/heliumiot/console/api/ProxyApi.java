@@ -152,6 +152,7 @@ public class ProxyApi {
                         || reqItf.getEndpoint().endsWith("/v1/devices")
                         || reqItf.getEndpoint().endsWith("/v1/functions")
                         || reqItf.getEndpoint().endsWith("/v1/flows")
+                        || reqItf.getEndpoint().endsWith("/v1/integrations")
                 ) {
                     // Accepted URL
                     HttpHeaders headers = new HttpHeaders();

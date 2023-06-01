@@ -397,6 +397,9 @@
   "mig_stop_migrate" : "Not yet, bring me back",
   "mig_end_migrate" : "End of migration. Close.",
 
+  "mig_loaded_integration" : "Integrations",
+
+
   "bcopy_card_title" : "Multi-buy / frame copy",
   "bcopy_parameter" : "Parameter", 
   "bcopy_curvalue" : "Curent Value", 

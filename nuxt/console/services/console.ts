@@ -1,4 +1,4 @@
-import { ProxyConfig, ProxyGetReqItf, LabelItf, DeviceItf, FunctionItf, FlowItf, ProxyDeactivateDeviceReqItf } from 'vue/types/proxy';
+import { ProxyConfig, ProxyGetReqItf, LabelItf, DeviceItf, FunctionItf, FlowItf, ProxyDeactivateDeviceReqItf, IntegrationItf } from 'vue/types/proxy';
 import { Device } from 'vue/types/console';
 
 
@@ -16,11 +16,13 @@ export class HeliumConsoleService {
     accountLabels : LabelItf[];
     accountDevices : Device[];
     accountFunctions : FunctionItf[];
+    accountIntegration : IntegrationItf[];
     accountFlows : FlowItf[];
 
     labelsGet : string = "v1/labels";
     devicesGet : string = "v1/devices";
     functionGet : string = "v1/functions";
+    integrationGet : string = "v1/integrations";
     flowGet : string = "v1/flows";
     DeactivatePut : string = "v1/devices";
 
@@ -34,6 +36,7 @@ export class HeliumConsoleService {
         this.accountLabels = [];
         this.accountDevices = [];
         this.accountFunctions = [];
+        this.accountIntegration = [];
         this.accountFlows = [];
         this.oui = -1;
         this.currentLabel = "";
@@ -361,6 +364,31 @@ export class HeliumConsoleService {
         }
         return undefined as any;
     }
+
+
+    async getIntegration(): Promise<string> {
+        this.isBusy = true;
+        let body : ProxyGetReqItf = {
+            endpoint: this.apiUrl+this.integrationGet,
+            key:this.apiKey,
+        };
+        this.accountIntegration = [];
+        return new Promise<string>((resolve) => { 
+            this.axios.post(this.proxyConfig.getterUrl,body,this.getHeader())
+            .then((response : any) =>{
+                if (response.status == 200 ) {
+                  this.isBusy = false;
+                  (response.data as IntegrationItf[]).forEach ( (integrationItf)=> {
+                       this.accountIntegration.push(integrationItf); 
+                  });
+                  resolve("");
+                } else resolve(response.data.message);
+            }).catch((err : any) =>{
+                if ( err != undefined ) resolve(err.response.data.message);
+            })
+        });
+    }
+
 
     /**
      * Desactivate a device on the Helium console site

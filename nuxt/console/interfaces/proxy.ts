@@ -63,4 +63,22 @@ declare module "vue/types/proxy" {
         organization_id : string,
     }
 
+    interface IntegrationItf {
+        credentials : {
+            endpoint : string,
+            headers : {},
+            inbound_token : string,
+            method : string,
+            url_params : {},
+            downlink : {
+                topic: string,
+            }
+            uplink : {
+                topic : string,
+            }
+        },
+        name : string,
+        type : string,
+    }
+
 }

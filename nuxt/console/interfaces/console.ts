@@ -31,4 +31,5 @@ declare module "vue/types/console" {
         devProfile : string, // selected device type
         application : string, // selected application
     }
+
 }
