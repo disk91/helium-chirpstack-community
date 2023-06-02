@@ -1025,6 +1025,11 @@ public class HeliumTenantService {
             throw new ITRightException();
         }
 
+        // security, Dc transfer should be higher than the default given DCs
+        // to make it simpler, need at least to transfer 2_000 DCs
+        // possibly we could add a DC transfer rate limit
+        if ( req.getDcs() < 2_000 ) throw new ITRightException("dc_amount");
+
         // Execute transaction
         long realDc = 0;
         synchronized (this) {
