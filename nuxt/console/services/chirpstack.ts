@@ -397,14 +397,14 @@ export class ChirpstackService {
                             encoding : "JSON",
                             eventEndpointUrl : "http://helium-forwarder-1:8082/capture/",
                             headers : {
-                                "HELIUM_ID" : this.integration.id,
-                                "HELIUM_ENDPOINT" : this.integration.endpoint,
-                                "HELIUM_TYPE" : this.integration.type,
-                                "HELIUM_VERB" : this.integration.verb,
-                                "HELIUM_URLPARAM" : JSON.stringify(this.integration.ulrparams),
-                                "HELIUM_HEADERS" : JSON.stringify(this.integration.headers),
-                                "HELIUM_UPTOPIC" : (this.integration.topic_up!="")?this.integration.topic_up:"none",
-                                "HELIUM_DNTOPIC" : (this.integration.topic_down!="")?this.integration.topic_down:"none",
+                                "hid" : this.integration.id,
+                                "hendpoint" : this.integration.endpoint,
+                                "htype" : this.integration.type,
+                                "hverb" : this.integration.verb,
+                                "hurlparam" : JSON.stringify(this.integration.ulrparams),
+                                "hheaders" : JSON.stringify(this.integration.headers),
+                                "huptopic" : (this.integration.topic_up!="")?this.integration.topic_up:"none",
+                                "hdntopic" : (this.integration.topic_down!="")?this.integration.topic_down:"none",
                             }
                         }
                     };
