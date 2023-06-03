@@ -632,7 +632,7 @@
                                 :options="applicationOption"
                                 size="sm"
                                 class="mt-2"
-                                :disabled="selectApplicationDisabled"
+                                @change="onAppplicationSelectChange($event)"
                         ></b-form-select>
                         <b-form-text style="font-size:0.6rem;color:#DC3545 !important;">{{ $t(appErrorMessage) }}</b-form-text>
                     </b-col>
@@ -718,6 +718,21 @@
 
         </b-modal>
 
+        <b-modal id="LoadDevicesModal" 
+                 centered 
+                 content-class="shadow"
+                 v-model="loadDevices"
+                 header-border-variant="white"
+                 header-text-variant="dark"
+                 footer-border-variant="white"
+                 class="text-center"
+                 hide-footer
+                 hide-header
+        >
+            <b-card-text class="text-dark" style="text-align:center;font-size:1.5rem;" >
+                {{ $t('mig_processing_devices') }}
+            </b-card-text>
+        </b-modal>
 
     </div>
 </template>
@@ -797,6 +812,8 @@ export default Vue.extend({
             createApplicationDisabled : false as boolean,
             newAppNameModal : false as boolean,
             newAppName : "" as string,
+            integrationReady : false as boolean,
+            loadDevices : false as boolean,
         };
     },
     methods : {
@@ -814,6 +831,8 @@ export default Vue.extend({
             this.createApplicationDisabled = false;
             this.newAppNameModal = false;
             this.newAppName = "";
+            this.integrationReady = false;
+            this.loadDevices = false;
         },
         selectTenant() {
 
@@ -854,9 +873,11 @@ export default Vue.extend({
                             };
                             if ( this.applicationOption.length > 0 ) {
                                 this.targetApplication = 0;
+                                this.onAppplicationSelectChange(0);
                                 this.selectApplicationDisabled = false;
                             } else {
-                            this.selectApplicationDisabled = true;
+                                this.selectApplicationDisabled = true;
+                                this.onAppplicationSelectChange(null);
                             }
                         } else {
                             this.appErrorMessage = mess;
@@ -904,8 +925,20 @@ export default Vue.extend({
         selectApplication() {
             // store selected app for next step
             this.chirpstackObject.setDefaultApplication(this.chirpstackObject.getApplications()[this.targetApplication]);
-            this.selectApplicationDisabled = true;
-            this.createApplicationDisabled = true;
+            this.appErrorMessage="";
+
+            // create the integation when required
+            this.chirpstackObject.createApplicationIntegration()
+            .then ( (result) => {
+                if ( result == "" ) {
+                    this.integrationReady = true;
+                    this.selectApplicationDisabled = true;
+                    this.createApplicationDisabled = true;
+                } else {
+                    this.appErrorMessage = result;
+                }
+            });
+
         },
         addApplication() {
             // need to modal for the name and create it
@@ -936,8 +969,10 @@ export default Vue.extend({
                     if ( this.applicationOption.length > 0 ) {
                         this.targetApplication = 0;
                         this.selectApplicationDisabled = false;
+                        this.onAppplicationSelectChange(0);
                     } else {
                         this.selectApplicationDisabled = true;
+                        this.onAppplicationSelectChange(null);
                     }
                 } else {
                     this.appErrorMessage = mess;
@@ -945,14 +980,43 @@ export default Vue.extend({
                 }
             });
         },
+        onAppplicationSelectChange(event:any) {
+            if ( this.chirpstackObject.getIntegration() != null ) {
+                if ( event != null ) {
+                    let app = this.chirpstackObject.getApplications()[event];
+                    this.chirpstackObject.getApplicationIntegration(app.id)
+                    .then( (integ) => {
+                        if ( integ == null ) {
+                            // no integration, no problem
+                            this.selectApplicationDisabled = false;
+                        } else {
+                            // is it the same integration ?
+                            if ( integ.integration.headers.HELIUM_ID != undefined && integ.integration.headers.HELIUM_ID == this.chirpstackObject.getIntegration().id ) {
+                                // yes, no problem
+                                this.selectApplicationDisabled = false;
+
+                            } else {
+                                // impossible to select this application
+                                this.selectApplicationDisabled = true;
+                            }
+                        }
+                    });
+                }
+            }
+        },
         gotoMigrationDisabled() : boolean {
             return ! (   this.selectApplicationDisabled && this.applicationOption.length > 0 
                       && this.selectTenantDisabled && this.sourceOption.length > 0 
-                      && this.chirpstackObject.haveDeviceProfile() );
+                      && this.chirpstackObject.haveDeviceProfile() 
+                      && this.integrationReady
+                     );
         },
         gotoMigration() {
-            this.$root.$emit("message-migration-validate-chirpstack", "");
-            this.$root.$emit("message-migration-next-tab", "");
+            this.loadDevices = true;
+            setTimeout( () => {
+                this.$root.$emit("message-migration-validate-chirpstack", "");
+                this.$root.$emit("message-migration-next-tab", "");
+            }, 1000);
         }
     },
     mounted() {
@@ -962,6 +1026,9 @@ export default Vue.extend({
         });
         this.$root.$on("message-migration-cancel", (msg:any) => {
             this.reset();
+        });
+        this.$root.$on("message-close-dev-modal", (msg:any) => {
+            this.loadDevices = false;
         });
     },
     created () {

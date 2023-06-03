@@ -98,6 +98,49 @@
             >
                 <b-row>
                     <b-col cols="12">
+                        <div v-html="$t('mig_setup_integration_select')"></div>
+                    </b-col>
+                </b-row>
+                <b-row>
+                    <b-col cols="4" class="mb-3">
+                        <b-form-select v-model="targetIntegration" 
+                                :options="sourceIntegration"
+                                size="sm"
+                                class="mt-2"
+                                :disabled="selectIntegrationDisabled"
+                                @change="onIntegrationSelectChange($event)"
+                        ></b-form-select>
+                    </b-col>
+                    <b-col cols="2">
+                        <b-button block
+                            variant="primary"
+                            size="sm"
+                            @click="selectIntegration()"
+                            style="text-align: right;font-size:0.8rem;"
+                            class="mt-2"
+                            :disabled="selectIntegrationDisabled"
+                        >
+                            {{ $t('mig_select_integation') }}
+                        </b-button>
+                    </b-col>
+                    <b-col cols="1">
+
+                    </b-col>
+                    <b-col cols="4">
+                        <div v-html="$t('mig_setup_integration_info')"></div>
+                    </b-col>
+                </b-row>
+            </b-col>
+        </b-row>
+
+
+        <b-row v-if="selectIntegrationDisabled" class="mx-1 my-3">
+            <b-col cols="12"
+                   class="bg-light p-3"
+                   style="border-radius: 0.5rem;"
+            >
+                <b-row>
+                    <b-col cols="12">
                         <div v-html="$t('mig_setup_function_select')"></div>
                     </b-col>
                 </b-row>
@@ -215,6 +258,9 @@ export default Vue.extend({
             sourceFunction : [] as any,
             targetFunction : "" as string,
             selectFunctionDisabled : false as boolean,
+            sourceIntegration : [] as any,
+            targetIntegration : "" as string,
+            selectIntegrationDisabled : false as boolean,
         };
     },
     methods : {
@@ -227,6 +273,9 @@ export default Vue.extend({
             this.sourceLabel = [];
             this.sourceFunction = [];
             this.targetFunction = "";
+            this.sourceIntegration = [];
+            this.targetIntegration = "";
+            this.selectIntegrationDisabled = false;
             this.leftEditor = "";
             this.rightEditor = "";
         },
@@ -264,6 +313,22 @@ export default Vue.extend({
             }
             this.targetFunction = this.sourceFunction[0].value;
 
+            let o = {
+                        value : "0",
+                        text : "none", 
+            };
+            this.sourceIntegration.push(o);
+            this.consoleObject.getDownloadedIntegration().forEach( (integ) => {
+                if ( integ.type == "http" || integ.type == "tago" ) {
+                    let o = {
+                        value : integ.id,
+                        text : integ.name, 
+                    };
+                    this.sourceIntegration.push(o);
+                } 
+            });
+            this.targetIntegration = this.sourceIntegration[0].value;
+
         },
         onFunctionSelectChange(event:any) {
             let f = this.consoleObject.getOneFunction(event);
@@ -298,7 +363,31 @@ export default Vue.extend({
             }
             this.$root.$emit("message-migration-validate-label", "");
             this.$root.$emit("message-migration-next-tab", "");
-        }
+        },
+        onIntegrationSelectChange(event:any) {
+        },
+        selectIntegration() {
+            this.selectIntegrationDisabled=true;
+            let integ = this.consoleObject.getOneIntegration(this.targetIntegration);
+            if ( integ == undefined || this.targetIntegration == "0" ) {
+                this.chirpstackObject.setIntegration(null as any);
+            } else {
+                this.chirpstackObject.setIntegration(
+                {
+                    type : integ.type,
+                    id: integ.id,
+                    name : integ.name,
+                    verb : integ.credentials.method,
+                    endpoint : integ.credentials.endpoint,
+                    ulrparams : integ.credentials.url_params,
+                    headers : integ.credentials.headers,
+                    topic_up : (integ.credentials.uplink != undefined)?integ.credentials.uplink.topic:"",
+                    topic_down : (integ.credentials.downlink != undefined)?integ.credentials.downlink.topic:"",
+                });
+            }
+            
+        },
+
     },
     mounted() {
         this.$root.$on("message-migration-validate-api", (msg:any) => {

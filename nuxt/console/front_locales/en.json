@@ -361,7 +361,7 @@
   "mig_select_label" : "Select Label",
   "mig_label" : "Select Label",
   "mig_label_data" : "Data from selected Label:",
-  "mig_setup_function_select" : "Select the docoder function to be applied:",
+  "mig_setup_function_select" : "Select the decoder function to be applied:",
   "mig_select_function" : "Select Function",
   "mig_setup_function_rewrite" : "The following function will be applied in chirpstack, please review this function and adapt it, the automatic migration is not able to manage all the migration situation.",
   "mig_commit_function" : "Function is ready",
@@ -370,7 +370,7 @@
   "mig_setup_defaultapp": "Select default app:",
   "mig_add_application" : "Add new Application",
   "mig_select_application" : "Select",
-  "mig_setup_appexplained_1" : "You can see the list of applications existing in your tenant, application is a group of devices with the <b>same integration target</b>. You can create a dedicated application. Select the default application you want to use for your devices.",
+  "mig_setup_appexplained_1" : "You can see the list of applications existing in your tenant, application is a group of devices with the <b>same integration target</b>. You can create a dedicated application. Select the default application you want to use for your devices. If the application already own a different integration, you can't select it",
   "mig_new_app_expl" : "my Application",
   "mig_new_app_setname" : "Please type a name for your application:",
   "mig_goto_migration" : "Next Step: Device migration",
@@ -398,7 +398,9 @@
   "mig_end_migrate" : "End of migration. Close.",
 
   "mig_loaded_integration" : "Integrations",
-
+  "mig_setup_integration_select" : "Select integration to be applied",
+  "mig_select_integation" : "Select Integration",
+  "mig_setup_integration_info" : "Currenlty not all the type of integration are supported for migration, the list only displays what is supported.",
 
   "bcopy_card_title" : "Multi-buy / frame copy",
   "bcopy_parameter" : "Parameter", 
@@ -411,6 +413,7 @@
   "bcopy_error" : "Error during max copy update, please try later",
 
   "mig_setup_auth_data_tx" : "By entering your API key, you accept to transfer device meta-data, credentials and other needed information to this service.",
+  "mig_processing_devices" : "Preparing devices",
 
   "end" : "end"
 }

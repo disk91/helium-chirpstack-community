@@ -370,7 +370,7 @@
     "mig_setup_defaultapp": "Choix de l'app par defaut",
     "mig_add_application" : "Créer une application",
     "mig_select_application" : "Choisir",
-    "mig_setup_appexplained_1" : "Voici la liste des applications existantes dans votre Tenant. Une application est un group de devices avec <b>la même cible d'intégration</b>. Vous pouvez créer une application dédiée. Sélectionnez l'application par défaut dans laquelle migrer vos objets.",
+    "mig_setup_appexplained_1" : "Voici la liste des applications existantes dans votre Tenant. Une application est un group de devices avec <b>la même cible d'intégration</b>. Vous pouvez créer une application dédiée. Sélectionnez l'application par défaut dans laquelle migrer vos objets. Si elle ne peux être validé c'est qu'une intégration différente existe deja dans cette application.",
     "mig_new_app_expl" : "mon application",
     "mig_new_app_setname" : "Merci de choisir un nom pour votre application :",
     "mig_goto_migration" : "Etape suivante: migration des devices",
@@ -399,6 +399,9 @@
     "mig_end_migrate" : "Fin de la migration. Fermer.",
 
     "mig_loaded_integration" : "Integrations",
+    "mig_setup_integration_select" : "Choissiez la fonction d'intégration a associer",
+    "mig_select_integation" : "Choisir l'intégration",
+    "mig_setup_integration_info" : "Actuellement toutes les intégrations ne sont pas migrable, seules celles migrables sont affichées.",
 
     "bcopy_card_title" : "Achats multiples / copie de messages",
     "bcopy_parameter" : "Paramètre", 
@@ -411,6 +414,7 @@
     "bcopy_error" : "Problème durant la mise à jour de Max Copy, réessayez plus tard",
 
     "mig_setup_auth_data_tx" : "En saisissant votre clef API, vous acceptez de transférer les meta-données de vos objets, leurs clefs, et autres données vers ce service.",
+    "mig_processing_devices" : "Prepartion des devices",
 
     "end" : "fin"
 }

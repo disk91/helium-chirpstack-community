@@ -110,4 +110,21 @@ declare module "vue/types/chirpstack" {
         }
     }
 
+    interface IntegrationHttp {
+        integration : {
+            applicationId : string,
+            encoding : string,
+            eventEndpointUrl : string,
+            headers : any
+        }
+    }
+
+    interface IntegrationHttpCreate {
+        integration : {
+            encoding : string,
+            eventEndpointUrl : string,
+            headers : any
+        }
+    }
+
 }

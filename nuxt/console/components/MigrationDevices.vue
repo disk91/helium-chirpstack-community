@@ -198,12 +198,10 @@
             >
                     {{ $t('mig_end_migrate') }}
             </b-button>
-
-
         </b-modal>   
 
-
     </div>
+
 </template>
 <style>
 .table .thead-dark th {
@@ -545,6 +543,7 @@ export default Vue.extend({
             this.createRegion();
             this.createApplication();
             this.createProfileOptions();
+            this.$root.$emit("message-close-dev-modal", "");
         });
         this.$root.$on("message-migration-cancel", (msg:any) => {
             this.reset();

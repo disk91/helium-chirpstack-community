@@ -233,6 +233,11 @@ export class HeliumConsoleService {
         return this.accountFunctions;
     }
 
+    getDownloadedIntegration() : IntegrationItf[] {
+        return this.accountIntegration;
+    }
+
+
     getLabelById(id:string) : LabelItf {
         for ( var i = 0 ; i < this.accountLabels.length ; i++ ) {
             if ( this.accountLabels[i].id == id ) return this.accountLabels[i];
@@ -287,7 +292,7 @@ export class HeliumConsoleService {
                             isAS923_3 : (deviceItf.region=="AS923_3"),
                             isAS923_4 : (deviceItf.region=="AS923_4"),
                             isCN470 : (deviceItf.region=="CN470"),
-                            isAU915_1 : (deviceItf.region=="AU915_1"),
+                            isAU915_1 : (deviceItf.region=="AU915_1" || deviceItf.region=="AU915"),
                             isAU915_SB1 : (deviceItf.region=="AU915_SB1"),
                             isAU915_6 : (deviceItf.region=="AU915_6"),
                             isIN865 : (deviceItf.region=="IN865"),
@@ -305,7 +310,7 @@ export class HeliumConsoleService {
                         || device.isAU915_SB1 || device.isAU915_6 || device.isIN865 || device.isCD900_1A || device.isKR920 ) {
                             device.isRegion = true;
                         } else {
-                            if ( deviceItf.region != null ) {
+                            if ( deviceItf.region != null && deviceItf.region != undefined ) {
                                 console.log(">>> "+deviceItf.region);
                             }
                         }
@@ -387,6 +392,13 @@ export class HeliumConsoleService {
                 if ( err != undefined ) resolve(err.response.data.message);
             })
         });
+    }
+
+    getOneIntegration(intId:string) : IntegrationItf {
+        for ( let i = 0 ; i < this.accountIntegration.length ; i ++ ) {
+            if ( this.accountIntegration[i].id == intId ) return this.accountIntegration[i]; 
+        }
+        return undefined as any;
     }
 
 

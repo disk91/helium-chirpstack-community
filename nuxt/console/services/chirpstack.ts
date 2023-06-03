@@ -1,9 +1,21 @@
-import { DeviceProfileList, DeviceKey, DeviceCreate, DeviceActivation, DeviceProfile, DeviceProfileCreate, ApplicationList, Application, ApplicationCreate } from 'vue/types/chirpstack';
+import { DeviceProfileList, DeviceKey, DeviceCreate, DeviceActivation, DeviceProfile, DeviceProfileCreate, ApplicationList, Application, ApplicationCreate, IntegrationHttp, IntegrationHttpCreate } from 'vue/types/chirpstack';
 import { Device } from 'vue/types/console';
 
 interface _DeviceProfile {
     profile: DeviceProfile,
     isUsable : boolean,
+}
+
+interface _Integration {
+    type : string,
+    verb : string,
+    endpoint : string,
+    ulrparams : {},
+    headers : {},
+    topic_up : string,
+    topic_down : string,
+    id : string,
+    name : string,
 }
 
 export class ChirpstackService {
@@ -13,6 +25,7 @@ export class ChirpstackService {
     tenantId : string;
     oui : number;
     funcDecoder : string;  // data transformation function
+    integration : _Integration; 
 
     deviceProfileGet : string = "/rest-api/api/device-profiles";
     deviceProfilePost : string = "/rest-api/api/device-profiles";
@@ -22,6 +35,10 @@ export class ChirpstackService {
     devicesDelete : string = "/rest-api/api/devices";
     devicesActivation : string = "/activate";
     devicesKey : string = "/keys";
+    integrationBGet : string = "/rest-api/api/applications/";
+    integrationEGet : string = "/integrations/http";
+    integrationBPost : string = "/rest-api/api/applications/";
+    integrationEPost : string = "/integrations/http";
 
     constructor (axios:any) {
         this.apiKey = "";
@@ -32,6 +49,7 @@ export class ChirpstackService {
         this.applications = [];
         this.defaultApplication = undefined as any;
         delete this.axios.defaults.headers.common['Authorization'];
+        this.integration = null as any;
     }
 
     setApiKey(ak:string) {
@@ -341,6 +359,74 @@ export class ChirpstackService {
 
     getDefaultApplication() : Application {
         return this.defaultApplication;
+    }
+
+    // --- Integration
+
+    setIntegration(i:_Integration) {
+        this.integration = i;
+    }
+
+    getIntegration() : _Integration {
+        return this.integration;
+    }
+
+
+    getApplicationIntegration(applicationId : string) : Promise<IntegrationHttp> {
+        return new Promise<IntegrationHttp>((resolve) => { 
+            this.axios.get(this.integrationBGet+applicationId+this.integrationEGet,this.getHeader())
+            .then((response : any) =>{
+                if (response.status == 200 ) {
+                    resolve(response.data);
+                }
+            }).catch((err : any) =>{
+                resolve(null as any);
+            })
+        });
+    }
+
+    createApplicationIntegration() : Promise<string> {
+
+        return new Promise<string>((resolve) => {
+            this.getApplicationIntegration(this.defaultApplication.id)
+            .then( (integ) => {
+                if ( integ == null ) {
+                    // create it
+                    let body : IntegrationHttpCreate = {
+                        integration : {
+                            encoding : "JSON",
+                            eventEndpointUrl : "http://helium-forwarder-1:8082/capture/",
+                            headers : {
+                                "HELIUM_ID" : this.integration.id,
+                                "HELIUM_ENDPOINT" : this.integration.endpoint,
+                                "HELIUM_TYPE" : this.integration.type,
+                                "HELIUM_VERB" : this.integration.verb,
+                                "HELIUM_URLPARAM" : JSON.stringify(this.integration.ulrparams),
+                                "HELIUM_HEADERS" : JSON.stringify(this.integration.headers),
+                                "HELIUM_UPTOPIC" : (this.integration.topic_up!="")?this.integration.topic_up:"none",
+                                "HELIUM_DNTOPIC" : (this.integration.topic_down!="")?this.integration.topic_down:"none",
+                            }
+                        }
+                    };
+
+                    this.axios.post(this.integrationBPost+this.defaultApplication.id+this.integrationEPost,body,this.getHeader())
+                    .then((response : any) =>{
+                        if (response.status == 200 ) {
+                            resolve("");
+                        }
+                    }).catch((err : any) =>{
+                        resolve("Error : "+err.response.data.message);
+                    })
+                } else if ( integ.integration.headers.HELIUM_ID != undefined && integ.integration.headers.HELIUM_ID == this.integration.id ) {
+                    // already existing
+                    resolve("");
+                } else {
+                    // another integration is already existing
+                    resolve("Error : An integration already exists");
+                }
+            })
+        });
+
     }
 
     // ------------------------------------

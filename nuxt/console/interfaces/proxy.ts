@@ -79,6 +79,7 @@ declare module "vue/types/proxy" {
         },
         name : string,
         type : string,
+        id : string,
     }
 
 }
