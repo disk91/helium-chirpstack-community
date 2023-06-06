@@ -16,6 +16,9 @@ services:
       - helium
       - chirpstack
       - chirpstack-rest-api
+      - fwdlb
+      - fwnode1
+      - fwnode2
 
   certbot:
     image: certbot/certbot:latest
@@ -24,12 +27,12 @@ services:
       - /helium/configuration/ssl/:/etc/letsencrypt/:rw
 
   fwdlb:
-  	image: disk91/forwarder:1.0.0
-  	restart: unless-stopped
-  	volumes:
-  	  - /helium/forwarder/loadbalancer.properties:/configuration.properties
-  	ports:
-  	  - 8100:8082
+    image: disk91/forwarder:1.0.0
+    restart: unless-stopped
+    volumes:
+      - /helium/forwarder/loadbalancer.properties:/configuration.properties
+    ports:
+      - 8100:8082
 
   fwnode1:
   	image: disk91/forwarder:2.0.0

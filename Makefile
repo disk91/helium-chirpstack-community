@@ -33,5 +33,5 @@ init-forwarder: .FORCE
 	cd helium-forwarder && make init
 	cd helium-forwarder && make back
 	if [ -f $(CONSOLE_DIR)/docker-compose.yml ] ; then mv $(CONSOLE_DIR)/docker-compose.yml $(CONSOLE_DIR)/docker-compose.yml.bak ; fi
-	cp chirpstack/docker-compose.yml.withforwarder $(CONSOLE_DIR)/docker-compose.yml
+	cp chirpstack/docker-compose.withforwarder.yml $(CONSOLE_DIR)/docker-compose.yml
 	if [ ! -d $(CONSOLE_DIR)/forwarder ] ; then cp -R chirpstack/forwarder $(CONSOLE_DIR)/ ; fi
