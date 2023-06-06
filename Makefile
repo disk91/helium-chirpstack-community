@@ -11,6 +11,7 @@ CONSOLE_DIR=/helium
 .FORCE:
 
 init: .FORCE
+	if [ -d $(CONSOLE_DIR) ] ; then echo "Are you really sure ?" ; read resp ; fi
 	if [ ! -d $(CONSOLE_DIR) ] ; then mkdir $(CONSOLE_DIR) ; fi
 	cp -R chirpstack/* $(CONSOLE_DIR)/
 	if [ -d $(CONSOLE_DIR)/prometheus ] ; then chown nobody:nogroup $(CONSOLE_DIR)/prometheus; fi
