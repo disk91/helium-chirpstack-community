@@ -35,17 +35,16 @@ services:
       - 8100:8082
 
   fwnode1:
-  	image: disk91/forwarder:2.0.0
-  	restart: unless-stopped
-  	volumes:
-  	  - /helium/configuration/forwarder/node1.properties:/configuration.properties
+    image: disk91/forwarder:2.0.0
+    restart: unless-stopped
+    volumes:
+      - /helium/configuration/forwarder/node1.properties:/configuration.properties
 
   fwnode2:
-  	image: disk91/forwarder:2.0.0
-  	restart: unless-stopped
-  	volumes:
-  	  - /helium/configuration/forwarder/node2.properties:/configuration.properties
-
+    image: disk91/forwarder:2.0.0
+    restart: unless-stopped
+    volumes:
+      - /helium/configuration/forwarder/node2.properties:/configuration.properties
 
   helium:
     image: disk91/console
