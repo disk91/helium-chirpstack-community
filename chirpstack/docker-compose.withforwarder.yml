@@ -30,7 +30,7 @@ services:
     image: disk91/forwarder:1.0.0
     restart: unless-stopped
     volumes:
-      - /helium/forwarder/loadbalancer.properties:/configuration.properties
+      - /helium/configuration/forwarder/loadbalancer.properties:/configuration.properties
     ports:
       - 8100:8082
 
@@ -38,13 +38,13 @@ services:
   	image: disk91/forwarder:2.0.0
   	restart: unless-stopped
   	volumes:
-  	  - /helium/forwarder/node1.properties:/configuration.properties
+  	  - /helium/configuration/forwarder/node1.properties:/configuration.properties
 
   fwnode2:
   	image: disk91/forwarder:2.0.0
   	restart: unless-stopped
   	volumes:
-  	  - /helium/forwarder/node2.properties:/configuration.properties
+  	  - /helium/configuration/forwarder/node2.properties:/configuration.properties
 
 
   helium:
