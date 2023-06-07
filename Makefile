@@ -30,8 +30,8 @@ build: front back
 
 init-forwarder: .FORCE
 	if [ ! -d helium-forwarder ] ; then git clone https://github.com/disk91/helium-forwarder.git ; fi
-	cd helium-forwarder && make init
-	cd helium-forwarder && make back
+	cd helium-forwarder && make nodes
+	cd helium-forwarder && make balancer
 	if [ -f $(CONSOLE_DIR)/docker-compose.yml ] ; then mv $(CONSOLE_DIR)/docker-compose.yml $(CONSOLE_DIR)/docker-compose.yml.bak ; fi
 	cp chirpstack/docker-compose.withforwarder.yml $(CONSOLE_DIR)/docker-compose.yml
 	if [ ! -d $(CONSOLE_DIR)/forwarder ] ; then cp -R chirpstack/forwarder $(CONSOLE_DIR)/ ; fi
