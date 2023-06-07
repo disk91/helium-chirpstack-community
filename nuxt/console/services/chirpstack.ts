@@ -395,7 +395,7 @@ export class ChirpstackService {
                     let body : IntegrationHttpCreate = {
                         integration : {
                             encoding : "JSON",
-                            eventEndpointUrl : "http://helium-forwarder-1:8082/capture/",
+                            eventEndpointUrl : "http://fwdlb:8082/capture/",
                             headers : {
                                 "hid" : this.integration.id,
                                 "hendpoint" : this.integration.endpoint,

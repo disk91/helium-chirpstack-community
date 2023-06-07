@@ -225,7 +225,7 @@ public class NovaService {
             // find the previous one and remove it
             skf_v1 old = r.skfsByEui.get(eui);
             if ( old != null) {
-                log.debug("Key "+old.getSessionKey()+" found for deletion");
+                log.info("Key "+old.getSessionKey()+" found for deletion");
                 SkfUpdate su = new SkfUpdate();
                 su.devAddr = old.getDevaddr();
                 su.session = old.getSessionKey();
@@ -244,7 +244,7 @@ public class NovaService {
             su.devAddr = iDevAddr;
             su.session = ntwSEncKey;
             skfToAdd.add(su);
-            log.debug("Key "+ntwSEncKey+" to be added");
+            log.info("Key "+ntwSEncKey+" to be added");
             grpcUpdateSessions(skfToAdd,skfToRem,routeId);
 
             skf_v1 n = skf_v1.newBuilder()
