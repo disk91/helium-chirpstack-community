@@ -310,7 +310,7 @@ export class HeliumConsoleService {
                         || device.isAU915_SB1 || device.isAU915_6 || device.isIN865 || device.isCD900_1A || device.isKR920 ) {
                             device.isRegion = true;
                         } else {
-                            if ( deviceItf.region != null && deviceItf.region != undefined ) {
+                            if ( deviceItf.region != null && deviceItf.region != undefined && deviceItf.region != "undefined" ) {
                                 console.log(">>> "+deviceItf.region);
                             }
                         }

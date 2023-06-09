@@ -926,7 +926,7 @@ export default Vue.extend({
             // store selected app for next step
             this.chirpstackObject.setDefaultApplication(this.chirpstackObject.getApplications()[this.targetApplication]);
             this.appErrorMessage="";
-
+            console.log("Integration : "+this.chirpstackObject.getIntegration());
             if ( this.chirpstackObject.getIntegration() != null ) {
                 // create the integation when required
                 this.chirpstackObject.createApplicationIntegration()
@@ -939,8 +939,11 @@ export default Vue.extend({
                         this.appErrorMessage = result;
                     }
                 });
+            } else {
+                this.integrationReady = true;
+                this.selectApplicationDisabled = true;
+                this.createApplicationDisabled = true;
             }
-
         },
         addApplication() {
             // need to modal for the name and create it
