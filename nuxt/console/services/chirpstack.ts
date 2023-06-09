@@ -515,7 +515,7 @@ export class ChirpstackService {
         }
         return new Promise<string>((resolve) => { 
             // create device
-            this.axios.post(this.devicesPost+'/'+dev.rawDevice.dev_eui+this.devicesActivation,body,this.getHeader())
+            this.axios.post(this.devicesPost+'/'+dev.rawDevice.dev_eui.toLowerCase()+this.devicesActivation,body,this.getHeader())
             .then((response : any) =>{
                 if (response.status == 200 ) {
                     resolve("");

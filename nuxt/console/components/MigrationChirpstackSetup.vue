@@ -927,17 +927,19 @@ export default Vue.extend({
             this.chirpstackObject.setDefaultApplication(this.chirpstackObject.getApplications()[this.targetApplication]);
             this.appErrorMessage="";
 
-            // create the integation when required
-            this.chirpstackObject.createApplicationIntegration()
-            .then ( (result) => {
-                if ( result == "" ) {
-                    this.integrationReady = true;
-                    this.selectApplicationDisabled = true;
-                    this.createApplicationDisabled = true;
-                } else {
-                    this.appErrorMessage = result;
-                }
-            });
+            if ( this.chirpstackObject.getIntegration() != null ) {
+                // create the integation when required
+                this.chirpstackObject.createApplicationIntegration()
+                .then ( (result) => {
+                    if ( result == "" ) {
+                        this.integrationReady = true;
+                        this.selectApplicationDisabled = true;
+                        this.createApplicationDisabled = true;
+                    } else {
+                        this.appErrorMessage = result;
+                    }
+                });
+            }
 
         },
         addApplication() {
