@@ -194,7 +194,7 @@
     "error_load_dc_tenants" : "Erreur lors du changement des données des tenants",
     "dc_remain_dc_title" : "data credit restants",
     "dc_payment_dc_title" : "moyen de paiement",
-    "dc_transfer" : "Tranferer des DC vers un Tenant",
+    "dc_transfer" : "Transferer des DC vers un Tenant",
     "dc_purchase" : "Acheter des Data Credits",
     "dc_tenant_label" : "Nom du tenant",
     "dc_balance_label" : "Data Credits restant",

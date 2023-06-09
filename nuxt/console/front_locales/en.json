@@ -195,7 +195,7 @@
   "error_load_dc_tenants" : "Error during Tenants information loading",
   "dc_remain_dc_title" : "remaining data credit",
   "dc_payment_dc_title" : "default payment mehod",
-  "dc_transfer" : "Tranfer DC to Tenant",
+  "dc_transfer" : "Transfer DC to Tenant",
   "dc_purchase" : "Purchase Data Credits",
   "dc_tenant_label" : "Tenant name",
   "dc_balance_label" : "Remaining Data Credits",
