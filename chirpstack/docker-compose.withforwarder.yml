@@ -1,11 +1,6 @@
 version: "3"
 name: helium
 services:
-  logs:
-    logging:
-      driver: "json-file"
-      options:
-        max-size: "100m"
 
   nginx:
     image: nginx:latest
@@ -25,14 +20,17 @@ services:
       - fwdlb
       - fwnode1
       - fwnode2
-    extends: logs
+    logging: &logs
+      driver: "json-file"
+      options:
+        max-size: "100m"
 
   certbot:
     image: certbot/certbot:latest
     volumes:
       - /helium/configuration/certbot/:/var/www/certbot/:rw
       - /helium/configuration/ssl/:/etc/letsencrypt/:rw
-    extends: logs
+    logging: *logs
 
   fwdlb:
     image: disk91/forwarder:1.0.0
@@ -41,21 +39,21 @@ services:
       - /helium/configuration/forwarder/loadbalancer.properties:/configuration.properties
     ports:
       - 8100:8082
-    extends: logs
+    logging: *logs
 
   fwnode1:
     image: disk91/forwarder:2.0.0
     restart: unless-stopped
     volumes:
       - /helium/configuration/forwarder/node1.properties:/configuration.properties
-    extends: logs
+    logging: *logs
 
   fwnode2:
     image: disk91/forwarder:2.0.0
     restart: unless-stopped
     volumes:
       - /helium/configuration/forwarder/node2.properties:/configuration.properties
-    extends: logs
+    logging: *logs
 
   helium:
     image: disk91/console
@@ -69,7 +67,7 @@ services:
       - redis
     ports:
       - 8081:8081
-    extends: logs
+    logging: *logs
 
   chirpstack:
     image: chirpstack/chirpstack:4.3.2
@@ -89,7 +87,7 @@ services:
     ports:
       - 8080:8080
       - 8070:8070
-    extends: logs
+    logging: *logs
 
   chirpstack-gateway-bridge-eu868:
     image: chirpstack/chirpstack-gateway-bridge:4.0.8
@@ -100,7 +98,7 @@ services:
       - /helium/configuration/chirpstack-gateway-bridge-eu868:/etc/chirpstack-gateway-bridge
     depends_on:
       - mosquitto
-    extends: logs
+    logging: *logs
 
   chirpstack-gateway-bridge-us915:
     image: chirpstack/chirpstack-gateway-bridge:4.0.8
@@ -111,7 +109,7 @@ services:
       - /helium/configuration/chirpstack-gateway-bridge-us915:/etc/chirpstack-gateway-bridge
     depends_on:
       - mosquitto
-    extends: logs
+    logging: *logs
 
   chirpstack-gateway-bridge-au915-1:
     image: chirpstack/chirpstack-gateway-bridge:4.0.8
@@ -122,7 +120,7 @@ services:
       - /helium/configuration/chirpstack-gateway-bridge-au915-1:/etc/chirpstack-gateway-bridge
     depends_on:
       - mosquitto
-    extends: logs
+    logging: *logs
 
   chirpstack-gateway-bridge-as923:
     image: chirpstack/chirpstack-gateway-bridge:4.0.8
@@ -133,7 +131,7 @@ services:
       - /helium/configuration/chirpstack-gateway-bridge-as923:/etc/chirpstack-gateway-bridge
     depends_on:
       - mosquitto
-    extends: logs
+    logging: *logs
 
   chirpstack-gateway-bridge-as923-2:
     image: chirpstack/chirpstack-gateway-bridge:4.0.8
@@ -144,7 +142,7 @@ services:
       - /helium/configuration/chirpstack-gateway-bridge-as923-2:/etc/chirpstack-gateway-bridge
     depends_on:
       - mosquitto
-    extends: logs
+    logging: *logs
 
   chirpstack-gateway-bridge-as923-3:
     image: chirpstack/chirpstack-gateway-bridge:4.0.8
@@ -155,7 +153,7 @@ services:
       - /helium/configuration/chirpstack-gateway-bridge-as923-3:/etc/chirpstack-gateway-bridge
     depends_on:
       - mosquitto
-    extends: logs
+    logging: *logs
 
   chirpstack-gateway-bridge-as923-4:
     image: chirpstack/chirpstack-gateway-bridge:4.0.8
@@ -166,7 +164,7 @@ services:
       - /helium/configuration/chirpstack-gateway-bridge-as923-4:/etc/chirpstack-gateway-bridge
     depends_on:
       - mosquitto
-    extends: logs
+    logging: *logs
 
   chirpstack-gateway-bridge-in865:
     image: chirpstack/chirpstack-gateway-bridge:4.0.8
@@ -177,7 +175,7 @@ services:
       - /helium/configuration/chirpstack-gateway-bridge-in865:/etc/chirpstack-gateway-bridge
     depends_on:
       - mosquitto
-    extends: logs
+    logging: *logs
 
   chirpstack-gateway-bridge-kr920:
     image: chirpstack/chirpstack-gateway-bridge:4.0.8
@@ -188,7 +186,7 @@ services:
       - /helium/configuration/chirpstack-gateway-bridge-kr920:/etc/chirpstack-gateway-bridge
     depends_on:
       - mosquitto
-    extends: logs
+    logging: *logs
 
   chirpstack-rest-api:
     image: chirpstack/chirpstack-rest-api:4.3.0
@@ -198,7 +196,7 @@ services:
       - 8090:8090
     depends_on:
       - chirpstack
-    extends: logs
+    logging: *logs
 
   postgres:
     image: postgres:14-alpine
@@ -208,14 +206,14 @@ services:
       - /helium/postgresql:/var/lib/postgresql/data
     environment:
       - POSTGRES_PASSWORD=root
-    extends: logs
+    logging: *logs
 
   redis:
     image: redis:7-alpine
     restart: unless-stopped
     volumes:
       - /helium/redis:/data
-    extends: logs
+    logging: *logs
 
   mosquitto:
     image: eclipse-mosquitto:2
@@ -225,7 +223,7 @@ services:
     volumes:
       - /helium/configuration/mosquitto/mosquitto.conf:/mosquitto/config/mosquitto.conf
       - /helium/mosquitto:/mosquitto/data
-    extends: logs
+    logging: *logs
 
   prometheus:
     image: prom/prometheus
@@ -254,7 +252,7 @@ services:
     restart: unless-stopped
     volumes:
       - '/:/host:ro,rslave'
-    extends: logs
+    logging: *logs
 
   mosquitto_exporter:
     image: sapcc/mosquitto-exporter:latest
@@ -264,7 +262,7 @@ services:
       - 9101:9234
     depends_on:
       - mosquitto
-    extends: logs
+    logging: *logs
 
   postgres_exporter:
     image: quay.io/prometheuscommunity/postgres-exporter
@@ -275,7 +273,7 @@ services:
       - 9102:9187
     depends_on:
       - postgres
-    extends: logs
+    logging: *logs
 
   cadvisor:
     image: gcr.io/cadvisor/cadvisor:latest
@@ -292,7 +290,7 @@ services:
       - '-port=8060'
     restart: unless-stopped
     network_mode: host
-    extends: logs
+    logging: *logs
 
   grafana:
     image: grafana/grafana-oss
@@ -313,4 +311,4 @@ services:
       - GF_SMTP_FROM_ADDRESS=alert@foo.bar
     depends_on:
       - prometheus
-    extends: logs
+    logging: *logs
