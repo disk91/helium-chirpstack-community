@@ -4,6 +4,7 @@ import com.google.protobuf.ByteString;
 import eu.heliumiot.console.ConsoleApplication;
 import eu.heliumiot.console.ConsoleConfig;
 import eu.heliumiot.console.jpa.db.HeliumDevice;
+import eu.heliumiot.console.jpa.db.HeliumParameter;
 import eu.heliumiot.console.jpa.db.HeliumTenantSetup;
 import eu.heliumiot.console.jpa.db.NovaDevice;
 import eu.heliumiot.console.jpa.repository.HeliumDeviceRepository;
@@ -566,6 +567,9 @@ public class NovaService {
     private int netIdValue = 0;
     private ArrayList<RegionSupported> regionsSupported;
 
+    @Autowired
+    protected HeliumParameterService heliumParameterService;
+
     @PostConstruct
     private void loadKey() {
         log.info("Init Nova GRPC setup");
@@ -705,6 +709,32 @@ public class NovaService {
         ) {
             log.error("Impossible to start GRPC - propertie file is not correctly setup");
             return;
+        }
+
+        // Verify if the OUI setup has changed, in this case we need to rebuild all the routes
+        HeliumParameter oui = heliumParameterService.getParameter(HeliumParameterService.PARAM_HELIUM_OUI);
+        if ( oui != null && oui.getLongValue() != consoleConfig.getHeliumRouteOui() ) {
+            log.warn("############################################################################");
+            log.warn("The Helium OUI has changed, we clear the existing route for creating new one");
+            log.warn("############################################################################");
+            Tools.sleep(20_000);
+
+            int _i = 0, _j = 0;
+            List<HeliumTenantSetup> htss = null;
+            do {
+                htss = heliumTenantSetupRepository.findAllByTemplate(false, PageRequest.of(_i, 100));
+                for (HeliumTenantSetup hts : htss) {
+                    if (hts.getRouteId() != null && !hts.isTemplate()) {
+                        // process one route
+                        hts.setRouteId(null);
+                        heliumTenantSetupRepository.save(hts);
+                    }
+                }
+                _i++;
+            } while (htss != null && htss.size() > 0);
+
+            oui.setLongValue(consoleConfig.getHeliumRouteOui());
+            heliumParameterService.flushParameter(oui);
         }
 
         this.grpcInitOk = true;
@@ -897,7 +927,7 @@ public class NovaService {
                             .setEndAddr(addr.getEndAddr())
                             .build();
 
-                    log.info("Add devAddr Range : "+String.format("0x%08X",addr.getStartAddr())+" / "+String.format("0x%08X",addr.getEndAddr()));
+                    log.debug("Add devAddr Range : "+String.format("0x%08X",addr.getStartAddr())+" / "+String.format("0x%08X",addr.getEndAddr()));
 
                     route_update_devaddr_ranges_req_v1 addrToSign = route_update_devaddr_ranges_req_v1.newBuilder()
                             .setAction(action_v1.add)

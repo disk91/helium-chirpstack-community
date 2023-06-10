@@ -42,6 +42,9 @@ public class HeliumParameterService {
     public static final String PARAM_COMPANY_VAT = "companyVat";
     public static final String PARAM_COMPANY_REGISTER = "companyRegistration";
 
+    public static final String PARAM_HELIUM_OUI = "previousOui";
+    public static final String PARAM_HELIUM_NETID = "previousNetId";
+
 
 
     @Autowired
@@ -101,6 +104,25 @@ public class HeliumParameterService {
             companyRegister.setStrValue("Acme is a company registered at xxx with company number 1235432516");
             heliumParameterRepository.save(companyRegister);
         }
+
+        HeliumParameter heliumOui = heliumParameterRepository.findOneHeliumParameterByParameterName(PARAM_HELIUM_OUI);
+        if ( heliumOui == null ) {
+            heliumOui = new HeliumParameter();
+            heliumOui.setParameterName(PARAM_HELIUM_OUI);
+            heliumOui.setLongValue(consoleConfig.getHeliumRouteOui());
+            heliumOui.setStrValue("");
+            heliumParameterRepository.save(heliumOui);
+        }
+
+        HeliumParameter heliumNetId = heliumParameterRepository.findOneHeliumParameterByParameterName(PARAM_HELIUM_NETID);
+        if ( heliumNetId == null ) {
+            heliumNetId = new HeliumParameter();
+            heliumNetId.setParameterName(PARAM_HELIUM_NETID);
+            heliumNetId.setLongValue(0);
+            heliumNetId.setStrValue(consoleConfig.getHeliumRouteNetid());
+            heliumParameterRepository.save(heliumNetId);
+        }
+
     }
 
     public HeliumParameter getParameter(String paramName) {

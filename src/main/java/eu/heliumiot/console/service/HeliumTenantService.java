@@ -900,8 +900,10 @@ public class HeliumTenantService {
         // Build the output based on this
         ArrayList<TenantSearchRespItf> r = new ArrayList<>();
         for ( String tId : tenantsId.values() ) {
-            HeliumTenant ht = this.getHeliumTenant(tId,true);
-            HeliumTenantSetup hts = heliumTenantSetupService.getHeliumTenantSetup(tId,true);
+            HeliumTenant ht = this.getHeliumTenant(tId,false);
+            if ( ht == null ) continue;
+            HeliumTenantSetup hts = heliumTenantSetupService.getHeliumTenantSetup(tId,false);
+            if ( hts == null ) continue;
             TenantSearchRespItf k = new TenantSearchRespItf();
             k.setTenantUUID(ht.getTenantUUID());
             k.setRouteId(((hts != null && hts.getRouteId() != null)?hts.getRouteId():"N/A"));

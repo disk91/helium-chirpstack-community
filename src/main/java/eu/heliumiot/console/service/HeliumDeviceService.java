@@ -511,6 +511,7 @@ public class HeliumDeviceService {
         long start = Now.NowUtcMs();
         log.info("resyncOnce - start db & helium route resync");
 
+
         // scan all Devices (to sync appEui when needed)
         Slice<Device> allDevices = deviceRepository.findDeviceBy(PageRequest.of(0, 100));
         boolean nextPage = false;
@@ -536,7 +537,6 @@ public class HeliumDeviceService {
                 } else nextPage = false;
             } while (nextPage);
         }
-
 
         // Scan all Helium tenants
         int i = 0;
