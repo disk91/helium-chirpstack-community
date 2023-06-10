@@ -1,10 +1,12 @@
 #!/bin/bash
 if [ "$HELIUM_OUI" == "" ] ; then
    echo "You need to source the env file first"
+   exit 1
 fi
 
 if [ $# -eq 0 ] ; then
   echo "Usage : clear_routes.sh hostname --commit"
+  exit 1
 fi
 
 python_script=$(cat <<EOF
