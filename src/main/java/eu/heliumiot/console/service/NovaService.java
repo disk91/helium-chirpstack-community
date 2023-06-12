@@ -340,6 +340,7 @@ public class NovaService {
                                                 // @Todo - to manage devaddr increase, we should cound the dummy skf
                                                 //         verify the number with devaddr size and rebuild the dummy
                                                 //          skf based on this.
+                                                // @Todo - when SKF is disable we should remove all the existing SKFS
         int dummySkfs = 0;
         for ( skf_v1 skf : inRouteSkfs ) {
             boolean found = false;
