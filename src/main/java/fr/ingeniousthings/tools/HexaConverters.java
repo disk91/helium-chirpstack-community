@@ -34,6 +34,22 @@ public class HexaConverters {
         return r;
     }
 
+    /**
+     * Get the hex string after extracting sz bytes from
+     * @param b
+     * @param from
+     * @param sz
+     * @return
+     */
+    public static String byteToHexString(byte b[],int from, int sz) {
+        String r = "";
+        for ( int j = from; j < b.length && j < from+sz ; j++ ) {
+            r+=byteToHexString(b[j]);
+        }
+        return r;
+    }
+
+
     public static String byteToHexStringWithSpace(byte b[]) {
         String r = "";
         for ( int j = 0; j < b.length; j++ ) {

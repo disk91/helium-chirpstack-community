@@ -36,6 +36,7 @@ import fr.ingeniousthings.tools.DateConverters;
 import fr.ingeniousthings.tools.HexaConverters;
 import fr.ingeniousthings.tools.Now;
 import fr.ingeniousthings.tools.RandomString;
+import io.chirpstack.api.gw.UplinkFrame;
 import io.chirpstack.json.DownlinkEvent;
 import io.chirpstack.json.JoinEvent;
 import io.chirpstack.json.UplinkEvent;
@@ -48,6 +49,8 @@ import org.eclipse.paho.client.mqttv3.*;
 import org.eclipse.paho.client.mqttv3.persist.MemoryPersistence;
 
 import javax.annotation.PostConstruct;
+import java.util.HashMap;
+import java.util.Set;
 
 @Component
 public class MqttListener implements MqttCallback {
@@ -66,8 +69,8 @@ public class MqttListener implements MqttCallback {
         private MemoryPersistence persistence;
         private MqttClient mqttClient;
 
-        protected String _topics[] = {"application/#","helium/#"};
-        protected int _qos[] = { MQTT_QOS,MQTT_QOS };
+        protected String _topics[] = {"application/#","helium/#","+/gateway/+/event/up"};
+        protected int _qos[] = { MQTT_QOS,MQTT_QOS,MQTT_QOS };
 
         @PostConstruct
         public MqttClient initMqtt() {
@@ -141,6 +144,13 @@ public class MqttListener implements MqttCallback {
 
         @Autowired
         protected HeliumDeviceService heliumDeviceService;
+
+        protected class DeviceDedup {
+                public String devEui;
+                public long lastSeen;
+        }
+
+        protected HashMap<String,DeviceDedup> dedupHashMap = new HashMap<>();
 
         @Override
         public void messageArrived(String topicName, MqttMessage message) throws Exception {
@@ -221,6 +231,45 @@ public class MqttListener implements MqttCallback {
                         }
                 } else if ( topicName.matches("application/.*/event/log$") ) {
                         // just do nothing for this one
+
+// =================================================
+// UPSTREAM REGION HACK
+// =================================================
+
+                } else if ( mqttConfig.getHeliumZoneDetectionEnable() && topicName.matches(".*/gateway/.*/event/up$") ) {
+
+                        UplinkFrame uf = UplinkFrame.parseFrom(message.getPayload());
+                        // 00 9A2E3DD7EFF98160 9861BFC396F98160 75AB   D683 EED2
+                        //       app eui (rev)   dev eui (rev)  nonce  MIC  CRC
+
+                        byte [] payload = uf.getPhyPayload().toByteArray();
+                        if ( payload[0] == 0 && payload.length == 23 ) {
+                                long now = Now.NowUtcMs();
+                                // possible Join Request
+                                String devEUI = HexaConverters.byteToHexString(payload,9,8);
+                                String region = topicName.substring(0,topicName.indexOf("/"));
+                                DeviceDedup d = dedupHashMap.get(devEUI);
+                                if ( d == null || (now - d.lastSeen) > Now.ONE_MINUTE ) {
+                                        // found a new join for that device
+                                        d = new DeviceDedup();
+                                        d.devEui = devEUI;
+                                        d.lastSeen = now;
+                                        dedupHashMap.put(devEUI,d);
+
+                                        // ... push to process
+                                        log.info("Found a join request for "+d.devEui+" for region "+region);
+                                }
+                                // clean the dedup storage
+                                if ( dedupHashMap.size() > 500 ) {
+                                        Set<String> obj = dedupHashMap.keySet();
+                                        for ( String s : obj ) {
+                                                DeviceDedup _d = dedupHashMap.get(s);
+                                                if ( _d != null && (now - _d.lastSeen) > 2*Now.ONE_MINUTE ) {
+                                                        dedupHashMap.remove(_d.devEui);
+                                                }
+                                        }
+                                }
+                        }
 
 // =================================================
 // INTERNAL ASYNCHRONOUS MESSAGES

@@ -63,6 +63,20 @@ public class ConsoleConfig {
     @Value ("${helium.oui.data.server}")
     private String heliumOuiDataServer;
 
+
+    @Value ("${helium.zone.detection.enable.default}")
+    private boolean heliumZoneDetectionEnableDefault;
+
+    @Value ("${helium.zone.detection.enable:false}")
+    private String heliumZoneDetectionEnable;
+
+    public boolean getHeliumZoneDetectionEnable() {
+        if ( heliumZoneDetectionEnable.length() > 0 ) {
+            return ( heliumZoneDetectionEnable.compareToIgnoreCase("true") == 0 );
+        }
+        return heliumZoneDetectionEnableDefault;
+    }
+
     public String getVersion() {
         return version;
     }
