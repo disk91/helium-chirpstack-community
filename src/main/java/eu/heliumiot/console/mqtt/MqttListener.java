@@ -303,8 +303,8 @@ public class MqttListener implements MqttCallback {
 // =================================================
 
                         // standard json messages
-                        log.info("MQTT - MessageArrived on "+topicName);
-                        log.info("MQTT - message "+message);
+                        log.debug("MQTT - MessageArrived on "+topicName);
+                        //log.info("MQTT - message "+message);
                 }
                 log.debug("MQTT processing time "+(Now.NowUtcMs()-start)+"ms for "+topicName);
         }
