@@ -257,6 +257,8 @@ public class TransactionService {
     throws ITParseException {
         Stripe.apiKey = consoleConfig.getStripeKeyPrivate();
 
+        if ( t.isCompleted() ) return null;
+
         if ( (Now.NowUtcMs() - t.getIntentTime()) > Now.ONE_HOUR ) {
             t.setCompleted(true);
             if ( t.getStripeStatus().compareToIgnoreCase("succeeded") != 0 ) {
@@ -277,10 +279,6 @@ public class TransactionService {
                     modified = true;
                 }
                 if (p.getStatus().compareToIgnoreCase("succeeded") == 0) {
-
-                    if ( ! heliumTenantService.processBalanceIncrease(t.getTargetTenantUUID(),t.getDcs()) ) {
-                        log.error("!!! Impossible to increase Tenant balance even if stripe paid !!!");
-                    }
 
                     // get Charged
                     if ( p.getLatestCharge() != null ) {
@@ -311,6 +309,11 @@ public class TransactionService {
                             t.setCompleted(true);
                             modified = true;
 
+                            // credit DCs
+                            if ( ! heliumTenantService.processBalanceIncrease(t.getTargetTenantUUID(),t.getDcs()) ) {
+                                log.error("!!! Impossible to increase Tenant balance even if stripe paid !!!");
+                            }
+                            
                         } else {
                             log.warn("No balance transaction for Payment Intent "+p.getId());
                         }
