@@ -298,7 +298,12 @@ public class TransactionService {
                             t.setStripeCost(tx.getFee()); // no currency here need to look tate details, default account, in cent when euro / usd
                             t.setStripeCurrency(tx.getCurrency());
                             t.setStripeAmount(tx.getAmount()); // net is amount - fee and the unit is integer so for eur / usd must be devided by 100
-                            t.setStripeCRate(tx.getExchangeRate().doubleValue());
+                            if (tx.getExchangeRate() != null) {
+                                t.setStripeCRate(tx.getExchangeRate().doubleValue());
+                            } else {
+                                log.warn("No exChange Rate for transaction "+tx.getId()+" with currency "+tx.getCurrency());
+                                t.setStripeCRate(1.0);
+                            }
                             HeliumParameter vat = heliumParameterService.getParameter(HeliumParameterService.PARAM_INVOICE_VAT);
                             t.setApplicableVAT(vat.getLongValue()/10_000.0);
 
