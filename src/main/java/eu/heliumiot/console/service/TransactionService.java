@@ -313,7 +313,7 @@ public class TransactionService {
                             if ( ! heliumTenantService.processBalanceIncrease(t.getTargetTenantUUID(),t.getDcs()) ) {
                                 log.error("!!! Impossible to increase Tenant balance even if stripe paid !!!");
                             }
-                            
+
                         } else {
                             log.warn("No balance transaction for Payment Intent "+p.getId());
                         }
@@ -369,23 +369,36 @@ public class TransactionService {
         // check if stripe is authorized
         if ( ! consoleConfig.isStripeEnable() ) throw new ITRightException("stripe_disable");
 
-        // check the rights
-        HeliumDcTransaction t = heliumDcTransactionRepository.findOneHeliumDcTransactionById(UUID.fromString(transactionId));
-        if (t == null) throw new ITRightException();
-        if (t.getUserUUID().compareToIgnoreCase(userId) != 0) {
+        // get transaction UUid
+        UUID uuid = null;
+        try {
+            uuid = UUID.fromString(transactionId);
+        } catch (Exception x) {
+            // @todo is the api used with the right Id ?
+            log.error("Transaction format invalid "+transactionId);
             throw new ITRightException();
         }
+        if (uuid != null ) {
 
-        // Update the Intent
-        synchronized (this) {
-            try {
-                t = updateTransaction(t);
-                if (t != null) { // null when not modified
-                    heliumDcTransactionRepository.save(t);
-                }
-            } catch ( ITParseException x ) {
-
+            // check the rights
+            HeliumDcTransaction t = heliumDcTransactionRepository.findOneHeliumDcTransactionById(UUID.fromString(transactionId));
+            if (t == null) throw new ITRightException();
+            if (t.getUserUUID().compareToIgnoreCase(userId) != 0) {
+                throw new ITRightException();
             }
+
+            // Update the Intent
+            synchronized (this) {
+                try {
+                    t = updateTransaction(t);
+                    if (t != null) { // null when not modified
+                        heliumDcTransactionRepository.save(t);
+                    }
+                } catch (ITParseException x) {
+
+                }
+            }
+
         }
     }
 
