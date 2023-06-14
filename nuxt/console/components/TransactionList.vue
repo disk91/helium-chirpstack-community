@@ -112,7 +112,8 @@ export default Vue.extend({
             }
         };
         this.isBusy = true;
-        this.$axios.get<TransactionListRespItf[]>(this.$config.transactionListGet,config)
+        let url = this.$config.transactionListGet;
+        this.$axios.get<TransactionListRespItf[]>(url,config)
             .then((response) =>{
                 if (response.status == 200 ) {
                   this.transactions = response.data;

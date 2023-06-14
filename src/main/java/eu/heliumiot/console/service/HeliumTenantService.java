@@ -876,23 +876,35 @@ public class HeliumTenantService {
     public List<TenantSearchRespItf> searchTenants(String searchKey)
     throws ITParseException {
         if ( searchKey.length() < 3 || searchKey.length() > 15 ) throw new ITParseException();
+        HashMap<String, String> tenantsId = new HashMap<>();
 
-        HashMap<String,String> tenantsId = new HashMap<>();
-        // create a list with 10 - 20 entries based on the search criteria type like
-        List<eu.heliumiot.console.jpa.db.Tenant> t0 = tenantRepository.findTenantLike(searchKey);
-        for (eu.heliumiot.console.jpa.db.Tenant t : t0) {
-            if ( tenantsId.get(t.getId().toString()) == null ) {
-                tenantsId.put(t.getId().toString(),t.getId().toString());
+        // bypass "***" for getting all tenants
+        if ( searchKey.compareTo("***") == 0 ) {
+
+            Iterable<eu.heliumiot.console.jpa.db.Tenant> t0 = tenantRepository.findAll();
+            for (eu.heliumiot.console.jpa.db.Tenant t : t0) {
+                if (tenantsId.get(t.getId().toString()) == null) {
+                    tenantsId.put(t.getId().toString(), t.getId().toString());
+                }
             }
-        }
 
-        // search 5 owners with email like
-        List<HeliumUser> u1 = heliumUserRepository.findHeliumUsersBySearch(searchKey);
-        for ( HeliumUser u : u1 ) {
-            List<UserTenant> t1 = userTenantRepository.findUserTenantByUserId(UUID.fromString(u.getUserid()));
-            for (UserTenant t : t1 ) {
-                if ( tenantsId.get(t.getTenantId().toString()) == null ) {
-                    tenantsId.put(t.getTenantId().toString(),t.getTenantId().toString());
+        } else {
+            // create a list with 10 - 20 entries based on the search criteria type like
+            List<eu.heliumiot.console.jpa.db.Tenant> t0 = tenantRepository.findTenantLike(searchKey);
+            for (eu.heliumiot.console.jpa.db.Tenant t : t0) {
+                if (tenantsId.get(t.getId().toString()) == null) {
+                    tenantsId.put(t.getId().toString(), t.getId().toString());
+                }
+            }
+
+            // search 5 owners with email like
+            List<HeliumUser> u1 = heliumUserRepository.findHeliumUsersBySearch(searchKey);
+            for (HeliumUser u : u1) {
+                List<UserTenant> t1 = userTenantRepository.findUserTenantByUserId(UUID.fromString(u.getUserid()));
+                for (UserTenant t : t1) {
+                    if (tenantsId.get(t.getTenantId().toString()) == null) {
+                        tenantsId.put(t.getTenantId().toString(), t.getTenantId().toString());
+                    }
                 }
             }
         }

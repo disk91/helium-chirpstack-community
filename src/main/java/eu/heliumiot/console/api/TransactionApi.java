@@ -86,7 +86,7 @@ public class TransactionApi {
     }
 
     @Operation(summary = "Request Update on a stripe transaction intent",
-            description = "Force to update the stripe transcation intent, it's managed in background also",
+            description = "Force to update the stripe transaction intent, it's managed in background also",
             responses = {
                     @ApiResponse(responseCode = "200", description= "Done", content = @Content(schema =@Schema(implementation = ActionResult.class))),
                     @ApiResponse(responseCode = "403", description= "Forbidden", content = @Content(schema = @Schema(implementation = ActionResult.class))),
@@ -144,7 +144,7 @@ public class TransactionApi {
         return new ResponseEntity<>(r, HttpStatus.OK);
     }
 
-    @Operation(summary = "Get transaction list fro admin",
+    @Operation(summary = "Get transaction list for admin",
             description = "Get the list of completed transaction for all the user in the past 60 days",
             responses = {
                     @ApiResponse(responseCode = "200", description= "Done",
