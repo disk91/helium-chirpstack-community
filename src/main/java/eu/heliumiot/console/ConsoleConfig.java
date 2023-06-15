@@ -188,8 +188,6 @@ public class ConsoleConfig {
     @Value ("${helium.billing.dcPerActivityPeriod}")
     private String heliumBillingDcPerActivityPeriodExternal;
 
-
-
     @Value ("${helium.billing.maxDcPerDevice.default}")
     private String heliumBillingMaxDcPerDeviceDefault;
 
@@ -233,6 +231,12 @@ public class ConsoleConfig {
     @Value ("${helium.billing.max.devices}")
     private String heliumBillingMaxDevicesExternal;
 
+    @Value ("${helium.billing.vat:2000}")
+    private int heliumBillingVat;
+
+    public int getHeliumBillingVat() {
+        return heliumBillingVat;
+    }
 
     public String getHeliumBillingDcBalanceStopDefault() {
         return heliumBillingDcBalanceStopDefault;

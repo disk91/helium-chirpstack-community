@@ -68,9 +68,15 @@ public class HeliumParameterService {
         if ( invoiceVat == null ) {
             invoiceVat = new HeliumParameter();
             invoiceVat.setParameterName(PARAM_INVOICE_VAT);
-            invoiceVat.setLongValue(2000); // 20.00%
+            invoiceVat.setLongValue(consoleConfig.getHeliumBillingVat()); // 20.00% default
             invoiceVat.setStrValue("");
             heliumParameterRepository.save(invoiceVat);
+        } else {
+            // refresh the VAT value when needed
+            if ( invoiceVat.getLongValue() != consoleConfig.getHeliumBillingVat()) {
+                invoiceVat.setLongValue(consoleConfig.getHeliumBillingVat());
+                heliumParameterRepository.save(invoiceVat);
+            }
         }
         HeliumParameter companyName = heliumParameterRepository.findOneHeliumParameterByParameterName(PARAM_COMPANY_NAME);
         if ( companyName == null ) {

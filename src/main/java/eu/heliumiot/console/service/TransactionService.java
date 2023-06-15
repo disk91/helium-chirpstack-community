@@ -375,6 +375,7 @@ public class TransactionService {
             uuid = UUID.fromString(transactionId);
         } catch (Exception x) {
             // @todo is the api used with the right Id ?
+            // apparently the payment intent id (pi_xxxxx) is used, none the UUID of transaction
             log.error("Transaction format invalid "+transactionId);
             throw new ITRightException();
         }
