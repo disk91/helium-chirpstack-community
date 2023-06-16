@@ -38,7 +38,7 @@ services:
     volumes:
       - /helium/configuration/forwarder/loadbalancer.properties:/configuration.properties
     ports:
-      - 8100:8082
+      - 127.0.0.1:8100:8082
     logging: *logs
 
   fwnode1:
@@ -66,7 +66,7 @@ services:
       - mosquitto
       - redis
     ports:
-      - 8081:8081
+      - 127.0.0.1:8081:8081
     logging: *logs
 
   chirpstack:
@@ -85,8 +85,8 @@ services:
       - REDIS_HOST=redis
       - POSTGRESQL_HOST=helium-postgres-1
     ports:
-      - 8080:8080
-      - 8070:8070
+      - 127.0.0.1:8080:8080
+      - 127.0.0.1:8070:8070
     logging: *logs
 
   chirpstack-gateway-bridge-eu868:
@@ -193,7 +193,7 @@ services:
     restart: unless-stopped
     command: --server chirpstack:8080 --bind 0.0.0.0:8090 --insecure
     ports:
-      - 8090:8090
+      - 127.0.0.1:8090:8090
     depends_on:
       - chirpstack
     logging: *logs
@@ -219,7 +219,7 @@ services:
     image: eclipse-mosquitto:2
     restart: unless-stopped
     ports:
-      - 1883:1883
+      - 127.0.0.1:1883:1883
     volumes:
       - /helium/configuration/mosquitto/mosquitto.conf:/mosquitto/config/mosquitto.conf
       - /helium/mosquitto:/mosquitto/data
@@ -259,7 +259,7 @@ services:
     restart: unless-stopped
     command: --endpoint tcp://mosquitto:1883
     ports:
-      - 9101:9234
+      - 127.0.0.1:9101:9234
     depends_on:
       - mosquitto
     logging: *logs
@@ -270,7 +270,7 @@ services:
     environment:
       - DATA_SOURCE_NAME=postgresql://postgres:root@postgres:5432/?sslmode=disable
     ports:
-      - 9102:9187
+      - 127.0.0.1:9102:9187
     depends_on:
       - postgres
     logging: *logs

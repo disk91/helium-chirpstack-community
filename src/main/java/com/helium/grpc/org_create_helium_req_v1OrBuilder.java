@@ -22,6 +22,7 @@ public interface org_create_helium_req_v1OrBuilder extends
   /**
    * <pre>
    * Number of device address needed
+   * Even number required, minimum of 8
    * </pre>
    *
    * <code>uint64 devaddrs = 3;</code>
@@ -71,4 +72,15 @@ public interface org_create_helium_req_v1OrBuilder extends
    * @return The signer.
    */
   com.google.protobuf.ByteString getSigner();
+
+  /**
+   * <code>.helium.iot_config.org_create_helium_req_v1.helium_net_id net_id = 8;</code>
+   * @return The enum numeric value on the wire for netId.
+   */
+  int getNetIdValue();
+  /**
+   * <code>.helium.iot_config.org_create_helium_req_v1.helium_net_id net_id = 8;</code>
+   * @return The netId.
+   */
+  org_create_helium_req_v1.helium_net_id getNetId();
 }

@@ -139,6 +139,37 @@ public final class orgGrpc {
     return getCreateRoamerMethod;
   }
 
+  private static volatile io.grpc.MethodDescriptor<org_update_req_v1,
+      org_res_v1> getUpdateMethod;
+
+  @io.grpc.stub.annotations.RpcMethod(
+      fullMethodName = SERVICE_NAME + '/' + "update",
+      requestType = org_update_req_v1.class,
+      responseType = org_res_v1.class,
+      methodType = io.grpc.MethodDescriptor.MethodType.UNARY)
+  public static io.grpc.MethodDescriptor<org_update_req_v1,
+      org_res_v1> getUpdateMethod() {
+    io.grpc.MethodDescriptor<org_update_req_v1, org_res_v1> getUpdateMethod;
+    if ((getUpdateMethod = orgGrpc.getUpdateMethod) == null) {
+      synchronized (orgGrpc.class) {
+        if ((getUpdateMethod = orgGrpc.getUpdateMethod) == null) {
+          orgGrpc.getUpdateMethod = getUpdateMethod =
+              io.grpc.MethodDescriptor.<org_update_req_v1, org_res_v1>newBuilder()
+              .setType(io.grpc.MethodDescriptor.MethodType.UNARY)
+              .setFullMethodName(generateFullMethodName(SERVICE_NAME, "update"))
+              .setSampledToLocalTracing(true)
+              .setRequestMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
+                  org_update_req_v1.getDefaultInstance()))
+              .setResponseMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
+                  org_res_v1.getDefaultInstance()))
+              .setSchemaDescriptor(new orgMethodDescriptorSupplier("update"))
+              .build();
+        }
+      }
+    }
+    return getUpdateMethod;
+  }
+
   private static volatile io.grpc.MethodDescriptor<org_disable_req_v1,
       org_disable_res_v1> getDisableMethod;
 
@@ -291,6 +322,18 @@ public final class orgGrpc {
 
     /**
      * <pre>
+     * Update any Org (Helium or Roaming)
+     * Modify payer and add/remove delegate keys (owner/admin)
+     * Modify owner and add/remove devaddr constraints (auth admin only)
+     * </pre>
+     */
+    public void update(org_update_req_v1 request,
+                       io.grpc.stub.StreamObserver<org_res_v1> responseObserver) {
+      io.grpc.stub.ServerCalls.asyncUnimplementedUnaryCall(getUpdateMethod(), responseObserver);
+    }
+
+    /**
+     * <pre>
      * Disable an org, this sends a stream route delete update to HPR
      * for all associated routes (auth admin only)
      * </pre>
@@ -341,6 +384,13 @@ public final class orgGrpc {
                 org_create_roamer_req_v1,
                 org_res_v1>(
                   this, METHODID_CREATE_ROAMER)))
+          .addMethod(
+            getUpdateMethod(),
+            io.grpc.stub.ServerCalls.asyncUnaryCall(
+              new MethodHandlers<
+                org_update_req_v1,
+                org_res_v1>(
+                  this, METHODID_UPDATE)))
           .addMethod(
             getDisableMethod(),
             io.grpc.stub.ServerCalls.asyncUnaryCall(
@@ -415,6 +465,19 @@ public final class orgGrpc {
                              io.grpc.stub.StreamObserver<org_res_v1> responseObserver) {
       io.grpc.stub.ClientCalls.asyncUnaryCall(
           getChannel().newCall(getCreateRoamerMethod(), getCallOptions()), request, responseObserver);
+    }
+
+    /**
+     * <pre>
+     * Update any Org (Helium or Roaming)
+     * Modify payer and add/remove delegate keys (owner/admin)
+     * Modify owner and add/remove devaddr constraints (auth admin only)
+     * </pre>
+     */
+    public void update(org_update_req_v1 request,
+                       io.grpc.stub.StreamObserver<org_res_v1> responseObserver) {
+      io.grpc.stub.ClientCalls.asyncUnaryCall(
+          getChannel().newCall(getUpdateMethod(), getCallOptions()), request, responseObserver);
     }
 
     /**
@@ -494,6 +557,18 @@ public final class orgGrpc {
     public org_res_v1 createRoamer(org_create_roamer_req_v1 request) {
       return io.grpc.stub.ClientCalls.blockingUnaryCall(
           getChannel(), getCreateRoamerMethod(), getCallOptions(), request);
+    }
+
+    /**
+     * <pre>
+     * Update any Org (Helium or Roaming)
+     * Modify payer and add/remove delegate keys (owner/admin)
+     * Modify owner and add/remove devaddr constraints (auth admin only)
+     * </pre>
+     */
+    public org_res_v1 update(org_update_req_v1 request) {
+      return io.grpc.stub.ClientCalls.blockingUnaryCall(
+          getChannel(), getUpdateMethod(), getCallOptions(), request);
     }
 
     /**
@@ -579,6 +654,19 @@ public final class orgGrpc {
 
     /**
      * <pre>
+     * Update any Org (Helium or Roaming)
+     * Modify payer and add/remove delegate keys (owner/admin)
+     * Modify owner and add/remove devaddr constraints (auth admin only)
+     * </pre>
+     */
+    public com.google.common.util.concurrent.ListenableFuture<org_res_v1> update(
+        org_update_req_v1 request) {
+      return io.grpc.stub.ClientCalls.futureUnaryCall(
+          getChannel().newCall(getUpdateMethod(), getCallOptions()), request);
+    }
+
+    /**
+     * <pre>
      * Disable an org, this sends a stream route delete update to HPR
      * for all associated routes (auth admin only)
      * </pre>
@@ -606,8 +694,9 @@ public final class orgGrpc {
   private static final int METHODID_GET = 1;
   private static final int METHODID_CREATE_HELIUM = 2;
   private static final int METHODID_CREATE_ROAMER = 3;
-  private static final int METHODID_DISABLE = 4;
-  private static final int METHODID_ENABLE = 5;
+  private static final int METHODID_UPDATE = 4;
+  private static final int METHODID_DISABLE = 5;
+  private static final int METHODID_ENABLE = 6;
 
   private static final class MethodHandlers<Req, Resp> implements
       io.grpc.stub.ServerCalls.UnaryMethod<Req, Resp>,
@@ -640,6 +729,10 @@ public final class orgGrpc {
           break;
         case METHODID_CREATE_ROAMER:
           serviceImpl.createRoamer((org_create_roamer_req_v1) request,
+              (io.grpc.stub.StreamObserver<org_res_v1>) responseObserver);
+          break;
+        case METHODID_UPDATE:
+          serviceImpl.update((org_update_req_v1) request,
               (io.grpc.stub.StreamObserver<org_res_v1>) responseObserver);
           break;
         case METHODID_DISABLE:
@@ -715,6 +808,7 @@ public final class orgGrpc {
               .addMethod(getGetMethod())
               .addMethod(getCreateHeliumMethod())
               .addMethod(getCreateRoamerMethod())
+              .addMethod(getUpdateMethod())
               .addMethod(getDisableMethod())
               .addMethod(getEnableMethod())
               .build();

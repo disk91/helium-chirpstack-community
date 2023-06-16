@@ -252,6 +252,7 @@ public class NovaService {
                     .setDevaddr(iDevAddr)
                     .setRouteId(routeId)
                     .setSessionKey(ntwSEncKey)
+                    .setMaxCopies(0)
                     .build();
             r.skfsByEui.put(eui,n);
         } else {
@@ -316,6 +317,7 @@ public class NovaService {
                                     .setDevaddr(iDevAddr)
                                     .setSessionKey(ntwSEncKey)
                                     .setRouteId(routeId)
+                                    .setMaxCopies(0)
                                     .build();
                             toAdd.add(sa);
                             r.skfsByEui.put(hd.getDeviceEui().toLowerCase(),sa);
@@ -1485,6 +1487,7 @@ public class NovaService {
                             .setAction(action_v1.add)
                             .setDevaddr(session.devAddr)
                             .setSessionKey(session.session)
+                            .setMaxCopies(0)
                             .build();
                     updates.add(update);
                     actions++;
@@ -1495,6 +1498,7 @@ public class NovaService {
                             .setAction(action_v1.remove)
                             .setDevaddr(session.devAddr)
                             .setSessionKey(session.session)
+                            .setMaxCopies(0)
                             .build();
                     updates.add(update);
                     actions++;

@@ -44,4 +44,10 @@ public interface skf_v1OrBuilder extends
    */
   com.google.protobuf.ByteString
       getSessionKeyBytes();
+
+  /**
+   * <code>uint32 max_copies = 4;</code>
+   * @return The maxCopies.
+   */
+  int getMaxCopies();
 }

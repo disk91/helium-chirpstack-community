@@ -21,6 +21,7 @@ private static final long serialVersionUID = 0L;
     signature_ = com.google.protobuf.ByteString.EMPTY;
     delegateKeys_ = java.util.Collections.emptyList();
     signer_ = com.google.protobuf.ByteString.EMPTY;
+    netId_ = 0;
   }
 
   @Override
@@ -41,6 +42,123 @@ private static final long serialVersionUID = 0L;
     return IotConfig.internal_static_helium_iot_config_org_create_helium_req_v1_fieldAccessorTable
         .ensureFieldAccessorsInitialized(
             org_create_helium_req_v1.class, Builder.class);
+  }
+
+  /**
+   * Protobuf enum {@code helium.iot_config.org_create_helium_req_v1.helium_net_id}
+   */
+  public enum helium_net_id
+      implements com.google.protobuf.ProtocolMessageEnum {
+    /**
+     * <code>type0_0x00003c = 0;</code>
+     */
+    type0_0x00003c(0),
+    /**
+     * <code>type3_0x60002d = 1;</code>
+     */
+    type3_0x60002d(1),
+    /**
+     * <code>type6_0xc00053 = 2;</code>
+     */
+    type6_0xc00053(2),
+    UNRECOGNIZED(-1),
+    ;
+
+    /**
+     * <code>type0_0x00003c = 0;</code>
+     */
+    public static final int type0_0x00003c_VALUE = 0;
+    /**
+     * <code>type3_0x60002d = 1;</code>
+     */
+    public static final int type3_0x60002d_VALUE = 1;
+    /**
+     * <code>type6_0xc00053 = 2;</code>
+     */
+    public static final int type6_0xc00053_VALUE = 2;
+
+
+    public final int getNumber() {
+      if (this == UNRECOGNIZED) {
+        throw new IllegalArgumentException(
+            "Can't get the number of an unknown enum value.");
+      }
+      return value;
+    }
+
+    /**
+     * @param value The numeric wire value of the corresponding enum entry.
+     * @return The enum associated with the given numeric wire value.
+     * @deprecated Use {@link #forNumber(int)} instead.
+     */
+    @Deprecated
+    public static helium_net_id valueOf(int value) {
+      return forNumber(value);
+    }
+
+    /**
+     * @param value The numeric wire value of the corresponding enum entry.
+     * @return The enum associated with the given numeric wire value.
+     */
+    public static helium_net_id forNumber(int value) {
+      switch (value) {
+        case 0: return type0_0x00003c;
+        case 1: return type3_0x60002d;
+        case 2: return type6_0xc00053;
+        default: return null;
+      }
+    }
+
+    public static com.google.protobuf.Internal.EnumLiteMap<helium_net_id>
+        internalGetValueMap() {
+      return internalValueMap;
+    }
+    private static final com.google.protobuf.Internal.EnumLiteMap<
+        helium_net_id> internalValueMap =
+          new com.google.protobuf.Internal.EnumLiteMap<helium_net_id>() {
+            public helium_net_id findValueByNumber(int number) {
+              return helium_net_id.forNumber(number);
+            }
+          };
+
+    public final com.google.protobuf.Descriptors.EnumValueDescriptor
+        getValueDescriptor() {
+      if (this == UNRECOGNIZED) {
+        throw new IllegalStateException(
+            "Can't get the descriptor of an unrecognized enum value.");
+      }
+      return getDescriptor().getValues().get(ordinal());
+    }
+    public final com.google.protobuf.Descriptors.EnumDescriptor
+        getDescriptorForType() {
+      return getDescriptor();
+    }
+    public static final com.google.protobuf.Descriptors.EnumDescriptor
+        getDescriptor() {
+      return org_create_helium_req_v1.getDescriptor().getEnumTypes().get(0);
+    }
+
+    private static final helium_net_id[] VALUES = values();
+
+    public static helium_net_id valueOf(
+        com.google.protobuf.Descriptors.EnumValueDescriptor desc) {
+      if (desc.getType() != getDescriptor()) {
+        throw new IllegalArgumentException(
+          "EnumValueDescriptor is not for this type.");
+      }
+      if (desc.getIndex() == -1) {
+        return UNRECOGNIZED;
+      }
+      return VALUES[desc.getIndex()];
+    }
+
+    private final int value;
+
+    private helium_net_id(int value) {
+      this.value = value;
+    }
+
+    // @@protoc_insertion_point(enum_scope:helium.iot_config.org_create_helium_req_v1.helium_net_id)
   }
 
   public static final int OWNER_FIELD_NUMBER = 1;
@@ -70,6 +188,7 @@ private static final long serialVersionUID = 0L;
   /**
    * <pre>
    * Number of device address needed
+   * Even number required, minimum of 8
    * </pre>
    *
    * <code>uint64 devaddrs = 3;</code>
@@ -149,6 +268,24 @@ private static final long serialVersionUID = 0L;
     return signer_;
   }
 
+  public static final int NET_ID_FIELD_NUMBER = 8;
+  private int netId_ = 0;
+  /**
+   * <code>.helium.iot_config.org_create_helium_req_v1.helium_net_id net_id = 8;</code>
+   * @return The enum numeric value on the wire for netId.
+   */
+  @Override public int getNetIdValue() {
+    return netId_;
+  }
+  /**
+   * <code>.helium.iot_config.org_create_helium_req_v1.helium_net_id net_id = 8;</code>
+   * @return The netId.
+   */
+  @Override public helium_net_id getNetId() {
+    helium_net_id result = helium_net_id.forNumber(netId_);
+    return result == null ? helium_net_id.UNRECOGNIZED : result;
+  }
+
   private byte memoizedIsInitialized = -1;
   @Override
   public final boolean isInitialized() {
@@ -183,6 +320,9 @@ private static final long serialVersionUID = 0L;
     }
     if (!signer_.isEmpty()) {
       output.writeBytes(7, signer_);
+    }
+    if (netId_ != helium_net_id.type0_0x00003c.getNumber()) {
+      output.writeEnum(8, netId_);
     }
     getUnknownFields().writeTo(output);
   }
@@ -226,6 +366,10 @@ private static final long serialVersionUID = 0L;
       size += com.google.protobuf.CodedOutputStream
         .computeBytesSize(7, signer_);
     }
+    if (netId_ != helium_net_id.type0_0x00003c.getNumber()) {
+      size += com.google.protobuf.CodedOutputStream
+        .computeEnumSize(8, netId_);
+    }
     size += getUnknownFields().getSerializedSize();
     memoizedSize = size;
     return size;
@@ -255,6 +399,7 @@ private static final long serialVersionUID = 0L;
         .equals(other.getDelegateKeysList())) return false;
     if (!getSigner()
         .equals(other.getSigner())) return false;
+    if (netId_ != other.netId_) return false;
     if (!getUnknownFields().equals(other.getUnknownFields())) return false;
     return true;
   }
@@ -284,6 +429,8 @@ private static final long serialVersionUID = 0L;
     }
     hash = (37 * hash) + SIGNER_FIELD_NUMBER;
     hash = (53 * hash) + getSigner().hashCode();
+    hash = (37 * hash) + NET_ID_FIELD_NUMBER;
+    hash = (53 * hash) + netId_;
     hash = (29 * hash) + getUnknownFields().hashCode();
     memoizedHashCode = hash;
     return hash;
@@ -420,6 +567,7 @@ private static final long serialVersionUID = 0L;
       signature_ = com.google.protobuf.ByteString.EMPTY;
       delegateKeys_ = java.util.Collections.emptyList();
       signer_ = com.google.protobuf.ByteString.EMPTY;
+      netId_ = 0;
       return this;
     }
 
@@ -480,6 +628,9 @@ private static final long serialVersionUID = 0L;
       if (((from_bitField0_ & 0x00000040) != 0)) {
         result.signer_ = signer_;
       }
+      if (((from_bitField0_ & 0x00000080) != 0)) {
+        result.netId_ = netId_;
+      }
     }
 
     @Override
@@ -521,6 +672,9 @@ private static final long serialVersionUID = 0L;
       }
       if (other.getSigner() != com.google.protobuf.ByteString.EMPTY) {
         setSigner(other.getSigner());
+      }
+      if (other.netId_ != 0) {
+        setNetIdValue(other.getNetIdValue());
       }
       this.mergeUnknownFields(other.getUnknownFields());
       onChanged();
@@ -584,6 +738,11 @@ private static final long serialVersionUID = 0L;
               bitField0_ |= 0x00000040;
               break;
             } // case 58
+            case 64: {
+              netId_ = input.readEnum();
+              bitField0_ |= 0x00000080;
+              break;
+            } // case 64
             default: {
               if (!super.parseUnknownField(input, extensionRegistry, tag)) {
                 done = true; // was an endgroup tag
@@ -669,6 +828,7 @@ private static final long serialVersionUID = 0L;
     /**
      * <pre>
      * Number of device address needed
+     * Even number required, minimum of 8
      * </pre>
      *
      * <code>uint64 devaddrs = 3;</code>
@@ -681,6 +841,7 @@ private static final long serialVersionUID = 0L;
     /**
      * <pre>
      * Number of device address needed
+     * Even number required, minimum of 8
      * </pre>
      *
      * <code>uint64 devaddrs = 3;</code>
@@ -697,6 +858,7 @@ private static final long serialVersionUID = 0L;
     /**
      * <pre>
      * Number of device address needed
+     * Even number required, minimum of 8
      * </pre>
      *
      * <code>uint64 devaddrs = 3;</code>
@@ -906,6 +1068,59 @@ private static final long serialVersionUID = 0L;
     public Builder clearSigner() {
       bitField0_ = (bitField0_ & ~0x00000040);
       signer_ = getDefaultInstance().getSigner();
+      onChanged();
+      return this;
+    }
+
+    private int netId_ = 0;
+    /**
+     * <code>.helium.iot_config.org_create_helium_req_v1.helium_net_id net_id = 8;</code>
+     * @return The enum numeric value on the wire for netId.
+     */
+    @Override public int getNetIdValue() {
+      return netId_;
+    }
+    /**
+     * <code>.helium.iot_config.org_create_helium_req_v1.helium_net_id net_id = 8;</code>
+     * @param value The enum numeric value on the wire for netId to set.
+     * @return This builder for chaining.
+     */
+    public Builder setNetIdValue(int value) {
+      netId_ = value;
+      bitField0_ |= 0x00000080;
+      onChanged();
+      return this;
+    }
+    /**
+     * <code>.helium.iot_config.org_create_helium_req_v1.helium_net_id net_id = 8;</code>
+     * @return The netId.
+     */
+    @Override
+    public helium_net_id getNetId() {
+      helium_net_id result = helium_net_id.forNumber(netId_);
+      return result == null ? helium_net_id.UNRECOGNIZED : result;
+    }
+    /**
+     * <code>.helium.iot_config.org_create_helium_req_v1.helium_net_id net_id = 8;</code>
+     * @param value The netId to set.
+     * @return This builder for chaining.
+     */
+    public Builder setNetId(helium_net_id value) {
+      if (value == null) {
+        throw new NullPointerException();
+      }
+      bitField0_ |= 0x00000080;
+      netId_ = value.getNumber();
+      onChanged();
+      return this;
+    }
+    /**
+     * <code>.helium.iot_config.org_create_helium_req_v1.helium_net_id net_id = 8;</code>
+     * @return This builder for chaining.
+     */
+    public Builder clearNetId() {
+      bitField0_ = (bitField0_ & ~0x00000080);
+      netId_ = 0;
       onChanged();
       return this;
     }

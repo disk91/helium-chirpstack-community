@@ -82,6 +82,12 @@ private static final long serialVersionUID = 0L;
      * @return The action.
      */
     action_v1 getAction();
+
+    /**
+     * <code>uint32 max_copies = 4;</code>
+     * @return The maxCopies.
+     */
+    int getMaxCopies();
   }
   /**
    * Protobuf type {@code helium.iot_config.route_skf_update_req_v1.route_skf_update_v1}
@@ -196,6 +202,17 @@ private static final long serialVersionUID = 0L;
       return result == null ? action_v1.UNRECOGNIZED : result;
     }
 
+    public static final int MAX_COPIES_FIELD_NUMBER = 4;
+    private int maxCopies_ = 0;
+    /**
+     * <code>uint32 max_copies = 4;</code>
+     * @return The maxCopies.
+     */
+    @Override
+    public int getMaxCopies() {
+      return maxCopies_;
+    }
+
     private byte memoizedIsInitialized = -1;
     @Override
     public final boolean isInitialized() {
@@ -219,6 +236,9 @@ private static final long serialVersionUID = 0L;
       if (action_ != action_v1.add.getNumber()) {
         output.writeEnum(3, action_);
       }
+      if (maxCopies_ != 0) {
+        output.writeUInt32(4, maxCopies_);
+      }
       getUnknownFields().writeTo(output);
     }
 
@@ -238,6 +258,10 @@ private static final long serialVersionUID = 0L;
       if (action_ != action_v1.add.getNumber()) {
         size += com.google.protobuf.CodedOutputStream
           .computeEnumSize(3, action_);
+      }
+      if (maxCopies_ != 0) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeUInt32Size(4, maxCopies_);
       }
       size += getUnknownFields().getSerializedSize();
       memoizedSize = size;
@@ -259,6 +283,8 @@ private static final long serialVersionUID = 0L;
       if (!getSessionKey()
           .equals(other.getSessionKey())) return false;
       if (action_ != other.action_) return false;
+      if (getMaxCopies()
+          != other.getMaxCopies()) return false;
       if (!getUnknownFields().equals(other.getUnknownFields())) return false;
       return true;
     }
@@ -276,6 +302,8 @@ private static final long serialVersionUID = 0L;
       hash = (53 * hash) + getSessionKey().hashCode();
       hash = (37 * hash) + ACTION_FIELD_NUMBER;
       hash = (53 * hash) + action_;
+      hash = (37 * hash) + MAX_COPIES_FIELD_NUMBER;
+      hash = (53 * hash) + getMaxCopies();
       hash = (29 * hash) + getUnknownFields().hashCode();
       memoizedHashCode = hash;
       return hash;
@@ -408,6 +436,7 @@ private static final long serialVersionUID = 0L;
         devaddr_ = 0;
         sessionKey_ = "";
         action_ = 0;
+        maxCopies_ = 0;
         return this;
       }
 
@@ -450,6 +479,9 @@ private static final long serialVersionUID = 0L;
         if (((from_bitField0_ & 0x00000004) != 0)) {
           result.action_ = action_;
         }
+        if (((from_bitField0_ & 0x00000008) != 0)) {
+          result.maxCopies_ = maxCopies_;
+        }
       }
 
       @Override
@@ -474,6 +506,9 @@ private static final long serialVersionUID = 0L;
         }
         if (other.action_ != 0) {
           setActionValue(other.getActionValue());
+        }
+        if (other.getMaxCopies() != 0) {
+          setMaxCopies(other.getMaxCopies());
         }
         this.mergeUnknownFields(other.getUnknownFields());
         onChanged();
@@ -516,6 +551,11 @@ private static final long serialVersionUID = 0L;
                 bitField0_ |= 0x00000004;
                 break;
               } // case 24
+              case 32: {
+                maxCopies_ = input.readUInt32();
+                bitField0_ |= 0x00000008;
+                break;
+              } // case 32
               default: {
                 if (!super.parseUnknownField(input, extensionRegistry, tag)) {
                   done = true; // was an endgroup tag
@@ -706,6 +746,38 @@ private static final long serialVersionUID = 0L;
       public Builder clearAction() {
         bitField0_ = (bitField0_ & ~0x00000004);
         action_ = 0;
+        onChanged();
+        return this;
+      }
+
+      private int maxCopies_ ;
+      /**
+       * <code>uint32 max_copies = 4;</code>
+       * @return The maxCopies.
+       */
+      @Override
+      public int getMaxCopies() {
+        return maxCopies_;
+      }
+      /**
+       * <code>uint32 max_copies = 4;</code>
+       * @param value The maxCopies to set.
+       * @return This builder for chaining.
+       */
+      public Builder setMaxCopies(int value) {
+
+        maxCopies_ = value;
+        bitField0_ |= 0x00000008;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>uint32 max_copies = 4;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearMaxCopies() {
+        bitField0_ = (bitField0_ & ~0x00000008);
+        maxCopies_ = 0;
         onChanged();
         return this;
       }
