@@ -1483,7 +1483,7 @@ public class NovaService {
                 ArrayList<route_skf_update_req_v1.route_skf_update_v1> updates = new ArrayList<>();
                 while (toAddSession.size() > 0 && actions < 50) {
                     SkfUpdate session = toAddSession.poll();
-                    
+
                     boolean inRange = false;
                     for ( devaddr_constraint_v1 addr : this.getAddresses() ) {
                         if ( session.devAddr >= addr.getStartAddr() && session.devAddr <= addr.getEndAddr() ) {
@@ -1526,27 +1526,29 @@ public class NovaService {
                     }
                 }
                 // execute
-                route_skf_update_req_v1 requestToSign = route_skf_update_req_v1.newBuilder()
-                        .setRouteId(routeId)
-                        .addAllUpdates(updates)
-                        .setTimestamp(now)
-                        .setSigner(this.owner)
-                        .clearSignature()
-                        .build();
+                if ( updates.size() > 0 ) {
+                    route_skf_update_req_v1 requestToSign = route_skf_update_req_v1.newBuilder()
+                            .setRouteId(routeId)
+                            .addAllUpdates(updates)
+                            .setTimestamp(now)
+                            .setSigner(this.owner)
+                            .clearSignature()
+                            .build();
 
-                byte[] requestToSignContent = requestToSign.toByteArray();
-                this.signer.update(requestToSignContent, 0, requestToSignContent.length);
-                byte[] signature = signer.generateSignature();
+                    byte[] requestToSignContent = requestToSign.toByteArray();
+                    this.signer.update(requestToSignContent, 0, requestToSignContent.length);
+                    byte[] signature = signer.generateSignature();
 
-                route_skf_update_req_v1 request = route_skf_update_req_v1.newBuilder()
-                        .setRouteId(routeId)
-                        .addAllUpdates(updates)
-                        .setTimestamp(now)
-                        .setSigner(this.owner)
-                        .setSignature(ByteString.copyFrom(signature))
-                        .build();
+                    route_skf_update_req_v1 request = route_skf_update_req_v1.newBuilder()
+                            .setRouteId(routeId)
+                            .addAllUpdates(updates)
+                            .setTimestamp(now)
+                            .setSigner(this.owner)
+                            .setSignature(ByteString.copyFrom(signature))
+                            .build();
 
-                route_skf_update_res_v1 response = stub.updateSkfs(request);
+                    route_skf_update_res_v1 response = stub.updateSkfs(request);
+                }
                 actions = 0;
             }
             log.debug("GPRC skf update duration " + (Now.NowUtcMs() - start) + "ms");
