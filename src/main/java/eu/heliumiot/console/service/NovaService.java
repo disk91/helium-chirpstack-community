@@ -1483,25 +1483,47 @@ public class NovaService {
                 ArrayList<route_skf_update_req_v1.route_skf_update_v1> updates = new ArrayList<>();
                 while (toAddSession.size() > 0 && actions < 50) {
                     SkfUpdate session = toAddSession.poll();
-                    route_skf_update_req_v1.route_skf_update_v1 update = route_skf_update_req_v1.route_skf_update_v1.newBuilder()
-                            .setAction(action_v1.add)
-                            .setDevaddr(session.devAddr)
-                            .setSessionKey(session.session)
-                            .setMaxCopies(0)
-                            .build();
-                    updates.add(update);
+                    
+                    boolean inRange = false;
+                    for ( devaddr_constraint_v1 addr : this.getAddresses() ) {
+                        if ( session.devAddr >= addr.getStartAddr() && session.devAddr <= addr.getEndAddr() ) {
+                            inRange = true;
+                            break;
+                        }
+                    }
+
+                    if ( inRange ) {
+                        route_skf_update_req_v1.route_skf_update_v1 update = route_skf_update_req_v1.route_skf_update_v1.newBuilder()
+                                .setAction(action_v1.add)
+                                .setDevaddr(session.devAddr)
+                                .setSessionKey(session.session)
+                                .setMaxCopies(0)
+                                .build();
+                        updates.add(update);
+                    }
                     actions++;
                 }
                 while (toRemoveSession.size() > 0 && actions < 50) {
                     SkfUpdate session = toRemoveSession.poll();
-                    route_skf_update_req_v1.route_skf_update_v1 update = route_skf_update_req_v1.route_skf_update_v1.newBuilder()
-                            .setAction(action_v1.remove)
-                            .setDevaddr(session.devAddr)
-                            .setSessionKey(session.session)
-                            .setMaxCopies(0)
-                            .build();
-                    updates.add(update);
-                    actions++;
+
+                    boolean inRange = false;
+                    for ( devaddr_constraint_v1 addr : this.getAddresses() ) {
+                        if ( session.devAddr >= addr.getStartAddr() && session.devAddr <= addr.getEndAddr() ) {
+                            inRange = true;
+                            break;
+                        }
+                    }
+
+                    if ( inRange ) {
+                        route_skf_update_req_v1.route_skf_update_v1 update = route_skf_update_req_v1.route_skf_update_v1.newBuilder()
+                                .setAction(action_v1.remove)
+                                .setDevaddr(session.devAddr)
+                                .setSessionKey(session.session)
+                                .setMaxCopies(0)
+                                .build();
+                        updates.add(update);
+                        actions++;
+                    }
                 }
                 // execute
                 route_skf_update_req_v1 requestToSign = route_skf_update_req_v1.newBuilder()
