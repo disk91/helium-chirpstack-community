@@ -26,11 +26,6 @@ private static final long serialVersionUID = 0L;
     return new Location();
   }
 
-  @Override
-  public final com.google.protobuf.UnknownFieldSet
-  getUnknownFields() {
-    return this.unknownFields;
-  }
   public static final com.google.protobuf.Descriptors.Descriptor
       getDescriptor() {
     return CommonProto.internal_static_common_Location_descriptor;
@@ -45,7 +40,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int LATITUDE_FIELD_NUMBER = 1;
-  private double latitude_;
+  private double latitude_ = 0D;
   /**
    * <pre>
    * Latitude.
@@ -60,7 +55,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int LONGITUDE_FIELD_NUMBER = 2;
-  private double longitude_;
+  private double longitude_ = 0D;
   /**
    * <pre>
    * Longitude.
@@ -75,7 +70,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int ALTITUDE_FIELD_NUMBER = 3;
-  private double altitude_;
+  private double altitude_ = 0D;
   /**
    * <pre>
    * Altitude.
@@ -90,7 +85,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int SOURCE_FIELD_NUMBER = 4;
-  private int source_;
+  private int source_ = 0;
   /**
    * <pre>
    * Location source.
@@ -111,13 +106,12 @@ private static final long serialVersionUID = 0L;
    * @return The source.
    */
   @Override public LocationSource getSource() {
-    @SuppressWarnings("deprecation")
-    LocationSource result = LocationSource.valueOf(source_);
+    LocationSource result = LocationSource.forNumber(source_);
     return result == null ? LocationSource.UNRECOGNIZED : result;
   }
 
   public static final int ACCURACY_FIELD_NUMBER = 5;
-  private float accuracy_;
+  private float accuracy_ = 0F;
   /**
    * <pre>
    * Accuracy.
@@ -370,16 +364,12 @@ private static final long serialVersionUID = 0L;
     @Override
     public Builder clear() {
       super.clear();
+      bitField0_ = 0;
       latitude_ = 0D;
-
       longitude_ = 0D;
-
       altitude_ = 0D;
-
       source_ = 0;
-
       accuracy_ = 0F;
-
       return this;
     }
 
@@ -406,47 +396,30 @@ private static final long serialVersionUID = 0L;
     @Override
     public Location buildPartial() {
       Location result = new Location(this);
-      result.latitude_ = latitude_;
-      result.longitude_ = longitude_;
-      result.altitude_ = altitude_;
-      result.source_ = source_;
-      result.accuracy_ = accuracy_;
+      if (bitField0_ != 0) { buildPartial0(result); }
       onBuilt();
       return result;
     }
 
-    @Override
-    public Builder clone() {
-      return super.clone();
+    private void buildPartial0(Location result) {
+      int from_bitField0_ = bitField0_;
+      if (((from_bitField0_ & 0x00000001) != 0)) {
+        result.latitude_ = latitude_;
+      }
+      if (((from_bitField0_ & 0x00000002) != 0)) {
+        result.longitude_ = longitude_;
+      }
+      if (((from_bitField0_ & 0x00000004) != 0)) {
+        result.altitude_ = altitude_;
+      }
+      if (((from_bitField0_ & 0x00000008) != 0)) {
+        result.source_ = source_;
+      }
+      if (((from_bitField0_ & 0x00000010) != 0)) {
+        result.accuracy_ = accuracy_;
+      }
     }
-    @Override
-    public Builder setField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        Object value) {
-      return super.setField(field, value);
-    }
-    @Override
-    public Builder clearField(
-        com.google.protobuf.Descriptors.FieldDescriptor field) {
-      return super.clearField(field);
-    }
-    @Override
-    public Builder clearOneof(
-        com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-      return super.clearOneof(oneof);
-    }
-    @Override
-    public Builder setRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        int index, Object value) {
-      return super.setRepeatedField(field, index, value);
-    }
-    @Override
-    public Builder addRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        Object value) {
-      return super.addRepeatedField(field, value);
-    }
+
     @Override
     public Builder mergeFrom(com.google.protobuf.Message other) {
       if (other instanceof Location) {
@@ -502,27 +475,27 @@ private static final long serialVersionUID = 0L;
               break;
             case 9: {
               latitude_ = input.readDouble();
-
+              bitField0_ |= 0x00000001;
               break;
             } // case 9
             case 17: {
               longitude_ = input.readDouble();
-
+              bitField0_ |= 0x00000002;
               break;
             } // case 17
             case 25: {
               altitude_ = input.readDouble();
-
+              bitField0_ |= 0x00000004;
               break;
             } // case 25
             case 32: {
               source_ = input.readEnum();
-
+              bitField0_ |= 0x00000008;
               break;
             } // case 32
             case 45: {
               accuracy_ = input.readFloat();
-
+              bitField0_ |= 0x00000010;
               break;
             } // case 45
             default: {
@@ -540,6 +513,7 @@ private static final long serialVersionUID = 0L;
       } // finally
       return this;
     }
+    private int bitField0_;
 
     private double latitude_ ;
     /**
@@ -564,8 +538,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setLatitude(double value) {
-      
+
       latitude_ = value;
+      bitField0_ |= 0x00000001;
       onChanged();
       return this;
     }
@@ -578,7 +553,7 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder clearLatitude() {
-      
+      bitField0_ = (bitField0_ & ~0x00000001);
       latitude_ = 0D;
       onChanged();
       return this;
@@ -607,8 +582,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setLongitude(double value) {
-      
+
       longitude_ = value;
+      bitField0_ |= 0x00000002;
       onChanged();
       return this;
     }
@@ -621,7 +597,7 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder clearLongitude() {
-      
+      bitField0_ = (bitField0_ & ~0x00000002);
       longitude_ = 0D;
       onChanged();
       return this;
@@ -650,8 +626,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setAltitude(double value) {
-      
+
       altitude_ = value;
+      bitField0_ |= 0x00000004;
       onChanged();
       return this;
     }
@@ -664,7 +641,7 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder clearAltitude() {
-      
+      bitField0_ = (bitField0_ & ~0x00000004);
       altitude_ = 0D;
       onChanged();
       return this;
@@ -692,8 +669,8 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setSourceValue(int value) {
-      
       source_ = value;
+      bitField0_ |= 0x00000008;
       onChanged();
       return this;
     }
@@ -707,8 +684,7 @@ private static final long serialVersionUID = 0L;
      */
     @Override
     public LocationSource getSource() {
-      @SuppressWarnings("deprecation")
-      LocationSource result = LocationSource.valueOf(source_);
+      LocationSource result = LocationSource.forNumber(source_);
       return result == null ? LocationSource.UNRECOGNIZED : result;
     }
     /**
@@ -724,7 +700,7 @@ private static final long serialVersionUID = 0L;
       if (value == null) {
         throw new NullPointerException();
       }
-      
+      bitField0_ |= 0x00000008;
       source_ = value.getNumber();
       onChanged();
       return this;
@@ -738,7 +714,7 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder clearSource() {
-      
+      bitField0_ = (bitField0_ & ~0x00000008);
       source_ = 0;
       onChanged();
       return this;
@@ -767,8 +743,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setAccuracy(float value) {
-      
+
       accuracy_ = value;
+      bitField0_ |= 0x00000010;
       onChanged();
       return this;
     }
@@ -781,7 +758,7 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder clearAccuracy() {
-      
+      bitField0_ = (bitField0_ & ~0x00000010);
       accuracy_ = 0F;
       onChanged();
       return this;

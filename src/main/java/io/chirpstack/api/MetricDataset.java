@@ -27,11 +27,6 @@ private static final long serialVersionUID = 0L;
     return new MetricDataset();
   }
 
-  @Override
-  public final com.google.protobuf.UnknownFieldSet
-  getUnknownFields() {
-    return this.unknownFields;
-  }
   public static final com.google.protobuf.Descriptors.Descriptor
       getDescriptor() {
     return CommonProto.internal_static_common_MetricDataset_descriptor;
@@ -46,7 +41,8 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int LABEL_FIELD_NUMBER = 1;
-  private volatile Object label_;
+  @SuppressWarnings("serial")
+  private volatile Object label_ = "";
   /**
    * <pre>
    * Label.
@@ -92,6 +88,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int DATA_FIELD_NUMBER = 2;
+  @SuppressWarnings("serial")
   private com.google.protobuf.Internal.FloatList data_;
   /**
    * <pre>
@@ -346,10 +343,9 @@ private static final long serialVersionUID = 0L;
     @Override
     public Builder clear() {
       super.clear();
+      bitField0_ = 0;
       label_ = "";
-
       data_ = emptyFloatList();
-      bitField0_ = (bitField0_ & ~0x00000001);
       return this;
     }
 
@@ -376,49 +372,27 @@ private static final long serialVersionUID = 0L;
     @Override
     public MetricDataset buildPartial() {
       MetricDataset result = new MetricDataset(this);
-      int from_bitField0_ = bitField0_;
-      result.label_ = label_;
-      if (((bitField0_ & 0x00000001) != 0)) {
-        data_.makeImmutable();
-        bitField0_ = (bitField0_ & ~0x00000001);
-      }
-      result.data_ = data_;
+      buildPartialRepeatedFields(result);
+      if (bitField0_ != 0) { buildPartial0(result); }
       onBuilt();
       return result;
     }
 
-    @Override
-    public Builder clone() {
-      return super.clone();
+    private void buildPartialRepeatedFields(MetricDataset result) {
+      if (((bitField0_ & 0x00000002) != 0)) {
+        data_.makeImmutable();
+        bitField0_ = (bitField0_ & ~0x00000002);
+      }
+      result.data_ = data_;
     }
-    @Override
-    public Builder setField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        Object value) {
-      return super.setField(field, value);
+
+    private void buildPartial0(MetricDataset result) {
+      int from_bitField0_ = bitField0_;
+      if (((from_bitField0_ & 0x00000001) != 0)) {
+        result.label_ = label_;
+      }
     }
-    @Override
-    public Builder clearField(
-        com.google.protobuf.Descriptors.FieldDescriptor field) {
-      return super.clearField(field);
-    }
-    @Override
-    public Builder clearOneof(
-        com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-      return super.clearOneof(oneof);
-    }
-    @Override
-    public Builder setRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        int index, Object value) {
-      return super.setRepeatedField(field, index, value);
-    }
-    @Override
-    public Builder addRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        Object value) {
-      return super.addRepeatedField(field, value);
-    }
+
     @Override
     public Builder mergeFrom(com.google.protobuf.Message other) {
       if (other instanceof MetricDataset) {
@@ -433,12 +407,13 @@ private static final long serialVersionUID = 0L;
       if (other == MetricDataset.getDefaultInstance()) return this;
       if (!other.getLabel().isEmpty()) {
         label_ = other.label_;
+        bitField0_ |= 0x00000001;
         onChanged();
       }
       if (!other.data_.isEmpty()) {
         if (data_.isEmpty()) {
           data_ = other.data_;
-          bitField0_ = (bitField0_ & ~0x00000001);
+          bitField0_ = (bitField0_ & ~0x00000002);
         } else {
           ensureDataIsMutable();
           data_.addAll(other.data_);
@@ -473,7 +448,7 @@ private static final long serialVersionUID = 0L;
               break;
             case 10: {
               label_ = input.readStringRequireUtf8();
-
+              bitField0_ |= 0x00000001;
               break;
             } // case 10
             case 21: {
@@ -562,11 +537,9 @@ private static final long serialVersionUID = 0L;
      */
     public Builder setLabel(
         String value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  
+      if (value == null) { throw new NullPointerException(); }
       label_ = value;
+      bitField0_ |= 0x00000001;
       onChanged();
       return this;
     }
@@ -579,8 +552,8 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder clearLabel() {
-      
       label_ = getDefaultInstance().getLabel();
+      bitField0_ = (bitField0_ & ~0x00000001);
       onChanged();
       return this;
     }
@@ -595,22 +568,20 @@ private static final long serialVersionUID = 0L;
      */
     public Builder setLabelBytes(
         com.google.protobuf.ByteString value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  checkByteStringIsUtf8(value);
-      
+      if (value == null) { throw new NullPointerException(); }
+      checkByteStringIsUtf8(value);
       label_ = value;
+      bitField0_ |= 0x00000001;
       onChanged();
       return this;
     }
 
     private com.google.protobuf.Internal.FloatList data_ = emptyFloatList();
     private void ensureDataIsMutable() {
-      if (!((bitField0_ & 0x00000001) != 0)) {
+      if (!((bitField0_ & 0x00000002) != 0)) {
         data_ = mutableCopy(data_);
-        bitField0_ |= 0x00000001;
-       }
+        bitField0_ |= 0x00000002;
+      }
     }
     /**
      * <pre>
@@ -623,7 +594,7 @@ private static final long serialVersionUID = 0L;
      */
     public java.util.List<Float>
         getDataList() {
-      return ((bitField0_ & 0x00000001) != 0) ?
+      return ((bitField0_ & 0x00000002) != 0) ?
                java.util.Collections.unmodifiableList(data_) : data_;
     }
     /**
@@ -664,6 +635,7 @@ private static final long serialVersionUID = 0L;
      */
     public Builder setData(
         int index, float value) {
+
       ensureDataIsMutable();
       data_.setFloat(index, value);
       onChanged();
@@ -680,6 +652,7 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder addData(float value) {
+
       ensureDataIsMutable();
       data_.addFloat(value);
       onChanged();
@@ -714,7 +687,7 @@ private static final long serialVersionUID = 0L;
      */
     public Builder clearData() {
       data_ = emptyFloatList();
-      bitField0_ = (bitField0_ & ~0x00000001);
+      bitField0_ = (bitField0_ & ~0x00000002);
       onChanged();
       return this;
     }

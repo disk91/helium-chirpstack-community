@@ -30,6 +30,8 @@
 - Manage Invoice generation
 - Manage device migration from console
 - Manage device live migration from console
+- Manage device live Region change
+- Manage Helium integration with forwarder
 
 
 #### MVP1 - terminated
@@ -95,3 +97,21 @@ be publicly published, even when small pieces of code or architecture are reused
 ./protoc/bin/protoc --java_out=... --proto_path=.../proto/src/ region.proto
 ./protoc/bin/protoc --java_out=... --proto_path=.../proto/src/ blockchain_region_param_v1.proto
 ```
+
+- Chirpstack-api grpc api found on - https://github.com/brocaar/chirpstack-api/tree/master
+- gooogleapi found on - https://fuchsia.googlesource.com/third_party/googleapis
+- Chirpstack grpc api found on - https://github.com/chirpstack/chirpstack.git
+```bash
+# for chirpstack grpc api
+~ git checkout v4.3.2
+```
+
+````
+./protoc/bin/protoc -I ./chirpstack/api/proto -I ./googleapis/ --java_out ./out ./chirpstack/api/proto/common/common.proto
+./protoc/bin/protoc -I ./chirpstack/api/proto -I ./googleapis/ --java_out ./out ./chirpstack/api/proto/api/user.proto 
+./protoc/bin/protoc -I ./chirpstack/api/proto -I ./googleapis/ --java_out ./out ./chirpstack/api/proto/api/device.proto
+./protoc/bin/protoc -I ./chirpstack/api/proto --java_out ./out ./chirpstack/api/proto/api/frame_log.proto
+./protoc/bin/protoc -I ./chirpstack/api/proto -I ./googleapis/ --java_out ./out ./chirpstack/api/proto/api/internal.proto
+
+./protoc/bin/protoc -I ./chirpstack-api/protobuf --java_out ./out ./chirpstack-api//protobuf/as/as.proto
+````

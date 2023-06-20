@@ -28,10 +28,7 @@ import eu.heliumiot.console.mqtt.api.HeliumDeviceActDeactItf;
 import eu.heliumiot.console.mqtt.api.HeliumDeviceStatItf;
 import eu.heliumiot.console.jpa.repository.TenantRepository;
 import eu.heliumiot.console.mqtt.api.HeliumTenantActDeactItf;
-import eu.heliumiot.console.service.HeliumDeviceService;
-import eu.heliumiot.console.service.HeliumDeviceStatService;
-import eu.heliumiot.console.service.HeliumTenantService;
-import eu.heliumiot.console.service.PrometeusService;
+import eu.heliumiot.console.service.*;
 import fr.ingeniousthings.tools.DateConverters;
 import fr.ingeniousthings.tools.HexaConverters;
 import fr.ingeniousthings.tools.Now;
@@ -49,6 +46,7 @@ import org.eclipse.paho.client.mqttv3.*;
 import org.eclipse.paho.client.mqttv3.persist.MemoryPersistence;
 
 import javax.annotation.PostConstruct;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Set;
 
@@ -144,6 +142,9 @@ public class MqttListener implements MqttCallback {
 
         @Autowired
         protected HeliumDeviceService heliumDeviceService;
+
+        @Autowired
+        protected RoamingService roamingService;
 
         protected class DeviceDedup {
                 public String devEui;
@@ -258,6 +259,7 @@ public class MqttListener implements MqttCallback {
 
                                         // ... push to process
                                         log.info("Found a join request for "+d.devEui+" for region "+region);
+                                        roamingService.processJoinMessage(Arrays.copyOfRange(payload,9,9+8), devEUI,region);
                                 }
                                 // clean the dedup storage
                                 if ( dedupHashMap.size() > 500 ) {

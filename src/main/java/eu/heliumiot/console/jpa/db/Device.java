@@ -160,4 +160,20 @@ public class Device {
     public void setVariables(String variables) {
         this.variables = variables;
     }
+
+    public UUID getDeviceProfileId() {
+        return deviceProfileId;
+    }
+
+    public void setDeviceProfileId(UUID deviceProfileId) {
+        this.deviceProfileId = deviceProfileId;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
 }

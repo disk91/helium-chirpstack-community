@@ -118,7 +118,7 @@ public interface DownlinkFrameLogOrBuilder extends
    * <code>.common.MType m_type = 6;</code>
    * @return The mType.
    */
-  MType getMType();
+  io.chirpstack.api.MType getMType();
 
   /**
    * <pre>

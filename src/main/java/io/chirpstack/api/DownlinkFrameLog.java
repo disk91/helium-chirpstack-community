@@ -30,11 +30,6 @@ private static final long serialVersionUID = 0L;
     return new DownlinkFrameLog();
   }
 
-  @Override
-  public final com.google.protobuf.UnknownFieldSet
-  getUnknownFields() {
-    return this.unknownFields;
-  }
   public static final com.google.protobuf.Descriptors.Descriptor
       getDescriptor() {
     return FrameLogProto.internal_static_api_DownlinkFrameLog_descriptor;
@@ -83,11 +78,11 @@ private static final long serialVersionUID = 0L;
    */
   @Override
   public com.google.protobuf.TimestampOrBuilder getTimeOrBuilder() {
-    return getTime();
+    return time_ == null ? com.google.protobuf.Timestamp.getDefaultInstance() : time_;
   }
 
   public static final int PHY_PAYLOAD_FIELD_NUMBER = 2;
-  private com.google.protobuf.ByteString phyPayload_;
+  private com.google.protobuf.ByteString phyPayload_ = com.google.protobuf.ByteString.EMPTY;
   /**
    * <pre>
    * PHYPayload.
@@ -136,11 +131,11 @@ private static final long serialVersionUID = 0L;
    */
   @Override
   public io.chirpstack.api.gw.DownlinkTxInfoOrBuilder getTxInfoOrBuilder() {
-    return getTxInfo();
+    return txInfo_ == null ? io.chirpstack.api.gw.DownlinkTxInfo.getDefaultInstance() : txInfo_;
   }
 
   public static final int DOWNLINK_ID_FIELD_NUMBER = 4;
-  private int downlinkId_;
+  private int downlinkId_ = 0;
   /**
    * <pre>
    * Downlink ID.
@@ -155,7 +150,8 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int GATEWAY_ID_FIELD_NUMBER = 5;
-  private volatile Object gatewayId_;
+  @SuppressWarnings("serial")
+  private volatile Object gatewayId_ = "";
   /**
    * <pre>
    * Gateway ID (EUI64).
@@ -201,7 +197,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int M_TYPE_FIELD_NUMBER = 6;
-  private int mType_;
+  private int mType_ = 0;
   /**
    * <pre>
    * Message type.
@@ -221,14 +217,14 @@ private static final long serialVersionUID = 0L;
    * <code>.common.MType m_type = 6;</code>
    * @return The mType.
    */
-  @Override public MType getMType() {
-    @SuppressWarnings("deprecation")
-    MType result = MType.valueOf(mType_);
-    return result == null ? MType.UNRECOGNIZED : result;
+  @Override public io.chirpstack.api.MType getMType() {
+    io.chirpstack.api.MType result = io.chirpstack.api.MType.forNumber(mType_);
+    return result == null ? io.chirpstack.api.MType.UNRECOGNIZED : result;
   }
 
   public static final int DEV_ADDR_FIELD_NUMBER = 7;
-  private volatile Object devAddr_;
+  @SuppressWarnings("serial")
+  private volatile Object devAddr_ = "";
   /**
    * <pre>
    * Device address (optional).
@@ -274,7 +270,8 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int DEV_EUI_FIELD_NUMBER = 8;
-  private volatile Object devEui_;
+  @SuppressWarnings("serial")
+  private volatile Object devEui_ = "";
   /**
    * <pre>
    * Device EUI (optional).
@@ -320,7 +317,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int PLAINTEXT_MAC_COMMANDS_FIELD_NUMBER = 9;
-  private boolean plaintextMacCommands_;
+  private boolean plaintextMacCommands_ = false;
   /**
    * <pre>
    * Plaintext mac-commands.
@@ -363,7 +360,7 @@ private static final long serialVersionUID = 0L;
     if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(gatewayId_)) {
       com.google.protobuf.GeneratedMessageV3.writeString(output, 5, gatewayId_);
     }
-    if (mType_ != MType.JOIN_REQUEST.getNumber()) {
+    if (mType_ != io.chirpstack.api.MType.JOIN_REQUEST.getNumber()) {
       output.writeEnum(6, mType_);
     }
     if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(devAddr_)) {
@@ -403,7 +400,7 @@ private static final long serialVersionUID = 0L;
     if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(gatewayId_)) {
       size += com.google.protobuf.GeneratedMessageV3.computeStringSize(5, gatewayId_);
     }
-    if (mType_ != MType.JOIN_REQUEST.getNumber()) {
+    if (mType_ != io.chirpstack.api.MType.JOIN_REQUEST.getNumber()) {
       size += com.google.protobuf.CodedOutputStream
         .computeEnumSize(6, mType_);
     }
@@ -617,32 +614,24 @@ private static final long serialVersionUID = 0L;
     @Override
     public Builder clear() {
       super.clear();
-      if (timeBuilder_ == null) {
-        time_ = null;
-      } else {
-        time_ = null;
+      bitField0_ = 0;
+      time_ = null;
+      if (timeBuilder_ != null) {
+        timeBuilder_.dispose();
         timeBuilder_ = null;
       }
       phyPayload_ = com.google.protobuf.ByteString.EMPTY;
-
-      if (txInfoBuilder_ == null) {
-        txInfo_ = null;
-      } else {
-        txInfo_ = null;
+      txInfo_ = null;
+      if (txInfoBuilder_ != null) {
+        txInfoBuilder_.dispose();
         txInfoBuilder_ = null;
       }
       downlinkId_ = 0;
-
       gatewayId_ = "";
-
       mType_ = 0;
-
       devAddr_ = "";
-
       devEui_ = "";
-
       plaintextMacCommands_ = false;
-
       return this;
     }
 
@@ -669,59 +658,46 @@ private static final long serialVersionUID = 0L;
     @Override
     public DownlinkFrameLog buildPartial() {
       DownlinkFrameLog result = new DownlinkFrameLog(this);
-      if (timeBuilder_ == null) {
-        result.time_ = time_;
-      } else {
-        result.time_ = timeBuilder_.build();
-      }
-      result.phyPayload_ = phyPayload_;
-      if (txInfoBuilder_ == null) {
-        result.txInfo_ = txInfo_;
-      } else {
-        result.txInfo_ = txInfoBuilder_.build();
-      }
-      result.downlinkId_ = downlinkId_;
-      result.gatewayId_ = gatewayId_;
-      result.mType_ = mType_;
-      result.devAddr_ = devAddr_;
-      result.devEui_ = devEui_;
-      result.plaintextMacCommands_ = plaintextMacCommands_;
+      if (bitField0_ != 0) { buildPartial0(result); }
       onBuilt();
       return result;
     }
 
-    @Override
-    public Builder clone() {
-      return super.clone();
+    private void buildPartial0(DownlinkFrameLog result) {
+      int from_bitField0_ = bitField0_;
+      if (((from_bitField0_ & 0x00000001) != 0)) {
+        result.time_ = timeBuilder_ == null
+            ? time_
+            : timeBuilder_.build();
+      }
+      if (((from_bitField0_ & 0x00000002) != 0)) {
+        result.phyPayload_ = phyPayload_;
+      }
+      if (((from_bitField0_ & 0x00000004) != 0)) {
+        result.txInfo_ = txInfoBuilder_ == null
+            ? txInfo_
+            : txInfoBuilder_.build();
+      }
+      if (((from_bitField0_ & 0x00000008) != 0)) {
+        result.downlinkId_ = downlinkId_;
+      }
+      if (((from_bitField0_ & 0x00000010) != 0)) {
+        result.gatewayId_ = gatewayId_;
+      }
+      if (((from_bitField0_ & 0x00000020) != 0)) {
+        result.mType_ = mType_;
+      }
+      if (((from_bitField0_ & 0x00000040) != 0)) {
+        result.devAddr_ = devAddr_;
+      }
+      if (((from_bitField0_ & 0x00000080) != 0)) {
+        result.devEui_ = devEui_;
+      }
+      if (((from_bitField0_ & 0x00000100) != 0)) {
+        result.plaintextMacCommands_ = plaintextMacCommands_;
+      }
     }
-    @Override
-    public Builder setField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        Object value) {
-      return super.setField(field, value);
-    }
-    @Override
-    public Builder clearField(
-        com.google.protobuf.Descriptors.FieldDescriptor field) {
-      return super.clearField(field);
-    }
-    @Override
-    public Builder clearOneof(
-        com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-      return super.clearOneof(oneof);
-    }
-    @Override
-    public Builder setRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        int index, Object value) {
-      return super.setRepeatedField(field, index, value);
-    }
-    @Override
-    public Builder addRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        Object value) {
-      return super.addRepeatedField(field, value);
-    }
+
     @Override
     public Builder mergeFrom(com.google.protobuf.Message other) {
       if (other instanceof DownlinkFrameLog) {
@@ -748,6 +724,7 @@ private static final long serialVersionUID = 0L;
       }
       if (!other.getGatewayId().isEmpty()) {
         gatewayId_ = other.gatewayId_;
+        bitField0_ |= 0x00000010;
         onChanged();
       }
       if (other.mType_ != 0) {
@@ -755,10 +732,12 @@ private static final long serialVersionUID = 0L;
       }
       if (!other.getDevAddr().isEmpty()) {
         devAddr_ = other.devAddr_;
+        bitField0_ |= 0x00000040;
         onChanged();
       }
       if (!other.getDevEui().isEmpty()) {
         devEui_ = other.devEui_;
+        bitField0_ |= 0x00000080;
         onChanged();
       }
       if (other.getPlaintextMacCommands() != false) {
@@ -794,49 +773,49 @@ private static final long serialVersionUID = 0L;
               input.readMessage(
                   getTimeFieldBuilder().getBuilder(),
                   extensionRegistry);
-
+              bitField0_ |= 0x00000001;
               break;
             } // case 10
             case 18: {
               phyPayload_ = input.readBytes();
-
+              bitField0_ |= 0x00000002;
               break;
             } // case 18
             case 26: {
               input.readMessage(
                   getTxInfoFieldBuilder().getBuilder(),
                   extensionRegistry);
-
+              bitField0_ |= 0x00000004;
               break;
             } // case 26
             case 32: {
               downlinkId_ = input.readUInt32();
-
+              bitField0_ |= 0x00000008;
               break;
             } // case 32
             case 42: {
               gatewayId_ = input.readStringRequireUtf8();
-
+              bitField0_ |= 0x00000010;
               break;
             } // case 42
             case 48: {
               mType_ = input.readEnum();
-
+              bitField0_ |= 0x00000020;
               break;
             } // case 48
             case 58: {
               devAddr_ = input.readStringRequireUtf8();
-
+              bitField0_ |= 0x00000040;
               break;
             } // case 58
             case 66: {
               devEui_ = input.readStringRequireUtf8();
-
+              bitField0_ |= 0x00000080;
               break;
             } // case 66
             case 72: {
               plaintextMacCommands_ = input.readBool();
-
+              bitField0_ |= 0x00000100;
               break;
             } // case 72
             default: {
@@ -854,6 +833,7 @@ private static final long serialVersionUID = 0L;
       } // finally
       return this;
     }
+    private int bitField0_;
 
     private com.google.protobuf.Timestamp time_;
     private com.google.protobuf.SingleFieldBuilderV3<
@@ -867,7 +847,7 @@ private static final long serialVersionUID = 0L;
      * @return Whether the time field is set.
      */
     public boolean hasTime() {
-      return timeBuilder_ != null || time_ != null;
+      return ((bitField0_ & 0x00000001) != 0);
     }
     /**
      * <pre>
@@ -897,11 +877,11 @@ private static final long serialVersionUID = 0L;
           throw new NullPointerException();
         }
         time_ = value;
-        onChanged();
       } else {
         timeBuilder_.setMessage(value);
       }
-
+      bitField0_ |= 0x00000001;
+      onChanged();
       return this;
     }
     /**
@@ -915,11 +895,11 @@ private static final long serialVersionUID = 0L;
         com.google.protobuf.Timestamp.Builder builderForValue) {
       if (timeBuilder_ == null) {
         time_ = builderForValue.build();
-        onChanged();
       } else {
         timeBuilder_.setMessage(builderForValue.build());
       }
-
+      bitField0_ |= 0x00000001;
+      onChanged();
       return this;
     }
     /**
@@ -931,17 +911,18 @@ private static final long serialVersionUID = 0L;
      */
     public Builder mergeTime(com.google.protobuf.Timestamp value) {
       if (timeBuilder_ == null) {
-        if (time_ != null) {
-          time_ =
-            com.google.protobuf.Timestamp.newBuilder(time_).mergeFrom(value).buildPartial();
+        if (((bitField0_ & 0x00000001) != 0) &&
+          time_ != null &&
+          time_ != com.google.protobuf.Timestamp.getDefaultInstance()) {
+          getTimeBuilder().mergeFrom(value);
         } else {
           time_ = value;
         }
-        onChanged();
       } else {
         timeBuilder_.mergeFrom(value);
       }
-
+      bitField0_ |= 0x00000001;
+      onChanged();
       return this;
     }
     /**
@@ -952,14 +933,13 @@ private static final long serialVersionUID = 0L;
      * <code>.google.protobuf.Timestamp time = 1;</code>
      */
     public Builder clearTime() {
-      if (timeBuilder_ == null) {
-        time_ = null;
-        onChanged();
-      } else {
-        time_ = null;
+      bitField0_ = (bitField0_ & ~0x00000001);
+      time_ = null;
+      if (timeBuilder_ != null) {
+        timeBuilder_.dispose();
         timeBuilder_ = null;
       }
-
+      onChanged();
       return this;
     }
     /**
@@ -970,7 +950,7 @@ private static final long serialVersionUID = 0L;
      * <code>.google.protobuf.Timestamp time = 1;</code>
      */
     public com.google.protobuf.Timestamp.Builder getTimeBuilder() {
-      
+      bitField0_ |= 0x00000001;
       onChanged();
       return getTimeFieldBuilder().getBuilder();
     }
@@ -1033,11 +1013,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setPhyPayload(com.google.protobuf.ByteString value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  
+      if (value == null) { throw new NullPointerException(); }
       phyPayload_ = value;
+      bitField0_ |= 0x00000002;
       onChanged();
       return this;
     }
@@ -1050,7 +1028,7 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder clearPhyPayload() {
-      
+      bitField0_ = (bitField0_ & ~0x00000002);
       phyPayload_ = getDefaultInstance().getPhyPayload();
       onChanged();
       return this;
@@ -1068,7 +1046,7 @@ private static final long serialVersionUID = 0L;
      * @return Whether the txInfo field is set.
      */
     public boolean hasTxInfo() {
-      return txInfoBuilder_ != null || txInfo_ != null;
+      return ((bitField0_ & 0x00000004) != 0);
     }
     /**
      * <pre>
@@ -1098,11 +1076,11 @@ private static final long serialVersionUID = 0L;
           throw new NullPointerException();
         }
         txInfo_ = value;
-        onChanged();
       } else {
         txInfoBuilder_.setMessage(value);
       }
-
+      bitField0_ |= 0x00000004;
+      onChanged();
       return this;
     }
     /**
@@ -1116,11 +1094,11 @@ private static final long serialVersionUID = 0L;
         io.chirpstack.api.gw.DownlinkTxInfo.Builder builderForValue) {
       if (txInfoBuilder_ == null) {
         txInfo_ = builderForValue.build();
-        onChanged();
       } else {
         txInfoBuilder_.setMessage(builderForValue.build());
       }
-
+      bitField0_ |= 0x00000004;
+      onChanged();
       return this;
     }
     /**
@@ -1132,17 +1110,18 @@ private static final long serialVersionUID = 0L;
      */
     public Builder mergeTxInfo(io.chirpstack.api.gw.DownlinkTxInfo value) {
       if (txInfoBuilder_ == null) {
-        if (txInfo_ != null) {
-          txInfo_ =
-            io.chirpstack.api.gw.DownlinkTxInfo.newBuilder(txInfo_).mergeFrom(value).buildPartial();
+        if (((bitField0_ & 0x00000004) != 0) &&
+          txInfo_ != null &&
+          txInfo_ != io.chirpstack.api.gw.DownlinkTxInfo.getDefaultInstance()) {
+          getTxInfoBuilder().mergeFrom(value);
         } else {
           txInfo_ = value;
         }
-        onChanged();
       } else {
         txInfoBuilder_.mergeFrom(value);
       }
-
+      bitField0_ |= 0x00000004;
+      onChanged();
       return this;
     }
     /**
@@ -1153,14 +1132,13 @@ private static final long serialVersionUID = 0L;
      * <code>.gw.DownlinkTxInfo tx_info = 3;</code>
      */
     public Builder clearTxInfo() {
-      if (txInfoBuilder_ == null) {
-        txInfo_ = null;
-        onChanged();
-      } else {
-        txInfo_ = null;
+      bitField0_ = (bitField0_ & ~0x00000004);
+      txInfo_ = null;
+      if (txInfoBuilder_ != null) {
+        txInfoBuilder_.dispose();
         txInfoBuilder_ = null;
       }
-
+      onChanged();
       return this;
     }
     /**
@@ -1171,7 +1149,7 @@ private static final long serialVersionUID = 0L;
      * <code>.gw.DownlinkTxInfo tx_info = 3;</code>
      */
     public io.chirpstack.api.gw.DownlinkTxInfo.Builder getTxInfoBuilder() {
-      
+      bitField0_ |= 0x00000004;
       onChanged();
       return getTxInfoFieldBuilder().getBuilder();
     }
@@ -1234,8 +1212,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setDownlinkId(int value) {
-      
+
       downlinkId_ = value;
+      bitField0_ |= 0x00000008;
       onChanged();
       return this;
     }
@@ -1248,7 +1227,7 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder clearDownlinkId() {
-      
+      bitField0_ = (bitField0_ & ~0x00000008);
       downlinkId_ = 0;
       onChanged();
       return this;
@@ -1307,11 +1286,9 @@ private static final long serialVersionUID = 0L;
      */
     public Builder setGatewayId(
         String value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  
+      if (value == null) { throw new NullPointerException(); }
       gatewayId_ = value;
+      bitField0_ |= 0x00000010;
       onChanged();
       return this;
     }
@@ -1324,8 +1301,8 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder clearGatewayId() {
-      
       gatewayId_ = getDefaultInstance().getGatewayId();
+      bitField0_ = (bitField0_ & ~0x00000010);
       onChanged();
       return this;
     }
@@ -1340,12 +1317,10 @@ private static final long serialVersionUID = 0L;
      */
     public Builder setGatewayIdBytes(
         com.google.protobuf.ByteString value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  checkByteStringIsUtf8(value);
-      
+      if (value == null) { throw new NullPointerException(); }
+      checkByteStringIsUtf8(value);
       gatewayId_ = value;
+      bitField0_ |= 0x00000010;
       onChanged();
       return this;
     }
@@ -1372,8 +1347,8 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setMTypeValue(int value) {
-      
       mType_ = value;
+      bitField0_ |= 0x00000020;
       onChanged();
       return this;
     }
@@ -1386,10 +1361,9 @@ private static final long serialVersionUID = 0L;
      * @return The mType.
      */
     @Override
-    public MType getMType() {
-      @SuppressWarnings("deprecation")
-      MType result = MType.valueOf(mType_);
-      return result == null ? MType.UNRECOGNIZED : result;
+    public io.chirpstack.api.MType getMType() {
+      io.chirpstack.api.MType result = io.chirpstack.api.MType.forNumber(mType_);
+      return result == null ? io.chirpstack.api.MType.UNRECOGNIZED : result;
     }
     /**
      * <pre>
@@ -1400,11 +1374,11 @@ private static final long serialVersionUID = 0L;
      * @param value The mType to set.
      * @return This builder for chaining.
      */
-    public Builder setMType(MType value) {
+    public Builder setMType(io.chirpstack.api.MType value) {
       if (value == null) {
         throw new NullPointerException();
       }
-      
+      bitField0_ |= 0x00000020;
       mType_ = value.getNumber();
       onChanged();
       return this;
@@ -1418,7 +1392,7 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder clearMType() {
-      
+      bitField0_ = (bitField0_ & ~0x00000020);
       mType_ = 0;
       onChanged();
       return this;
@@ -1477,11 +1451,9 @@ private static final long serialVersionUID = 0L;
      */
     public Builder setDevAddr(
         String value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  
+      if (value == null) { throw new NullPointerException(); }
       devAddr_ = value;
+      bitField0_ |= 0x00000040;
       onChanged();
       return this;
     }
@@ -1494,8 +1466,8 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder clearDevAddr() {
-      
       devAddr_ = getDefaultInstance().getDevAddr();
+      bitField0_ = (bitField0_ & ~0x00000040);
       onChanged();
       return this;
     }
@@ -1510,12 +1482,10 @@ private static final long serialVersionUID = 0L;
      */
     public Builder setDevAddrBytes(
         com.google.protobuf.ByteString value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  checkByteStringIsUtf8(value);
-      
+      if (value == null) { throw new NullPointerException(); }
+      checkByteStringIsUtf8(value);
       devAddr_ = value;
+      bitField0_ |= 0x00000040;
       onChanged();
       return this;
     }
@@ -1573,11 +1543,9 @@ private static final long serialVersionUID = 0L;
      */
     public Builder setDevEui(
         String value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  
+      if (value == null) { throw new NullPointerException(); }
       devEui_ = value;
+      bitField0_ |= 0x00000080;
       onChanged();
       return this;
     }
@@ -1590,8 +1558,8 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder clearDevEui() {
-      
       devEui_ = getDefaultInstance().getDevEui();
+      bitField0_ = (bitField0_ & ~0x00000080);
       onChanged();
       return this;
     }
@@ -1606,12 +1574,10 @@ private static final long serialVersionUID = 0L;
      */
     public Builder setDevEuiBytes(
         com.google.protobuf.ByteString value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  checkByteStringIsUtf8(value);
-      
+      if (value == null) { throw new NullPointerException(); }
+      checkByteStringIsUtf8(value);
       devEui_ = value;
+      bitField0_ |= 0x00000080;
       onChanged();
       return this;
     }
@@ -1639,8 +1605,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setPlaintextMacCommands(boolean value) {
-      
+
       plaintextMacCommands_ = value;
+      bitField0_ |= 0x00000100;
       onChanged();
       return this;
     }
@@ -1653,7 +1620,7 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder clearPlaintextMacCommands() {
-      
+      bitField0_ = (bitField0_ & ~0x00000100);
       plaintextMacCommands_ = false;
       onChanged();
       return this;
