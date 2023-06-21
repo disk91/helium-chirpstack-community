@@ -289,6 +289,8 @@ interface data {
     card : any,
     secret : string,
 
+    transaction : string,
+
 }
 
 Vue.filter('currency', function (value:number) {
@@ -322,7 +324,7 @@ export default Vue.extend({
             stripe : undefined,
             card : undefined,
             secret : '',
-
+            transaction : '',
         };
     },
     async fetch() {
@@ -368,6 +370,7 @@ export default Vue.extend({
             this.stripe = undefined;
             this.card = undefined;
             this.secret = '';
+            this.transaction = '';
         },
         updateTenantConfiguration() {
             this.isBusy = true;
@@ -417,6 +420,7 @@ export default Vue.extend({
                     if (response.status == 200 ) {
                         this.isBusy = false;
                         let r : TransactionStripeRespItf = response.data;
+                        this.transaction = r.transactionUUID;  // here is the key for update later
                         var stripe = Stripe(r.stripePublicKey);
                         var elements = stripe.elements();
                         var style = {
@@ -491,9 +495,12 @@ export default Vue.extend({
                         'Authorization': 'Bearer '+self.$store.state.consoleBearer,  
                         }
                     };
-                    self.$axios.put(self.$config.transactionStripeUpdate+'/'+result.paymentIntent.id+'/',null,config)
-                    .then((response) =>{})
-                    .catch((err) => {})
+                    //self.$axios.put(self.$config.transactionStripeUpdate+'/'+result.paymentIntent.id+'/',null,config)
+                    if ( self.transaction != '' ) {
+                        self.$axios.put(self.$config.transactionStripeUpdate+'/'+self.transaction+'/',null,config)
+                        .then((response) =>{})
+                        .catch((err) => {})
+                    }
 
                     // display success and quit
                     setTimeout(function() { 

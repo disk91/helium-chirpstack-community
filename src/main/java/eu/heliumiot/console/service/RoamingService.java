@@ -7,11 +7,13 @@ import eu.heliumiot.console.jpa.db.Device;
 import eu.heliumiot.console.jpa.db.DeviceProfile;
 import eu.heliumiot.console.jpa.repository.DeviceProfileRepository;
 import eu.heliumiot.console.jpa.repository.DeviceRepository;
+import fr.ingeniousthings.tools.HexaConverters;
 import fr.ingeniousthings.tools.ITNotFoundException;
 import fr.ingeniousthings.tools.ITRightException;
 import fr.ingeniousthings.tools.Now;
 import io.chirpstack.api.GetDeviceRequest;
 import io.chirpstack.api.GetDeviceResponse;
+import io.chirpstack.api.UpdateDeviceRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,6 +43,18 @@ public class RoamingService {
     @Autowired
     protected ChirpstackApiAccess chirpstackApiAccess;
 
+
+    protected String convertRegion(String topicRegion) {
+        topicRegion = topicRegion.toUpperCase();
+        if ( topicRegion.contains("US915") ) return "US915";
+        if ( topicRegion.contains("EU869") ) return "EU868";
+        if ( topicRegion.contains("AS923") ) return "AS923";
+        if ( topicRegion.contains("AU915") ) return "AU915";
+        if ( topicRegion.contains("KR920") ) return "KR920";
+        if ( topicRegion.contains("IN865") ) return "IN865";
+        return topicRegion;
+    }
+
     @Async
     public void processJoinMessage(byte [] _devEui, String devEui, String region) {
         long start = Now.NowUtcMs();
@@ -49,7 +63,7 @@ public class RoamingService {
             // get device
             Device d = deviceRepository.findOneDeviceByDevEui(_devEui);
             if (d == null || d.getDeviceProfileId() == null) {
-                log.warn("Unknown device / deviceProfile");
+                log.warn("Unknown device / deviceProfile for "+devEui+"("+ HexaConverters.byteToHexString(_devEui)+")");
                 return;
             }
 
@@ -60,21 +74,23 @@ public class RoamingService {
                 return;
             }
 
+            region = convertRegion(region);
             // check region, if valid, nothing more to be done
             if (dp.getRegion().compareToIgnoreCase(region) == 0) return;
             log.debug("Device "+devEui+" Join from a different zone ("+region+") than default ("+dp.getRegion()+")");
 
             // when different, find a compatible device template
-            String templateName = dp.getName().replaceFirst("(.*)","").trim().toLowerCase();
+            String templateName = dp.getName().replaceFirst("[(].*[)]","").trim().toLowerCase();
             log.debug("Match device profile : "+templateName);
             List<DeviceProfile> dps = deviceProfileRepository.findDeviceProfileByTenantId(dp.getTenantId());
             boolean found = false;
             DeviceProfile target = null;
+            region = region.toUpperCase();
             for ( DeviceProfile _dp : dps ) {
                 if ( _dp.getName().toLowerCase().endsWith(templateName) ) {
                     // same group
                     log.debug("Get Region " + _dp.getRegion());
-                    if (_dp.getRegion().compareToIgnoreCase(region) == 0) {
+                    if ( region.compareTo(_dp.getRegion()) == 0 ) {
                         target = _dp;
                         found = true;
                     }
@@ -92,14 +108,31 @@ public class RoamingService {
             try {
                 byte[] resp = chirpstackApiAccess.execute(
                         HttpMethod.POST,
-                        "/api.DeviceService/Get", //@todo check
+                        "/api.DeviceService/Get",
                         null,
                         heads,
                         gdr.toByteArray()
                 );
                 GetDeviceResponse dev = GetDeviceResponse.parseFrom(resp);
+                log.debug("Found device "+dev.getDevice().getDevEui());
 
-                // @todo .. update the device and push resonse
+                io.chirpstack.api.Device ndev = dev.getDevice();
+                ndev = ndev.toBuilder()
+                        .setDeviceProfileId(target.getId().toString())
+                        .build();
+
+                UpdateDeviceRequest udr = UpdateDeviceRequest.newBuilder()
+                        .setDevice(ndev)
+                        .build();
+
+                chirpstackApiAccess.execute(
+                        HttpMethod.POST,
+                        "/api.DeviceService/Update",
+                        null,
+                        heads,
+                        udr.toByteArray()
+                );
+                log.debug("Updated device "+ndev.getDevEui());
 
             } catch ( ITRightException x ) {
                 log.error("Impossible to get device config - rights");
@@ -108,8 +141,6 @@ public class RoamingService {
             } catch ( InvalidProtocolBufferException x ) {
                 log.error("Impossible to get device config - protobuf");
             }
-            
-
 
             // then
             prometeusService.roamingAddOne();
