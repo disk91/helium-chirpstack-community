@@ -87,7 +87,7 @@ public class UserCacheService {
     // get user if exist from cache, then from DB
     public UserCacheElement getUserById(String userId) {
         UserCacheElement r = this.userCache.get(userId);
-        if ( r == null ) {
+        if ( r == null || ! r.user.isActive() ) {   // if cache user is not Active, better to check if has been activated since in cache
             // search in db
             User u = userRepository.findOneUserById(UUID.fromString(userId));
             if ( u == null ) return null;
