@@ -29,11 +29,6 @@ private static final long serialVersionUID = 0L;
     return new Metric();
   }
 
-  @Override
-  public final com.google.protobuf.UnknownFieldSet
-  getUnknownFields() {
-    return this.unknownFields;
-  }
   public static final com.google.protobuf.Descriptors.Descriptor
       getDescriptor() {
     return CommonProto.internal_static_common_Metric_descriptor;
@@ -48,7 +43,8 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int NAME_FIELD_NUMBER = 1;
-  private volatile Object name_;
+  @SuppressWarnings("serial")
+  private volatile Object name_ = "";
   /**
    * <pre>
    * Name.
@@ -94,6 +90,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int TIMESTAMPS_FIELD_NUMBER = 2;
+  @SuppressWarnings("serial")
   private java.util.List<com.google.protobuf.Timestamp> timestamps_;
   /**
    * <pre>
@@ -154,6 +151,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int DATASETS_FIELD_NUMBER = 3;
+  @SuppressWarnings("serial")
   private java.util.List<MetricDataset> datasets_;
   /**
    * <pre>
@@ -214,7 +212,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int KIND_FIELD_NUMBER = 4;
-  private int kind_;
+  private int kind_ = 0;
   /**
    * <pre>
    * Kind.
@@ -235,8 +233,7 @@ private static final long serialVersionUID = 0L;
    * @return The kind.
    */
   @Override public MetricKind getKind() {
-    @SuppressWarnings("deprecation")
-    MetricKind result = MetricKind.valueOf(kind_);
+    MetricKind result = MetricKind.forNumber(kind_);
     return result == null ? MetricKind.UNRECOGNIZED : result;
   }
 
@@ -463,24 +460,23 @@ private static final long serialVersionUID = 0L;
     @Override
     public Builder clear() {
       super.clear();
+      bitField0_ = 0;
       name_ = "";
-
       if (timestampsBuilder_ == null) {
         timestamps_ = java.util.Collections.emptyList();
       } else {
         timestamps_ = null;
         timestampsBuilder_.clear();
       }
-      bitField0_ = (bitField0_ & ~0x00000001);
+      bitField0_ = (bitField0_ & ~0x00000002);
       if (datasetsBuilder_ == null) {
         datasets_ = java.util.Collections.emptyList();
       } else {
         datasets_ = null;
         datasetsBuilder_.clear();
       }
-      bitField0_ = (bitField0_ & ~0x00000002);
+      bitField0_ = (bitField0_ & ~0x00000004);
       kind_ = 0;
-
       return this;
     }
 
@@ -507,63 +503,43 @@ private static final long serialVersionUID = 0L;
     @Override
     public Metric buildPartial() {
       Metric result = new Metric(this);
-      int from_bitField0_ = bitField0_;
-      result.name_ = name_;
+      buildPartialRepeatedFields(result);
+      if (bitField0_ != 0) { buildPartial0(result); }
+      onBuilt();
+      return result;
+    }
+
+    private void buildPartialRepeatedFields(Metric result) {
       if (timestampsBuilder_ == null) {
-        if (((bitField0_ & 0x00000001) != 0)) {
+        if (((bitField0_ & 0x00000002) != 0)) {
           timestamps_ = java.util.Collections.unmodifiableList(timestamps_);
-          bitField0_ = (bitField0_ & ~0x00000001);
+          bitField0_ = (bitField0_ & ~0x00000002);
         }
         result.timestamps_ = timestamps_;
       } else {
         result.timestamps_ = timestampsBuilder_.build();
       }
       if (datasetsBuilder_ == null) {
-        if (((bitField0_ & 0x00000002) != 0)) {
+        if (((bitField0_ & 0x00000004) != 0)) {
           datasets_ = java.util.Collections.unmodifiableList(datasets_);
-          bitField0_ = (bitField0_ & ~0x00000002);
+          bitField0_ = (bitField0_ & ~0x00000004);
         }
         result.datasets_ = datasets_;
       } else {
         result.datasets_ = datasetsBuilder_.build();
       }
-      result.kind_ = kind_;
-      onBuilt();
-      return result;
     }
 
-    @Override
-    public Builder clone() {
-      return super.clone();
+    private void buildPartial0(Metric result) {
+      int from_bitField0_ = bitField0_;
+      if (((from_bitField0_ & 0x00000001) != 0)) {
+        result.name_ = name_;
+      }
+      if (((from_bitField0_ & 0x00000008) != 0)) {
+        result.kind_ = kind_;
+      }
     }
-    @Override
-    public Builder setField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        Object value) {
-      return super.setField(field, value);
-    }
-    @Override
-    public Builder clearField(
-        com.google.protobuf.Descriptors.FieldDescriptor field) {
-      return super.clearField(field);
-    }
-    @Override
-    public Builder clearOneof(
-        com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-      return super.clearOneof(oneof);
-    }
-    @Override
-    public Builder setRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        int index, Object value) {
-      return super.setRepeatedField(field, index, value);
-    }
-    @Override
-    public Builder addRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        Object value) {
-      return super.addRepeatedField(field, value);
-    }
+
     @Override
     public Builder mergeFrom(com.google.protobuf.Message other) {
       if (other instanceof Metric) {
@@ -578,13 +554,14 @@ private static final long serialVersionUID = 0L;
       if (other == Metric.getDefaultInstance()) return this;
       if (!other.getName().isEmpty()) {
         name_ = other.name_;
+        bitField0_ |= 0x00000001;
         onChanged();
       }
       if (timestampsBuilder_ == null) {
         if (!other.timestamps_.isEmpty()) {
           if (timestamps_.isEmpty()) {
             timestamps_ = other.timestamps_;
-            bitField0_ = (bitField0_ & ~0x00000001);
+            bitField0_ = (bitField0_ & ~0x00000002);
           } else {
             ensureTimestampsIsMutable();
             timestamps_.addAll(other.timestamps_);
@@ -597,7 +574,7 @@ private static final long serialVersionUID = 0L;
             timestampsBuilder_.dispose();
             timestampsBuilder_ = null;
             timestamps_ = other.timestamps_;
-            bitField0_ = (bitField0_ & ~0x00000001);
+            bitField0_ = (bitField0_ & ~0x00000002);
             timestampsBuilder_ = 
               com.google.protobuf.GeneratedMessageV3.alwaysUseFieldBuilders ?
                  getTimestampsFieldBuilder() : null;
@@ -610,7 +587,7 @@ private static final long serialVersionUID = 0L;
         if (!other.datasets_.isEmpty()) {
           if (datasets_.isEmpty()) {
             datasets_ = other.datasets_;
-            bitField0_ = (bitField0_ & ~0x00000002);
+            bitField0_ = (bitField0_ & ~0x00000004);
           } else {
             ensureDatasetsIsMutable();
             datasets_.addAll(other.datasets_);
@@ -623,7 +600,7 @@ private static final long serialVersionUID = 0L;
             datasetsBuilder_.dispose();
             datasetsBuilder_ = null;
             datasets_ = other.datasets_;
-            bitField0_ = (bitField0_ & ~0x00000002);
+            bitField0_ = (bitField0_ & ~0x00000004);
             datasetsBuilder_ = 
               com.google.protobuf.GeneratedMessageV3.alwaysUseFieldBuilders ?
                  getDatasetsFieldBuilder() : null;
@@ -663,7 +640,7 @@ private static final long serialVersionUID = 0L;
               break;
             case 10: {
               name_ = input.readStringRequireUtf8();
-
+              bitField0_ |= 0x00000001;
               break;
             } // case 10
             case 18: {
@@ -694,7 +671,7 @@ private static final long serialVersionUID = 0L;
             } // case 26
             case 32: {
               kind_ = input.readEnum();
-
+              bitField0_ |= 0x00000008;
               break;
             } // case 32
             default: {
@@ -767,11 +744,9 @@ private static final long serialVersionUID = 0L;
      */
     public Builder setName(
         String value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  
+      if (value == null) { throw new NullPointerException(); }
       name_ = value;
+      bitField0_ |= 0x00000001;
       onChanged();
       return this;
     }
@@ -784,8 +759,8 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder clearName() {
-      
       name_ = getDefaultInstance().getName();
+      bitField0_ = (bitField0_ & ~0x00000001);
       onChanged();
       return this;
     }
@@ -800,12 +775,10 @@ private static final long serialVersionUID = 0L;
      */
     public Builder setNameBytes(
         com.google.protobuf.ByteString value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  checkByteStringIsUtf8(value);
-      
+      if (value == null) { throw new NullPointerException(); }
+      checkByteStringIsUtf8(value);
       name_ = value;
+      bitField0_ |= 0x00000001;
       onChanged();
       return this;
     }
@@ -813,9 +786,9 @@ private static final long serialVersionUID = 0L;
     private java.util.List<com.google.protobuf.Timestamp> timestamps_ =
       java.util.Collections.emptyList();
     private void ensureTimestampsIsMutable() {
-      if (!((bitField0_ & 0x00000001) != 0)) {
+      if (!((bitField0_ & 0x00000002) != 0)) {
         timestamps_ = new java.util.ArrayList<com.google.protobuf.Timestamp>(timestamps_);
-        bitField0_ |= 0x00000001;
+        bitField0_ |= 0x00000002;
        }
     }
 
@@ -1009,7 +982,7 @@ private static final long serialVersionUID = 0L;
     public Builder clearTimestamps() {
       if (timestampsBuilder_ == null) {
         timestamps_ = java.util.Collections.emptyList();
-        bitField0_ = (bitField0_ & ~0x00000001);
+        bitField0_ = (bitField0_ & ~0x00000002);
         onChanged();
       } else {
         timestampsBuilder_.clear();
@@ -1114,7 +1087,7 @@ private static final long serialVersionUID = 0L;
         timestampsBuilder_ = new com.google.protobuf.RepeatedFieldBuilderV3<
             com.google.protobuf.Timestamp, com.google.protobuf.Timestamp.Builder, com.google.protobuf.TimestampOrBuilder>(
                 timestamps_,
-                ((bitField0_ & 0x00000001) != 0),
+                ((bitField0_ & 0x00000002) != 0),
                 getParentForChildren(),
                 isClean());
         timestamps_ = null;
@@ -1125,9 +1098,9 @@ private static final long serialVersionUID = 0L;
     private java.util.List<MetricDataset> datasets_ =
       java.util.Collections.emptyList();
     private void ensureDatasetsIsMutable() {
-      if (!((bitField0_ & 0x00000002) != 0)) {
+      if (!((bitField0_ & 0x00000004) != 0)) {
         datasets_ = new java.util.ArrayList<MetricDataset>(datasets_);
-        bitField0_ |= 0x00000002;
+        bitField0_ |= 0x00000004;
        }
     }
 
@@ -1321,7 +1294,7 @@ private static final long serialVersionUID = 0L;
     public Builder clearDatasets() {
       if (datasetsBuilder_ == null) {
         datasets_ = java.util.Collections.emptyList();
-        bitField0_ = (bitField0_ & ~0x00000002);
+        bitField0_ = (bitField0_ & ~0x00000004);
         onChanged();
       } else {
         datasetsBuilder_.clear();
@@ -1426,7 +1399,7 @@ private static final long serialVersionUID = 0L;
         datasetsBuilder_ = new com.google.protobuf.RepeatedFieldBuilderV3<
             MetricDataset, MetricDataset.Builder, MetricDatasetOrBuilder>(
                 datasets_,
-                ((bitField0_ & 0x00000002) != 0),
+                ((bitField0_ & 0x00000004) != 0),
                 getParentForChildren(),
                 isClean());
         datasets_ = null;
@@ -1456,8 +1429,8 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setKindValue(int value) {
-      
       kind_ = value;
+      bitField0_ |= 0x00000008;
       onChanged();
       return this;
     }
@@ -1471,8 +1444,7 @@ private static final long serialVersionUID = 0L;
      */
     @Override
     public MetricKind getKind() {
-      @SuppressWarnings("deprecation")
-      MetricKind result = MetricKind.valueOf(kind_);
+      MetricKind result = MetricKind.forNumber(kind_);
       return result == null ? MetricKind.UNRECOGNIZED : result;
     }
     /**
@@ -1488,7 +1460,7 @@ private static final long serialVersionUID = 0L;
       if (value == null) {
         throw new NullPointerException();
       }
-      
+      bitField0_ |= 0x00000008;
       kind_ = value.getNumber();
       onChanged();
       return this;
@@ -1502,7 +1474,7 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder clearKind() {
-      
+      bitField0_ = (bitField0_ & ~0x00000008);
       kind_ = 0;
       onChanged();
       return this;

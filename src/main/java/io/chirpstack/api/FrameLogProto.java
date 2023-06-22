@@ -48,15 +48,15 @@ public final class FrameLogProto {
       "\004 \001(\r\022\022\n\ngateway_id\030\005 \001(\t\022\035\n\006m_type\030\006 \001(" +
       "\0162\r.common.MType\022\020\n\010dev_addr\030\007 \001(\t\022\017\n\007de" +
       "v_eui\030\010 \001(\t\022\036\n\026plaintext_mac_commands\030\t " +
-      "\001(\010BT\n\021io.chirpstack.apiB\rFrameLogProtoP" +
+      "\001(\010Be\n\021io.chirpstack.apiB\rFrameLogProtoP" +
       "\001Z.github.com/chirpstack/chirpstack/api/" +
-      "go/v4/apib\006proto3"
+      "go/v4/api\252\002\016Chirpstack.Apib\006proto3"
     };
     descriptor = com.google.protobuf.Descriptors.FileDescriptor
       .internalBuildGeneratedFileFrom(descriptorData,
         new com.google.protobuf.Descriptors.FileDescriptor[] {
           com.google.protobuf.TimestampProto.getDescriptor(),
-          CommonProto.getDescriptor(),
+          io.chirpstack.api.CommonProto.getDescriptor(),
           io.chirpstack.api.gw.GatewayProto.getDescriptor(),
         });
     internal_static_api_UplinkFrameLog_descriptor =
@@ -72,7 +72,7 @@ public final class FrameLogProto {
         internal_static_api_DownlinkFrameLog_descriptor,
         new String[] { "Time", "PhyPayload", "TxInfo", "DownlinkId", "GatewayId", "MType", "DevAddr", "DevEui", "PlaintextMacCommands", });
     com.google.protobuf.TimestampProto.getDescriptor();
-    CommonProto.getDescriptor();
+    io.chirpstack.api.CommonProto.getDescriptor();
     io.chirpstack.api.gw.GatewayProto.getDescriptor();
   }
 

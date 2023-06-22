@@ -27,11 +27,6 @@ private static final long serialVersionUID = 0L;
     return new KeyEnvelope();
   }
 
-  @Override
-  public final com.google.protobuf.UnknownFieldSet
-  getUnknownFields() {
-    return this.unknownFields;
-  }
   public static final com.google.protobuf.Descriptors.Descriptor
       getDescriptor() {
     return CommonProto.internal_static_common_KeyEnvelope_descriptor;
@@ -46,7 +41,8 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int KEK_LABEL_FIELD_NUMBER = 1;
-  private volatile Object kekLabel_;
+  @SuppressWarnings("serial")
+  private volatile Object kekLabel_ = "";
   /**
    * <pre>
    * KEK label.
@@ -92,7 +88,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int AES_KEY_FIELD_NUMBER = 2;
-  private com.google.protobuf.ByteString aesKey_;
+  private com.google.protobuf.ByteString aesKey_ = com.google.protobuf.ByteString.EMPTY;
   /**
    * <pre>
    * AES key (when the kek_label is set, this value must first be decrypted).
@@ -304,10 +300,9 @@ private static final long serialVersionUID = 0L;
     @Override
     public Builder clear() {
       super.clear();
+      bitField0_ = 0;
       kekLabel_ = "";
-
       aesKey_ = com.google.protobuf.ByteString.EMPTY;
-
       return this;
     }
 
@@ -334,44 +329,21 @@ private static final long serialVersionUID = 0L;
     @Override
     public KeyEnvelope buildPartial() {
       KeyEnvelope result = new KeyEnvelope(this);
-      result.kekLabel_ = kekLabel_;
-      result.aesKey_ = aesKey_;
+      if (bitField0_ != 0) { buildPartial0(result); }
       onBuilt();
       return result;
     }
 
-    @Override
-    public Builder clone() {
-      return super.clone();
+    private void buildPartial0(KeyEnvelope result) {
+      int from_bitField0_ = bitField0_;
+      if (((from_bitField0_ & 0x00000001) != 0)) {
+        result.kekLabel_ = kekLabel_;
+      }
+      if (((from_bitField0_ & 0x00000002) != 0)) {
+        result.aesKey_ = aesKey_;
+      }
     }
-    @Override
-    public Builder setField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        Object value) {
-      return super.setField(field, value);
-    }
-    @Override
-    public Builder clearField(
-        com.google.protobuf.Descriptors.FieldDescriptor field) {
-      return super.clearField(field);
-    }
-    @Override
-    public Builder clearOneof(
-        com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-      return super.clearOneof(oneof);
-    }
-    @Override
-    public Builder setRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        int index, Object value) {
-      return super.setRepeatedField(field, index, value);
-    }
-    @Override
-    public Builder addRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        Object value) {
-      return super.addRepeatedField(field, value);
-    }
+
     @Override
     public Builder mergeFrom(com.google.protobuf.Message other) {
       if (other instanceof KeyEnvelope) {
@@ -386,6 +358,7 @@ private static final long serialVersionUID = 0L;
       if (other == KeyEnvelope.getDefaultInstance()) return this;
       if (!other.getKekLabel().isEmpty()) {
         kekLabel_ = other.kekLabel_;
+        bitField0_ |= 0x00000001;
         onChanged();
       }
       if (other.getAesKey() != com.google.protobuf.ByteString.EMPTY) {
@@ -419,12 +392,12 @@ private static final long serialVersionUID = 0L;
               break;
             case 10: {
               kekLabel_ = input.readStringRequireUtf8();
-
+              bitField0_ |= 0x00000001;
               break;
             } // case 10
             case 18: {
               aesKey_ = input.readBytes();
-
+              bitField0_ |= 0x00000002;
               break;
             } // case 18
             default: {
@@ -442,6 +415,7 @@ private static final long serialVersionUID = 0L;
       } // finally
       return this;
     }
+    private int bitField0_;
 
     private Object kekLabel_ = "";
     /**
@@ -496,11 +470,9 @@ private static final long serialVersionUID = 0L;
      */
     public Builder setKekLabel(
         String value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  
+      if (value == null) { throw new NullPointerException(); }
       kekLabel_ = value;
+      bitField0_ |= 0x00000001;
       onChanged();
       return this;
     }
@@ -513,8 +485,8 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder clearKekLabel() {
-      
       kekLabel_ = getDefaultInstance().getKekLabel();
+      bitField0_ = (bitField0_ & ~0x00000001);
       onChanged();
       return this;
     }
@@ -529,12 +501,10 @@ private static final long serialVersionUID = 0L;
      */
     public Builder setKekLabelBytes(
         com.google.protobuf.ByteString value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  checkByteStringIsUtf8(value);
-      
+      if (value == null) { throw new NullPointerException(); }
+      checkByteStringIsUtf8(value);
       kekLabel_ = value;
+      bitField0_ |= 0x00000001;
       onChanged();
       return this;
     }
@@ -562,11 +532,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setAesKey(com.google.protobuf.ByteString value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  
+      if (value == null) { throw new NullPointerException(); }
       aesKey_ = value;
+      bitField0_ |= 0x00000002;
       onChanged();
       return this;
     }
@@ -579,7 +547,7 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder clearAesKey() {
-      
+      bitField0_ = (bitField0_ & ~0x00000002);
       aesKey_ = getDefaultInstance().getAesKey();
       onChanged();
       return this;

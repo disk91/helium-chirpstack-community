@@ -105,7 +105,7 @@ public interface UplinkFrameLogOrBuilder extends
    * <code>.common.MType m_type = 4;</code>
    * @return The mType.
    */
-  MType getMType();
+  io.chirpstack.api.MType getMType();
 
   /**
    * <pre>

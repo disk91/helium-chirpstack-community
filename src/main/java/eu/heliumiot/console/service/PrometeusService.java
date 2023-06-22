@@ -178,6 +178,24 @@ public class PrometeusService {
 
     public void setDcAmount(long dcAmount) { this.dcAmount = dcAmount; }
 
+
+    // ============================================================
+    // Roaming Service metrix
+
+    private long roamingTotalDurationMs = 0;    // total time spend in processing roaming
+    private long roamingCount = 0;              // number of time we roam a device
+
+    public void roamingAddDuration(long duration) {
+        this.roamingTotalDurationMs += duration;
+    }
+
+    public void roamingAddOne() {
+        this.roamingCount++;
+    }
+
+    protected Supplier<Number> getRoamingTotalDuration() { return ()->roamingTotalDurationMs; }
+    protected Supplier<Number> getRoamingCount() { return ()->roamingCount; }
+
     // =============================================================
     // Prometheus interface
 
@@ -394,6 +412,13 @@ public class PrometeusService {
                 .register(registry);
         Gauge.builder("cons.router.dcbalance", getDcAmount())
                 .description("current router wallet DCs")
+                .register(registry);
+
+        Gauge.builder("cons.roaming.duration", getRoamingTotalDuration())
+                .description("Time passed in processing roaming management")
+                .register(registry);
+        Gauge.builder("cons.roaming.changes", getRoamingCount())
+                .description("Number of devices updated to another region")
                 .register(registry);
     }
 
