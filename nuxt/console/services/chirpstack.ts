@@ -501,6 +501,15 @@ export class ChirpstackService {
     }
 
     activatedevice (dev : Device) : Promise<string> {
+
+        // this device has never been activated and we should bypass it
+        if ( dev.rawDevice.app_s_key == null || dev.rawDevice.app_s_key.length < 5 ) {
+            return new Promise<string>((resolve) => {
+                resolve("");  
+            })
+        }
+
+        // normal case where the device has already been activated prevously
         let body : DeviceActivation = {
             deviceActivation : {
                 aFCntDown : 0,
