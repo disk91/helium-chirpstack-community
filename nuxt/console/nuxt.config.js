@@ -57,7 +57,7 @@ export default {
     proxyDeact:(process.env.API_HOST || '')+'/console/1.0/proxy/deactivate',
     ouiGet:(process.env.API_HOST || '')+'/console/1.0/misc/oui',
     termAndUse:process.env.CONSOLE_TERMS || '/',
-    frontVersion:'1.2.0'
+    frontVersion:'1.2.1'
   },
 
   // env variables loaded accessible on the server side

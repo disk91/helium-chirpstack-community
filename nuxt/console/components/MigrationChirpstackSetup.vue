@@ -874,9 +874,9 @@ export default Vue.extend({
                             if ( this.applicationOption.length > 0 ) {
                                 this.targetApplication = 0;
                                 this.onAppplicationSelectChange(0);
-                                this.selectApplicationDisabled = false;
+                                //this.selectApplicationDisabled = false;
                             } else {
-                                this.selectApplicationDisabled = true;
+                                //this.selectApplicationDisabled = true;
                                 this.onAppplicationSelectChange(null);
                             }
                         } else {
@@ -973,10 +973,10 @@ export default Vue.extend({
                     };
                     if ( this.applicationOption.length > 0 ) {
                         this.targetApplication = 0;
-                        this.selectApplicationDisabled = false;
+                        //this.selectApplicationDisabled = false;
                         this.onAppplicationSelectChange(0);
                     } else {
-                        this.selectApplicationDisabled = true;
+                        //this.selectApplicationDisabled = true;
                         this.onAppplicationSelectChange(null);
                     }
                 } else {
@@ -996,7 +996,7 @@ export default Vue.extend({
                             this.selectApplicationDisabled = false;
                         } else {
                             // is it the same integration ?
-                            if ( integ.integration.headers.HELIUM_ID != undefined && integ.integration.headers.HELIUM_ID == this.chirpstackObject.getIntegration().id ) {
+                            if ( integ.integration.headers.hid != undefined && integ.integration.headers.hid == this.chirpstackObject.getIntegration().id ) {
                                 // yes, no problem
                                 this.selectApplicationDisabled = false;
 
@@ -1007,6 +1007,9 @@ export default Vue.extend({
                         }
                     });
                 }
+            } else {
+                // no applications
+                this.selectApplicationDisabled = true;
             }
         },
         gotoMigrationDisabled() : boolean {
