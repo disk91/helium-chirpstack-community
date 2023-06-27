@@ -17,6 +17,7 @@ declare module "vue/types/console" {
         isCN470 : boolean,
         isAU915_1 : boolean,
         isAU915_SB1 : boolean,
+        isAU915_SB5 : boolean,
         isAU915_6 : boolean,
         isIN865 : boolean,
         isRU864 : boolean,

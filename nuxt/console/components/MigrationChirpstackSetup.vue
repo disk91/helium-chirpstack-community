@@ -53,6 +53,8 @@
                 <b-col cols="1" class="text-primary">{{ consoleObject.countZone("CD900_1A",targetLabel.id) }}</b-col>
                 <b-col cols="1">{{ $t('mig_loaded_kr920') }}</b-col>
                 <b-col cols="1" class="text-primary">{{ consoleObject.countZone("KR920",targetLabel.id) }}</b-col>
+                <b-col cols="1">{{ $t('mig_loaded_au915_sb5') }}</b-col>
+                <b-col cols="1" class="text-primary">{{ consoleObject.countZone("AU915_SB5",targetLabel.id) }}</b-col>
 
             </b-row>
             <b-row style="font-size:0.7rem;">
@@ -384,6 +386,19 @@
                         >
                             <b-icon icon="plus-circle-dotted" variant="white" style="font-size:0.6rem;"></b-icon>
                             ABP - CD900_1A
+                        </b-button>
+                    </b-col>
+                    <b-col cols="2"> <!-- AU915_SB5 -->
+                        <b-button block
+                            :variant="getVariant('AU915_SB5',false)"
+                            size="sm"
+                            @click="createDevProfile('AU915_SB5', false)"
+                            style="text-align: center;font-size:0.6rem;"
+                            class=""
+                            :disabled="existDevProfile('AU915_SB5',false)"
+                        >
+                            <b-icon icon="plus-circle-dotted" variant="white" style="font-size:0.6rem;"></b-icon>
+                            ABP - AU915_SB5
                         </b-button>
                     </b-col>
                 </b-row>
@@ -926,7 +941,7 @@ export default Vue.extend({
             // store selected app for next step
             this.chirpstackObject.setDefaultApplication(this.chirpstackObject.getApplications()[this.targetApplication]);
             this.appErrorMessage="";
-            console.log("Integration : "+this.chirpstackObject.getIntegration());
+            //console.log("Integration : "+this.chirpstackObject.getIntegration());
             if ( this.chirpstackObject.getIntegration() != null ) {
                 // create the integation when required
                 this.chirpstackObject.createApplicationIntegration()

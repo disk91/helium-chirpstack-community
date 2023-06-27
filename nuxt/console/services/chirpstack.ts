@@ -417,8 +417,8 @@ export class ChirpstackService {
                     }).catch((err : any) =>{
                         resolve("Error : "+err.response.data.message);
                     })
-                } else if ( integ.integration.headers.HELIUM_ID != undefined && integ.integration.headers.HELIUM_ID == this.integration.id ) {
-                    // already existing
+                } else if ( integ.integration.headers.hid != undefined && integ.integration.headers.hid == this.integration.id ) {
+                    // same already existing
                     resolve("");
                 } else {
                     // another integration is already existing

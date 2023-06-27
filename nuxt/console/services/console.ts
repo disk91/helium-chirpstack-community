@@ -179,6 +179,7 @@ export class HeliumConsoleService {
                     case "CN470" : if ( device.isCN470 ) r++; break;
                     case "AU915_1" : if ( device.isAU915_1 ) r++; break;
                     case "AU915_SB1" : if ( device.isAU915_SB1 ) r++; break;
+                    case "AU915_SB5" : if ( device.isAU915_SB5 ) r++; break;
                     case "AU915_6" : if ( device.isAU915_6 ) r++; break;
                     case "IN865" : if ( device.isIN865 ) r++; break;
                     case "CD900_1A" : if ( device.isCD900_1A ) r++; break;
@@ -211,7 +212,7 @@ export class HeliumConsoleService {
         let r = 0;
         this.accountDevices.forEach( (device) => {
             if ( device.isActive ) {
-                if ( label == "" ) r++;
+                if ( label == "" && device.rawDevice.oui == this.oui ) r++;
                 if ( label == "no_label" && device.rawDevice.labels.length  == 0 )
                     if ( device.rawDevice.oui == this.oui ) r++;
 
@@ -294,6 +295,7 @@ export class HeliumConsoleService {
                             isCN470 : (deviceItf.region=="CN470"),
                             isAU915_1 : (deviceItf.region=="AU915_1" || deviceItf.region=="AU915"),
                             isAU915_SB1 : (deviceItf.region=="AU915_SB1"),
+                            isAU915_SB5 : (deviceItf.region=="AU915_SB5"),
                             isAU915_6 : (deviceItf.region=="AU915_6"),
                             isIN865 : (deviceItf.region=="IN865"),
                             isCD900_1A : (deviceItf.region=="CD900_1A"),
@@ -307,7 +309,7 @@ export class HeliumConsoleService {
                        } as Device;
                        if ( device.isEU868 || device.isEU868 || device.isUS915 || device.isAS923_1 || device.isAS923_1B 
                         || device.isAS923_2 || device.isAS923_3 || device.isAS923_4 || device.isCN470 || device.isAU915_1 
-                        || device.isAU915_SB1 || device.isAU915_6 || device.isIN865 || device.isCD900_1A || device.isKR920 ) {
+                        || device.isAU915_SB1 || device.isAU915_SB5 || device.isAU915_6 || device.isIN865 || device.isCD900_1A || device.isKR920 ) {
                             device.isRegion = true;
                         } else {
                             if ( deviceItf.region != null && deviceItf.region != undefined && deviceItf.region != "undefined" ) {
