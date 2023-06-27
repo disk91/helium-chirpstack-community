@@ -26,6 +26,8 @@ export class HeliumConsoleService {
     flowGet : string = "v1/flows";
     DeactivatePut : string = "v1/devices";
 
+    maxDevices = 500;
+
     constructor (axios:any, proxyConfig:ProxyConfig) {
         this.proxyConfig = proxyConfig;
         this.axios = axios; 
@@ -275,6 +277,7 @@ export class HeliumConsoleService {
                 if (response.status == 200 ) {
                   this.isBusy = false;
                   (response.data as DeviceItf[]).forEach ( (deviceItf)=> {
+                    if ( ( this.accountDevices.length < this.maxDevices || this.maxDevices == 0 ) && deviceItf.active ) {
                        let lastConnected = 0;
                        if ( deviceItf.last_connected != null ) {
                            lastConnected = (new Date(deviceItf.last_connected)).getMilliseconds();
@@ -317,6 +320,7 @@ export class HeliumConsoleService {
                             }
                         }
                        this.accountDevices.push(device); 
+                    }
                   });
                   resolve("");
                 } else resolve(response.data.message);

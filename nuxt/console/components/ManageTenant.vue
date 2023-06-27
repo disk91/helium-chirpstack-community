@@ -135,7 +135,7 @@ export default Vue.extend({
             if ( this.isBusy ) return;
             if ( this.keyword.length >= 3 && this.keyword.length <= 15 ) {
                 this.isBusy = true;
-                console.log(this.keyword);
+                //console.log(this.keyword);
                 let config = {
                     headers: {
                         'Content-Type': 'application/json',

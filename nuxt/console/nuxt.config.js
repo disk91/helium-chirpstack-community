@@ -57,6 +57,7 @@ export default {
     proxyDeact:(process.env.API_HOST || '')+'/console/1.0/proxy/deactivate',
     ouiGet:(process.env.API_HOST || '')+'/console/1.0/misc/oui',
     termAndUse:process.env.CONSOLE_TERMS || '/',
+    maxDevices:process.env.MAX_DEVICES || 500,
     frontVersion:'1.2.1'
   },
 
