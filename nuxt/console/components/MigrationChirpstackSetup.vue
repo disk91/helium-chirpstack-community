@@ -1023,8 +1023,8 @@ export default Vue.extend({
                     });
                 }
             } else {
-                // no applications
-                this.selectApplicationDisabled = true;
+                // no applications, selected, we can go whatever
+                this.selectApplicationDisabled = false;
             }
         },
         gotoMigrationDisabled() : boolean {
