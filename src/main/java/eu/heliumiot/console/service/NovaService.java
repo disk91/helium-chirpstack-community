@@ -896,6 +896,7 @@ public class NovaService {
                     .setMaxCopies(max_copy)
                     .setActive(true) // something I can set true / false to lock an entire route
                     .setLocked(false) // defined by the router when our of DC
+                    .setIgnoreEmptySkf(false) // when true empty devadd are blocked (avoid dummy skf) @todo
                     .setServer(server)
                     .build();
 
@@ -1088,6 +1089,7 @@ public class NovaService {
                     .setMaxCopies(maxCopy)
                     .setActive(oldRoute.getActive())
                     .setLocked(oldRoute.getLocked())
+                    .setIgnoreEmptySkf(oldRoute.getIgnoreEmptySkf()) // when true empty devadd are blocked (avoid dummy skf) @todo
                     .build();
 
             route_update_req_v1 requestToSign = route_update_req_v1.newBuilder()

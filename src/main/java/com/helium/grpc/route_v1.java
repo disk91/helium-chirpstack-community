@@ -187,6 +187,21 @@ private static final long serialVersionUID = 0L;
     return locked_;
   }
 
+  public static final int IGNORE_EMPTY_SKF_FIELD_NUMBER = 8;
+  private boolean ignoreEmptySkf_ = false;
+  /**
+   * <pre>
+   * If true, routes are blocked whose devaddrs have empty session key filters
+   * </pre>
+   *
+   * <code>bool ignore_empty_skf = 8;</code>
+   * @return The ignoreEmptySkf.
+   */
+  @Override
+  public boolean getIgnoreEmptySkf() {
+    return ignoreEmptySkf_;
+  }
+
   private byte memoizedIsInitialized = -1;
   @Override
   public final boolean isInitialized() {
@@ -221,6 +236,9 @@ private static final long serialVersionUID = 0L;
     }
     if (locked_ != false) {
       output.writeBool(7, locked_);
+    }
+    if (ignoreEmptySkf_ != false) {
+      output.writeBool(8, ignoreEmptySkf_);
     }
     getUnknownFields().writeTo(output);
   }
@@ -258,6 +276,10 @@ private static final long serialVersionUID = 0L;
       size += com.google.protobuf.CodedOutputStream
         .computeBoolSize(7, locked_);
     }
+    if (ignoreEmptySkf_ != false) {
+      size += com.google.protobuf.CodedOutputStream
+        .computeBoolSize(8, ignoreEmptySkf_);
+    }
     size += getUnknownFields().getSerializedSize();
     memoizedSize = size;
     return size;
@@ -290,6 +312,8 @@ private static final long serialVersionUID = 0L;
         != other.getActive()) return false;
     if (getLocked()
         != other.getLocked()) return false;
+    if (getIgnoreEmptySkf()
+        != other.getIgnoreEmptySkf()) return false;
     if (!getUnknownFields().equals(other.getUnknownFields())) return false;
     return true;
   }
@@ -320,6 +344,9 @@ private static final long serialVersionUID = 0L;
     hash = (37 * hash) + LOCKED_FIELD_NUMBER;
     hash = (53 * hash) + com.google.protobuf.Internal.hashBoolean(
         getLocked());
+    hash = (37 * hash) + IGNORE_EMPTY_SKF_FIELD_NUMBER;
+    hash = (53 * hash) + com.google.protobuf.Internal.hashBoolean(
+        getIgnoreEmptySkf());
     hash = (29 * hash) + getUnknownFields().hashCode();
     memoizedHashCode = hash;
     return hash;
@@ -464,6 +491,7 @@ private static final long serialVersionUID = 0L;
       maxCopies_ = 0;
       active_ = false;
       locked_ = false;
+      ignoreEmptySkf_ = false;
       return this;
     }
 
@@ -520,6 +548,9 @@ private static final long serialVersionUID = 0L;
       if (((from_bitField0_ & 0x00000040) != 0)) {
         result.locked_ = locked_;
       }
+      if (((from_bitField0_ & 0x00000080) != 0)) {
+        result.ignoreEmptySkf_ = ignoreEmptySkf_;
+      }
     }
 
     @Override
@@ -556,6 +587,9 @@ private static final long serialVersionUID = 0L;
       }
       if (other.getLocked() != false) {
         setLocked(other.getLocked());
+      }
+      if (other.getIgnoreEmptySkf() != false) {
+        setIgnoreEmptySkf(other.getIgnoreEmptySkf());
       }
       this.mergeUnknownFields(other.getUnknownFields());
       onChanged();
@@ -620,6 +654,11 @@ private static final long serialVersionUID = 0L;
               bitField0_ |= 0x00000040;
               break;
             } // case 56
+            case 64: {
+              ignoreEmptySkf_ = input.readBool();
+              bitField0_ |= 0x00000080;
+              break;
+            } // case 64
             default: {
               if (!super.parseUnknownField(input, extensionRegistry, tag)) {
                 done = true; // was an endgroup tag
@@ -1052,6 +1091,50 @@ private static final long serialVersionUID = 0L;
     public Builder clearLocked() {
       bitField0_ = (bitField0_ & ~0x00000040);
       locked_ = false;
+      onChanged();
+      return this;
+    }
+
+    private boolean ignoreEmptySkf_ ;
+    /**
+     * <pre>
+     * If true, routes are blocked whose devaddrs have empty session key filters
+     * </pre>
+     *
+     * <code>bool ignore_empty_skf = 8;</code>
+     * @return The ignoreEmptySkf.
+     */
+    @Override
+    public boolean getIgnoreEmptySkf() {
+      return ignoreEmptySkf_;
+    }
+    /**
+     * <pre>
+     * If true, routes are blocked whose devaddrs have empty session key filters
+     * </pre>
+     *
+     * <code>bool ignore_empty_skf = 8;</code>
+     * @param value The ignoreEmptySkf to set.
+     * @return This builder for chaining.
+     */
+    public Builder setIgnoreEmptySkf(boolean value) {
+
+      ignoreEmptySkf_ = value;
+      bitField0_ |= 0x00000080;
+      onChanged();
+      return this;
+    }
+    /**
+     * <pre>
+     * If true, routes are blocked whose devaddrs have empty session key filters
+     * </pre>
+     *
+     * <code>bool ignore_empty_skf = 8;</code>
+     * @return This builder for chaining.
+     */
+    public Builder clearIgnoreEmptySkf() {
+      bitField0_ = (bitField0_ & ~0x00000080);
+      ignoreEmptySkf_ = false;
       onChanged();
       return this;
     }

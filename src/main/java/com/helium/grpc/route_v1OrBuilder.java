@@ -87,4 +87,14 @@ public interface route_v1OrBuilder extends
    * @return The locked.
    */
   boolean getLocked();
+
+  /**
+   * <pre>
+   * If true, routes are blocked whose devaddrs have empty session key filters
+   * </pre>
+   *
+   * <code>bool ignore_empty_skf = 8;</code>
+   * @return The ignoreEmptySkf.
+   */
+  boolean getIgnoreEmptySkf();
 }
