@@ -263,6 +263,7 @@ public class TransactionService {
             t.setCompleted(true);
             if ( t.getStripeStatus().compareToIgnoreCase("succeeded") != 0 ) {
                 t.setStripeStatus("timeout");
+                log.info("Expiring one transaction ("+t.getTransactionId()+")");
             }
             return t;
         }
@@ -275,10 +276,12 @@ public class TransactionService {
 
             if ( p.getStatus() != null ) {
                 if ( t.getStripeStatus().compareToIgnoreCase(p.getStatus()) != 0 ) {
+                    log.info("Updating transaction ("+t.getTransactionId()+") to status "+p.getStatus());
                     t.setStripeStatus(p.getStatus());
                     modified = true;
                 }
                 if (p.getStatus().compareToIgnoreCase("succeeded") == 0) {
+                    log.info("Terminating transaction ("+t.getTransactionId()+") with success");
 
                     // get Charged
                     if ( p.getLatestCharge() != null ) {
@@ -351,6 +354,7 @@ public class TransactionService {
                     }
                 }
             } catch ( ITParseException x ) {
+                log.error("Failure in updateTransaction "+x.getMessage());
             }
         }
     }
@@ -396,7 +400,7 @@ public class TransactionService {
                         heliumDcTransactionRepository.save(t);
                     }
                 } catch (ITParseException x) {
-
+                    log.error("Failure in updateTransaction "+x.getMessage());
                 }
             }
 
