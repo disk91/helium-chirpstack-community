@@ -166,6 +166,16 @@ public class HeliumTenantSetupService {
         // Get an element from cache, if failed, get it from DB, the tenant will be cached only if
     // we want to add in cache and cache is under the given limit
     protected HeliumTenantSetup getHeliumTenantSetup(String tenantUUID, boolean create, boolean addInCache, int cacheLimit) {
+        try {
+            if (tenantUUID.compareToIgnoreCase("create") == 0) {
+                log.error("### Create found 4 ");
+                throw new Exception();
+            }
+        } catch (Exception x) {
+            x.printStackTrace();
+            return null;
+        }
+
         HeliumTenantSetup ts = heliumSetupCache.get(tenantUUID);
         if (ts == null) {
             ts = heliumTenantSetupRepository.findOneHeliumTenantSetupByTenantUUID(tenantUUID);
@@ -199,7 +209,11 @@ public class HeliumTenantSetupService {
     }
 
     public void flushTenantSetup(HeliumTenantSetup ts) {
-        heliumTenantSetupRepository.save(ts);
+        if ( ts.getTenantUUID().compareToIgnoreCase("create") == 0 ) {
+            log.error("### Create found 1 ");
+        } else {
+            heliumTenantSetupRepository.save(ts);
+        }
         this.heliumSetupCache.remove(ts.getTenantUUID(),false);
     }
 
@@ -207,6 +221,16 @@ public class HeliumTenantSetupService {
      * create a new Tenant Setup for a new tenant
      */
     public HeliumTenantSetup createAndSave(HeliumTenantSetup def, String tenantUUID) {
+        try {
+            if (tenantUUID.compareToIgnoreCase("create") == 0) {
+                log.error("### Create found 2 ");
+                throw new Exception();
+            }
+        } catch (Exception x) {
+            x.printStackTrace();
+            return null;
+        }
+
         HeliumTenantSetup ts = new HeliumTenantSetup();
         ts.setTenantUUID(tenantUUID);
         ts.setDcBalanceStop(def.getDcBalanceStop());
@@ -345,6 +369,17 @@ public class HeliumTenantSetupService {
             ts.setTemplate(false);
             ts.setRouteId(null);
         }
+
+        try {
+            if (def.getTenantUUID().compareToIgnoreCase("create") == 0) {
+                log.error("### Create found 5 ");
+                throw new Exception();
+            }
+        } catch (Exception x) {
+            x.printStackTrace();
+            throw new ITRightException();
+        }
+
         ts.setTenantUUID(def.getTenantUUID());
         ts.setDcBalanceStop(def.getDcBalanceStop());
         ts.setFreeTenantDc(def.getFreeTenantDc());

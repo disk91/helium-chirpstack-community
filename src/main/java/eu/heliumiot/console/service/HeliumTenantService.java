@@ -126,6 +126,14 @@ public class HeliumTenantService {
     }
 
     public HeliumTenant createNewHeliumTenant(String tenantUUID, HeliumTenantSetup ts) {
+        try {
+            if (tenantUUID.compareToIgnoreCase("create") == 0) {
+                log.error("#### FOUND create ");
+                throw new Exception();
+            }
+        } catch (Exception x) {
+            x.printStackTrace();
+        }
         HeliumTenant t = new HeliumTenant();
         t.setTenantUUID(tenantUUID);
         t.setDcBalance(ts.getFreeTenantDc());
