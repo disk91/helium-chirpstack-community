@@ -68,13 +68,14 @@ public class MqttSender implements MqttCallback {
                         log.info("Url :" + mqttConfig.getMqttServer());
                         log.info("User :" + mqttConfig.getMqttLogin());
                         //log.info("Password :"+mqttConfig.getPassword());
-                        //log.info("Id : "+clientId);
+                        log.info("Id : "+clientId);
                         this.mqttClient = new MqttClient(mqttConfig.getMqttServer(), clientId, persistence);
                         this.connectionOptions.setCleanSession(true);
                         this.connectionOptions.setAutomaticReconnect(true);
+                        this.connectionOptions.setConnectionTimeout(10);
+                        this.connectionOptions.setKeepAliveInterval(30);
                         this.connectionOptions.setUserName(mqttConfig.getMqttLogin());
                         this.connectionOptions.setPassword(mqttConfig.getMqttPassword().toCharArray());
-                        this.connectionOptions.setConnectionTimeout(10);
                         this.mqttClient.connect(this.connectionOptions);
                         this.mqttClient.setCallback(this);
                         //this.mqttClient.subscribe("#",2);
