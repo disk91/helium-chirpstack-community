@@ -681,18 +681,26 @@ public class HeliumTenantService {
         }
 
         // Here we are the right to get the DC Balance info
-        HeliumTenant ht = this.getHeliumTenant(tenantId,true);
-        HeliumTenantSetup hts = heliumTenantSetupService.getHeliumTenantSetup(tenantId,true);
-        eu.heliumiot.console.jpa.db.Tenant t = this.getTenant(UUID.fromString(ht.getTenantUUID()));
+        HeliumTenant ht = this.getHeliumTenant(tenantId,false);
+        long bstop = 0;
+        long bal = 0;
+        String name = "N/A";
+        if ( ht != null ) {
+            HeliumTenantSetup hts = heliumTenantSetupService.getHeliumTenantSetup(tenantId, true);
+            eu.heliumiot.console.jpa.db.Tenant t = this.getTenant(UUID.fromString(ht.getTenantUUID()));
+            bstop = hts.getDcBalanceStop();
+            bal = ht.getDcBalance();
+            if ( t != null ) {
+                name = t.getName();
+            }
+        }
 
         TenantBalanceItf r = new TenantBalanceItf();
-        r.setDcBalance(ht.getDcBalance());
-        r.setMinBalance(hts.getDcBalanceStop());
+        r.setDcBalance(bal);
+        r.setMinBalance(bstop);
         r.setOwnerMode(true);
-        r.setBalanceOk((ht.getDcBalance()-hts.getDcBalanceStop()) > 1000);
-        if ( t != null ) {
-            r.setTenantName(t.getName());
-        }
+        r.setBalanceOk((bal-bstop) > 1000);
+        r.setTenantName(name);
         return r;
     }
 
