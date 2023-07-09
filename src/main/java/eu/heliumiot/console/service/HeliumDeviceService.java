@@ -398,7 +398,7 @@ public class HeliumDeviceService {
                         case INACTIVE:
                         case INSERTED:
                             hdev.setState(HeliumDevice.DeviceState.DISABLED);
-                            hdev.setToUpdate(true); // never used for real
+                            hdev.setToUpdate(false); // for not being updated with activity / inactivity costs
                             // need to destroy the route on Nova router
                             // due to synchronized, it seems better to delay the action
                             LoRaWanCreds c = new LoRaWanCreds(
@@ -416,7 +416,7 @@ public class HeliumDeviceService {
                         case OUTOFDCS:
                         case DEACTIVATED:
                         case DISABLED:
-                            log.info("scanDeletedDevicesJob - a device in a non active status has been disabled");
+                            log.debug("scanDeletedDevicesJob - a device in a non active status has been disabled "+hdev.getDeviceEui());
                             break;
                     }
                 }
