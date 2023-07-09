@@ -259,11 +259,11 @@ public class MqttListener implements MqttCallback {
                                         dedupHashMap.put(devEUI,d);
 
                                         // ... push to process
-                                        log.info("Found a join request for "+d.devEui+" for region "+region);
                                         byte [] _dev = new byte[8]; // reverse the bytes of the address
                                         for ( int i = 0 ; i < 8 ; i++ ) {
                                            _dev[i] = payload[(9+8-1)-i];
                                         }
+                                        log.info("Found a join request for "+HexaConverters.byteToHexString(_dev)+" for region "+region);
                                         roamingService.processJoinMessage(_dev, HexaConverters.byteToHexString(_dev),region);
                                 }
                                 // clean the dedup storage
