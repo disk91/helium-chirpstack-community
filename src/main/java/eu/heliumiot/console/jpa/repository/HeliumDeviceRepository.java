@@ -37,6 +37,14 @@ public interface HeliumDeviceRepository extends PagingAndSortingRepository<Heliu
     @Query(value = "SELECT * FROM helium_devices LEFT JOIN device on device.dev_eui = helium_devices.deviceuuid WHERE device.dev_eui is null AND helium_devices.state <> 5", nativeQuery = true)
     public List<HeliumDevice> findDeletedDevices();
 
+    @Query(value = "SELECT * FROM helium_devices LEFT JOIN device on device.dev_eui = helium_devices.deviceuuid WHERE device.is_disabled = true AND helium_devices.state <> 6", nativeQuery = true)
+    public List<HeliumDevice> findDeactivatedDevices();
+
+    @Query(value = "SELECT * FROM helium_devices LEFT JOIN device on device.dev_eui = helium_devices.deviceuuid WHERE device.is_disabled = false AND helium_devices.state = 6", nativeQuery = true)
+    public List<HeliumDevice> findReactivatedDevices();
+
+
+
     @Query(value = "SELECT * FROM helium_devices WHERE to_update IS TRUE ORDER BY last_seen ASC LIMIT ?1", nativeQuery = true)
     public List<HeliumDevice> findHeliumDeviceToProcess(int limit);
 

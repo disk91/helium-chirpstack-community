@@ -327,6 +327,7 @@ public class NovaService {
                     case DEACTIVATED:
                     case OUTOFDCS:
                     case DELETED:
+                    case DISABLED:
                         break;
                 }
             }

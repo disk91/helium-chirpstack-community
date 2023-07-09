@@ -292,6 +292,8 @@ public class HeliumDeviceService {
             List<Device> udevs = deviceRepository.findDeviceByUpdatedAtGreaterThanOrderByUpdatedAtAsc(
                     new Timestamp(p.getLongValue()-(consoleConfig.getHeliumDeviceNewScanPeriod()+10_000)));
             for (Device udev : udevs) {
+                if ( udev.isDisabled() ) continue; // do not update disabled devices
+
                 String devEui = HexaConverters.byteToHexString(udev.getDevEui());
                 // verify
                 HeliumDevice hdev = heliumDeviceRepository.findOneHeliumDeviceByDeviceEui(devEui);
@@ -328,6 +330,19 @@ public class HeliumDeviceService {
                 }
             }
 
+            // Search for re-enabled devices
+            synchronized (this) {
+                List<HeliumDevice> hdevs = heliumDeviceRepository.findReactivatedDevices();
+                for ( HeliumDevice hdev : hdevs ) {
+                    hdev.setState(HeliumDevice.DeviceState.INSERTED);
+                    hdev.setToUpdate(true);
+                    this.reportDeviceActivationOnMqtt(hdev);
+                    // save this
+                    heliumDeviceRepository.save(hdev);
+                    log.info("scanNewDevicesJob - Enabling device "+hdev.getDeviceEui());
+                }
+            }
+
         } finally {
             this.runningJobs--;
         }
@@ -336,6 +351,7 @@ public class HeliumDeviceService {
 
     /**
       Scan for devices removed from the database
+      Scan for deactivated devices also
      */
     @Scheduled(fixedRateString = "${helium.device.deleted.scanPeriod}", initialDelay = 30_000)
     private void scanDeletedDevicesJob() {
@@ -345,9 +361,11 @@ public class HeliumDeviceService {
         try {
 
             // check if we have a difference (same table size, nothing new, nothing deleted)
-            long deviceEntrySize = deviceRepository.count();
-            long heliumDeviceEntrySize = heliumDeviceRepository.count();
-            if (heliumDeviceEntrySize <= deviceEntrySize) return;
+            // as Chirpstack table remove the devices but helium glue table store the deleted
+            // devices, this part of the code is not required any more.
+            // long deviceEntrySize = deviceRepository.count();
+            // long heliumDeviceEntrySize = heliumDeviceRepository.count();
+            // if (heliumDeviceEntrySize <= deviceEntrySize) return;
 
             // search for devices not in deviceRepository
             log.debug("Running scanDeletedDevicesJob");
@@ -371,7 +389,39 @@ public class HeliumDeviceService {
                     log.info("scanDeletedDevicesJob - Del " + hdev.getDeviceEui());
                     prometeusService.addDeviceDeletion();
                 }
+
+                // search for deactivated devices ... like a deleted but can be reactivated later
+                hdevs = heliumDeviceRepository.findDeactivatedDevices();
+                for ( HeliumDevice hdev : hdevs ) {
+                    switch ( hdev.getState() ) {
+                        case ACTIVE:
+                        case INACTIVE:
+                        case INSERTED:
+                            hdev.setState(HeliumDevice.DeviceState.DISABLED);
+                            hdev.setToUpdate(true); // never used for real
+                            // need to destroy the route on Nova router
+                            // due to synchronized, it seems better to delay the action
+                            LoRaWanCreds c = new LoRaWanCreds(
+                                    hdev.getDeviceEui(),
+                                    hdev.getApplicationEui(),
+                                    hdev.getTenantUUID()
+                            );
+                            toRemove.add(c);
+                            // save this
+                            heliumDeviceRepository.save(hdev);
+                            log.info("scanDeletedDevicesJob - Disable " + hdev.getDeviceEui());
+                            break;
+
+                        case DELETED:
+                        case OUTOFDCS:
+                        case DEACTIVATED:
+                        case DISABLED:
+                            log.info("scanDeletedDevicesJob - a device in a non active status has been disabled");
+                            break;
+                    }
+                }
             }
+
             // Call Helium API for updating
             for (LoRaWanCreds c : toRemove) {
                 // Declare on Nova Lab Router asynchronously
@@ -424,6 +474,7 @@ public class HeliumDeviceService {
                         case DEACTIVATED:
                         case OUTOFDCS:
                         case DELETED:
+                        case DISABLED:
                             log.debug("Device " + dev.devEui + " / " + dev.appEui + " can be cleared");
                             invalids.add(dev);
                             break;
@@ -483,6 +534,7 @@ public class HeliumDeviceService {
                         case DEACTIVATED:
                         case OUTOFDCS:
                         case DELETED:
+                        case DISABLED:
                         break;
                     }
 

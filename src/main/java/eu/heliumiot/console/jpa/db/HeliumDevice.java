@@ -35,7 +35,8 @@ import java.util.UUID;
 public class HeliumDevice implements ClonnableObject<HeliumDevice> {
 
     // Warning, do not change the order - it will impact the BDD values
-    public enum DeviceState { INSERTED, ACTIVE, INACTIVE, DEACTIVATED, OUTOFDCS, DELETED }
+    public enum DeviceState { INSERTED, ACTIVE, INACTIVE, DEACTIVATED, OUTOFDCS, DELETED, DISABLED }
+                            // 0        1       2           3           4        5          6
 
     @Id
     @GenericGenerator(name = "UUIDGenerator", strategy = "uuid2")
