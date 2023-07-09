@@ -855,7 +855,8 @@ public class HeliumDeviceService {
                 if (
                         d.getState() == HeliumDevice.DeviceState.ACTIVE ||
                         d.getState() == HeliumDevice.DeviceState.INACTIVE ||
-                        d.getState() == HeliumDevice.DeviceState.INSERTED
+                        d.getState() == HeliumDevice.DeviceState.INSERTED ||
+                        d.getState() == HeliumDevice.DeviceState.OUTOFDCS       // not normal but we have the case the device was still running event if ...
                 ) {
 
                     d.setState(HeliumDevice.DeviceState.OUTOFDCS);
