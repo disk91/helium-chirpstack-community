@@ -420,6 +420,7 @@ public class NovaService {
     protected final ArrayList<NovaDevice> delayedEuisRefreshRemoval = new ArrayList<>();
 
     protected void addDelayedEuisRefreshAddition(NovaDevice dev) {
+        if (dev.routeId == null) return;
         synchronized (delayedEuisRefreshAddition) {
             boolean found = false;
             for ( NovaDevice d : this.delayedEuisRefreshAddition ) {
@@ -433,6 +434,7 @@ public class NovaService {
     }
 
     protected void addDelayedEuisRefreshRemoval(NovaDevice dev) {
+        if (dev.routeId == null) return;
         synchronized (delayedEuisRefreshRemoval) {
             boolean found = false;
             for ( NovaDevice d : this.delayedEuisRefreshRemoval ) {
