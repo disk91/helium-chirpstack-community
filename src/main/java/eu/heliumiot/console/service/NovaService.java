@@ -73,7 +73,11 @@ public class NovaService {
 
     protected void addDelayedSessionRefresh(String devEUI) {
         synchronized (delayedSessionRefresh) {
-            this.delayedSessionRefresh.add(devEUI);
+            boolean found = false;
+            for ( String s : this.delayedSessionRefresh ) {
+                if ( s.compareToIgnoreCase(devEUI) == 0 ) { found = true; break; }
+            }
+            if ( !found )this.delayedSessionRefresh.add(devEUI);
         }
     }
 
@@ -417,15 +421,27 @@ public class NovaService {
 
     protected void addDelayedEuisRefreshAddition(NovaDevice dev) {
         synchronized (delayedEuisRefreshAddition) {
-            log.debug("To be added "+dev.devEui+" ("+dev.appEui+") "+dev.routeId);
-            this.delayedEuisRefreshAddition.add(dev);
+            boolean found = false;
+            for ( NovaDevice d : this.delayedEuisRefreshAddition ) {
+                if ( d.devEui.compareToIgnoreCase(dev.devEui) == 0 ) { found = true; break; }
+            }
+            if ( !found ) {
+                log.debug("To be added " + dev.devEui + " (" + dev.appEui + ") " + dev.routeId);
+                this.delayedEuisRefreshAddition.add(dev);
+            }
         }
     }
 
     protected void addDelayedEuisRefreshRemoval(NovaDevice dev) {
         synchronized (delayedEuisRefreshRemoval) {
-            log.debug("To be deleted "+dev.devEui+" ("+dev.appEui+") "+dev.routeId);
-            this.delayedEuisRefreshRemoval.add(dev);
+            boolean found = false;
+            for ( NovaDevice d : this.delayedEuisRefreshRemoval ) {
+                if ( d.devEui.compareToIgnoreCase(dev.devEui) == 0 ) { found = true; break; }
+            }
+            if ( !found ) {
+                log.debug("To be deleted " + dev.devEui + " (" + dev.appEui + ") " + dev.routeId);
+                this.delayedEuisRefreshRemoval.add(dev);
+            }
         }
     }
 
