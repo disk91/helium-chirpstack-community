@@ -303,7 +303,7 @@ public class NovaService {
                             continue;
                         }
                         String ntwSEncKey = HexaConverters.byteToHexString(s.getNwkSEncKey().toByteArray());
-                        log.debug("### Ntwks Key "+ntwSEncKey);
+                        //log.debug("### Ntwks Key "+ntwSEncKey);
                         String devaddr = HexaConverters.byteToHexString(s.getDevAddr().toByteArray());
                         int iDevAddr = Stuff.hexStrToInt(devaddr);
                         boolean keep = false;
