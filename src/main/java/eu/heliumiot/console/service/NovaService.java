@@ -303,6 +303,7 @@ public class NovaService {
                             continue;
                         }
                         String ntwSEncKey = HexaConverters.byteToHexString(s.getNwkSEncKey().toByteArray());
+                        log.debug("### Ntwks Key "+ntwSEncKey);
                         String devaddr = HexaConverters.byteToHexString(s.getDevAddr().toByteArray());
                         int iDevAddr = Stuff.hexStrToInt(devaddr);
                         boolean keep = false;
@@ -344,7 +345,7 @@ public class NovaService {
 
         // search for session to be removed
         boolean hasNonEmpty = false;            // search & make sure this route have the dummy session keys
-                                                // @Todo - to manage devaddr increase, we should cound the dummy skf
+                                                // @Todo - to manage devaddr increase, we should count the dummy skf
                                                 //         verify the number with devaddr size and rebuild the dummy
                                                 //          skf based on this.
                                                 // @Todo - when SKF is disable we should remove all the existing SKFS
