@@ -161,7 +161,9 @@ public class NovaService {
 
                             // verify if route server are ok
                             boolean toBeUpdated = false;
-                            if ( r.getServer().getHost().compareTo(consoleConfig.getHeliumRouteHost()) != 0 ) {
+                            if ( r.getServer().getHost().compareTo(consoleConfig.getHeliumRouteHost()) != 0
+                                || r.getIgnoreEmptySkf() != consoleConfig.isHeliumRouteRejectEmptySKF()
+                            ) {
                                 toBeUpdated = true;
                             } else {
                                 for (RegionSupported reg : regionsSupported) {
@@ -389,7 +391,7 @@ public class NovaService {
         grpcUpdateSessions(skfToAdd,skfToRem,routeId);
 
         // fix the route with non empty skf missing
-        if ( ! hasNonEmpty ) {
+        if ( ! hasNonEmpty && ! consoleConfig.isHeliumRouteRejectEmptySKF() ) {
             log.warn("We found a route without the non empty skf entry");
             this.grpcAddRandomSkf(routeId);
         }
@@ -916,7 +918,7 @@ public class NovaService {
                     .setMaxCopies(max_copy)
                     .setActive(true) // something I can set true / false to lock an entire route
                     .setLocked(false) // defined by the router when our of DC
-                    .setIgnoreEmptySkf(false) // when true empty devadd are blocked (avoid dummy skf) @todo
+                    .setIgnoreEmptySkf(consoleConfig.isHeliumRouteRejectEmptySKF()) // when true empty devadd are blocked (avoid dummy skf) @todo
                     .setServer(server)
                     .build();
 
@@ -1109,7 +1111,7 @@ public class NovaService {
                     .setMaxCopies(maxCopy)
                     .setActive(oldRoute.getActive())
                     .setLocked(oldRoute.getLocked())
-                    .setIgnoreEmptySkf(oldRoute.getIgnoreEmptySkf()) // when true empty devadd are blocked (avoid dummy skf) @todo
+                    .setIgnoreEmptySkf(consoleConfig.isHeliumRouteRejectEmptySKF()) // when true empty devadd are blocked (avoid dummy skf) @todo
                     .build();
 
             route_update_req_v1 requestToSign = route_update_req_v1.newBuilder()
@@ -1372,6 +1374,9 @@ public class NovaService {
      * @param addr
      */
     public void grpcAddRandomSkf(String routeId) {
+        // when emptySkf is rejected we don't need to add the dummy keys
+        if ( consoleConfig.isHeliumRouteRejectEmptySKF() ) return;
+
         // RandomSkf pattern is
         // 91919192xxxxxxxxxxxxxxxxxxDEVADDR
         LinkedList<SkfUpdate> add = new LinkedList<>();
@@ -1390,6 +1395,9 @@ public class NovaService {
     }
 
     public boolean isRandomSkf(int addr, String session, String routeId) {
+        // if emptySkf is rejected, we don't need the dummy skfs
+        if ( consoleConfig.isHeliumRouteRejectEmptySKF() ) return false;
+        // else we need to verify it.
         return (session.length() == 32 && session.startsWith("91919193") && session.endsWith(String.format("%08X",addr)));
     }
 

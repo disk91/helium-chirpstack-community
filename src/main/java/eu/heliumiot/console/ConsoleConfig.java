@@ -581,6 +581,13 @@ public class ConsoleConfig {
     @Value ("${helium.grpc.skf.enable}")
     private boolean heliumGrpcSkfEnable;
 
+    @Value ("${helium.route.reject.empty.skf:false}")
+    private boolean heliumRouteRejectEmptySKF;
+
+    public boolean isHeliumRouteRejectEmptySKF() {
+        return heliumRouteRejectEmptySKF;
+    }
+
     public boolean isHeliumGrpcSkfEnable() {
         return heliumGrpcSkfEnable;
     }

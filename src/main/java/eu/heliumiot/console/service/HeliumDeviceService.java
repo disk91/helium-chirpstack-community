@@ -49,6 +49,7 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.UUID;
 
 @Service
 public class HeliumDeviceService {
@@ -334,12 +335,21 @@ public class HeliumDeviceService {
             synchronized (this) {
                 List<HeliumDevice> hdevs = heliumDeviceRepository.findReactivatedDevices();
                 for ( HeliumDevice hdev : hdevs ) {
-                    hdev.setState(HeliumDevice.DeviceState.INSERTED);
-                    hdev.setToUpdate(true);
-                    this.reportDeviceActivationOnMqtt(hdev);
-                    // save this
-                    heliumDeviceRepository.save(hdev);
-                    log.info("scanNewDevicesJob - Enabling device "+hdev.getDeviceEui());
+                    HeliumTenant t = heliumTenantService.getHeliumTenant(hdev.getTenantUUID(),false);
+                    if ( t != null ) {
+                        if ( t.getState() == HeliumTenant.TenantState.NORMAL ) {
+                            hdev.setState(HeliumDevice.DeviceState.INSERTED);
+                            hdev.setToUpdate(true);
+                            this.reportDeviceActivationOnMqtt(hdev);
+                            // save this
+                            heliumDeviceRepository.save(hdev);
+                            log.info("scanNewDevicesJob - Enabling device " + hdev.getDeviceEui());
+                        } else {
+                            log.info("scanNewDevicesJob - skip re-enable device when out of dcs "+ hdev.getDeviceEui() );
+                        }
+                    } else {
+                        log.error("Try to reactivate a device not in a tenant");
+                    }
                 }
             }
 
