@@ -269,6 +269,9 @@ public class NovaService {
 
     public synchronized void refreshOneRouteSkf(String routeId) {
 
+        // Trace
+        log.debug("refreshOneRouteSkf - "+routeId);
+
         // get the route SKF entries
         List<skf_v1> inRouteSkfs =  grpcListSessionsByDevaddr(0,routeId);
         if ( inRouteSkfs == null ) inRouteSkfs = new ArrayList<>();
@@ -302,6 +305,7 @@ public class NovaService {
                         Internal.DeviceSession s = redisDeviceRepository.getDeviceDetails(hd.getDeviceEui());
                         if ( s == null ) {
                             // no session yet for that device (just inserted)
+                            log.debug("refreshOneRouteSkf - session not ready for "+hd.getDeviceEui());
                             continue;
                         }
                         String ntwSEncKey = HexaConverters.byteToHexString(s.getNwkSEncKey().toByteArray());
@@ -335,6 +339,7 @@ public class NovaService {
                     case OUTOFDCS:
                     case DELETED:
                     case DISABLED:
+                        log.debug("refreshOneRouteSkf - "+hd.getDeviceEui()+" not added due to state "+hd.getState());
                         break;
                 }
             }
