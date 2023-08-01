@@ -189,7 +189,7 @@ public class HeliumDeviceService {
                     new Timestamp(p.getLongValue()-(    // as we can have 2 loops of NewScan and a loop for deleted = max
                             consoleConfig.getHeliumDeviceNewScanPeriod()+
                             consoleConfig.getHeliumDeviceDeletedScanPeriod()+
-                            10_000
+                            20_000
                     )));
             long lastCreated = 0;
             for (Device dev : devs) {
@@ -236,7 +236,7 @@ public class HeliumDeviceService {
                 // device creation on chirpstack, including the session
                 // configuration, it's better to not process a device too fast
                 // when it comes from migration process, lets make it for all now
-                if ( (start - dev.getCreatedAt().getTime()) < 10_000 ) {
+                if ( (start - dev.getCreatedAt().getTime()) < 20_000 ) {
                     log.debug("scanNewDevicesJob - skip device "+HexaConverters.byteToHexString(dev.getDevEui()));
                     continue;
                 }
