@@ -232,6 +232,15 @@ public class HeliumDeviceService {
                     heliumDeviceRepository.save(hdev);
                 }
 
+                // new devices but to make sure we had time to complete the
+                // device creation on chirpstack, including the session
+                // configuration, it's better to not process a device too fast
+                // when it comes from migration process, lets make it for all now
+                if ( (start - dev.getCreatedAt().getTime()) < 10_000 ) {
+                    log.debug("scanNewDevicesJob - skip device "+HexaConverters.byteToHexString(dev.getDevEui()));
+                    continue;
+                }
+
                 // new devices
                 hdev = new HeliumDevice();
                 hdev.setDeviceUUID(dev.getDevEui());
