@@ -63,12 +63,19 @@ public class ConsoleConfig {
     @Value ("${helium.oui.data.server}")
     private String heliumOuiDataServer;
 
+    @Value ("${helium.migration.graceful.session.period:60000}")
+    private long heliumMigrationGracefulSessionPeriod;
+
 
     @Value ("${helium.zone.detection.enable.default}")
     private boolean heliumZoneDetectionEnableDefault;
 
     @Value ("${helium.zone.detection.enable:false}")
     private String heliumZoneDetectionEnable;
+
+    public long getHeliumMigrationGracefulSessionPeriod() {
+        return heliumMigrationGracefulSessionPeriod;
+    }
 
     public boolean getHeliumZoneDetectionEnable() {
         if ( heliumZoneDetectionEnable.length() > 0 ) {

@@ -31,8 +31,10 @@ import eu.heliumiot.console.jpa.repository.HeliumTenantSetupRepository;
 import eu.heliumiot.console.mqtt.MqttSender;
 import eu.heliumiot.console.mqtt.api.HeliumDeviceActDeactItf;
 import eu.heliumiot.console.mqtt.api.HeliumDeviceStatItf;
+import eu.heliumiot.console.redis.RedisDeviceRepository;
 import fr.ingeniousthings.tools.HexaConverters;
 import fr.ingeniousthings.tools.Now;
+import io.chirpstack.api.internal.Internal;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -174,6 +176,9 @@ public class HeliumDeviceService {
     @Autowired
     protected ConsoleConfig consoleConfig;
 
+    @Autowired
+    protected RedisDeviceRepository redisDeviceRepository;
+
     /**
      * Search for new device added into the device table
      */
@@ -189,7 +194,8 @@ public class HeliumDeviceService {
                     new Timestamp(p.getLongValue()-(    // as we can have 2 loops of NewScan and a loop for deleted = max
                             consoleConfig.getHeliumDeviceNewScanPeriod()+
                             consoleConfig.getHeliumDeviceDeletedScanPeriod()+
-                            20_000
+                            consoleConfig.getHeliumMigrationGracefulSessionPeriod()+
+                            10_000
                     )));
             long lastCreated = 0;
             for (Device dev : devs) {
@@ -236,9 +242,18 @@ public class HeliumDeviceService {
                 // device creation on chirpstack, including the session
                 // configuration, it's better to not process a device too fast
                 // when it comes from migration process, lets make it for all now
-                if ( (start - dev.getCreatedAt().getTime()) < 20_000 ) {
-                    log.debug("scanNewDevicesJob - skip device "+HexaConverters.byteToHexString(dev.getDevEui()));
-                    continue;
+                if ( dev.getVariables().contains("migrated\": \"true") ) {
+                    Internal.DeviceSession s = redisDeviceRepository.getDeviceDetails(HexaConverters.byteToHexString(dev.getDevEui()));
+                    if ( s == null ) {
+                        log.info("Session for "+HexaConverters.byteToHexString(dev.getDevEui())+ "not ready");
+                        // wait a minute
+                        if ( (start - dev.getCreatedAt().getTime()) < consoleConfig.getHeliumMigrationGracefulSessionPeriod() ) {
+                            log.debug("scanNewDevicesJob - skip device "+HexaConverters.byteToHexString(dev.getDevEui()));
+                            continue;
+                        }
+                    } else {
+                        log.info(" device "+HexaConverters.byteToHexString(dev.getDevEui())+" is ready to process");
+                    }
                 }
 
                 // new devices
