@@ -243,16 +243,16 @@ public class HeliumDeviceService {
                 // configuration, it's better to not process a device too fast
                 // when it comes from migration process, lets make it for all now
                 if ( dev.getVariables().contains("migrated\": \"true") ) {
-                    Internal.DeviceSession s = redisDeviceRepository.getDeviceDetails(HexaConverters.byteToHexString(dev.getDevEui()));
+                    Internal.DeviceSession s = redisDeviceRepository.getDeviceDetails(devEui);
                     if ( s == null ) {
-                        log.info("Session for "+HexaConverters.byteToHexString(dev.getDevEui())+ "not ready");
+                        log.debug("scanNewDevicesJob - Session for "+devEui+ " not ready");
                         // wait a minute
                         if ( (start - dev.getCreatedAt().getTime()) < consoleConfig.getHeliumMigrationGracefulSessionPeriod() ) {
-                            log.debug("scanNewDevicesJob - skip device "+HexaConverters.byteToHexString(dev.getDevEui()));
+                            log.debug("scanNewDevicesJob - skip device "+devEui);
                             continue;
                         }
                     } else {
-                        log.info(" device "+HexaConverters.byteToHexString(dev.getDevEui())+" is ready to process");
+                        log.debug("scanNewDevicesJob - Device "+devEui+" is ready to process");
                     }
                 }
 
