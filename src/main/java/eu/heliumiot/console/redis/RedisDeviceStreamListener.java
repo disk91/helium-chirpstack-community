@@ -49,7 +49,7 @@ public class RedisDeviceStreamListener {
     @PostConstruct
     public void setupRedisStreamMetaListener() {
         log.info("Init setupRedisStreamMetaListener");
-        String connectionString = "redis://";
+        String connectionString = redisConfiguration.getRedisUseSsl() ? "rediss://" : "redis://";
         if (redisConfiguration.getRedisUsername().length() > 0) {
             connectionString += redisConfiguration.getRedisUsername() + ":" + redisConfiguration.getRedisPassword() + "@";
         }

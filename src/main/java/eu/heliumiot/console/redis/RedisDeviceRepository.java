@@ -35,7 +35,7 @@ public class RedisDeviceRepository {
     @PostConstruct
     public void setupRedisDeviceRepository() {
         log.info("Init setupRedisDeviceRepository");
-        String connectionString = "redis://";
+        String connectionString = redisConfiguration.getRedisUseSsl() ? "rediss://" : "redis://";
         if (redisConfiguration.getRedisUsername().length() > 0) {
             connectionString += redisConfiguration.getRedisUsername() + ":" + redisConfiguration.getRedisPassword() + "@";
         }
