@@ -39,7 +39,9 @@ import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 @Configuration
 @SpringBootApplication
 @EnableJpaRepositories(basePackages = "eu.heliumiot.console.jpa")
-@EnableRedisRepositories(basePackages = "eu.heliumiot.console.redis", enableKeyspaceEvents = RedisKeyValueAdapter.EnableKeyspaceEvents.ON_STARTUP)
+@EnableRedisRepositories(basePackages = "eu.heliumiot.console.redis",
+		enableKeyspaceEvents = RedisKeyValueAdapter.EnableKeyspaceEvents.ON_STARTUP,
+		keyspaceNotificationsConfigParameter = "")
 public class ConsoleApplication implements CommandLineRunner, ExitCodeGenerator {
 
 	@Autowired

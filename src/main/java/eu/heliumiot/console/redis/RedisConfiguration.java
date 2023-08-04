@@ -20,8 +20,8 @@ public class RedisConfiguration {
     @Value("${spring.redis.password}")
     private String redisPassword;
 
-    @Value("${spring.redis.useSsl}")
-    private boolean redisUseSsl;
+    @Value("${spring.redis.ssl}")
+    private boolean redisSsl;
 
     @Value("${spring.redis.consumerGroup}")
     private String redisCGroup;
@@ -53,8 +53,8 @@ public class RedisConfiguration {
         return redisPassword;
     }
 
-    public boolean getRedisUseSsl() {
-        return redisUseSsl;
+    public boolean getRedisSsl() {
+        return redisSsl;
     }
 
     public String getRedisCGroup() {

@@ -13,6 +13,7 @@ import io.lettuce.core.api.sync.RedisCommands;
 import io.lettuce.core.codec.ByteArrayCodec;
 import io.lettuce.core.codec.RedisCodec;
 import io.lettuce.core.codec.StringCodec;
+import io.lettuce.core.protocol.ProtocolVersion;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,12 +50,21 @@ public class RedisDeviceStreamListener {
     @PostConstruct
     public void setupRedisStreamMetaListener() {
         log.info("Init setupRedisStreamMetaListener");
-        String connectionString = redisConfiguration.getRedisUseSsl() ? "rediss://" : "redis://";
+        String connectionString = redisConfiguration.getRedisSsl() ? "rediss://" : "redis://";
         if (redisConfiguration.getRedisUsername().length() > 0) {
             connectionString += redisConfiguration.getRedisUsername() + ":" + redisConfiguration.getRedisPassword() + "@";
         }
         connectionString += redisConfiguration.getRedisHost() + ":" + redisConfiguration.getRedisPort();
         redisClient = RedisClient.create(connectionString);
+
+        redisClient.setOptions(ClientOptions.builder()
+            .pingBeforeActivateConnection(true)
+            .socketOptions(SocketOptions.builder()
+                .keepAlive(true)
+                .build())
+            .protocolVersion(ProtocolVersion.RESP3)
+            .build());
+
         RedisCodec<String, byte[]> codec = RedisCodec.of(new StringCodec(), new ByteArrayCodec());
         redisConnection = redisClient.connect(codec);
         syncCommands = redisConnection.sync();
