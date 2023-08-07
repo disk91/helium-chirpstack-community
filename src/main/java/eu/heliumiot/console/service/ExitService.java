@@ -77,7 +77,7 @@ public class ExitService {
 
         // ------------------------------------------------
         log.info("Exit - stop listeners");
-        mqttListener.stopListner();
+        mqttListener.stopListener();
         redisStreamMetaListener.stopService();
         long s = Now.NowUtcMs();
         long d = s;
