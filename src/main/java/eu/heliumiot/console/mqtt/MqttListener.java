@@ -90,16 +90,16 @@ public class MqttListener implements MqttCallback {
                         this.connectionOptions.setPassword(mqttConfig.getMqttPassword().toCharArray());
 
                         // connect to server
-                        this.connectClient();
+                        this._connectClient();
 
-                        log.info("MQTT - Starting Mqtt listener");
+                        log.info("MQTT - Starting MqttListener");
                 } catch (MqttException me) {
                         log.error("MQTT ERROR", me);
                 }
                 return this.mqttClient;
         }
 
-        public void connectClient() {
+        private void _connectClient() {
                 try {
                         this.mqttClient.connect(this.connectionOptions);
                         this.mqttClient.setCallback(this);
@@ -111,11 +111,12 @@ public class MqttListener implements MqttCallback {
                 }
         }
 
-        // stop the listener once we request a stop of the application
-        public void stopListener() {
+        // close connection once we request a stop of the application
+        public void stop() {
                 try {
                         this.mqttClient.unsubscribe(_topics);
                         this.mqttClient.disconnect();
+                        this.mqttClient.close();
                 } catch (MqttException me) {
                         log.error("MQTT ERROR", me);
                 }
@@ -133,7 +134,7 @@ public class MqttListener implements MqttCallback {
                 // @TODO ... make it working differently to reconnect
 
                 // re-connect to server
-                this.connectClient();
+                this._connectClient();
         }
 
         /*

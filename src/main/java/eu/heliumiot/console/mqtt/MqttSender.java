@@ -76,14 +76,36 @@ public class MqttSender implements MqttCallback {
                         this.connectionOptions.setKeepAliveInterval(30);
                         this.connectionOptions.setUserName(mqttConfig.getMqttLogin());
                         this.connectionOptions.setPassword(mqttConfig.getMqttPassword().toCharArray());
-                        this.mqttClient.connect(this.connectionOptions);
-                        this.mqttClient.setCallback(this);
-                        //this.mqttClient.subscribe("#",2);
-                        log.info("Starting Mqtt listener");
+
+                        // connect to server
+                        this._connectClient();
+
+                        log.info("MQTT - Starting MqttSender");
                 } catch (MqttException me) {
                         log.error("MQTT ERROR", me);
                 }
                 return this.mqttClient;
+        }
+
+        private void _connectClient() {
+                try {
+                        this.mqttClient.connect(this.connectionOptions);
+                        this.mqttClient.setCallback(this);
+
+                        log.info("MQTT - Connected to MQTT server");
+                } catch (MqttException me) {
+                        log.error("MQTT ERROR", me);
+                }
+        }
+
+        // close connection once we request a stop of the application
+        public void stop() {
+                try {
+                        this.mqttClient.disconnect();
+                        this.mqttClient.close();
+                } catch (MqttException me) {
+                        log.error("MQTT ERROR", me);
+                }
         }
 
         public void publishMessage(String topic, String message, int qos) {
@@ -107,12 +129,9 @@ public class MqttSender implements MqttCallback {
         public void connectionLost(Throwable arg0) {
                 log.info("MQTT - Connection Lost");
                 // @TODO ... make it working differently to reconnect
-                try {
-                        this.mqttClient.connect(this.connectionOptions);
-                        log.info("MQTT - reconnecting");
-                } catch (MqttException me) {
-                        log.error("MQTT ERROR", me);
-                }
+
+                // re-connect to server
+                this._connectClient();
         }
 
         /*
