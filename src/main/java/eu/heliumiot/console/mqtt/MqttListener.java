@@ -88,20 +88,34 @@ public class MqttListener implements MqttCallback {
                         this.connectionOptions.setKeepAliveInterval(30);
                         this.connectionOptions.setUserName(mqttConfig.getMqttLogin());
                         this.connectionOptions.setPassword(mqttConfig.getMqttPassword().toCharArray());
-                        this.mqttClient.connect(this.connectionOptions);
-                        this.mqttClient.setCallback(this);
-                        this.mqttClient.subscribe(_topics,_qos);
-                        log.info("Starting Mqtt listener");
+
+                        // connect to server
+                        this.connectClient();
+
+                        log.info("MQTT - Starting Mqtt listener");
                 } catch (MqttException me) {
                         log.error("MQTT ERROR", me);
                 }
                 return this.mqttClient;
         }
 
-        // stop the listener once we request a stop of the application
-        public void stopListner() {
+        public void connectClient() {
                 try {
-                        this.mqttClient.unsubscribe (_topics);
+                        this.mqttClient.connect(this.connectionOptions);
+                        this.mqttClient.setCallback(this);
+                        this.mqttClient.subscribe(_topics, _qos);
+
+                        log.info("MQTT - Connected and subscribed to MQTT server");
+                } catch (MqttException me) {
+                        log.error("MQTT ERROR", me);
+                }
+        }
+
+        // stop the listener once we request a stop of the application
+        public void stopListener() {
+                try {
+                        this.mqttClient.unsubscribe(_topics);
+                        this.mqttClient.disconnect();
                 } catch (MqttException me) {
                         log.error("MQTT ERROR", me);
                 }
@@ -117,12 +131,9 @@ public class MqttListener implements MqttCallback {
                 log.info("MQTT - Connection Lost");
                 prometeusService.addMqttConnectionLoss();
                 // @TODO ... make it working differently to reconnect
-                try {
-                        this.mqttClient.connect(this.connectionOptions);
-                        log.info("MQTT - reconnecting");
-                } catch (MqttException me) {
-                        log.error("MQTT ERROR", me);
-                }
+
+                // re-connect to server
+                this.connectClient();
         }
 
         /*
