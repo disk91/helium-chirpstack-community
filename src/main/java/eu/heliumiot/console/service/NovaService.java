@@ -110,7 +110,13 @@ public class NovaService {
                 for (String devEUI : toRefresh) {
                     // get routeId to be refreshed
                     String routeId = heliumTStoNovaProxyService.getRouteIdFromEui(devEUI);
-                    if ( routes.get(routeId) == null ) routes.put(routeId,routeId);
+                    if ( routeId == null ) {
+                        log.warn("flushDelayedSessionUpdate - the route is not existing for "+devEUI);
+                        // process later
+                        addDelayedSessionRefresh(devEUI);
+                    } else {
+                        if (routes.get(routeId) == null) routes.put(routeId, routeId);
+                    }
                 }
 
                 for ( String route : routes.values() ) {
