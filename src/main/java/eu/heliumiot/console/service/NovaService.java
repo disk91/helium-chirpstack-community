@@ -115,7 +115,7 @@ public class NovaService {
                         // process later
                         addDelayedSessionRefresh(devEUI);
                     } else {
-                        if (routes.get(routeId) == null) routes.put(routeId, routeId);
+                        routes.putIfAbsent(routeId,routeId);
                     }
                 }
 
@@ -636,13 +636,17 @@ public class NovaService {
             }
             if (k != 65) {
                 // error
+                log.error("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
                 log.error("Invalid private keyfile");
+                log.error("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
                 ConsoleApplication.requestingExitForStartupFailure = true;
                 return;
             }
 
         } catch (IOException x) {
+            log.error("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
             log.error("Impossible to access private key file " + x.getMessage());
+            log.error("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
             ConsoleApplication.requestingExitForStartupFailure = true;
             return;
         }
@@ -664,12 +668,16 @@ public class NovaService {
                 }
                 this.owner = ByteString.copyFrom(owner_b2);
             } else {
+                log.error("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
                 log.error("The public key size is not valid");
+                log.error("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
                 ConsoleApplication.requestingExitForStartupFailure = true;
                 return;
             }
         } catch (ITParseException x) {
+            log.error("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
             log.error("Impossible to parse Public Key with Base58");
+            log.error("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
             ConsoleApplication.requestingExitForStartupFailure = true;
             return;
         }
