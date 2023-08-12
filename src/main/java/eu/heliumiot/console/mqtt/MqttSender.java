@@ -41,6 +41,7 @@ import org.postgresql.shaded.com.ongres.scram.common.bouncycastle.base64.Base64;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
@@ -65,10 +66,10 @@ public class MqttSender implements MqttCallback {
                 this.persistence = new MemoryPersistence();
                 this.connectionOptions = new MqttConnectOptions();
                 try {
-                        log.info("Url :" + mqttConfig.getMqttServer());
-                        log.info("User :" + mqttConfig.getMqttLogin());
+                        log.info("MQTT S Url :" + mqttConfig.getMqttServer());
+                        log.info("MQTT S User :" + mqttConfig.getMqttLogin());
                         //log.info("Password :"+mqttConfig.getPassword());
-                        log.info("Id : "+clientId);
+                        log.info("MQTT S Id : "+clientId);
                         this.mqttClient = new MqttClient(mqttConfig.getMqttServer(), clientId, persistence);
                         this.connectionOptions.setCleanSession(true);
                         this.connectionOptions.setAutomaticReconnect(true);
@@ -76,14 +77,18 @@ public class MqttSender implements MqttCallback {
                         this.connectionOptions.setKeepAliveInterval(30);
                         this.connectionOptions.setUserName(mqttConfig.getMqttLogin());
                         this.connectionOptions.setPassword(mqttConfig.getMqttPassword().toCharArray());
-                        this.mqttClient.connect(this.connectionOptions);
-                        this.mqttClient.setCallback(this);
-                        //this.mqttClient.subscribe("#",2);
-                        log.info("Starting Mqtt listener");
+                        this.connect();
+                        log.info("MQTT S Starting Mqtt listener");
                 } catch (MqttException me) {
-                        log.error("MQTT ERROR", me);
+                        log.error("MQTT S ERROR : "+me.getMessage());
                 }
                 return this.mqttClient;
+        }
+
+        public void connect() throws MqttException {
+                log.debug("MQTT S - Connect");
+                this.mqttClient.connect(this.connectionOptions);
+                this.mqttClient.setCallback(this);
         }
 
         public void stop() {
@@ -91,7 +96,37 @@ public class MqttSender implements MqttCallback {
                         this.mqttClient.disconnect();
                         this.mqttClient.close();
                 } catch (MqttException me) {
-                        log.error("MQTT ERROR", me);
+                        log.error("MQTT S ERROR :"+me.getMessage());
+                }
+        }
+
+
+        private boolean pendingReconnection = false;
+
+        @Override
+        public void connectionLost(Throwable arg0) {
+                log.error("MQTT S - Connection Lost");
+                try {
+                        // immediate retry, then will be async
+                        this.connect();
+                } catch (MqttException me) {
+                        pendingReconnection = true;
+                }
+        }
+
+        @Scheduled(fixedDelayString = "${helium.mqtt.reconnect.scanPeriod}", initialDelay = 30_000) // default 10s
+        protected void autoReconnect() {
+                if ( ! pendingReconnection ) return;
+                try {
+                        if ( mqttClient.isConnected() ) {
+                                log.info("MQTT S - reconnected");
+                                pendingReconnection = false;
+                        }
+                        this.connect();
+                        log.info("MQTT S - reconnected");
+                        pendingReconnection = false;
+                } catch (MqttException me) {
+                        log.warn("MQTT S - reconnection failed - "+me.getMessage());
                 }
         }
 
@@ -104,25 +139,9 @@ public class MqttSender implements MqttCallback {
                         //log.info("MQTT : Topic("+topic+") Mess("+mqttmessage+")");
                         this.mqttClient.publish(topic, mqttmessage);
                 } catch (MqttException me) {
-                        log.error("MessagePublish Error", me);
+                        log.error("MQTT S - MessagePublish Error", me);
                 }
 
-        }
-
-        /*
-         * (non-Javadoc)
-         * @see org.eclipse.paho.client.mqttv3.MqttCallback#connectionLost(java.lang.Throwable)
-         */
-        @Override
-        public void connectionLost(Throwable arg0) {
-                log.info("MQTT - Connection Lost");
-                // @TODO ... make it working differently to reconnect
-                try {
-                        this.mqttClient.connect(this.connectionOptions);
-                        log.info("MQTT - reconnecting");
-                } catch (MqttException me) {
-                        log.error("MQTT ERROR", me);
-                }
         }
 
         /*

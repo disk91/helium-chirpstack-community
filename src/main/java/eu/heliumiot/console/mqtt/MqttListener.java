@@ -84,10 +84,10 @@ public class MqttListener implements MqttCallback {
                 this.persistence = new MemoryPersistence();
                 this.connectionOptions = new MqttConnectOptions();
                 try {
-                        log.info("Url :"+mqttConfig.getMqttServer());
-                        log.info("User :"+mqttConfig.getMqttLogin());
+                        log.info("MQTT Url :"+mqttConfig.getMqttServer());
+                        log.info("MQTT User :"+mqttConfig.getMqttLogin());
                         //log.info("Password :"+mqttConfig.getPassword());
-                        log.info("Id : "+clientId);
+                        log.info("MQTT Id : "+clientId);
                         this.mqttClient = new MqttClient(mqttConfig.getMqttServer(), clientId, persistence);
                         this.connectionOptions.setCleanSession(true);
                         this.connectionOptions.setAutomaticReconnect(true);
@@ -96,7 +96,7 @@ public class MqttListener implements MqttCallback {
                         this.connectionOptions.setUserName(mqttConfig.getMqttLogin());
                         this.connectionOptions.setPassword(mqttConfig.getMqttPassword().toCharArray());
                         this.connect();
-                        log.info("Starting Mqtt listener");
+                        log.info("MQTT Starting Mqtt listener");
                 } catch (MqttException me) {
                         log.error("MQTT Init ERROR : "+me.getMessage());
                 }
@@ -148,6 +148,7 @@ public class MqttListener implements MqttCallback {
                                 pendingReconnection = false;
                         }
                         this.connect();
+                        log.info("MQTT - reconnected");
                         pendingReconnection = false;
                 } catch (MqttException me) {
                         log.warn("MQTT - reconnection failed - "+me.getMessage());
@@ -187,7 +188,7 @@ public class MqttListener implements MqttCallback {
         public void messageArrived(String topicName, MqttMessage message) throws Exception {
                 // Leave it blank for Publisher
                 long start = Now.NowUtcMs();
-                //log.info("MQTT - MessageArrived on "+topicName);
+                log.info("MQTT - MessageArrived on "+topicName);
                 ObjectMapper mapper = new ObjectMapper();
                 mapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
                 mapper.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
