@@ -80,7 +80,7 @@ public class MqttListener implements MqttCallback {
         public MqttClient initMqtt() {
 
                 HeliumParameter mqttClientId = heliumParameterService.getParameter(PARAM_MQTT_CLIENT_ID);
-                String clientId = mqttConfig.getMqttId()+mqttClientId;
+                String clientId = mqttConfig.getMqttId()+mqttClientId.getStrValue();
                 this.persistence = new MemoryPersistence();
                 this.connectionOptions = new MqttConnectOptions();
                 try {
