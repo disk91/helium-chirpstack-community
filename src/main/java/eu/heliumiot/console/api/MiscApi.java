@@ -23,13 +23,12 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import eu.heliumiot.console.ConsoleConfig;
-import eu.heliumiot.console.api.interfaces.ActionResult;
-import eu.heliumiot.console.api.interfaces.ConsoleStatusRespItf;
-import eu.heliumiot.console.api.interfaces.ServerLogItf;
-import eu.heliumiot.console.api.interfaces.UserSignUpReqItf;
+import eu.heliumiot.console.api.interfaces.*;
 import eu.heliumiot.console.jpa.db.HeliumLogs;
+import eu.heliumiot.console.jpa.db.HeliumParameter;
 import eu.heliumiot.console.jpa.repository.HeliumLogsRepository;
 import eu.heliumiot.console.service.ExitService;
+import eu.heliumiot.console.service.HeliumParameterService;
 import eu.heliumiot.console.service.PrometeusService;
 import fr.ingeniousthings.tools.Now;
 import io.swagger.v3.oas.annotations.Operation;
@@ -47,6 +46,8 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+
+import static eu.heliumiot.console.service.HeliumParameterService.PARAM_USER_COND_CURRENT;
 
 @Tag( name = "misc api", description = "misc api" )
 @CrossOrigin
@@ -177,6 +178,60 @@ public class MiscApi {
         ActionResult r = ActionResult.SUCESS();
         return new ResponseEntity<>(r, HttpStatus.OK);
     }
+
+    // =================================================
+    // Manage condition version
+    // =================================================
+
+    @Autowired
+    protected HeliumParameterService heliumParameterService;
+
+    @Operation(summary = "Get Current Condition Version",
+        description = "Returns the current user condition version",
+        responses = {
+            @ApiResponse(responseCode = "200", description= "Done", content = @Content(schema = @Schema(implementation = ActionResult.class)))
+        }
+    )
+    @RequestMapping(value="/condition",
+        produces = MediaType.APPLICATION_JSON_VALUE,
+        method= RequestMethod.GET)
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
+    public ResponseEntity<?> requestConditionVersion(
+        HttpServletRequest request
+    ) {
+        long startMs= Now.NowUtcMs();
+        ActionResult r = ActionResult.SUCESS();
+        HeliumParameter version = heliumParameterService.getParameter(PARAM_USER_COND_CURRENT);
+        if ( version != null ) r.setMessage(version.getStrValue());
+        prometeusService.addApiTotalTimeMs(startMs);
+        return new ResponseEntity<>(r, HttpStatus.OK);
+    }
+
+
+    @Operation(summary = "Change Current Condition Version",
+        description = "Change the current user condition version",
+        responses = {
+            @ApiResponse(responseCode = "200", description= "Done", content = @Content(schema = @Schema(implementation = ActionResult.class)))
+        }
+    )
+    @RequestMapping(value="/condition",
+        produces = MediaType.APPLICATION_JSON_VALUE,
+        method= RequestMethod.PUT)
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
+    public ResponseEntity<?> changeConditionVersion(
+        HttpServletRequest request,
+        @RequestBody(required = true) UserConditionVersionUpdateReqItf versionChange
+    ) {
+        long startMs= Now.NowUtcMs();
+        ActionResult r = ActionResult.SUCESS();
+        HeliumParameter version = heliumParameterService.getParameter(PARAM_USER_COND_CURRENT);
+        if ( version != null ) version.setStrValue(versionChange.getConditionVersion());
+        heliumParameterService.flushParameter(version);
+        r.setMessage("Version Updated");
+        prometeusService.addApiTotalTimeMs(startMs);
+        return new ResponseEntity<>(r, HttpStatus.OK);
+    }
+
 
 }
 

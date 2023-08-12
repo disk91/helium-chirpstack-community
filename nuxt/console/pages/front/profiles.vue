@@ -6,7 +6,8 @@
         <b-col cols="6">
           <ManageTenant/>
         </b-col>
-        <b-col cols="6">        
+        <b-col cols="6">
+         <UserConditionVersion/>      
          <InvoiceSetup/>
         </b-col>
       </b-row>
@@ -19,6 +20,7 @@
   import ManageTenantTemplate from '~/components/ManageTenantTemplate.vue'; 
   import ManageTenant from '~/components/ManageTenant.vue';
   import InvoiceSetup from '~/components/InvoiceSetup.vue';
+  import UserConditionVersion from '~/components/UserConditionSetup.vue';
 
   export default Vue.extend({
       name: "ManageTenantProfiles",
@@ -27,6 +29,7 @@
         'ManageTenantTemplate' : ManageTenantTemplate,
         'ManageTenant' : ManageTenant,
         'InvoiceSetup' : InvoiceSetup,
+        'UserConditionVersion' : UserConditionVersion,
       },
     })
 </script>

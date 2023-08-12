@@ -44,6 +44,13 @@ public class LoginRespItf {
     )
     protected boolean admin;
 
+    @Schema(
+        description = "True when user condition changed",
+        requiredMode = Schema.RequiredMode.REQUIRED
+    )
+    protected boolean userConditionChanged;
+
+
     // ------------------------------------
 
 
@@ -69,5 +76,13 @@ public class LoginRespItf {
 
     public void setAdmin(boolean admin) {
         this.admin = admin;
+    }
+
+    public boolean isUserConditionChanged() {
+        return userConditionChanged;
+    }
+
+    public void setUserConditionChanged(boolean userConditionChanged) {
+        this.userConditionChanged = userConditionChanged;
     }
 }

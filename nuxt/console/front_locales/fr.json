@@ -418,5 +418,16 @@
     "mig_setup_auth_data_tx" : "En saisissant votre clef API, vous acceptez de transférer les meta-données de vos objets, leurs clefs, et autres données vers ce service.",
     "mig_processing_devices" : "Prepartion des devices",
 
+    "uc_version_title" : "Version des conditions utilisateur",
+    "uc_version" : "Version actuelle",
+    "uc_version_desc" : "Version des conditions, champ texte libre",
+    "uc_error_load_condition" : "Impossible de charger la version de condition",
+    "uc_update_success" : "La version des conditions a été mise à jour",
+    "uc_update_error" : "Impossible de mettre à jour la version",
+    "uc_condition_message" : "Les conditions d'utilisation du service ont évoluées, vous devez valider les nouvelles conditions pour accéder au service.",
+    "uc_condition_visit" : "Merci de lire les nouvelles conditions d'utilisation",
+    "uc_condition_valid" : "J'accepte les conditions d'utilisation",
+    "uc_condition_submit" : "Continuer",
+
     "end" : "fin"
 }

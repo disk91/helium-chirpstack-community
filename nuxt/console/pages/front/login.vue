@@ -169,8 +169,15 @@ export default Vue.extend({
                        let conBearer = resp.data.consoleBearer;
                        this.$store.commit('setConsoleBearer', conBearer);
                        this.$store.commit('setUserAdmin',resp.data.admin);
+                       if ( resp.data.userConditionChanged ) {
+                         this.$router.push('/front/conditions/');
+                       } else {
+                        this.$router.push('/front/');
+                       }
+                    } else {
+                        // @TODO should be an error page ?
+                        this.$router.push('/front/');
                     }
-                    this.$router.push('/front/');
                 });
             } catch (err) {
                 this.errorMessage=this.$t('login_error') as string;

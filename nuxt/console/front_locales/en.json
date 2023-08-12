@@ -417,5 +417,16 @@
   "mig_setup_auth_data_tx" : "By entering your API key, you accept to transfer device meta-data, credentials and other needed information to this service.",
   "mig_processing_devices" : "Preparing devices",
 
+  "uc_version_title" : "User condition version",
+  "uc_version" : "Current version",
+  "uc_version_desc" : "Free text field for naming the current user condition version",
+  "uc_error_load_condition" : "Failed to load user condition version",
+  "uc_update_success" : "Condition Version has been updated",
+  "uc_update_error" : "Impossible to update condition version",
+  "uc_condition_message" : "The end user licence agreement has been updated, before being able to access the service, you need to renew your agreement for these new conditions.",
+  "uc_condition_visit" : "Please read the end-user license agreement",
+  "uc_condition_valid" : "I accept the new end-user license agreement",  
+  "uc_condition_submit" : "Next",
+
   "end" : "end"
 }

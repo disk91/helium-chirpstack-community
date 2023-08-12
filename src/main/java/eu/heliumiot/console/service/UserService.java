@@ -569,6 +569,13 @@ public class UserService {
             u.heliumUser.setLastSeen(Now.NowUtcMs());
             userCacheService.updateHeliumUser(u);
 
+            // check the user Condition version
+            r.setUserConditionChanged(false);
+            HeliumParameter version = heliumParameterService.getParameter(PARAM_USER_COND_CURRENT);
+            if ( version != null && u.heliumUser.getConditionVersion().compareToIgnoreCase(version.getStrValue()) != 0 ) {
+               r.setUserConditionChanged(true);
+            }
+
             return r;
         } catch ( ITNotFoundException x ) {
             throw new ITRightException();
@@ -630,6 +637,21 @@ public class UserService {
         } else r.setLastName("");
         return r;
     }
+
+    public void updateUserAgreement(String userid) throws ITNotFoundException, ITRightException {
+
+        UserCacheService.UserCacheElement c =  userCacheService.getUserById(userid);
+        if ( c == null ) throw new ITNotFoundException();
+
+        HeliumParameter version = heliumParameterService.getParameter(PARAM_USER_COND_CURRENT);
+        if ( version != null ) {
+            c.heliumUser.setConditionVersion(version.getStrValue());
+            c.heliumUser.setConditionTime(new Timestamp(Now.NowUtcMs()));
+            userCacheService.updateHeliumUser(c);
+        }
+
+    }
+
 
     /**
      * Update the User profile
