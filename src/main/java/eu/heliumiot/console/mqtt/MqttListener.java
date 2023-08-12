@@ -188,7 +188,7 @@ public class MqttListener implements MqttCallback {
         public void messageArrived(String topicName, MqttMessage message) throws Exception {
                 // Leave it blank for Publisher
                 long start = Now.NowUtcMs();
-                log.info("MQTT - MessageArrived on "+topicName);
+                //log.info("MQTT - MessageArrived on "+topicName);
                 ObjectMapper mapper = new ObjectMapper();
                 mapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
                 mapper.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
