@@ -6,7 +6,6 @@ import eu.heliumiot.console.service.PrometeusService;
 import fr.ingeniousthings.tools.HexaConverters;
 import fr.ingeniousthings.tools.Now;
 import io.chirpstack.api.DownlinkFrameLog;
-import io.chirpstack.api.internal.Internal;
 import io.lettuce.core.*;
 import io.lettuce.core.api.StatefulRedisConnection;
 import io.lettuce.core.api.sync.RedisCommands;
@@ -21,10 +20,8 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 @Service
 public class RedisDeviceStreamListener {
@@ -50,7 +47,7 @@ public class RedisDeviceStreamListener {
     @PostConstruct
     public void setupRedisStreamMetaListener() {
         log.info("Init setupRedisStreamMetaListener");
-        String connectionString = redisConfiguration.getRedisSsl() ? "rediss://" : "redis://";
+        String connectionString = redisConfiguration.isRedisSsl() ? "rediss://" : "redis://";
         if (redisConfiguration.getRedisUsername().length() > 0) {
             connectionString += redisConfiguration.getRedisUsername() + ":" + redisConfiguration.getRedisPassword() + "@";
         }
