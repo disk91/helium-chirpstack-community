@@ -57,6 +57,7 @@
   
     "menu_add_tenant" : "Créer un tenant",
     "menu_documentation" : "Documentation",
+    "menu_documentation_api" : "Documentation API",
     "menu_sign_out" : "Deconnexion",
     "menu_chirpstack" : "Chirpstack",
     "menu_user_stats" : "Info Tenant",
