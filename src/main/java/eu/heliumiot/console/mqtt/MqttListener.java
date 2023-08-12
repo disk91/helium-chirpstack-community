@@ -89,9 +89,9 @@ public class MqttListener implements MqttCallback {
                         //log.info("Password :"+mqttConfig.getPassword());
                         log.info("MQTT Id : "+clientId);
                         this.mqttClient = new MqttClient(mqttConfig.getMqttServer(), clientId, persistence);
-                        this.connectionOptions.setCleanSession(true);
-                        this.connectionOptions.setAutomaticReconnect(true);
-                        this.connectionOptions.setConnectionTimeout(10);
+                        this.connectionOptions.setCleanSession(false);          // restart by processing pending events
+                        this.connectionOptions.setAutomaticReconnect(false);    // reconnect managed manually
+                        this.connectionOptions.setConnectionTimeout(5);         // do not wait more than 5s to reconnect
                         this.connectionOptions.setKeepAliveInterval(30);
                         this.connectionOptions.setUserName(mqttConfig.getMqttLogin());
                         this.connectionOptions.setPassword(mqttConfig.getMqttPassword().toCharArray());
@@ -113,7 +113,7 @@ public class MqttListener implements MqttCallback {
         // stop the listener once we request a stop of the application
         public void stop() {
            try {
-              this.mqttClient.unsubscribe (_topics);
+              this.mqttClient.unsubscribe(_topics);
               this.mqttClient.disconnect();
               this.mqttClient.close();
            } catch (MqttException me) {
