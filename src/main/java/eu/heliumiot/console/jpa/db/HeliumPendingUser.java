@@ -65,6 +65,9 @@ public class HeliumPendingUser {
     @Column(name = "retrial")
     private int retrial;
 
+    @Column(name = "condition_version")
+    private String conditionVersion;
+
     // ---
 
 
@@ -138,5 +141,13 @@ public class HeliumPendingUser {
 
     public void setRetrial(int retrial) {
         this.retrial = retrial;
+    }
+
+    public String getConditionVersion() {
+        return conditionVersion;
+    }
+
+    public void setConditionVersion(String conditionVersion) {
+        this.conditionVersion = conditionVersion;
     }
 }

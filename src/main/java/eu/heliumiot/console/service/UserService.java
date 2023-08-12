@@ -53,6 +53,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.Random;
 
+import static eu.heliumiot.console.service.HeliumParameterService.PARAM_USER_COND_CURRENT;
 import static eu.heliumiot.console.service.HeliumTenantService.HELIUM_TENANT_SETUP_DEFAULT;
 
 @Service
@@ -262,6 +263,13 @@ public class UserService {
         hpe.setValidationCode(RandomString.getRandomAZString(80));
         hpe.setUserPassword(encryptionHelper.encryptStringWithServerKey(req.getPassword()));
         hpe.setType(HPU_TYPE_CREATION);
+        HeliumParameter version = heliumParameterService.getParameter(PARAM_USER_COND_CURRENT);
+        if ( version != null ) {
+            hpe.setConditionVersion(version.getStrValue());
+        } else {
+            hpe.setConditionVersion("Default");
+        }
+
         heliumPendingUserRepository.save(hpe);
 
         // Now we need to send an email
@@ -288,6 +296,9 @@ public class UserService {
 
     @Autowired
     private HeliumTenantRepository heliumTenantRepository;
+
+    @Autowired
+    private HeliumParameterService heliumParameterService;
 
     /**
      * Get the registration confirmation code to terminate the user signup
@@ -426,6 +437,8 @@ public class UserService {
                     u.heliumUser.setDefaultOffer(hpe.getOfferName());
                     u.heliumUser.setConditionValidation(true);
                     u.heliumUser.setRegistrationTime(hpe.getInsertedAt());
+                    u.heliumUser.setConditionTime(hpe.getInsertedAt());
+                    u.heliumUser.setConditionVersion(hpe.getConditionVersion());
                     heliumUserRepository.save(u.heliumUser);
                 }
             }

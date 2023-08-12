@@ -85,6 +85,12 @@ public class HeliumUser {
     @Column(name = "condition_validation")
     private boolean conditionValidation = false;
 
+    @Column(name = "condition_version")
+    private String conditionVersion;
+
+    @Column(name = "condition_time")
+    private Timestamp conditionTime;
+
     @Column(name = "last_seen")
     private long lastSeen = 0;      // last login
 
@@ -228,5 +234,21 @@ public class HeliumUser {
 
     public void setLastMessSeen(long lastMessSeen) {
         this.lastMessSeen = lastMessSeen;
+    }
+
+    public String getConditionVersion() {
+        return conditionVersion;
+    }
+
+    public void setConditionVersion(String conditionVersion) {
+        this.conditionVersion = conditionVersion;
+    }
+
+    public Timestamp getConditionTime() {
+        return conditionTime;
+    }
+
+    public void setConditionTime(Timestamp conditionTime) {
+        this.conditionTime = conditionTime;
     }
 }
