@@ -42,6 +42,7 @@ import static eu.heliumiot.console.service.UserService.HUPROFILE_STATUS_COMPLETE
 public class TransactionService {
     private final Logger log = LoggerFactory.getLogger(this.getClass());
 
+    private static final Object lock = new Object();
 
     @Autowired
     HeliumDcTransactionRepository heliumDcTransactionRepository;
@@ -253,7 +254,7 @@ public class TransactionService {
     @Autowired
     HeliumParameterService heliumParameterService;
 
-    protected HeliumDcTransaction updateTransaction(HeliumDcTransaction t)
+    synchronized protected HeliumDcTransaction updateTransaction(HeliumDcTransaction t)
     throws ITParseException {
         Stripe.apiKey = consoleConfig.getStripeKeyPrivate();
 
@@ -347,7 +348,7 @@ public class TransactionService {
         );
         for ( HeliumDcTransaction t : ts ) {
             try {
-                synchronized (this) {
+                synchronized (lock) {
                     t = updateTransaction(t);
                     if (t != null) { // null when not modified
                         heliumDcTransactionRepository.save(t);
@@ -393,7 +394,7 @@ public class TransactionService {
             }
 
             // Update the Intent
-            synchronized (this) {
+            synchronized (lock) {
                 try {
                     t = updateTransaction(t);
                     if (t != null) { // null when not modified
