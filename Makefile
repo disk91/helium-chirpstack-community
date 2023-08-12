@@ -3,8 +3,8 @@ REDISIP=$(shell docker inspect -f '{{range.NetworkSettings.Networks}}{{.IPAddres
 MQTTIP=$(shell docker inspect -f '{{range.NetworkSettings.Networks}}{{.IPAddress}}{{end}}' `docker ps | grep mosqui | cut -d " " -f 1`) 
 NETWORK=$(shell docker network ls | grep chirpstack | cut -d " " -f 1)
 CONSOLE_NAME="Helium-Console"
-#DIS_DC_PURCHASE=true
-#DIS_NEW_TENANT=true
+DIS_DC_PURCHASE=false
+DIS_NEW_TENANT=false
 CONSOLE_TERMS=https://...
 API_HOST=
 CHIRPSTACK_HOST=
@@ -23,6 +23,7 @@ init: .FORCE
 front: .FORCE
 	export CONSOLE_NAME=$(CONSOLE_NAME) ; export CONSOLE_TERMS=$(CONSOLE_TERMS) ; \
 	export API_HOST=$(API_HOST) ; export CHIRPSTACK_HOST=$(CHIRPSTACK_HOST) ; \
+	export DIS_DC_PURCHASE=$(DIS_DC_PURCHASE) ; export DIS_NEW_TENANT=$(DIS_NEW_TENANT) ; \
 	cd nuxt/console && yarn install --ignore-engines && yarn generate && cp -R dist/* /helium/front/
 
 back: .FORCE
