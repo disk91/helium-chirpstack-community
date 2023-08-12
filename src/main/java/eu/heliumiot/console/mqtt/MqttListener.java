@@ -143,9 +143,12 @@ public class MqttListener implements MqttCallback {
         protected void autoReconnect() {
                 if ( ! pendingReconnection ) return;
                 try {
-                        log.info("MQTT - reconnecting");
+                        if ( mqttClient.isConnected() ) {
+                                log.info("MQTT - reconnected");
+                                pendingReconnection = false;
+                        }
                         this.connect();
-                        pendingReconnection = true;
+                        pendingReconnection = false;
                 } catch (MqttException me) {
                         log.warn("MQTT - reconnection failed - "+me.getMessage());
                 }
