@@ -22,6 +22,7 @@ package eu.heliumiot.console.service;
 import eu.heliumiot.console.ConsoleConfig;
 import eu.heliumiot.console.jpa.db.HeliumParameter;
 import eu.heliumiot.console.jpa.repository.HeliumParameterRepository;
+import fr.ingeniousthings.tools.RandomString;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,6 +45,8 @@ public class HeliumParameterService {
 
     public static final String PARAM_HELIUM_OUI = "previousOui";
     public static final String PARAM_HELIUM_NETID = "previousNetId";
+
+    public static final String PARAM_MQTT_CLIENT_ID = "mqttClientId";
 
 
 
@@ -127,6 +130,15 @@ public class HeliumParameterService {
             heliumNetId.setLongValue(0);
             heliumNetId.setStrValue(consoleConfig.getHeliumRouteNetid());
             heliumParameterRepository.save(heliumNetId);
+        }
+
+        HeliumParameter mqttClientId = heliumParameterRepository.findOneHeliumParameterByParameterName(PARAM_MQTT_CLIENT_ID);
+        if ( mqttClientId == null ) {
+            mqttClientId = new HeliumParameter();
+            mqttClientId.setParameterName(PARAM_MQTT_CLIENT_ID);
+            mqttClientId.setLongValue(0);
+            mqttClientId.setStrValue(RandomString.getRandomString(6));
+            heliumParameterRepository.save(mqttClientId);
         }
 
     }

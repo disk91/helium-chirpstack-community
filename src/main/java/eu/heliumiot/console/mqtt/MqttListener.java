@@ -24,6 +24,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import eu.heliumiot.console.ConsoleConfig;
+import eu.heliumiot.console.jpa.db.HeliumParameter;
 import eu.heliumiot.console.mqtt.api.HeliumDeviceActDeactItf;
 import eu.heliumiot.console.mqtt.api.HeliumDeviceStatItf;
 import eu.heliumiot.console.jpa.repository.TenantRepository;
@@ -41,6 +42,7 @@ import org.postgresql.shaded.com.ongres.scram.common.bouncycastle.base64.Base64;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import org.eclipse.paho.client.mqttv3.*;
 import org.eclipse.paho.client.mqttv3.persist.MemoryPersistence;
@@ -49,6 +51,8 @@ import javax.annotation.PostConstruct;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Set;
+
+import static eu.heliumiot.console.service.HeliumParameterService.PARAM_MQTT_CLIENT_ID;
 
 @Component
 public class MqttListener implements MqttCallback {
@@ -62,18 +66,21 @@ public class MqttListener implements MqttCallback {
         @Autowired
         protected PrometeusService prometeusService;
 
+        @Autowired
+        protected HeliumParameterService heliumParameterService;
 
         private MqttConnectOptions connectionOptions;
         private MemoryPersistence persistence;
         private MqttClient mqttClient;
 
-        protected String _topics[] = {"application/#","helium/#","+/gateway/+/event/up"};
-        protected int _qos[] = { MQTT_QOS,MQTT_QOS,MQTT_QOS };
+        protected String[] _topics = {"application/#","helium/#","+/gateway/+/event/up"};
+        protected int[] _qos = { MQTT_QOS,MQTT_QOS,MQTT_QOS };
 
         @PostConstruct
         public MqttClient initMqtt() {
 
-                String clientId = mqttConfig.getMqttId()+RandomString.getRandomString(4);
+                HeliumParameter mqttClientId = heliumParameterService.getParameter(PARAM_MQTT_CLIENT_ID);
+                String clientId = mqttConfig.getMqttId()+mqttClientId;
                 this.persistence = new MemoryPersistence();
                 this.connectionOptions = new MqttConnectOptions();
                 try {
@@ -88,42 +95,62 @@ public class MqttListener implements MqttCallback {
                         this.connectionOptions.setKeepAliveInterval(30);
                         this.connectionOptions.setUserName(mqttConfig.getMqttLogin());
                         this.connectionOptions.setPassword(mqttConfig.getMqttPassword().toCharArray());
-                        this.mqttClient.connect(this.connectionOptions);
-                        this.mqttClient.setCallback(this);
-                        this.mqttClient.subscribe(_topics,_qos);
+                        this.connect();
                         log.info("Starting Mqtt listener");
                 } catch (MqttException me) {
-                        log.error("MQTT ERROR", me);
+                        log.error("MQTT Init ERROR : "+me.getMessage());
                 }
                 return this.mqttClient;
         }
 
+        public void connect() throws MqttException {
+                log.debug("MQTT - Connect");
+                this.mqttClient.connect(this.connectionOptions);
+                this.mqttClient.setCallback(this);
+                this.mqttClient.subscribe(_topics,_qos);
+        }
+
         // stop the listener once we request a stop of the application
-        public void stopListner() {
-                try {
-                        this.mqttClient.unsubscribe (_topics);
-                } catch (MqttException me) {
-                        log.error("MQTT ERROR", me);
-                }
+        public void stop() {
+           try {
+              this.mqttClient.unsubscribe (_topics);
+              this.mqttClient.disconnect();
+              this.mqttClient.close();
+           } catch (MqttException me) {
+              log.error("MQTT ERROR :"+me.getMessage());
+           }
         }
 
 
+        private boolean pendingReconnection = false;
         /*
          * (non-Javadoc)
          * @see org.eclipse.paho.client.mqttv3.MqttCallback#connectionLost(java.lang.Throwable)
          */
         @Override
         public void connectionLost(Throwable arg0) {
-                log.info("MQTT - Connection Lost");
-                prometeusService.addMqttConnectionLoss();
-                // @TODO ... make it working differently to reconnect
+                log.error("MQTT - Connection Lost");
                 try {
-                        this.mqttClient.connect(this.connectionOptions);
-                        log.info("MQTT - reconnecting");
+                        // immediate retry, then will be async
+                        this.connect();
                 } catch (MqttException me) {
-                        log.error("MQTT ERROR", me);
+                        pendingReconnection = true;
+                }
+                prometeusService.addMqttConnectionLoss();
+        }
+
+        @Scheduled(fixedDelayString = "${helium.mqtt.reconnect.scanPeriod}", initialDelay = 30_000) // default 10s
+        protected void autoReconnect() {
+                if ( ! pendingReconnection ) return;
+                try {
+                        log.info("MQTT - reconnecting");
+                        this.connect();
+                        pendingReconnection = true;
+                } catch (MqttException me) {
+                        log.warn("MQTT - reconnection failed - "+me.getMessage());
                 }
         }
+
 
         /*
          * (non-Javadoc)
@@ -132,7 +159,6 @@ public class MqttListener implements MqttCallback {
         @Override
         public void deliveryComplete(IMqttDeliveryToken arg0) {
                 // log.info("MQTT - delivery completed");
-
         }
 
         @Autowired
