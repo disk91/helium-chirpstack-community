@@ -58,8 +58,8 @@ export default {
     ouiGet:(process.env.API_HOST || '')+'/console/1.0/misc/oui',
     termAndUse:process.env.CONSOLE_TERMS || '/',
     maxDevices:process.env.MAX_DEVICES || 500,
-    disablePurchase:process.env.DIS_DC_PURCHASE || false,
-    disableNewTenant:process.env.DIS_NEW_TENANT || false,
+    disablePurchase:process.env.DIS_DC_PURCHASE || 'false',
+    disableNewTenant:process.env.DIS_NEW_TENANT || 'false',
     frontVersion:'1.3.0'
   },
 

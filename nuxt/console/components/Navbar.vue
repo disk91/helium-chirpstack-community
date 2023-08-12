@@ -36,8 +36,8 @@
           <template #button-content>
             <img src="/static/front/home_icon.svg" style="width: 24px;position: relative; top: -1px;"/>
           </template>
-          <b-dropdown-item v-if="! $config.disablePurchase" to="/front/datacredits">{{$t('menu_purchase_dc')}}</b-dropdown-item>
-          <b-dropdown-item v-if="! $config.disableNewTenant" href="#" @click="addTenantAction">{{$t('menu_add_tenant')}}</b-dropdown-item>
+          <b-dropdown-item v-if="$config.disablePurchase=='false'" to="/front/datacredits">{{$t('menu_purchase_dc')}}</b-dropdown-item>
+          <b-dropdown-item v-if="$config.disableNewTenant=='false'" href="#" @click="addTenantAction">{{$t('menu_add_tenant')}}</b-dropdown-item>
           <b-dropdown-item href="https://github.com/disk91/helium-chirpstack/wiki">{{$t('menu_documentation')}}</b-dropdown-item>
           <b-dropdown-item href="/rest-api/">{{$t('menu_documentation_api')}}</b-dropdown-item>
           <b-dropdown-item to="/front/ticketing">{{$t('menu_service_request')}}</b-dropdown-item>
