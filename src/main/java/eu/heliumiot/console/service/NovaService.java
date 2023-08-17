@@ -613,7 +613,9 @@ public class NovaService {
         // For some demo environments it can be good to not pollute with route update
         // like for testing the migrations of devices.
         if ( ! consoleConfig.isHeliumGrpcEnable() ) {
+            log.warn("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
             log.warn("Nova GRPC service is disabled, no route will be created");
+            log.warn("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
             this.grpcInitOk=false;
             return;
         }
@@ -751,7 +753,9 @@ public class NovaService {
             || consoleConfig.getHeliumRouteHost().length() == 0
             || regionsSupported.size() == 0
         ) {
-            log.error("Impossible to start GRPC - propertie file is not correctly setup");
+            log.error("############################################################################");
+            log.error("Impossible to start GRPC - properties file is not correctly setup");
+            log.error("############################################################################");
             return;
         }
 

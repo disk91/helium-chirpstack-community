@@ -160,6 +160,7 @@ public class HeliumTenantService {
     protected void asyncRouteRegistration() {
         if ( ! this.serviceEnable ) return;
         this.runningJobs++;
+        log.debug("asyncRouteRegistration - starting");
         try {
 
             // find all the tenant w/o route created
@@ -167,6 +168,7 @@ public class HeliumTenantService {
             if ( tss != null ) {
                 for ( HeliumTenantSetup ts : tss ) {
                     if ( ! ts.isTemplate() && ts.getRouteId() == null ) {
+                        log.debug("asyncRouteRegistration - Found tenant "+ts.getTenantUUID()+" with route to create");
                         // find tenant to update the max_copy in case of
                         HeliumTenant ht = this.getHeliumTenant(ts.getTenantUUID(),true);
                         int mc = ts.getMaxCopy();
@@ -181,6 +183,8 @@ public class HeliumTenantService {
                             // update the cache
                             ts = heliumTenantSetupService.getHeliumTenantSetup(ts.getTenantUUID(),true);
                             log.debug("Route for tenant "+ts.getTenantUUID()+" created with id "+ts.getRouteId());
+                        } else {
+                            log.debug("Failed to create route");
                         }
                     }
                 }
@@ -200,6 +204,7 @@ public class HeliumTenantService {
     protected void asyncTenantDeletion() {
         if ( ! this.serviceEnable ) return;
         this.runningJobs++;
+        log.debug("asyncTenantDeletion - starting");
         try {
 
             // find all the Helium tenant without associated Tenant
