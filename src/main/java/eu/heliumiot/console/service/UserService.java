@@ -575,7 +575,7 @@ public class UserService {
             // check the user Condition version
             r.setUserConditionChanged(false);
             HeliumParameter version = heliumParameterService.getParameter(PARAM_USER_COND_CURRENT);
-            if (  u.heliumUser.getConditionVersion() != null ||
+            if (  u.heliumUser.getConditionVersion() == null ||
                 ( version != null && u.heliumUser.getConditionVersion().compareToIgnoreCase(version.getStrValue()) != 0 )
             ) {
                r.setUserConditionChanged(true);
