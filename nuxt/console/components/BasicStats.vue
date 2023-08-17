@@ -7,6 +7,7 @@
             <b-row class="ml-0" v-if="loadBasicStatSuccess">
                 <b-col cols="6">
                     <b-card 
+                        v-if="!$config.disableStatTenant" 
                         :header="$t('bstat_card_title')"
                         class="TenantDetails">
                         <b-list-group class="m-0 p-0">

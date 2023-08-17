@@ -63,6 +63,7 @@ export default {
     maxDevices:process.env.MAX_DEVICES || 500,
     disablePurchase:process.env.DIS_DC_PURCHASE || 'false',
     disableNewTenant:process.env.DIS_NEW_TENANT || 'false',
+    disableStatTenant:process.env.DIS_STAT_TENANT || 'false',
     frontVersion:'1.3.0'
   },
 

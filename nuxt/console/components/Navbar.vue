@@ -41,7 +41,7 @@
           <b-dropdown-item href="https://github.com/disk91/helium-chirpstack/wiki">{{$t('menu_documentation')}}</b-dropdown-item>
           <b-dropdown-item href="/rest-api/">{{$t('menu_documentation_api')}}</b-dropdown-item>
           <b-dropdown-item to="/front/ticketing">{{$t('menu_service_request')}}</b-dropdown-item>
-          <b-dropdown-item to="/front/migration">{{$t('menu_migration')}}</b-dropdown-item>
+          <b-dropdown-item v-if="!$store.state.admin" to="/front/migration">{{$t('menu_migration')}}</b-dropdown-item>
           <b-dropdown-item to="/front/user">{{$t('menu_edit_profile')}}</b-dropdown-item>
           <b-dropdown-item href="#" @click="signoutAction">{{$t('menu_sign_out')}}</b-dropdown-item>
         </b-nav-item-dropdown>

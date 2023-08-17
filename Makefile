@@ -5,6 +5,7 @@ NETWORK=$(shell docker network ls | grep chirpstack | cut -d " " -f 1)
 CONSOLE_NAME="Helium-Console"
 DIS_DC_PURCHASE=false
 DIS_NEW_TENANT=false
+DIS_STAT_TENANT=false
 CONSOLE_TERMS=https://...
 API_HOST=
 CHIRPSTACK_HOST=
