@@ -651,6 +651,7 @@ public class UserService {
         if ( version != null ) {
             c.heliumUser.setConditionVersion(version.getStrValue());
             c.heliumUser.setConditionTime(new Timestamp(Now.NowUtcMs()));
+            c.heliumUser.setConditionValidation(true);
             userCacheService.updateHeliumUser(c);
         }
 
