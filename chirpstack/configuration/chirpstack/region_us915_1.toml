@@ -149,7 +149,7 @@
     # resulting in a lower data-rate but decreasing the chance that the
     # device gets disconnected because it is unable to reach one of the
     # surrounded gateways.
-    installation_margin=10
+    installation_margin=15
 
     # RX window (Class-A).
     #
