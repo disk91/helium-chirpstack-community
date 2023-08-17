@@ -44,13 +44,17 @@ public class TicketListRespItf {
 
     // ---
 
+    public void setTopic(String topic) {
+        if ( topic.length() > 254 ) topic = topic.substring(0,254);
+        this.topic = topic;
+    }
+
+    // ---
+
     public String getTopic() {
         return topic;
     }
 
-    public void setTopic(String topic) {
-        this.topic = topic;
-    }
 
     public String getDetails() {
         return details;

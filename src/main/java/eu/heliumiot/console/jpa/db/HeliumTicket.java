@@ -61,7 +61,7 @@ public class HeliumTicket {
     private String topic;
 
     // Detail of the message
-    @Column(name = "detail")
+    @Column(name = "detail", columnDefinition = "text")
     private String detail;
 
 

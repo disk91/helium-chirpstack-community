@@ -49,7 +49,7 @@ public class HeliumTicketResponse {
     private Timestamp createdAt;
 
     // Content of the response
-    @Column(name = "content")
+    @Column(name = "content", columnDefinition = "text")
     private String content;
 
     // true when admin is the responder
