@@ -30,9 +30,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
+import java.sql.Timestamp;
 import java.util.List;
 import java.util.UUID;
 
+import static eu.heliumiot.console.service.HeliumParameterService.PARAM_USER_COND_CURRENT;
 import static eu.heliumiot.console.service.UserService.HUPROFILE_STATUS_CREATED;
 
 @Service
@@ -115,6 +117,8 @@ public class UserCacheService {
         h.setProfileStatus(HUPROFILE_STATUS_CREATED);
         h.setUserSecret(RandomString.getRandomAZString(64));
         h.setDefaultOffer(offer);
+        h.setConditionVersion("");  // no condition validated with this path
+        h.setConditionTime(new Timestamp(0));
         h = heliumUserRepository.save(h);
         return h;
     }

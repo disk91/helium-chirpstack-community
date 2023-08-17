@@ -572,10 +572,11 @@ public class UserService {
             // check the user Condition version
             r.setUserConditionChanged(false);
             HeliumParameter version = heliumParameterService.getParameter(PARAM_USER_COND_CURRENT);
-            if ( version != null && u.heliumUser.getConditionVersion().compareToIgnoreCase(version.getStrValue()) != 0 ) {
+            if (  u.heliumUser.getConditionVersion() != null ||
+                ( version != null && u.heliumUser.getConditionVersion().compareToIgnoreCase(version.getStrValue()) != 0 )
+            ) {
                r.setUserConditionChanged(true);
             }
-
             return r;
         } catch ( ITNotFoundException x ) {
             throw new ITRightException();
