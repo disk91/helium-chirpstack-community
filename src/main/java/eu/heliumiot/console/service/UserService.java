@@ -197,6 +197,9 @@ public class UserService {
             throw new ITParseException("error_signupclose");
         }
 
+        // don't mix upper  lower case in user name
+        req.setUsername(req.getUsername().toLowerCase());
+
         UserSignUpRespItf r = new UserSignUpRespItf();
         // verify information
         //  is conditions accepted ?
