@@ -156,7 +156,7 @@ public class HeliumTenantService {
     @Autowired
     private HeliumTenantSetupRepository heliumTenantSetupRepository;
 
-    @Scheduled(fixedRateString = "${helium.tenant.routeregistration.scanPeriod}", initialDelay = 15_000)
+    @Scheduled(fixedRateString = "${helium.tenant.routeregistration.scanPeriod}", initialDelay = 15_000) // default 5s
     protected void asyncRouteRegistration() {
         if ( ! this.serviceEnable ) return;
         this.runningJobs++;

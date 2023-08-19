@@ -35,7 +35,7 @@ public interface TenantRepository extends CrudRepository<Tenant, UUID> {
     @Query(value = "SELECT * FROM tenant WHERE name LIKE CONCAT('%',?1,'%') OR CAST(id as TEXT) LIKE CONCAT('%',?1,'%') LIMIT 10", nativeQuery = true)
     public List<Tenant> findTenantLike(String search);
 
-    @Query(value = "SELECT * FROM helium_tenant LEFT JOIN tenant on tenant.id = UUID(helium_tenant.tenantuuid) WHERE helium_tenant.tenantuuid is null", nativeQuery = true)
+    @Query(value = "SELECT * FROM tenant LEFT JOIN helium_tenant on tenant.id = UUID(helium_tenant.tenantuuid) WHERE helium_tenant.tenantuuid IS NULL", nativeQuery = true)
     public List<Tenant> findMissingTenant();
 
 }
