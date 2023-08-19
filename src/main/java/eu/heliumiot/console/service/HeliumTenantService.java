@@ -193,9 +193,8 @@ public class HeliumTenantService {
                         );
                         if ( rId != null ) {
                             ts.setRouteId(rId);
-                            heliumTenantSetupRepository.save(ts);
-                            // update the cache
-                            ts = heliumTenantSetupService.getHeliumTenantSetup(ts.getTenantUUID(),true);
+                            // save and clear cache for making sure information are up-to-date
+                            heliumTenantSetupService.flushTenantSetup(ts);
                             log.debug("Route for tenant "+ts.getTenantUUID()+" created with id "+ts.getRouteId());
                         } else {
                             log.debug("Failed to create route");
