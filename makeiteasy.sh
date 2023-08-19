@@ -189,8 +189,13 @@ createApiKey() {
     while ! docker exec -ti helium-chirpstack-1 /bin/ls >/dev/null 2>&1 ; do
      sleep 2
     done
+    sleep 10
     APIKEY=`docker exec -ti helium-chirpstack-1 /usr/bin/chirpstack --config /etc/chirpstack create-api-key --name "admin key" | grep token | cut -d ":" -f 2 | tr -d "\r "`
     docker compose stop
+    if [ "$APIKEY" == "" ] ; then
+      echo "Chirpstack API key creation error"
+      exit 7
+    fi
   fi
 }
 
