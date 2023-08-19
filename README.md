@@ -54,7 +54,7 @@ It includes invoice generation for customers and Ticketing solution. It also all
 The MVP4 aim to allow user to migrate devices from a legacy console to the new chirpstack / helium environment based on a wizard.
 It allows to migrate one or many devices from one environment to another.
 
-#### MVP5 - pending
+#### MVP5 - in progress
 The MVP4 aime to provide the user screen to manage all the specific situation like device reactivation, access to invoice, 
 consumption statistics... It also includes the users/customer communication solutions for the platform administrator.
 
@@ -64,7 +64,35 @@ universities. Support of coupons will allow larger program solution including de
 
 
 ## Build the application
-The full installation, including the Chirpstack configuration is detailed on (disk91.com blogpost)[https://www.disk91.com/2022/technology/helium/installing-chirpstack-lorawan-network-server-for-helium/]
+
+Installation is automated with a script and take under 5 minutes for a standard configuration.
+
+As a pre-requisite:
+- You need to have Ubuntu 22.x server ready (config 4VCPU / 8GB / 40GB or more)
+- You need to have a domain name pointing to your server for https configuration or a public IP for http configuration.
+- You need to have SMTP (service to send email) setup ready, if your don't master this, register on sendgrid, configure your email
+and create an API key. 
+
+Once you completed the pre-requisite, you can run setup script
+```
+bash ./makeiteasy.sh
+```
+
+For advanced user & usage, I recommend to follow the full installation guide including the Chirpstack configuration is detailed on (disk91.com blogpost)[https://www.disk91.com/2022/technology/helium/installing-chirpstack-lorawan-network-server-for-helium/]
+
+### Debugging
+
+In most of the cases, problems come from mis-settings during the configuration phase.
+Some tips to help in debugging:
+
+`docker ps` list the running services, if some are restarting on every 30 seconds, look at the service logs to identify the problem. `docker logs` *service_name* will show you the details.
+
+`docker logs helium-helium-1 | grep -i error` also helps to identify the reason why the companion refuses to start or starts with some feature deactivated due to setting issues.
+
+## Monitoring
+
+The solution comes with `grafana` dashboard pre-configured and server / docker monitoring. `grafana` is not exposed publicly and
+it can be accessed over a ssh tunnel or locally on port 8050. Default user / password is admin/admin.
 
 ## Stop the application
 - clean exist with cache purge and queueing processes
