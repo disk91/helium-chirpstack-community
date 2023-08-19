@@ -162,6 +162,20 @@ public class HeliumTenantService {
         this.runningJobs++;
         log.debug("asyncRouteRegistration - starting");
         try {
+            // find all tenant manually created w/o Helium tenant
+            List<eu.heliumiot.console.jpa.db.Tenant> missingTenants = tenantRepository.findMissingTenant();
+            if ( missingTenants != null && missingTenants.size() > 0 ) {
+                HeliumTenantSetup hts = heliumTenantSetupService.getHeliumTenantSetup(HELIUM_TENANT_SETUP_DEFAULT,false);
+                if ( hts != null ) {
+                    for (eu.heliumiot.console.jpa.db.Tenant t : missingTenants) {
+                        log.info("Sync Helium Tenant manually created "+t.getName()+" with default profile");
+                        // create the HeliumTenantSetup
+                        heliumTenantSetupService.createAndSave(hts, t.getId().toString());
+                        // create HeliumTenant
+                        this.createNewHeliumTenant(t.getId().toString(), hts);
+                    }
+                }
+            }
 
             // find all the tenant w/o route created
             List<HeliumTenantSetup> tss = heliumTenantSetupRepository.findHeliumTenantSetupByRouteId(null);
