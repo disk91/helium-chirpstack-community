@@ -213,7 +213,7 @@ public class HeliumTenantService {
 
 
     // Background cleaning of the HeliumTenant and associated HeliumTenantSetup and routes
-    @Scheduled(fixedRateString = "${helium.tenant.removedeleted.scanPeriod}", initialDelay = 15_000)
+    @Scheduled(fixedRateString = "${helium.tenant.removedeleted.scanPeriod}", initialDelay = 15_000) // every 1 hour
     protected void asyncTenantDeletion() {
         if ( ! this.serviceEnable ) return;
         this.runningJobs++;

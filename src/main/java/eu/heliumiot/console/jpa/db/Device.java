@@ -58,6 +58,10 @@ public class Device {
     @Column(name = "variables")
     private String variables;       // contains tags
 
+    @Column(name = "join_eui")
+    private byte[] join_eui;
+
+
     // --
     public String getAppEui() {
         if ( this.variables != null ) {
@@ -74,16 +78,21 @@ public class Device {
                         if ( ae.length() == 16 && HexaConverters.isHexString(ae) ) {
                             return ae;
                         } else {
-                            return null;
+                            break;
                         }
                     }
                 }
             }
         }
+        if ( this.join_eui != null ) {
+            String joinEui = HexaConverters.byteToHexString(this.join_eui);
+            if ( joinEui.length() == 16 && joinEui.compareToIgnoreCase("0000000000000000") != 0 ) {
+                // we have a joinEui setup
+                return joinEui;
+            }
+        }
         return null;
     }
-
-
 
 
     // ---
@@ -175,5 +184,13 @@ public class Device {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public byte[] getJoin_eui() {
+        return join_eui;
+    }
+
+    public void setJoin_eui(byte[] join_eui) {
+        this.join_eui = join_eui;
     }
 }
