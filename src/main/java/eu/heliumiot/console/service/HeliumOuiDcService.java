@@ -8,6 +8,7 @@ import eu.heliumiot.console.api.interfaces.HeliumDcOuisDataOuis;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.*;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
@@ -15,6 +16,7 @@ import org.springframework.web.client.RestTemplate;
 
 import javax.annotation.PostConstruct;
 import java.util.ArrayList;
+import java.util.List;
 
 @Service
 public class HeliumOuiDcService {
@@ -63,17 +65,17 @@ public class HeliumOuiDcService {
             try {
                 HttpEntity<String> he = createHeaders(false);
                 url = consoleConfig.getHeliumOuiDataServer() + "/ouis";
-                ResponseEntity<HeliumDcOuis> responseEntity =
+                ResponseEntity<List<HeliumDcOuisDataOuis>> responseEntity =
                         restTemplate.exchange(
                                 url,
                                 HttpMethod.GET,
                                 he,
-                                HeliumDcOuis.class
+                                new ParameterizedTypeReference<List<HeliumDcOuisDataOuis>>() {}
                         );
                 if (responseEntity.getStatusCode() == HttpStatus.OK) {
                     if (responseEntity.getBody() != null) {
-                        HeliumDcOuis h = responseEntity.getBody();
-                        for (HeliumDcOuisDataOuis oui : h.getData().getOuis()) {
+                        List<HeliumDcOuisDataOuis> h = responseEntity.getBody();
+                        for (HeliumDcOuisDataOuis oui : h) {
                             if (oui.getOui() == consoleConfig.getHeliumRouteOui()) {
                                 this.payer = oui.getPayer();
                             }
@@ -82,13 +84,14 @@ public class HeliumOuiDcService {
                 }
             } catch (Exception e) {
                 this.payer = null;
+                log.warn("Failed to contact service for DC balance");
             }
         }
 
         if (this.escrowAccount == null) {
             try {
                 HttpEntity<String> he = createHeaders(false);
-                url = consoleConfig.getHeliumOuiDataServer() + "/escrowAccount/" + this.payer;
+                url = consoleConfig.getHeliumOuiDataServer() + "/routerKeyToEscrowAccount/" + this.payer;
                 ResponseEntity<HeliumDcEscrow> responseEntity =
                         restTemplate.exchange(
                                 url,
@@ -99,12 +102,13 @@ public class HeliumOuiDcService {
                 if (responseEntity.getStatusCode() == HttpStatus.OK) {
                     if (responseEntity.getBody() != null) {
                         HeliumDcEscrow h = responseEntity.getBody();
-                        this.escrowAccount = h.pubKey;
+                        this.escrowAccount = h.escrowKey;
                         log.info("EscrowAccount is "+this.escrowAccount);
                     }
                 }
             } catch (Exception e) {
                 this.escrowAccount = null;
+                log.warn("Failed to get EscrowAccount");
             }
         }
     }
@@ -117,7 +121,7 @@ public class HeliumOuiDcService {
         if ( this.escrowAccount != null ) {
             try {
                 HttpEntity<String> he = createHeaders(false);
-                url = consoleConfig.getHeliumOuiDataServer() + "/dcAmount/" + this.escrowAccount;
+                url = consoleConfig.getHeliumOuiDataServer() + "/escrowAccountToDcAmount/" + this.escrowAccount;
                 ResponseEntity<HeliumDcAmount> responseEntity =
                         restTemplate.exchange(
                                 url,
@@ -130,9 +134,11 @@ public class HeliumOuiDcService {
                         HeliumDcAmount h = responseEntity.getBody();
                         this.currentDcAmount = h.dcAmount;
                         prometeusService.setDcAmount(this.currentDcAmount);
+                        log.debug("Dc balance "+h.dcAmount);
                     }
                 }
             } catch (Exception e) {
+                log.debug("Failed to get Dc balance");
             }
         } else {
             getInformations();

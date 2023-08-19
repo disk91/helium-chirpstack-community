@@ -3,18 +3,18 @@ package eu.heliumiot.console.api.interfaces;
 public class HeliumDcEscrow {
     /*
         {
-            "pubKey": "HdUJ4CVUp2tDj22UKtFTbd5A4fNmnFvZmH5fkrjxdRdX"
+            "escrowKey": "HdUJ4CVUp2tDj22UKtFTbd5A4fNmnFvZmH5fkrjxdRdX"
         }
      */
-    public String pubKey;
+    public String escrowKey;
 
     // ---
 
-    public String getPubKey() {
-        return pubKey;
+    public String getEscrowKey() {
+        return escrowKey;
     }
 
-    public void setPubKey(String pubKey) {
-        this.pubKey = pubKey;
+    public void setEscrowKey(String escrowKey) {
+        this.escrowKey = escrowKey;
     }
 }
