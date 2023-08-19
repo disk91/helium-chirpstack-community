@@ -306,7 +306,7 @@ public class HeliumDeviceService {
                 this.reportDeviceActivationOnMqtt(hdev);
 
                 prometeusService.addDeviceCreation();
-                log.info("scanNewDevicesJob - Add " + hdev.getDeviceEui());
+                log.debug("scanNewDevicesJob - Add " + hdev.getDeviceEui());
             }
             if (lastCreated > 0) {
                 p.setLongValue(lastCreated - 1); // 1 ms before to make sure
@@ -367,9 +367,9 @@ public class HeliumDeviceService {
                             this.reportDeviceActivationOnMqtt(hdev);
                             // save this
                             heliumDeviceRepository.save(hdev);
-                            log.info("scanNewDevicesJob - Enabling device " + hdev.getDeviceEui());
+                            log.debug("scanNewDevicesJob - Enabling device " + hdev.getDeviceEui());
                         } else {
-                            log.info("scanNewDevicesJob - skip re-enable device when out of dcs "+ hdev.getDeviceEui() );
+                            log.debug("scanNewDevicesJob - skip re-enable device when out of dcs "+ hdev.getDeviceEui() );
                         }
                     } else {
                         log.error("Try to reactivate a device not in a tenant");
@@ -420,7 +420,7 @@ public class HeliumDeviceService {
                     toRemove.add(c);
                     // save this
                     heliumDeviceRepository.save(hdev);
-                    log.info("scanDeletedDevicesJob - Del " + hdev.getDeviceEui());
+                    log.debug("scanDeletedDevicesJob - Del " + hdev.getDeviceEui());
                     prometeusService.addDeviceDeletion();
                 }
 
@@ -443,7 +443,7 @@ public class HeliumDeviceService {
                             toRemove.add(c);
                             // save this
                             heliumDeviceRepository.save(hdev);
-                            log.info("scanDeletedDevicesJob - Disable " + hdev.getDeviceEui());
+                            log.debug("scanDeletedDevicesJob - Disable " + hdev.getDeviceEui());
                             break;
 
                         case DELETED:
@@ -610,7 +610,7 @@ public class HeliumDeviceService {
                         HeliumDevice hdev = heliumDeviceCacheService.getHeliumDevice(devEui,false);
                         if ( hdev != null ) {
                             if ( hdev.getApplicationEui().compareTo(appEui) != 0) {
-                                log.info("Found an appEui to update : "+devEui +" ("+appEui+")");
+                                log.debug("Found an appEui to update : "+devEui +" ("+appEui+")");
                                 hdev.setApplicationEui(appEui);
                                 heliumDeviceRepository.save(hdev);
                             }

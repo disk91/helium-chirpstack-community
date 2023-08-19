@@ -238,7 +238,7 @@ public class NovaService {
             // find the previous one and remove it
             skf_v1 old = r.skfsByEui.get(eui);
             if ( old != null) {
-                log.info("Key "+old.getSessionKey()+" found for deletion");
+                log.debug("Key "+old.getSessionKey()+" found for deletion");
                 SkfUpdate su = new SkfUpdate();
                 su.devAddr = old.getDevaddr();
                 su.session = old.getSessionKey();
@@ -257,7 +257,7 @@ public class NovaService {
             su.devAddr = iDevAddr;
             su.session = ntwSEncKey;
             skfToAdd.add(su);
-            log.info("Key "+ntwSEncKey+" to be added");
+            log.debug("Key "+ntwSEncKey+" to be added");
             grpcUpdateSessions(skfToAdd,skfToRem,routeId);
 
             skf_v1 n = skf_v1.newBuilder()
@@ -568,7 +568,7 @@ public class NovaService {
         for (NovaDevice d : devices) {
             this.addDelayedSessionRefresh(d.devEui);
             this.addDelayedEuisRefreshRemoval(d);
-            log.info("Deactivating device " + d.devEui);
+            log.debug("Deactivating device " + d.devEui);
         }
         return true;
     }
@@ -577,7 +577,7 @@ public class NovaService {
         for (NovaDevice d : devices) {
             this.addDelayedSessionRefresh(d.devEui);
             this.addDelayedEuisRefreshAddition(d);
-            log.info("Activating device " + d.devEui);
+            log.debug("Activating device " + d.devEui);
         }
         return true;
     }
