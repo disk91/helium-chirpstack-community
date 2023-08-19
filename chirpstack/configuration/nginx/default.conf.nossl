@@ -23,7 +23,7 @@ server {
     listen 80;
     listen [::]:80;
 
-    server_name xx.xx.xx.xx;
+    server_name @DOMAIN@;
 
     location ~ ^(/console/) {
          proxy_pass http://backend$request_uri;
