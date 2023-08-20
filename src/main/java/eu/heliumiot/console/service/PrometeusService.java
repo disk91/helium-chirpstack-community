@@ -49,6 +49,8 @@ public class PrometeusService {
 
     // ------ LoRaWan Metrics
     private long loRaTotalTravelTimeMs = 0;      // time between emission and reception - OK
+    private long loRaTotalConfirmedTravelTimeMs = 0; // time between emission and reception for confirmed frame
+    private long loRaConfirmedCount = 0;        // number of uplink confirmed frame
     private long loRaUplinkCount = 0;           // number of uplink messages - OK
     private long loRaDownlinkCount = 0;         // number of downlink messages - OK
     private long loRaTotalUplinkBytes = 0;      // number of bytes transfered in Uplink - OK
@@ -115,10 +117,15 @@ public class PrometeusService {
     synchronized public void addMqttConnectionLoss() { this.mqttConnectionLoss++; }
 
     synchronized public void addLoRaUplink(long travelTime, long bytes) {
-        this.loRaUplinkCount ++;
+        this.loRaUplinkCount++;
         this.loRaTotalUplinkBytes += bytes;
         this.loRaTotalTravelTimeMs += travelTime;
         this.loRaLastSeen = Now.NowUtcMs();
+    }
+
+    synchronized public void addLoRaUplinkConf(long travelTime) {
+        this.loRaConfirmedCount++;
+        this.loRaTotalConfirmedTravelTimeMs += travelTime;
     }
 
     synchronized public void addLoRaJoin() { this.loRaJoinCount++; }
@@ -250,6 +257,11 @@ public class PrometeusService {
     protected Supplier<Number> getLoRaTotalUplink() {
         return ()->loRaUplinkCount;
     }
+
+    protected Supplier<Number> getLoRaConfirmedUplinkCount() {
+        return ()->loRaConfirmedCount;
+    }
+    protected Supplier<Number> getLoRaConfirmedTravelTimeMs() { return ()->loRaTotalConfirmedTravelTimeMs; }
 
     protected Supplier<Number> getLoRaTotalBytesUplink() {
         return ()->loRaTotalUplinkBytes;
@@ -420,6 +432,14 @@ public class PrometeusService {
         Gauge.builder("cons.roaming.changes", getRoamingCount())
                 .description("Number of devices updated to another region")
                 .register(registry);
+
+        Gauge.builder("cons.lora.confirmed.uplink", getLoRaConfirmedUplinkCount())
+            .description("Number of Uplink frame with confirmation request")
+            .register(registry);
+        Gauge.builder("cons.lora.confirmed.traveltime", getLoRaConfirmedTravelTimeMs())
+            .description("Cumulated travel time for uplink confirmed frame")
+            .register(registry);
+
     }
 
     @Autowired

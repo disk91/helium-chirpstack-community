@@ -275,6 +275,13 @@ public class MqttListener implements MqttCallback {
                         //       app eui (rev)   dev eui (rev)  nonce  MIC  CRC
 
                         byte [] payload = uf.getPhyPayload().toByteArray();
+                        if ( (payload[0] & 0xC0) == 0x80 && uf.getRxInfo().getTime().getSeconds() > 0 ) {
+                                // header for confirmed frame - compute elapse time in ms
+                                long rx = (uf.getRxInfo().getTime().getSeconds() * 1000) + (uf.getRxInfo().getTime().getNanos() / 1_000_000);
+                                prometeusService.addLoRaUplinkConf(
+                                    Now.NowUtcMs() - rx
+                                );
+                        }
                         if ( payload[0] == 0 && payload.length == 23 ) {
                                 long now = Now.NowUtcMs();
                                 // possible Join Request
