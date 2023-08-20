@@ -75,6 +75,10 @@ server {
          root /var/www/front;
     }
 
+	location = /integrations/mqtt.png {
+	   return 301 /static/front/mqtt.png;
+	}
+
     location = / {
          if ( $override = "front" ) { return 301 /front/; }
          proxy_pass http://chirpstack$request_uri;
