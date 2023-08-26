@@ -81,7 +81,7 @@ export default Vue.extend({
     },
     methods: {
         async redirectTologin() {
-            window.location.href = 'https://console.helium-iot.eu/mylogin';
+            window.location.href = 'https://console.helium-iot.eu';
         },
         async redirectToChirp() {
             this.$router.push('/front/login');
