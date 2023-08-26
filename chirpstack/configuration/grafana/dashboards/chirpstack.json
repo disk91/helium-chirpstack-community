@@ -24,7 +24,7 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
-  "id": 6,
+  "id": 1,
   "links": [],
   "liveNow": false,
   "panels": [
@@ -65,7 +65,7 @@
               "tooltip": false,
               "viz": false
             },
-            "lineInterpolation": "smooth",
+            "lineInterpolation": "stepBefore",
             "lineWidth": 1,
             "pointSize": 5,
             "scaleDistribution": {
@@ -97,7 +97,24 @@
           },
           "unit": "ms"
         },
-        "overrides": []
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "{instance=\"localhost:8081\", job=\"console\"}"
+            },
+            "properties": [
+              {
+                "id": "custom.hideFrom",
+                "value": {
+                  "legend": false,
+                  "tooltip": false,
+                  "viz": false
+                }
+              }
+            ]
+          }
+        ]
       },
       "gridPos": {
         "h": 5,
@@ -126,9 +143,23 @@
           },
           "editorMode": "code",
           "expr": "increase(cons_lora_travel_time_ms[1m]) / increase(cons_lora_uplinks[1m])",
+          "hide": false,
           "legendFormat": "__auto",
           "range": true,
           "refId": "A"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "PBFA97CFB590B2093"
+          },
+          "editorMode": "code",
+          "expr": "increase(cons_lora_confirmed_traveltime[1m]) / increase(cons_lora_confirmed_uplink[1m])",
+          "hide": false,
+          "instant": false,
+          "legendFormat": "__auto",
+          "range": true,
+          "refId": "B"
         }
       ],
       "title": "Uplink travel time (HS to Console)",
@@ -303,7 +334,7 @@
         },
         "textMode": "auto"
       },
-      "pluginVersion": "9.3.6",
+      "pluginVersion": "10.0.3",
       "targets": [
         {
           "datasource": {
@@ -368,7 +399,7 @@
         },
         "textMode": "auto"
       },
-      "pluginVersion": "9.3.6",
+      "pluginVersion": "10.0.3",
       "targets": [
         {
           "datasource": {
@@ -442,6 +473,7 @@
       "options": {
         "barRadius": 0,
         "barWidth": 0.9,
+        "fullHighlight": false,
         "groupWidth": 0.7,
         "legend": {
           "calcs": [],
@@ -533,6 +565,7 @@
       "options": {
         "barRadius": 0,
         "barWidth": 0.9,
+        "fullHighlight": false,
         "groupWidth": 0.7,
         "legend": {
           "calcs": [],
@@ -724,7 +757,7 @@
               },
               {
                 "color": "red",
-                "value": 80
+                "value": 100000
               }
             ]
           }
@@ -752,7 +785,7 @@
         },
         "textMode": "auto"
       },
-      "pluginVersion": "9.3.6",
+      "pluginVersion": "10.0.3",
       "targets": [
         {
           "datasource": {
@@ -789,7 +822,7 @@
               },
               {
                 "color": "red",
-                "value": 80
+                "value": 100000
               }
             ]
           }
@@ -817,7 +850,7 @@
         },
         "textMode": "auto"
       },
-      "pluginVersion": "9.3.6",
+      "pluginVersion": "10.0.3",
       "targets": [
         {
           "datasource": {
@@ -854,7 +887,7 @@
               },
               {
                 "color": "red",
-                "value": 80
+                "value": 100000
               }
             ]
           }
@@ -882,7 +915,7 @@
         },
         "textMode": "auto"
       },
-      "pluginVersion": "9.3.6",
+      "pluginVersion": "10.0.3",
       "targets": [
         {
           "datasource": {
@@ -1240,7 +1273,7 @@
               },
               {
                 "color": "red",
-                "value": 4000000
+                "value": 40
               }
             ]
           },
@@ -1754,6 +1787,7 @@
         "barRadius": 0.1,
         "barWidth": 0.91,
         "colorByField": "{instance=\"localhost:8081\", job=\"console\"}",
+        "fullHighlight": false,
         "groupWidth": 0.7,
         "legend": {
           "calcs": [],
@@ -2444,8 +2478,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -2537,8 +2570,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -2630,8 +2662,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -2723,8 +2754,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "semi-dark-orange",
-                "value": null
+                "color": "semi-dark-orange"
               },
               {
                 "color": "red",
@@ -2805,8 +2835,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "semi-dark-orange",
-                "value": null
+                "color": "semi-dark-orange"
               },
               {
                 "color": "red",
@@ -2827,6 +2856,7 @@
       "options": {
         "barRadius": 0,
         "barWidth": 0.9,
+        "fullHighlight": false,
         "groupWidth": 0.7,
         "legend": {
           "calcs": [],
@@ -2907,8 +2937,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "semi-dark-orange",
@@ -2974,8 +3003,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "#EAB839",
@@ -3012,7 +3040,7 @@
         },
         "textMode": "auto"
       },
-      "pluginVersion": "9.3.6",
+      "pluginVersion": "10.0.3",
       "targets": [
         {
           "datasource": {
@@ -3819,20 +3847,20 @@
     }
   ],
   "refresh": "10s",
-  "schemaVersion": 37,
+  "schemaVersion": 38,
   "style": "dark",
   "tags": [],
   "templating": {
     "list": []
   },
   "time": {
-    "from": "now-1h",
+    "from": "now-7d",
     "to": "now"
   },
   "timepicker": {},
   "timezone": "",
   "title": "Chirpstack",
   "uid": "6pIR3ibVz",
-  "version": 24,
+  "version": 4,
   "weekStart": ""
 }
