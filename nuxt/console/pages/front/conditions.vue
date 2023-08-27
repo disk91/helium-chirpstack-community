@@ -22,6 +22,7 @@
                 </span><br/>
                 <b-link :href="$config.termAndUse">{{ $t('uc_condition_visit') }}</b-link>
                 <br/>
+                <b-form>
                 <b-form-group style="text-align:center;" class="mb-1 small mt-2">
                         <b-form-checkbox v-model="conditionAccepted"
                                   id="signup-conditions"
@@ -40,7 +41,6 @@
                               class="mb-2">
                               {{ $t('uc_condition_submit') }}</b-button>
                </b-form>
-
               </b-card-text>
             </b-card>
         </div>

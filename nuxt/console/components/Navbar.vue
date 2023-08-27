@@ -35,12 +35,23 @@
         <b-nav-item-dropdown right>
           <template #button-content>
             <img src="/static/front/home_icon.svg" style="width: 24px;position: relative; top: -1px;"/>
+            <span class="badge badge-info position-absolute" 
+                  style="position: relative;top: -5px; right: -5px;" 
+                  v-if="pendingTickets > 0">
+              {{ pendingTickets }}
+            </span>
           </template>
           <b-dropdown-item v-if="!$config.disablePurchase" to="/front/datacredits">{{$t('menu_purchase_dc')}}</b-dropdown-item>
           <b-dropdown-item v-if="!$config.disableNewTenant" href="#" @click="addTenantAction">{{$t('menu_add_tenant')}}</b-dropdown-item>
           <b-dropdown-item href="https://github.com/disk91/helium-chirpstack/wiki">{{$t('menu_documentation')}}</b-dropdown-item>
           <b-dropdown-item href="/rest-api/">{{$t('menu_documentation_api')}}</b-dropdown-item>
-          <b-dropdown-item to="/front/ticketing">{{$t('menu_service_request')}}</b-dropdown-item>
+          <b-dropdown-item to="/front/ticketing">
+            {{$t('menu_service_request')}}
+            <span class="badge badge-info" 
+                  v-if="pendingTickets > 0">
+              {{ pendingTickets }}
+            </span>
+          </b-dropdown-item>
           <b-dropdown-item v-if="!$store.state.admin" to="/front/migration">{{$t('menu_migration')}}</b-dropdown-item>
           <b-dropdown-item to="/front/user">{{$t('menu_edit_profile')}}</b-dropdown-item>
           <b-dropdown-item href="#" @click="signoutAction">{{$t('menu_sign_out')}}</b-dropdown-item>
@@ -99,6 +110,8 @@ export default Vue.extend({
     data () {
 	    return {
 		    polling: null,
+        pollingTickets: null,
+        pendingTickets: 0,
         dc : 0,
         formatedDc : 0,
         mindc : 0,
@@ -188,16 +201,15 @@ export default Vue.extend({
       isChirpStackActive() {
           return false;
       },
-	    pollData () {
-		      this.polling = setInterval(() => {
-          let tenantId = this.$store.state.currentTenant;
+      loadDcBalance() {
+        let tenantId = this.$store.state.currentTenant;
           if ( tenantId != undefined && tenantId != null && tenantId.length > 5 ) {
             let config = {
                   headers: {
                       Authorization: 'Bearer '+this.$store.state.consoleBearer,
                   }
               };
-            this.$axios.get(this.$config.dcbalanceEndpoint+'/'+tenantId+'/')
+            this.$axios.get(this.$config.dcbalanceEndpoint+'/'+tenantId+'/',config)
             .then((response) =>{
                 const dcb = response.data;
                 this.tenantName = dcb.tenantName;
@@ -219,7 +231,29 @@ export default Vue.extend({
           } else {
             this.tenantName = "NA";
           }
+      },
+	    pollData () {
+        this.loadDcBalance();
+		    this.polling = setInterval(() => {
+            this.loadDcBalance();
 		    } , 1000)
+	    },
+      loadTickets() {
+        let config = {
+              headers: {
+                  Authorization: 'Bearer '+this.$store.state.consoleBearer,
+              }
+          };
+          this.$axios.get(this.$config.ticketCountPendingGet,config)
+          .then((response) =>{
+                this.pendingTickets = response.data.pending;
+            })
+      },
+	    pollTickets () {
+        this.loadTickets();
+		    this.pollingTickets = setInterval(() => {
+          this.loadTickets();
+		    } , 30000)
 	    },
       addTenantAction() {
         this.$root.$emit("message-display-add-tenant", "");
@@ -240,11 +274,13 @@ export default Vue.extend({
       }
     },
     created () {
-	    this.pollData()   
+	    this.pollData();
+      this.pollTickets();
     },
     beforeDestroy () {
       // clean DC poller
-  	  clearInterval(this.polling)
+  	  clearInterval(this.polling);
+      clearInterval(this.pollingTickets);
     },
 })
 

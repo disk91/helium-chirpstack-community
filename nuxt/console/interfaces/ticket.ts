@@ -30,4 +30,7 @@ declare module "vue/types/ticket" {
         content : string,
         closing : boolean,
     }
+    interface TicketCountRespItf {
+        pending: number,
+    }
 }

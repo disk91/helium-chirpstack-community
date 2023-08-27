@@ -37,6 +37,7 @@ public interface HeliumTicketRepository extends CrudRepository<HeliumTicket, UUI
             UUID userUUID
     );
 
+
     public List<HeliumTicket> findHeliumTicketByUserUUIDAndStatusOrderByCreatedAtDesc(
             UUID userUUID,
             int status

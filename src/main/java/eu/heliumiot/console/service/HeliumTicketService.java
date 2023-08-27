@@ -128,6 +128,31 @@ public class HeliumTicketService {
         return rs;
     }
 
+
+    public TicketCountRespItf countUserTickets(String userUUID)
+        throws ITRightException {
+
+        TicketCountRespItf r = new TicketCountRespItf();
+        r.setPending(0);
+
+        // Admin have a different path to get all pending
+        UserCacheService.UserCacheElement user = userCacheService.getUserById(userUUID);
+        if (user == null) throw new ITRightException();
+        if ( user.user.isAdmin() ) {
+            r.setPending(getAdminTickets().size());
+        } else {
+            List<HeliumTicket> ts = heliumTicketRepository.findHeliumTicketByUserUUIDAndStatusOrderByCreatedAtDesc(
+                UUID.fromString(userUUID),
+                HELIUM_TICKET_STATUS_RESPP
+            );
+            if (ts != null) {
+                r.setPending(ts.size());
+            }
+        }
+        return r;
+    }
+
+
     // List admin ticket
     public List<TicketListRespItf> getAdminTickets() {
         List<HeliumTicket> ts = heliumTicketRepository.findHeliumTicketByStatusOrderByCreatedAtDesc(

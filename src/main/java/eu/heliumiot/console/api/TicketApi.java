@@ -71,6 +71,36 @@ public class TicketApi {
         }
     }
 
+    @Operation(summary = "Count Pending Tickets",
+        description = "Count my pending tickets or user tickets when admin",
+        responses = {
+            @ApiResponse(responseCode = "200", description= "Done",
+                content = @Content(array = @ArraySchema(schema = @Schema( implementation = TicketCountRespItf.class)))),
+            @ApiResponse(responseCode = "403", description= "Forbidden", content = @Content(schema = @Schema(implementation = ActionResult.class))),
+        }
+    )
+    @RequestMapping(value="/count",
+        produces = MediaType.APPLICATION_JSON_VALUE,
+        method= RequestMethod.GET)
+    @PreAuthorize("hasAnyRole('ROLE_USER')")
+    public ResponseEntity<?> countTickets(
+        HttpServletRequest request
+    ) {
+        long startMs= Now.NowUtcMs();
+        log.debug("Count tickets for "+request.getUserPrincipal().getName());
+        try {
+            TicketCountRespItf r = heliumTicketService.countUserTickets(request.getUserPrincipal().getName());
+            return new ResponseEntity<>(r, HttpStatus.OK);
+        } catch (ITRightException x) {
+            prometeusService.addApiTotalError();
+            ActionResult r = ActionResult.FORBIDDEN();
+            r.setMessage(x.getMessage());
+            return new ResponseEntity<>(r, HttpStatus.FORBIDDEN);
+        } finally {
+            prometeusService.addApiTotalTimeMs(startMs);
+        }
+    }
+
     @Operation(summary = "Get ticket detail",
             description = "Get details of one given ticket",
             responses = {
