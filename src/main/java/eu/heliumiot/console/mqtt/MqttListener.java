@@ -200,16 +200,17 @@ public class MqttListener implements MqttCallback {
                         try {
 
                                 UplinkEvent up = mapper.readValue(message.toString(), UplinkEvent.class);
+                                prometeusService.addLoRaUplink(
+                                    Now.NowUtcMs() - DateConverters.StringDateToMs(up.getTime()),
+                                    Base64.decode(up.getData()).length
+                                );
+
                                 log.debug("UPLINK Dev: " + up.getDeviceInfo().getDevEui() + " Adr:" + up.getDevAddr() + " duplicates:" + up.getRxInfo().size() + " size: "+Base64.decode(up.getData()).length);
                                 heliumTenantService.processUplink(
                                         up.getDeviceInfo().getTenantId(),
                                         up.getDeviceInfo().getDevEui(),
                                         Base64.decode(up.getData()).length,
                                         up.getRxInfo().size() - 1
-                                );
-                                prometeusService.addLoRaUplink(
-                                        Now.NowUtcMs() - DateConverters.StringDateToMs(up.getTime()),
-                                        Base64.decode(up.getData()).length
                                 );
 
                         } catch (JsonProcessingException x) {
@@ -268,13 +269,15 @@ public class MqttListener implements MqttCallback {
 // UPSTREAM REGION HACK
 // =================================================
 
-                } else if ( mqttConfig.getHeliumZoneDetectionEnable() && topicName.matches(".*/gateway/.*/event/up$") ) {
+                } else if (  topicName.matches(".*/gateway/.*/event/up$") ) {
 
                         UplinkFrame uf = UplinkFrame.parseFrom(message.getPayload());
                         // 00 9A2E3DD7EFF98160 9861BFC396F98160 75AB   D683 EED2
                         //       app eui (rev)   dev eui (rev)  nonce  MIC  CRC
 
                         byte [] payload = uf.getPhyPayload().toByteArray();
+
+                        // Measure uplink confirmed processing time
                         if ( (payload[0] & 0xC0) == 0x80 && uf.getRxInfo().getTime().getSeconds() > 0 ) {
                                 // header for confirmed frame - compute elapse time in ms
                                 long rx = (uf.getRxInfo().getTime().getSeconds() * 1000) + (uf.getRxInfo().getTime().getNanos() / 1_000_000);
@@ -282,34 +285,38 @@ public class MqttListener implements MqttCallback {
                                     Now.NowUtcMs() - rx
                                 );
                         }
-                        if ( payload[0] == 0 && payload.length == 23 ) {
-                                long now = Now.NowUtcMs();
-                                // possible Join Request
-                                String devEUI = HexaConverters.byteToHexString(payload,9,8);
-                                String region = topicName.substring(0,topicName.indexOf("/"));
-                                DeviceDedup d = dedupHashMap.get(devEUI);
-                                if ( d == null || (now - d.lastSeen) > Now.ONE_MINUTE ) {
-                                        // found a new join for that device
-                                        d = new DeviceDedup();
-                                        d.devEui = devEUI;
-                                        d.lastSeen = now;
-                                        dedupHashMap.put(devEUI,d);
 
-                                        // ... push to process
-                                        byte [] _dev = new byte[8]; // reverse the bytes of the address
-                                        for ( int i = 0 ; i < 8 ; i++ ) {
-                                           _dev[i] = payload[(9+8-1)-i];
+                        // Manage zone switch on Join Requests
+                        if ( mqttConfig.getHeliumZoneDetectionEnable()  ) {
+                                if (payload[0] == 0 && payload.length == 23) {
+                                        long now = Now.NowUtcMs();
+                                        // possible Join Request
+                                        String devEUI = HexaConverters.byteToHexString(payload, 9, 8);
+                                        String region = topicName.substring(0, topicName.indexOf("/"));
+                                        DeviceDedup d = dedupHashMap.get(devEUI);
+                                        if (d == null || (now - d.lastSeen) > Now.ONE_MINUTE) {
+                                                // found a new join for that device
+                                                d = new DeviceDedup();
+                                                d.devEui = devEUI;
+                                                d.lastSeen = now;
+                                                dedupHashMap.put(devEUI, d);
+
+                                                // ... push to process
+                                                byte[] _dev = new byte[8]; // reverse the bytes of the address
+                                                for (int i = 0; i < 8; i++) {
+                                                        _dev[i] = payload[(9 + 8 - 1) - i];
+                                                }
+                                                log.info("Found a join request for " + HexaConverters.byteToHexString(_dev) + " for region " + region);
+                                                roamingService.processJoinMessage(_dev, HexaConverters.byteToHexString(_dev), region);
                                         }
-                                        log.info("Found a join request for "+HexaConverters.byteToHexString(_dev)+" for region "+region);
-                                        roamingService.processJoinMessage(_dev, HexaConverters.byteToHexString(_dev),region);
-                                }
-                                // clean the dedup storage
-                                if ( dedupHashMap.size() > 500 ) {
-                                        Set<String> obj = dedupHashMap.keySet();
-                                        for ( String s : obj ) {
-                                                DeviceDedup _d = dedupHashMap.get(s);
-                                                if ( _d != null && (now - _d.lastSeen) > 2*Now.ONE_MINUTE ) {
-                                                        dedupHashMap.remove(_d.devEui);
+                                        // clean the dedup storage
+                                        if (dedupHashMap.size() > 500) {
+                                                Set<String> obj = dedupHashMap.keySet();
+                                                for (String s : obj) {
+                                                        DeviceDedup _d = dedupHashMap.get(s);
+                                                        if (_d != null && (now - _d.lastSeen) > 2 * Now.ONE_MINUTE) {
+                                                                dedupHashMap.remove(_d.devEui);
+                                                        }
                                                 }
                                         }
                                 }
