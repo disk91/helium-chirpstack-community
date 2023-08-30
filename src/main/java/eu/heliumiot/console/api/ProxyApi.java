@@ -72,7 +72,12 @@ public class ProxyApi {
     private boolean verifyEndpoint(String endPoint,String user) {
 
         // @TODO - rate limiter could be implemented
+        // validate the standard domains
+        if ( endPoint.compareToIgnoreCase("https://console.helium-iot.eu/api") == 0 ) {
+            return true;
+        }
 
+        // do it for the rest
         if (endPoint.matches("^[A-Za-z0-9_./:-]+$")
                 && (endPoint.startsWith("http://") || endPoint.startsWith("https://"))
                 && (!endPoint.matches("/v1/.*/v1/"))
