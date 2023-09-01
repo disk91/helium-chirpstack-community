@@ -117,7 +117,7 @@
         ]
       },
       "gridPos": {
-        "h": 5,
+        "h": 6,
         "w": 9,
         "x": 0,
         "y": 1
@@ -224,7 +224,7 @@
         "overrides": []
       },
       "gridPos": {
-        "h": 8,
+        "h": 9,
         "w": 12,
         "x": 9,
         "y": 1
@@ -303,10 +303,6 @@
               {
                 "color": "green",
                 "value": null
-              },
-              {
-                "color": "red",
-                "value": 80
               }
             ]
           }
@@ -314,7 +310,7 @@
         "overrides": []
       },
       "gridPos": {
-        "h": 4,
+        "h": 3,
         "w": 3,
         "x": 21,
         "y": 1
@@ -366,12 +362,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
+                "color": "orange",
                 "value": null
-              },
-              {
-                "color": "red",
-                "value": 80
               }
             ]
           }
@@ -379,10 +371,10 @@
         "overrides": []
       },
       "gridPos": {
-        "h": 4,
+        "h": 3,
         "w": 3,
         "x": 21,
-        "y": 5
+        "y": 4
       },
       "id": 54,
       "options": {
@@ -467,7 +459,7 @@
         "h": 3,
         "w": 5,
         "x": 0,
-        "y": 6
+        "y": 7
       },
       "id": 56,
       "options": {
@@ -559,7 +551,7 @@
         "h": 3,
         "w": 4,
         "x": 5,
-        "y": 6
+        "y": 7
       },
       "id": 59,
       "options": {
@@ -599,6 +591,67 @@
       ],
       "title": "Mqtt Error",
       "type": "barchart"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "PBFA97CFB590B2093"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "blue",
+                "value": null
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 3,
+        "w": 3,
+        "x": 21,
+        "y": 7
+      },
+      "id": 84,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "textMode": "auto"
+      },
+      "pluginVersion": "10.0.3",
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "PBFA97CFB590B2093"
+          },
+          "editorMode": "code",
+          "expr": "increase(cons_lora_downlinks[1h])+increase(cons_lora_uplinks[1h])+increase(cons_lora_join[1h])",
+          "legendFormat": "__auto",
+          "range": true,
+          "refId": "A"
+        }
+      ],
+      "title": "Packets/h",
+      "type": "stat"
     },
     {
       "datasource": {
@@ -692,7 +745,7 @@
         "h": 4,
         "w": 9,
         "x": 0,
-        "y": 9
+        "y": 10
       },
       "id": 64,
       "options": {
@@ -768,7 +821,7 @@
         "h": 4,
         "w": 3,
         "x": 9,
-        "y": 9
+        "y": 10
       },
       "id": 71,
       "options": {
@@ -833,7 +886,7 @@
         "h": 4,
         "w": 3,
         "x": 12,
-        "y": 9
+        "y": 10
       },
       "id": 72,
       "options": {
@@ -898,7 +951,7 @@
         "h": 4,
         "w": 3,
         "x": 15,
-        "y": 9
+        "y": 10
       },
       "id": 73,
       "options": {
@@ -996,7 +1049,7 @@
         "h": 4,
         "w": 6,
         "x": 18,
-        "y": 9
+        "y": 10
       },
       "id": 74,
       "options": {
@@ -1091,7 +1144,7 @@
         "h": 5,
         "w": 14,
         "x": 0,
-        "y": 13
+        "y": 14
       },
       "hideTimeOverride": false,
       "id": 80,
@@ -1188,7 +1241,7 @@
         "h": 5,
         "w": 4,
         "x": 14,
-        "y": 13
+        "y": 14
       },
       "hideTimeOverride": false,
       "id": 83,
@@ -1285,7 +1338,7 @@
         "h": 5,
         "w": 6,
         "x": 18,
-        "y": 13
+        "y": 14
       },
       "id": 82,
       "options": {
@@ -1322,7 +1375,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 18
+        "y": 19
       },
       "id": 24,
       "panels": [],
@@ -1391,7 +1444,7 @@
         "h": 7,
         "w": 9,
         "x": 0,
-        "y": 19
+        "y": 20
       },
       "id": 26,
       "options": {
@@ -1497,7 +1550,7 @@
         "h": 3,
         "w": 5,
         "x": 9,
-        "y": 19
+        "y": 20
       },
       "id": 28,
       "options": {
@@ -1589,7 +1642,7 @@
         "h": 4,
         "w": 5,
         "x": 9,
-        "y": 22
+        "y": 23
       },
       "id": 30,
       "options": {
@@ -1626,7 +1679,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 26
+        "y": 27
       },
       "id": 41,
       "panels": [],
@@ -1679,8 +1732,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -1696,7 +1748,7 @@
         "h": 4,
         "w": 9,
         "x": 0,
-        "y": 27
+        "y": 28
       },
       "id": 43,
       "options": {
@@ -1764,8 +1816,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "light-red",
@@ -1780,7 +1831,7 @@
         "h": 4,
         "w": 5,
         "x": 9,
-        "y": 27
+        "y": 28
       },
       "id": 45,
       "options": {
@@ -1866,8 +1917,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -1914,7 +1964,7 @@
         "h": 8,
         "w": 10,
         "x": 14,
-        "y": 27
+        "y": 28
       },
       "id": 66,
       "options": {
@@ -2002,8 +2052,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -2018,7 +2067,7 @@
         "h": 4,
         "w": 7,
         "x": 0,
-        "y": 31
+        "y": 32
       },
       "id": 68,
       "options": {
@@ -2094,8 +2143,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -2110,7 +2158,7 @@
         "h": 4,
         "w": 7,
         "x": 7,
-        "y": 31
+        "y": 32
       },
       "id": 69,
       "options": {
@@ -2147,7 +2195,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 35
+        "y": 36
       },
       "id": 32,
       "panels": [],
@@ -2199,8 +2247,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -2216,7 +2263,7 @@
         "h": 4,
         "w": 8,
         "x": 0,
-        "y": 36
+        "y": 37
       },
       "id": 34,
       "options": {
@@ -2292,8 +2339,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -2309,7 +2355,7 @@
         "h": 4,
         "w": 8,
         "x": 8,
-        "y": 36
+        "y": 37
       },
       "id": 36,
       "options": {
@@ -2385,8 +2431,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -2402,7 +2447,7 @@
         "h": 4,
         "w": 8,
         "x": 16,
-        "y": 36
+        "y": 37
       },
       "id": 37,
       "options": {
@@ -2494,7 +2539,7 @@
         "h": 4,
         "w": 8,
         "x": 0,
-        "y": 40
+        "y": 41
       },
       "id": 35,
       "options": {
@@ -2586,7 +2631,7 @@
         "h": 4,
         "w": 8,
         "x": 8,
-        "y": 40
+        "y": 41
       },
       "id": 38,
       "options": {
@@ -2678,7 +2723,7 @@
         "h": 4,
         "w": 8,
         "x": 16,
-        "y": 40
+        "y": 41
       },
       "id": 39,
       "options": {
@@ -2769,7 +2814,7 @@
         "h": 4,
         "w": 8,
         "x": 0,
-        "y": 44
+        "y": 45
       },
       "id": 61,
       "options": {
@@ -2850,7 +2895,7 @@
         "h": 4,
         "w": 8,
         "x": 8,
-        "y": 44
+        "y": 45
       },
       "id": 62,
       "options": {
@@ -2957,7 +3002,7 @@
         "h": 4,
         "w": 5,
         "x": 16,
-        "y": 44
+        "y": 45
       },
       "id": 76,
       "options": {
@@ -3023,7 +3068,7 @@
         "h": 4,
         "w": 3,
         "x": 21,
-        "y": 44
+        "y": 45
       },
       "id": 78,
       "options": {
@@ -3063,7 +3108,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 48
+        "y": 49
       },
       "id": 6,
       "panels": [],
@@ -3131,7 +3176,7 @@
         "h": 7,
         "w": 24,
         "x": 0,
-        "y": 49
+        "y": 50
       },
       "id": 4,
       "options": {
@@ -3226,7 +3271,7 @@
         "h": 7,
         "w": 24,
         "x": 0,
-        "y": 56
+        "y": 57
       },
       "id": 2,
       "options": {
@@ -3268,7 +3313,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 63
+        "y": 64
       },
       "id": 8,
       "panels": [],
@@ -3335,7 +3380,7 @@
         "h": 8,
         "w": 10,
         "x": 0,
-        "y": 64
+        "y": 65
       },
       "id": 10,
       "options": {
@@ -3447,7 +3492,7 @@
         "h": 5,
         "w": 3,
         "x": 10,
-        "y": 64
+        "y": 65
       },
       "id": 12,
       "options": {
@@ -3517,7 +3562,7 @@
         "h": 3,
         "w": 3,
         "x": 13,
-        "y": 64
+        "y": 65
       },
       "id": 20,
       "options": {
@@ -3610,7 +3655,7 @@
         "h": 8,
         "w": 8,
         "x": 16,
-        "y": 64
+        "y": 65
       },
       "id": 16,
       "options": {
@@ -3684,7 +3729,7 @@
         "h": 3,
         "w": 3,
         "x": 13,
-        "y": 67
+        "y": 68
       },
       "id": 22,
       "options": {
@@ -3746,7 +3791,7 @@
         "h": 3,
         "w": 3,
         "x": 10,
-        "y": 69
+        "y": 70
       },
       "id": 14,
       "options": {
@@ -3811,7 +3856,7 @@
         "h": 2,
         "w": 3,
         "x": 13,
-        "y": 70
+        "y": 71
       },
       "id": 18,
       "options": {
@@ -3854,13 +3899,13 @@
     "list": []
   },
   "time": {
-    "from": "now-7d",
+    "from": "now-3h",
     "to": "now"
   },
   "timepicker": {},
   "timezone": "",
   "title": "Chirpstack",
   "uid": "6pIR3ibVz",
-  "version": 4,
+  "version": 5,
   "weekStart": ""
 }
