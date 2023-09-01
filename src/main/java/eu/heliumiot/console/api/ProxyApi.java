@@ -73,7 +73,10 @@ public class ProxyApi {
 
         // @TODO - rate limiter could be implemented
         // validate the standard domains
-        if ( endPoint.compareToIgnoreCase("https://console.helium-iot.eu/api") == 0 ) {
+        if ( endPoint.compareToIgnoreCase("https://console.helium-iot.eu/api") == 0
+           || endPoint.compareToIgnoreCase("https://console-vip.helium.com/api/") == 0
+           || endPoint.compareToIgnoreCase("https://console.helium.com/api/") == 0
+        ) {
             return true;
         }
 

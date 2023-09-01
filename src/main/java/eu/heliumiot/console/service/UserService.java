@@ -209,6 +209,7 @@ public class UserService {
 
         // verify email
         if ( ! Tools.isValidEmailSyntax(req.getUsername()) ) {
+            log.warn("Rejected email registration for "+req.getUsername());
             throw new ITParseException("error_invalid_email");
         }
 
@@ -233,7 +234,7 @@ public class UserService {
         // verify email does not exists
         if ( userCacheService.getUserByUsername(req.getUsername()) != null ) {
             // return success but nothing will be made, the
-            // email already exist but we do not want this infomration
+            // email already exist but we do not want this infomrmation
             // to be publicly reported
             r.setErrorMessage("success");
             try {
