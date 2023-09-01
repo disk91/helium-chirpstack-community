@@ -71,7 +71,7 @@
                  footer-border-variant="white"
                  size="small"
         >
-        {{ umessage.content }}
+        <div v-html="umessage.content"></div>
   </b-modal>
   <b-alert 
     v-model="umessage.showAlert"
@@ -81,7 +81,7 @@
     dismissible
     @dismissed="ackMessage"
   >
-    {{ umessage.content }}
+    <div v-html="umessage.content"></div>
   </b-alert>
 </div>
 </template>
