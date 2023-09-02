@@ -348,7 +348,7 @@ public class MqttListener implements MqttCallback {
                                 }
                         }
                         long p = Now.NowUtcMs() - now;
-                        log.info("## Process : total "+p+"ms / decode "+k+"ms / prom "+l+"ms ");
+                        log.info("## Process : total "+p+"ms / decode "+k+"ms / prom "+l+"ms "+"Packet : "+(now-rx)+"ms");
 
 // =================================================
 // INTERNAL ASYNCHRONOUS MESSAGES
