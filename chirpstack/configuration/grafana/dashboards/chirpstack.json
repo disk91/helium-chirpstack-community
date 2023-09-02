@@ -351,7 +351,8 @@
                 "value": null
               }
             ]
-          }
+          },
+          "unit": "decbytes"
         },
         "overrides": []
       },
@@ -412,7 +413,8 @@
                 "value": null
               }
             ]
-          }
+          },
+          "unit": "decbytes"
         },
         "overrides": []
       },
@@ -889,7 +891,8 @@
                 "value": null
               }
             ]
-          }
+          },
+          "unit": "decbytes"
         },
         "overrides": []
       },
@@ -911,6 +914,9 @@
           ],
           "fields": "",
           "values": false
+        },
+        "text": {
+          "titleSize": 1
         },
         "textMode": "auto"
       },
@@ -4174,13 +4180,13 @@
     "list": []
   },
   "time": {
-    "from": "now-3h",
+    "from": "now-1h",
     "to": "now"
   },
   "timepicker": {},
   "timezone": "",
   "title": "Chirpstack",
   "uid": "6pIR3ibVz",
-  "version": 7,
+  "version": 8,
   "weekStart": ""
 }
