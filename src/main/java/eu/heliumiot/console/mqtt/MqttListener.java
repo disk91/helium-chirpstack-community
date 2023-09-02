@@ -192,6 +192,13 @@ public class MqttListener implements MqttCallback {
         protected HashMap<String,DeviceDedup> dedupHashMap = new HashMap<>();
         protected HashMap<String,Long> packetDedup = new HashMap<>();
 
+        @Scheduled(fixedDelayString = "${helium.mqtt.reconnect.scanPeriod}", initialDelay = 120_000) // default 10s
+        protected void cleanDedupCache() {
+                // @TODO - clean the dedup ashmap
+                // change the scanPeriod entry also
+        }
+
+
         @Override
         public void messageArrived(String topicName, MqttMessage message) throws Exception {
                 // Leave it blank for Publisher
@@ -282,10 +289,10 @@ public class MqttListener implements MqttCallback {
 
                         byte [] payload = uf.getPhyPayload().toByteArray();
                         long rx = (uf.getRxInfo().getTime().getSeconds() * 1000) + (uf.getRxInfo().getTime().getNanos() / 1_000_000);
-
                         String spayload = HexaConverters.byteToHexString(payload);
                         // Manage arrival time for the first frame
                         Long packetTime = packetDedup.get(spayload);
+        long k = Now.NowUtcMs()-now;
                         if ( packetTime == null ) {
                                 // first time we see this packet
                                 packetDedup.put(spayload, now);
@@ -296,7 +303,7 @@ public class MqttListener implements MqttCallback {
                         }
                         // count packets received at gateway level (invoiced by HPR, potentially rejected by LNS)
                         prometeusService.addLoRaGatewayUplink();
-
+        long l = Now.NowUtcMs()-now;
 
                         // Measure uplink confirmed processing time
                         if ( (payload[0] & 0xC0) == 0x80 && uf.getRxInfo().getTime().getSeconds() > 0 ) {
@@ -340,6 +347,8 @@ public class MqttListener implements MqttCallback {
                                         }
                                 }
                         }
+                        long p = Now.NowUtcMs() - now;
+                        log.info("## Process : total "+p+"ms / decode "+k+"ms / prom "+l+"ms ");
 
 // =================================================
 // INTERNAL ASYNCHRONOUS MESSAGES
