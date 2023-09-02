@@ -45,6 +45,7 @@ services:
     image: disk91/forwarder:2.0.0
     restart: unless-stopped
     volumes:
+      - /helium/cli/keypair.bin:/etc/helium/pkey.bin
       - /helium/configuration/forwarder/node1.properties:/configuration.properties
     logging: *logs
 
@@ -52,6 +53,7 @@ services:
     image: disk91/forwarder:2.0.0
     restart: unless-stopped
     volumes:
+      - /helium/cli/keypair.bin:/etc/helium/pkey.bin
       - /helium/configuration/forwarder/node2.properties:/configuration.properties
     logging: *logs
 
