@@ -48,6 +48,7 @@ import org.eclipse.paho.client.mqttv3.*;
 import org.eclipse.paho.client.mqttv3.persist.MemoryPersistence;
 
 import javax.annotation.PostConstruct;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Set;
@@ -202,12 +203,16 @@ public class MqttListener implements MqttCallback {
         // clean the dedup storage
         if (dedupHashMap.size() > 200) {
             Set<String> obj = dedupHashMap.keySet();
+            ArrayList<String> toRemove = new ArrayList<>();
             synchronized (lockJoinDedup) {
                 for (String s : obj) {
                     DeviceDedup _d = dedupHashMap.get(s);
                     if (_d != null && (now - _d.lastSeen) > 2 * Now.ONE_MINUTE) {
-                        dedupHashMap.remove(_d.devEui);
+                        toRemove.add(_d.devEui);
                     }
+                }
+                for ( String s : toRemove ) {
+                    dedupHashMap.remove(s);
                 }
             }
         }
@@ -215,13 +220,17 @@ public class MqttListener implements MqttCallback {
         // clean the dedup packets
         if (packetDedup.size() > 500) {
             Set<String> obj = packetDedup.keySet();
+            ArrayList<String> toRemove = new ArrayList<>();
             synchronized (lockPacketDedup) {
                 for (String s : obj) {
                     long t = packetDedup.get(s);
                     if ((now - t) > 30 * Now.ONE_MINUTE) {
                         // use 30 minutes because HPR uses 30 minutes dedup windows
-                        packetDedup.remove(s);
+                        toRemove.add(s);
                     }
+                }
+                for ( String s : toRemove ) {
+                    packetDedup.remove(s);
                 }
             }
         }
