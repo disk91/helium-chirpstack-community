@@ -492,7 +492,7 @@ public class PrometeusService {
         Gauge.builder("cons.lora.gateway.uplink", getLoRaGatewayUplinkCount())
             .description("Number of packets received at gateway level, not lns accepted")
             .register(registry);
-        
+
     }
 
     @Autowired

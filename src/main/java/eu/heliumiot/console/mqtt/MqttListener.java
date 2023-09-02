@@ -413,5 +413,5 @@ public class MqttListener implements MqttCallback {
         }
         log.debug("MQTT processing time "+(Now.NowUtcMs()-start)+"ms for "+topicName);
     }
-    
+
 }
