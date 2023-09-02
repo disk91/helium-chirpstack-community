@@ -76,6 +76,8 @@ public class MqttListener implements MqttCallback {
         protected String[] _topics = {"application/#","helium/#","+/gateway/+/event/up"};
         protected int[] _qos = { MQTT_QOS,MQTT_QOS,MQTT_QOS };
 
+        ObjectMapper mapper = new ObjectMapper();
+
         @PostConstruct
         public MqttClient initMqtt() {
 
@@ -96,6 +98,11 @@ public class MqttListener implements MqttCallback {
                         this.connectionOptions.setUserName(mqttConfig.getMqttLogin());
                         this.connectionOptions.setPassword(mqttConfig.getMqttPassword().toCharArray());
                         this.connect();
+
+                        this.mapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
+                        this.mapper.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
+                        this.mapper.configure(SerializationFeature.FAIL_ON_SELF_REFERENCES, false);
+
                         log.info("MQTT Starting Mqtt listener");
                 } catch (MqttException me) {
                         log.error("MQTT Init ERROR : "+me.getMessage());
@@ -183,25 +190,21 @@ public class MqttListener implements MqttCallback {
         }
 
         protected HashMap<String,DeviceDedup> dedupHashMap = new HashMap<>();
+        protected HashMap<String,Long> packetDedup = new HashMap<>();
 
         @Override
         public void messageArrived(String topicName, MqttMessage message) throws Exception {
                 // Leave it blank for Publisher
                 long start = Now.NowUtcMs();
                 //log.info("MQTT - MessageArrived on "+topicName);
-                ObjectMapper mapper = new ObjectMapper();
-                mapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
-                mapper.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
-                mapper.configure(SerializationFeature.FAIL_ON_SELF_REFERENCES, false);
 
                 // some of the messages are protobuf format
                 if ( topicName.matches("application/.*/event/up$") ) {
                         // Prefer MQTT to get the uplink information because the data is decoded
                         try {
-
                                 UplinkEvent up = mapper.readValue(message.toString(), UplinkEvent.class);
                                 prometeusService.addLoRaUplink(
-                                    Now.NowUtcMs() - DateConverters.StringDateToMs(up.getTime()),
+                                    start - DateConverters.StringDateToMs(up.getTime()),
                                     Base64.decode(up.getData()).length
                                 );
 
@@ -270,26 +273,42 @@ public class MqttListener implements MqttCallback {
 // =================================================
 
                 } else if (  topicName.matches(".*/gateway/.*/event/up$") ) {
+                        long now = Now.NowUtcMs();
+
 
                         UplinkFrame uf = UplinkFrame.parseFrom(message.getPayload());
                         // 00 9A2E3DD7EFF98160 9861BFC396F98160 75AB   D683 EED2
                         //       app eui (rev)   dev eui (rev)  nonce  MIC  CRC
 
                         byte [] payload = uf.getPhyPayload().toByteArray();
+                        long rx = (uf.getRxInfo().getTime().getSeconds() * 1000) + (uf.getRxInfo().getTime().getNanos() / 1_000_000);
+
+                        String spayload = HexaConverters.byteToHexString(payload);
+                        // Manage arrival time for the first frame
+                        Long packetTime = packetDedup.get(spayload);
+                        if ( packetTime == null ) {
+                                // first time we see this packet
+                                packetDedup.put(spayload, now);
+                                prometeusService.addLoRaFirstUplink( now - rx );
+                        } else if ( (now - rx) > 2_000 ) {
+                                // late packet
+                                prometeusService.addLoRaLateUplink( now - rx );
+                        }
+                        // count packets received at gateway level (invoiced by HPR, potentially rejected by LNS)
+                        prometeusService.addLoRaGatewayUplink();
+
 
                         // Measure uplink confirmed processing time
                         if ( (payload[0] & 0xC0) == 0x80 && uf.getRxInfo().getTime().getSeconds() > 0 ) {
                                 // header for confirmed frame - compute elapse time in ms
-                                long rx = (uf.getRxInfo().getTime().getSeconds() * 1000) + (uf.getRxInfo().getTime().getNanos() / 1_000_000);
                                 prometeusService.addLoRaUplinkConf(
-                                    Now.NowUtcMs() - rx
+                                    now - rx
                                 );
                         }
 
                         // Manage zone switch on Join Requests
                         if ( mqttConfig.getHeliumZoneDetectionEnable()  ) {
                                 if (payload[0] == 0 && payload.length == 23) {
-                                        long now = Now.NowUtcMs();
                                         // possible Join Request
                                         String devEUI = HexaConverters.byteToHexString(payload, 9, 8);
                                         String region = topicName.substring(0, topicName.indexOf("/"));
@@ -306,7 +325,7 @@ public class MqttListener implements MqttCallback {
                                                 for (int i = 0; i < 8; i++) {
                                                         _dev[i] = payload[(9 + 8 - 1) - i];
                                                 }
-                                                log.info("Found a join request for " + HexaConverters.byteToHexString(_dev) + " for region " + region);
+                                                log.debug("Found a join request for " + HexaConverters.byteToHexString(_dev) + " for region " + region);
                                                 roamingService.processJoinMessage(_dev, HexaConverters.byteToHexString(_dev), region);
                                         }
                                         // clean the dedup storage

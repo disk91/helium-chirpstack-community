@@ -1608,7 +1608,7 @@ public class NovaService {
             return true;
         } catch ( StatusRuntimeException x ) {
             prometeusService.addHeliumTotalError();
-            log.warn("SKf Update Nova Backend not reachable "+x.getMessage());
+            log.warn("Skf Update Nova Backend not reachable "+x.getMessage());
             return false;
         } finally {
             if ( channel != null ) channel.shutdown();

@@ -56,8 +56,13 @@ public class PrometeusService {
     private long loRaTotalUplinkBytes = 0;      // number of bytes transfered in Uplink - OK
     private long loRaTotalDownlinkBytes = 0;    // number of bytes transfered in Downlink - OK
     private long loRaLastSeen = 0;              // last time we seen data
-
     private long loRaJoinCount = 0;             // number of Join request - OK
+
+    private long loRaFirstUplinkTravelTime = 0; // the travel time for the first of the replicates only
+    private long loRaFirstUplinkCount = 0;      // the number of different packet (only the first)
+    private long loRaLateUplinkTravelTime = 0;  // the travel time for the late packets (over 2s)
+    private long loRaLateUplinkCount = 0;       // the number of late packets received
+    private long loRaGatewayUplink = 0;         // the number of uplink seen at gateway level ( invoiced by hpr )
 
     // ------- internal Metrics
     private long mqttConnectionLoss = 0;        // number of MQTT disconnection - OK
@@ -133,6 +138,20 @@ public class PrometeusService {
     synchronized public void addLoRaDownlink(long size) {
         this.loRaDownlinkCount++;
         this.loRaTotalDownlinkBytes+=size;
+    }
+
+    synchronized public void addLoRaFirstUplink(long travelTime) {
+        this.loRaFirstUplinkCount++;
+        this.loRaFirstUplinkTravelTime += travelTime;
+    }
+
+    synchronized public void addLoRaLateUplink(long travelTime) {
+        this.loRaLateUplinkCount++;
+        this.loRaLateUplinkTravelTime += travelTime;
+    }
+
+    synchronized public void addLoRaGatewayUplink() {
+        this.loRaGatewayUplink++;
     }
 
     synchronized public void addRedisStreamError() { this.redisStreamReadError++; }
@@ -272,6 +291,22 @@ public class PrometeusService {
     }
     protected Supplier<Number> getLoRaTotalDownlink() {
         return ()->loRaDownlinkCount;
+    }
+
+    protected Supplier<Number> getLoRaFirstUplinkCount() {
+        return ()->loRaFirstUplinkCount;
+    }
+    protected Supplier<Number> getLoRaFirstUplinkTravel() {
+        return ()->loRaFirstUplinkTravelTime;
+    }
+    protected Supplier<Number> getLoRaLateUplinkCount() {
+        return ()->loRaLateUplinkCount;
+    }
+    protected Supplier<Number> getLoRaLateUplinkTravel() {
+        return ()->loRaLateUplinkTravelTime;
+    }
+    protected Supplier<Number> getLoRaGatewayUplinkCount() {
+        return ()->loRaGatewayUplink;
     }
 
     protected Supplier<Number> getLoRaTotalBytesDownlink() {
@@ -440,6 +475,24 @@ public class PrometeusService {
             .description("Cumulated travel time for uplink confirmed frame")
             .register(registry);
 
+        Gauge.builder("cons.lora.uplink.first", getLoRaFirstUplinkCount())
+            .description("Number of different uplink packet received")
+            .register(registry);
+        Gauge.builder("cons.lora.uplink.first.traveltime", getLoRaFirstUplinkTravel())
+            .description("Cumulated travel time of the first replicate of each packet arrival")
+            .register(registry);
+
+        Gauge.builder("cons.lora.uplink.late", getLoRaLateUplinkCount())
+            .description("Number of different late packet uplink received")
+            .register(registry);
+        Gauge.builder("cons.lora.uplink.late.traveltime", getLoRaLateUplinkTravel())
+            .description("Cumulated travel time of the late packet arrival")
+            .register(registry);
+
+        Gauge.builder("cons.lora.gateway.uplink", getLoRaGatewayUplinkCount())
+            .description("Number of packets received at gateway level, not lns accepted")
+            .register(registry);
+        
     }
 
     @Autowired
