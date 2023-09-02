@@ -189,13 +189,43 @@ public class MqttListener implements MqttCallback {
                 public long lastSeen;
         }
 
+        private final Object lockJoinDedup = new Object();
         protected HashMap<String,DeviceDedup> dedupHashMap = new HashMap<>();
+
+        private final Object lockPacketDedup = new Object();
         protected HashMap<String,Long> packetDedup = new HashMap<>();
 
-        @Scheduled(fixedDelayString = "${helium.mqtt.reconnect.scanPeriod}", initialDelay = 120_000) // default 10s
+        @Scheduled(fixedDelayString = "${helium.mqtt.dedup.scanPeriod}", initialDelay = 120_000) // default 10m
         protected void cleanDedupCache() {
-                // @TODO - clean the dedup ashmap
-                // change the scanPeriod entry also
+                long now = Now.NowUtcMs();
+
+                // clean the dedup storage
+                if (dedupHashMap.size() > 200) {
+                        Set<String> obj = dedupHashMap.keySet();
+                        synchronized (lockJoinDedup) {
+                                for (String s : obj) {
+                                        DeviceDedup _d = dedupHashMap.get(s);
+                                        if (_d != null && (now - _d.lastSeen) > 2 * Now.ONE_MINUTE) {
+                                                dedupHashMap.remove(_d.devEui);
+                                        }
+                                }
+                        }
+                }
+
+                // clean the dedup packets
+                if (packetDedup.size() > 500) {
+                        Set<String> obj = packetDedup.keySet();
+                        synchronized (lockPacketDedup) {
+                                for (String s : obj) {
+                                        long t = packetDedup.get(s);
+                                        if ((now - t) > 30 * Now.ONE_MINUTE) {
+                                                // use 30 minutes because HPR uses 30 minutes dedup windows
+                                                packetDedup.remove(s);
+                                        }
+                                }
+                        }
+                }
+
         }
 
 
@@ -282,20 +312,24 @@ public class MqttListener implements MqttCallback {
                 } else if (  topicName.matches(".*/gateway/.*/event/up$") ) {
                         long now = Now.NowUtcMs();
 
-
                         UplinkFrame uf = UplinkFrame.parseFrom(message.getPayload());
                         // 00 9A2E3DD7EFF98160 9861BFC396F98160 75AB   D683 EED2
                         //       app eui (rev)   dev eui (rev)  nonce  MIC  CRC
 
                         byte [] payload = uf.getPhyPayload().toByteArray();
                         long rx = (uf.getRxInfo().getTime().getSeconds() * 1000) + (uf.getRxInfo().getTime().getNanos() / 1_000_000);
+
                         String spayload = HexaConverters.byteToHexString(payload);
                         // Manage arrival time for the first frame
-                        Long packetTime = packetDedup.get(spayload);
-        long k = Now.NowUtcMs()-now;
+                        Long packetTime;
+                        synchronized (lockPacketDedup) {
+                                packetTime = packetDedup.get(spayload);
+                        }
                         if ( packetTime == null ) {
                                 // first time we see this packet
-                                packetDedup.put(spayload, now);
+                                synchronized (lockPacketDedup) {
+                                   packetDedup.put(spayload, now);
+                                }
                                 prometeusService.addLoRaFirstUplink( now - rx );
                         } else if ( (now - rx) > 2_000 ) {
                                 // late packet
@@ -303,7 +337,6 @@ public class MqttListener implements MqttCallback {
                         }
                         // count packets received at gateway level (invoiced by HPR, potentially rejected by LNS)
                         prometeusService.addLoRaGatewayUplink();
-        long l = Now.NowUtcMs()-now;
 
                         // Measure uplink confirmed processing time
                         if ( (payload[0] & 0xC0) == 0x80 && uf.getRxInfo().getTime().getSeconds() > 0 ) {
@@ -319,13 +352,18 @@ public class MqttListener implements MqttCallback {
                                         // possible Join Request
                                         String devEUI = HexaConverters.byteToHexString(payload, 9, 8);
                                         String region = topicName.substring(0, topicName.indexOf("/"));
-                                        DeviceDedup d = dedupHashMap.get(devEUI);
+                                        DeviceDedup d;
+                                        synchronized (lockJoinDedup) {
+                                                d = dedupHashMap.get(devEUI);
+                                        }
                                         if (d == null || (now - d.lastSeen) > Now.ONE_MINUTE) {
                                                 // found a new join for that device
                                                 d = new DeviceDedup();
                                                 d.devEui = devEUI;
                                                 d.lastSeen = now;
-                                                dedupHashMap.put(devEUI, d);
+                                                synchronized (lockJoinDedup) {
+                                                        dedupHashMap.put(devEUI, d);
+                                                }
 
                                                 // ... push to process
                                                 byte[] _dev = new byte[8]; // reverse the bytes of the address
@@ -335,20 +373,8 @@ public class MqttListener implements MqttCallback {
                                                 log.debug("Found a join request for " + HexaConverters.byteToHexString(_dev) + " for region " + region);
                                                 roamingService.processJoinMessage(_dev, HexaConverters.byteToHexString(_dev), region);
                                         }
-                                        // clean the dedup storage
-                                        if (dedupHashMap.size() > 500) {
-                                                Set<String> obj = dedupHashMap.keySet();
-                                                for (String s : obj) {
-                                                        DeviceDedup _d = dedupHashMap.get(s);
-                                                        if (_d != null && (now - _d.lastSeen) > 2 * Now.ONE_MINUTE) {
-                                                                dedupHashMap.remove(_d.devEui);
-                                                        }
-                                                }
-                                        }
                                 }
                         }
-                        long p = Now.NowUtcMs() - now;
-                        log.info("## Process : total "+p+"ms / decode "+k+"ms / prom "+l+"ms "+"Packet : "+(now-rx)+"ms");
 
 // =================================================
 // INTERNAL ASYNCHRONOUS MESSAGES
