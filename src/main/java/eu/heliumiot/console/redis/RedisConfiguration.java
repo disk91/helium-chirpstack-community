@@ -8,6 +8,9 @@ public class RedisConfiguration {
     @Value("${spring.redis.metakey}")
     private String streamMetaKey;
 
+    @Value("${spring.redis.eventkey:}")
+    private String streamEventKey;
+
     @Value("${spring.redis.host}")
     private String redisHost;
 
@@ -63,5 +66,9 @@ public class RedisConfiguration {
 
     public String getRedisConsumer() {
         return redisConsumer;
+    }
+
+    public String getStreamEventKey() {
+        return streamEventKey;
     }
 }
