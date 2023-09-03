@@ -137,6 +137,7 @@ public class RedisDeviceEventStreamListener {
                                 log.warn("## Found a new key on device:stream:event " + k);
                                 byte[] byteData = message.getBody().get(k);
                                 log.info(HexaConverters.byteToHexStringWithSpace(byteData));
+                                log.info(new String(byteData));
                             }
                         }
                         // Confirm that the message has been processed using XACK
