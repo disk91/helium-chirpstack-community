@@ -1,11 +1,13 @@
 package eu.heliumiot.console.redis;
 
 import com.google.protobuf.InvalidProtocolBufferException;
+import eu.heliumiot.console.service.HeliumDeviceService;
 import eu.heliumiot.console.service.HeliumTenantService;
 import eu.heliumiot.console.service.PrometeusService;
 import fr.ingeniousthings.tools.HexaConverters;
 import fr.ingeniousthings.tools.Now;
 import io.chirpstack.api.DownlinkFrameLog;
+import io.chirpstack.api.RequestLog;
 import io.lettuce.core.*;
 import io.lettuce.core.api.StatefulRedisConnection;
 import io.lettuce.core.api.sync.RedisCommands;
@@ -83,12 +85,12 @@ public class RedisDeviceEventStreamListener {
     }
 
     @Autowired
-    protected HeliumTenantService heliumTenantService;
+    protected HeliumDeviceService heliumDeviceService;
 
     @Autowired
     protected PrometeusService prometeusService;
 
-    @Scheduled(fixedRateString = "${spring.redis.metaRefreshRate}", initialDelay = 2_000)
+    @Scheduled(fixedRateString = "${spring.redis.metaRefreshRate}", initialDelay = 1_000)
     void ListenOnRedisStreamEvent() {
 
         if ( ! this.serviceEnable ) return;
@@ -130,9 +132,30 @@ public class RedisDeviceEventStreamListener {
                         Map<String, byte[]> m = message.getBody();
                         for (String k : m.keySet()) {
                             processed++;
-                            log.info("Message on "+k);
+                            //log.debug("Message on "+k);
                             if (k.compareToIgnoreCase("request") == 0) {
-
+                                byte[] byteData = message.getBody().get(k);
+                                try {
+                                    RequestLog req = RequestLog.parseFrom(byteData);
+                                    if (req != null) {
+                                        if (  req.getMethod().compareToIgnoreCase("activate") == 0 ) {
+                                            if ( req.getService().compareToIgnoreCase("api.DeviceService") == 0 && req.getMetadataCount() == 1 ) {
+                                                // we have an activation update
+                                                String devEui = req.getMetadataMap().get("dev_eui");
+                                                if ( devEui != null ) {
+                                                    log.debug("Found activation change for "+devEui);
+                                                    heliumDeviceService.reportDeviceActivationOnMqtt(devEui);
+                                                }
+                                            }
+                                        } else {
+                                            log.debug("Req: " + req.getMethod() + " Srv:" + req.getService() + " Meta: " + req.getMetadataCount());
+                                            //req.getMetadataMap().forEach( (s,l) -> { log.debug(s+" "+l); });
+                                        }
+                                    }
+                                } catch (InvalidProtocolBufferException x) {
+                                    log.error("Impossible to parse stream type up with " + x.getMessage());
+                                    log.info(HexaConverters.byteToHexStringWithSpace(byteData));
+                                }
                             } else {
                                 log.warn("## Found a new key on device:stream:event " + k);
                                 byte[] byteData = message.getBody().get(k);
@@ -155,6 +178,9 @@ public class RedisDeviceEventStreamListener {
             }
         }
         log.debug("ListenOnRedisStreamEvent - duration "+(Now.NowUtcMs()-start)+" ms, process "+processed+" new entries");
+        if ( (Now.NowUtcMs()-start) > 1000 ) {
+            log.warn("ListenOnRedisStreamEvent - duration "+(Now.NowUtcMs()-start)+" ms, process "+processed+" new entries");
+        }
     }
 
 }

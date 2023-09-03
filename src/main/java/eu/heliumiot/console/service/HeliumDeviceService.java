@@ -124,6 +124,29 @@ public class HeliumDeviceService {
     }
 
 
+    public void reportDeviceActivationOnMqtt(String devEui) {
+        HeliumDevice hdev = this.heliumDeviceCacheService.getHeliumDevice(devEui);
+        if ( hdev != null && ( Now.NowUtcMs() - hdev.getCreatedAt() ) > 30_000 ) {
+            switch ( hdev.getState() ) {
+                default:
+                case INSERTED:
+                case ACTIVE:
+                case INACTIVE:
+                    this.reportDeviceActivationOnMqtt(hdev);
+                    break;
+
+                case DEACTIVATED:
+                case OUTOFDCS:
+                case DELETED:
+                case DISABLED:
+                    break;
+            }
+        } else {
+            log.warn("Got a device activation request for not existing device or just setup, is this case happen too ofen ?");
+        }
+    }
+
+
     protected void reportDeviceActivationOnMqtt(HeliumDevice hdev) {
         HeliumDeviceActDeactItf i = new HeliumDeviceActDeactItf();
         i.setDeviceId(hdev.getDeviceEui());
@@ -872,6 +895,10 @@ public class HeliumDeviceService {
     /**
      * Search all devices of the tenant that are currently
      * @param tenantID
+     *
+     * @todo - this is called many time when DC OUT and high traffic
+     *          we should filter redoundancy on the previous layer...
+     *
      */
     public void processTenantDeactivation(String tenantID) {
         log.debug("Start tenant deactivation for "+tenantID);
