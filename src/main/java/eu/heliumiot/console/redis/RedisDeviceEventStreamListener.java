@@ -134,7 +134,7 @@ public class RedisDeviceEventStreamListener {
                             if (k.compareToIgnoreCase("none") == 0) {
                                 log.info("testing");
                             } else {
-                                log.warn("## Found a new key on stream:meta " + k);
+                                log.warn("## Found a new key on device:stream:event " + k);
                                 byte[] byteData = message.getBody().get(k);
                                 log.info(HexaConverters.byteToHexStringWithSpace(byteData));
                             }

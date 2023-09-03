@@ -46,7 +46,7 @@ public class RedisDeviceStreamListener {
 
     @PostConstruct
     public void setupRedisStreamMetaListener() {
-        log.info("Init setupRedisStreamMetaListener");
+        log.info("Init setupRedisStreamFrameListener");
         String connectionString = redisConfiguration.isRedisSsl() ? "rediss://" : "redis://";
         if (redisConfiguration.getRedisUsername().length() > 0) {
             connectionString += redisConfiguration.getRedisUsername() + ":" + redisConfiguration.getRedisPassword() + "@";
@@ -180,7 +180,7 @@ public class RedisDeviceStreamListener {
                                     log.info(HexaConverters.byteToHexStringWithSpace(byteData));
                                 }
                             } else {
-                                log.warn("## Found a new key on stream:meta " + k);
+                                log.warn("## Found a new key on device:stream:frame " + k);
                                 byte[] byteData = message.getBody().get(k);
                                 log.info(HexaConverters.byteToHexStringWithSpace(byteData));
                             }
