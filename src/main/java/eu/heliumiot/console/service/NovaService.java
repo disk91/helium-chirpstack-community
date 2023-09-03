@@ -387,17 +387,26 @@ public class NovaService {
         // package this for update function
         LinkedList<SkfUpdate> skfToAdd = new LinkedList<>();
         for ( skf_v1 s : toAdd ) {
-            SkfUpdate su = new SkfUpdate();
-            su.devAddr = s.getDevaddr();
-            su.session = s.getSessionKey();
-            skfToAdd.add(su);
+            // check if exist
+            if (skfToAdd.parallelStream().noneMatch(skf -> (skf.devAddr == s.getDevaddr() && skf.session.compareToIgnoreCase(s.getSessionKey()) == 0))) {
+                SkfUpdate su = new SkfUpdate();
+                su.devAddr = s.getDevaddr();
+                su.session = s.getSessionKey();
+                skfToAdd.add(su);
+            } else {
+                log.warn("The route "+routeId+" contains redundant add skf for devAddr "+s.getDevaddr()+ " key "+s.getSessionKey());
+            }
         }
         LinkedList<SkfUpdate> skfToRem = new LinkedList<>();
         for ( skf_v1 s : toRem ) {
-            SkfUpdate su = new SkfUpdate();
-            su.devAddr = s.getDevaddr();
-            su.session = s.getSessionKey();
-            skfToRem.add(su);
+            if (skfToRem.parallelStream().noneMatch(skf -> (skf.devAddr == s.getDevaddr() && skf.session.compareToIgnoreCase(s.getSessionKey()) == 0))) {
+                SkfUpdate su = new SkfUpdate();
+                su.devAddr = s.getDevaddr();
+                su.session = s.getSessionKey();
+                skfToRem.add(su);
+            } else {
+                log.warn("The route "+routeId+" contains redundant del skf for devAddr "+s.getDevaddr()+ " key "+s.getSessionKey());
+            }
         }
         grpcUpdateSessions(skfToAdd,skfToRem,routeId);
 
