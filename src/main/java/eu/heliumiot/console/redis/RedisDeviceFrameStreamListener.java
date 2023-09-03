@@ -24,7 +24,7 @@ import java.util.List;
 import java.util.Map;
 
 @Service
-public class RedisDeviceStreamListener {
+public class RedisDeviceFrameStreamListener {
 
     @Autowired
     private RedisConfiguration redisConfiguration;

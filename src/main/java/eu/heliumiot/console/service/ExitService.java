@@ -23,7 +23,8 @@ package eu.heliumiot.console.service;
 import eu.heliumiot.console.ConsoleApplication;
 import eu.heliumiot.console.mqtt.MqttListener;
 import eu.heliumiot.console.mqtt.MqttSender;
-import eu.heliumiot.console.redis.RedisDeviceStreamListener;
+import eu.heliumiot.console.redis.RedisDeviceEventStreamListener;
+import eu.heliumiot.console.redis.RedisDeviceFrameStreamListener;
 import fr.ingeniousthings.tools.Now;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -57,7 +58,10 @@ public class ExitService {
     private MqttSender mqttSender;
 
     @Autowired
-    private RedisDeviceStreamListener redisStreamMetaListener;
+    private RedisDeviceFrameStreamListener redisStreamMetaListener;
+
+    @Autowired
+    private RedisDeviceEventStreamListener redisDeviceEventStreamListener;
 
     @Autowired
     private HeliumDeviceStatService heliumDeviceStatService;
@@ -94,6 +98,20 @@ public class ExitService {
             }
             if ( (Now.NowUtcMs() - s) > 15_000 ) {
                 log.error("Redis listener not stopping, force stop");
+                break;
+            }
+        }
+
+        redisDeviceEventStreamListener.stopService();
+        s = Now.NowUtcMs();
+        d = s;
+        while ( !redisDeviceEventStreamListener.hasStopped() ) {
+            if ( (Now.NowUtcMs() - d) > 1000 ) {
+                log.warn("Waiting for redis event listener stop");
+                d+=1000;
+            }
+            if ( (Now.NowUtcMs() - s) > 15_000 ) {
+                log.error("Redis event listener not stopping, force stop");
                 break;
             }
         }

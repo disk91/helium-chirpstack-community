@@ -131,13 +131,12 @@ public class RedisDeviceEventStreamListener {
                         for (String k : m.keySet()) {
                             processed++;
                             log.info("Message on "+k);
-                            if (k.compareToIgnoreCase("none") == 0) {
-                                log.info("testing");
+                            if (k.compareToIgnoreCase("request") == 0) {
+
                             } else {
                                 log.warn("## Found a new key on device:stream:event " + k);
                                 byte[] byteData = message.getBody().get(k);
                                 log.info(HexaConverters.byteToHexStringWithSpace(byteData));
-                                log.info(new String(byteData));
                             }
                         }
                         // Confirm that the message has been processed using XACK
