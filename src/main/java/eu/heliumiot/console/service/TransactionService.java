@@ -560,7 +560,11 @@ public class TransactionService {
                     contentStream.beginText();
                     contentStream.newLineAtOffset(300, offset);
                     contentStream.setFont(PDType1Font.TIMES_ROMAN, 12);
-                    contentStream.showText(s);
+                    try {
+                        contentStream.showText(s);
+                    } catch ( java.lang.IllegalArgumentException x ) {
+                        contentStream.showText("Only ASCII chars supported");
+                    }
                     contentStream.endText();
                     offset -= 16;
                 }
@@ -576,7 +580,11 @@ public class TransactionService {
                 contentStream.beginText();
                 contentStream.newLineAtOffset(300, offset);
                 contentStream.setFont(PDType1Font.TIMES_ROMAN, 12);
-                contentStream.showText(first+' '+last);
+                try {
+                    contentStream.showText(first+' '+last);
+                } catch ( java.lang.IllegalArgumentException x ) {
+                    contentStream.showText("Only ASCII chars supported");
+                }
                 contentStream.endText();
                 offset -= 16;
             }
@@ -590,7 +598,11 @@ public class TransactionService {
                 contentStream.newLineAtOffset(300, offset);
                 for ( String a : as ) {
                     // relative position
-                    contentStream.showText(a.trim());
+                    try {
+                        contentStream.showText(a.trim());
+                    } catch ( java.lang.IllegalArgumentException x ) {
+                        contentStream.showText("Only ASCII chars supported");
+                    }
                     contentStream.newLineAtOffset(0, -16);
                     offset -= 16;
                 }
@@ -606,7 +618,11 @@ public class TransactionService {
                 contentStream.beginText();
                 contentStream.newLineAtOffset(300, offset);
                 contentStream.setFont(PDType1Font.TIMES_ROMAN, 12);
-                contentStream.showText(cn+", "+ci);
+                try {
+                    contentStream.showText(cn+", "+ci);
+                } catch ( java.lang.IllegalArgumentException x ) {
+                    contentStream.showText("Only ASCII chars supported");
+                }
                 offset -= 16;
                 contentStream.newLineAtOffset(0, -16);
                 contentStream.showText(cc);
@@ -782,7 +798,11 @@ public class TransactionService {
                     contentStream.beginText();
                     contentStream.setFont(PDType1Font.TIMES_BOLD, 9);
                     contentStream.newLineAtOffset(qtyPos, tableStart-tableHeight-64);
-                    contentStream.showText("Customer additional information : "+memo);
+                    try {
+                        contentStream.showText("Customer additional information : "+memo);
+                    } catch ( java.lang.IllegalArgumentException x ) {
+                        contentStream.showText("Only ASCII chars supported");
+                    }
                     contentStream.endText();
                 }
             }
