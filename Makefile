@@ -13,6 +13,9 @@ CONSOLE_DIR=/helium
 
 .FORCE:
 
+help: .FORCE
+    echo "Run make with build, back, front ... option"
+
 init: .FORCE
 	if [ -d $(CONSOLE_DIR) ] ; then echo "Are you really sure ?" ; read resp ; fi
 	if [ ! -d $(CONSOLE_DIR) ] ; then mkdir $(CONSOLE_DIR) ; fi
