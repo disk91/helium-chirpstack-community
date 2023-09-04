@@ -303,6 +303,7 @@ public class MqttListener implements MqttCallback {
                 prometeusService.addLoRaJoin();
                 prometeusService.addLoRaUplink(
                     Now.NowUtcMs() - DateConverters.StringDateToMs(e.getTime()),
+                    0,
                     0
                 );
 
