@@ -1162,15 +1162,21 @@
             }
           },
           "mappings": [],
+          "min": 0,
           "thresholds": {
             "mode": "absolute",
             "steps": [
               {
-                "color": "red",
+                "color": "orange",
                 "value": null
+              },
+              {
+                "color": "red",
+                "value": 100
               }
             ]
-          }
+          },
+          "unit": "none"
         },
         "overrides": []
       },
@@ -1181,6 +1187,7 @@
         "y": 16
       },
       "id": 56,
+      "interval": "1m",
       "options": {
         "barRadius": 0,
         "barWidth": 0.9,
@@ -1216,7 +1223,7 @@
           "refId": "A"
         }
       ],
-      "title": "Unpaid packets",
+      "title": "Unpaid packets / m",
       "type": "barchart"
     },
     {
@@ -4280,6 +4287,6 @@
   "timezone": "",
   "title": "Chirpstack",
   "uid": "6pIR3ibVz",
-  "version": 9,
+  "version": 10,
   "weekStart": ""
 }
