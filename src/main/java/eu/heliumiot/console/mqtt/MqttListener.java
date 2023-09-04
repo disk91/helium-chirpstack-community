@@ -251,7 +251,8 @@ public class MqttListener implements MqttCallback {
                 UplinkEvent up = mapper.readValue(message.toString(), UplinkEvent.class);
                 prometeusService.addLoRaUplink(
                     start - DateConverters.StringDateToMs(up.getTime()),
-                    Base64.decode(up.getData()).length
+                    Base64.decode(up.getData()).length,
+                    up.getRxInfo().size()-1
                 );
 
                 log.debug("UPLINK Dev: " + up.getDeviceInfo().getDevEui() + " Adr:" + up.getDevAddr() + " duplicates:" + up.getRxInfo().size() + " size: "+Base64.decode(up.getData()).length);

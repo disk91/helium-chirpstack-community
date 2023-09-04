@@ -52,6 +52,7 @@ public class PrometeusService {
     private long loRaTotalConfirmedTravelTimeMs = 0; // time between emission and reception for confirmed frame
     private long loRaConfirmedCount = 0;        // number of uplink confirmed frame
     private long loRaUplinkCount = 0;           // number of uplink messages - OK
+    private long loRaDuplicatesCount = 0;       // number of uplink duplicates ( add uplink for packet total )
     private long loRaDownlinkCount = 0;         // number of downlink messages - OK
     private long loRaTotalUplinkBytes = 0;      // number of bytes transfered in Uplink - OK
     private long loRaTotalDownlinkBytes = 0;    // number of bytes transfered in Downlink - OK
@@ -121,8 +122,9 @@ public class PrometeusService {
 
     synchronized public void addMqttConnectionLoss() { this.mqttConnectionLoss++; }
 
-    synchronized public void addLoRaUplink(long travelTime, long bytes) {
+    synchronized public void addLoRaUplink(long travelTime, long bytes, int duplicates) {
         this.loRaUplinkCount++;
+        this.loRaDuplicatesCount+=duplicates;
         this.loRaTotalUplinkBytes += bytes;
         this.loRaTotalTravelTimeMs += travelTime;
         this.loRaLastSeen = Now.NowUtcMs();
@@ -277,6 +279,10 @@ public class PrometeusService {
         return ()->loRaUplinkCount;
     }
 
+    protected Supplier<Number> getLoRaTotalDuplicates() {
+        return ()->loRaDuplicatesCount;
+    }
+
     protected Supplier<Number> getLoRaConfirmedUplinkCount() {
         return ()->loRaConfirmedCount;
     }
@@ -400,6 +406,9 @@ public class PrometeusService {
         Gauge.builder("cons.lora.uplinks", getLoRaTotalUplink())
                 .description("number LoRa uplink proceeded")
                 .register(registry);
+        Gauge.builder("cons.lora.duplicates", getLoRaTotalUplink())
+            .description("number LoRa duplicates proceeded")
+            .register(registry);
         Gauge.builder("cons.lora.travel_time_ms", getLoRaTravelTime())
                 .description("total uplink travel time")
                 .register(registry);
