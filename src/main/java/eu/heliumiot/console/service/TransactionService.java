@@ -341,22 +341,24 @@ public class TransactionService {
 
     @Scheduled(fixedRateString = "${helium.transaction.intent.upd.scanPeriod}", initialDelay = 5_000)
     private void scanStripeTransactionJob() {
-        List<HeliumDcTransaction> ts = heliumDcTransactionRepository.findHeliumDcTransactionByTypeAndIsCompletedAndIntentTimeGreaterThanOrderByIntentTimeDesc(
+        synchronized (lock) {
+
+            List<HeliumDcTransaction> ts = heliumDcTransactionRepository.findHeliumDcTransactionByTypeAndIsCompletedAndIntentTimeGreaterThanOrderByIntentTimeDesc(
                 HTRANSACTION_TYPE_STRIPE,
                 false,
                 Now.NowUtcMs()-(20*60_000)
-        );
-        for ( HeliumDcTransaction t : ts ) {
-            try {
-                synchronized (lock) {
+            );
+            for ( HeliumDcTransaction t : ts ) {
+                try {
                     t = updateTransaction(t);
                     if (t != null) { // null when not modified
                         heliumDcTransactionRepository.save(t);
                     }
+                } catch ( ITParseException x ) {
+                    log.error("Failure in updateTransaction "+x.getMessage());
                 }
-            } catch ( ITParseException x ) {
-                log.error("Failure in updateTransaction "+x.getMessage());
             }
+
         }
     }
 
@@ -386,15 +388,16 @@ public class TransactionService {
         }
         if (uuid != null ) {
 
-            // check the rights
-            HeliumDcTransaction t = heliumDcTransactionRepository.findOneHeliumDcTransactionById(UUID.fromString(transactionId));
-            if (t == null) throw new ITRightException();
-            if (t.getUserUUID().compareToIgnoreCase(userId) != 0) {
-                throw new ITRightException();
-            }
-
-            // Update the Intent
             synchronized (lock) {
+
+                // check the rights
+                HeliumDcTransaction t = heliumDcTransactionRepository.findOneHeliumDcTransactionById(UUID.fromString(transactionId));
+                if (t == null) throw new ITRightException();
+                if (t.getUserUUID().compareToIgnoreCase(userId) != 0) {
+                    throw new ITRightException();
+                }
+
+                // Update the Intent
                 try {
                     t = updateTransaction(t);
                     if (t != null) { // null when not modified
