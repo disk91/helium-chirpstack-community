@@ -529,14 +529,16 @@ public class TransactionService {
             contentStream.endText();
 
             // Get tenant
-            Tenant tenant = heliumTenantService.getTenant( UUID.fromString(t.getSourceTenantUUID()) );
-            if ( tenant != null ) {
-                contentStream.moveTo(0, 0);
-                contentStream.beginText();
-                contentStream.setFont(PDType1Font.TIMES_BOLD, 12);
-                contentStream.newLineAtOffset(300, 718);
-                contentStream.showText("Tenant NAME: " + tenant.getName());
-                contentStream.endText();
+            if ( t.getTargetTenantUUID() != null ) {
+                Tenant tenant = heliumTenantService.getTenant(UUID.fromString(t.getTargetTenantUUID()));
+                if (tenant != null) {
+                    contentStream.moveTo(0, 0);
+                    contentStream.beginText();
+                    contentStream.setFont(PDType1Font.TIMES_BOLD, 12);
+                    contentStream.newLineAtOffset(300, 718);
+                    contentStream.showText("Tenant NAME: " + tenant.getName());
+                    contentStream.endText();
+                }
             }
 
             // date
