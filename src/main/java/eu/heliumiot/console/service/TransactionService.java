@@ -528,11 +528,22 @@ public class TransactionService {
             contentStream.showText("Customer ID: "+t.getUserUUID());
             contentStream.endText();
 
+            // Get tenant
+            Tenant tenant = heliumTenantService.getTenant( UUID.fromString(t.getSourceTenantUUID()) );
+            if ( tenant != null ) {
+                contentStream.moveTo(0, 0);
+                contentStream.beginText();
+                contentStream.setFont(PDType1Font.TIMES_BOLD, 12);
+                contentStream.newLineAtOffset(300, 718);
+                contentStream.showText("Tenant NAME: " + tenant.getName());
+                contentStream.endText();
+            }
+
             // date
             contentStream.moveTo(0,0);
             contentStream.beginText();
             contentStream.setFont(PDType1Font.TIMES_ROMAN, 12);
-            contentStream.newLineAtOffset(300, 718);
+            contentStream.newLineAtOffset(300, 702);
             Date d = new Date(t.getIntentTime());
             Locale locale = new Locale("en", "US");
             SimpleDateFormat sdf =  new SimpleDateFormat("yyyy-MMMM-dd",locale);
