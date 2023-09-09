@@ -22,6 +22,7 @@ map $arg_override $override {
 server {
     listen 80;
     listen [::]:80;
+    http2 on;
 
     server_name @DOMAIN@;
 
@@ -75,6 +76,21 @@ server {
          proxy_set_header        Host $http_host;
     }
 
+    location /api.InternalService/StreamDeviceEvents {
+         grpc_pass grpc://chirpstack;
+         grpc_set_header Host $host;
+         grpc_set_header X-Real-IP $remote_addr;
+         grpc_read_timeout 1h;
+         grpc_send_timeout 1h;
+    }
+
+    location /api.InternalService/StreamDeviceFrames {
+         grpc_pass grpc://chirpstack;
+         grpc_set_header Host $host;
+         grpc_set_header X-Real-IP $remote_addr;
+         grpc_read_timeout 1h;
+         grpc_send_timeout 1h;
+    }
 
 # uncomment when forwarder is deployed
 #    location ~ ^(/forwarder1/) {
