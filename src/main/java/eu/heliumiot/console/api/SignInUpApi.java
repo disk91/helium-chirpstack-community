@@ -94,7 +94,7 @@ public class SignInUpApi {
         long startMs= Now.NowUtcMs();
         log.debug("Sign up for "+signup.getUsername());
         try {
-            UserSignUpRespItf r = userService.userSignup(signup);
+            UserSignUpRespItf r = userService.userSignup(signup,request.getRemoteAddr());
             return new ResponseEntity<>(r, HttpStatus.OK);
         } catch (ITNotFoundException x) {
             prometeusService.addApiTotalError();

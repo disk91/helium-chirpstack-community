@@ -172,7 +172,7 @@ public class UserService {
      * @throws ITNotFoundException
      * @throws ITParseException
      */
-    public UserSignUpRespItf userSignup(UserSignUpReqItf req)
+    public UserSignUpRespItf userSignup(UserSignUpReqItf req, String adr)
     throws ITNotFoundException,ITParseException
     {
         // Make sure the property file allow signup as a global setting
@@ -208,7 +208,13 @@ public class UserService {
         }
 
         // verify email
-        if ( ! Tools.isValidEmailSyntax(req.getUsername(), consoleConfig.getIngeniousthingsEmailFilter()) ) {
+        if ( ! Tools.isAcceptedEmailSyntax(req.getUsername(), consoleConfig.getIngeniousthingsEmailFilter()) ) {
+            log.warn("Refused email registration for "+req.getUsername()+" from "+adr);
+            r.setErrorMessage("success");
+            Tools.sleep(8+((new Random().nextInt()) % 7));
+            return r;
+        }
+        if ( ! Tools.isValidEmailSyntax(req.getUsername()) ) {
             log.warn("Rejected email registration for "+req.getUsername());
             throw new ITParseException("error_invalid_email");
         }
@@ -237,9 +243,7 @@ public class UserService {
             // email already exist but we do not want this infomrmation
             // to be publicly reported
             r.setErrorMessage("success");
-            try {
-                Thread.sleep(8+((new Random().nextInt()) % 7));
-            }catch (InterruptedException x){};
+            Tools.sleep(8+((new Random().nextInt()) % 7));
             return r;
         }
 
@@ -290,9 +294,7 @@ public class UserService {
         );
 
         // add time delay to avoid analysis of the response time
-        try {
-            Thread.sleep(10+((new Random().nextInt()) % 10));
-        }catch (InterruptedException x){};
+        Tools.sleep(10+((new Random().nextInt()) % 10));
         r.setErrorMessage("success");
         return r;
     }
