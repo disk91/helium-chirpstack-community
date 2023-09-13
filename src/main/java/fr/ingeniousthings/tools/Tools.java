@@ -2,7 +2,12 @@ package fr.ingeniousthings.tools;
 
 public class Tools {
 
-    public static boolean isValidEmailSyntax(String email) {
+    public static boolean isValidEmailSyntax(String email, String filters) {
+        // filters is a list of regEx separated by , cooresponding to rejected patterns
+        String [] _filters = filters.split(",");
+        for (String filter : _filters) {
+            if (email.matches(filter)) return false;
+        }
         return email.matches("^(?=.{1,64}@)[A-Za-z0-9_-]+(\\.[A-Za-z0-9_-]+)*@"
                 + "[^-][A-Za-z0-9-]+(\\.[A-Za-z0-9-]+)*(\\.[A-Za-z]{2,})$");
     }

@@ -249,6 +249,8 @@ public class MqttListener implements MqttCallback {
             // Prefer MQTT to get the uplink information because the data is decoded
             try {
                 UplinkEvent up = mapper.readValue(message.toString(), UplinkEvent.class);
+
+ log.info("UP "+up.getDeduplicationId());
                 prometeusService.addLoRaUplink(
                     start - DateConverters.StringDateToMs(up.getTime()),
                     Base64.decode(up.getData()).length,
@@ -294,6 +296,8 @@ public class MqttListener implements MqttCallback {
         } else if ( topicName.matches("application/.*/event/join$") ) {
             try {
                 JoinEvent e = mapper.readValue(message.toString(), JoinEvent.class);
+log.info("Join "+e.getDeduplicationId());
+
                 log.debug("JOIN - Dev: " + e.getDeviceInfo().getDeviceName() + " Adr:" + e.getDevAddr() + " timestamp :" + DateConverters.StringDateToMs(e.getTime()));
                 heliumTenantService.processJoin(
                     e.getDeviceInfo().getTenantId(),
@@ -329,6 +333,8 @@ public class MqttListener implements MqttCallback {
 
             byte [] payload = uf.getPhyPayload().toByteArray();
             long rx = (uf.getRxInfo().getTime().getSeconds() * 1000) + (uf.getRxInfo().getTime().getNanos() / 1_000_000);
+
+          //  long legTime = (uf.getRxInfoLegacy().getTime().getSeconds() * 1000) + (uf.getRxInfo().getTime().getNanos() / 1_000_000);
 
             String spayload = HexaConverters.byteToHexString(payload);
             // Manage arrival time for the first frame

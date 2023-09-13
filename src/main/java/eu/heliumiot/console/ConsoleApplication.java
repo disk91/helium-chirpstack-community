@@ -63,7 +63,7 @@ public class ConsoleApplication implements CommandLineRunner, ExitCodeGenerator 
 	public void run(String... args) throws Exception {
 		long pid = ProcessHandle.current().pid();
 		System.out.println("-------------- GO ("+pid+")--------------");
-		if ( consoleConfig.getHeliumMailFrom().length() == 0 || ! Tools.isValidEmailSyntax(consoleConfig.getHeliumMailFrom()) ) {
+		if ( consoleConfig.getHeliumMailFrom().length() == 0 || ! Tools.isValidEmailSyntax(consoleConfig.getHeliumMailFrom(),"") ) {
 			System.err.println("#### Contact email must be setup");
 			exit();
 		}

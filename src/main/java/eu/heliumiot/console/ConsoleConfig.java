@@ -73,6 +73,9 @@ public class ConsoleConfig {
     @Value ("${helium.zone.detection.enable:false}")
     private String heliumZoneDetectionEnable;
 
+    @Value ("${ingeniousthings.email.filter:}")
+    private String ingeniousthingsEmailFilter;
+
     public long getHeliumMigrationGracefulSessionPeriod() {
         return heliumMigrationGracefulSessionPeriod;
     }
@@ -129,6 +132,10 @@ public class ConsoleConfig {
 
     public String getHeliumOuiDataServer() {
         return heliumOuiDataServer;
+    }
+
+    public String getIngeniousthingsEmailFilter() {
+        return ingeniousthingsEmailFilter;
     }
 
     // =====================================
@@ -840,6 +847,7 @@ public class ConsoleConfig {
         if (this.getTestdeviceEuiExternal().length() > 0) return this.getTestdeviceEuiExternal();
         return getTestdeviceEuiDefault();
     }
+
 
 
 }

@@ -113,6 +113,7 @@ public class NovaService {
                     if ( routeId == null ) {
                         log.warn("flushDelayedSessionUpdate - the route is not existing for "+devEUI);
                         // process later
+                        // @todo - after a certain time we should clear this, the route may be simply deleted
                         addDelayedSessionRefresh(devEUI);
                     } else {
                         routes.putIfAbsent(routeId,routeId);

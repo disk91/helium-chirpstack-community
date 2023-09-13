@@ -208,7 +208,7 @@ public class UserService {
         }
 
         // verify email
-        if ( ! Tools.isValidEmailSyntax(req.getUsername()) ) {
+        if ( ! Tools.isValidEmailSyntax(req.getUsername(), consoleConfig.getIngeniousthingsEmailFilter()) ) {
             log.warn("Rejected email registration for "+req.getUsername());
             throw new ITParseException("error_invalid_email");
         }
