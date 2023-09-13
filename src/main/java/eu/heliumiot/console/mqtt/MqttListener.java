@@ -365,40 +365,41 @@ public class MqttListener implements MqttCallback {
             }
 
             // Manage zone switch on Join Requests
-            if ( mqttConfig.getHeliumZoneDetectionEnable()  ) {
-                if (payload[0] == 0 && payload.length == 23) {
-                    // possible Join Request
-                    byte[] _dev = new byte[8]; // reverse the bytes of the address
-                    for (int i = 0; i < 8; i++) {_dev[i] = payload[(9 + 8 - 1) - i]; }
-                    String devEUI = HexaConverters.byteToHexString(_dev, 0, 8);
-                    String region = topicName.substring(0, topicName.indexOf("/"));
-                    DeviceDedup d;
-                    synchronized (lockJoinDedup) {
-                        d = dedupHashMap.get(devEUI);
+            // Manage DC count for Join Requests
+            if (payload[0] == 0 && payload.length == 23) {
+                // possible Join Request
+                byte[] _dev = new byte[8]; // reverse the bytes of the address
+                for (int i = 0; i < 8; i++) {_dev[i] = payload[(9 + 8 - 1) - i]; }
+                String devEUI = HexaConverters.byteToHexString(_dev, 0, 8);
+                String region = topicName.substring(0, topicName.indexOf("/"));
+                DeviceDedup d;
+                synchronized (lockJoinDedup) {
+                    d = dedupHashMap.get(devEUI);
+                }
+                if (d == null || (now - d.lastSeen) > Now.ONE_MINUTE) {
+                    // found a new join for that device
+                    if ( d == null ) {
+                        d = new DeviceDedup();
+                        d.count = 1;
+                        d.devEui = devEUI;
+                        d.lastSeen = now;
+                    } else {
+                        // new session but we keep the structure
+                        d.lastSeen = now;
+                        d.count++;
                     }
-                    if (d == null || (now - d.lastSeen) > Now.ONE_MINUTE) {
-                        // found a new join for that device
-                        if ( d == null ) {
-                            d = new DeviceDedup();
-                            d.count = 1;
-                            d.devEui = devEUI;
-                            d.lastSeen = now;
-                        } else {
-                            // new session but we keep the structure
-                            d.lastSeen = now;
-                            d.count++;
-                        }
-                        synchronized (lockJoinDedup) {
-                            dedupHashMap.put(devEUI, d);
-                        }
+                    synchronized (lockJoinDedup) {
+                        dedupHashMap.put(devEUI, d);
+                    }
 
+                    if ( mqttConfig.getHeliumZoneDetectionEnable()  ) {
                         // ... push to process
                         log.debug("Found a join request for " + HexaConverters.byteToHexString(_dev) + " for region " + region);
                         roamingService.processJoinMessage(_dev, HexaConverters.byteToHexString(_dev), region);
-                    } else {
-                        // count a new Join to invoice
-                        d.count++;
                     }
+                } else {
+                    // count a new Join to invoice
+                    d.count++;
                 }
             }
 
