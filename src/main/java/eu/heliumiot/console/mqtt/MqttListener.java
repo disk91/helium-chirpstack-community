@@ -187,6 +187,7 @@ public class MqttListener implements MqttCallback {
 
     protected class DeviceDedup {
         public String devEui;
+        public int count;
         public long lastSeen;
     }
 
@@ -196,18 +197,21 @@ public class MqttListener implements MqttCallback {
     private final Object lockPacketDedup = new Object();
     protected HashMap<String,Long> packetDedup = new HashMap<>();
 
+    private long lastCleanJoinDedup = 0;
     @Scheduled(fixedDelayString = "${helium.mqtt.dedup.scanPeriod}", initialDelay = 120_000) // default 10m
     protected void cleanDedupCache() {
         long now = Now.NowUtcMs();
 
         // clean the dedup storage
-        if (dedupHashMap.size() > 200) {
+        if (dedupHashMap.size() > 50 || ( now - lastCleanJoinDedup ) > 10*Now.ONE_MINUTE ) {
             Set<String> obj = dedupHashMap.keySet();
             ArrayList<String> toRemove = new ArrayList<>();
             synchronized (lockJoinDedup) {
                 for (String s : obj) {
                     DeviceDedup _d = dedupHashMap.get(s);
                     if (_d != null && (now - _d.lastSeen) > 2 * Now.ONE_MINUTE) {
+                        // @Todo : invoice the packets
+                        log.info("Join Commit "+_d.devEui+" packets "+_d.count);
                         toRemove.add(_d.devEui);
                     }
                 }
@@ -215,6 +219,7 @@ public class MqttListener implements MqttCallback {
                     dedupHashMap.remove(s);
                 }
             }
+            this.lastCleanJoinDedup = now;
         }
 
         // clean the dedup packets
@@ -249,8 +254,6 @@ public class MqttListener implements MqttCallback {
             // Prefer MQTT to get the uplink information because the data is decoded
             try {
                 UplinkEvent up = mapper.readValue(message.toString(), UplinkEvent.class);
-
- log.info("UP "+up.getDeduplicationId());
                 prometeusService.addLoRaUplink(
                     start - DateConverters.StringDateToMs(up.getTime()),
                     Base64.decode(up.getData()).length,
@@ -296,8 +299,6 @@ public class MqttListener implements MqttCallback {
         } else if ( topicName.matches("application/.*/event/join$") ) {
             try {
                 JoinEvent e = mapper.readValue(message.toString(), JoinEvent.class);
-log.info("Join "+e.getDeduplicationId());
-
                 log.debug("JOIN - Dev: " + e.getDeviceInfo().getDeviceName() + " Adr:" + e.getDevAddr() + " timestamp :" + DateConverters.StringDateToMs(e.getTime()));
                 heliumTenantService.processJoin(
                     e.getDeviceInfo().getTenantId(),
@@ -367,7 +368,9 @@ log.info("Join "+e.getDeduplicationId());
             if ( mqttConfig.getHeliumZoneDetectionEnable()  ) {
                 if (payload[0] == 0 && payload.length == 23) {
                     // possible Join Request
-                    String devEUI = HexaConverters.byteToHexString(payload, 9, 8);
+                    byte[] _dev = new byte[8]; // reverse the bytes of the address
+                    for (int i = 0; i < 8; i++) {_dev[i] = payload[(9 + 8 - 1) - i]; }
+                    String devEUI = HexaConverters.byteToHexString(_dev, 0, 8);
                     String region = topicName.substring(0, topicName.indexOf("/"));
                     DeviceDedup d;
                     synchronized (lockJoinDedup) {
@@ -375,20 +378,26 @@ log.info("Join "+e.getDeduplicationId());
                     }
                     if (d == null || (now - d.lastSeen) > Now.ONE_MINUTE) {
                         // found a new join for that device
-                        d = new DeviceDedup();
-                        d.devEui = devEUI;
-                        d.lastSeen = now;
+                        if ( d == null ) {
+                            d = new DeviceDedup();
+                            d.count = 1;
+                            d.devEui = devEUI;
+                            d.lastSeen = now;
+                        } else {
+                            // new session but we keep the structure
+                            d.lastSeen = now;
+                            d.count++;
+                        }
                         synchronized (lockJoinDedup) {
                             dedupHashMap.put(devEUI, d);
                         }
 
                         // ... push to process
-                        byte[] _dev = new byte[8]; // reverse the bytes of the address
-                        for (int i = 0; i < 8; i++) {
-                            _dev[i] = payload[(9 + 8 - 1) - i];
-                        }
                         log.debug("Found a join request for " + HexaConverters.byteToHexString(_dev) + " for region " + region);
                         roamingService.processJoinMessage(_dev, HexaConverters.byteToHexString(_dev), region);
+                    } else {
+                        // count a new Join to invoice
+                        d.count++;
                     }
                 }
             }
