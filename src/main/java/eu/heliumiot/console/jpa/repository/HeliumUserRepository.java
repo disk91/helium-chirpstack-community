@@ -39,6 +39,11 @@ public interface HeliumUserRepository extends CrudRepository<HeliumUser, UUID> {
     @Query(value = "SELECT * FROM helium_user WHERE username LIKE CONCAT('%',?1,'%') OR userid LIKE CONCAT('%',?1,'%') LIMIT 5", nativeQuery = true)
     public List<HeliumUser> findHeliumUsersBySearch(String search);
 
+    @Query(value = "SELECT * FROM helium_user WHERE username LIKE CONCAT('%',?1,'%') OR userid LIKE CONCAT('%',?1,'%') ORDER BY registration_time DESC LIMIT 5", nativeQuery = true)
+    public List<HeliumUser> findHeliumUsersBySearchOrderByRegistration(String search);
+
+    public List<HeliumUser> findFirst20HeliumUsersByOrderByRegistrationTimeDesc();
+
     //public List<HeliumUser> findHeliumUsersByUsernameContainingOrUseridContaining(String search,String search2);
 
 

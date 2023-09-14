@@ -9,6 +9,8 @@ import fr.ingeniousthings.tools.ITParseException;
 import fr.ingeniousthings.tools.ITRightException;
 import fr.ingeniousthings.tools.Now;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -23,6 +25,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 
 @Tag( name = "user api", description = "user api" )
 @CrossOrigin
@@ -162,6 +165,39 @@ public class UserApi {
         } catch (ITRightException x) {
             prometeusService.addApiTotalError();
             return new ResponseEntity<>(ActionResult.FORBIDDEN(), HttpStatus.FORBIDDEN);
+        } finally {
+            prometeusService.addApiTotalTimeMs(startMs);
+        }
+    }
+
+    // ---
+    // Admin features
+    // ---
+    @Operation(summary = "Get user list",
+        description = "Get user list by registration, based on query",
+        responses = {
+            @ApiResponse(responseCode = "200", description= "Done",
+                content = @Content(array = @ArraySchema(schema = @Schema( implementation = UserListRespItf.class)))),
+            @ApiResponse(responseCode = "400", description= "Bad Request", content = @Content(schema = @Schema(implementation = ActionResult.class)))
+        }
+    )
+    @RequestMapping(value="/list",
+        produces = MediaType.APPLICATION_JSON_VALUE,
+        method= RequestMethod.GET)
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
+    public ResponseEntity<?> requestUserList(
+        HttpServletRequest request,
+        @Parameter(required = true, name = "keyword", description = "search key")
+        @RequestParam("keyword") String keyword
+    ) {
+        long startMs= Now.NowUtcMs();
+        log.debug("Get user list for key "+keyword);
+        try {
+            List<UserListRespItf> r = userService.getUserlist(request.getUserPrincipal().getName(),keyword);
+            return new ResponseEntity<>(r, HttpStatus.OK);
+        } catch (ITParseException x) {
+            prometeusService.addApiTotalError();
+            return new ResponseEntity<>(ActionResult.BADREQUEST(), HttpStatus.BAD_REQUEST);
         } finally {
             prometeusService.addApiTotalTimeMs(startMs);
         }

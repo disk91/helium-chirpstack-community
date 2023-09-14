@@ -26,10 +26,7 @@ import eu.heliumiot.console.ConsoleConfig;
 import eu.heliumiot.console.api.interfaces.*;
 import eu.heliumiot.console.chirpstack.ChirpstackApiAccess;
 import eu.heliumiot.console.jpa.db.*;
-import eu.heliumiot.console.jpa.repository.HeliumCouponRepository;
-import eu.heliumiot.console.jpa.repository.HeliumPendingUserRepository;
-import eu.heliumiot.console.jpa.repository.HeliumTenantRepository;
-import eu.heliumiot.console.jpa.repository.HeliumUserRepository;
+import eu.heliumiot.console.jpa.repository.*;
 import eu.heliumiot.console.tools.EncryptionHelper;
 import eu.heliumiot.console.tools.ExecuteEmail;
 import fr.ingeniousthings.tools.*;
@@ -49,9 +46,7 @@ import org.springframework.stereotype.Service;
 import javax.annotation.PostConstruct;
 import java.security.Key;
 import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.Random;
+import java.util.*;
 
 import static eu.heliumiot.console.service.HeliumParameterService.PARAM_USER_COND_CURRENT;
 import static eu.heliumiot.console.service.HeliumTenantService.HELIUM_TENANT_SETUP_DEFAULT;
@@ -712,9 +707,13 @@ public class UserService {
 
         UserCacheService.UserCacheElement u = userCacheService.getUserByUsername(req.getUsername());
         if ( u == null ) {
-            try {
-                Thread.sleep((Math.abs(new Random().nextInt()) % 40));
-            }catch (InterruptedException x){};
+            Tools.sleep((Math.abs(new Random().nextInt()) % 40));
+            return;
+        }
+
+        // no reset on inactive users
+        if ( ! u.user.isActive() ) {
+            Tools.sleep((Math.abs(new Random().nextInt()) % 40));
             return;
         }
 
@@ -751,9 +750,7 @@ public class UserService {
         );
 
         // add time delay to avoid analysis of the response time
-        try {
-            Thread.sleep((Math.abs(new Random().nextInt()) % 20));
-        }catch (InterruptedException x){};
+        Tools.sleep((Math.abs(new Random().nextInt()) % 20));
 
     }
 
@@ -823,5 +820,60 @@ public class UserService {
         heliumPendingUserRepository.delete(hpe);
     }
 
+    // ==================================================
+    // Admin task
+    // ==================================================
+
+    @Autowired
+    protected UserTenantRepository userTenantRepository;
+
+    @Autowired
+    protected TenantRepository tenantRepository;
+
+    public List<UserListRespItf> getUserlist( String userId, String searchKey )
+    throws ITParseException {
+        ArrayList<UserListRespItf> resp = new ArrayList<>();
+        if ( searchKey.length() < 3 || searchKey.length() > 25 ) return resp;
+
+        // search user
+        List<HeliumUser> u1;
+        if ( searchKey.compareTo("***") == 0 ) {
+            u1 = heliumUserRepository.findFirst20HeliumUsersByOrderByRegistrationTimeDesc();
+        } else {
+            u1 = heliumUserRepository.findHeliumUsersBySearchOrderByRegistration(searchKey);
+        }
+        if ( u1 != null ) {
+            for (HeliumUser u : u1) {
+                UserCacheService.UserCacheElement _u = userCacheService.getUserByUsername(u.getUsername());
+                if ( _u != null ){
+                    UserListRespItf r = new UserListRespItf();
+                    r.setUserLogin(u.getUsername());
+                    if ( u.getRegistrationTime() != null ) {
+                        r.setRegistration(u.getRegistrationTime().getTime());
+                    } else { r.setRegistration(0); }
+                    r.setLastLogin(u.getLastSeen());
+                    r.setDisable(!_u.user.isActive());
+                    r.setTenants(new ArrayList<>());
+                    List<eu.heliumiot.console.jpa.db.UserTenant> t1 = userTenantRepository.findUserTenantByUserId(UUID.fromString(u.getUserid()));
+                    for (eu.heliumiot.console.jpa.db.UserTenant ut : t1) {
+                        eu.heliumiot.console.jpa.db.Tenant t = tenantRepository.findOneTenantById(ut.getTenantId());
+                        TenantEntry _t = new TenantEntry();
+                        _t.setId(ut.getTenantId().toString());
+                        _t.setAdmin(ut.isAdmin());
+                        if ( t != null ) {
+                            _t.setName(t.getName());
+                        } else {
+                            _t.setName("unknown");
+                        }
+                        r.getTenants().add(_t);
+                    }
+                    resp.add(r);
+                } else {
+                    log.warn("User "+u.getUsername()+" exist in helium_user but can't be find in cache");
+                }
+            }
+        }
+        return resp;
+    }
 
 }

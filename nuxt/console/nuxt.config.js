@@ -38,6 +38,7 @@ export default {
     messagePublicGet:(process.env.API_HOST || '')+'/console/1.0/message/public',
     userDetailsGet:(process.env.API_HOST || '')+'/console/1.0/user/details',
     userDetailsUpd:(process.env.API_HOST || '')+'/console/1.0/user/details',
+    userListGet:(process.env.API_HOST || '')+'/console/1.0/user/list',
     userStatusGet:(process.env.API_HOST || '')+'/console/1.0/user/',
     transactionListGet:(process.env.API_HOST || '')+'/console/1.0/transaction/',
     transactionStripeCreate:(process.env.API_HOST || '')+'/console/1.0/transaction/intent',

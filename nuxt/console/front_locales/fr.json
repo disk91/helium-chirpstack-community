@@ -63,6 +63,7 @@
     "menu_user_stats" : "Info Tenant",
     "menu_purchase_dc": "Acheter des Data Credits",
     "menu_admin_profiles" : "Adm profils",
+    "menu_admin_users" : "Adm users",   
     "menu_edit_profile" : "Mes informations",  
     "menu_service_request" : "Service request",
     "menu_migration" : "Import d'objets",   
@@ -428,6 +429,16 @@
     "uc_condition_visit" : "Merci de lire les nouvelles conditions d'utilisation",
     "uc_condition_valid" : "J'accepte les conditions d'utilisation",
     "uc_condition_submit" : "Continuer",
+
+    "u_search_title" : "Gestion des utilisateurs",
+    "tip_search_user" : "Tapez au moins 3 caractères ou *** pour lancer un recherche sur l'email",
+    "tsl_search_user" : "Recherche",
+    "tsl_ban_user" : "Ban",
+    "tsl_dis_user" : "Desactivé",
+    "tsl_login_user" : "Email",
+    "tsl_reg_user" : "Inscription",
+    "tsl_lastl_user" : "Connexion",
+    "tsl_tenants" : "Tenants",
 
     "end" : "fin"
 }

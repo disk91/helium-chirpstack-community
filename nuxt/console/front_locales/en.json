@@ -64,6 +64,7 @@
   "menu_user_stats" : "Tenant details",
   "menu_purchase_dc": "Purchase Data Credits",
   "menu_admin_profiles" : "Adm profiles",
+  "menu_admin_users" : "Adm users",
   "menu_edit_profile" : "My profile",
   "menu_service_request" : "Service request",
   "menu_migration" : "Migrate from legacy",
@@ -427,6 +428,16 @@
   "uc_condition_visit" : "Please read the end-user license agreement",
   "uc_condition_valid" : "I accept the new end-user license agreement",  
   "uc_condition_submit" : "Next",
+
+  "u_search_title" : "User Mangement",
+  "tip_search_user" : "Enter at least 3 chars to start searching for user email or ***",
+  "tsl_search_user" : "Search keyword",
+  "tsl_ban_user" : "Ban",
+  "tsl_dis_user" : "Disable",
+  "tsl_login_user" : "Email",
+  "tsl_reg_user" : "Registration time",
+  "tsl_lastl_user" : "Last login",
+  "tsl_tenants" : "Owned tenants",
 
   "end" : "end"
 }

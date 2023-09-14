@@ -3,6 +3,9 @@
 ## Build Setup
 
 ```bash
+# create project / answer question, select boostrap-vue , select JS
+$ yarn create nuxt-app <project-name>
+
 # install dependencies
 $ yarn install
 
