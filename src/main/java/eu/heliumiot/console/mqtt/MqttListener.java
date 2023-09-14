@@ -213,6 +213,9 @@ public class MqttListener implements MqttCallback {
                         // @Todo : invoice the packets
                         log.info("Join Commit "+_d.devEui+" packets "+_d.count);
                         toRemove.add(_d.devEui);
+                    } else if ( _d != null && _d.count > 100 ) {
+                        log.warn("Join Commit "+_d.devEui+" not committing "+_d.count+" packets");
+                        // @Todo : commit pending packets and keep it
                     }
                 }
                 for ( String s : toRemove ) {
@@ -370,7 +373,7 @@ public class MqttListener implements MqttCallback {
                 // possible Join Request
                 byte[] _dev = new byte[8]; // reverse the bytes of the address
                 for (int i = 0; i < 8; i++) {_dev[i] = payload[(9 + 8 - 1) - i]; }
-                String devEUI = HexaConverters.byteToHexString(_dev, 0, 8);
+                String devEUI = HexaConverters.byteToHexString(_dev);
                 String region = topicName.substring(0, topicName.indexOf("/"));
                 DeviceDedup d;
                 synchronized (lockJoinDedup) {
@@ -394,8 +397,8 @@ public class MqttListener implements MqttCallback {
 
                     if ( mqttConfig.getHeliumZoneDetectionEnable()  ) {
                         // ... push to process
-                        log.debug("Found a join request for " + HexaConverters.byteToHexString(_dev) + " for region " + region);
-                        roamingService.processJoinMessage(_dev, HexaConverters.byteToHexString(_dev), region);
+                        log.debug("Found a join request for " + d.devEui + " for region " + region);
+                        roamingService.processJoinMessage(_dev, d.devEui, region);
                     }
                 } else {
                     // count a new Join to invoice
