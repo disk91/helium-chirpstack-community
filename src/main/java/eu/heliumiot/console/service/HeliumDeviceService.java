@@ -742,6 +742,10 @@ public class HeliumDeviceService {
                                     }
                                     hdev.setState(HeliumDevice.DeviceState.INACTIVE);
                                 }
+                            } else if ( hts.getActivityBillingPeriodMs() == 0 ){
+                                // we have been active and it will not be updated by ActivityBilling
+                                hdev.setLastInactivityInvoiced(lastSeenDevice);
+                                hdev.setState(HeliumDevice.DeviceState.ACTIVE);
                             }
 
                         }
@@ -763,6 +767,13 @@ public class HeliumDeviceService {
                                     }
                                     hdev.setState(HeliumDevice.DeviceState.ACTIVE);
                                 }
+                            } else if (hts.getInactivityBillingPeriodMs() == 0) {
+                                if ( ( now - hdev.getLastActivityInvoiced() ) > hts.getActivityBillingPeriodMs() ) {
+                                    // more than a period of activity has passed in inactivity
+                                    // skip it
+                                    hdev.setLastActivityInvoiced(hdev.getLastActivityInvoiced() + hts.getActivityBillingPeriodMs());
+                                }
+                                hdev.setState(HeliumDevice.DeviceState.INACTIVE);
                             }
 
                         }
