@@ -48,6 +48,7 @@ import org.eclipse.paho.client.mqttv3.*;
 import org.eclipse.paho.client.mqttv3.persist.MemoryPersistence;
 
 import javax.annotation.PostConstruct;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -197,6 +198,11 @@ public class MqttListener implements MqttCallback {
     private final Object lockPacketDedup = new Object();
     protected HashMap<String,Long> packetDedup = new HashMap<>();
 
+    protected class ToInvoice {
+        public String devEui;
+        public int dcs;
+    }
+
     private long lastCleanJoinDedup = 0;
     @Scheduled(fixedDelayString = "${helium.mqtt.dedup.scanPeriod}", initialDelay = 120_000) // default 10m
     protected void cleanDedupCache() {
@@ -206,21 +212,32 @@ public class MqttListener implements MqttCallback {
         if (dedupHashMap.size() > 50 || ( now - lastCleanJoinDedup ) > 10*Now.ONE_MINUTE ) {
             Set<String> obj = dedupHashMap.keySet();
             ArrayList<String> toRemove = new ArrayList<>();
+            ArrayList<ToInvoice> toInvoice = new ArrayList<>();
             synchronized (lockJoinDedup) {
                 for (String s : obj) {
                     DeviceDedup _d = dedupHashMap.get(s);
                     if (_d != null && (now - _d.lastSeen) > 2 * Now.ONE_MINUTE) {
-                        // @Todo : invoice the packets
-                        log.info("Join Commit "+_d.devEui+" packets "+_d.count);
+                        log.debug("Join Commit "+_d.devEui+" packets "+_d.count);
+                        ToInvoice ti = new ToInvoice();
+                        ti.devEui=_d.devEui;
+                        ti.dcs=_d.count;
+                        toInvoice.add(ti);
                         toRemove.add(_d.devEui);
                     } else if ( _d != null && _d.count > 100 ) {
                         log.warn("Join Commit "+_d.devEui+" not committing "+_d.count+" packets");
-                        // @Todo : commit pending packets and keep it
+                        ToInvoice ti = new ToInvoice();
+                        ti.devEui=_d.devEui;
+                        ti.dcs=_d.count;
+                        toInvoice.add(ti);
+                        _d.count = 0;
                     }
                 }
                 for ( String s : toRemove ) {
                     dedupHashMap.remove(s);
                 }
+            }
+            for ( ToInvoice t : toInvoice ) {
+                heliumTenantService.invoiceJoin(t.devEui,t.dcs);
             }
             this.lastCleanJoinDedup = now;
         }
@@ -309,11 +326,13 @@ public class MqttListener implements MqttCallback {
                     e.getDevAddr()
                 );
                 prometeusService.addLoRaJoin();
+                /* Processed at packet level
                 prometeusService.addLoRaUplink(
                     Now.NowUtcMs() - DateConverters.StringDateToMs(e.getTime()),
                     0,
                     0
                 );
+                */
 
             } catch (JsonProcessingException x) {
                 log.error("MQTT - failed to parse App JOIN - " + x.getMessage());
@@ -404,6 +423,14 @@ public class MqttListener implements MqttCallback {
                     // count a new Join to invoice
                     d.count++;
                 }
+
+                // not perfect as we have a Uplink stat for each of the Join duplicates
+                prometeusService.addLoRaUplink(
+                    now-rx,
+                    23,
+                    0
+                );
+
             }
 
 // =================================================

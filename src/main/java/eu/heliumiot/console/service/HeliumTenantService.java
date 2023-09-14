@@ -412,17 +412,16 @@ public class HeliumTenantService {
         synchronized (this) {
             HeliumTenant t = this.getHeliumTenant(tenantUUID,false);
             if (t != null) {
-                int uplinkDc = ts.getDcPer24BMessage();
                 int downlinkDc = ts.getDcPer24BDownlink();
-                t.setDcBalance(t.getDcBalance() - uplinkDc);
                 t.setDcBalance(t.getDcBalance() - downlinkDc);
                 this.flushHeliumTenant(t);
 
                 // publish message to update the stats async
-                i.setUplinkDc(uplinkDc);
-                i.setDownlinkDc(downlinkDc);
                 i.setJoin(1);
                 i.setDownlink(1); // JOIN ACCEPT
+                i.setDownlinkDc(downlinkDc);
+                i.setUplink(0);
+                i.setUplinkDc(0);
                 reportStatToMqtt(i);
 
                 // check deactivation
@@ -435,6 +434,49 @@ public class HeliumTenantService {
             novaService.refreshOneEuiSkf(ts.getRouteId(),deviceUUID);
         }
         log.debug("Process JOIN in "+(Now.NowUtcMs()-start)+"ms");
+    }
+
+    public void invoiceJoin(String deviceEui, int packets ) {
+        long start = Now.NowUtcMs();
+        String tenantUUID = heliumDeviceCacheService.getTenantId(deviceEui);
+        if ( tenantUUID == null ) {
+            log.error("Get a device to invoice w/o tenantId associated "+deviceEui+" for "+packets+" packets");
+        }
+
+        HeliumDeviceStatItf i = new HeliumDeviceStatItf();
+        i.setDeviceId(deviceEui);
+        i.setTenantId(tenantUUID);
+        HeliumTenantSetup ts = heliumTenantSetupService.getHeliumTenantSetup(tenantUUID,false);
+        if ( ts == null ) {
+            HeliumTenant t = this.getHeliumTenant(tenantUUID,true);
+            ts = heliumTenantSetupService.getHeliumTenantSetup(tenantUUID,false);
+            if ( ts == null ) {
+                log.error("Should not be  here ... (2)");
+                return;
+            }
+        }
+        synchronized (this) {
+            HeliumTenant t = this.getHeliumTenant(tenantUUID,false);
+            if (t != null) {
+                int uplinkDc = packets*ts.getDcPer24BMessage();
+                t.setDcBalance(t.getDcBalance() - uplinkDc);
+                this.flushHeliumTenant(t);
+
+                // publish message to update the stats async
+                i.setJoin(0);               // will be incremented on process
+                i.setUplink(packets);
+                i.setUplinkDc(uplinkDc);
+                i.setDownlinkDc(0);
+                i.setDownlink(0);
+                reportStatToMqtt(i);
+
+                // check deactivation
+                if ( !processBalance(ts,t) ) {
+                    this.flushHeliumTenant(t);
+                }
+            }
+        }
+        log.debug("Process JOIN invoicing in "+(Now.NowUtcMs()-start)+"ms");
     }
 
 
