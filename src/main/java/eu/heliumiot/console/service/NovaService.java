@@ -38,6 +38,8 @@ public class NovaService {
 
     private final Logger log = LoggerFactory.getLogger(this.getClass());
 
+    // @TODO - reverse this to 0
+    protected static final int SKFS_MAX_COPIES = 1;
     @Autowired
     protected RedisDeviceRepository redisDeviceRepository;
 
@@ -265,7 +267,7 @@ public class NovaService {
                     .setDevaddr(iDevAddr)
                     .setRouteId(routeId)
                     .setSessionKey(ntwSEncKey)
-                    .setMaxCopies(0)
+                    .setMaxCopies(SKFS_MAX_COPIES)
                     .build();
             r.skfsByEui.put(eui,n);
         } else {
@@ -335,7 +337,7 @@ public class NovaService {
                                     .setDevaddr(iDevAddr)
                                     .setSessionKey(ntwSEncKey)
                                     .setRouteId(routeId)
-                                    .setMaxCopies(0)
+                                    .setMaxCopies(SKFS_MAX_COPIES)
                                     .build();
                             toAdd.add(sa);
                             r.skfsByEui.put(hd.getDeviceEui().toLowerCase(),sa);
@@ -1560,7 +1562,7 @@ public class NovaService {
                                 .setAction(action_v1.add)
                                 .setDevaddr(session.devAddr)
                                 .setSessionKey(session.session)
-                                .setMaxCopies(0)
+                                .setMaxCopies(SKFS_MAX_COPIES)
                                 .build();
                         updates.add(update);
                     }
@@ -1582,7 +1584,7 @@ public class NovaService {
                                 .setAction(action_v1.remove)
                                 .setDevaddr(session.devAddr)
                                 .setSessionKey(session.session)
-                                .setMaxCopies(0)
+                                .setMaxCopies(SKFS_MAX_COPIES)
                                 .build();
                         updates.add(update);
                         actions++;

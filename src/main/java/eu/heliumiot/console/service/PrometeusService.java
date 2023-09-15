@@ -124,7 +124,7 @@ public class PrometeusService {
 
     synchronized public void addLoRaUplink(long travelTime, long bytes, int duplicates) {
         this.loRaUplinkCount++;
-        this.loRaDuplicatesCount+=duplicates;
+        this.loRaDuplicatesCount += duplicates;
         this.loRaTotalUplinkBytes += bytes;
         this.loRaTotalTravelTimeMs += travelTime;
         this.loRaLastSeen = Now.NowUtcMs();
