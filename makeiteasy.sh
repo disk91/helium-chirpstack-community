@@ -189,8 +189,12 @@ createApiKey() {
     while ! docker exec -ti helium-chirpstack-1 /bin/ls >/dev/null 2>&1 ; do
      sleep 2
     done
-    sleep 10
+    sleep 20
     APIKEY=`docker exec -ti helium-chirpstack-1 /usr/bin/chirpstack --config /etc/chirpstack create-api-key --name "admin key" | grep token | cut -d ":" -f 2 | tr -d "\r "`
+    if [ "$APIKEY" == "" ] ; then
+      echo "Chirpstack API key failure... retrying"
+      APIKEY=`docker exec -ti helium-chirpstack-1 /usr/bin/chirpstack --config /etc/chirpstack create-api-key --name "admin key" | grep token | cut -d ":" -f 2 | tr -d "\r "`
+    fi
     docker compose stop
     if [ "$APIKEY" == "" ] ; then
       echo "Chirpstack API key creation error"
@@ -280,7 +284,7 @@ if [ ! -f $HOME/.cargo/env ] ; then
 fi
 
 # Install Helium-Chirpstack
-if [ ! -d /helium ] ; then
+if [ ! -d /helium/configuration ] ; then
  cecho "Creating helium-chirpstack structure"
  make init
 fi
