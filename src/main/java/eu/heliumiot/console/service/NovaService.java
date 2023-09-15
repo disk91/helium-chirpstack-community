@@ -39,7 +39,7 @@ public class NovaService {
     private final Logger log = LoggerFactory.getLogger(this.getClass());
 
     // @TODO - reverse this to 0
-    protected static final int SKFS_MAX_COPIES = 1;
+    protected static final int SKFS_MAX_COPIES = 0;
     @Autowired
     protected RedisDeviceRepository redisDeviceRepository;
 
