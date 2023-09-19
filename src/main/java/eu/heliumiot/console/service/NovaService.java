@@ -175,6 +175,7 @@ public class NovaService {
                             ) {
                                 toBeUpdated = true;
                             } else {
+                                // check the region list
                                 for (RegionSupported reg : regionsSupported) {
                                     toBeUpdated = true;
                                     for (protocol_gwmp_mapping_v1 gwp : r.getServer().getGwmp().getMappingList()) {
@@ -186,7 +187,10 @@ public class NovaService {
                                     if ( toBeUpdated ) break;
                                 }
                             }
-                            if ( toBeUpdated ) grpcUpdateOneRoute(hts.getRouteId(),hts.getMaxCopy(),true);
+                            if ( toBeUpdated ) {
+                                log.info("Updating route definition "+hts.getRouteId());
+                                grpcUpdateOneRoute(hts.getRouteId(),hts.getMaxCopy(),true);
+                            }
 
                             // now check the sessions
                             if (!consoleConfig.isHeliumGrpcSkfEnable()) continue;

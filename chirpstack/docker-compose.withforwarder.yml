@@ -124,6 +124,17 @@ services:
       - mosquitto
     logging: *logs
 
+  chirpstack-gateway-bridge-au915-2:
+    image: chirpstack/chirpstack-gateway-bridge:4.0.10
+    restart: unless-stopped
+    ports:
+      - 1709:1700/udp
+    volumes:
+      - /helium/configuration/chirpstack-gateway-bridge-au915-2:/etc/chirpstack-gateway-bridge
+    depends_on:
+      - mosquitto
+    logging: *logs
+
   chirpstack-gateway-bridge-as923:
     image: chirpstack/chirpstack-gateway-bridge:4.0.10
     restart: unless-stopped
