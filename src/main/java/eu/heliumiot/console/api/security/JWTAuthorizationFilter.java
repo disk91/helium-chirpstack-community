@@ -121,7 +121,13 @@ public class JWTAuthorizationFilter extends GenericFilterBean {
             }
             String user = claims.getSubject();
             UserCacheService.UserCacheElement u = userCacheService.getUserById(user);
-            if ( ! u.user.isAdmin() ) {
+            if ( u == null ) {
+                log.error("### jwt attempt with non existing user!!! ");
+                chain.doFilter(request, response);
+                return;
+            }
+
+            if ( ! u.user.isAdmin() && roles != null ) {
                 for ( String role : roles ) {
                     if ( role.compareToIgnoreCase("ROLE_ADMIN") == 0 ) {
                         log.error("### A simple user try to be identified as an admin !!! ");
@@ -130,13 +136,14 @@ public class JWTAuthorizationFilter extends GenericFilterBean {
                     }
                 }
             }
-            if ( u != null && u.user.isActive() /* todo ... more test */ ) {
+            if ( u.user.isActive() /* todo ... more test */ ) {
                 // accept the authentication
                 SecurityContextHolder
                         .getContext()
                         .setAuthentication(new UsernamePasswordAuthenticationToken(user, null, list));
             }
         } catch (ExpiredJwtException x) {
+            // Expired
         } catch (SignatureException x) {
             // the signature of the JWT is invalid
         } catch (IllegalArgumentException x) {
