@@ -248,6 +248,15 @@ public class ConsoleConfig {
     @Value ("${helium.billing.vat:2000}")
     private int heliumBillingVat;
 
+    @Value ("${helium.billing.dcPerJoinRequest:0}")
+    private int heliumBillingDcPerJoinRequest;
+
+    @Value ("${helium.billing.maxJoinRequestDup:-1}")
+    private int heliumBillingMaxJoinRequestDup;
+
+    @Value ("${helium.billing.dcPerJoinAccept:0}")
+    private int heliumBillingDcPerJoinAccept;
+
     public int getHeliumBillingVat() {
         return heliumBillingVat;
     }
@@ -354,6 +363,30 @@ public class ConsoleConfig {
 
     public String getHeliumBillingLimitDcRatePeriodExternal() {
         return heliumBillingLimitDcRatePeriodExternal;
+    }
+
+    public boolean isHeliumZoneDetectionEnableDefault() {
+        return heliumZoneDetectionEnableDefault;
+    }
+
+    public int getHeliumBillingDcPerJoinRequest() {
+        return heliumBillingDcPerJoinRequest;
+    }
+
+    public int getHeliumBillingMaxJoinRequestDup() {
+        return heliumBillingMaxJoinRequestDup;
+    }
+
+    public int getHeliumBillingDcPerJoinAccept() {
+        return heliumBillingDcPerJoinAccept;
+    }
+
+    public boolean isStatReportEnableDefault() {
+        return statReportEnableDefault;
+    }
+
+    public String getStatReportEnable() {
+        return statReportEnable;
     }
 
     public int getHeliumBillingMaxDcPerDevice() {

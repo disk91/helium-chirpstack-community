@@ -100,6 +100,9 @@ public class HeliumTenantSetupService {
             ts.setDcMin(consoleConfig.getHeliumBillingDcMinAmount());
             ts.setSignupAllowed(consoleConfig.isHeliumAllowsSignup());
             ts.setMaxCopy(consoleConfig.getHeliumRouteDefaultCopy());
+            ts.setDcPerJoinRequest(consoleConfig.getHeliumBillingDcPerJoinRequest());
+            ts.setDcPerJoinAccept(consoleConfig.getHeliumBillingDcPerJoinAccept());
+            ts.setMaxJoinRequestDup(consoleConfig.getHeliumBillingMaxJoinRequestDup());
             ts.setRouteId("N/A");
             ts.setTemplate(true);
             heliumTenantSetupRepository.save(ts);
@@ -254,6 +257,9 @@ public class HeliumTenantSetupService {
         ts.setMaxCopy(def.getMaxCopy());
         ts.setRouteId(null);
         ts.setTemplate(false);
+        ts.setDcPerJoinRequest(def.getDcPerJoinRequest());
+        ts.setDcPerJoinAccept(def.getDcPerJoinAccept());
+        ts.setMaxJoinRequestDup(def.getMaxJoinRequestDup());
         heliumTenantSetupRepository.save(ts);
         return ts;
     }
@@ -299,6 +305,9 @@ public class HeliumTenantSetupService {
             ts.setDcMin(def.getDcMin());
             ts.setSignupAllowed(def.isSignupAllowed());
             ts.setMaxCopy(def.getMaxCopy());
+            ts.setDcPerJoinRequest(def.getDcPerJoinRequest());
+            ts.setDcPerJoinAccept(def.getDcPerJoinAccept());
+            ts.setMaxJoinRequestDup(def.getMaxJoinRequestDup());
             r.add(ts);
         }
 
@@ -340,6 +349,9 @@ public class HeliumTenantSetupService {
         ts.setDcMin(def.getDcMin());
         ts.setSignupAllowed(def.isSignupAllowed());
         ts.setMaxCopy(def.getMaxCopy());
+        ts.setDcPerJoinRequest(def.getDcPerJoinRequest());
+        ts.setDcPerJoinAccept(def.getDcPerJoinAccept());
+        ts.setMaxJoinRequestDup(def.getMaxJoinRequestDup());
 
         heliumTenantSetupRepository.save(ts);
         this.heliumSetupCache.remove(ts.getTenantUUID(),false);
@@ -400,6 +412,9 @@ public class HeliumTenantSetupService {
         ts.setDcMin(def.getDcMin());
         ts.setSignupAllowed(def.isSignupAllowed());
         ts.setMaxCopy(( (def.getMaxCopy() > 0 )? def.getMaxCopy() : 1));
+        ts.setDcPerJoinRequest(def.getDcPerJoinRequest());
+        ts.setDcPerJoinAccept(def.getDcPerJoinAccept());
+        ts.setMaxJoinRequestDup(def.getMaxJoinRequestDup());
         heliumTenantSetupRepository.save(ts);
     }
 

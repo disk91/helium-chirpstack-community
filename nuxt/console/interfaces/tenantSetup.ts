@@ -3,6 +3,9 @@ declare module "vue/types/tenantSetup" {
         tenantUUID : string,
         dcBalanceStop : bigint,
         freeTenantDc : bigint,
+        dcPerJoinRequest : bigint,
+        dcPerJoinAccept : bigint,
+        maxJoinRequestDup : bigint,
         dcPer24BMessage : bigint,
         dcPer24BDownlink : bigint,
         dcPer24BDuplicate : bigint,
@@ -16,9 +19,10 @@ declare module "vue/types/tenantSetup" {
         limitDcRatePerDevice : bigint,
         dcPrice : number,
         dcMin : bigint,
+        maxCopy : bigint,
         maxOwnedTenants : bigint,
         maxDevices : bigint,
-        signupAllowed : boolean
+        signupAllowed : boolean,
         id : string
     }
 }

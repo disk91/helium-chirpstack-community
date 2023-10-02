@@ -104,6 +104,14 @@ public class HeliumTenantSetup implements ClonnableObject<HeliumTenantSetup> {
     @Column(name = "route_id")
     private String routeId;
 
+    // Join Req / Acc invoicing
+    @Column(name = "dc_per_join_request")
+    private int dcPerJoinRequest;
+    @Column(name = "max_join_request_dup")
+    private int maxJoinRequestDup;
+    @Column(name = "dc_per_join_accept")
+    private int dcPerJoinAccept;
+
     // ---
     public HeliumTenantSetup clone() {
         System.out.println("### HeliumTenantSetup clone not implemented");
@@ -295,5 +303,29 @@ public class HeliumTenantSetup implements ClonnableObject<HeliumTenantSetup> {
 
     public void setRouteId(String routeId) {
         this.routeId = routeId;
+    }
+
+    public int getDcPerJoinRequest() {
+        return dcPerJoinRequest;
+    }
+
+    public void setDcPerJoinRequest(int dcPerJoinRequest) {
+        this.dcPerJoinRequest = dcPerJoinRequest;
+    }
+
+    public int getMaxJoinRequestDup() {
+        return maxJoinRequestDup;
+    }
+
+    public void setMaxJoinRequestDup(int maxJoinRequestDup) {
+        this.maxJoinRequestDup = maxJoinRequestDup;
+    }
+
+    public int getDcPerJoinAccept() {
+        return dcPerJoinAccept;
+    }
+
+    public void setDcPerJoinAccept(int dcPerJoinAccept) {
+        this.dcPerJoinAccept = dcPerJoinAccept;
     }
 }

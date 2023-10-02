@@ -163,12 +163,33 @@ public class TenantSetupTemplateCreateReqItf {
     private boolean signupAllowed;
 
     @Schema(
-            description = "Max number of Frames purchased by router from different hotpost ",
+            description = "Max number of Frames purchased by router from different hotspot ",
             example = "2",
             requiredMode = Schema.RequiredMode.REQUIRED
     )
     private int maxCopy;
 
+
+    @Schema(
+        description = "Number of DCs invoiced for a Join request and each of the duplicates up to the limit",
+        example = "1",
+        requiredMode = Schema.RequiredMode.REQUIRED
+    )
+    private int dcPerJoinRequest;
+
+    @Schema(
+        description = "Maximum join request duplicates invoiced -1 for all. This is in preparation of future unlimited Join Req",
+        example = "0",
+        requiredMode = Schema.RequiredMode.REQUIRED
+    )
+    private int maxJoinRequestDup;
+
+    @Schema(
+        description = "Number of DCs invoices for a Join Accept - each join req group have a join accept",
+        example = "1",
+        requiredMode = Schema.RequiredMode.REQUIRED
+    )
+    private int dcPerJoinAccept;
 
     // ---
 
@@ -331,5 +352,29 @@ public class TenantSetupTemplateCreateReqItf {
 
     public void setMaxCopy(int maxCopy) {
         this.maxCopy = maxCopy;
+    }
+
+    public int getDcPerJoinRequest() {
+        return dcPerJoinRequest;
+    }
+
+    public void setDcPerJoinRequest(int dcPerJoinRequest) {
+        this.dcPerJoinRequest = dcPerJoinRequest;
+    }
+
+    public int getMaxJoinRequestDup() {
+        return maxJoinRequestDup;
+    }
+
+    public void setMaxJoinRequestDup(int maxJoinRequestDup) {
+        this.maxJoinRequestDup = maxJoinRequestDup;
+    }
+
+    public int getDcPerJoinAccept() {
+        return dcPerJoinAccept;
+    }
+
+    public void setDcPerJoinAccept(int dcPerJoinAccept) {
+        this.dcPerJoinAccept = dcPerJoinAccept;
     }
 }

@@ -421,7 +421,7 @@ public class HeliumTenantService {
                 i.setDownlink(1); // JOIN ACCEPT
                 i.setDownlinkDc(downlinkDc);
                 i.setUplink(0);
-                i.setUplinkDc(0);
+                i.setUplinkDc(0);   // JOIN IS FREE
                 reportStatToMqtt(i);
 
                 // check deactivation

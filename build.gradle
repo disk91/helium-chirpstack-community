@@ -46,7 +46,6 @@ dependencies {
 	implementation group: 'io.grpc', name: 'grpc-stub', version:'1.57.1'
 	implementation group: 'org.bouncycastle', name: 'bcprov-jdk15on', version: '1.70'
 	implementation group: 'io.jsonwebtoken', name: 'jjwt-api', version: '0.11.5'
-	implementation group: 'commons-validator', name: 'commons-validator', version: '1.7'
 	implementation group: 'org.flywaydb', name: 'flyway-core', version: '9.21.1'
 	implementation group: 'com.stripe', name:'stripe-java', version:'22.31.0'
 	implementation group: 'org.apache.pdfbox', name:'pdfbox', version:'2.0.29'
