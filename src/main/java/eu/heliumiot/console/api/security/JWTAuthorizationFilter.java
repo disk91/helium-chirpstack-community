@@ -27,6 +27,7 @@ import io.jsonwebtoken.security.SignatureException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.DependsOn;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -42,6 +43,7 @@ import java.security.Key;
 import java.util.ArrayList;
 
 @Service
+@DependsOn("entityManagerFactory")
 public class JWTAuthorizationFilter extends GenericFilterBean {
 
     private final Logger log = LoggerFactory.getLogger(this.getClass());
