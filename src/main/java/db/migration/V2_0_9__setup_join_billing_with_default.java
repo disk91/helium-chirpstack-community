@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component;
 import java.sql.Statement;
 
 @Component
-public class V2_0_8__setup_join_billing_with_default extends BaseJavaMigration {
+public class V2_0_9__setup_join_billing_with_default extends BaseJavaMigration {
     private final Logger log = LoggerFactory.getLogger(this.getClass());
 
     @Autowired
