@@ -106,11 +106,11 @@ public class HeliumTenantSetup implements ClonnableObject<HeliumTenantSetup> {
 
     // Join Req / Acc invoicing
     @Column(name = "dc_per_join_request")
-    private int dcPerJoinRequest;
+    private int dcPerJoinRequest = 0;
     @Column(name = "max_join_request_dup")
-    private int maxJoinRequestDup;
+    private int maxJoinRequestDup = 0;
     @Column(name = "dc_per_join_accept")
-    private int dcPerJoinAccept;
+    private int dcPerJoinAccept = 0;
 
     // ---
     public HeliumTenantSetup clone() {
