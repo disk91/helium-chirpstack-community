@@ -31,6 +31,7 @@ import io.micrometer.core.instrument.MeterRegistry;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.DependsOn;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Slice;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -42,6 +43,7 @@ import java.util.List;
 import java.util.UUID;
 
 @Service
+@DependsOn("entityManagerFactory")
 public class HeliumTenantSetupService {
     private final Logger log = LoggerFactory.getLogger(this.getClass());
 
