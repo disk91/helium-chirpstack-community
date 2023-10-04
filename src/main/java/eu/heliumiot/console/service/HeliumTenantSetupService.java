@@ -82,19 +82,21 @@ public class HeliumTenantSetupService {
         boolean nextPage = false;
         if ( alltenants != null ) {
             log.info("### [db V2_0_9] Migrate the HeliumTenantSetup with join values ");
+            int i = 0;
             do {
                 for (HeliumTenantSetup t : alltenants) {
                     t.setMaxJoinRequestDup(consoleConfig.getHeliumBillingMaxJoinRequestDup());
                     t.setDcPerJoinRequest(consoleConfig.getHeliumBillingDcPerJoinRequest());
                     t.setDcPerJoinAccept(consoleConfig.getHeliumBillingDcPerJoinAccept());
                     heliumTenantSetupRepository.save(t);
+                    i++;
                 }
                 if (alltenants.hasNext()) {
                     alltenants = heliumTenantSetupRepository.findHeliumTenantSetupByDcPerJoinRequest(-2, alltenants.nextPageable());
                     nextPage = true;
                 } else nextPage = false;
             } while (nextPage);
-            log.info("### [db V2_0_9] Done");
+            log.info("### [db V2_0_9] "+i+" Done");
         }
 
         // search for default entry

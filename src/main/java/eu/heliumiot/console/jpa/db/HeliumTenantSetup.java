@@ -105,12 +105,12 @@ public class HeliumTenantSetup implements ClonnableObject<HeliumTenantSetup> {
     private String routeId;
 
     // Join Req / Acc invoicing
-    @Column(name = "dc_per_join_request", columnDefinition = "int4 default 0")
-    private int dcPerJoinRequest = 0;
-    @Column(name = "max_join_request_dup", columnDefinition = "int4 default 0")
-    private int maxJoinRequestDup = 0;
-    @Column(name = "dc_per_join_accept", columnDefinition = "int4 default 0")
-    private int dcPerJoinAccept = 0;
+    @Column(name = "dc_per_join_request", columnDefinition = "int4")
+    private int dcPerJoinRequest;
+    @Column(name = "max_join_request_dup", columnDefinition = "int4")
+    private int maxJoinRequestDup;
+    @Column(name = "dc_per_join_accept", columnDefinition = "int4")
+    private int dcPerJoinAccept;
 
     // ---
     public HeliumTenantSetup clone() {
