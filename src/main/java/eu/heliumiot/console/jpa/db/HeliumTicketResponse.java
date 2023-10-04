@@ -28,7 +28,7 @@ import java.util.UUID;
 @Entity
 @Table(name = "helium_ticket_response",
         indexes = {
-                @Index(name="uniqueheliummessageindex", columnList = "ticket_uuid", unique = true)
+                @Index(name="byticketuuid", columnList = "ticket_uuid")
         }
 )
 public class HeliumTicketResponse {

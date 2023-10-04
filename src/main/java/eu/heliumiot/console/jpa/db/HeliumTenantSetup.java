@@ -28,7 +28,7 @@ import java.util.UUID;
 @Entity
 @Table(name = "helium_tenantSetup",
         indexes = {
-          @Index(name="uniqueTenantSetupIndex", columnList = "tenantUUID", unique = true)
+            @Index(name="bytenantuuidsearch", columnList = "tenantUUID")
         }
 )
 public class HeliumTenantSetup implements ClonnableObject<HeliumTenantSetup> {
@@ -105,11 +105,11 @@ public class HeliumTenantSetup implements ClonnableObject<HeliumTenantSetup> {
     private String routeId;
 
     // Join Req / Acc invoicing
-    @Column(name = "dc_per_join_request")
+    @Column(name = "dc_per_join_request", columnDefinition = "int4 default 0")
     private int dcPerJoinRequest = 0;
-    @Column(name = "max_join_request_dup")
+    @Column(name = "max_join_request_dup", columnDefinition = "int4 default 0")
     private int maxJoinRequestDup = 0;
-    @Column(name = "dc_per_join_accept")
+    @Column(name = "dc_per_join_accept", columnDefinition = "int4 default 0")
     private int dcPerJoinAccept = 0;
 
     // ---

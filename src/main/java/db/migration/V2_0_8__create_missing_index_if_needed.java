@@ -21,12 +21,12 @@ public class V2_0_8__create_missing_index_if_needed extends BaseJavaMigration {
 
         log.info("### Create index for helium_ticket when not created automatically");
         try (Statement update = context.getConnection().createStatement()) {
-            update.execute("CREATE INDEX IF NOT EXISTS uniqueheliummessageindex ON helium_ticket (user_uuid)");
+            update.execute("CREATE INDEX IF NOT EXISTS byusersearch ON helium_ticket (user_uuid)");
         }
 
         log.info("### Create index for helium_ticket_response when not created automatically");
         try (Statement update = context.getConnection().createStatement()) {
-            update.execute("CREATE INDEX IF NOT EXISTS uniqueheliummessageindex ON helium_ticket_response (ticket_uuid)");
+            update.execute("CREATE INDEX IF NOT EXISTS byticketuuid ON helium_ticket_response (ticket_uuid)");
         }
     }
 }

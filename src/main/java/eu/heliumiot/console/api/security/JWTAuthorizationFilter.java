@@ -43,7 +43,7 @@ import java.security.Key;
 import java.util.ArrayList;
 
 @Service
-@DependsOn("flywayInitializer")
+@DependsOn("flywayConfiguration")
 public class JWTAuthorizationFilter extends GenericFilterBean {
 
     private final Logger log = LoggerFactory.getLogger(this.getClass());
