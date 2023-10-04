@@ -21,6 +21,7 @@ package eu.heliumiot.console.jpa.repository;
 
 import eu.heliumiot.console.jpa.db.HeliumTenantSetup;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
 import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.stereotype.Repository;
 
@@ -39,5 +40,10 @@ public interface HeliumTenantSetupRepository extends PagingAndSortingRepository<
     public List<HeliumTenantSetup> findHeliumTenantSetupByRouteId(String routeId);
 
     public List<HeliumTenantSetup> findAllByTemplate(boolean template, Pageable pageable);
+
+    public Slice<HeliumTenantSetup> findHeliumTenantSetupByDcPerJoinRequest(
+            int dcPerJoinRequest,
+            Pageable pageable
+    );
 
 }

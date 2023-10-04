@@ -21,6 +21,7 @@ package eu.heliumiot.console.service;
 
 import eu.heliumiot.console.ConsoleConfig;
 import eu.heliumiot.console.api.interfaces.*;
+import eu.heliumiot.console.jpa.db.Device;
 import eu.heliumiot.console.jpa.db.HeliumCoupon;
 import eu.heliumiot.console.jpa.db.HeliumTenantSetup;
 import eu.heliumiot.console.jpa.repository.HeliumCouponRepository;
@@ -31,6 +32,8 @@ import io.micrometer.core.instrument.MeterRegistry;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Slice;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
@@ -73,6 +76,26 @@ public class HeliumTenantSetupService {
             }
 
         };
+
+        // Update the entries after migration 0.9 if value is -2 for dc_per_join_request and others
+        Slice<HeliumTenantSetup> alltenants = heliumTenantSetupRepository.findHeliumTenantSetupByDcPerJoinRequest(-2,PageRequest.of(0, 100));
+        boolean nextPage = false;
+        if ( alltenants != null ) {
+            log.info("### [db V2_0_9] Migrate the HeliumTenantSetup with join values ");
+            do {
+                for (HeliumTenantSetup t : alltenants) {
+                    t.setMaxJoinRequestDup(consoleConfig.getHeliumBillingMaxJoinRequestDup());
+                    t.setDcPerJoinRequest(consoleConfig.getHeliumBillingDcPerJoinRequest());
+                    t.setDcPerJoinAccept(consoleConfig.getHeliumBillingDcPerJoinAccept());
+                    heliumTenantSetupRepository.save(t);
+                }
+                if (alltenants.hasNext()) {
+                    alltenants = heliumTenantSetupRepository.findHeliumTenantSetupByDcPerJoinRequest(-2, alltenants.nextPageable());
+                    nextPage = true;
+                } else nextPage = false;
+            } while (nextPage);
+            log.info("### [db V2_0_9] Done");
+        }
 
         // search for default entry
         HeliumTenantSetup ts = heliumTenantSetupRepository.findOneHeliumTenantSetupByTenantUUID(HELIUM_TENANT_SETUP_DEFAULT);
