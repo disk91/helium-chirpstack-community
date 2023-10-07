@@ -43,6 +43,8 @@ public class HeliumDeviceStatItf {
     protected int uplink = 0;
     protected int downlink = 0;
     protected int join=0;
+    protected int joinDc = 0;
+    protected int joinAcceptDc = 0;
 
     // ---
 
@@ -149,5 +151,21 @@ public class HeliumDeviceStatItf {
 
     public void setTenantId(String tenantId) {
         this.tenantId = tenantId;
+    }
+
+    public int getJoinDc() {
+        return joinDc;
+    }
+
+    public void setJoinDc(int joinDc) {
+        this.joinDc = joinDc;
+    }
+
+    public int getJoinAcceptDc() {
+        return joinAcceptDc;
+    }
+
+    public void setJoinAcceptDc(int joinAcceptDc) {
+        this.joinAcceptDc = joinAcceptDc;
     }
 }

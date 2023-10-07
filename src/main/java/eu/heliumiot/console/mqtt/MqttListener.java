@@ -224,6 +224,7 @@ public class MqttListener implements MqttCallback {
                         toInvoice.add(ti);
                         toRemove.add(_d.devEui);
                     } else if ( _d != null && _d.count > 100 ) {
+                        // possible when the rate of Join is really fast and we have no end on the prevous if
                         log.warn("Join Commit "+_d.devEui+" not committing "+_d.count+" packets");
                         ToInvoice ti = new ToInvoice();
                         ti.devEui=_d.devEui;
@@ -326,14 +327,6 @@ public class MqttListener implements MqttCallback {
                     e.getDevAddr()
                 );
                 prometeusService.addLoRaJoin();
-                /* Processed at packet level
-                prometeusService.addLoRaUplink(
-                    Now.NowUtcMs() - DateConverters.StringDateToMs(e.getTime()),
-                    0,
-                    0
-                );
-                */
-
             } catch (JsonProcessingException x) {
                 log.error("MQTT - failed to parse App JOIN - " + x.getMessage());
                 x.printStackTrace();
@@ -356,6 +349,7 @@ public class MqttListener implements MqttCallback {
 
             byte [] payload = uf.getPhyPayload().toByteArray();
             long rx = (uf.getRxInfo().getTime().getSeconds() * 1000) + (uf.getRxInfo().getTime().getNanos() / 1_000_000);
+            boolean isJoin = (payload[0] == 0 && payload.length == 23);
 
           //  long legTime = (uf.getRxInfoLegacy().getTime().getSeconds() * 1000) + (uf.getRxInfo().getTime().getNanos() / 1_000_000);
 
@@ -376,7 +370,11 @@ public class MqttListener implements MqttCallback {
                 prometeusService.addLoRaLateUplink( now - rx );
             }
             // count packets received at gateway level (invoiced by HPR, potentially rejected by LNS)
-            prometeusService.addLoRaGatewayUplink();
+            if ( isJoin ) {
+                prometeusService.addLoRaJoinRequest(now-rx);
+            } else {
+                prometeusService.addLoRaGatewayUplink();
+            }
 
             // Measure uplink confirmed processing time
             if ( (payload[0] & 0xC0) == 0x80 && uf.getRxInfo().getTime().getSeconds() > 0 ) {
@@ -388,7 +386,7 @@ public class MqttListener implements MqttCallback {
 
             // Manage zone switch on Join Requests
             // Manage DC count for Join Requests
-            if (payload[0] == 0 && payload.length == 23) {
+            if ( isJoin ) {
                 // possible Join Request
                 byte[] _dev = new byte[8]; // reverse the bytes of the address
                 for (int i = 0; i < 8; i++) {_dev[i] = payload[(9 + 8 - 1) - i]; }

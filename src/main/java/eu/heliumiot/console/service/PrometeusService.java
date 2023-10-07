@@ -57,7 +57,11 @@ public class PrometeusService {
     private long loRaTotalUplinkBytes = 0;      // number of bytes transfered in Uplink - OK
     private long loRaTotalDownlinkBytes = 0;    // number of bytes transfered in Downlink - OK
     private long loRaLastSeen = 0;              // last time we seen data
-    private long loRaJoinCount = 0;             // number of Join request - OK
+    private long loRaJoinCount = 0;             // number of Join request accepted - OK
+    private long loRaJoinRequest = 0;           // number of Join Request Frame received - OK
+    private long loRaJoinTravelTime = 0;        // sum of travel time for Join Requests
+    private long loRaJoinByteCounts = 0;        // sum of byte related to Join Request
+
 
     private long loRaFirstUplinkTravelTime = 0; // the travel time for the first of the replicates only
     private long loRaFirstUplinkCount = 0;      // the number of different packet (only the first)
@@ -128,6 +132,12 @@ public class PrometeusService {
         this.loRaTotalUplinkBytes += bytes;
         this.loRaTotalTravelTimeMs += travelTime;
         this.loRaLastSeen = Now.NowUtcMs();
+    }
+    synchronized public void addLoRaJoinRequest(long travelTime) {
+        this.loRaJoinRequest++;
+        this.loRaJoinTravelTime += travelTime;
+        this.loRaLastSeen = Now.NowUtcMs();
+        this.loRaJoinByteCounts += 23;
     }
 
     synchronized public void addLoRaUplinkConf(long travelTime) {
@@ -295,6 +305,19 @@ public class PrometeusService {
     protected Supplier<Number> getLoRaTotalJoin() {
         return ()->loRaJoinCount;
     }
+
+    protected Supplier<Number> getLoRaTotalJoinRequest() {
+        return ()->loRaJoinRequest;
+    }
+
+    protected Supplier<Number> getLoRaTotalJoinTravelTime() {
+        return ()->loRaJoinTravelTime;
+    }
+
+    protected Supplier<Number> getLoRaTotalJoinByteCount() {
+        return ()->loRaJoinByteCounts;
+    }
+
     protected Supplier<Number> getLoRaTotalDownlink() {
         return ()->loRaDownlinkCount;
     }
@@ -416,8 +439,17 @@ public class PrometeusService {
                 .description("total uplink bytes")
                 .register(registry);
         Gauge.builder("cons.lora.join", getLoRaTotalJoin())
-                .description("total join request")
+                .description("total join request success")
                 .register(registry);
+        Gauge.builder("cons.lora.join.request", getLoRaTotalJoinRequest())
+            .description("total join request frames")
+            .register(registry);
+        Gauge.builder("cons.lora.join.travel", getLoRaTotalJoinTravelTime())
+            .description("total travel time on join request frames")
+            .register(registry);
+        Gauge.builder("cons.lora.join.bytes", getLoRaTotalJoinByteCount())
+            .description("total bytes on join request frames")
+            .register(registry);
         Gauge.builder("cons.lora.downlinks", getLoRaTotalDownlink())
                 .description("number LoRa downlink proceeded")
                 .register(registry);

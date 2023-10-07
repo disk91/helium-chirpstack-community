@@ -92,6 +92,9 @@ public class HeliumTenantStatService {
         r.setDcPrice(hts.getDcPrice());
         r.setDcMin(hts.getDcMin());
         r.setMaxCopy(hts.getMaxCopy());
+        r.setDcPerJoinRequest(hts.getDcPerJoinRequest());
+        r.setDcPerJoinAccept(hts.getDcPerJoinAccept());
+        r.setMaxJoinRequestDup(hts.getMaxJoinRequestDup());
 
         // get name
         Tenant t = tenantRepository.findOneTenantById(UUID.fromString(tenantUUID));
@@ -123,6 +126,8 @@ public class HeliumTenantStatService {
             r.setDownlinkDc(0);
             r.setActivityDc(0);
             r.setInactivityDc(0);
+            r.setJoinDc(0);
+            r.setJoinAcceptDc(0);
         } else {
             r.setRegistrationDc(s.getRegistrationDc());
             r.setJoinReq(s.getJoinReq());
@@ -134,6 +139,8 @@ public class HeliumTenantStatService {
             r.setDownlinkDc(s.getDownlinkDc());
             r.setActivityDc(s.getActivityDc());
             r.setInactivityDc(s.getInactivityDc());
+            r.setJoinDc(s.getJoinDc());
+            r.setJoinAcceptDc(s.getJoinAcceptDc());
         }
 
         tenantStatCache.put(r,tenantUUID);

@@ -254,6 +254,42 @@ public class TenantBasicStatRespItf implements ClonnableObject<TenantBasicStatRe
     )
     private int maxCopy;
 
+    @Schema(
+        description = "Number of Dc to be paid for a Join Request",
+        example = "1",
+        requiredMode = Schema.RequiredMode.REQUIRED
+    )
+    private int dcPerJoinRequest;
+
+    @Schema(
+        description = "Maximum Join Request duplicates invoiced at dcPerJoinRequest, -1 all",
+        example = "-1",
+        requiredMode = Schema.RequiredMode.REQUIRED
+    )
+    private int maxJoinRequestDup;
+
+    @Schema(
+        description = "Number of Dc consumed for Join Request, including duplicates",
+        example = "100",
+        requiredMode = Schema.RequiredMode.REQUIRED
+    )
+    private int joinDc;
+
+    @Schema(
+        description = "Cost in DCs to send a Join Accept as a response to Join request",
+        example = "1",
+        requiredMode = Schema.RequiredMode.REQUIRED
+    )
+    private int dcPerJoinAccept;
+
+    @Schema(
+        description = "Number of DCs consumed for Join Accept",
+        example = "10",
+        requiredMode = Schema.RequiredMode.REQUIRED
+    )
+    private int joinAcceptDc;
+
+
     // ----
 
     public TenantBasicStatRespItf clone() {
@@ -520,5 +556,45 @@ public class TenantBasicStatRespItf implements ClonnableObject<TenantBasicStatRe
 
     public void setMaxCopy(int maxCopy) {
         this.maxCopy = maxCopy;
+    }
+
+    public int getDcPerJoinRequest() {
+        return dcPerJoinRequest;
+    }
+
+    public void setDcPerJoinRequest(int dcPerJoinRequest) {
+        this.dcPerJoinRequest = dcPerJoinRequest;
+    }
+
+    public int getMaxJoinRequestDup() {
+        return maxJoinRequestDup;
+    }
+
+    public void setMaxJoinRequestDup(int maxJoinRequestDup) {
+        this.maxJoinRequestDup = maxJoinRequestDup;
+    }
+
+    public int getJoinDc() {
+        return joinDc;
+    }
+
+    public void setJoinDc(int joinDc) {
+        this.joinDc = joinDc;
+    }
+
+    public int getDcPerJoinAccept() {
+        return dcPerJoinAccept;
+    }
+
+    public void setDcPerJoinAccept(int dcPerJoinAccept) {
+        this.dcPerJoinAccept = dcPerJoinAccept;
+    }
+
+    public int getJoinAcceptDc() {
+        return joinAcceptDc;
+    }
+
+    public void setJoinAcceptDc(int joinAcceptDc) {
+        this.joinAcceptDc = joinAcceptDc;
     }
 }
