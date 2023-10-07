@@ -67,6 +67,12 @@ public class HeliumDeviceStat implements ClonnableObject<HeliumDeviceStat> {
 
     private int joinReq;
 
+    @Column(name = "join_dc", columnDefinition = "int4")
+    private int joinDc;
+
+    @Column(name = "join_accept_dc", columnDefinition = "int4")
+    private int joinAcceptDc;
+
     // ---
 
     public HeliumDeviceStat clone() {
@@ -194,5 +200,21 @@ public class HeliumDeviceStat implements ClonnableObject<HeliumDeviceStat> {
 
     public void setDuplicate(int duplicate) {
         this.duplicate = duplicate;
+    }
+
+    public int getJoinDc() {
+        return joinDc;
+    }
+
+    public void setJoinDc(int joinDc) {
+        this.joinDc = joinDc;
+    }
+
+    public int getJoinAcceptDc() {
+        return joinAcceptDc;
+    }
+
+    public void setJoinAcceptDc(int joinAcceptDc) {
+        this.joinAcceptDc = joinAcceptDc;
     }
 }
