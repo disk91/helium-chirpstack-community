@@ -485,6 +485,7 @@ public class HeliumTenantService {
 
                 // publish message to update the stats async
                 i.setJoin(1);               // 1 join request detected
+                i.setDuplicateJoin(packets-1);
                 i.setUplink(0);
                 i.setUplinkDc(0);
                 i.setDownlinkDc(0);
@@ -497,6 +498,7 @@ public class HeliumTenantService {
                 if ( !processBalance(ts,t) ) {
                     this.flushHeliumTenant(t);
                 }
+                prometeusService.addLoRaInvoicableUplink(packets);
             }
         }
         log.debug("Process JOIN invoicing in "+(Now.NowUtcMs()-start)+"ms");

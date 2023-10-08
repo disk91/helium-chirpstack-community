@@ -48,7 +48,8 @@ public class PrometeusService {
     private long userTotalLoginCount = 0;        // number of successful login - OK
 
     // ------ LoRaWan Metrics
-    private long loRaTotalTravelTimeMs = 0;      // time between emission and reception - OK
+    private long loRaGatewayTravelTimeMs = 0;      // time between emission and reception - OK
+    private long loRaTotalToProcessTimeMs = 0;  // time between emission and LNS process time - OK
     private long loRaTotalConfirmedTravelTimeMs = 0; // time between emission and reception for confirmed frame
     private long loRaConfirmedCount = 0;        // number of uplink confirmed frame
     private long loRaUplinkCount = 0;           // number of uplink messages - OK
@@ -67,7 +68,8 @@ public class PrometeusService {
     private long loRaFirstUplinkCount = 0;      // the number of different packet (only the first)
     private long loRaLateUplinkTravelTime = 0;  // the travel time for the late packets (over 2s)
     private long loRaLateUplinkCount = 0;       // the number of late packets received
-    private long loRaGatewayUplink = 0;         // the number of uplink seen at gateway level ( invoiced by hpr )
+    private long loRaGatewayUplink = 0;         // the number of uplink (including join) seen at gateway level ( invoiced by hpr )
+    private long loRaInvoicableUplink = 0;          // the number of uplink (including join) proceed by invoice mechanisme
 
     // ------- internal Metrics
     private long mqttConnectionLoss = 0;        // number of MQTT disconnection - OK
@@ -130,7 +132,7 @@ public class PrometeusService {
         this.loRaUplinkCount++;
         this.loRaDuplicatesCount += duplicates;
         this.loRaTotalUplinkBytes += bytes;
-        this.loRaTotalTravelTimeMs += travelTime;
+        this.loRaTotalToProcessTimeMs += travelTime;
         this.loRaLastSeen = Now.NowUtcMs();
     }
     synchronized public void addLoRaJoinRequest(long travelTime) {
@@ -162,8 +164,13 @@ public class PrometeusService {
         this.loRaLateUplinkTravelTime += travelTime;
     }
 
-    synchronized public void addLoRaGatewayUplink() {
+    synchronized public void addLoRaGatewayUplink(long travelTime) {
         this.loRaGatewayUplink++;
+        this.loRaGatewayTravelTimeMs += travelTime;
+    }
+
+    synchronized public void addLoRaInvoicableUplink(int packets) {
+        this.loRaInvoicableUplink += packets;
     }
 
     synchronized public void addRedisStreamError() { this.redisStreamReadError++; }
@@ -281,9 +288,14 @@ public class PrometeusService {
         return ()->redisStreamReadError;
     }
 
-    protected Supplier<Number> getLoRaTravelTime() {
-        return ()->loRaTotalTravelTimeMs;
+    protected Supplier<Number> getLoRagatewayTravelTime() {
+        return ()->loRaGatewayTravelTimeMs;
     }
+
+    protected Supplier<Number> getLoRaUplinkToProcessTime() {
+        return ()->loRaTotalToProcessTimeMs;
+    }
+
 
     protected Supplier<Number> getLoRaTotalUplink() {
         return ()->loRaUplinkCount;
@@ -336,6 +348,10 @@ public class PrometeusService {
     }
     protected Supplier<Number> getLoRaGatewayUplinkCount() {
         return ()->loRaGatewayUplink;
+    }
+
+    protected Supplier<Number> getLoRaInvoicablePacket() {
+        return ()->loRaInvoicableUplink;
     }
 
     protected Supplier<Number> getLoRaTotalBytesDownlink() {
@@ -432,8 +448,8 @@ public class PrometeusService {
         Gauge.builder("cons.lora.duplicates", getLoRaTotalUplink())
             .description("number LoRa duplicates proceeded")
             .register(registry);
-        Gauge.builder("cons.lora.travel_time_ms", getLoRaTravelTime())
-                .description("total uplink travel time")
+        Gauge.builder("cons.lora.travel_time_ms", getLoRaUplinkToProcessTime())
+                .description("total uplink travel and process time")
                 .register(registry);
         Gauge.builder("cons.lora.uplinks_bytes", getLoRaTotalBytesUplink())
                 .description("total uplink bytes")
@@ -444,7 +460,7 @@ public class PrometeusService {
         Gauge.builder("cons.lora.join.request", getLoRaTotalJoinRequest())
             .description("total join request frames")
             .register(registry);
-        Gauge.builder("cons.lora.join.travel", getLoRaTotalJoinTravelTime())
+        Gauge.builder("cons.lora.join.traveltime", getLoRaTotalJoinTravelTime())
             .description("total travel time on join request frames")
             .register(registry);
         Gauge.builder("cons.lora.join.bytes", getLoRaTotalJoinByteCount())
@@ -529,9 +545,14 @@ public class PrometeusService {
         Gauge.builder("cons.lora.uplink.late.traveltime", getLoRaLateUplinkTravel())
             .description("Cumulated travel time of the late packet arrival")
             .register(registry);
-
         Gauge.builder("cons.lora.gateway.uplink", getLoRaGatewayUplinkCount())
             .description("Number of packets received at gateway level, not lns accepted")
+            .register(registry);
+        Gauge.builder("cons.lora.gateway.traveltime", getLoRagatewayTravelTime())
+            .description("Travel time for packet received at gateway bridge level, not lns accepted")
+            .register(registry);
+        Gauge.builder("cons.lora.invoicable.uplink", getLoRaInvoicablePacket())
+            .description("Number of packets received processed by the invoicing mechanism")
             .register(registry);
 
     }

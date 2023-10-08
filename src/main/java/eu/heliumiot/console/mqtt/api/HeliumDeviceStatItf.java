@@ -43,6 +43,7 @@ public class HeliumDeviceStatItf {
     protected int uplink = 0;
     protected int downlink = 0;
     protected int join=0;
+    protected int duplicateJoin=0;
     protected int joinDc = 0;
     protected int joinAcceptDc = 0;
 
@@ -167,5 +168,13 @@ public class HeliumDeviceStatItf {
 
     public void setJoinAcceptDc(int joinAcceptDc) {
         this.joinAcceptDc = joinAcceptDc;
+    }
+
+    public int getDuplicateJoin() {
+        return duplicateJoin;
+    }
+
+    public void setDuplicateJoin(int duplicateJoin) {
+        this.duplicateJoin = duplicateJoin;
     }
 }

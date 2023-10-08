@@ -224,7 +224,7 @@ public class MqttListener implements MqttCallback {
                         toInvoice.add(ti);
                         toRemove.add(_d.devEui);
                     } else if ( _d != null && _d.count > 100 ) {
-                        // possible when the rate of Join is really fast and we have no end on the prevous if
+                        // possible when the rate of Join is really fast and we have no end on the previous if
                         log.warn("Join Commit "+_d.devEui+" not committing "+_d.count+" packets");
                         ToInvoice ti = new ToInvoice();
                         ti.devEui=_d.devEui;
@@ -369,11 +369,12 @@ public class MqttListener implements MqttCallback {
                 // late packet
                 prometeusService.addLoRaLateUplink( now - rx );
             }
+
             // count packets received at gateway level (invoiced by HPR, potentially rejected by LNS)
             if ( isJoin ) {
                 prometeusService.addLoRaJoinRequest(now-rx);
             } else {
-                prometeusService.addLoRaGatewayUplink();
+                prometeusService.addLoRaGatewayUplink(now-rx);
             }
 
             // Measure uplink confirmed processing time
@@ -413,7 +414,8 @@ public class MqttListener implements MqttCallback {
                     }
 
                     if ( mqttConfig.getHeliumZoneDetectionEnable()  ) {
-                        // ... push to process
+                        // ... push to process, this is synchronous action, can be long
+                        // and delay the rest of the timing, rare but could be optimized.
                         log.debug("Found a join request for " + d.devEui + " for region " + region);
                         roamingService.processJoinMessage(_dev, d.devEui, region);
                     }
@@ -422,14 +424,8 @@ public class MqttListener implements MqttCallback {
                     d.count++;
                 }
 
-                // not perfect as we have a Uplink stat for each of the Join duplicates
-                prometeusService.addLoRaUplink(
-                    now-rx,
-                    23,
-                    0
-                );
-
             }
+
 
 // =================================================
 // INTERNAL ASYNCHRONOUS MESSAGES
