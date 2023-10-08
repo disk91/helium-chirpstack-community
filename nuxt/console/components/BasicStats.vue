@@ -115,7 +115,39 @@
                                     </div>
                                 </div>
                             </b-list-group-item>
-                            
+
+                            <b-list-group-item v-if="(basicStat.dcPerJoinRequest > 0)" class="border-0 p-0" style="text-align:left; line-height: 1;" variant="secondary">
+                                <div class="d-flex w-100">
+                                    <div class="col-md-5 p-1"> 
+                                        <span class="text-dark p-0" style="font-size:0.8rem; ">{{ $t('tsl_dcPerJoinRequest') }}</span><br/>
+                                        <span class="text-black-50 p-0" style="font-size:0.6rem; ">{{ $t('tip_dcPerJoinRequest') }}</span>
+                                    </div>
+                                    <div class="col-md-3 text-dark p-2" style="font-size:0.8rem; text-align:right;"> 
+                                        {{ basicStat.dcPerJoinRequest }}<br/>
+                                        Max: {{ basicStat.maxJoinRequestDup }}
+                                    </div>
+                                    <div class="col-md-4 text-dark p-2" style="font-size:0.8rem; text-align:right;">
+                                        <span class="text-dark p-0" style="font-size:0.8rem; ">{{ basicStat.joinDc }} DCs</span><br/>
+                                        <span class="text-dark p-0" style="font-size:0.6rem; ">{{ basicStat.joinReq }} Valid Join Req</span>
+                                    </div>
+                                </div>
+                            </b-list-group-item>
+
+                            <b-list-group-item v-if="(basicStat.dcPerJoinAccept > 0)" class="border-0 p-0" style="text-align:left; line-height: 1;" variant="secondary">
+                                <div class="d-flex w-100">
+                                    <div class="col-md-5 p-1"> 
+                                        <span class="text-dark p-0" style="font-size:0.8rem; ">{{ $t('tsl_dcPerJoinAccept') }}</span><br/>
+                                        <span class="text-black-50 p-0" style="font-size:0.6rem; ">{{ $t('tip_dcPerJoinAccept') }}</span>
+                                    </div>
+                                    <div class="col-md-3 text-dark p-2" style="font-size:0.8rem; text-align:right;"> 
+                                        {{ basicStat.dcPerJoinAccept }}
+                                    </div>
+                                    <div class="col-md-4 text-dark p-2" style="font-size:0.8rem; text-align:right;">
+                                        <span class="text-dark p-0" style="font-size:0.8rem; ">{{ basicStat.joinAcceptDc }} DCs</span>
+                                    </div>
+                                </div>
+                            </b-list-group-item>
+
                             <b-list-group-item v-if="(basicStat.inactivityBillingPeriodMs > 0)" class="border-0 p-0" style="text-align:left; line-height: 1;" variant="secondary">
                                 <div class="d-flex w-100">
                                     <div class="col-md-5 p-1"> 
