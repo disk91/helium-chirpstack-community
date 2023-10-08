@@ -447,5 +447,7 @@
   "tsl_lastl_user" : "Last login",
   "tsl_tenants" : "Owned tenants",
 
+  "tenantConsumption_card_title" : "Tenant activity history",
+
   "end" : "end"
 }

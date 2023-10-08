@@ -448,5 +448,7 @@
     "tsl_lastl_user" : "Connexion",
     "tsl_tenants" : "Tenants",
 
+    "tenantConsumption_card_title" : "Activité historique du tenant",
+
     "end" : "fin"
 }
