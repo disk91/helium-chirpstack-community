@@ -85,7 +85,7 @@ public class ExitService {
 
         // ------------------------------------------------
         log.info("Exit - stop listeners");
-        mqttListener.stop();
+        mqttListener.stopMqttListener();
         mqttSender.stop();
 
         redisStreamMetaListener.stopService();

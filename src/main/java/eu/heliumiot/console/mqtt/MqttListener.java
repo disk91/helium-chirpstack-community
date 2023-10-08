@@ -30,10 +30,7 @@ import eu.heliumiot.console.mqtt.api.HeliumDeviceStatItf;
 import eu.heliumiot.console.jpa.repository.TenantRepository;
 import eu.heliumiot.console.mqtt.api.HeliumTenantActDeactItf;
 import eu.heliumiot.console.service.*;
-import fr.ingeniousthings.tools.DateConverters;
-import fr.ingeniousthings.tools.HexaConverters;
-import fr.ingeniousthings.tools.Now;
-import fr.ingeniousthings.tools.RandomString;
+import fr.ingeniousthings.tools.*;
 import io.chirpstack.api.gw.UplinkFrame;
 import io.chirpstack.json.DownlinkEvent;
 import io.chirpstack.json.JoinEvent;
@@ -79,6 +76,24 @@ public class MqttListener implements MqttCallback {
     protected int[] _qos = { MQTT_QOS,MQTT_QOS,MQTT_QOS };
 
     ObjectMapper mapper = new ObjectMapper();
+
+    protected boolean requestToStop = false;
+    protected volatile int scheduleRunning = 0;
+    protected boolean stopped = false;
+
+    public void stopMqttListener() {
+        this.requestToStop = true;
+        this.stop();
+        long start = Now.NowUtcMs();
+        while ( this.scheduleRunning > 0 && (Now.NowUtcMs() - start) < 10_000 ) {
+            Tools.sleep(100);
+        }
+        // Clear the pending Join
+        for ( DeviceDedup _d : dedupHashMap.values() ) {
+            heliumTenantService.invoiceJoin(_d.devEui, _d.count);
+        }
+        this.stopped = true;
+    }
 
     @PostConstruct
     public MqttClient initMqtt() {
@@ -206,61 +221,66 @@ public class MqttListener implements MqttCallback {
     private long lastCleanJoinDedup = 0;
     @Scheduled(fixedDelayString = "${helium.mqtt.dedup.scanPeriod}", initialDelay = 120_000) // default 10m
     protected void cleanDedupCache() {
-        long now = Now.NowUtcMs();
+        if ( this.requestToStop ) return;
+        this.scheduleRunning++;
+        try {
+            long now = Now.NowUtcMs();
 
-        // clean the dedup storage
-        if (dedupHashMap.size() > 50 || ( now - lastCleanJoinDedup ) > 10*Now.ONE_MINUTE ) {
-            Set<String> obj = dedupHashMap.keySet();
-            ArrayList<String> toRemove = new ArrayList<>();
-            ArrayList<ToInvoice> toInvoice = new ArrayList<>();
-            synchronized (lockJoinDedup) {
-                for (String s : obj) {
-                    DeviceDedup _d = dedupHashMap.get(s);
-                    if (_d != null && (now - _d.lastSeen) > 2 * Now.ONE_MINUTE) {
-                        log.debug("Join Commit "+_d.devEui+" packets "+_d.count);
-                        ToInvoice ti = new ToInvoice();
-                        ti.devEui=_d.devEui;
-                        ti.dcs=_d.count;
-                        toInvoice.add(ti);
-                        toRemove.add(_d.devEui);
-                    } else if ( _d != null && _d.count > 100 ) {
-                        // possible when the rate of Join is really fast and we have no end on the previous if
-                        log.warn("Join Commit "+_d.devEui+" not committing "+_d.count+" packets");
-                        ToInvoice ti = new ToInvoice();
-                        ti.devEui=_d.devEui;
-                        ti.dcs=_d.count;
-                        toInvoice.add(ti);
-                        _d.count = 0;
+            // clean the dedup storage
+            if (dedupHashMap.size() > 50 || (now - lastCleanJoinDedup) > 10 * Now.ONE_MINUTE) {
+                Set<String> obj = dedupHashMap.keySet();
+                ArrayList<String> toRemove = new ArrayList<>();
+                ArrayList<ToInvoice> toInvoice = new ArrayList<>();
+                synchronized (lockJoinDedup) {
+                    for (String s : obj) {
+                        DeviceDedup _d = dedupHashMap.get(s);
+                        if (_d != null && (now - _d.lastSeen) > 2 * Now.ONE_MINUTE) {
+                            log.debug("Join Commit " + _d.devEui + " packets " + _d.count);
+                            ToInvoice ti = new ToInvoice();
+                            ti.devEui = _d.devEui;
+                            ti.dcs = _d.count;
+                            toInvoice.add(ti);
+                            toRemove.add(_d.devEui);
+                        } else if (_d != null && _d.count > 100) {
+                            // possible when the rate of Join is really fast and we have no end on the previous if
+                            log.warn("Join Commit " + _d.devEui + " not committing " + _d.count + " packets");
+                            ToInvoice ti = new ToInvoice();
+                            ti.devEui = _d.devEui;
+                            ti.dcs = _d.count;
+                            toInvoice.add(ti);
+                            _d.count = 0;
+                        }
+                    }
+                    for (String s : toRemove) {
+                        dedupHashMap.remove(s);
                     }
                 }
-                for ( String s : toRemove ) {
-                    dedupHashMap.remove(s);
+                for (ToInvoice t : toInvoice) {
+                    heliumTenantService.invoiceJoin(t.devEui, t.dcs);
                 }
+                this.lastCleanJoinDedup = now;
             }
-            for ( ToInvoice t : toInvoice ) {
-                heliumTenantService.invoiceJoin(t.devEui,t.dcs);
-            }
-            this.lastCleanJoinDedup = now;
-        }
 
-        // clean the dedup packets
-        if (packetDedup.size() > 500) {
-            Set<String> obj = packetDedup.keySet();
-            ArrayList<String> toRemove = new ArrayList<>();
-            synchronized (lockPacketDedup) {
-                for (String s : obj) {
-                    long t = packetDedup.get(s);
-                    if ((now - t) > 30 * Now.ONE_MINUTE) {
-                        // use 30 minutes because HPR uses 30 minutes dedup windows
-                        toRemove.add(s);
+            // clean the dedup packets
+            if (packetDedup.size() > 500) {
+                Set<String> obj = packetDedup.keySet();
+                ArrayList<String> toRemove = new ArrayList<>();
+                synchronized (lockPacketDedup) {
+                    for (String s : obj) {
+                        long t = packetDedup.get(s);
+                        if ((now - t) > 30 * Now.ONE_MINUTE) {
+                            // use 30 minutes because HPR uses 30 minutes dedup windows
+                            toRemove.add(s);
+                        }
+                    }
+                    for (String s : toRemove) {
+                        packetDedup.remove(s);
                     }
                 }
-                for ( String s : toRemove ) {
-                    packetDedup.remove(s);
-                }
             }
+        } finally {
+            this.scheduleRunning--;
         }
-
     }
 
 
