@@ -23,6 +23,6 @@ declare module "vue/types/tenantSetup" {
         maxOwnedTenants : bigint,
         maxDevices : bigint,
         signupAllowed : boolean,
-        id : string
+        id : string,
     }
 }

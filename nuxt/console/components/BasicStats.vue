@@ -347,7 +347,7 @@
                this.basicStat = {} as TenantBasicStat;
                this.errorMessage = 'error_load_basicstat';
                this.loadBasicStatSuccess = false;
-            })
+            });
       },
       methods: {
         getTenantTitle() : string {
@@ -369,18 +369,17 @@
             this.updateSuccess='';
 
             this.$axios.put(this.$config.tenantMaxCopyUpdate,body,config)
-                    .then((response) =>{
-                        if ( response.status == 200 ) {
-                            this.updateSuccess='bcopy_success';
-                            this.$fetch();
-                        } else {
-                            this.updateError='bcopy_error';
-                        }
-                    })
-                    .catch((err) => {
+                .then((response) =>{
+                    if ( response.status == 200 ) {
+                        this.updateSuccess='bcopy_success';
+                        this.$fetch();
+                    } else {
                         this.updateError='bcopy_error';
-                    })
-
+                    }
+                })
+                .catch((err) => {
+                    this.updateError='bcopy_error';
+                });
         }
       },
     });

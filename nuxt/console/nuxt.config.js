@@ -17,6 +17,7 @@ export default {
     passChangeEndpoint:(process.env.API_HOST || '')+'/console/1.0/sign/password',
     addTenantEndpoint:(process.env.API_HOST || '')+'/console/1.0/tenant/create',
     tenantSetupGet:(process.env.API_HOST || '')+'/console/1.0/tenant/setup',
+    tenantSetupGetDetails:(process.env.API_HOST || '')+'/console/1.0/tenant/setup/detail',
     tenantSetupCreate:(process.env.API_HOST || '')+'/console/1.0/tenant/setup',
     tenantSetupTemplateList:(process.env.API_HOST || '')+'/console/1.0/tenant/setup/templates',
     tenantSetupUpdate:(process.env.API_HOST || '')+'/console/1.0/tenant/setup',

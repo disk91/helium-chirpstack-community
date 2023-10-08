@@ -337,6 +337,46 @@ public class HeliumTenantSetupService {
         return r;
     }
 
+
+    public TenantSetupTemplateListRespItf getOneTenantSetup (
+        String user,
+        String tenantUUID
+    ) throws ITRightException, ITNotFoundException {
+        UserCacheService.UserCacheElement u = userCacheService.getUserById(user);
+        if ( u == null || ! u.user.isAdmin() ) throw new ITRightException();
+
+        HeliumTenantSetup def = heliumTenantSetupRepository.findOneHeliumTenantSetupByTenantUUID(tenantUUID);
+        if ( def == null ) throw new ITNotFoundException();
+
+        TenantSetupTemplateListRespItf ts = new TenantSetupTemplateListRespItf();
+        ts.setId(def.getId());
+        ts.setTenantUUID(def.getTenantUUID());
+        ts.setDcBalanceStop(def.getDcBalanceStop());
+        ts.setFreeTenantDc(def.getFreeTenantDc());
+        ts.setDcPer24BMessage(def.getDcPer24BMessage());
+        ts.setDcPer24BDuplicate(def.getDcPer24BDuplicate());
+        ts.setDcPer24BDownlink(def.getDcPer24BDownlink());
+        ts.setDcPerDeviceInserted(def.getDcPerDeviceInserted());
+        ts.setDcPerInactivityPeriod(def.getDcPerInactivityPeriod());
+        ts.setInactivityBillingPeriodMs(def.getInactivityBillingPeriodMs());
+        ts.setDcPerActivityPeriod(def.getDcPerActivityPeriod());
+        ts.setActivityBillingPeriodMs(def.getActivityBillingPeriodMs());
+        ts.setMaxDcPerDevice(def.getMaxDcPerDevice());
+        ts.setLimitDcRatePerDevice(def.getLimitDcRatePerDevice());
+        ts.setLimitDcRatePeriodMs(def.getLimitDcRatePeriodMs());
+        ts.setMaxOwnedTenants(def.getMaxOwnedTenants());
+        ts.setMaxDevices(def.getMaxDevices());
+        ts.setDcPrice(def.getDcPrice());
+        ts.setDcMin(def.getDcMin());
+        ts.setSignupAllowed(def.isSignupAllowed());
+        ts.setMaxCopy(def.getMaxCopy());
+        ts.setDcPerJoinRequest(def.getDcPerJoinRequest());
+        ts.setDcPerJoinAccept(def.getDcPerJoinAccept());
+        ts.setMaxJoinRequestDup(def.getMaxJoinRequestDup());
+        return ts;
+    }
+
+
     /**
      * Update an existing tenant template, should also work for any tenant Setup
      * @param user

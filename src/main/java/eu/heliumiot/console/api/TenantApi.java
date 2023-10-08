@@ -219,6 +219,40 @@ public class TenantApi {
         }
     }
 
+    @Operation(summary = "Get One tenant setup",
+        description = "Get one tenant template",
+        responses = {
+            @ApiResponse(responseCode = "200", description= "Done", content = @Content(schema = @Schema(implementation = TenantSetupTemplateListRespItf.class))),
+            @ApiResponse(responseCode = "400", description= "Parse Error - not found", content = @Content(schema = @Schema(implementation = ActionResult.class))),
+            @ApiResponse(responseCode = "403", description= "Forbidden", content = @Content(schema = @Schema(implementation = ActionResult.class))),
+        }
+    )
+    @RequestMapping(value="/setup/detail/{tenantId}/",
+        produces = MediaType.APPLICATION_JSON_VALUE,
+        method= RequestMethod.GET)
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
+    public ResponseEntity<?> requestOneTenantSetup(
+        HttpServletRequest request,
+        @Parameter(required = true, name = "tenantId", description = "tenant Id")
+        @PathVariable String tenantId
+    ) {
+        long startMs= Now.NowUtcMs();
+        log.debug("Get one tenant setup "+request.getUserPrincipal().getName());
+        try {
+            TenantSetupTemplateListRespItf r = heliumTenantSetupService.getOneTenantSetup(request.getUserPrincipal().getName(), tenantId);
+            return new ResponseEntity<>(r, HttpStatus.OK);
+        } catch (ITRightException x) {
+            prometeusService.addApiTotalError();
+            return new ResponseEntity<>(ActionResult.FORBIDDEN(), HttpStatus.FORBIDDEN);
+        } catch (ITNotFoundException x) {
+            prometeusService.addApiTotalError();
+            return new ResponseEntity<>(ActionResult.BADREQUEST(), HttpStatus.BAD_REQUEST);
+        } finally {
+            prometeusService.addApiTotalTimeMs(startMs);
+        }
+    }
+
+
     // ########
 
     @Operation(summary = "Update tenant setup templates",

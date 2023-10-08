@@ -127,12 +127,35 @@
                   ></b-form-input>
               </b-form-group>
             </div><div class="col-md-6">
+              <b-form-group :description="$t('tip_dcPerJoinRequest')" style="text-align:left;" class="mb-1 small">
+                  <b-form-input v-model.number="template.dcPerJoinRequest" type="number" size="sm"
+                                :placeholder="$t('tsl_dcPerJoinRequest')"
+                  ></b-form-input>
+              </b-form-group>
+            </div></div>
+            <div class="row"><div class="col-md-6">
+              <b-form-group :description="$t('tip_maxJoinRequestDup')" style="text-align:left;" class="mb-1 small">
+                  <b-form-input v-model.number="template.maxJoinRequestDup" type="number" size="sm"
+                                :placeholder="$t('tsl_maxJoinRequestDup')"
+                  ></b-form-input>
+              </b-form-group>
+            </div><div class="col-md-6">
+              <b-form-group :description="$t('tip_dcPerJoinAccept')" style="text-align:left;" class="mb-1 small">
+                  <b-form-input v-model.number="template.dcPerJoinAccept" type="number" size="sm"
+                                :placeholder="$t('tsl_dcPerJoinAccept')"
+                  ></b-form-input>
+              </b-form-group>
+            </div></div>
+            <div class="row"><div class="col-md-6">
+            </div><div class="col-md-6">
               <b-form-group :description="$t('tip_dcPerDeviceInserted')" style="text-align:left;" class="mb-1 small">
                   <b-form-input v-model.number="template.dcPerDeviceInserted" type="number" size="sm"
                                 :placeholder="$t('tsl_dcPerDeviceInserted')"
                   ></b-form-input>
               </b-form-group>
             </div></div>
+
+
             <div class="row"><div class="col-md-6">
               <b-form-group :description="$t('tip_inactivityBillingPeriodMs')" style="text-align:left;" class="mb-1 small">
                   <b-form-input v-model.number="template.inactivityBillingPeriodMs" type="number" size="sm"
@@ -240,6 +263,9 @@
             {key: 'dcPer24BMessage', sortable: false, label : this.$t('tsl_dcPer24BMessage')},
             {key: 'dcPer24BDuplicate', sortable: false, label : this.$t('tsl_dcPer24BDuplicate')},
             {key: 'dcPer24BDownlink', sortable: false, label : this.$t('tsl_dcPer24BDownlink')},
+            {key: 'dcPerJoinRequest', sortable: false, label : this.$t('tsl_dcPerJoinRequest')},
+            {key: 'maxJoinRequestDup', sortable: false, label : this.$t('tsl_maxJoinRequestDup')},
+            {key: 'dcPerJoinAccept', sortable: false, label : this.$t('tsl_dcPerJoinAccept')},
             {key: 'dcPerDeviceInserted', sortable: false, label : this.$t('tsl_dcPerDeviceInserted')},
             {key: 'inactivityBillingPeriodMs', sortable: false, label : this.$t('tsl_inactivityBillingPeriodMs')},
             {key: 'dcPerInactivityPeriod', sortable: false, label : this.$t('tsl_dcPerInactivityPeriod')},
