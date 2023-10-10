@@ -47,6 +47,7 @@ public class HeliumParameterService {
     public static final String PARAM_HELIUM_NETID = "previousNetId";
 
     public static final String PARAM_MQTT_CLIENT_ID = "mqttClientId";
+    public static final String PARAM_MQTT_HELIUM_CLIENT_ID = "mqttHeliumClientId";
 
     public static final String PARAM_USER_COND_CURRENT = "userConditionCurrentVersion";
 
@@ -140,6 +141,15 @@ public class HeliumParameterService {
             mqttClientId.setLongValue(0);
             mqttClientId.setStrValue(RandomString.getRandomString(6));
             heliumParameterRepository.save(mqttClientId);
+        }
+
+        HeliumParameter mqttheliumClientId = heliumParameterRepository.findOneHeliumParameterByParameterName(PARAM_MQTT_HELIUM_CLIENT_ID);
+        if ( mqttheliumClientId == null ) {
+            mqttheliumClientId = new HeliumParameter();
+            mqttheliumClientId.setParameterName(PARAM_MQTT_HELIUM_CLIENT_ID);
+            mqttheliumClientId.setLongValue(0);
+            mqttheliumClientId.setStrValue(RandomString.getRandomString(6));
+            heliumParameterRepository.save(mqttheliumClientId);
         }
 
         HeliumParameter userConditions = heliumParameterRepository.findOneHeliumParameterByParameterName(PARAM_USER_COND_CURRENT);

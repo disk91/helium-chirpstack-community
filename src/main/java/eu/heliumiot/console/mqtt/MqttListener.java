@@ -72,8 +72,8 @@ public class MqttListener implements MqttCallback {
     private MemoryPersistence persistence;
     private MqttClient mqttClient;
 
-    protected String[] _topics = {"application/#","helium/#","+/gateway/+/event/up"};
-    protected int[] _qos = { MQTT_QOS,MQTT_QOS,MQTT_QOS };
+    protected String[] _topics = {"application/#","+/gateway/+/event/up"};
+    protected int[] _qos = { MQTT_QOS,MQTT_QOS };
 
     ObjectMapper mapper = new ObjectMapper();
 
@@ -450,7 +450,7 @@ public class MqttListener implements MqttCallback {
 // =================================================
 // INTERNAL ASYNCHRONOUS MESSAGES
 // =================================================
-
+/* managed in the second listner to avoid impacting these topic processing
         } else if ( topicName.matches("helium/device/stats/.*") ) {
             HeliumDeviceStatItf e = mapper.readValue(message.toString(), HeliumDeviceStatItf.class);
             heliumDeviceStatService.updateDeviceStat(e);
@@ -473,10 +473,11 @@ public class MqttListener implements MqttCallback {
                 log.error("Invalid state for manage tenant request");
             }
             prometeusService.delDelayedStatUpdate();
-        } else {
+ */
 // =================================================
 // OTHERS
 // =================================================
+        } else {
 
             // standard json messages
             log.debug("MQTT - MessageArrived on "+topicName);
