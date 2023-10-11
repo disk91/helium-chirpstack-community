@@ -1,7 +1,7 @@
 package eu.heliumiot.console.service;
 
 import eu.heliumiot.console.api.interfaces.TenantBasicStatRespItf;
-import eu.heliumiot.console.api.interfaces.TenantSetupStatsRespItf;
+//import eu.heliumiot.console.api.interfaces.TenantSetupStatsRespItf;
 import eu.heliumiot.console.jpa.db.HeliumDeviceStat;
 import eu.heliumiot.console.jpa.db.HeliumTenantSetup;
 import eu.heliumiot.console.jpa.db.Tenant;
