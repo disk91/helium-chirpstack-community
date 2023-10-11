@@ -80,8 +80,8 @@ public class HeliumTenantSetupService {
         // Update the entries after migration 0.9 if value is -2 for dc_per_join_request and others
         Slice<HeliumTenantSetup> alltenants = heliumTenantSetupRepository.findHeliumTenantSetupByDcPerJoinRequest(-2,PageRequest.of(0, 100));
         boolean nextPage = false;
-        if ( alltenants != null ) {
-            log.info("### [db V2_0_9] Migrate the HeliumTenantSetup with join values ");
+        if ( alltenants != null && alltenants.getNumberOfElements() > 0 ) {
+            log.info("### [db V2_0_9] Migrate the HeliumTenantSetup with join values");
             int i = 0;
             do {
                 for (HeliumTenantSetup t : alltenants) {

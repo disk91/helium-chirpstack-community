@@ -1,6 +1,7 @@
 package eu.heliumiot.console.service;
 
 import eu.heliumiot.console.api.interfaces.TenantBasicStatRespItf;
+import eu.heliumiot.console.api.interfaces.TenantSetupStatsRespItf;
 import eu.heliumiot.console.jpa.db.HeliumDeviceStat;
 import eu.heliumiot.console.jpa.db.HeliumTenantSetup;
 import eu.heliumiot.console.jpa.db.Tenant;
@@ -12,6 +13,8 @@ import fr.ingeniousthings.tools.ObjectCache;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
@@ -38,6 +41,28 @@ public class HeliumTenantStatService {
             }
 
         };
+    }
+
+
+    @Autowired
+    private JdbcTemplate jdbcTemplate;
+
+    @Scheduled(fixedRate = 86_400_000, initialDelay = 1_080_000) // every 24h / first after 18m
+    protected void clean_stat_tables() {
+        // on every day, move the data to history after 1 month
+        // clear the history data over a year
+        // this is based on stored procedure
+        long start = Now.NowUtcMs();
+        try {
+            jdbcTemplate.execute("CALL move_helium_device_stats_history()");
+            log.info("clean_stat_tables - move_helium_device_stats_history duration " + (Now.NowUtcMs() - start) / 1000 + "s");
+            start = Now.NowUtcMs();
+
+            jdbcTemplate.execute("CALL delete_helium_device_stats_history()");
+            log.info("clean_stat_tables - delete_helium_device_stats_history duration " + (Now.NowUtcMs() - start) / 1000 + "s");
+        } catch (Exception x) {
+            log.error("clean_stat_tables - error ("+x.getMessage()+") - after "+ (Now.NowUtcMs() - start) / 1000 + "s");
+        }
     }
 
     @Autowired

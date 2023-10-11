@@ -48,7 +48,8 @@ public interface HeliumDeviceStatsRepository extends CrudRepository<HeliumDevice
                           "?1 as tenantuuid, " +
                           "SUM(activity_dc) as activity_dc, SUM(downlink) as downlink, SUM(downlink_dc) as downlink_dc, " +
                           "SUM(duplicate) as duplicate, SUM(duplicate_dc) as duplicate_dc, SUM(inactivity_dc) as inactivity_dc, SUM(join_req) as join_req, " +
-                          "SUM(registration_dc) as registration_dc, SUM(uplink) as uplink, SUM(uplink_dc) as uplink_dc " +
+                          "SUM(registration_dc) as registration_dc, SUM(uplink) as uplink, SUM(uplink_dc) as uplink_dc, " +
+                          "SUM(join_dc) as join_dc, SUM(join_accept_dc) as join_accept_dc " +
                           "FROM helium_device_stats " +
                           "WHERE tenantuuid = ?1 AND day >= ?2 AND day < ?3", nativeQuery = true)
     public HeliumDeviceStat findSumStatForTenantBetween(String tenantUUID, long from, long to);

@@ -82,10 +82,10 @@ public class MqttHeliumListener implements MqttCallback {
         this.persistence = new MemoryPersistence();
         this.connectionOptions = new MqttConnectOptions();
         try {
-            log.info("HMQTT Url :"+mqttConfig.getMqttServer());
-            log.info("HMQTT User :"+mqttConfig.getMqttLogin());
+            log.info("MQTT H Url :"+mqttConfig.getMqttServer());
+            log.info("MQTT H User :"+mqttConfig.getMqttLogin());
             //log.info("Password :"+mqttConfig.getPassword());
-            log.info("HMQTT Id : "+clientId);
+            log.info("MQTT H Id : "+clientId);
             this.mqttClient = new MqttClient(mqttConfig.getMqttServer(), clientId, persistence);
             this.connectionOptions.setCleanSession(false);          // restart by processing pending events
             this.connectionOptions.setAutomaticReconnect(false);    // reconnect managed manually
@@ -99,15 +99,15 @@ public class MqttHeliumListener implements MqttCallback {
             this.mapper.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
             this.mapper.configure(SerializationFeature.FAIL_ON_SELF_REFERENCES, false);
 
-            log.info("HMQTT Starting Mqtt listener");
+            log.info("MQTT H Starting Mqtt listener");
         } catch (MqttException me) {
-            log.error("HMQTT Init ERROR : "+me.getMessage());
+            log.error("MQTT H Init ERROR : "+me.getMessage());
         }
         return this.mqttClient;
     }
 
     public void connect() throws MqttException {
-        log.debug("HMQTT - Connect");
+        log.debug("MQTT H - Connect");
         this.mqttClient.connect(this.connectionOptions);
         this.mqttClient.setCallback(this);
         this.mqttClient.subscribe(_topics,_qos);
@@ -120,7 +120,7 @@ public class MqttHeliumListener implements MqttCallback {
             this.mqttClient.disconnect();
             this.mqttClient.close();
         } catch (MqttException me) {
-            log.error("HMQTT ERROR :"+me.getMessage());
+            log.error("MQTT H ERROR :"+me.getMessage());
         }
     }
 
@@ -132,7 +132,7 @@ public class MqttHeliumListener implements MqttCallback {
      */
     @Override
     public void connectionLost(Throwable arg0) {
-        log.error("HMQTT - Connection Lost");
+        log.error("MQTT H - Connection Lost");
         try {
             // immediate retry, then will be async
             this.connect();
@@ -212,13 +212,13 @@ public class MqttHeliumListener implements MqttCallback {
 // =================================================
 
                 // standard json messages
-                log.debug("HMQTT - MessageArrived on " + topicName);
+                log.debug("MQTT H - MessageArrived on " + topicName);
                 //log.info("MQTT - message "+message);
             }
-            log.debug("HMQTT processing time " + (Now.NowUtcMs() - start) + "ms for " + topicName);
+            log.debug("MQTT H processing time " + (Now.NowUtcMs() - start) + "ms for " + topicName);
         } catch (Exception e) {
             // cath Exception to not kill the MQTT process
-            log.error("HMQTT - Exception "+e.getMessage());
+            log.error("MQTT H - Exception "+e.getMessage());
             e.printStackTrace();
         }
     }
