@@ -1087,7 +1087,7 @@ public class HeliumTenantService {
             }
         }
 
-        long duration = 30*Now.ONE_FULL_DAY;
+        long duration = 15*Now.ONE_FULL_DAY;
         long start = Now.TodayMidnightUtc() - duration;
         TenantSetupStatsRespItf stats = heliumTenantStatService.getTenantStatsForChart(
             tenantId,
