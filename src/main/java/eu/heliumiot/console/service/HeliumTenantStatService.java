@@ -1,7 +1,8 @@
 package eu.heliumiot.console.service;
 
 import eu.heliumiot.console.api.interfaces.TenantBasicStatRespItf;
-//import eu.heliumiot.console.api.interfaces.TenantSetupStatsRespItf;
+import eu.heliumiot.console.api.interfaces.TenantSetupStatsRespItf;
+import eu.heliumiot.console.api.interfaces.TenantSetupStatsSerie;
 import eu.heliumiot.console.jpa.db.HeliumDeviceStat;
 import eu.heliumiot.console.jpa.db.HeliumTenantSetup;
 import eu.heliumiot.console.jpa.db.Tenant;
@@ -18,6 +19,7 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -178,5 +180,59 @@ public class HeliumTenantStatService {
         return r;
     }
 
+    public TenantSetupStatsRespItf getTenantStatsForChart(String tenantUUID, long start, long duration)
+    throws ITParseException {
+        long _start = Now.NowUtcMs();
+
+        // calculate stats
+        log.debug("Tenant Stats calculation for "+tenantUUID+" between "+start+" and "+(start+duration));
+
+        // get the usage stat
+        boolean success = false;
+        List<HeliumDeviceStat> ss = null;
+        try {
+            ss = heliumDeviceStatsRepository.findSumStatForTenantByDayBetween(
+                tenantUUID,
+                start,
+                (start + duration)
+            );
+            success = true;
+        } catch (Exception x) {
+            // We have an exception when no value match the SUM on the period
+            // forget this
+            log.debug("Failed to get Tenant stats calculation "+x.getMessage());
+        }
+        if ( !success ) {
+            throw new ITParseException();
+        } else {
+            TenantSetupStatsRespItf r = new TenantSetupStatsRespItf();
+            r.setDateLabel(new ArrayList<>());
+            r.setSeries(new ArrayList<>());
+            TenantSetupStatsSerie sUplink = new TenantSetupStatsSerie();
+            sUplink.setName("uplink");
+            sUplink.setData(new ArrayList<>());
+            TenantSetupStatsSerie sCopies = new TenantSetupStatsSerie();
+            sCopies.setName("up_copy");
+            sCopies.setData(new ArrayList<>());
+            TenantSetupStatsSerie sDownlink = new TenantSetupStatsSerie();
+            sDownlink.setName("downlink");
+            sDownlink.setData(new ArrayList<>());
+            TenantSetupStatsSerie sJoin = new TenantSetupStatsSerie();
+            sJoin.setName("join");
+            sJoin.setData(new ArrayList<>());
+            r.getSeries().add(sUplink);
+            r.getSeries().add(sCopies);
+            r.getSeries().add(sDownlink);
+            r.getSeries().add(sJoin);
+            for ( HeliumDeviceStat s : ss ) {
+                r.getDateLabel().add(Now.formatToYYYYMMDDUtc(s.getDay()));
+                sUplink.getData().add(s.getUplink());
+                sCopies.getData().add(s.getDuplicate());
+                sDownlink.getData().add(s.getDownlink());
+                sJoin.getData().add(s.getJoinReq());
+            }
+            return r;
+        }
+    }
 
 }

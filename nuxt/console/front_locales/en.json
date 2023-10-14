@@ -448,6 +448,7 @@
   "tsl_tenants" : "Owned tenants",
 
   "tenantConsumption_card_title" : "Tenant activity history",
+  "error_load_stat_nodata" : "No data found for that tenant",
 
   "end" : "end"
 }

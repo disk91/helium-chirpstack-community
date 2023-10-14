@@ -449,6 +449,7 @@
     "tsl_tenants" : "Tenants",
 
     "tenantConsumption_card_title" : "Activité historique du tenant",
+    "error_load_stat_nodata" : "Il n'y a pas de données pour ce tenant",
 
     "end" : "fin"
 }

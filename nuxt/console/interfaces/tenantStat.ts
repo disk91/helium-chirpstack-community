@@ -43,4 +43,12 @@ declare module "vue/types/tenantStat" {
         tenantId : string,
         newMaxCopy : number,
     }
+    interface TenantSetupStatsSerie {
+        name : string,
+        data : number[],
+    }
+    interface TenantSetupStatsRespItf {
+        series : TenantSetupStatsSerie[],
+        dateLabel : string[],
+    }
 }
