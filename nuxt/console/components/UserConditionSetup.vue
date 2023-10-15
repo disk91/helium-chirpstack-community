@@ -1,7 +1,8 @@
 <template>
-    <div>
-        <h5><b-badge variant="secondary" class="m-2">{{ $t('uc_version_title') }}</b-badge></h5>
-
+    <b-card 
+        :header="$t('uc_version_title')"
+        class="mt-3 mr-3 myCard"
+    >
         <b-form-group 
                         :label="$t('uc_version')"
                         label-for="conditionVersion"
@@ -41,9 +42,18 @@
                         {{ $t(successMessage) }}
                     </b-card-text>
             </b-form-group>
-
-    </div>
+        </b-card>
 </template>
+<style>
+.myCard .card-header  {
+    font-size: 0.8rem;
+    font-weight: 600;
+    font-variant: small-caps;
+}
+.myCard .card-body  {
+    padding: 20px 5px 20px 5px;
+}
+</style>
 
 <script lang="ts">
 import Vue from 'vue'

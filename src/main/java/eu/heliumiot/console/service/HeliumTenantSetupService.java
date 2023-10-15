@@ -21,7 +21,6 @@ package eu.heliumiot.console.service;
 
 import eu.heliumiot.console.ConsoleConfig;
 import eu.heliumiot.console.api.interfaces.*;
-import eu.heliumiot.console.jpa.db.Device;
 import eu.heliumiot.console.jpa.db.HeliumCoupon;
 import eu.heliumiot.console.jpa.db.HeliumTenantSetup;
 import eu.heliumiot.console.jpa.repository.HeliumCouponRepository;
@@ -544,6 +543,7 @@ public class HeliumTenantSetupService {
             HeliumCoupon c = new HeliumCoupon();
             c.setCouponState(HeliumCoupon.CouponState.ACTIVE);
             c.setInUse(0);
+            c.setCouponFor(req.getCouponFor());
             c.setMaxUse(req.getMaxUse());
             c.setStart(req.getStart());
             c.setStop(req.getStop());
@@ -596,7 +596,7 @@ public class HeliumTenantSetupService {
     public synchronized String acquiresCoupon(String couponId) {
 
         // check if exist & valid
-        HeliumCoupon c = heliumCouponRepository.findOneHeliumTenantByCouponID(couponId);
+        HeliumCoupon c = heliumCouponRepository.findOneHeliumCouponByCouponID(couponId);
         if ( c == null || c.getCouponState() == HeliumCoupon.CouponState.CLEARED ) return null;
 
         // check if in the period of availability

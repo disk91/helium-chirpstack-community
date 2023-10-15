@@ -453,6 +453,23 @@
     "tenantDevConsumption_card_title" : "Objets les plus consommateurs sur 48h",
     "tenantDevInactive_card_title" : "10 des objets innactifs sur 24h",
     "topActiveTenant_card_title" : "Top 20 des tenant les plus actifs sur 24h",
+    "coupon_creation_title" : "Creation d'un coupon",
+    "cc_tenant_template" : "Template a utiliser",
+    "cc_tenant_template_desc" : "Choisir le template a activer avec le coupon",
+    "cc_tenant_prefix" : "Prefix des coupons",
+    "cc_tenant_prefix_desc" : "Ce prefix sera ajouté en tete des coupons",
+    "cc_tenant_maxUse" : "Nombre d'usages",
+    "cc_tenant_maxUse_desc" : "Nombre de fois que le coupon peut etre réutilisé",
+    "cc_tenant_couponFor" : "Propriétaire du coupon",
+    "cc_tenant_couponFor_desc" : "Login de l'utilisateur pour qui est le coupon, (champ libre)",
+    "cc_tenant_validity" : "Validité du coupon",
+    "cc_tenant_validity_desc" : "Durée en jour de validite du coupon",
+    "cc_tenant_toCreate" : "Combien ?",
+    "cc_tenant_toCreate_desc" : "Nombre de coupons different à créer.",  
+    "cc_create" : "Générer",
+    "cc_create_success" : "Les coupons ont été créés",
+    "cc_create_error" : "Problème durant la génération des coupons, vérifiez les données d'entrée",
+    "cc_show_coupons" : "Les coupons créés",
 
     "end" : "fin"
 }
