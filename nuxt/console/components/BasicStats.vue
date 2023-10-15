@@ -249,6 +249,7 @@
 
                         </b-list-group>
                     </b-card>
+                    <TenantDevInactive/>
                     </b-col>
                     <b-col cols="6">
                         <b-card 
@@ -329,6 +330,7 @@
     import { TenantBasicStat, TenantUpdateMaxCopyReqItf } from 'vue/types/tenantStat';
     import TenantConsumption from '~/components/TenantConsumption.vue'
     import TenantDevConsumption from '~/components/TenantDevConsumption.vue'
+    import TenantDevInactive from '~/components/TenantDevInactive.vue'
   
     interface data {
         basicStat : TenantBasicStat,
@@ -346,6 +348,7 @@
       components: { 
         'TenantConsumption' : TenantConsumption,
         'TenantDevConsumption' : TenantDevConsumption,
+        'TenantDevInactive' : TenantDevInactive,
       },
       data() : data {
         return {

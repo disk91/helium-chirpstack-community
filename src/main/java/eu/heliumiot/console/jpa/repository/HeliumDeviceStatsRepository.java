@@ -80,5 +80,32 @@ public interface HeliumDeviceStatsRepository extends CrudRepository<HeliumDevice
         "GROUP BY deviceuuid ORDER BY registration_dc DESC LIMIT ?4", nativeQuery = true)
     public List<HeliumDeviceStat> findSumStatForTenantDeviceByDayBetween(String tenantUUID, long from, long to, int limit);
 
+    // Get device with join loop but no uplinks for a given tenant
+    @Query(value = "SELECT uuid_generate_v4() as id, 0 as day, 0 as last_commit, " +
+        "deviceuuid, " +
+        "?1 as tenantuuid, " +
+        "SUM(activity_dc) as activity_dc, SUM(downlink) as downlink, SUM(downlink_dc) as downlink_dc, " +
+        "SUM(duplicate) as duplicate, SUM(duplicate_dc) as duplicate_dc, SUM(inactivity_dc) as inactivity_dc, SUM(join_req) as join_req, " +
+        "SUM(registration_dc) as registration_dc, SUM(uplink) as uplink, SUM(uplink_dc) as uplink_dc, " +
+        "SUM(join_dc) as join_dc, SUM(join_accept_dc) as join_accept_dc " +
+        "FROM helium_device_stats " +
+        "WHERE tenantuuid = ?1 AND day >= ?2 AND day < ?3 AND ( uplink = 0 OR inactivity_dc > 0)" +
+        "GROUP BY deviceuuid ORDER BY join_req DESC LIMIT ?4", nativeQuery = true)
+    public List<HeliumDeviceStat> findSumStatForTenantInactiveDeviceByDayBetween(String tenantUUID, long from, long to, int limit);
+
+
+    // get stats for top consuming tenant
+    @Query(value = "SELECT uuid_generate_v4() as id, 0 as day, 0 as last_commit, " +
+        "'00000000-0000-0000-0000-000000000000' as deviceuuid, " +
+        "tenantuuid, " +
+        "SUM(activity_dc+downlink_dc+duplicate_dc+inactivity_dc+registration_dc+uplink_dc+join_dc+join_accept_dc) as activity_dc, " +
+        "SUM(downlink) as downlink, SUM(downlink_dc) as downlink_dc, " +
+        "SUM(duplicate) as duplicate, SUM(duplicate_dc) as duplicate_dc, SUM(inactivity_dc) as inactivity_dc, SUM(join_req) as join_req, " +
+        "SUM(registration_dc) as registration_dc, SUM(uplink) as uplink, SUM(uplink_dc) as uplink_dc, " +
+        "SUM(join_dc) as join_dc, SUM(join_accept_dc) as join_accept_dc " +
+        "FROM helium_device_stats " +
+        "WHERE day >= ?1 AND day < ?2 " +
+        "GROUP BY tenantuuid ORDER BY activity_dc DESC LIMIT ?3", nativeQuery = true)
+    public List<HeliumDeviceStat> findSumStatByDayBetween(long from, long to, int limit);
 
 }

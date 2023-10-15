@@ -598,7 +598,7 @@ public class TenantApi {
         produces = MediaType.APPLICATION_JSON_VALUE,
         method= RequestMethod.GET)
     @PreAuthorize("hasAnyRole('ROLE_USER')")
-    public ResponseEntity<?> getTenanteviceActivityStat(
+    public ResponseEntity<?> getTenantDeviceActivityStat(
         HttpServletRequest request,
         @Parameter(required = true, name = "tenantId", description = "tenant UUID")
         @PathVariable String tenantId
@@ -607,6 +607,70 @@ public class TenantApi {
         log.debug("Get tenant device activity stats "+request.getUserPrincipal().getName()+" for tenant "+tenantId);
         try {
             TenantSetupStatsRespItf r = heliumTenantService.getTenantDeviceActivityStat(request.getUserPrincipal().getName(),tenantId);
+            return new ResponseEntity<>(r, HttpStatus.OK);
+        } catch (ITParseException x) {
+            prometeusService.addApiTotalError();
+            return new ResponseEntity<>(ActionResult.BADREQUEST(), HttpStatus.BAD_REQUEST);
+        } catch (ITRightException x) {
+            prometeusService.addApiTotalError();
+            return new ResponseEntity<>(ActionResult.FORBIDDEN(), HttpStatus.FORBIDDEN);
+        } finally {
+            prometeusService.addApiTotalTimeMs(startMs);
+        }
+    }
+
+    @Operation(summary = "Get 10 devices with no uplink activity but other with 24h",
+        description = "Get 10 devices w/o activity for uplink within last 24h, formatted for frontend bar chart",
+        responses = {
+            @ApiResponse(responseCode = "200", description= "Ok", content = @Content(schema = @Schema(implementation = TenantSetupStatsRespItf.class))),
+            @ApiResponse(responseCode = "400", description= "Bad Request", content = @Content(schema = @Schema(implementation = ActionResult.class))),
+            @ApiResponse(responseCode = "403", description= "Forbidden", content = @Content(schema = @Schema(implementation = ActionResult.class))),
+        }
+    )
+    @RequestMapping(value="/{tenantId}/inactive",
+        produces = MediaType.APPLICATION_JSON_VALUE,
+        method= RequestMethod.GET)
+    @PreAuthorize("hasAnyRole('ROLE_USER')")
+    public ResponseEntity<?> getTenantDeviceInactivityStat(
+        HttpServletRequest request,
+        @Parameter(required = true, name = "tenantId", description = "tenant UUID")
+        @PathVariable String tenantId
+    ) {
+        long startMs= Now.NowUtcMs();
+        log.debug("Get tenant device inactivity stats "+request.getUserPrincipal().getName()+" for tenant "+tenantId);
+        try {
+            TenantSetupStatsRespItf r = heliumTenantService.getTenantDeviceInactivityStat(request.getUserPrincipal().getName(),tenantId);
+            return new ResponseEntity<>(r, HttpStatus.OK);
+        } catch (ITParseException x) {
+            prometeusService.addApiTotalError();
+            return new ResponseEntity<>(ActionResult.BADREQUEST(), HttpStatus.BAD_REQUEST);
+        } catch (ITRightException x) {
+            prometeusService.addApiTotalError();
+            return new ResponseEntity<>(ActionResult.FORBIDDEN(), HttpStatus.FORBIDDEN);
+        } finally {
+            prometeusService.addApiTotalTimeMs(startMs);
+        }
+    }
+
+    @Operation(summary = "Get 10 devices with no uplink activity but other with 24h",
+        description = "Get 10 devices w/o activity for uplink within last 24h, formatted for frontend bar chart",
+        responses = {
+            @ApiResponse(responseCode = "200", description= "Ok", content = @Content(schema = @Schema(implementation = TenantSetupStatsRespItf.class))),
+            @ApiResponse(responseCode = "400", description= "Bad Request", content = @Content(schema = @Schema(implementation = ActionResult.class))),
+            @ApiResponse(responseCode = "403", description= "Forbidden", content = @Content(schema = @Schema(implementation = ActionResult.class))),
+        }
+    )
+    @RequestMapping(value="/topactive",
+        produces = MediaType.APPLICATION_JSON_VALUE,
+        method= RequestMethod.GET)
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
+    public ResponseEntity<?> getTopTenantActivityStat(
+        HttpServletRequest request
+    ) {
+        long startMs= Now.NowUtcMs();
+        log.debug("Get top tenant activity stats "+request.getUserPrincipal().getName()+" for all tenant ");
+        try {
+            TenantSetupStatsRespItf r = heliumTenantService.getTopTenantActivityStat(request.getUserPrincipal().getName());
             return new ResponseEntity<>(r, HttpStatus.OK);
         } catch (ITParseException x) {
             prometeusService.addApiTotalError();

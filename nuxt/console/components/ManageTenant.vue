@@ -1,6 +1,8 @@
 <template>
-    <div>
-        <h5><b-badge variant="secondary" class="m-2">{{ $t('t_search_title') }}</b-badge></h5>
+    <b-card 
+        :header="$t('t_search_title')"
+        class="mt-2 ml-2"
+    >
 
         <div class="col-md-8">
             <b-form-group :description="$t('tip_search_tenant')" style="text-align:left;" class="mb-1 small">
@@ -264,8 +266,7 @@
                 {{ $t(successMessageMod)}} 
             </b-card-text>
         </b-modal>
-
-    </div>
+    </b-card>
 </template>
 <script lang="ts">
 import Vue from 'vue'

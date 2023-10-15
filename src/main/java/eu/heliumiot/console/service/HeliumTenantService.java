@@ -1128,6 +1128,59 @@ public class HeliumTenantService {
         return stats;
     }
 
+    public TenantSetupStatsRespItf getTenantDeviceInactivityStat(String userId, String tenantId)
+        throws ITRightException, ITParseException {
+        // check user and ownership
+        UserCacheService.UserCacheElement user = userCacheService.getUserById(userId);
+        if (user == null) throw new ITRightException();
+        if ( !user.user.isAdmin() ) {
+            // search if tenant authorization exists
+            UserTenant ut = userTenantRepository.findOneUserByUserIdAndTenantId(
+                UUID.fromString(userId),
+                UUID.fromString(tenantId)
+            );
+
+            if ( ut == null ) throw new ITRightException();
+            if ( ! ut.isAdmin() ) {
+                throw new ITRightException();
+            }
+        }
+
+        // get devices with activity but no uplink (like join loop) or inactivity_dc > 0
+        long duration = Now.ONE_FULL_DAY;     // during the last 24 hours
+        long start = Now.NowUtcMs() - duration;
+        TenantSetupStatsRespItf stats = heliumTenantStatService.getTenantInactiveDeviceStatsForChart(
+            tenantId,
+            start,
+            duration,
+            10          // max 10 devices
+        );
+
+        return stats;
+    }
+
+    /* Admin API to get stat on top tenant for analysis */
+    public TenantSetupStatsRespItf getTopTenantActivityStat(String userId)
+        throws ITRightException, ITParseException {
+        // check user and ownership
+        UserCacheService.UserCacheElement user = userCacheService.getUserById(userId);
+        if (user == null) throw new ITRightException();
+        if ( !user.user.isAdmin() ) {
+           throw new ITRightException();
+        }
+
+        // get devices with activity but no uplink (like join loop) or inactivity_dc > 0
+        long duration = Now.ONE_FULL_DAY;     // during the last 24 hours
+        long start = Now.NowUtcMs() - duration;
+        TenantSetupStatsRespItf stats = heliumTenantStatService.getTopConsumerStatsForChart(
+            start,
+            duration,
+            20          // max 20 tenant
+        );
+
+        return stats;
+    }
+
 
     public TenantSetupRespItf getTenantSetup(String userId, String tenantId)
             throws ITRightException {

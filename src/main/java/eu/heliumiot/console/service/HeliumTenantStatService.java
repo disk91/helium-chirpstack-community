@@ -256,7 +256,7 @@ public class HeliumTenantStatService {
         } catch (Exception x) {
             // We have an exception when no value match the SUM on the period
             // forget this
-            log.info("Failed to get Tenant Device stats calculation "+x.getMessage());
+            log.debug("Failed to get Tenant Device stats calculation "+x.getMessage());
         }
         if ( !success ) {
             throw new ITParseException();
@@ -281,12 +281,145 @@ public class HeliumTenantStatService {
             r.getSeries().add(sDownlink);
             r.getSeries().add(sJoin);
             for ( HeliumDeviceStat s : ss ) {
-                log.info("device:"+s.getTenantUUID()+" uplink: "+s.getUplink());
+                //log.info("device:"+s.getTenantUUID()+" uplink: "+s.getUplink());
                 r.getDateLabel().add(s.getDeviceUUID());
                 sUplink.getData().add(s.getUplink());
                 sCopies.getData().add(s.getDuplicate());
                 sDownlink.getData().add(s.getDownlink());
                 sJoin.getData().add(s.getJoinReq());
+            }
+            return r;
+        }
+    }
+
+    public TenantSetupStatsRespItf getTenantInactiveDeviceStatsForChart(String tenantUUID, long start, long duration, int maxDevices)
+        throws ITParseException {
+        long _start = Now.NowUtcMs();
+
+        // calculate stats
+        log.debug("Tenant Inactive Device Stats calculation for "+tenantUUID+" between "+start+" and "+(start+duration));
+
+        // get the usage stat
+        boolean success = false;
+        List<HeliumDeviceStat> ss = null;
+        try {
+            ss = heliumDeviceStatsRepository.findSumStatForTenantInactiveDeviceByDayBetween(
+                tenantUUID,
+                start,
+                (start + duration),
+                maxDevices
+            );
+            success = true;
+        } catch (Exception x) {
+            // We have an exception when no value match the SUM on the period
+            // forget this
+            log.debug("Failed to get Tenant Inactiv Device stats calculation "+x.getMessage());
+        }
+        if ( !success ) {
+            throw new ITParseException();
+        } else {
+            TenantSetupStatsRespItf r = new TenantSetupStatsRespItf();
+            r.setDateLabel(new ArrayList<>());
+            r.setSeries(new ArrayList<>());
+            TenantSetupStatsSerie sUplink = new TenantSetupStatsSerie();
+            sUplink.setName("uplink");
+            sUplink.setData(new ArrayList<>());
+            TenantSetupStatsSerie sCopies = new TenantSetupStatsSerie();
+            sCopies.setName("up_copy");
+            sCopies.setData(new ArrayList<>());
+            TenantSetupStatsSerie sDownlink = new TenantSetupStatsSerie();
+            sDownlink.setName("downlink");
+            sDownlink.setData(new ArrayList<>());
+            TenantSetupStatsSerie sJoin = new TenantSetupStatsSerie();
+            sJoin.setName("join");
+            sJoin.setData(new ArrayList<>());
+            TenantSetupStatsSerie sInactivity = new TenantSetupStatsSerie();
+            sInactivity.setName("inactivity");
+            sInactivity.setData(new ArrayList<>());
+            r.getSeries().add(sUplink);
+            r.getSeries().add(sCopies);
+            r.getSeries().add(sDownlink);
+            r.getSeries().add(sJoin);
+            r.getSeries().add(sInactivity);
+            for ( HeliumDeviceStat s : ss ) {
+                //log.info("device:"+s.getTenantUUID()+" uplink: "+s.getUplink());
+                r.getDateLabel().add(s.getDeviceUUID());
+                sUplink.getData().add(s.getUplink());
+                sCopies.getData().add(s.getDuplicate());
+                sDownlink.getData().add(s.getDownlink());
+                sJoin.getData().add(s.getJoinReq());
+                sInactivity.getData().add(s.getInactivityDc());
+            }
+            return r;
+        }
+    }
+
+    public TenantSetupStatsRespItf getTopConsumerStatsForChart(long start, long duration, int maxDevices)
+        throws ITParseException {
+        long _start = Now.NowUtcMs();
+
+        // calculate stats
+        log.debug("Top consumer Stats calculation for between "+start+" and "+(start+duration));
+
+        // get the usage stat
+        boolean success = false;
+        List<HeliumDeviceStat> ss = null;
+        try {
+            ss = heliumDeviceStatsRepository.findSumStatByDayBetween(
+                start,
+                (start + duration),
+                maxDevices
+            );
+            success = true;
+        } catch (Exception x) {
+            // We have an exception when no value match the SUM on the period
+            // forget this
+            log.info("Failed to get top consumer stats calculation "+x.getMessage());
+        }
+        if ( !success ) {
+            throw new ITParseException();
+        } else {
+            TenantSetupStatsRespItf r = new TenantSetupStatsRespItf();
+            r.setDateLabel(new ArrayList<>());
+            r.setSeries(new ArrayList<>());
+            TenantSetupStatsSerie sUplink = new TenantSetupStatsSerie();
+            sUplink.setName("uplink");
+            sUplink.setData(new ArrayList<>());
+            TenantSetupStatsSerie sCopies = new TenantSetupStatsSerie();
+            sCopies.setName("up_copy");
+            sCopies.setData(new ArrayList<>());
+            TenantSetupStatsSerie sDownlink = new TenantSetupStatsSerie();
+            sDownlink.setName("downlink");
+            sDownlink.setData(new ArrayList<>());
+            TenantSetupStatsSerie sJoin = new TenantSetupStatsSerie();
+            sJoin.setName("join");
+            sJoin.setData(new ArrayList<>());
+            TenantSetupStatsSerie sInactivity = new TenantSetupStatsSerie();
+            sInactivity.setName("inactivity");
+            sInactivity.setData(new ArrayList<>());
+            TenantSetupStatsSerie sRegistration = new TenantSetupStatsSerie();
+            sRegistration.setName("registration");
+            sRegistration.setData(new ArrayList<>());
+            r.getSeries().add(sUplink);
+            r.getSeries().add(sCopies);
+            r.getSeries().add(sDownlink);
+            r.getSeries().add(sJoin);
+            r.getSeries().add(sInactivity);
+            r.getSeries().add(sRegistration);
+            for ( HeliumDeviceStat s : ss ) {
+                log.info("device:"+s.getTenantUUID()+" uplink: "+s.getUplink());
+                Tenant t = tenantRepository.findOneTenantById(UUID.fromString(s.getTenantUUID()));
+                if ( t != null ) {
+                    r.getDateLabel().add(t.getName());
+                } else {
+                    r.getDateLabel().add(s.getTenantUUID());
+                }
+                sUplink.getData().add(s.getUplinkDc());
+                sCopies.getData().add(s.getDuplicateDc());
+                sDownlink.getData().add(s.getDownlinkDc());
+                sJoin.getData().add(s.getJoinDc()+s.getJoinAcceptDc());
+                sInactivity.getData().add(s.getInactivityDc());
+                sRegistration.getData().add(s.getRegistrationDc());
             }
             return r;
         }

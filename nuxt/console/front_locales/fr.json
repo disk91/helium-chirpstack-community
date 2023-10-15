@@ -451,6 +451,8 @@
     "tenantConsumption_card_title" : "Activité historique du tenant",
     "error_load_stat_nodata" : "Il n'y a pas de données pour ce tenant",
     "tenantDevConsumption_card_title" : "Objets les plus consommateurs sur 48h",
+    "tenantDevInactive_card_title" : "10 des objets innactifs sur 24h",
+    "topActiveTenant_card_title" : "Top 20 des tenant les plus actifs sur 24h",
 
     "end" : "fin"
 }
