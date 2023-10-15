@@ -33,9 +33,22 @@ declare module "vue/types/tenantStat" {
         inactivityDc : bigint,
         activityDc : bigint,
         maxCopy: number,
+        dcPerJoinRequest: number,
+        maxJoinRequestDup: number,
+        joinDc : number,
+        dcPerJoinAccept : number,
+        joinAcceptDc : number,
     }
     interface TenantUpdateMaxCopyReqItf {
         tenantId : string,
         newMaxCopy : number,
+    }
+    interface TenantSetupStatsSerie {
+        name : string,
+        data : number[],
+    }
+    interface TenantSetupStatsRespItf {
+        series : TenantSetupStatsSerie[],
+        dateLabel : string[],
     }
 }

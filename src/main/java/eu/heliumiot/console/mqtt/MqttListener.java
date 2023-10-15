@@ -30,10 +30,7 @@ import eu.heliumiot.console.mqtt.api.HeliumDeviceStatItf;
 import eu.heliumiot.console.jpa.repository.TenantRepository;
 import eu.heliumiot.console.mqtt.api.HeliumTenantActDeactItf;
 import eu.heliumiot.console.service.*;
-import fr.ingeniousthings.tools.DateConverters;
-import fr.ingeniousthings.tools.HexaConverters;
-import fr.ingeniousthings.tools.Now;
-import fr.ingeniousthings.tools.RandomString;
+import fr.ingeniousthings.tools.*;
 import io.chirpstack.api.gw.UplinkFrame;
 import io.chirpstack.json.DownlinkEvent;
 import io.chirpstack.json.JoinEvent;
@@ -75,10 +72,28 @@ public class MqttListener implements MqttCallback {
     private MemoryPersistence persistence;
     private MqttClient mqttClient;
 
-    protected String[] _topics = {"application/#","helium/#","+/gateway/+/event/up"};
-    protected int[] _qos = { MQTT_QOS,MQTT_QOS,MQTT_QOS };
+    protected String[] _topics = {"application/#","+/gateway/+/event/up"};
+    protected int[] _qos = { MQTT_QOS,MQTT_QOS };
 
     ObjectMapper mapper = new ObjectMapper();
+
+    protected boolean requestToStop = false;
+    protected volatile int scheduleRunning = 0;
+    protected boolean stopped = false;
+
+    public void stopMqttListener() {
+        this.requestToStop = true;
+        this.stop();
+        long start = Now.NowUtcMs();
+        while ( this.scheduleRunning > 0 && (Now.NowUtcMs() - start) < 10_000 ) {
+            Tools.sleep(100);
+        }
+        // Clear the pending Join
+        for ( DeviceDedup _d : dedupHashMap.values() ) {
+            heliumTenantService.invoiceJoin(_d.devEui, _d.count);
+        }
+        this.stopped = true;
+    }
 
     @PostConstruct
     public MqttClient initMqtt() {
@@ -88,10 +103,10 @@ public class MqttListener implements MqttCallback {
         this.persistence = new MemoryPersistence();
         this.connectionOptions = new MqttConnectOptions();
         try {
-            log.info("MQTT Url :"+mqttConfig.getMqttServer());
-            log.info("MQTT User :"+mqttConfig.getMqttLogin());
+            log.info("MQTT L Url :"+mqttConfig.getMqttServer());
+            log.info("MQTT L User :"+mqttConfig.getMqttLogin());
             //log.info("Password :"+mqttConfig.getPassword());
-            log.info("MQTT Id : "+clientId);
+            log.info("MQTT L Id : "+clientId);
             this.mqttClient = new MqttClient(mqttConfig.getMqttServer(), clientId, persistence);
             this.connectionOptions.setCleanSession(false);          // restart by processing pending events
             this.connectionOptions.setAutomaticReconnect(false);    // reconnect managed manually
@@ -105,15 +120,15 @@ public class MqttListener implements MqttCallback {
             this.mapper.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
             this.mapper.configure(SerializationFeature.FAIL_ON_SELF_REFERENCES, false);
 
-            log.info("MQTT Starting Mqtt listener");
+            log.info("MQTT L Starting Mqtt listener");
         } catch (MqttException me) {
-            log.error("MQTT Init ERROR : "+me.getMessage());
+            log.error("MQTT L Init ERROR : "+me.getMessage());
         }
         return this.mqttClient;
     }
 
     public void connect() throws MqttException {
-        log.debug("MQTT - Connect");
+        log.debug("MQTT L - Connect");
         this.mqttClient.connect(this.connectionOptions);
         this.mqttClient.setCallback(this);
         this.mqttClient.subscribe(_topics,_qos);
@@ -126,7 +141,7 @@ public class MqttListener implements MqttCallback {
             this.mqttClient.disconnect();
             this.mqttClient.close();
         } catch (MqttException me) {
-            log.error("MQTT ERROR :"+me.getMessage());
+            log.error("MQTT L ERROR :"+me.getMessage());
         }
     }
 
@@ -138,7 +153,7 @@ public class MqttListener implements MqttCallback {
      */
     @Override
     public void connectionLost(Throwable arg0) {
-        log.error("MQTT - Connection Lost");
+        log.error("MQTT L - Connection Lost");
         try {
             // immediate retry, then will be async
             this.connect();
@@ -153,14 +168,14 @@ public class MqttListener implements MqttCallback {
         if ( ! pendingReconnection ) return;
         try {
             if ( mqttClient.isConnected() ) {
-                log.info("MQTT - reconnected");
+                log.info("MQTT L - reconnected");
                 pendingReconnection = false;
             }
             this.connect();
-            log.info("MQTT - reconnected");
+            log.info("MQTT L - reconnected");
             pendingReconnection = false;
         } catch (MqttException me) {
-            log.warn("MQTT - reconnection failed - "+me.getMessage());
+            log.warn("MQTT L - reconnection failed - "+me.getMessage());
         }
     }
 
@@ -171,7 +186,7 @@ public class MqttListener implements MqttCallback {
      */
     @Override
     public void deliveryComplete(IMqttDeliveryToken arg0) {
-        // log.info("MQTT - delivery completed");
+        // log.info("MQTT L - delivery completed");
     }
 
     @Autowired
@@ -206,60 +221,66 @@ public class MqttListener implements MqttCallback {
     private long lastCleanJoinDedup = 0;
     @Scheduled(fixedDelayString = "${helium.mqtt.dedup.scanPeriod}", initialDelay = 120_000) // default 10m
     protected void cleanDedupCache() {
-        long now = Now.NowUtcMs();
+        if ( this.requestToStop ) return;
+        this.scheduleRunning++;
+        try {
+            long now = Now.NowUtcMs();
 
-        // clean the dedup storage
-        if (dedupHashMap.size() > 50 || ( now - lastCleanJoinDedup ) > 10*Now.ONE_MINUTE ) {
-            Set<String> obj = dedupHashMap.keySet();
-            ArrayList<String> toRemove = new ArrayList<>();
-            ArrayList<ToInvoice> toInvoice = new ArrayList<>();
-            synchronized (lockJoinDedup) {
-                for (String s : obj) {
-                    DeviceDedup _d = dedupHashMap.get(s);
-                    if (_d != null && (now - _d.lastSeen) > 2 * Now.ONE_MINUTE) {
-                        log.debug("Join Commit "+_d.devEui+" packets "+_d.count);
-                        ToInvoice ti = new ToInvoice();
-                        ti.devEui=_d.devEui;
-                        ti.dcs=_d.count;
-                        toInvoice.add(ti);
-                        toRemove.add(_d.devEui);
-                    } else if ( _d != null && _d.count > 100 ) {
-                        log.warn("Join Commit "+_d.devEui+" not committing "+_d.count+" packets");
-                        ToInvoice ti = new ToInvoice();
-                        ti.devEui=_d.devEui;
-                        ti.dcs=_d.count;
-                        toInvoice.add(ti);
-                        _d.count = 0;
+            // clean the dedup storage
+            if (dedupHashMap.size() > 50 || (now - lastCleanJoinDedup) > 10 * Now.ONE_MINUTE) {
+                Set<String> obj = dedupHashMap.keySet();
+                ArrayList<String> toRemove = new ArrayList<>();
+                ArrayList<ToInvoice> toInvoice = new ArrayList<>();
+                synchronized (lockJoinDedup) {
+                    for (String s : obj) {
+                        DeviceDedup _d = dedupHashMap.get(s);
+                        if (_d != null && (now - _d.lastSeen) > 2 * Now.ONE_MINUTE) {
+                            log.debug("Join Commit " + _d.devEui + " packets " + _d.count);
+                            ToInvoice ti = new ToInvoice();
+                            ti.devEui = _d.devEui;
+                            ti.dcs = _d.count;
+                            toInvoice.add(ti);
+                            toRemove.add(_d.devEui);
+                        } else if (_d != null && _d.count > 100) {
+                            // possible when the rate of Join is really fast and we have no end on the previous if
+                            log.warn("Join Commit " + _d.devEui + " not committing " + _d.count + " packets");
+                            ToInvoice ti = new ToInvoice();
+                            ti.devEui = _d.devEui;
+                            ti.dcs = _d.count;
+                            toInvoice.add(ti);
+                            _d.count = 0;
+                        }
+                    }
+                    for (String s : toRemove) {
+                        dedupHashMap.remove(s);
                     }
                 }
-                for ( String s : toRemove ) {
-                    dedupHashMap.remove(s);
+                for (ToInvoice t : toInvoice) {
+                    heliumTenantService.invoiceJoin(t.devEui, t.dcs);
                 }
+                this.lastCleanJoinDedup = now;
             }
-            for ( ToInvoice t : toInvoice ) {
-                heliumTenantService.invoiceJoin(t.devEui,t.dcs);
-            }
-            this.lastCleanJoinDedup = now;
-        }
 
-        // clean the dedup packets
-        if (packetDedup.size() > 500) {
-            Set<String> obj = packetDedup.keySet();
-            ArrayList<String> toRemove = new ArrayList<>();
-            synchronized (lockPacketDedup) {
-                for (String s : obj) {
-                    long t = packetDedup.get(s);
-                    if ((now - t) > 30 * Now.ONE_MINUTE) {
-                        // use 30 minutes because HPR uses 30 minutes dedup windows
-                        toRemove.add(s);
+            // clean the dedup packets
+            if (packetDedup.size() > 500) {
+                Set<String> obj = packetDedup.keySet();
+                ArrayList<String> toRemove = new ArrayList<>();
+                synchronized (lockPacketDedup) {
+                    for (String s : obj) {
+                        long t = packetDedup.get(s);
+                        if ((now - t) > 30 * Now.ONE_MINUTE) {
+                            // use 30 minutes because HPR uses 30 minutes dedup windows
+                            toRemove.add(s);
+                        }
+                    }
+                    for (String s : toRemove) {
+                        packetDedup.remove(s);
                     }
                 }
-                for ( String s : toRemove ) {
-                    packetDedup.remove(s);
-                }
             }
+        } finally {
+            --this.scheduleRunning;
         }
-
     }
 
 
@@ -267,11 +288,11 @@ public class MqttListener implements MqttCallback {
     public void messageArrived(String topicName, MqttMessage message) throws Exception {
         // Leave it blank for Publisher
         long start = Now.NowUtcMs();
-        //log.info("MQTT - MessageArrived on "+topicName);
+        //log.info("MQTT L - MessageArrived on "+topicName);
 
         // some of the messages are protobuf format
         if ( topicName.matches("application/.*/event/up$") ) {
-            // Prefer MQTT to get the uplink information because the data is decoded
+            // Prefer MQTT L to get the uplink information because the data is decoded
             try {
                 UplinkEvent up = mapper.readValue(message.toString(), UplinkEvent.class);
                 prometeusService.addLoRaUplink(
@@ -289,15 +310,15 @@ public class MqttListener implements MqttCallback {
                 );
 
             } catch (JsonProcessingException x) {
-                log.error("MQTT - failed to parse App uplink - " + x.getMessage());
+                log.error("MQTT L - failed to parse App uplink - " + x.getMessage());
                 x.printStackTrace();
             } catch (Exception x) {
                 x.printStackTrace();
             }
 
         } else if ( topicName.matches("application/.*/event/down$") ) {
-            // REDIS will be prefered because MQTT Json does not have size
-            // And MQTT does not trace Uplink
+            // REDIS will be prefered because MQTT L Json does not have size
+            // And MQTT L does not trace Uplink
                         /*
                         try {
 
@@ -310,7 +331,7 @@ public class MqttListener implements MqttCallback {
                                 );
 
                         } catch (JsonProcessingException x) {
-                                log.error("MQTT - failed to parse App downlink - " + x.getMessage());
+                                log.error("MQTT L - failed to parse App downlink - " + x.getMessage());
                                 x.printStackTrace();
                         } catch (Exception x) {
                                 x.printStackTrace();
@@ -326,16 +347,8 @@ public class MqttListener implements MqttCallback {
                     e.getDevAddr()
                 );
                 prometeusService.addLoRaJoin();
-                /* Processed at packet level
-                prometeusService.addLoRaUplink(
-                    Now.NowUtcMs() - DateConverters.StringDateToMs(e.getTime()),
-                    0,
-                    0
-                );
-                */
-
             } catch (JsonProcessingException x) {
-                log.error("MQTT - failed to parse App JOIN - " + x.getMessage());
+                log.error("MQTT L - failed to parse App JOIN - " + x.getMessage());
                 x.printStackTrace();
             } catch (Exception x) {
                 x.printStackTrace();
@@ -356,6 +369,7 @@ public class MqttListener implements MqttCallback {
 
             byte [] payload = uf.getPhyPayload().toByteArray();
             long rx = (uf.getRxInfo().getTime().getSeconds() * 1000) + (uf.getRxInfo().getTime().getNanos() / 1_000_000);
+            boolean isJoin = (payload[0] == 0 && payload.length == 23);
 
           //  long legTime = (uf.getRxInfoLegacy().getTime().getSeconds() * 1000) + (uf.getRxInfo().getTime().getNanos() / 1_000_000);
 
@@ -375,8 +389,13 @@ public class MqttListener implements MqttCallback {
                 // late packet
                 prometeusService.addLoRaLateUplink( now - rx );
             }
+
             // count packets received at gateway level (invoiced by HPR, potentially rejected by LNS)
-            prometeusService.addLoRaGatewayUplink();
+            if ( isJoin ) {
+                prometeusService.addLoRaJoinRequest(now-rx);
+            } else {
+                prometeusService.addLoRaGatewayUplink(now-rx);
+            }
 
             // Measure uplink confirmed processing time
             if ( (payload[0] & 0xC0) == 0x80 && uf.getRxInfo().getTime().getSeconds() > 0 ) {
@@ -388,7 +407,7 @@ public class MqttListener implements MqttCallback {
 
             // Manage zone switch on Join Requests
             // Manage DC count for Join Requests
-            if (payload[0] == 0 && payload.length == 23) {
+            if ( isJoin ) {
                 // possible Join Request
                 byte[] _dev = new byte[8]; // reverse the bytes of the address
                 for (int i = 0; i < 8; i++) {_dev[i] = payload[(9 + 8 - 1) - i]; }
@@ -415,7 +434,8 @@ public class MqttListener implements MqttCallback {
                     }
 
                     if ( mqttConfig.getHeliumZoneDetectionEnable()  ) {
-                        // ... push to process
+                        // ... push to process, this is synchronous action, can be long
+                        // and delay the rest of the timing, rare but could be optimized.
                         log.debug("Found a join request for " + d.devEui + " for region " + region);
                         roamingService.processJoinMessage(_dev, d.devEui, region);
                     }
@@ -424,19 +444,13 @@ public class MqttListener implements MqttCallback {
                     d.count++;
                 }
 
-                // not perfect as we have a Uplink stat for each of the Join duplicates
-                prometeusService.addLoRaUplink(
-                    now-rx,
-                    23,
-                    0
-                );
-
             }
+
 
 // =================================================
 // INTERNAL ASYNCHRONOUS MESSAGES
 // =================================================
-
+/* managed in the second listner to avoid impacting these topic processing
         } else if ( topicName.matches("helium/device/stats/.*") ) {
             HeliumDeviceStatItf e = mapper.readValue(message.toString(), HeliumDeviceStatItf.class);
             heliumDeviceStatService.updateDeviceStat(e);
@@ -459,16 +473,17 @@ public class MqttListener implements MqttCallback {
                 log.error("Invalid state for manage tenant request");
             }
             prometeusService.delDelayedStatUpdate();
-        } else {
+ */
 // =================================================
 // OTHERS
 // =================================================
+        } else {
 
             // standard json messages
-            log.debug("MQTT - MessageArrived on "+topicName);
-            //log.info("MQTT - message "+message);
+            log.debug("MQTT L - MessageArrived on "+topicName);
+            //log.info("MQTT L - message "+message);
         }
-        log.debug("MQTT processing time "+(Now.NowUtcMs()-start)+"ms for "+topicName);
+        log.debug("MQTT L processing time "+(Now.NowUtcMs()-start)+"ms for "+topicName);
     }
 
 }

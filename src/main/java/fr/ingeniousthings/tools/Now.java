@@ -21,6 +21,7 @@
 package fr.ingeniousthings.tools;
 
 import java.time.*;
+import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -110,6 +111,13 @@ public class Now {
         long v = 10*365*24;
         v *= 3_600_000L;
         return NowUtcMs()+v;
+    }
+
+    public static String formatToYYYYMMDDUtc(long t) {
+        Instant instant = Instant.ofEpochMilli(t);
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
+            .withZone(ZoneId.of("UTC"));
+        return formatter.format(instant);
     }
 
     public static long ONE_FULL_DAY = 24*3600*1000;

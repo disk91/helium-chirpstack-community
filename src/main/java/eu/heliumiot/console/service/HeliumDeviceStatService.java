@@ -95,7 +95,7 @@ public class HeliumDeviceStatService {
 
     }
 
-    private MeterRegistry registry;
+    private final MeterRegistry registry;
     public HeliumDeviceStatService(MeterRegistry registry) {
         this.registry = registry;
     }
@@ -108,7 +108,7 @@ public class HeliumDeviceStatService {
 
     // return true when the service has stopped all the running jobs
     public boolean hasStopped() {
-        return (this.serviceEnable == false && this.runningJobs == 0);
+        return (!this.serviceEnable && this.runningJobs == 0);
     }
 
     public void stopHeliumDeviceStatServiceCache() {
@@ -184,6 +184,8 @@ public class HeliumDeviceStatService {
             s.setUplink(0);
             s.setDownlink(0);
             s.setJoinReq(0);
+            s.setJoinDc(0);
+            s.setJoinAcceptDc(0);
             s = heliumDeviceStatsRepository.save(s);
             this.heliumDeviceStatCache.put(s,devId);
         }
@@ -204,6 +206,8 @@ public class HeliumDeviceStatService {
         s.setUplink(s.getUplink()+e.getUplink());
         s.setDownlink(s.getDownlink()+e.getDownlink());
         s.setJoinReq(s.getJoinReq()+e.getJoin());
+        s.setJoinDc(s.getJoinDc()+e.getJoinDc());
+        s.setJoinAcceptDc(s.getJoinAcceptDc()+e.getJoinAcceptDc());
         this.heliumDeviceStatCache.put(s,e.getDeviceId()); // refresh update status
     }
 

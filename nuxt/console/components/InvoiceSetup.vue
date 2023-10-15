@@ -1,7 +1,10 @@
 <template>
-    <div>
-        <h5><b-badge variant="secondary" class="m-2">{{ $t('inv_setup_title') }}</b-badge></h5>
-
+    <b-card 
+        :header="$t('inv_setup_title')"
+        class="mt-2 mr-2"
+    >
+    <b-row>
+       <b-col cols="12">
         <b-form-group 
                         :label="$t('inv_companyName')"
                         label-for="companyName"
@@ -94,8 +97,9 @@
                         {{ $t(successMessage) }}
                     </b-card-text>
             </b-form-group>
-
-    </div>
+          </b-col>
+        </b-row>
+    </b-card>
 </template>
 
 <script lang="ts">

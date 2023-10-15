@@ -807,6 +807,8 @@ public class HeliumDeviceService {
                                     sumDcs += e.getInactivityDc();
                                     sumDcs += e.getActivityDc();
                                     sumDcs += e.getRegistrationDc();
+                                    sumDcs += e.getJoinDc();
+                                    sumDcs += e.getJoinAcceptDc();
                                 }
                                 hdev.setTotalDCs(hdev.getTotalDCs() + sumDcs);
                                 hdev.setTotalDCsAt(stopSearch);
@@ -825,6 +827,8 @@ public class HeliumDeviceService {
                                     sumDcs += c.getInactivityDc();
                                     sumDcs += c.getActivityDc();
                                     sumDcs += c.getRegistrationDc();
+                                    sumDcs += c.getJoinDc();
+                                    sumDcs += c.getJoinAcceptDc();
                                     hdev.setTodayDCs(sumDcs);
                                 }
                                 // check if we need to deactivate the device
@@ -872,6 +876,8 @@ public class HeliumDeviceService {
                                     sumDcs += e.getInactivityDc();
                                     sumDcs += e.getActivityDc();
                                     sumDcs += e.getRegistrationDc();
+                                    sumDcs += e.getJoinDc();
+                                    sumDcs += e.getJoinAcceptDc();
                                 }
                                 if (sumDcs > hts.getLimitDcRatePerDevice()) {
                                     log.debug("deviceActivityJob - deactivate device (limitDCs) " + hdev.getDeviceEui() + " consumed "+sumDcs);

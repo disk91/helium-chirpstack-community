@@ -74,6 +74,9 @@
     "tsl_dcBalanceStop" : "Min Dc",
     "tsl_dcPer24BMessage" : "Uplink",
     "tsl_dcPer24BDownlink" : "Downlink",
+    "tsl_dcPerJoinRequest" : "Join Req Dc",
+    "tsl_maxJoinRequestDup" : "Join Dup",
+    "tsl_dcPerJoinAccept" : "Join Acc Dc",
     "tsl_dcPer24BDuplicate" : "Duplicate",
     "tsl_dcPerDeviceInserted" : "Insert",
     "tsl_inactivityBillingPeriodMs" : "Inact period",
@@ -90,6 +93,7 @@
     "tsl_signupAllowed" : "Inscription",
     "tsl_freeTenantDc" : "Free DC",
     "tsl_edit" : "Edition",
+    "tsl_credit" : "Maj Balance",
     "ts_list_title" : "Liste des modèles de configuration",
   
     "tip_tenantUUID" : "Nom du template",
@@ -97,6 +101,9 @@
     "tip_dcPer24BMessage" : "Cout en DCs pour un Uplink de moins de 24 octets",
     "tip_dcPer24BDownlink" : "Cout en DCs pour un Downlink de moins de 24 octets",
     "tip_dcPer24BDuplicate" : "Cout en DCs pour les répétitions d'un uplink par 24 octets",
+    "tip_dcPerJoinRequest" : "Cout en DCs pour un paquet Join Request",
+    "tip_maxJoinRequestDup" : "Nombre max de paquet doublon Join Req pour une meme demande, -1 pour tous",
+    "tip_dcPerJoinAccept" : "Cout en DCs pour une réponse Join Accept", 
     "tip_dcPerDeviceInserted" : "Cout en DCs pour l'ajout d'un objet",
     "tip_inactivityBillingPeriodMs" : "Durée d'une période d'innactivité en Ms",
     "tip_dcPerInactivityPeriod" : "Cout en DCs pour un objet sans communication durant la période d'innactivité",
@@ -128,7 +135,8 @@
     "tsl_tenantID" : "Tenant UUID",
     "tsl_addBalance" : "DCs a ajouter / enlever",
     "tsl_newBalance" : "Balance future",  
-    "balance_modal" : "Mis à jour d'un tenant",
+    "balance_modal" : "Mis à jour de la balance d'un tenant",
+    "tenant_edit_modal" : "Mis à jour d'un tenant",
 
     "error_load_basicstat" : "Impossible de charger des statistique du tenant",
     "error_find_basicstat" : "Un tenant doit etre selectionné dans la page Chirpstack",
@@ -439,6 +447,12 @@
     "tsl_reg_user" : "Inscription",
     "tsl_lastl_user" : "Connexion",
     "tsl_tenants" : "Tenants",
+
+    "tenantConsumption_card_title" : "Activité historique du tenant",
+    "error_load_stat_nodata" : "Il n'y a pas de données pour ce tenant",
+    "tenantDevConsumption_card_title" : "Objets les plus consommateurs sur 48h",
+    "tenantDevInactive_card_title" : "10 des objets innactifs sur 24h",
+    "topActiveTenant_card_title" : "Top 20 des tenant les plus actifs sur 24h",
 
     "end" : "fin"
 }

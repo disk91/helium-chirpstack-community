@@ -395,6 +395,14 @@ public class HeliumTenantService {
 
     @Autowired
     protected NovaService novaService;
+
+    /**
+     * This function is called when the device get a Join Success
+     * Basically a Join Accept is fired in this case
+     * @param tenantUUID
+     * @param deviceUUID
+     * @param devAddr
+     */
     public void processJoin(String tenantUUID, String deviceUUID, String devAddr ) {
         long start = Now.NowUtcMs();
         HeliumDeviceStatItf i = new HeliumDeviceStatItf();
@@ -412,16 +420,17 @@ public class HeliumTenantService {
         synchronized (this) {
             HeliumTenant t = this.getHeliumTenant(tenantUUID,false);
             if (t != null) {
-                int downlinkDc = ts.getDcPer24BDownlink();
-                t.setDcBalance(t.getDcBalance() - downlinkDc);
+                t.setDcBalance(t.getDcBalance() - ts.getDcPerJoinAccept());
                 this.flushHeliumTenant(t);
 
                 // publish message to update the stats async
-                i.setJoin(1);
-                i.setDownlink(1); // JOIN ACCEPT
-                i.setDownlinkDc(downlinkDc);
+                i.setJoin(0);
+                i.setDownlink(0);
+                i.setDownlinkDc(0);
                 i.setUplink(0);
                 i.setUplinkDc(0);
+                i.setJoinDc(0);
+                i.setJoinAcceptDc(ts.getDcPerJoinAccept());
                 reportStatToMqtt(i);
 
                 // check deactivation
@@ -436,11 +445,18 @@ public class HeliumTenantService {
         log.debug("Process JOIN in "+(Now.NowUtcMs()-start)+"ms");
     }
 
+    /**
+     * This is called for a group of Join request including the duplicates
+     * we consider a group as a single join request with multiple duplicates
+     * @param deviceEui
+     * @param packets
+     */
     public void invoiceJoin(String deviceEui, int packets ) {
         long start = Now.NowUtcMs();
         String tenantUUID = heliumDeviceCacheService.getTenantId(deviceEui);
         if ( tenantUUID == null ) {
-            log.error("Get a device to invoice w/o tenantId associated "+deviceEui+" for "+packets+" packets");
+            log.error("Get a device to invoice w/o tenantId associated: "+deviceEui+" for "+packets+" packets");
+            return;
         }
 
         HeliumDeviceStatItf i = new HeliumDeviceStatItf();
@@ -451,29 +467,38 @@ public class HeliumTenantService {
             HeliumTenant t = this.getHeliumTenant(tenantUUID,true);
             ts = heliumTenantSetupService.getHeliumTenantSetup(tenantUUID,false);
             if ( ts == null ) {
-                log.error("Should not be  here ... (2)");
+                log.error("Found a Tenant "+tenantUUID+" not having a TenantSetup associated (2)");
                 return;
             }
         }
         synchronized (this) {
             HeliumTenant t = this.getHeliumTenant(tenantUUID,false);
             if (t != null) {
-                int uplinkDc = packets*ts.getDcPer24BMessage();
-                t.setDcBalance(t.getDcBalance() - uplinkDc);
+                if ( ts.getMaxJoinRequestDup() > 0 ) {
+                    if ( packets > ts.getMaxJoinRequestDup()+1 ) {
+                        // maximum number of invoiced duplicates, adding the original one
+                        packets = ts.getMaxJoinRequestDup()+1;
+                    }
+                }
+                t.setDcBalance(t.getDcBalance() - (long)packets*ts.getDcPerJoinRequest());
                 this.flushHeliumTenant(t);
 
                 // publish message to update the stats async
-                i.setJoin(0);               // will be incremented on process
-                i.setUplink(packets);
-                i.setUplinkDc(uplinkDc);
+                i.setJoin(1);               // 1 join request detected
+                i.setDuplicateJoin(packets-1);
+                i.setUplink(0);
+                i.setUplinkDc(0);
                 i.setDownlinkDc(0);
                 i.setDownlink(0);
+                i.setJoinDc(packets*ts.getDcPerJoinRequest());
+                i.setJoinAcceptDc(0);
                 reportStatToMqtt(i);
 
                 // check deactivation
                 if ( !processBalance(ts,t) ) {
                     this.flushHeliumTenant(t);
                 }
+                prometeusService.addLoRaInvoicableUplink(packets);
             }
         }
         log.debug("Process JOIN invoicing in "+(Now.NowUtcMs()-start)+"ms");
@@ -1044,6 +1069,117 @@ public class HeliumTenantService {
         return stats;
     }
 
+    public TenantSetupStatsRespItf getTenantActivityStat(String userId, String tenantId)
+        throws ITRightException, ITParseException {
+        // check user and ownership
+        UserCacheService.UserCacheElement user = userCacheService.getUserById(userId);
+        if (user == null) throw new ITRightException();
+        if ( !user.user.isAdmin() ) {
+            // search if tenant authorization exists
+            UserTenant ut = userTenantRepository.findOneUserByUserIdAndTenantId(
+                UUID.fromString(userId),
+                UUID.fromString(tenantId)
+            );
+
+            if ( ut == null ) throw new ITRightException();
+            if ( ! ut.isAdmin() ) {
+                throw new ITRightException();
+            }
+        }
+
+        long duration = 15*Now.ONE_FULL_DAY;
+        long start = Now.TodayMidnightUtc() - duration;
+        TenantSetupStatsRespItf stats = heliumTenantStatService.getTenantStatsForChart(
+            tenantId,
+            start,
+            duration
+        );
+
+        return stats;
+    }
+
+    public TenantSetupStatsRespItf getTenantDeviceActivityStat(String userId, String tenantId)
+        throws ITRightException, ITParseException {
+        // check user and ownership
+        UserCacheService.UserCacheElement user = userCacheService.getUserById(userId);
+        if (user == null) throw new ITRightException();
+        if ( !user.user.isAdmin() ) {
+            // search if tenant authorization exists
+            UserTenant ut = userTenantRepository.findOneUserByUserIdAndTenantId(
+                UUID.fromString(userId),
+                UUID.fromString(tenantId)
+            );
+
+            if ( ut == null ) throw new ITRightException();
+            if ( ! ut.isAdmin() ) {
+                throw new ITRightException();
+            }
+        }
+
+        long duration = 2*Now.ONE_FULL_DAY;     // during the last 48 hours
+        long start = Now.NowUtcMs() - duration;
+        TenantSetupStatsRespItf stats = heliumTenantStatService.getTenantDeviceStatsForChart(
+            tenantId,
+            start,
+            duration,
+            10          // 10 most consuming devices
+        );
+
+        return stats;
+    }
+
+    public TenantSetupStatsRespItf getTenantDeviceInactivityStat(String userId, String tenantId)
+        throws ITRightException, ITParseException {
+        // check user and ownership
+        UserCacheService.UserCacheElement user = userCacheService.getUserById(userId);
+        if (user == null) throw new ITRightException();
+        if ( !user.user.isAdmin() ) {
+            // search if tenant authorization exists
+            UserTenant ut = userTenantRepository.findOneUserByUserIdAndTenantId(
+                UUID.fromString(userId),
+                UUID.fromString(tenantId)
+            );
+
+            if ( ut == null ) throw new ITRightException();
+            if ( ! ut.isAdmin() ) {
+                throw new ITRightException();
+            }
+        }
+
+        // get devices with activity but no uplink (like join loop) or inactivity_dc > 0
+        long duration = Now.ONE_FULL_DAY;     // during the last 24 hours
+        long start = Now.NowUtcMs() - duration;
+        TenantSetupStatsRespItf stats = heliumTenantStatService.getTenantInactiveDeviceStatsForChart(
+            tenantId,
+            start,
+            duration,
+            10          // max 10 devices
+        );
+
+        return stats;
+    }
+
+    /* Admin API to get stat on top tenant for analysis */
+    public TenantSetupStatsRespItf getTopTenantActivityStat(String userId)
+        throws ITRightException, ITParseException {
+        // check user and ownership
+        UserCacheService.UserCacheElement user = userCacheService.getUserById(userId);
+        if (user == null) throw new ITRightException();
+        if ( !user.user.isAdmin() ) {
+           throw new ITRightException();
+        }
+
+        // get devices with activity but no uplink (like join loop) or inactivity_dc > 0
+        long duration = Now.ONE_FULL_DAY;     // during the last 24 hours
+        long start = Now.NowUtcMs() - duration;
+        TenantSetupStatsRespItf stats = heliumTenantStatService.getTopConsumerStatsForChart(
+            start,
+            duration,
+            20          // max 20 tenant
+        );
+
+        return stats;
+    }
 
 
     public TenantSetupRespItf getTenantSetup(String userId, String tenantId)

@@ -20,7 +20,6 @@
 package eu.heliumiot.console;
 
 import fr.ingeniousthings.tools.Tools;
-import org.apache.commons.validator.routines.EmailValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.ExitCodeGenerator;
