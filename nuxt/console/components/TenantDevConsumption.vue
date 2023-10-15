@@ -40,7 +40,7 @@ import { TenantSetupStatsSerie, TenantSetupStatsRespItf } from 'vue/types/tenant
 
 interface data {
     isBusy : boolean,
-    tenantConsumptionOption : {},
+    tenantConsumptionOption : any,
     tenantConsumptionData: any [],
     errorMessage: string,
     loadStatSuccess: boolean,
