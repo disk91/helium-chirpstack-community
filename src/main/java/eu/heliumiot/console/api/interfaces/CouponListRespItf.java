@@ -70,6 +70,13 @@ public class CouponListRespItf {
     )
     private long stop;
 
+    @Schema(
+        description = "Who's coupon for - login",
+        example = "john.doe@foo.bar",
+        requiredMode = Schema.RequiredMode.REQUIRED
+    )
+    private String couponFor;
+
 
     // ---
 
@@ -120,5 +127,13 @@ public class CouponListRespItf {
 
     public void setStop(long stop) {
         this.stop = stop;
+    }
+
+    public String getCouponFor() {
+        return couponFor;
+    }
+
+    public void setCouponFor(String couponFor) {
+        this.couponFor = couponFor;
     }
 }

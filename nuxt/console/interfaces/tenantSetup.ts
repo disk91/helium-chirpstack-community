@@ -38,4 +38,13 @@ declare module "vue/types/tenantSetup" {
         tenantUUID : string,
         couponID : string,
     }
+    interface CouponListRespItf {
+        tenantUUID : string,
+        couponID : string,
+        maxUse : number,
+        inUse : number,
+        start : number,
+        stop : number,
+        couponFor : string,
+    }
 }

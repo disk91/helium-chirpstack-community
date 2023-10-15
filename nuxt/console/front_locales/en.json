@@ -469,6 +469,16 @@
   "cc_create_success" : "Coupons correctly created",
   "cc_create_error" : "Error during coupon creation, please check inputs",
   "cc_show_coupons" : "Coupons just created",
+  "u_coupon_list" : "List of active coupons",
+  "error_load_coupons" : "Failed to load coupons",
+  "ccf_couponid" : "Coupon Id",
+  "ccf_tenantuuid" : "Tenant",
+  "ccf_inuse" : "In Use",
+  "ccf_maxuse" : "Max Use",
+  "ccf_stopdate" : "End Date",
+  "ccf_couponFor" : "Owner",
+
+
 
   "end" : "end"
 }

@@ -574,8 +574,8 @@ public class HeliumTenantSetupService {
                  ! filterInactive ||
                  (
                        coupon.getCouponState() == HeliumCoupon.CouponState.ACTIVE
-                    && (coupon.getStart() == 0 || coupon.getStart() >= now )
-                    && (coupon.getStop() == 0 || coupon.getStop() < now )
+                    && (coupon.getStart() == 0 || coupon.getStart() < now )
+                    && (coupon.getStop() == 0 || coupon.getStop() > now )
                     && coupon.getInUse() < coupon.getMaxUse()
                  )
             ) {
@@ -586,6 +586,7 @@ public class HeliumTenantSetupService {
                 _r.setMaxUse(coupon.getMaxUse());
                 _r.setStop(coupon.getStop());
                 _r.setStart(coupon.getStart());
+                _r.setCouponFor(coupon.getCouponFor());
                 ret.add(_r);
             }
         });

@@ -470,6 +470,14 @@
     "cc_create_success" : "Les coupons ont été créés",
     "cc_create_error" : "Problème durant la génération des coupons, vérifiez les données d'entrée",
     "cc_show_coupons" : "Les coupons créés",
-
+    "u_coupon_list" : "Liste des coupons actifs",
+    "error_load_coupons" : "Impossible de charger les coupons",
+    "ccf_couponid" : "Coupon Id",
+    "ccf_tenantuuid" : "Tenant",
+    "ccf_inuse" : "Actifs",
+    "ccf_maxuse" : "Activables",
+    "ccf_stopdate" : "Fin",
+    "ccf_couponFor" : "Propriétaire",
+  
     "end" : "fin"
 }
