@@ -586,6 +586,39 @@ public class TenantApi {
         }
     }
 
+    @Operation(summary = "Get 10 most consuming uplink devices in a tenant for last 2 days activity stats",
+        description = "Get 10 most uplink + join req consuming devices in a given tenant, formatted for frontend bar chart",
+        responses = {
+            @ApiResponse(responseCode = "200", description= "Ok", content = @Content(schema = @Schema(implementation = TenantSetupStatsRespItf.class))),
+            @ApiResponse(responseCode = "400", description= "Bad Request", content = @Content(schema = @Schema(implementation = ActionResult.class))),
+            @ApiResponse(responseCode = "403", description= "Forbidden", content = @Content(schema = @Schema(implementation = ActionResult.class))),
+        }
+    )
+    @RequestMapping(value="/{tenantId}/topdevices",
+        produces = MediaType.APPLICATION_JSON_VALUE,
+        method= RequestMethod.GET)
+    @PreAuthorize("hasAnyRole('ROLE_USER')")
+    public ResponseEntity<?> getTenanteviceActivityStat(
+        HttpServletRequest request,
+        @Parameter(required = true, name = "tenantId", description = "tenant UUID")
+        @PathVariable String tenantId
+    ) {
+        long startMs= Now.NowUtcMs();
+        log.debug("Get tenant device activity stats "+request.getUserPrincipal().getName()+" for tenant "+tenantId);
+        try {
+            TenantSetupStatsRespItf r = heliumTenantService.getTenantDeviceActivityStat(request.getUserPrincipal().getName(),tenantId);
+            return new ResponseEntity<>(r, HttpStatus.OK);
+        } catch (ITParseException x) {
+            prometeusService.addApiTotalError();
+            return new ResponseEntity<>(ActionResult.BADREQUEST(), HttpStatus.BAD_REQUEST);
+        } catch (ITRightException x) {
+            prometeusService.addApiTotalError();
+            return new ResponseEntity<>(ActionResult.FORBIDDEN(), HttpStatus.FORBIDDEN);
+        } finally {
+            prometeusService.addApiTotalTimeMs(startMs);
+        }
+    }
+
     // ==========================================
     // Manage Tenant Api keys
     // ==========================================

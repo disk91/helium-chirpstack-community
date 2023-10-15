@@ -449,6 +449,7 @@
 
   "tenantConsumption_card_title" : "Tenant activity history",
   "error_load_stat_nodata" : "No data found for that tenant",
+  "tenantDevConsumption_card_title" : "Last 48 hours top consuming devices",
 
   "end" : "end"
 }

@@ -1098,6 +1098,35 @@ public class HeliumTenantService {
         return stats;
     }
 
+    public TenantSetupStatsRespItf getTenantDeviceActivityStat(String userId, String tenantId)
+        throws ITRightException, ITParseException {
+        // check user and ownership
+        UserCacheService.UserCacheElement user = userCacheService.getUserById(userId);
+        if (user == null) throw new ITRightException();
+        if ( !user.user.isAdmin() ) {
+            // search if tenant authorization exists
+            UserTenant ut = userTenantRepository.findOneUserByUserIdAndTenantId(
+                UUID.fromString(userId),
+                UUID.fromString(tenantId)
+            );
+
+            if ( ut == null ) throw new ITRightException();
+            if ( ! ut.isAdmin() ) {
+                throw new ITRightException();
+            }
+        }
+
+        long duration = 2*Now.ONE_FULL_DAY;     // during the last 48 hours
+        long start = Now.NowUtcMs() - duration;
+        TenantSetupStatsRespItf stats = heliumTenantStatService.getTenantDeviceStatsForChart(
+            tenantId,
+            start,
+            duration,
+            10          // 10 most consuming devices
+        );
+
+        return stats;
+    }
 
 
     public TenantSetupRespItf getTenantSetup(String userId, String tenantId)

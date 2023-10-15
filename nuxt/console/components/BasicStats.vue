@@ -298,6 +298,7 @@
                             </b-list-group>
                         </b-card>
                         <TenantConsumption/>
+                        <TenantDevConsumption/>
                     </b-col>
             </b-row>
             <b-row cols="6" class="ml-0" v-if="! loadBasicStatSuccess">
@@ -327,6 +328,7 @@
     import Vue from 'vue'
     import { TenantBasicStat, TenantUpdateMaxCopyReqItf } from 'vue/types/tenantStat';
     import TenantConsumption from '~/components/TenantConsumption.vue'
+    import TenantDevConsumption from '~/components/TenantDevConsumption.vue'
   
     interface data {
         basicStat : TenantBasicStat,
@@ -343,6 +345,7 @@
       name: "BasicStatComponent",
       components: { 
         'TenantConsumption' : TenantConsumption,
+        'TenantDevConsumption' : TenantDevConsumption,
       },
       data() : data {
         return {

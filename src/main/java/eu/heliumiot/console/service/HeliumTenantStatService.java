@@ -235,4 +235,63 @@ public class HeliumTenantStatService {
         }
     }
 
+    public TenantSetupStatsRespItf getTenantDeviceStatsForChart(String tenantUUID, long start, long duration, int maxDevices)
+        throws ITParseException {
+        long _start = Now.NowUtcMs();
+
+        // calculate stats
+        log.debug("Tenant Device Stats calculation for "+tenantUUID+" between "+start+" and "+(start+duration));
+
+        // get the usage stat
+        boolean success = false;
+        List<HeliumDeviceStat> ss = null;
+        try {
+            ss = heliumDeviceStatsRepository.findSumStatForTenantDeviceByDayBetween(
+                tenantUUID,
+                start,
+                (start + duration),
+                maxDevices
+            );
+            success = true;
+        } catch (Exception x) {
+            // We have an exception when no value match the SUM on the period
+            // forget this
+            log.info("Failed to get Tenant Device stats calculation "+x.getMessage());
+        }
+        if ( !success ) {
+            throw new ITParseException();
+        } else {
+            TenantSetupStatsRespItf r = new TenantSetupStatsRespItf();
+            r.setDateLabel(new ArrayList<>());
+            r.setSeries(new ArrayList<>());
+            TenantSetupStatsSerie sUplink = new TenantSetupStatsSerie();
+            sUplink.setName("uplink");
+            sUplink.setData(new ArrayList<>());
+            TenantSetupStatsSerie sCopies = new TenantSetupStatsSerie();
+            sCopies.setName("up_copy");
+            sCopies.setData(new ArrayList<>());
+            TenantSetupStatsSerie sDownlink = new TenantSetupStatsSerie();
+            sDownlink.setName("downlink");
+            sDownlink.setData(new ArrayList<>());
+            TenantSetupStatsSerie sJoin = new TenantSetupStatsSerie();
+            sJoin.setName("join");
+            sJoin.setData(new ArrayList<>());
+            r.getSeries().add(sUplink);
+            r.getSeries().add(sCopies);
+            r.getSeries().add(sDownlink);
+            r.getSeries().add(sJoin);
+            for ( HeliumDeviceStat s : ss ) {
+                log.info("device:"+s.getTenantUUID()+" uplink: "+s.getUplink());
+                r.getDateLabel().add(s.getDeviceUUID());
+                sUplink.getData().add(s.getUplink());
+                sCopies.getData().add(s.getDuplicate());
+                sDownlink.getData().add(s.getDownlink());
+                sJoin.getData().add(s.getJoinReq());
+            }
+            return r;
+        }
+    }
+
+
+
 }

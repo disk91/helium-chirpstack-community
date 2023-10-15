@@ -1,12 +1,12 @@
 <template>
     <b-overlay :show="isBusy" rounded="sm">
         <b-card 
-            :header="$t('tenantConsumption_card_title')"
+            :header="$t('tenantDevConsumption_card_title')"
             class="TenantConsumption mt-3"
         >
            <b-row v-if="loadStatSuccess">
             <b-col cols="12">
-              <apexchart type="bar" height="350" :options="tenantConsumptionOption" :series="tenantConsumptionData"></apexchart>
+              <apexchart type="bar" height="300" :options="tenantConsumptionOption" :series="tenantConsumptionData"></apexchart>
             </b-col>
            </b-row>
            <b-row class="ml-0" v-if="! loadStatSuccess">
@@ -47,7 +47,7 @@ interface data {
 }
 
 export default Vue.extend({
-    name: "TenantConsumption",
+    name: "TenantDevConsumption",
     components: {
         apexchart: VueApexCharts,
     },
@@ -55,16 +55,16 @@ export default Vue.extend({
         return {
             isBusy : false,
             tenantConsumptionOption : {
-                chart: { type: 'bar', height: 350, stacked: true},
-                plotOptions: { bar: { horizontal: false, }, },
+                chart: { type: 'bar', height: 300, stacked: true},
+                plotOptions: { bar: { horizontal: true, }, },
                 stroke: { width: 1, colors: ['#fff'] },
                 fill: { opacity: 1 },
                 legend: { position: 'bottom', horizontalAlign: 'left', offsetX: 40 },
-                xaxis: { categories: [], labels : { rotate: -45, rotateAlways: false, }, }
+                xaxis: { categories: [] }
             },
             tenantConsumptionData: [
             ],
-            errorMessage: '', 
+            errorMessage: '',
             loadStatSuccess: false,
         };
     },
@@ -81,7 +81,7 @@ export default Vue.extend({
             }
         };
         this.isBusy = true;
-        this.$axios.get<TenantSetupStatsRespItf>(this.$config.tenantBasicStat+'/'+tenantId+'/activity',config)
+        this.$axios.get<TenantSetupStatsRespItf>(this.$config.tenantBasicStat+'/'+tenantId+'/topdevices',config)
             .then((response) =>{
                 if (response.status == 200 ) {
                   this.tenantConsumptionOption.xaxis.categories = response.data.dateLabel;

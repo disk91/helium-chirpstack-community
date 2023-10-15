@@ -103,10 +103,10 @@ public class MqttListener implements MqttCallback {
         this.persistence = new MemoryPersistence();
         this.connectionOptions = new MqttConnectOptions();
         try {
-            log.info("MQTT Url :"+mqttConfig.getMqttServer());
-            log.info("MQTT User :"+mqttConfig.getMqttLogin());
+            log.info("MQTT L Url :"+mqttConfig.getMqttServer());
+            log.info("MQTT L User :"+mqttConfig.getMqttLogin());
             //log.info("Password :"+mqttConfig.getPassword());
-            log.info("MQTT Id : "+clientId);
+            log.info("MQTT L Id : "+clientId);
             this.mqttClient = new MqttClient(mqttConfig.getMqttServer(), clientId, persistence);
             this.connectionOptions.setCleanSession(false);          // restart by processing pending events
             this.connectionOptions.setAutomaticReconnect(false);    // reconnect managed manually
@@ -120,15 +120,15 @@ public class MqttListener implements MqttCallback {
             this.mapper.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
             this.mapper.configure(SerializationFeature.FAIL_ON_SELF_REFERENCES, false);
 
-            log.info("MQTT Starting Mqtt listener");
+            log.info("MQTT L Starting Mqtt listener");
         } catch (MqttException me) {
-            log.error("MQTT Init ERROR : "+me.getMessage());
+            log.error("MQTT L Init ERROR : "+me.getMessage());
         }
         return this.mqttClient;
     }
 
     public void connect() throws MqttException {
-        log.debug("MQTT - Connect");
+        log.debug("MQTT L - Connect");
         this.mqttClient.connect(this.connectionOptions);
         this.mqttClient.setCallback(this);
         this.mqttClient.subscribe(_topics,_qos);
@@ -141,7 +141,7 @@ public class MqttListener implements MqttCallback {
             this.mqttClient.disconnect();
             this.mqttClient.close();
         } catch (MqttException me) {
-            log.error("MQTT ERROR :"+me.getMessage());
+            log.error("MQTT L ERROR :"+me.getMessage());
         }
     }
 
@@ -153,7 +153,7 @@ public class MqttListener implements MqttCallback {
      */
     @Override
     public void connectionLost(Throwable arg0) {
-        log.error("MQTT - Connection Lost");
+        log.error("MQTT L - Connection Lost");
         try {
             // immediate retry, then will be async
             this.connect();
@@ -168,14 +168,14 @@ public class MqttListener implements MqttCallback {
         if ( ! pendingReconnection ) return;
         try {
             if ( mqttClient.isConnected() ) {
-                log.info("MQTT - reconnected");
+                log.info("MQTT L - reconnected");
                 pendingReconnection = false;
             }
             this.connect();
-            log.info("MQTT - reconnected");
+            log.info("MQTT L - reconnected");
             pendingReconnection = false;
         } catch (MqttException me) {
-            log.warn("MQTT - reconnection failed - "+me.getMessage());
+            log.warn("MQTT L - reconnection failed - "+me.getMessage());
         }
     }
 
@@ -186,7 +186,7 @@ public class MqttListener implements MqttCallback {
      */
     @Override
     public void deliveryComplete(IMqttDeliveryToken arg0) {
-        // log.info("MQTT - delivery completed");
+        // log.info("MQTT L - delivery completed");
     }
 
     @Autowired
@@ -279,7 +279,7 @@ public class MqttListener implements MqttCallback {
                 }
             }
         } finally {
-            this.scheduleRunning--;
+            --this.scheduleRunning;
         }
     }
 
@@ -288,11 +288,11 @@ public class MqttListener implements MqttCallback {
     public void messageArrived(String topicName, MqttMessage message) throws Exception {
         // Leave it blank for Publisher
         long start = Now.NowUtcMs();
-        //log.info("MQTT - MessageArrived on "+topicName);
+        //log.info("MQTT L - MessageArrived on "+topicName);
 
         // some of the messages are protobuf format
         if ( topicName.matches("application/.*/event/up$") ) {
-            // Prefer MQTT to get the uplink information because the data is decoded
+            // Prefer MQTT L to get the uplink information because the data is decoded
             try {
                 UplinkEvent up = mapper.readValue(message.toString(), UplinkEvent.class);
                 prometeusService.addLoRaUplink(
@@ -310,15 +310,15 @@ public class MqttListener implements MqttCallback {
                 );
 
             } catch (JsonProcessingException x) {
-                log.error("MQTT - failed to parse App uplink - " + x.getMessage());
+                log.error("MQTT L - failed to parse App uplink - " + x.getMessage());
                 x.printStackTrace();
             } catch (Exception x) {
                 x.printStackTrace();
             }
 
         } else if ( topicName.matches("application/.*/event/down$") ) {
-            // REDIS will be prefered because MQTT Json does not have size
-            // And MQTT does not trace Uplink
+            // REDIS will be prefered because MQTT L Json does not have size
+            // And MQTT L does not trace Uplink
                         /*
                         try {
 
@@ -331,7 +331,7 @@ public class MqttListener implements MqttCallback {
                                 );
 
                         } catch (JsonProcessingException x) {
-                                log.error("MQTT - failed to parse App downlink - " + x.getMessage());
+                                log.error("MQTT L - failed to parse App downlink - " + x.getMessage());
                                 x.printStackTrace();
                         } catch (Exception x) {
                                 x.printStackTrace();
@@ -348,7 +348,7 @@ public class MqttListener implements MqttCallback {
                 );
                 prometeusService.addLoRaJoin();
             } catch (JsonProcessingException x) {
-                log.error("MQTT - failed to parse App JOIN - " + x.getMessage());
+                log.error("MQTT L - failed to parse App JOIN - " + x.getMessage());
                 x.printStackTrace();
             } catch (Exception x) {
                 x.printStackTrace();
@@ -480,10 +480,10 @@ public class MqttListener implements MqttCallback {
         } else {
 
             // standard json messages
-            log.debug("MQTT - MessageArrived on "+topicName);
-            //log.info("MQTT - message "+message);
+            log.debug("MQTT L - MessageArrived on "+topicName);
+            //log.info("MQTT L - message "+message);
         }
-        log.debug("MQTT processing time "+(Now.NowUtcMs()-start)+"ms for "+topicName);
+        log.debug("MQTT L processing time "+(Now.NowUtcMs()-start)+"ms for "+topicName);
     }
 
 }
