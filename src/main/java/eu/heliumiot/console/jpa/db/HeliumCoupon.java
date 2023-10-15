@@ -48,6 +48,10 @@ public class HeliumCoupon {
     @Column(name = "tenant_uuid")
     private String tenantUUID;
 
+    // who can access that coupon
+    @Column(name = "coupon_for")
+    private String couponFor;
+
     // coupon state
     @Column(name = "coupon_state")
     private CouponState CouponState;
@@ -131,5 +135,13 @@ public class HeliumCoupon {
 
     public void setStop(long stop) {
         this.stop = stop;
+    }
+
+    public String getCouponFor() {
+        return couponFor;
+    }
+
+    public void setCouponFor(String couponFor) {
+        this.couponFor = couponFor;
     }
 }

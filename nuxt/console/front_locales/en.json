@@ -452,6 +452,33 @@
   "tenantDevConsumption_card_title" : "Last 48 hours top consuming devices",
   "tenantDevInactive_card_title" : "Last 24h, 10 of the inactive devices",
   "topActiveTenant_card_title" : "Last 24h, top 20 active tenants",
+  "coupon_creation_title" : "Create a coupon",
+  "cc_tenant_template" : "Tenant Template to be used",
+  "cc_tenant_template_desc" : "Select the tenant template to be activated by coupon",
+  "cc_tenant_prefix" : "Coupon prefix",
+  "cc_tenant_prefix_desc" : "This header will be added to coupon name",
+  "cc_tenant_maxUse" : "Max usage",
+  "cc_tenant_maxUse_desc" : "Max time the coupon can be used to create tenants",
+  "cc_tenant_couponFor" : "Coupon owner",
+  "cc_tenant_couponFor_desc" : "Login of the user who get the coupon (free text fields)",
+  "cc_tenant_validity" : "Coupon validity",
+  "cc_tenant_validity_desc" : "Duration in days of the coupon validity",
+  "cc_tenant_toCreate" : "How many ?",
+  "cc_tenant_toCreate_desc" : "Number of different coupons to be created",
+  "cc_create" : "Generate",
+  "cc_create_success" : "Coupons correctly created",
+  "cc_create_error" : "Error during coupon creation, please check inputs",
+  "cc_show_coupons" : "Coupons just created",
+  "u_coupon_list" : "List of active coupons",
+  "error_load_coupons" : "Failed to load coupons",
+  "ccf_couponid" : "Coupon Id",
+  "ccf_tenantuuid" : "Tenant",
+  "ccf_inuse" : "In Use",
+  "ccf_maxuse" : "Max Use",
+  "ccf_stopdate" : "End Date",
+  "ccf_couponFor" : "Owner",
+
+
 
   "end" : "end"
 }

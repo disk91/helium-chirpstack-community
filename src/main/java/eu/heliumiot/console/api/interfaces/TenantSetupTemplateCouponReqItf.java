@@ -69,6 +69,13 @@ public class TenantSetupTemplateCouponReqItf {
     )
     private int toCreate;
 
+    @Schema(
+        description = "Who's coupon for - login",
+        example = "john.doe@foo.bar",
+        requiredMode = Schema.RequiredMode.REQUIRED
+    )
+    private String couponFor;
+
     // ---
 
 
@@ -118,5 +125,13 @@ public class TenantSetupTemplateCouponReqItf {
 
     public void setPrefix(String prefix) {
         this.prefix = prefix;
+    }
+
+    public String getCouponFor() {
+        return couponFor;
+    }
+
+    public void setCouponFor(String couponFor) {
+        this.couponFor = couponFor;
     }
 }

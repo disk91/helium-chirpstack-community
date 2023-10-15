@@ -1,7 +1,8 @@
 <template>
-    <div>
-        <h5><b-badge variant="secondary" class="m-2">{{ $t('u_search_title') }}</b-badge></h5>
-
+    <b-card 
+        :header="$t('u_search_title')"
+        class="mt-3 ml-3 myCard"
+    >
         <div class="col-md-8">
             <b-form-group :description="$t('tip_search_user')" style="text-align:left;" class="mb-1 small">
                 <b-form-input v-model="keyword"
@@ -51,8 +52,20 @@
         </b-table>
         </div>
 
-    </div>
+    </b-card>
 </template>
+<style>
+.myCard .card-header  {
+    font-size: 0.8rem;
+    font-weight: 600;
+    font-variant: small-caps;
+}
+.myCard .card-body  {
+    padding: 20px 5px 20px 5px;
+}
+</style>
+
+
 <script lang="ts">
 import { BIconHandThumbsDown } from 'bootstrap-vue';
 import Vue from 'vue'

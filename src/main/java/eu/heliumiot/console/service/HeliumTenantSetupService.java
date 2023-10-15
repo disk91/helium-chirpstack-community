@@ -21,7 +21,6 @@ package eu.heliumiot.console.service;
 
 import eu.heliumiot.console.ConsoleConfig;
 import eu.heliumiot.console.api.interfaces.*;
-import eu.heliumiot.console.jpa.db.Device;
 import eu.heliumiot.console.jpa.db.HeliumCoupon;
 import eu.heliumiot.console.jpa.db.HeliumTenantSetup;
 import eu.heliumiot.console.jpa.repository.HeliumCouponRepository;
@@ -544,6 +543,7 @@ public class HeliumTenantSetupService {
             HeliumCoupon c = new HeliumCoupon();
             c.setCouponState(HeliumCoupon.CouponState.ACTIVE);
             c.setInUse(0);
+            c.setCouponFor(req.getCouponFor());
             c.setMaxUse(req.getMaxUse());
             c.setStart(req.getStart());
             c.setStop(req.getStop());
@@ -574,8 +574,8 @@ public class HeliumTenantSetupService {
                  ! filterInactive ||
                  (
                        coupon.getCouponState() == HeliumCoupon.CouponState.ACTIVE
-                    && (coupon.getStart() == 0 || coupon.getStart() >= now )
-                    && (coupon.getStop() == 0 || coupon.getStop() < now )
+                    && (coupon.getStart() == 0 || coupon.getStart() < now )
+                    && (coupon.getStop() == 0 || coupon.getStop() > now )
                     && coupon.getInUse() < coupon.getMaxUse()
                  )
             ) {
@@ -586,6 +586,7 @@ public class HeliumTenantSetupService {
                 _r.setMaxUse(coupon.getMaxUse());
                 _r.setStop(coupon.getStop());
                 _r.setStart(coupon.getStart());
+                _r.setCouponFor(coupon.getCouponFor());
                 ret.add(_r);
             }
         });
@@ -596,7 +597,7 @@ public class HeliumTenantSetupService {
     public synchronized String acquiresCoupon(String couponId) {
 
         // check if exist & valid
-        HeliumCoupon c = heliumCouponRepository.findOneHeliumTenantByCouponID(couponId);
+        HeliumCoupon c = heliumCouponRepository.findOneHeliumCouponByCouponID(couponId);
         if ( c == null || c.getCouponState() == HeliumCoupon.CouponState.CLEARED ) return null;
 
         // check if in the period of availability

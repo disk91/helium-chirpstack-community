@@ -23,13 +23,16 @@ import eu.heliumiot.console.jpa.db.HeliumCoupon;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.UUID;
 
 @Repository
 public interface HeliumCouponRepository extends CrudRepository<HeliumCoupon, UUID> {
 
-    public HeliumCoupon findOneHeliumTenantByTenantUUID(String id);
+    public List<HeliumCoupon> findHeliumCouponByTenantUUID(String id);
 
-    public HeliumCoupon findOneHeliumTenantByCouponID(String id);
+    public HeliumCoupon findOneHeliumCouponByCouponID(String id);
+
+    public List<HeliumCoupon> findHeliumCouponByCouponFor(String user);
 
 }

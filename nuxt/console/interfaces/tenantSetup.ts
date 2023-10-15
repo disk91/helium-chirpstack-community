@@ -25,4 +25,26 @@ declare module "vue/types/tenantSetup" {
         signupAllowed : boolean,
         id : string,
     }
+    interface TenantSetupTemplateCouponReqItf {
+        prefix : string,
+        tenantUUID : string,
+        maxUse : number,
+        start : number,
+        stop : number,
+        toCreate : number,
+        couponFor : string,
+    }
+    interface TenantSetupTemplateCouponRespItf {
+        tenantUUID : string,
+        couponID : string,
+    }
+    interface CouponListRespItf {
+        tenantUUID : string,
+        couponID : string,
+        maxUse : number,
+        inUse : number,
+        start : number,
+        stop : number,
+        couponFor : string,
+    }
 }

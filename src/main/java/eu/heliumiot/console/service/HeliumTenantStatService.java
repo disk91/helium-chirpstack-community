@@ -374,7 +374,7 @@ public class HeliumTenantStatService {
         } catch (Exception x) {
             // We have an exception when no value match the SUM on the period
             // forget this
-            log.info("Failed to get top consumer stats calculation "+x.getMessage());
+            log.debug("Failed to get top consumer stats calculation "+x.getMessage());
         }
         if ( !success ) {
             throw new ITParseException();
@@ -407,7 +407,7 @@ public class HeliumTenantStatService {
             r.getSeries().add(sInactivity);
             r.getSeries().add(sRegistration);
             for ( HeliumDeviceStat s : ss ) {
-                log.info("device:"+s.getTenantUUID()+" uplink: "+s.getUplink());
+                //log.info("device:"+s.getTenantUUID()+" uplink: "+s.getUplink());
                 Tenant t = tenantRepository.findOneTenantById(UUID.fromString(s.getTenantUUID()));
                 if ( t != null ) {
                     r.getDateLabel().add(t.getName());
