@@ -1170,7 +1170,6 @@
             }
           },
           "mappings": [],
-          "min": 0,
           "thresholds": {
             "mode": "absolute",
             "steps": [
@@ -1202,10 +1201,12 @@
         "fullHighlight": false,
         "groupWidth": 0.7,
         "legend": {
-          "calcs": [],
+          "calcs": [
+            "sum"
+          ],
           "displayMode": "list",
-          "placement": "bottom",
-          "showLegend": false
+          "placement": "right",
+          "showLegend": true
         },
         "orientation": "auto",
         "showValue": "never",
@@ -1989,6 +1990,7 @@
               "tooltip": false,
               "viz": false
             },
+            "insertNulls": false,
             "lineInterpolation": "smooth",
             "lineWidth": 1,
             "pointSize": 5,
@@ -2010,7 +2012,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": null
               },
               {
                 "color": "red",
@@ -4282,13 +4285,13 @@
     "list": []
   },
   "time": {
-    "from": "now-12h",
+    "from": "now-24h",
     "to": "now"
   },
   "timepicker": {},
   "timezone": "",
   "title": "Chirpstack",
   "uid": "6pIR3ibVz",
-  "version": 13,
+  "version": 14,
   "weekStart": ""
 }
