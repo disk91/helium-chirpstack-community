@@ -32,6 +32,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
@@ -77,13 +78,14 @@ public class HeliumTenantSetupService {
         };
 
         // Update the entries after migration 0.9 if value is -2 for dc_per_join_request and others
-        Slice<HeliumTenantSetup> alltenants = heliumTenantSetupRepository.findHeliumTenantSetupByDcPerJoinRequest(-2,PageRequest.of(0, 100));
-        boolean nextPage = false;
+        Pageable page = PageRequest.of(0,100);
+        Slice<HeliumTenantSetup> alltenants = heliumTenantSetupRepository.findHeliumTenantSetupByDcPerJoinRequest(-2,page);
+        boolean nextPage;
         if ( alltenants != null && alltenants.getNumberOfElements() > 0 ) {
             log.info("### [db V2_0_9] Migrate the HeliumTenantSetup with join values");
             int i = 0;
             do {
-                for (HeliumTenantSetup t : alltenants) {
+                for (HeliumTenantSetup t : alltenants.getContent()) {
                     t.setMaxJoinRequestDup(consoleConfig.getHeliumBillingMaxJoinRequestDup());
                     t.setDcPerJoinRequest(consoleConfig.getHeliumBillingDcPerJoinRequest());
                     t.setDcPerJoinAccept(consoleConfig.getHeliumBillingDcPerJoinAccept());
@@ -91,8 +93,9 @@ public class HeliumTenantSetupService {
                     i++;
                 }
                 if (alltenants.hasNext()) {
-                    alltenants = heliumTenantSetupRepository.findHeliumTenantSetupByDcPerJoinRequest(-2, alltenants.nextPageable());
                     nextPage = true;
+                    // As the entries have been updated we stay on page 0...
+                    alltenants = heliumTenantSetupRepository.findHeliumTenantSetupByDcPerJoinRequest(-2, page);
                 } else nextPage = false;
             } while (nextPage);
             log.info("### [db V2_0_9] "+i+" Done");
