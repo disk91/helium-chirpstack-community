@@ -13,12 +13,12 @@ scrape_configs:
     metrics_path: '/actuator/prometheus'
     scrape_interval: 5s
     static_configs:
-      - targets: ['fwnode1:8082']
+      - targets: ['localhost:8101']
   - job_name: fwnode2
     metrics_path: '/actuator/prometheus'
     scrape_interval: 5s
     static_configs:
-      - targets: ['fwnode2:8082']
+      - targets: ['localhost:8102']
   - job_name: node
     static_configs:
       - targets: ['localhost:9100']

@@ -47,11 +47,15 @@ services:
     volumes:
       - /helium/cli/keypair.bin:/etc/helium/pkey.bin
       - /helium/configuration/forwarder/node1.properties:/configuration.properties
+    ports:
+      - 127.0.0.1:8101:8082
     logging: *logs
 
   fwnode2:
     image: disk91/forwarder:2.0.0
     restart: unless-stopped
+    ports:
+      - 127.0.0.1:8102:8082
     volumes:
       - /helium/cli/keypair.bin:/etc/helium/pkey.bin
       - /helium/configuration/forwarder/node2.properties:/configuration.properties
