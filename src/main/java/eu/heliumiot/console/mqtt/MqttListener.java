@@ -172,11 +172,11 @@ public class MqttListener implements MqttCallback {
         try {
             if ( mqttClient.isConnected() ) {
                 log.info("MQTT L - reconnected");
-                pendingReconnection = false;
+            } else {
+                log.info("MQTT L - reconnecting");
+                this.connect();
+                log.info("MQTT L - reconnected");
             }
-            log.info("MQTT L - reconnecting");
-            this.connect();
-            log.info("MQTT L - reconnected");
             pendingReconnection = false;
         } catch (MqttException me) {
             log.warn("MQTT L - reconnection failed - "+me.getMessage());

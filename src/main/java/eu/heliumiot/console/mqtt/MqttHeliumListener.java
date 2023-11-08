@@ -151,11 +151,11 @@ public class MqttHeliumListener implements MqttCallback {
         try {
             if ( mqttClient.isConnected() ) {
                 log.info("MQTT H - reconnected");
-                pendingReconnection = false;
+            } else {
+                log.info("MQTT H - reconnecting");
+                this.connect();
+                log.info("MQTT H - reconnected");
             }
-            log.info("MQTT H - reconnecting");
-            this.connect();
-            log.info("MQTT H - reconnected");
             pendingReconnection = false;
         } catch (MqttException me) {
             log.warn("MQTT H - reconnection failed - "+me.getMessage());

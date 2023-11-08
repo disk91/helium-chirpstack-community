@@ -129,11 +129,11 @@ public class MqttSender implements MqttCallback {
             try {
                 if ( mqttClient.isConnected() ) {
                     log.info("MQTT S - reconnected");
-                    pendingReconnection = false;
+                } else {
+                    log.info("MQTT S - reconnecting");
+                    this.connect();
+                    log.info("MQTT S - reconnected");
                 }
-                log.info("MQTT S - reconnecting");
-                this.connect();
-                log.info("MQTT S - reconnected");
                 pendingReconnection = false;
             } catch (MqttException me) {
                 log.warn("MQTT S - reconnection failed - "+me.getMessage());
