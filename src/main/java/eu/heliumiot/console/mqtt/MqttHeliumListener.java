@@ -90,7 +90,7 @@ public class MqttHeliumListener implements MqttCallback {
             this.connectionOptions.setCleanSession(false);          // restart by processing pending events
             this.connectionOptions.setAutomaticReconnect(false);    // reconnect managed manually
             this.connectionOptions.setConnectionTimeout(5);         // do not wait more than 5s to reconnect
-            this.connectionOptions.setKeepAliveInterval(30);
+            this.connectionOptions.setKeepAliveInterval(60);
             this.connectionOptions.setUserName(mqttConfig.getMqttLogin());
             this.connectionOptions.setPassword(mqttConfig.getMqttPassword().toCharArray());
             this.connect();
@@ -135,8 +135,11 @@ public class MqttHeliumListener implements MqttCallback {
         log.error("MQTT H - Connection Lost");
         try {
             // immediate retry, then will be async
+            log.error("MQTT H - Direct reconnecting");
             this.connect();
+            log.error("MQTT H - Direct reconnected");
         } catch (MqttException me) {
+            log.warn("MQTT H - direct reconnection failed - "+me.getMessage());
             pendingReconnection = true;
         }
         prometeusService.addMqttConnectionLoss();
@@ -150,6 +153,7 @@ public class MqttHeliumListener implements MqttCallback {
                 log.info("MQTT H - reconnected");
                 pendingReconnection = false;
             }
+            log.info("MQTT H - reconnecting");
             this.connect();
             log.info("MQTT H - reconnected");
             pendingReconnection = false;

@@ -29,6 +29,7 @@ import eu.heliumiot.console.mqtt.api.HeliumDeviceActDeactItf;
 import eu.heliumiot.console.mqtt.api.HeliumDeviceStatItf;
 import eu.heliumiot.console.service.HeliumDeviceStatService;
 import eu.heliumiot.console.service.HeliumTenantService;
+import eu.heliumiot.console.service.PrometeusService;
 import fr.ingeniousthings.tools.DateConverters;
 import fr.ingeniousthings.tools.HexaConverters;
 import fr.ingeniousthings.tools.Now;
@@ -48,14 +49,18 @@ import javax.annotation.PostConstruct;
 
 @Component
 public class MqttSender implements MqttCallback {
-        private final Logger log = LoggerFactory.getLogger(this.getClass());
 
-        protected static final int MQTT_QOS = 2;
+    private final Logger log = LoggerFactory.getLogger(this.getClass());
 
-        @Autowired
-        private ConsoleConfig mqttConfig;
+    protected static final int MQTT_QOS = 2;
 
-        private MqttConnectOptions connectionOptions;
+    @Autowired
+    private ConsoleConfig mqttConfig;
+
+    @Autowired
+    protected PrometeusService prometeusService;
+
+    private MqttConnectOptions connectionOptions;
         private MemoryPersistence persistence;
         private MqttClient mqttClient;
 
@@ -74,7 +79,7 @@ public class MqttSender implements MqttCallback {
                         this.connectionOptions.setCleanSession(true);
                         this.connectionOptions.setAutomaticReconnect(false); // managed manually
                         this.connectionOptions.setConnectionTimeout(5);
-                        this.connectionOptions.setKeepAliveInterval(30);
+                        this.connectionOptions.setKeepAliveInterval(60);
                         this.connectionOptions.setUserName(mqttConfig.getMqttLogin());
                         this.connectionOptions.setPassword(mqttConfig.getMqttPassword().toCharArray());
                         this.connect();
@@ -105,42 +110,47 @@ public class MqttSender implements MqttCallback {
 
         @Override
         public void connectionLost(Throwable arg0) {
-                log.error("MQTT S - Connection Lost");
-                try {
-                        // immediate retry, then will be async
-                        this.connect();
-                } catch (MqttException me) {
-                        pendingReconnection = true;
-                }
+            log.error("MQTT S - Connection Lost");
+            try {
+                // immediate retry, then will be async
+                log.error("MQTT S - Direct reconnecting");
+                this.connect();
+                log.error("MQTT S - Direct reconnected");
+            } catch (MqttException me) {
+                log.warn("MQTT S - direct reconnection failed - "+me.getMessage());
+                pendingReconnection = true;
+            }
+            prometeusService.addMqttConnectionLoss();
         }
 
         @Scheduled(fixedDelayString = "${helium.mqtt.reconnect.scanPeriod}", initialDelay = 30_000) // default 10s
         protected void autoReconnect() {
-                if ( ! pendingReconnection ) return;
-                try {
-                        if ( mqttClient.isConnected() ) {
-                                log.info("MQTT S - reconnected");
-                                pendingReconnection = false;
-                        }
-                        this.connect();
-                        log.info("MQTT S - reconnected");
-                        pendingReconnection = false;
-                } catch (MqttException me) {
-                        log.warn("MQTT S - reconnection failed - "+me.getMessage());
+            if ( ! pendingReconnection ) return;
+            try {
+                if ( mqttClient.isConnected() ) {
+                    log.info("MQTT S - reconnected");
+                    pendingReconnection = false;
                 }
+                log.info("MQTT S - reconnecting");
+                this.connect();
+                log.info("MQTT S - reconnected");
+                pendingReconnection = false;
+            } catch (MqttException me) {
+                log.warn("MQTT S - reconnection failed - "+me.getMessage());
+            }
         }
 
 
         public void publishMessage(String topic, String message, int qos) {
 
-                try {
-                        MqttMessage mqttmessage = new MqttMessage(message.getBytes());
-                        mqttmessage.setQos(qos);
-                        //log.info("MQTT : Topic("+topic+") Mess("+mqttmessage+")");
-                        this.mqttClient.publish(topic, mqttmessage);
-                } catch (MqttException me) {
-                        log.error("MQTT S - MessagePublish Error", me);
-                }
+            try {
+                MqttMessage mqttmessage = new MqttMessage(message.getBytes());
+                mqttmessage.setQos(qos);
+                //log.info("MQTT : Topic("+topic+") Mess("+mqttmessage+")");
+                this.mqttClient.publish(topic, mqttmessage);
+            } catch (MqttException me) {
+                log.error("MQTT S - MessagePublish Error", me);
+            }
 
         }
 

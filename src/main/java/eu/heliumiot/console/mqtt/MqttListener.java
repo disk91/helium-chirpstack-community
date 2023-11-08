@@ -111,7 +111,7 @@ public class MqttListener implements MqttCallback {
             this.connectionOptions.setCleanSession(false);          // restart by processing pending events
             this.connectionOptions.setAutomaticReconnect(false);    // reconnect managed manually
             this.connectionOptions.setConnectionTimeout(5);         // do not wait more than 5s to reconnect
-            this.connectionOptions.setKeepAliveInterval(30);
+            this.connectionOptions.setKeepAliveInterval(60);
             this.connectionOptions.setUserName(mqttConfig.getMqttLogin());
             this.connectionOptions.setPassword(mqttConfig.getMqttPassword().toCharArray());
             this.connect();
@@ -156,8 +156,11 @@ public class MqttListener implements MqttCallback {
         log.error("MQTT L - Connection Lost");
         try {
             // immediate retry, then will be async
+            log.error("MQTT L - Direct reconnecting");
             this.connect();
+            log.error("MQTT L - Direct reconnected");
         } catch (MqttException me) {
+            log.warn("MQTT L - direct reconnection failed - "+me.getMessage());
             pendingReconnection = true;
         }
         prometeusService.addMqttConnectionLoss();
@@ -171,6 +174,7 @@ public class MqttListener implements MqttCallback {
                 log.info("MQTT L - reconnected");
                 pendingReconnection = false;
             }
+            log.info("MQTT L - reconnecting");
             this.connect();
             log.info("MQTT L - reconnected");
             pendingReconnection = false;
