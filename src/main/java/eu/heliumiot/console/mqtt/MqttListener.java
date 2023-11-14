@@ -70,7 +70,8 @@ public class MqttListener implements MqttCallback {
 
     private MqttConnectOptions connectionOptions;
     private MemoryPersistence persistence;
-    private MqttClient mqttClient;
+    private MqttClient mqttClient = null;
+    private String clientId;
 
     protected String[] _topics = {"application/#","+/gateway/+/event/up"};
     protected int[] _qos = { MQTT_QOS,MQTT_QOS };
@@ -99,7 +100,7 @@ public class MqttListener implements MqttCallback {
     public MqttClient initMqtt() {
 
         HeliumParameter mqttClientId = heliumParameterService.getParameter(PARAM_MQTT_CLIENT_ID);
-        String clientId = mqttConfig.getMqttId()+mqttClientId.getStrValue();
+        this.clientId = mqttConfig.getMqttId()+mqttClientId.getStrValue();
         this.persistence = new MemoryPersistence();
         this.connectionOptions = new MqttConnectOptions();
         try {
@@ -107,7 +108,6 @@ public class MqttListener implements MqttCallback {
             log.info("MQTT L User :"+mqttConfig.getMqttLogin());
             //log.info("Password :"+mqttConfig.getPassword());
             log.info("MQTT L Id : "+clientId);
-            this.mqttClient = new MqttClient(mqttConfig.getMqttServer(), clientId, persistence);
             this.connectionOptions.setCleanSession(false);          // restart by processing pending events
             this.connectionOptions.setAutomaticReconnect(false);    // reconnect managed manually
             this.connectionOptions.setConnectionTimeout(5);         // do not wait more than 5s to reconnect
@@ -127,11 +127,19 @@ public class MqttListener implements MqttCallback {
         return this.mqttClient;
     }
 
+    private boolean inConnect = false;
     public void connect() throws MqttException {
-        log.debug("MQTT L - Connect");
-        this.mqttClient.connect(this.connectionOptions);
-        this.mqttClient.setCallback(this);
-        this.mqttClient.subscribe(_topics,_qos);
+        inConnect = true;
+        try {
+            log.debug("MQTT L - Connect");
+            if (this.mqttClient != null) this.mqttClient.close();
+            this.mqttClient = new MqttClient(mqttConfig.getMqttServer(), this.clientId, persistence);
+            this.mqttClient.connect(this.connectionOptions);
+            this.mqttClient.setCallback(this);
+            this.mqttClient.subscribe(_topics, _qos);
+        } finally {
+            inConnect = false;
+        }
     }
 
     // stop the listener once we request a stop of the application
@@ -157,13 +165,9 @@ public class MqttListener implements MqttCallback {
         try {
             // immediate retry, then will be async
             log.error("MQTT L - Direct reconnecting");
-            // instead of a connect, let's try to deconnect & reconnect
-            // because reconnect is like 3 minutes before failure and lost frames
-            this.stop();
-            this.initMqtt();
-            //this.connect();
+            this.connect();
             log.error("MQTT L - Direct reconnected");
-        } catch (Exception /*MqttException*/ me) {
+        } catch (MqttException me) {
             log.warn("MQTT L - direct reconnection failed - "+me.getMessage());
             pendingReconnection = true;
         }
@@ -172,7 +176,7 @@ public class MqttListener implements MqttCallback {
 
     @Scheduled(fixedDelayString = "${helium.mqtt.reconnect.scanPeriod}", initialDelay = 30_000) // default 10s
     protected void autoReconnect() {
-        if ( ! pendingReconnection ) return;
+        if ( ! pendingReconnection || inConnect ) return;
         try {
             if ( mqttClient.isConnected() ) {
                 log.info("MQTT L - reconnected");
