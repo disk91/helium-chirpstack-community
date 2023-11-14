@@ -157,9 +157,13 @@ public class MqttListener implements MqttCallback {
         try {
             // immediate retry, then will be async
             log.error("MQTT L - Direct reconnecting");
-            this.connect();
+            // instead of a connect, let's try to deconnect & reconnect
+            // because reconnect is like 3 minutes before failure and lost frames
+            this.stop();
+            this.initMqtt();
+            //this.connect();
             log.error("MQTT L - Direct reconnected");
-        } catch (MqttException me) {
+        } catch (Exception /*MqttException*/ me) {
             log.warn("MQTT L - direct reconnection failed - "+me.getMessage());
             pendingReconnection = true;
         }
