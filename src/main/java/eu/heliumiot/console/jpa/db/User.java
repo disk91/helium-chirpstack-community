@@ -62,6 +62,9 @@ public class User {
     @Column(name = "updated_at")
     private Timestamp updatedAt;
 
+    @Column(name = "created_at")
+    private Timestamp createdAt;
+
     // ---
 
 
@@ -135,5 +138,13 @@ public class User {
 
     public void setUpdatedAt(Timestamp updatedAt) {
         this.updatedAt = updatedAt;
+    }
+
+    public Timestamp getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(Timestamp createdAt) {
+        this.createdAt = createdAt;
     }
 }

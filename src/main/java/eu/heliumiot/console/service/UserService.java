@@ -872,6 +872,8 @@ public class UserService {
                     log.warn("User "+u.getUsername()+" exist in helium_user but can't be find in cache");
                 }
             }
+            // make newer come first
+            Collections.reverse(resp);
         }
         return resp;
     }

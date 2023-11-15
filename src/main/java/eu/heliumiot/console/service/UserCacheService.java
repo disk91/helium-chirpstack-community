@@ -119,6 +119,7 @@ public class UserCacheService {
         h.setDefaultOffer(offer);
         h.setConditionVersion("");  // no condition validated with this path
         h.setConditionTime(new Timestamp(0));
+        h.setRegistrationTime(u.getCreatedAt());
         h = heliumUserRepository.save(h);
         return h;
     }
