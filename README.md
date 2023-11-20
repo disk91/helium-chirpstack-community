@@ -104,14 +104,8 @@ it can be accessed over a ssh tunnel or locally on port 8050. Default user / pas
 This program is distributed according to [GPLv3](https://www.gnu.org/licenses/gpl-3.0.en.html) licence for any private 
 IoT device fleet purpose, without restriction.
 
-In case you provide a public operator service with this software, even free for user, or in case you manage a such service for a third party 
-with this software you have two options:
-- having a minimum Uplink cost of $0.00010 per Uplink x 24 Bytes
-- request for a specific license w/o pricing limitation by contacting the author
-
-Specific licences 
-can be obtained by contacting the Author. Any reuse of this code-source needs to be indicated and modifications/addition need to 
-be publicly published, even when small pieces of code or architecture are reused.
+Specific licences can be obtained by contacting the Author. Any reuse of this code-source needs to be indicated and modifications/addition need to 
+be publicly published, even when small pieces of code or architecture are reused as requested by GPLv3.
 
 ## Misc
 - Nova service GRPC proto can be found on - https://github.com/helium/proto/blob/master/src/service/iot_config.proto
