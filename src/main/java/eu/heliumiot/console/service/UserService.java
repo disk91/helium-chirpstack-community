@@ -878,4 +878,77 @@ public class UserService {
         return resp;
     }
 
+    public void banUser( String userId, String userLogin) throws ITNotFoundException {
+        UserCacheService.UserCacheElement u = userCacheService.getUserByUsername(userLogin);
+        if (u == null) throw new ITNotFoundException();
+
+        // Ban the User steps
+        // Reset Password and deactivate
+        HttpHeaders heads = new HttpHeaders();
+        heads.add("authorization", "Bearer "+consoleConfig.getChirpstackApiAdminKey());
+        UpdateUserPasswordRequest upd = UpdateUserPasswordRequest.newBuilder()
+            .setUserId(u.heliumUser.getUsername())
+            .setPassword(RandomString.getRandomAZString(25))
+            .build();
+        try {
+            byte[] respB = chirpstackApiAccess.execute(
+                HttpMethod.POST,
+                "/api.UserService/UpdatePassword",
+                null,
+                heads,
+                upd.toByteArray()
+            );
+        } catch ( ITRightException x ) {
+            log.error("Impossible to force reset password - rights");
+        } catch ( ITNotFoundException | ITParseException x ) {
+            log.error("Impossible to force reset password - not found/parse "+x.getMessage());
+        }
+
+        /*
+
+        // Disable the user
+        io.chirpstack.api.UpdateUserRequest cur = io.chirpstack.api.UpdateUserRequest.newBuilder()
+            .setUser(u.user)
+            .setUnknownFields()
+            .build();
+        try {
+
+            byte[] respB = chirpstackApiAccess.execute(
+                HttpMethod.POST,
+                "/api.UserService/Create",
+                null,
+                heads,
+                cur.toByteArray()
+            );
+            CreateUserResponse resp = CreateUserResponse.parseFrom(respB);
+
+            if ( resp != null && resp.getId() != null && resp.getId().length() > 5 ) {
+                // get User to make sure
+                userId = resp.getId();
+                UserCacheService.UserCacheElement u = userCacheService.getUserById(resp.getId());
+                if ( u != null ) {
+                    u.heliumUser.setDefaultOffer(hpe.getOfferName());
+                    u.heliumUser.setConditionValidation(true);
+                    u.heliumUser.setRegistrationTime(hpe.getInsertedAt());
+                    u.heliumUser.setConditionTime(hpe.getInsertedAt());
+                    u.heliumUser.setConditionVersion(hpe.getConditionVersion());
+                    heliumUserRepository.save(u.heliumUser);
+                }
+            }
+
+        } catch ( ITRightException x ) {
+            log.error("Impossible to create new user - rights");
+        } catch ( ITNotFoundException x ) {
+            log.error("Impossible to create new user - not found");
+        } catch ( InvalidProtocolBufferException x ) {
+            log.error("Impossible to create new user - protobuf");
+        }
+*/
+
+
+
+
+
+    }
+
 }
