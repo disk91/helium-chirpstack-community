@@ -203,4 +203,37 @@ public class UserApi {
         }
     }
 
+    @Operation(summary = "Ban one user",
+        description = "Ban a given user, reset password, deactivate & clean tenants where admin",
+        responses = {
+            @ApiResponse(responseCode = "200", description= "Done", content = @Content(schema = @Schema(implementation = ActionResult.class))),
+            @ApiResponse(responseCode = "400", description= "Bad Request", content = @Content(schema = @Schema(implementation = ActionResult.class))),
+            @ApiResponse(responseCode = "403", description= "Forbidden", content = @Content(schema = @Schema(implementation = ActionResult.class)))
+        }
+    )
+    @RequestMapping(value="/ban",
+        produces = MediaType.APPLICATION_JSON_VALUE,
+        method= RequestMethod.PUT)
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
+    public ResponseEntity<?> requestUserBan(
+        HttpServletRequest request,
+        @RequestBody(required = true) UserBanReqItf userInfo
+    ) {
+        long startMs= Now.NowUtcMs();
+        log.debug("Ban User "+userInfo.getUsername());
+        try {
+            userService.banUser(request.getUserPrincipal().getName(),userInfo.getUsername());
+            return new ResponseEntity<>(ActionResult.SUCESS(), HttpStatus.OK);
+        } catch (ITRightException x) {
+            prometeusService.addApiTotalError();
+            return new ResponseEntity<>(ActionResult.FORBIDDEN(), HttpStatus.FORBIDDEN);
+        } catch (ITNotFoundException x) {
+            prometeusService.addApiTotalError();
+            return new ResponseEntity<>(ActionResult.BADREQUEST(), HttpStatus.BAD_REQUEST);
+        } finally {
+            prometeusService.addApiTotalTimeMs(startMs);
+        }
+    }
+
+
 }

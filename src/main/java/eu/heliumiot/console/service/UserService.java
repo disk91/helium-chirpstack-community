@@ -65,6 +65,9 @@ public class UserService {
     @Autowired
     protected HeliumUserRepository heliumUserRepository;
 
+    @Autowired
+    protected HeliumTenantService heliumTenantService;
+
 
     // ===================================================
     // Cache Management
@@ -878,7 +881,11 @@ public class UserService {
         return resp;
     }
 
-    public void banUser( String userId, String userLogin) throws ITNotFoundException {
+    public void banUser( String userId, String userLogin) throws ITNotFoundException, ITRightException {
+        UserCacheService.UserCacheElement ad = userCacheService.getUserByUsername(userId);
+        if (ad == null) throw new ITNotFoundException();
+        if (! ad.user.isAdmin()) throw new ITRightException();
+
         UserCacheService.UserCacheElement u = userCacheService.getUserByUsername(userLogin);
         if (u == null) throw new ITNotFoundException();
 
@@ -904,50 +911,41 @@ public class UserService {
             log.error("Impossible to force reset password - not found/parse "+x.getMessage());
         }
 
-        /*
 
-        // Disable the user
-        io.chirpstack.api.UpdateUserRequest cur = io.chirpstack.api.UpdateUserRequest.newBuilder()
-            .setUser(u.user)
-            .setUnknownFields()
+        // Disable the user, then he won't be able to reset password
+        io.chirpstack.restapi.User user = io.chirpstack.restapi.User.newBuilder()
+            .setEmail(u.user.getEmail())
+            .setIsActive(false)
+            .setIsAdmin(false)
+            .build();
+        io.chirpstack.restapi.UpdateUserRequest cur = io.chirpstack.restapi.UpdateUserRequest.newBuilder()
+            .setUser(user)
             .build();
         try {
 
             byte[] respB = chirpstackApiAccess.execute(
                 HttpMethod.POST,
-                "/api.UserService/Create",
+                "/api.UserService/Update",
                 null,
                 heads,
                 cur.toByteArray()
             );
-            CreateUserResponse resp = CreateUserResponse.parseFrom(respB);
-
-            if ( resp != null && resp.getId() != null && resp.getId().length() > 5 ) {
-                // get User to make sure
-                userId = resp.getId();
-                UserCacheService.UserCacheElement u = userCacheService.getUserById(resp.getId());
-                if ( u != null ) {
-                    u.heliumUser.setDefaultOffer(hpe.getOfferName());
-                    u.heliumUser.setConditionValidation(true);
-                    u.heliumUser.setRegistrationTime(hpe.getInsertedAt());
-                    u.heliumUser.setConditionTime(hpe.getInsertedAt());
-                    u.heliumUser.setConditionVersion(hpe.getConditionVersion());
-                    heliumUserRepository.save(u.heliumUser);
-                }
-            }
 
         } catch ( ITRightException x ) {
-            log.error("Impossible to create new user - rights");
+            log.error("Impossible to update user in ban - rights");
         } catch ( ITNotFoundException x ) {
-            log.error("Impossible to create new user - not found");
-        } catch ( InvalidProtocolBufferException x ) {
-            log.error("Impossible to create new user - protobuf");
+            log.error("Impossible to update user in ban - not found");
+        } catch ( ITParseException x ) {
+            log.error("Parse error to update user in ban - parse");
         }
-*/
 
-
-
-
+        // Get tenants where admin and purge the DCs
+        List<eu.heliumiot.console.jpa.db.UserTenant> t1 = userTenantRepository.findUserTenantByUserId(u.user.getId());
+        for (eu.heliumiot.console.jpa.db.UserTenant ut : t1) {
+            if ( ut.isAdmin() ) {
+                heliumTenantService.clearTenant(ut.getTenantId().toString());
+            }
+        }
 
     }
 

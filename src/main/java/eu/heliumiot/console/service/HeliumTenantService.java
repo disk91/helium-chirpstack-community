@@ -147,6 +147,18 @@ public class HeliumTenantService {
         return t;
     }
 
+    public boolean clearTenant(String tenantUUID) {
+        synchronized (this) {
+            HeliumTenant t = this.getHeliumTenant(tenantUUID,false);
+            if ( t != null ) {
+                log.warn("Clear a tenant ("+t.getTenantUUID()+") balance was "+t.getDcBalance());
+                t.setDcBalance(0);
+                this.flushHeliumTenant(t);
+                return true;
+            } else return false;
+        }
+    }
+
     // ===============================================
     // Async route management
     // Here to not have cycle integration with tenantSetupService
