@@ -105,7 +105,7 @@
     "tip_maxJoinRequestDup" : "Nombre max de paquet doublon Join Req pour une meme demande, -1 pour tous",
     "tip_dcPerJoinAccept" : "Cout en DCs pour une réponse Join Accept", 
     "tip_dcPerDeviceInserted" : "Cout en DCs pour l'ajout d'un objet",
-    "tip_inactivityBillingPeriodMs" : "Durée d'une période d'innactivité en ms",
+    "tip_inactivityBillingPeriodMs" : "Durée d'une période d'inactivité en ms",
     "tip_dcPerInactivityPeriod" : "Cout en DCs pour un objet sans communication durant la période d'innactivité",
     "tip_activityBillingPeriodMs" : "Durée d'une période d'activité en ms",
     "tip_dcPerActivityPeriod" : "Cout en DCs pour un objet qui a communiqué durant la période d'activité",
