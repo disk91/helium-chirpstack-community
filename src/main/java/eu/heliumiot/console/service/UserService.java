@@ -892,7 +892,7 @@ public class UserService {
             throw new ITRightException();
         }
 
-        UserCacheService.UserCacheElement u = userCacheService.getUserById(userName);
+        UserCacheService.UserCacheElement u = userCacheService.getUserByUsername(userName);
         if (u == null) {
             log.warn("Ban request for unknown user ("+userName+")");
             throw new ITNotFoundException();
