@@ -839,7 +839,7 @@ public class UserService {
             " This is above the alarm limit and why you get this email. Please make sure you will credit your tenant before reaching 0Dcs\n\n" +
             "Sincerely.";
 
-        List<eu.heliumiot.console.jpa.db.UserTenant> us = userTenantRepository.findUserTenantByTenantIdAndIsAdmin(t.getId(),true);
+        List<eu.heliumiot.console.jpa.db.UserTenant> us = userTenantRepository.findUserTenantByTenantIdAndIsAdmin(UUID.fromString(t.getTenantUUID()),true);
         if ( us.size() > 0 ) {
             us.forEach( u -> {
                 UserCacheService.UserCacheElement uc = userCacheService.getUserById(u.getUserId().toString());
@@ -850,6 +850,8 @@ public class UserService {
                     consoleConfig.getHeliumMailFrom()
                 );
             });
+        } else {
+            log.info("Try to fire Dc alarm on a tenant w/o admins");
         }
     }
 

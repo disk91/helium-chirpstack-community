@@ -216,6 +216,7 @@ public class MqttHeliumListener implements MqttCallback {
                 prometeusService.delDelayedStatUpdate();
             } else if (topicName.matches("helium/tenant/alarm/.*")) {
                 HeliumTenant t = mapper.readValue(message.toString(), HeliumTenant.class);
+                log.info("FireDcBalanceAlarm for "+t.getTenantUUID());
                 userService.fireDcBalanceAlarm(t);
             } else {
 // =================================================
