@@ -142,7 +142,7 @@ public class HeliumTenantService {
         }
         // check next level
         if ( t.getAlarmed() == 2 && consoleConfig.getHeliumTenantDcAlarm() > 0 && t.getDcBalance() < consoleConfig.getHeliumTenantDcAlarm() ) {
-            t.setAlarmed(2);
+            t.setAlarmed(3);
             riseAlarm = true;
         }
         if ( consoleConfig.getHeliumTenantDcWarn() > 0 && t.getDcBalance() > consoleConfig.getHeliumTenantDcWarn() ) {
