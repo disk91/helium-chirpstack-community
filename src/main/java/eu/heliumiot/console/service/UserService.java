@@ -883,11 +883,21 @@ public class UserService {
 
     public void banUser( String userId, String userLogin) throws ITNotFoundException, ITRightException {
         UserCacheService.UserCacheElement ad = userCacheService.getUserByUsername(userId);
-        if (ad == null) throw new ITNotFoundException();
-        if (! ad.user.isAdmin()) throw new ITRightException();
+        if (ad == null) {
+            log.warn("Ban request from unknown user "+userId);
+            throw new ITNotFoundException();
+        }
+        if (! ad.user.isAdmin()) {
+            log.error("Ban request from a non admin user ("+ad.user.getEmail()+")");
+            throw new ITRightException();
+        }
 
         UserCacheService.UserCacheElement u = userCacheService.getUserByUsername(userLogin);
-        if (u == null) throw new ITNotFoundException();
+        if (u == null) {
+            log.warn("Ban request for unknown user ("+userLogin+")");
+            throw new ITNotFoundException();
+        }
+        log.info("Ban request for ("+u.user.getEmail()+")");
 
         // Ban the User steps
         // Reset Password and deactivate
@@ -910,7 +920,6 @@ public class UserService {
         } catch ( ITNotFoundException | ITParseException x ) {
             log.error("Impossible to force reset password - not found/parse "+x.getMessage());
         }
-
 
         // Disable the user, then he won't be able to reset password
         io.chirpstack.restapi.User user = io.chirpstack.restapi.User.newBuilder()
