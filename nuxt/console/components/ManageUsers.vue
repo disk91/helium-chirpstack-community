@@ -34,7 +34,7 @@
                       pill 
                       variant="outline-secondary"
                       style="font-size:0.5rem;margin:2px;"
-                      :disabled=true
+                      :disabled=false
             >
               {{ $t('tsl_ban_user') }} 
             </b-button>
