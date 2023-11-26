@@ -97,7 +97,7 @@ public class ChirpstackApiAccess {
                     // message in header "gprc-message"
                     String v = response.getHeaders().getFirst("grpc-message");
                     if ( v != null ) log.debug("Problem : "+v);
-                    throw new ITNotFoundException();
+                    throw new ITNotFoundException(v);
                 }
                 log.debug("Response from the API :"+respStr);
 
@@ -135,7 +135,7 @@ public class ChirpstackApiAccess {
         } catch ( ResourceAccessException x ) {
             log.error("Impossible to connect to Chirpstack");
         }
-        throw new ITParseException();
+        throw new ITParseException("Parse, see above");
     }
 
 
