@@ -48,10 +48,9 @@
           <template #cell(tenants)="row">
             {{ tenantsFormatter(row.value) }} 
           </template>
-
         </b-table>
+        {{ banResult }}
         </div>
-
     </b-card>
 </template>
 <style>
@@ -69,7 +68,7 @@
 <script lang="ts">
 import { BIconHandThumbsDown } from 'bootstrap-vue';
 import Vue from 'vue'
-import { UserListRespItf, TenantEntry } from 'vue/types/userSearch';
+import { UserListRespItf, TenantEntry, UserBanReqItf } from 'vue/types/userSearch';
 
 interface data {
     keyword : string,
@@ -79,6 +78,7 @@ interface data {
     isBusy : boolean,
     errorMessageMod : string,
     successMessageMod : string,
+    banResult : string,
 }
 
 export default Vue.extend({
@@ -98,7 +98,8 @@ export default Vue.extend({
             ],
             isBusy : false,
             errorMessageMod : '',
-            successMessageMod : ''
+            successMessageMod : '',
+            banResult : '',
         };
     },
     methods : {
@@ -150,6 +151,29 @@ export default Vue.extend({
         },
         onLineClick(row : any) {
             this.user = Object.assign({},row.item);
+            let config = {
+              headers: {
+                'Content-Type': 'application/json',  
+                'Authorization': 'Bearer '+this.$store.state.consoleBearer,
+              }
+            };
+            let body = {
+                username: this.user.userLogin,
+            } as UserBanReqItf;
+            this.isBusy = true;
+            this.banResult = '';
+            this.$axios.put(this.$config.userBanPut,body,config)
+                .then((response) =>{
+                    if (response.status == 200 ) {
+                        this.banResult = 'success';
+                    } else {
+                        this.banResult = 'failed';
+                    }
+                    this.isBusy = false;
+                }).catch((err) =>{
+                    this.banResult = 'failed';
+                    this.isBusy = false;
+                });
         }
     }
 })

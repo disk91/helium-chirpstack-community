@@ -13,4 +13,7 @@ declare module "vue/types/userSearch" {
         tenants : TenantEntry[],
     }
 
+    interface UserBanReqItf {
+        username : string,
+    }
 }

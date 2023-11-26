@@ -41,6 +41,7 @@ export default {
     userDetailsUpd:(process.env.API_HOST || '')+'/console/1.0/user/details',
     userListGet:(process.env.API_HOST || '')+'/console/1.0/user/list',
     userStatusGet:(process.env.API_HOST || '')+'/console/1.0/user/',
+    userBanPut:(process.env.API_HOST || '')+'/console/1.0/user/ban',
     transactionListGet:(process.env.API_HOST || '')+'/console/1.0/transaction/',
     transactionStripeCreate:(process.env.API_HOST || '')+'/console/1.0/transaction/intent',
     transactionStripeUpdate:(process.env.API_HOST || '')+'/console/1.0/transaction/intent',
