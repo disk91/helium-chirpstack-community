@@ -47,6 +47,7 @@ public class HeliumTenant {
     // tenant DCs balance
     private long dcBalance;
 
+    @Column(name="alarmed")
     private int alarmed = 0;    // 0 = No alarm, never armed / 1 = No alarm but armed / 2 : Warn / 3: Alarm
 
     // tenant state

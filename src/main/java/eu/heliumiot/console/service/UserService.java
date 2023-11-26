@@ -877,7 +877,7 @@ public class UserService {
     // ==================================================
     // Admin task
     // ==================================================
-    
+
     @Autowired
     protected TenantRepository tenantRepository;
 
