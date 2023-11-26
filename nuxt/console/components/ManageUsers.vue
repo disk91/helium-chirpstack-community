@@ -49,7 +49,14 @@
             {{ tenantsFormatter(row.value) }} 
           </template>
         </b-table>
-        {{ banResult }}
+        <b-card-text class="small mb-2 text-danger" v-show="errorBan!=''">
+                <b-icon icon="exclamation-circle-fill" variant="danger"></b-icon>
+                {{ $t(errorBan) }}
+            </b-card-text>
+            <b-card-text class="mb-2 text-success" v-show="successBan!=''">
+                <b-icon icon="check-square" variant="success"></b-icon>
+                {{ $t(successBan) }}
+            </b-card-text>
         </div>
     </b-card>
 </template>
@@ -78,7 +85,8 @@ interface data {
     isBusy : boolean,
     errorMessageMod : string,
     successMessageMod : string,
-    banResult : string,
+    errorBan : string,
+    successBan : string,
 }
 
 export default Vue.extend({
@@ -99,7 +107,8 @@ export default Vue.extend({
             isBusy : false,
             errorMessageMod : '',
             successMessageMod : '',
-            banResult : '',
+            errorBan : '',
+            successBan : '',
         };
     },
     methods : {
@@ -161,17 +170,18 @@ export default Vue.extend({
                 username: this.user.userLogin,
             } as UserBanReqItf;
             this.isBusy = true;
-            this.banResult = '';
+            this.errorBan = '';
+            this.successBan = '';
             this.$axios.put(this.$config.userBanPut,body,config)
                 .then((response) =>{
                     if (response.status == 200 ) {
-                        this.banResult = 'success';
+                        this.successBan = 'success';
                     } else {
-                        this.banResult = 'failed';
+                        this.errorBan = 'failed';
                     }
                     this.isBusy = false;
                 }).catch((err) =>{
-                    this.banResult = 'failed';
+                    this.errorBan = 'failed';
                     this.isBusy = false;
                 });
         }
