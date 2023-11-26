@@ -47,6 +47,8 @@ public class HeliumTenant {
     // tenant DCs balance
     private long dcBalance;
 
+    private int alarmed = 0;    // 0 = No alarm, never armed / 1 = No alarm but armed / 2 : Warn / 3: Alarm
+
     // tenant state
     private TenantState state;
 
@@ -95,5 +97,13 @@ public class HeliumTenant {
 
     public void setMaxCopy(int maxCopy) {
         this.maxCopy = maxCopy;
+    }
+
+    public int getAlarmed() {
+        return alarmed;
+    }
+
+    public void setAlarmed(int alarmed) {
+        this.alarmed = alarmed;
     }
 }

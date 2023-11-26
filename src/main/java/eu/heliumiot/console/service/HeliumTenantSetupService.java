@@ -191,7 +191,7 @@ public class HeliumTenantSetupService {
     }
 
 
-        // Get an element from cache, if failed, get it from DB, the tenant will be cached only if
+    // Get an element from cache, if failed, get it from DB, the tenant will be cached only if
     // we want to add in cache and cache is under the given limit
     protected HeliumTenantSetup getHeliumTenantSetup(String tenantUUID, boolean create, boolean addInCache, int cacheLimit) {
         try {

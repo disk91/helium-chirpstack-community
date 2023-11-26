@@ -122,7 +122,48 @@ public class HeliumTenantService {
 
     protected void flushHeliumTenant(HeliumTenant t) {
         log.debug("#> new balance "+t.getDcBalance()+" for "+t.getTenantUUID());
+        // Manage alarm
+        boolean riseAlarm = false;
+
+        // do not alarm the user with a small amount of DCs like free registration
+        if ( t.getAlarmed() == 0 && consoleConfig.getHeliumTenantDcAlarm() > 0 && t.getDcBalance() > consoleConfig.getHeliumTenantDcAlarm() ) {
+            if ( consoleConfig.getHeliumTenantDcWarn() > 0 && t.getDcBalance() < consoleConfig.getHeliumTenantDcWarn() ) {
+                // do not set email immediately on init, we will send the nex level only
+                t.setAlarmed(2);
+            } else {
+                t.setAlarmed(1);
+            }
+        }
+
+        // check the warn level first
+        if ( t.getAlarmed() == 1 && consoleConfig.getHeliumTenantDcWarn() > 0 && t.getDcBalance() < consoleConfig.getHeliumTenantDcWarn() ) {
+            t.setAlarmed(2);
+            riseAlarm = true;
+        }
+        // check next level
+        if ( t.getAlarmed() == 2 && consoleConfig.getHeliumTenantDcAlarm() > 0 && t.getDcBalance() < consoleConfig.getHeliumTenantDcAlarm() ) {
+            t.setAlarmed(2);
+            riseAlarm = true;
+        }
+        if ( consoleConfig.getHeliumTenantDcWarn() > 0 && t.getDcBalance() > consoleConfig.getHeliumTenantDcWarn() ) {
+            t.setAlarmed(1); // rearm alarm
+            riseAlarm = false;
+        }
         heliumTenantRepository.save(t);
+
+        if ( riseAlarm ) {
+            try {
+                mqttSender.publishMessage(
+                    "helium/tenant/alarm/" + t.getTenantUUID(),
+                    mapper.writeValueAsString(t),
+                    2
+                );
+            } catch (Exception x) {
+                this.prometeusService.addMqttConnectionLoss();
+                log.error("Something went wrong with publishing tenant alarm on MQTT");
+                log.error(x.getMessage());
+            }
+        }
     }
 
     public HeliumTenant createNewHeliumTenant(String tenantUUID, HeliumTenantSetup ts) {

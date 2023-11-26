@@ -24,6 +24,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import eu.heliumiot.console.ConsoleConfig;
 import eu.heliumiot.console.jpa.db.HeliumParameter;
+import eu.heliumiot.console.jpa.db.HeliumTenant;
 import eu.heliumiot.console.mqtt.api.HeliumDeviceActDeactItf;
 import eu.heliumiot.console.mqtt.api.HeliumDeviceStatItf;
 import eu.heliumiot.console.mqtt.api.HeliumTenantActDeactItf;
@@ -178,6 +179,9 @@ public class MqttHeliumListener implements MqttCallback {
     @Autowired
     protected HeliumDeviceService heliumDeviceService;
 
+    @Autowired
+    protected UserService userService;
+
     @Override
     public void messageArrived(String topicName, MqttMessage message) throws Exception {
         // Leave it blank for Publisher
@@ -210,6 +214,9 @@ public class MqttHeliumListener implements MqttCallback {
                     log.error("Invalid state for manage tenant request");
                 }
                 prometeusService.delDelayedStatUpdate();
+            } else if (topicName.matches("helium/tenant/alarm/.*")) {
+                HeliumTenant t = mapper.readValue(message.toString(), HeliumTenant.class);
+                userService.fireDcBalanceAlarm(t);
             } else {
 // =================================================
 // OTHERS

@@ -824,12 +824,60 @@ public class UserService {
     }
 
     // ==================================================
-    // Admin task
+    // alarm on Dc Balance
     // ==================================================
 
     @Autowired
     protected UserTenantRepository userTenantRepository;
 
+    public void fireDcBalanceAlarm( HeliumTenant t ) {
+        // Send an email to the Tenant Admin when the
+        // Dc Balance is going under the defined level
+        // warn & alarm message are the same.
+        String bodyEmail_en = "Hello, \n\n" +
+            "Your DC balance on "+consoleConfig.getHeliumConsoleName()+" is currently "+t.getDcBalance()+" for one of your tenants." +
+            " This is above the alarm limit and why you get this email. Please make sure you will credit your tenant before reaching 0Dcs\n\n" +
+            "Sincerely.";
+
+        List<eu.heliumiot.console.jpa.db.UserTenant> us = userTenantRepository.findUserTenantByTenantIdAndIsAdmin(t.getId(),true);
+        if ( us.size() > 0 ) {
+            us.forEach( u -> {
+                UserCacheService.UserCacheElement uc = userCacheService.getUserById(u.getUserId().toString());
+                executeEmail.execute(
+                    uc.user.getEmail(),
+                    bodyEmail_en+this.bottomEmail_en,
+                    "["+consoleConfig.getHeliumConsoleName()+"] Low DC balance on one of your tenants",
+                    consoleConfig.getHeliumMailFrom()
+                );
+            });
+        }
+    }
+
+
+    public void fireAdminDcBalanceAlarm( ) {
+        // Send an email to the Tenant Admin when the
+        // Dc Balance is going under the defined level
+        // warn & alarm message are the same.
+        String bodyEmail_en = "Hello, \n\n" +
+            "The oui DC balance on "+consoleConfig.getHeliumConsoleName()+" is currently above the alarm limit." +
+            " Make sure your burn more DCs into your wallet to ensure communications will continue\n\n" +
+            "Sincerely.";
+
+        executeEmail.execute(
+            consoleConfig.getHeliumMailFrom(),
+            bodyEmail_en+this.bottomEmail_en,
+            "["+consoleConfig.getHeliumConsoleName()+"] Low OUI DC balance",
+            consoleConfig.getHeliumMailFrom()
+        );
+    }
+
+
+
+
+    // ==================================================
+    // Admin task
+    // ==================================================
+    
     @Autowired
     protected TenantRepository tenantRepository;
 

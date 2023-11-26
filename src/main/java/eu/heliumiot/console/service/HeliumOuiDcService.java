@@ -113,6 +113,10 @@ public class HeliumOuiDcService {
         }
     }
 
+    @Autowired
+    protected UserService userService;
+
+    private boolean alarmFired = false;
     @Scheduled(fixedDelay = 900_000, initialDelay = 5_000)
     protected void updateDcBalance() {
         String url;
@@ -135,6 +139,15 @@ public class HeliumOuiDcService {
                         this.currentDcAmount = h.dcAmount;
                         prometeusService.setDcAmount(this.currentDcAmount);
                         log.debug("Dc balance "+h.dcAmount);
+                        if ( consoleConfig.getHeliumOuiDcAlarm() > 0 && h.dcAmount < consoleConfig.getHeliumOuiDcAlarm() ) {
+                            if( !alarmFired ) {
+                                this.alarmFired = true;
+                                userService.fireAdminDcBalanceAlarm();
+                            }
+                        } else {
+                            // rearmed
+                            this.alarmFired = false;
+                        }
                     }
                 }
             } catch (Exception e) {

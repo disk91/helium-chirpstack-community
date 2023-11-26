@@ -861,6 +861,16 @@ public class ConsoleConfig {
     @Value ("${helium.stats.report.enable:}")
     private String statReportEnable;
 
+    @Value ("${helium.oui.dc.alarm:4000000}")
+    private int heliumOuiDcAlarm;
+
+    @Value ("${helium.tenant.dc.warn:30000}")
+    private int heliumTenantDcWarn;
+
+    @Value ("${helium.tenant.dc.alarm:10000}")
+    private int heliumTenantDcAlarm;
+
+
     public boolean isStatReportEnable() {
         if ( statReportEnable.length() > 0 ) {
             if ( statReportEnable.compareToIgnoreCase("true") == 0 ) return true;
@@ -881,6 +891,15 @@ public class ConsoleConfig {
         return getTestdeviceEuiDefault();
     }
 
+    public int getHeliumOuiDcAlarm() {
+        return heliumOuiDcAlarm;
+    }
 
+    public int getHeliumTenantDcWarn() {
+        return heliumTenantDcWarn;
+    }
 
+    public int getHeliumTenantDcAlarm() {
+        return heliumTenantDcAlarm;
+    }
 }
