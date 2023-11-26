@@ -904,7 +904,7 @@ public class UserService {
         HttpHeaders heads = new HttpHeaders();
         heads.add("authorization", "Bearer "+consoleConfig.getChirpstackApiAdminKey());
         UpdateUserPasswordRequest upd = UpdateUserPasswordRequest.newBuilder()
-            .setUserId(u.heliumUser.getUsername())
+            .setUserId(u.user.getId().toString())
             .setPassword(RandomString.getRandomAZString(25))
             .build();
         try {
@@ -943,7 +943,7 @@ public class UserService {
         } catch ( ITRightException x ) {
             log.error("Impossible to update user in ban - rights");
         } catch ( ITNotFoundException x ) {
-            log.error("Impossible to update user in ban - not found");
+            log.error("Impossible to update user in ban - not found - "+x.getMessage());
         } catch ( ITParseException x ) {
             log.error("Parse error to update user in ban - parse");
         }
