@@ -923,6 +923,7 @@ public class UserService {
 
         // Disable the user, then he won't be able to reset password
         io.chirpstack.restapi.User user = io.chirpstack.restapi.User.newBuilder()
+            .setId(u.user.getId().toString())
             .setEmail(u.user.getEmail())
             .setIsActive(false)
             .setIsAdmin(false)
