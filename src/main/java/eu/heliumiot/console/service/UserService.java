@@ -881,10 +881,10 @@ public class UserService {
         return resp;
     }
 
-    public void banUser( String userId, String userLogin) throws ITNotFoundException, ITRightException {
-        UserCacheService.UserCacheElement ad = userCacheService.getUserByUsername(userId);
+    public void banUser( String adminId, String userName) throws ITNotFoundException, ITRightException {
+        UserCacheService.UserCacheElement ad = userCacheService.getUserById(adminId);
         if (ad == null) {
-            log.warn("Ban request from unknown user "+userId);
+            log.warn("Ban request from unknown admin "+adminId);
             throw new ITNotFoundException();
         }
         if (! ad.user.isAdmin()) {
@@ -892,9 +892,9 @@ public class UserService {
             throw new ITRightException();
         }
 
-        UserCacheService.UserCacheElement u = userCacheService.getUserByUsername(userLogin);
+        UserCacheService.UserCacheElement u = userCacheService.getUserById(userName);
         if (u == null) {
-            log.warn("Ban request for unknown user ("+userLogin+")");
+            log.warn("Ban request for unknown user ("+userName+")");
             throw new ITNotFoundException();
         }
         log.info("Ban request for ("+u.user.getEmail()+")");
