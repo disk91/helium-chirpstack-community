@@ -1005,9 +1005,10 @@ public class UserService {
             if ( ut.isAdmin() ) {
                 heliumTenantService.clearTenant(ut.getTenantId().toString());
                 // clean the API keys
-                ListApiKeysRequest keys =  ListApiKeysRequest.newBuilder()
+                ListApiKeysRequest keys = ListApiKeysRequest.newBuilder()
                     .setTenantId(ut.getTenantId().toString())
                     .setIsAdmin(false)
+                    .setLimit(10)
                     .build();
                 try {
 

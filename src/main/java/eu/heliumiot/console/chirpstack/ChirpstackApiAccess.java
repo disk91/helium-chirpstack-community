@@ -99,7 +99,7 @@ public class ChirpstackApiAccess {
                     if ( v != null ) log.debug("Problem : "+v);
                     throw new ITNotFoundException(v);
                 }
-                log.info("Response from the API :"+respStr);
+                log.debug("Response from the API :"+respStr);
 
                 // The response comes with 2 Base64 string concatenated, so the decoder don't like this
                 // the second one is a grpc status, we can remove it from the response
