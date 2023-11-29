@@ -142,7 +142,7 @@ public class HeliumDeviceService {
                     break;
             }
         } else {
-            log.warn("Got a device activation request for not existing device or just setup, is this case happen too ofen ?");
+            log.warn("Got a device activation request for not existing device or just setup, is this case happen too often ? ("+devEui+")");
         }
     }
 
@@ -662,6 +662,7 @@ public class HeliumDeviceService {
         } while ( htss != null && htss.size() > 0 );
 
         resynced = true;
+        novaService.setReadyForSessionRefresh(true);
         log.info("resyncOnce - processed in " + (Now.NowUtcMs() - start) + "ms");
     }
 
@@ -909,17 +910,45 @@ public class HeliumDeviceService {
     @Autowired
     protected NovaService novaService;
 
+    protected class DeactivationRequest {
+        public String tenantID;
+        public long lastRequest;
+        public int retries;
+    }
+    protected HashMap<String,DeactivationRequest> lastDeactivation = new HashMap<>();
+
     /**
      * Search all devices of the tenant that are currently
      * @param tenantID
      *
      * @todo - this is called many time when DC OUT and high traffic
-     *          we should filter redoundancy on the previous layer...
+     *          we should filter redundancy on the previous layer...
      *
      */
     public void processTenantDeactivation(String tenantID) {
         log.debug("Start tenant deactivation for "+tenantID);
         long start = Now.NowUtcMs();
+
+        // Avoid to process the same tenant many times on high traffic
+        DeactivationRequest r = lastDeactivation.get(tenantID);
+        if ( r != null && (start - r.lastRequest) < 10_000 ) {
+            // skip this one
+            log.debug("Skip tenant deactivation request for "+tenantID);
+            return;
+        }
+        if ( r != null ) {
+            r.lastRequest = start;
+            r.retries++;
+            if ( r.retries > 10 ) {
+                log.error("More than 10 trial to deactivate a tenant is not normal for "+tenantID);
+            }
+        } else {
+            r = new DeactivationRequest();
+            r.retries=0;
+            r.lastRequest=start;
+            r.tenantID=tenantID;
+            lastDeactivation.put(tenantID,r);
+        }
 
         ArrayList<NovaDevice> toDeactivate = new ArrayList<>();
         synchronized (this) {
@@ -955,6 +984,20 @@ public class HeliumDeviceService {
         novaService.deactivateDevices(toDeactivate);
         heliumTenantService.commitTenantDeactivation(tenantID);
         log.info("tenantDeactivation ("+tenantID+")- processed in " + (Now.NowUtcMs() - start) + "ms");
+
+        // clean the deactivation cache
+        if ( lastDeactivation.size() > 5 ) {
+            ArrayList<String> cleanup = new ArrayList<>();
+            for ( DeactivationRequest d : lastDeactivation.values() ) {
+                if ( d.lastRequest < (start - 300_000) ) {
+                    // more than 5 minutes pending
+                    cleanup.add(d.tenantID);
+                }
+            }
+            for ( String s : cleanup ) {
+                lastDeactivation.remove(s);
+            }
+        }
 
     }
 

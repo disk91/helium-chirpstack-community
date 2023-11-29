@@ -214,6 +214,7 @@ public class HeliumTenantService {
         if ( ! this.serviceEnable ) return;
         this.runningJobs++;
         log.debug("asyncRouteRegistration - starting");
+        long now = Now.NowUtcMs();
         try {
             // find all tenant manually created w/o Helium tenant
             List<eu.heliumiot.console.jpa.db.Tenant> missingTenants = tenantRepository.findMissingTenant();
@@ -221,11 +222,14 @@ public class HeliumTenantService {
                 HeliumTenantSetup hts = heliumTenantSetupService.getHeliumTenantSetup(HELIUM_TENANT_SETUP_DEFAULT,false);
                 if ( hts != null ) {
                     for (eu.heliumiot.console.jpa.db.Tenant t : missingTenants) {
-                        log.info("Sync Helium Tenant manually created "+t.getName()+" with default profile");
-                        // create the HeliumTenantSetup
-                        heliumTenantSetupService.createAndSave(hts, t.getId().toString());
-                        // create HeliumTenant
-                        this.createNewHeliumTenant(t.getId().toString(), hts);
+                        // make sure we do not conflict with interactive way
+                        if ( t.getCreated_at().getTime() < (now - 30_000) ) {
+                            log.info("Sync Helium Tenant manually created (" + t.getName() + ") with default profile");
+                            // create the HeliumTenantSetup
+                            heliumTenantSetupService.createAndSave(hts, t.getId().toString());
+                            // create HeliumTenant
+                            this.createNewHeliumTenant(t.getId().toString(), hts);
+                        }
                     }
                 }
             }
@@ -508,7 +512,10 @@ public class HeliumTenantService {
         long start = Now.NowUtcMs();
         String tenantUUID = heliumDeviceCacheService.getTenantId(deviceEui);
         if ( tenantUUID == null ) {
-            log.error("Get a device to invoice w/o tenantId associated: "+deviceEui+" for "+packets+" packets");
+            log.error("Join invoice - Get a device to invoice w/o tenantId associated: "+deviceEui+" for "+packets+" packets");
+            if ( heliumDeviceCacheService.getHeliumDevice(deviceEui,false) == null ) {
+                log.error("And this device does not exists...");
+            }
             return;
         }
 
@@ -562,7 +569,7 @@ public class HeliumTenantService {
      * Process the tenant balance and return false when the balance has reached a minimum
      * value and devices needs to be blocked.
      * The device modification is asynchronously managed
-     * @return false when the tenant runs out of DCs and deactiviation is requested
+     * @return false when the tenant runs out of DCs and deactivation is requested
      */
     protected boolean processBalance(HeliumTenantSetup ts, HeliumTenant t) {
         if ( t.getDcBalance() < ts.getDcBalanceStop() ) {
@@ -926,11 +933,11 @@ public class HeliumTenantService {
             }
 
         } catch ( ITRightException x ) {
-            log.error("Impossible to create additionnal tenant - rights");
+            log.error("Impossible to create additional tenant - rights");
         } catch ( ITNotFoundException x ) {
-            log.error("Impossible to create additionnal tenant - not found");
+            log.error("Impossible to create additional tenant - not found");
         } catch ( InvalidProtocolBufferException x ) {
-            log.error("Impossible to create additionnal tenant - protobuf");
+            log.error("Impossible to create additional tenant - protobuf");
         }
 
         if ( tenantId == null ) throw new ITParseException("error_internal");
@@ -1514,7 +1521,7 @@ public class HeliumTenantService {
 
     /**
      * update the Max Copy param for a given tenant / route
-     * this is the number of frame the router can purchase for a sigle packet
+     * this is the number of frame the router can purchase for a single packet
      * @param userUUID
      * @param req
      * @throws ITRightException
@@ -1532,7 +1539,7 @@ public class HeliumTenantService {
         if (! user.user.isAdmin() ) {
             UserTenant ts = userTenantRepository.findOneUserByUserIdAndTenantId(UUID.fromString(userUUID), UUID.fromString(req.getTenantId()));
             if (ts == null || ts.isAdmin() == false) {
-                log.warn("updteMaxCopyValue - attempt to update by non tenant owner / try by " + userUUID);
+                log.warn("updateMaxCopyValue - attempt to update by non tenant owner / try by " + userUUID);
                 throw new ITRightException("tenant_right");
             }
         }
