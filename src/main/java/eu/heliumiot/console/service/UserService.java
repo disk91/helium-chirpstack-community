@@ -1007,6 +1007,7 @@ public class UserService {
                 // clean the API keys
                 ListApiKeysRequest keys =  ListApiKeysRequest.newBuilder()
                     .setTenantId(ut.getTenantId().toString())
+                    .setIsAdmin(false)
                     .build();
                 try {
 
