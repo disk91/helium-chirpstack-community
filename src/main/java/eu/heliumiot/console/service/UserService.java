@@ -386,9 +386,9 @@ public class UserService {
             }
 
         } catch ( ITRightException x ) {
-            log.error("Impossible to create new tenant - rights");
+            log.error("Impossible to create new tenant - rights - "+x.getMessage());
         } catch ( ITNotFoundException x ) {
-            log.error("Impossible to create new user - not found");
+            log.error("Impossible to create new tenant - not found - "+x.getMessage());
         } catch ( InvalidProtocolBufferException x ) {
             log.error("Impossible to create new tenant - protobuf");
         }
@@ -448,9 +448,9 @@ public class UserService {
             }
 
         } catch ( ITRightException x ) {
-            log.error("Impossible to create new user - rights");
+            log.error("Impossible to create new user - rights - "+x.getMessage());
         } catch ( ITNotFoundException x ) {
-            log.error("Impossible to create new user - not found");
+            log.error("Impossible to create new user - not found - "+x.getMessage());
         } catch ( InvalidProtocolBufferException x ) {
             log.error("Impossible to create new user - protobuf");
         }
@@ -471,9 +471,9 @@ public class UserService {
                 );
 
             } catch ( ITRightException x ) {
-                log.error("Impossible to delete tenant - rights");
+                log.error("Impossible to delete tenant - rights - "+x.getMessage());
             } catch (ITNotFoundException x) {
-                log.error("Impossible to delete tenant - not found");
+                log.error("Impossible to delete tenant - not found - "+x.getMessage());
             } catch ( ITParseException x) {
                 log.error("Impossible to delete tenant - parse");
             }
@@ -1004,6 +1004,60 @@ public class UserService {
         for (eu.heliumiot.console.jpa.db.UserTenant ut : t1) {
             if ( ut.isAdmin() ) {
                 heliumTenantService.clearTenant(ut.getTenantId().toString());
+                // clean the API keys
+                ListApiKeysRequest keys =  ListApiKeysRequest.newBuilder()
+                    .setTenantId(ut.getTenantId().toString())
+                    .build();
+                try {
+
+                    byte[] respB = chirpstackApiAccess.execute(
+                        HttpMethod.POST,
+                        "/api.InternalService/ListApiKeys",
+                        null,
+                        heads,
+                        keys.toByteArray()
+                    );
+
+                    ListApiKeysResponse rApi = ListApiKeysResponse.parseFrom(respB);
+                    for ( ApiKey k : rApi.getResultList() ) {
+                        log.info("Ban - found API key ("+k.getId()+") for tenant "+ut.getTenantId().toString());
+
+                        // @TODO
+                        // now it's time to delete it ...
+                        /*
+                        try {
+                            DeleteApiKeyRequest del = DeleteApiKeyRequest.newBuilder()
+                                .setId(k.getId())
+                                .build();
+
+                            chirpstackApiAccess.execute(
+                                HttpMethod.POST,
+                                "/api.InternalService/DeleteApiKey",
+                                null,
+                                heads,
+                                del.toByteArray()
+                            );
+                        } catch ( ITRightException x ) {
+                            log.error("Impossible to delete api key ("+k.getId()+") in ban - rights");
+                        } catch ( ITNotFoundException x ) {
+                            log.error("Impossible to delete api key ("+k.getId()+") in ban - not found - "+x.getMessage());
+                        } catch ( ITParseException x ) {
+                            log.error("Parse error delete api key ("+k.getId()+") in ban - parse");
+                        }
+                        */
+
+                    }
+
+                } catch ( ITRightException x ) {
+                    log.error("Impossible to list api key in ban - rights");
+                } catch ( ITNotFoundException x ) {
+                    log.error("Impossible to list api key in ban - not found - "+x.getMessage());
+                } catch ( ITParseException x ) {
+                    log.error("Parse error list api key in ban - parse");
+                } catch ( InvalidProtocolBufferException x ) {
+                    log.error("Error parsing protobuf in list api key in ban - "+x.getMessage());
+                }
+
             }
         }
 
