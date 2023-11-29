@@ -215,6 +215,38 @@ public class NovaService {
         this.initialSessionRefreshDone = true;
     }
 
+    protected boolean initialRouteCheckDone = false;
+    @Scheduled(fixedDelay = 120_000, initialDelay = 300_000)
+    protected void initialRouteCheck() {
+        // make sure the declared route have a corresponding tenant
+        if (!this.initialSessionRefreshDone) return; // make sure we run it after other refresh
+        if (this.initialRouteCheckDone) return; // not run twice
+
+        route_list_res_v1 routes = this.grpcListRoutes();
+        if ( routes != null ) {
+            log.info("initialRouteCheck - found "+routes.getRoutesCount()+" routes registered ");
+            int anotherServer=0;
+            int found=0;
+            int error=0;
+            for (route_v1 r : routes.getRoutesList()) {
+                if ( r.getServer().getHost().compareToIgnoreCase(consoleConfig.getHeliumRouteHost()) == 0 ){
+                    // search if it has a tenant
+                   List<HeliumTenantSetup> hts = heliumTenantSetupRepository.findHeliumTenantSetupByRouteId(r.getId());
+                   if ( hts == null || hts.size() == 0 ) {
+                       log.error("initialRouteCheck - route ("+r.getId()+") does not have tenant setup");
+                       error++;
+                   } else found++;
+                } else {
+                    anotherServer++;
+                }
+            }
+            log.info("initialRouteCheck - end of process - total("+routes.getRoutesCount()+") found("+found+") error("+error+") external("+anotherServer+")");
+            initialRouteCheckDone=true;
+        } else {
+            log.error("initialRouteCheck - problem in getting routes");
+        }
+    }
+
 
     @Autowired
     protected HeliumDeviceRepository heliumDeviceRepository;
