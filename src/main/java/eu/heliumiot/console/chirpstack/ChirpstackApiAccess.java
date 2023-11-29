@@ -68,12 +68,12 @@ public class ChirpstackApiAccess {
 
 
             log.debug("Connect to "+url);
-            log.debug("With body "+bodyStr);
+            log.info("With body "+bodyStr);
 
 
             HttpEntity<String> he;
             if (    httpMethod == HttpMethod.GET
-                    || httpMethod == HttpMethod.DELETE
+                 || httpMethod == HttpMethod.DELETE
             ) {
                 he = new HttpEntity<String>(headers);
             } else {
