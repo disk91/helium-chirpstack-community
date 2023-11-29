@@ -146,8 +146,15 @@ public class NovaService {
     @Autowired
     protected HeliumTenantSetupRepository heliumTenantSetupRepository;
 
-    @Scheduled(fixedDelay = 3600_000, initialDelay = 180_000)
+    private boolean readyForSessionRefresh = false;
+    public void setReadyForSessionRefresh(boolean readyForSessionRefresh) {
+        this.readyForSessionRefresh = readyForSessionRefresh;
+    }
+
+    @Scheduled(fixedDelay = 120_000, initialDelay = 180_000)
     protected void initialRouteAndSessionRefresh() {
+        // make sure the tenant refresh has been done
+        if (!this.readyForSessionRefresh ) return;
         if (!initialSessionRefreshDone) {
             if (!this.serviceEnable) return;
             this.runningJobs++;
