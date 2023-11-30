@@ -1012,44 +1012,40 @@ public class UserService {
                 // clean the API keys
                 // Rq : API keys can't be retrieved with an Admin API
                 List<ApiKey> apis = apiKeyRepository.findApiKeyByTenantId(ut.getTenantId());
-                if ( apis != null ) {
-                    for ( ApiKey api : apis ) {
-                        if ( ! api.isAdmin() ) {
+                if (apis != null) {
+                    for (ApiKey api : apis) {
+                        if (!api.isAdmin()) {
                             log.info("Ban - found API key (" + api.getId() + ") for tenant " + ut.getTenantId().toString());
+                            try {
+                                DeleteApiKeyRequest del = DeleteApiKeyRequest.newBuilder()
+                                    .setId(api.getId().toString())
+                                    .build();
+
+                                chirpstackApiAccess.execute(
+                                    HttpMethod.POST,
+                                    "/api.InternalService/DeleteApiKey",
+                                    null,
+                                    heads,
+                                    del.toByteArray()
+                                );
+                            } catch ( ITRightException x ) {
+                                log.error("Impossible to delete api key ("+api.getId()+") in ban - rights");
+                            } catch ( ITNotFoundException x ) {
+                                log.error("Impossible to delete api key ("+api.getId()+") in ban - not found - "+x.getMessage());
+                            } catch ( ITParseException x ) {
+                                log.error("Parse error delete api key ("+api.getId()+") in ban - parse");
+                            }
                         } else {
                             log.error("************************************************");
                             log.error("!!! Why this user to ban have an admin api key ?");
                         }
                     }
                 }
-
-
-                        // @TODO
-                        // now it's time to delete it ...
-                        /*
-                        try {
-                            DeleteApiKeyRequest del = DeleteApiKeyRequest.newBuilder()
-                                .setId(k.getId())
-                                .build();
-
-                            chirpstackApiAccess.execute(
-                                HttpMethod.POST,
-                                "/api.InternalService/DeleteApiKey",
-                                null,
-                                heads,
-                                del.toByteArray()
-                            );
-                        } catch ( ITRightException x ) {
-                            log.error("Impossible to delete api key ("+k.getId()+") in ban - rights");
-                        } catch ( ITNotFoundException x ) {
-                            log.error("Impossible to delete api key ("+k.getId()+") in ban - not found - "+x.getMessage());
-                        } catch ( ITParseException x ) {
-                            log.error("Parse error delete api key ("+k.getId()+") in ban - parse");
-                        }
-
-                    }
-            */
+            } else {
+                log.warn("*********************************");
+                log.warn("A banned user is member of tenant ("+ut.getTenantId()+") but not admin");
             }
+
         }
 
     }
