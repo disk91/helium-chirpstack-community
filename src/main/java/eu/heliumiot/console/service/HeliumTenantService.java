@@ -1405,7 +1405,7 @@ public class HeliumTenantService {
         try {
 
             // Create a new Api key
-            ApiKey a = ApiKey.newBuilder()
+            io.chirpstack.restapi.ApiKey a = io.chirpstack.restapi.ApiKey.newBuilder()
                     .setTenantId(tenantUUID)
                     .setName("MigrationKey")
                     .setIsAdmin(false)
@@ -1483,7 +1483,7 @@ public class HeliumTenantService {
             );
             ListApiKeysResponse resp = ListApiKeysResponse.parseFrom(respB);
             if ( resp != null ) {
-                for ( ApiKey a : resp.getResultList() ) {
+                for ( io.chirpstack.restapi.ApiKey a : resp.getResultList() ) {
                     if ( a.getName().compareToIgnoreCase("MigrationKey") == 0 ) {
                         // destroy the previous ApiKey
                         DeleteApiKeyRequest dar = DeleteApiKeyRequest.newBuilder()
