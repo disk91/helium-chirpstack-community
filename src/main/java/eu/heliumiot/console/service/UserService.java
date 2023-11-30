@@ -1015,26 +1015,8 @@ public class UserService {
                 if (apis != null) {
                     for (ApiKey api : apis) {
                         if (!api.isAdmin()) {
-                            log.info("Ban - found API key (" + api.getId() + ") for tenant " + ut.getTenantId().toString());
-                            try {
-                                DeleteApiKeyRequest del = DeleteApiKeyRequest.newBuilder()
-                                    .setId(api.getId().toString())
-                                    .build();
-
-                                chirpstackApiAccess.execute(
-                                    HttpMethod.POST,
-                                    "/api.InternalService/DeleteApiKey",
-                                    null,
-                                    heads,
-                                    del.toByteArray()
-                                );
-                            } catch ( ITRightException x ) {
-                                log.error("Impossible to delete api key ("+api.getId()+") in ban - rights");
-                            } catch ( ITNotFoundException x ) {
-                                log.error("Impossible to delete api key ("+api.getId()+") in ban - not found - "+x.getMessage());
-                            } catch ( ITParseException x ) {
-                                log.error("Parse error delete api key ("+api.getId()+") in ban - parse");
-                            }
+                            log.info("Ban - found API key to delete (" + api.getId() + ") for tenant " + ut.getTenantId().toString());
+                            apiKeyRepository.delete(api);
                         } else {
                             log.error("************************************************");
                             log.error("!!! Why this user to ban have an admin api key ?");
@@ -1045,9 +1027,7 @@ public class UserService {
                 log.warn("*********************************");
                 log.warn("A banned user is member of tenant ("+ut.getTenantId()+") but not admin");
             }
-
         }
-
     }
 
 }
