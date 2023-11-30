@@ -68,7 +68,7 @@ public class ChirpstackApiAccess {
 
 
             log.debug("Connect to "+url);
-            log.info("With body "+bodyStr);
+            log.debug("With body "+bodyStr);
 
 
             HttpEntity<String> he;
@@ -117,8 +117,7 @@ public class ChirpstackApiAccess {
                 byte[] fullResp = Base64.decode(respStr);
                 // the response also contains a header with the size of the response
                 // we can remove it assuming we have the right quantity fo data into the response
-                byte[] respB = Arrays.copyOfRange(fullResp,5,fullResp.length);
-                return respB;
+                return Arrays.copyOfRange(fullResp,5,fullResp.length);
 
             } else {
                 log.error("Response code from Chirpstack is" + response.getStatusCode());

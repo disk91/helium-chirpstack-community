@@ -26,6 +26,7 @@ import eu.heliumiot.console.ConsoleConfig;
 import eu.heliumiot.console.api.interfaces.*;
 import eu.heliumiot.console.chirpstack.ChirpstackApiAccess;
 import eu.heliumiot.console.jpa.db.*;
+import eu.heliumiot.console.jpa.db.ApiKey;
 import eu.heliumiot.console.jpa.repository.*;
 import eu.heliumiot.console.tools.EncryptionHelper;
 import eu.heliumiot.console.tools.ExecuteEmail;
@@ -931,6 +932,10 @@ public class UserService {
         return resp;
     }
 
+
+    @Autowired
+    protected ApiKeyRepository apiKeyRepository;
+
     public void banUser( String adminId, String userName) throws ITNotFoundException, ITRightException {
         UserCacheService.UserCacheElement ad = userCacheService.getUserById(adminId);
         if (ad == null) {
@@ -958,7 +963,7 @@ public class UserService {
             .setPassword(RandomString.getRandomAZString(25))
             .build();
         try {
-            byte[] respB = chirpstackApiAccess.execute(
+            chirpstackApiAccess.execute(
                 HttpMethod.POST,
                 "/api.UserService/UpdatePassword",
                 null,
@@ -983,7 +988,7 @@ public class UserService {
             .build();
         try {
 
-            byte[] respB = chirpstackApiAccess.execute(
+            chirpstackApiAccess.execute(
                 HttpMethod.POST,
                 "/api.UserService/Update",
                 null,
@@ -1005,24 +1010,19 @@ public class UserService {
             if ( ut.isAdmin() ) {
                 heliumTenantService.clearTenant(ut.getTenantId().toString());
                 // clean the API keys
-                ListApiKeysRequest keys = ListApiKeysRequest.newBuilder()
-                    .setTenantId(ut.getTenantId().toString())
-                    .setIsAdmin(false)
-                    .setLimit(10)
-                    .build();
-                try {
+                // Rq : API keys can't be retrieved with an Admin API
+                List<ApiKey> apis = apiKeyRepository.findApiKeyByTenantId(ut.getTenantId());
+                if ( apis != null ) {
+                    for ( ApiKey api : apis ) {
+                        if ( ! api.isAdmin() ) {
+                            log.info("Ban - found API key (" + api.getId() + ") for tenant " + ut.getTenantId().toString());
+                        } else {
+                            log.error("************************************************");
+                            log.error("!!! Why this user to ban have an admin api key ?");
+                        }
+                    }
+                }
 
-                    byte[] respB = chirpstackApiAccess.execute(
-                        HttpMethod.POST,
-                        "/api.InternalService/ListApiKeys",
-                        null,
-                        heads,
-                        keys.toByteArray()
-                    );
-
-                    ListApiKeysResponse rApi = ListApiKeysResponse.parseFrom(respB);
-                    for ( ApiKey k : rApi.getResultList() ) {
-                        log.info("Ban - found API key ("+k.getId()+") for tenant "+ut.getTenantId().toString());
 
                         // @TODO
                         // now it's time to delete it ...
@@ -1046,20 +1046,9 @@ public class UserService {
                         } catch ( ITParseException x ) {
                             log.error("Parse error delete api key ("+k.getId()+") in ban - parse");
                         }
-                        */
 
                     }
-
-                } catch ( ITRightException x ) {
-                    log.error("Impossible to list api key in ban - rights");
-                } catch ( ITNotFoundException x ) {
-                    log.error("Impossible to list api key in ban - not found - "+x.getMessage());
-                } catch ( ITParseException x ) {
-                    log.error("Parse error list api key in ban - parse");
-                } catch ( InvalidProtocolBufferException x ) {
-                    log.error("Error parsing protobuf in list api key in ban - "+x.getMessage());
-                }
-
+            */
             }
         }
 
