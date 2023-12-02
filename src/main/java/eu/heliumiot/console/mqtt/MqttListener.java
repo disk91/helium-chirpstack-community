@@ -65,13 +65,14 @@ public class MqttListener implements MqttCallback {
     @Autowired
     protected PrometeusService prometeusService;
 
-    @Autowired
-    protected HeliumParameterService heliumParameterService;
-
     private MqttConnectOptions connectionOptions;
     private MemoryPersistence persistence;
     private MqttClient mqttClient = null;
     private String clientId;
+
+    @Autowired
+    protected HeliumParameterService heliumParameterService;
+
 
     protected String[] _topics = {"application/#","+/gateway/+/event/up"};
     protected int[] _qos = { MQTT_QOS,MQTT_QOS };
