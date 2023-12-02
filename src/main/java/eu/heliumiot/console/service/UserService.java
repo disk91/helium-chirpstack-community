@@ -248,20 +248,21 @@ public class UserService {
 
         // All test ok, prepare to the next phase : the user will only be
         // really created once we get the email confirmation
-        // @todo chercher s'il n'existe pas deja, sinon faire le menage
-        // chiffre les password dans la transition
-        //HeliumPendingUser ....
-        HeliumPendingUser hpe = heliumPendingUserRepository.findOneHeliumPendingUserByUsernameAndType(
+        // clean the previous PendingUser, should have a single one but we already seen multiple
+        // encrypt passwords
+        List<HeliumPendingUser> hpes = heliumPendingUserRepository.findHeliumPendingUserByUsernameAndType(
                 req.getUsername(),
                 HPU_TYPE_CREATION
                 );
         int retry = 0;
-        if ( hpe != null ) {
-            retry = hpe.getRetrial()+1;
-            heliumPendingUserRepository.delete(hpe);
+        if ( hpes != null && hpes.size() > 0 ) {
+            retry = hpes.get(0).getRetrial()+1;
+            for (HeliumPendingUser hpe : hpes ) {
+                heliumPendingUserRepository.delete(hpe);
+            }
         }
 
-        hpe = new HeliumPendingUser();
+        HeliumPendingUser hpe = new HeliumPendingUser();
         hpe.setUsername(req.getUsername());
         hpe.setInsertedAt(new Timestamp(Now.NowUtcMs()));
         hpe.setRetrial(retry);
