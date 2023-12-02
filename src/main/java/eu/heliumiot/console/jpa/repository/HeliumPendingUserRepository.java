@@ -24,6 +24,7 @@ import eu.heliumiot.console.jpa.db.HeliumUser;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.UUID;
 
 @Repository
@@ -32,6 +33,8 @@ public interface HeliumPendingUserRepository extends CrudRepository<HeliumPendin
     public HeliumPendingUser findOneHeliumUserById(UUID id);
 
     public HeliumPendingUser findOneHeliumPendingUserByUsernameAndType(String username, int type);
+
+    public List<HeliumPendingUser> findHeliumPendingUserByUsernameAndType(String username, int type);
 
 
     public HeliumPendingUser findOneHeliumPendingUserByValidationCode(String validationCode);
