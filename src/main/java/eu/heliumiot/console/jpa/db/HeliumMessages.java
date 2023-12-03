@@ -52,7 +52,7 @@ public class HeliumMessages {
     private int category;
 
     // content of the message to be displayed
-    @Column(name = "content")
+    @Column(name = "content", columnDefinition = "text")
     private String content;
 
     // Final date to display this message
