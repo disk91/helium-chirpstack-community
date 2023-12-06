@@ -620,6 +620,9 @@ public class HeliumDeviceService {
         long start = Now.NowUtcMs();
         log.info("resyncOnce - start db & helium route resync");
 
+        long cDevices = deviceRepository.count();
+        long pDevices = 0;
+        long lastTrace = Now.NowUtcMs();
 
         // scan all Devices (to sync appEui when needed)
         Slice<Device> allDevices = deviceRepository.findDeviceBy(PageRequest.of(0, 100));
@@ -639,6 +642,11 @@ public class HeliumDeviceService {
                             }
                         }
                     }
+                    pDevices++;
+                    if ((Now.NowUtcMs() - lastTrace) > 30_000) {
+                        lastTrace = Now.NowUtcMs();
+                        log.info("resyncOnce - Phase 1 - "+pDevices+" / "+cDevices+" devices already processed");
+                    }
                 }
                 if ( allDevices.hasNext() ) {
                     allDevices = deviceRepository.findDeviceBy(allDevices.nextPageable());
@@ -649,6 +657,8 @@ public class HeliumDeviceService {
 
         // Scan all Helium tenants
         int i = 0;
+        long cTemplate = heliumTenantSetupRepository.count();
+        long pTemplate = 0;
         List<HeliumTenantSetup> htss = null;
         do {
             htss = heliumTenantSetupRepository.findAllByTemplate(false,PageRequest.of(i,50));
@@ -656,6 +666,11 @@ public class HeliumDeviceService {
                 if ( hts.getRouteId() != null && !hts.isTemplate() ) {
                     this.clearInvalidRouteEuis(hts.getRouteId(), true);
                     this.searchMissingRouteEuis(hts.getTenantUUID(),hts.getRouteId(),true);
+                }
+                pTemplate++;
+                if ((Now.NowUtcMs() - lastTrace) > 30_000) {
+                    lastTrace = Now.NowUtcMs();
+                    log.info("resyncOnce - Phase 2 - "+pTemplate+" / "+cTemplate+" templates already processed");
                 }
             }
             i++;
