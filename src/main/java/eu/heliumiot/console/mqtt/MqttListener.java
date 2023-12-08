@@ -398,9 +398,16 @@ public class MqttListener implements MqttCallback {
                     packetDedup.put(spayload, now);
                 }
                 prometeusService.addLoRaFirstUplink( now - rx );
-            } else if ( (now - rx) > 2_000 ) {
-                // late packet
-                prometeusService.addLoRaLateUplink( now - rx );
+            } else if ( (now - rx) > 2_000 || ( now - packetTime ) > 200 ) {
+                // late packet can be due to hotspot clock this is why it's good to check
+                // the window reception is "deduplication_delay" parameter
+                if ( ( now - packetTime ) > 200 ) {
+                    prometeusService.addLoRaLateUplink(now - packetTime);
+                    // We need to invoice this packet
+                    log.info("Late Payload "+HexaConverters.byteToHexString(payload));
+                } else {
+                    log.debug("Late HPR of Hotspot "+HexaConverters.byteToHexString(payload));
+                }
             }
 
             // count packets received at gateway level (invoiced by HPR, potentially rejected by LNS)
