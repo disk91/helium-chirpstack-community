@@ -377,6 +377,8 @@ public class MqttListener implements MqttCallback {
         } else if (  topicName.matches(".*/gateway/.*/event/up$") ) {
             long now = Now.NowUtcMs();
 
+            log.info("Frame :"+HexaConverters.byteToHexString(message.getPayload()));
+
             UplinkFrame uf = UplinkFrame.parseFrom(message.getPayload());
             // 00 9A2E3DD7EFF98160 9861BFC396F98160 75AB   D683 EED2
             //       app eui (rev)   dev eui (rev)  nonce  MIC  CRC
@@ -389,6 +391,7 @@ public class MqttListener implements MqttCallback {
 
             String spayload = HexaConverters.byteToHexString(payload);
             // Manage arrival time for the first frame
+            // @TODO identify if Join or Uplink all fram pass here
             Long packetTime;
             synchronized (lockPacketDedup) {
                 packetTime = packetDedup.get(spayload);
