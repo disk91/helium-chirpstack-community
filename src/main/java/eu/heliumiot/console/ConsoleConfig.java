@@ -738,6 +738,9 @@ public class ConsoleConfig {
     @Value ("${chirpstack.api.admin.key}")
     private String chirpstackApiAdminKey;
 
+    @Value ("${chirpstack.dedup.delay.ms:350}")
+    private int chirpstackDedupDelayMs;
+
     @Value ("${helium.jwt.signature.key.default}")
     private String jwtSignatureKeyDefault;
 
@@ -775,6 +778,10 @@ public class ConsoleConfig {
 
     public String getJwtSignatureKeyExternal() {
         return jwtSignatureKeyExternal;
+    }
+
+    public int getChirpstackDedupDelayMs() {
+        return chirpstackDedupDelayMs;
     }
 
     // ==========================================

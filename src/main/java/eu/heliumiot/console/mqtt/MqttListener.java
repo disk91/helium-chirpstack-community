@@ -23,6 +23,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
+import com.google.protobuf.Value;
 import eu.heliumiot.console.ConsoleConfig;
 import eu.heliumiot.console.jpa.db.HeliumParameter;
 import eu.heliumiot.console.mqtt.api.HeliumDeviceActDeactItf;
@@ -35,6 +36,7 @@ import io.chirpstack.api.gw.UplinkFrame;
 import io.chirpstack.json.DownlinkEvent;
 import io.chirpstack.json.JoinEvent;
 import io.chirpstack.json.UplinkEvent;
+import io.chirpstack.json.sub.UplinkEventRxInfo;
 import org.postgresql.shaded.com.ongres.scram.common.bouncycastle.base64.Base64;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -46,10 +48,7 @@ import org.eclipse.paho.client.mqttv3.persist.MemoryPersistence;
 
 import javax.annotation.PostConstruct;
 import java.lang.reflect.Array;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Set;
+import java.util.*;
 
 import static eu.heliumiot.console.service.HeliumParameterService.PARAM_MQTT_CLIENT_ID;
 
@@ -313,7 +312,6 @@ public class MqttListener implements MqttCallback {
                     Base64.decode(up.getData()).length,
                     up.getRxInfo().size()-1
                 );
-
                 log.debug("UPLINK Dev: " + up.getDeviceInfo().getDevEui() + " Adr:" + up.getDevAddr() + " duplicates:" + up.getRxInfo().size() + " size: "+Base64.decode(up.getData()).length);
                 heliumTenantService.processUplink(
                     up.getDeviceInfo().getTenantId(),
@@ -321,7 +319,10 @@ public class MqttListener implements MqttCallback {
                     Base64.decode(up.getData()).length,
                     up.getRxInfo().size() - 1
                 );
-
+                log.info("Up : "+up.getDevAddr()+" FCnt : "+up.getfCnt() );
+                for ( UplinkEventRxInfo gw : up.getRxInfo() ) {
+                    log.info("  * "+gw.getGatewayId());
+                }
             } catch (JsonProcessingException x) {
                 log.error("MQTT L - failed to parse App uplink - " + x.getMessage());
                 x.printStackTrace();
@@ -397,23 +398,30 @@ public class MqttListener implements MqttCallback {
                 synchronized (lockPacketDedup) {
                     packetDedup.put(spayload, now);
                 }
+                log.info("UP 1st GW ID : ", uf.getRxInfo().getGatewayId());
                 prometeusService.addLoRaFirstUplink( now - rx );
-            } else if ( (now - rx) > 2_000 || ( now - packetTime ) > 200 ) {
+            } else if ( (now - rx) > 2_000 || ( now - packetTime ) > mqttConfig.getChirpstackDedupDelayMs() ) {
                 // late packet can be due to hotspot clock this is why it's good to check
                 // the window reception is "deduplication_delay" parameter
-                if ( ( now - packetTime ) > 220 ) {
+                if ( ( now - packetTime ) > mqttConfig.getChirpstackDedupDelayMs() ) {
                     prometeusService.addLoRaLateUplink(now - packetTime);
                     // We need to invoice this packet
                     // Packet is
-                    // 40 XX XX XX XX .. where XX are DevAddr reversed byte order
+                    // 40 XX XX XX XX YY ZZ ZZ
+                        // where XX are DevAddr reversed byte order
+                        // YY FCtrl
+                        // ZZ FCnt
                     String adr = "";
-                    if ( payload.length > 5 ) {
+                    String fCnt = "";
+                    if ( payload.length > 8 ) {
                         adr = HexaConverters.byteToHexString(payload[4]) +
                               HexaConverters.byteToHexString(payload[3]) +
                               HexaConverters.byteToHexString(payload[2]) +
                               HexaConverters.byteToHexString(payload[1]);
+                        fCnt= HexaConverters.byteToHexString(payload[6]) +
+                              HexaConverters.byteToHexString(payload[7]);
                     }
-                    log.info("Late Payload "+HexaConverters.byteToHexString(payload)+" - "+(now - packetTime)+"ms for 0x"+adr);
+                    log.info("Late Payload "+HexaConverters.byteToHexString(payload)+" - "+(now - packetTime)+"ms for 0x"+adr+" and FCnt "+fCnt);
                 } else {
                     log.debug("Late HPR of Hotspot "+HexaConverters.byteToHexString(payload));
                 }
