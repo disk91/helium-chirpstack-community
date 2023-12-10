@@ -60,7 +60,7 @@ public class MqttListener implements MqttCallback {
 
     protected static final int MQTT_QOS = 2;
 
-    protected static final long HPR_PACKET_WINDOW_TIMEOUT = 180_000;     // 30 * Now.ONE_MINUTE;
+    protected static final long HPR_PACKET_WINDOW_TIMEOUT = 30 * Now.ONE_MINUTE;
     protected static final long HPR_PACKET_FULL_TIMEOUT = 2 * Now.ONE_MINUTE;
     protected static final long PACKET_CACHE_TIMEOUT = 10_000;
     protected static final long PACKET_DEDUP_MAXSZ = 50_000;
@@ -309,12 +309,12 @@ public class MqttListener implements MqttCallback {
                     toRemove = packetDedup.values().parallelStream().filter(dedup -> (!isFull && (now - dedup.firstArrivalTime) > HPR_PACKET_WINDOW_TIMEOUT)
                         || (isFull && (now - dedup.firstArrivalTime) > HPR_PACKET_FULL_TIMEOUT)).collect(Collectors.toList());
                 }
-                log.info("Found "+toRemove.size()+" packets to clean");
+                log.info("cleanDedupCache - Found "+toRemove.size()+" packets to clean");
 
                 // process invoicing
                 for ( ToDedup d : toRemove ) {
                     if ( !d.isJoin && d.duplicatesInvoiced < d.duplicates && d.deviceEui != null && d.tenantId != null ) {
-                        log.info("Found device to invoice late packets "+d.deviceEui+"("+(d.duplicates-d.duplicatesInvoiced)+")");
+                        log.info("cleanDedupCache - Found device to invoice late packets "+d.deviceEui+" ("+(d.duplicates-d.duplicatesInvoiced)+")");
                         heliumTenantService.processUplink(
                             d.tenantId,
                             d.deviceEui,
@@ -400,7 +400,7 @@ public class MqttListener implements MqttCallback {
                     d.tenantId = up.getDeviceInfo().getTenantId();
                     d.duplicatesInvoiced = up.getRxInfo().size(); // this is a total invoiced ( first + duplicate )
                     d.dataSz = dataSz;
-                    log.info("Found packet for dedup "+up.getDeviceInfo().getDevEui()+" fCnt "+up.getfCnt()+" devAddr "+up.getDevAddr()+" invoiced "+d.duplicatesInvoiced);
+                    log.debug("Found packet for dedup "+up.getDeviceInfo().getDevEui()+" fCnt "+up.getfCnt()+" devAddr "+up.getDevAddr()+" invoiced "+d.duplicatesInvoiced);
                 } else {
                     log.warn("Found a packet invoiced with no dedup reference "+up.getDeviceInfo().getDevEui()+" with fCnt "+up.getfCnt()+" and devAddr "+up.getDevAddr());
                 }
@@ -518,9 +518,9 @@ public class MqttListener implements MqttCallback {
                     packetDedup.put(spayload, dedup);
                 }
                 if ( isJoin ) {
-                    log.info("New join detected from "+dedup.firstGatewayId+" for device "+dedup.deviceEui);
+                    log.debug("New join detected from "+dedup.firstGatewayId+" for device "+dedup.deviceEui);
                 } else {
-                    log.info("New Uplink detected from "+dedup.firstGatewayId+" for devaddr "+dedup.devAddr+" with fCnt "+dedup.fCnt);
+                    log.debug("New Uplink detected from "+dedup.firstGatewayId+" for devaddr "+dedup.devAddr+" with fCnt "+dedup.fCnt);
                 }
                 prometeusService.addLoRaFirstUplink( now - rx );
             } else {
@@ -531,7 +531,7 @@ public class MqttListener implements MqttCallback {
                     prometeusService.addLoRaLateUplink(now - dedup.firstArrivalTime);
                     log.info("Late uplink arriving for devaddr "+dedup.devAddr+" with fCnt "+dedup.fCnt);
                 } else {
-                    log.info("OnTime uplink arriving for devaddr "+dedup.devAddr+" with fCnt "+dedup.fCnt);
+                    log.debug("OnTime uplink arriving for devaddr "+dedup.devAddr+" with fCnt "+dedup.fCnt);
                 }
             }
 
