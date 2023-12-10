@@ -401,7 +401,7 @@ public class MqttListener implements MqttCallback {
                 synchronized (lockPacketDedup) {
                     packetDedup.put(spayload, now);
                 }
-                log.info("UP 1st GW ID : ", uf.getRxInfo().getGatewayId());
+                log.info("UP 1st GW ID : "+uf.getRxInfo().getGatewayId()+" / "+HexaConverters.byteToHexString(uf.getRxInfo().getGatewayIdBytes().toByteArray()));
                 prometeusService.addLoRaFirstUplink( now - rx );
             } else if ( (now - rx) > 2_000 || ( now - packetTime ) > mqttConfig.getChirpstackDedupDelayMs() ) {
                 // late packet can be due to hotspot clock this is why it's good to check
