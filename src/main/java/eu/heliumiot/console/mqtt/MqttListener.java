@@ -512,7 +512,7 @@ public class MqttListener implements MqttCallback {
                             recentPacketDedup.removeFirst();
                         }
                     }
-                    log.info("First uplink arriving for devaddr "+dedup.devAddr+" with fCnt "+dedup.fCnt+" after "+(now - dedup.firstArrivalTime)+"ms from "+uf.getRxInfo().getGatewayId());
+                    log.debug("First uplink arriving for devaddr "+dedup.devAddr+" with fCnt "+dedup.fCnt+" after "+(now - dedup.firstArrivalTime)+"ms from "+uf.getRxInfo().getGatewayId());
                 } else {
                     dedup._deviceEui = new byte[8]; // reverse the bytes of the address
                     for (int i = 0; i < 8; i++) {dedup._deviceEui[i] = payload[(9 + 8 - 1) - i]; }
