@@ -299,7 +299,7 @@ public class MqttListener implements MqttCallback {
             }
 
             // clean the dedup packets
-            if (packetDedup.size() > PACKET_DEDUP_MAXSZ || lastCleanLateDedup > 8 * Now.ONE_MINUTE) {
+            if (packetDedup.size() > PACKET_DEDUP_MAXSZ || ( now - lastCleanLateDedup ) > 8 * Now.ONE_MINUTE) {
                 boolean isFull = ( packetDedup.size() > PACKET_DEDUP_MAXSZ );
                 if ( isFull ) log.warn("PacketDedup is running full "+packetDedup.size());
 
