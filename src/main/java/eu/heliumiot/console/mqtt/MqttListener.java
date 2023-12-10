@@ -363,7 +363,7 @@ public class MqttListener implements MqttCallback {
 
                 // Attach to dedup objects
                 Optional<ToDedup> theDedup = packetDedup.values().parallelStream().filter( dedup -> {
-                    if ( dedup.fCnt == up.getfCnt() && !dedup.isJoin && dedup.devAddr.compareToIgnoreCase(up.getDevAddr()) == 0 ) {
+                    if ( dedup.fCnt == up.getfCnt() && !dedup.isJoin && dedup.deviceEui == null && dedup.devAddr.compareToIgnoreCase(up.getDevAddr()) == 0 ) {
                         for ( UplinkEventRxInfo gw : up.getRxInfo() ) {
                             if ( gw.getGatewayId().compareToIgnoreCase(dedup.firstGatewayId) == 0 ) return true;
                         }
@@ -436,7 +436,7 @@ public class MqttListener implements MqttCallback {
 
         } else if (  topicName.matches(".*/gateway/.*/event/up$") ) {
             long now = Now.NowUtcMs();
-            
+
             UplinkFrame uf = UplinkFrame.parseFrom(message.getPayload());
             // 00 9A2E3DD7EFF98160 9861BFC396F98160 75AB   D683 EED2
             //       app eui (rev)   dev eui (rev)  nonce  MIC  CRC
