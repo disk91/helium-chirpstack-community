@@ -128,8 +128,8 @@ public class PrometeusService {
 
     synchronized public void addMqttConnectionLoss() { this.mqttConnectionLoss++; }
 
-    synchronized public void addLoRaUplink(long travelTime, long bytes, int duplicates) {
-        this.loRaUplinkCount++;
+    synchronized public void addLoRaUplink(long travelTime, long bytes, boolean withFirst, int duplicates) {
+        if ( withFirst ) this.loRaUplinkCount++;
         this.loRaDuplicatesCount += duplicates;
         this.loRaTotalUplinkBytes += bytes;
         this.loRaTotalToProcessTimeMs += travelTime;

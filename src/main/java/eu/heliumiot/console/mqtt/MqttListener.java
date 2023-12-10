@@ -314,7 +314,13 @@ public class MqttListener implements MqttCallback {
                 // process invoicing
                 for ( ToDedup d : toRemove ) {
                     if ( !d.isJoin && d.duplicatesInvoiced < d.duplicates && d.deviceEui != null && d.tenantId != null ) {
-                        log.info("cleanDedupCache - Found device to invoice late packets "+d.deviceEui+" ("+(d.duplicates-d.duplicatesInvoiced)+")");
+                        log.info("cleanDedupCache - Found device to invoice late packets "+d.deviceEui+" ("+(d.duplicates-d.duplicatesInvoiced)+") fCnt "+d.fCnt);
+                        prometeusService.addLoRaUplink(
+                            0,
+                            d.dataSz,
+                            false,
+                            d.duplicates - d.duplicatesInvoiced
+                        );
                         heliumTenantService.processUplink(
                             d.tenantId,
                             d.deviceEui,
@@ -357,6 +363,7 @@ public class MqttListener implements MqttCallback {
                 prometeusService.addLoRaUplink(
                     start - DateConverters.StringDateToMs(up.getTime()),
                     dataSz,
+                    true,
                     up.getRxInfo().size()-1
                 );
                 log.debug("UPLINK Dev: " + up.getDeviceInfo().getDevEui() + " Adr:" + up.getDevAddr() + " duplicates:" + up.getRxInfo().size() + " size: "+Base64.decode(up.getData()).length);
@@ -505,6 +512,7 @@ public class MqttListener implements MqttCallback {
                             recentPacketDedup.removeFirst();
                         }
                     }
+                    log.info("First uplink arriving for devaddr "+dedup.devAddr+" with fCnt "+dedup.fCnt+" after "+(now - dedup.firstArrivalTime)+"ms from "+uf.getRxInfo().getGatewayId());
                 } else {
                     dedup._deviceEui = new byte[8]; // reverse the bytes of the address
                     for (int i = 0; i < 8; i++) {dedup._deviceEui[i] = payload[(9 + 8 - 1) - i]; }
@@ -529,7 +537,7 @@ public class MqttListener implements MqttCallback {
                 // update the late stats
                 if ( (now - dedup.firstArrivalTime) > mqttConfig.getChirpstackDedupDelayMs() ) {
                     prometeusService.addLoRaLateUplink(now - dedup.firstArrivalTime);
-                    log.info("Late uplink arriving for devaddr "+dedup.devAddr+" with fCnt "+dedup.fCnt);
+                    log.info("Late uplink arriving for devaddr "+dedup.devAddr+" with fCnt "+dedup.fCnt+" after "+(now - dedup.firstArrivalTime)+"ms from "+uf.getRxInfo().getGatewayId());
                 } else {
                     log.debug("OnTime uplink arriving for devaddr "+dedup.devAddr+" with fCnt "+dedup.fCnt);
                 }
