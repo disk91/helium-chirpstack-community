@@ -60,6 +60,11 @@ public class MqttListener implements MqttCallback {
 
     protected static final int MQTT_QOS = 2;
 
+    protected static final long HPR_PACKET_WINDOW_TIMEOUT = 180_000;     // 30 * Now.ONE_MINUTE;
+    protected static final long HPR_PACKET_FULL_TIMEOUT = 2 * Now.ONE_MINUTE;
+    protected static final long PACKET_CACHE_TIMEOUT = 10_000;
+    protected static final long PACKET_DEDUP_MAXSZ = 50_000;
+
     @Autowired
     private ConsoleConfig mqttConfig;
 
@@ -225,6 +230,7 @@ public class MqttListener implements MqttCallback {
     protected HashMap<String,DeviceDedup> dedupHashMap = new HashMap<>();
 
     private final Object lockPacketDedup = new Object();
+    private final Object lockRecentPacketDedup = new Object();
     protected static class ToDedup {
         public long firstArrivalTime;       // server time for first of the packets
         public boolean isJoin;              // true when a join packet
@@ -241,6 +247,7 @@ public class MqttListener implements MqttCallback {
     }
 
     protected HashMap<String,ToDedup> packetDedup = new HashMap<>();
+    protected LinkedList<ToDedup> recentPacketDedup = new LinkedList<>();
 
     protected class ToInvoice {
         public String devEui;
@@ -257,7 +264,7 @@ public class MqttListener implements MqttCallback {
             long now = Now.NowUtcMs();
 
             // clean the dedup storage
-            if (dedupHashMap.size() > 50 || (now - lastCleanJoinDedup) > 10 * Now.ONE_MINUTE) {
+            if (dedupHashMap.size() > 50 || (now - lastCleanJoinDedup) > 8 * Now.ONE_MINUTE) {
                 Set<String> obj = dedupHashMap.keySet();
                 ArrayList<String> toRemove = new ArrayList<>();
                 ArrayList<ToInvoice> toInvoice = new ArrayList<>();
@@ -292,17 +299,17 @@ public class MqttListener implements MqttCallback {
             }
 
             // clean the dedup packets
-            if (packetDedup.size() > 50_000 || lastCleanLateDedup > 10 * Now.ONE_MINUTE) {
-                Set<String> obj = packetDedup.keySet();
-                boolean isFull = ( packetDedup.size() > 50_000 );
+            if (packetDedup.size() > PACKET_DEDUP_MAXSZ || lastCleanLateDedup > 8 * Now.ONE_MINUTE) {
+                boolean isFull = ( packetDedup.size() > PACKET_DEDUP_MAXSZ );
                 if ( isFull ) log.warn("PacketDedup is running full "+packetDedup.size());
 
                 // identify what to be removed
                 List<ToDedup> toRemove;
                 synchronized (lockPacketDedup) {
-                    toRemove = packetDedup.values().parallelStream().filter(dedup -> (!isFull && (now - dedup.firstArrivalTime) > 30 * Now.ONE_MINUTE)
-                        || (isFull && (now - dedup.firstArrivalTime) > 2 * Now.ONE_MINUTE)).collect(Collectors.toList());
+                    toRemove = packetDedup.values().parallelStream().filter(dedup -> (!isFull && (now - dedup.firstArrivalTime) > HPR_PACKET_WINDOW_TIMEOUT)
+                        || (isFull && (now - dedup.firstArrivalTime) > HPR_PACKET_FULL_TIMEOUT)).collect(Collectors.toList());
                 }
+                log.info("Found "+toRemove.size()+" packets to clean");
 
                 // process invoicing
                 for ( ToDedup d : toRemove ) {
@@ -361,17 +368,32 @@ public class MqttListener implements MqttCallback {
                     up.getRxInfo().size() - 1
                 );
 
-                // Attach to dedup objects
-                Optional<ToDedup> theDedup = packetDedup.values().parallelStream().filter( dedup -> {
-                    if ( dedup.fCnt == up.getfCnt() && !dedup.isJoin && dedup.deviceEui == null && dedup.devAddr.compareToIgnoreCase(up.getDevAddr()) == 0 ) {
-                        for ( UplinkEventRxInfo gw : up.getRxInfo() ) {
-                            if ( gw.getGatewayId().compareToIgnoreCase(dedup.firstGatewayId) == 0 ) return true;
+                // Attach to dedup objects, try a fast search on last 10s
+                Optional<ToDedup> theDedup;
+                synchronized (lockRecentPacketDedup) {
+                    theDedup = recentPacketDedup.parallelStream().filter( dedup -> {
+                            if (dedup.fCnt == up.getfCnt() && !dedup.isJoin && dedup.deviceEui == null && dedup.devAddr.compareToIgnoreCase(up.getDevAddr()) == 0) {
+                                for (UplinkEventRxInfo gw : up.getRxInfo()) {
+                                    if (gw.getGatewayId().compareToIgnoreCase(dedup.firstGatewayId) == 0) return true;
+                                }
+                            }
+                            return false;
+                    }).findFirst();
+                }
+                // Eventually a deep search on the whole history
+                if (theDedup.isEmpty()) {
+                    log.warn("Uplink not found in the recent history... deep search");
+                    theDedup = packetDedup.values().parallelStream().filter(dedup -> {
+                        if (dedup.fCnt == up.getfCnt() && !dedup.isJoin && dedup.deviceEui == null && dedup.devAddr.compareToIgnoreCase(up.getDevAddr()) == 0) {
+                            for (UplinkEventRxInfo gw : up.getRxInfo()) {
+                                if (gw.getGatewayId().compareToIgnoreCase(dedup.firstGatewayId) == 0) return true;
+                            }
                         }
-                    }
-                    return false;
-                }).findFirst();
+                        return false;
+                    }).findFirst();
+                }
 
-                // give the information for lte paket invoice later
+                // give the information for lte packet invoice later
                 if ( theDedup.isPresent() ) {
                     ToDedup d = theDedup.get();
                     d.deviceEui = up.getDeviceInfo().getDevEui();
@@ -476,6 +498,13 @@ public class MqttListener implements MqttCallback {
                         HexaConverters.byteToHexString(payload[1]);
                     dedup.fCnt= Stuff.getIntFromByte(payload[7])*256 + Stuff.getIntFromByte(payload[6]);
                     dedup.dataSz = 0;
+                    synchronized (lockRecentPacketDedup) {
+                        recentPacketDedup.addLast(dedup);
+                        // clear the old one
+                        while ( (now - recentPacketDedup.getFirst().firstArrivalTime) > PACKET_CACHE_TIMEOUT ) {
+                            recentPacketDedup.removeFirst();
+                        }
+                    }
                 } else {
                     dedup._deviceEui = new byte[8]; // reverse the bytes of the address
                     for (int i = 0; i < 8; i++) {dedup._deviceEui[i] = payload[(9 + 8 - 1) - i]; }
@@ -500,8 +529,10 @@ public class MqttListener implements MqttCallback {
                 // update the late stats
                 if ( (now - dedup.firstArrivalTime) > mqttConfig.getChirpstackDedupDelayMs() ) {
                     prometeusService.addLoRaLateUplink(now - dedup.firstArrivalTime);
+                    log.info("Late uplink arriving for devaddr "+dedup.devAddr+" with fCnt "+dedup.fCnt);
+                } else {
+                    log.info("OnTime uplink arriving for devaddr "+dedup.devAddr+" with fCnt "+dedup.fCnt);
                 }
-
             }
 
             // count packets received at gateway level (invoiced by HPR, potentially rejected by LNS)
