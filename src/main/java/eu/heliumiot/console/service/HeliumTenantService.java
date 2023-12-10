@@ -335,7 +335,7 @@ public class HeliumTenantService {
     @Autowired
     protected HeliumDeviceCacheService heliumDeviceCacheService;
 
-    public void processUplink( String tenantUUID, String deviceUUID,  int payloadSize, int duplicates) {
+    public void processUplink( String tenantUUID, String deviceUUID,  int payloadSize, boolean withFirst, int duplicates) {
         if ( tenantUUID == null ) {
             tenantUUID = heliumDeviceCacheService.getTenantId(deviceUUID);
             if (tenantUUID == null) {
@@ -360,7 +360,7 @@ public class HeliumTenantService {
             HeliumTenant t = this.getHeliumTenant(tenantUUID,false);
             if (t != null) {
                 payloadSize = (payloadSize / 24) + 1;
-                int uplinkDc = payloadSize * ts.getDcPer24BMessage();
+                int uplinkDc = (withFirst)?payloadSize * ts.getDcPer24BMessage():0;
                 int duplicateDc = payloadSize * duplicates * ts.getDcPer24BDuplicate();
                 t.setDcBalance(t.getDcBalance() - uplinkDc);
                 t.setDcBalance(t.getDcBalance() - duplicateDc);
@@ -369,7 +369,7 @@ public class HeliumTenantService {
                 // publish message to update the stats async
                 i.setUplinkDc(uplinkDc);
                 i.setDuplicateDc(duplicateDc);
-                i.setUplink(1);
+                i.setUplink((withFirst)?1:0);
                 i.setDuplicate(duplicates);
                 reportStatToMqtt(i);
 

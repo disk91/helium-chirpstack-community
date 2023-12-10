@@ -49,6 +49,8 @@ import org.eclipse.paho.client.mqttv3.persist.MemoryPersistence;
 import javax.annotation.PostConstruct;
 import java.lang.reflect.Array;
 import java.util.*;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.stream.Collectors;
 
 import static eu.heliumiot.console.service.HeliumParameterService.PARAM_MQTT_CLIENT_ID;
 
@@ -223,7 +225,22 @@ public class MqttListener implements MqttCallback {
     protected HashMap<String,DeviceDedup> dedupHashMap = new HashMap<>();
 
     private final Object lockPacketDedup = new Object();
-    protected HashMap<String,Long> packetDedup = new HashMap<>();
+    protected static class ToDedup {
+        public long firstArrivalTime;       // server time for first of the packets
+        public boolean isJoin;              // true when a join packet
+        public String key;                  // entry key
+        public String firstGatewayId;       // for identification
+        public String devAddr;              // device devaddr for identification
+        public int fCnt;                    // for identification
+        public int dataSz;                  // data size for invoicing
+        public int duplicates;              // number of copy received
+        public int duplicatesInvoiced;      // what chirpstack received
+        public String deviceEui;            // who is to be invoiced
+        public String tenantId;
+        public byte[] _deviceEui;           // raw devEui
+    }
+
+    protected HashMap<String,ToDedup> packetDedup = new HashMap<>();
 
     protected class ToInvoice {
         public String devEui;
@@ -231,6 +248,7 @@ public class MqttListener implements MqttCallback {
     }
 
     private long lastCleanJoinDedup = 0;
+    private long lastCleanLateDedup = 0;
     @Scheduled(fixedDelayString = "${helium.mqtt.dedup.scanPeriod}", initialDelay = 120_000) // default 10m
     protected void cleanDedupCache() {
         if ( this.requestToStop ) return;
@@ -274,21 +292,42 @@ public class MqttListener implements MqttCallback {
             }
 
             // clean the dedup packets
-            if (packetDedup.size() > 500) {
+            if (packetDedup.size() > 50_000 || lastCleanLateDedup > 10 * Now.ONE_MINUTE) {
                 Set<String> obj = packetDedup.keySet();
-                ArrayList<String> toRemove = new ArrayList<>();
+                boolean isFull = ( packetDedup.size() > 50_000 );
+                if ( isFull ) log.warn("PacketDedup is running full "+packetDedup.size());
+
+                // identify what to be removed
+                List<ToDedup> toRemove;
                 synchronized (lockPacketDedup) {
-                    for (String s : obj) {
-                        long t = packetDedup.get(s);
-                        if ((now - t) > 30 * Now.ONE_MINUTE) {
-                            // use 30 minutes because HPR uses 30 minutes dedup windows
-                            toRemove.add(s);
-                        }
-                    }
-                    for (String s : toRemove) {
-                        packetDedup.remove(s);
+                    toRemove = packetDedup.values().parallelStream().filter(dedup -> (!isFull && (now - dedup.firstArrivalTime) > 30 * Now.ONE_MINUTE)
+                        || (isFull && (now - dedup.firstArrivalTime) > 2 * Now.ONE_MINUTE)).collect(Collectors.toList());
+                }
+
+                // process invoicing
+                for ( ToDedup d : toRemove ) {
+                    if ( !d.isJoin && d.duplicatesInvoiced < d.duplicates && d.deviceEui != null && d.tenantId != null ) {
+                        log.info("Found device to invoice late packets "+d.deviceEui+"("+(d.duplicates-d.duplicatesInvoiced)+")");
+                        heliumTenantService.processUplink(
+                            d.tenantId,
+                            d.deviceEui,
+                            d.dataSz,
+                            false,
+                            d.duplicates - d.duplicatesInvoiced
+                        );
+                    } else if ( d.deviceEui == null ) {
+                        log.warn("Found a packetDedup without uplink event for "+d.devAddr+" from "+d.firstGatewayId+" with "+d.duplicates+" dup");
                     }
                 }
+
+                // clean
+                synchronized (lockPacketDedup) {
+                    for ( ToDedup d : toRemove ) {
+                        packetDedup.remove(d.key);
+                    }
+                }
+                if ( isFull ) log.warn("PacketDedup is running full, new size "+packetDedup.size());
+                lastCleanLateDedup = now;
             }
         } finally {
             --this.scheduleRunning;
@@ -307,22 +346,43 @@ public class MqttListener implements MqttCallback {
             // Prefer MQTT L to get the uplink information because the data is decoded
             try {
                 UplinkEvent up = mapper.readValue(message.toString(), UplinkEvent.class);
+                int dataSz = Base64.decode(up.getData()).length;
                 prometeusService.addLoRaUplink(
                     start - DateConverters.StringDateToMs(up.getTime()),
-                    Base64.decode(up.getData()).length,
+                    dataSz,
                     up.getRxInfo().size()-1
                 );
                 log.debug("UPLINK Dev: " + up.getDeviceInfo().getDevEui() + " Adr:" + up.getDevAddr() + " duplicates:" + up.getRxInfo().size() + " size: "+Base64.decode(up.getData()).length);
                 heliumTenantService.processUplink(
                     up.getDeviceInfo().getTenantId(),
                     up.getDeviceInfo().getDevEui(),
-                    Base64.decode(up.getData()).length,
+                    dataSz,
+                    true,
                     up.getRxInfo().size() - 1
                 );
-                log.info("Up : "+up.getDevAddr()+" FCnt : "+up.getfCnt() );
-                for ( UplinkEventRxInfo gw : up.getRxInfo() ) {
-                    log.info("  * "+gw.getGatewayId());
+
+                // Attach to dedup objects
+                Optional<ToDedup> theDedup = packetDedup.values().parallelStream().filter( dedup -> {
+                    if ( dedup.fCnt == up.getfCnt() && !dedup.isJoin && dedup.devAddr.compareToIgnoreCase(up.getDevAddr()) == 0 ) {
+                        for ( UplinkEventRxInfo gw : up.getRxInfo() ) {
+                            if ( gw.getGatewayId().compareToIgnoreCase(dedup.firstGatewayId) == 0 ) return true;
+                        }
+                    }
+                    return false;
+                }).findFirst();
+
+                // give the information for lte paket invoice later
+                if ( theDedup.isPresent() ) {
+                    ToDedup d = theDedup.get();
+                    d.deviceEui = up.getDeviceInfo().getDevEui();
+                    d.tenantId = up.getDeviceInfo().getTenantId();
+                    d.duplicatesInvoiced = up.getRxInfo().size(); // this is a total invoiced ( first + duplicate )
+                    d.dataSz = dataSz;
+                    log.info("Found packet for dedup "+up.getDeviceInfo().getDevEui()+" fCnt "+up.getfCnt()+" devAddr "+up.getDevAddr()+" invoiced "+d.duplicatesInvoiced);
+                } else {
+                    log.warn("Found a packet invoiced with no dedup reference "+up.getDeviceInfo().getDevEui()+" with fCnt "+up.getfCnt()+" and devAddr "+up.getDevAddr());
                 }
+
             } catch (JsonProcessingException x) {
                 log.error("MQTT L - failed to parse App uplink - " + x.getMessage());
                 x.printStackTrace();
@@ -391,43 +451,59 @@ public class MqttListener implements MqttCallback {
 
             String spayload = HexaConverters.byteToHexString(payload);
             // Manage arrival time for the first frame
-            // @TODO identify if Join or Uplink all fram pass here
-            Long packetTime;
+            ToDedup dedup;
             synchronized (lockPacketDedup) {
-                packetTime = packetDedup.get(spayload);
+                dedup = packetDedup.get(spayload);
             }
-            if ( packetTime == null ) {
+            if ( dedup == null ) {
                 // first time we see this packet
-                synchronized (lockPacketDedup) {
-                    packetDedup.put(spayload, now);
-                }
-                log.info("UP 1st GW ID : "+uf.getRxInfo().getGatewayId()+" / "+HexaConverters.byteToHexString(uf.getRxInfo().getGatewayIdBytes().toByteArray()));
-                prometeusService.addLoRaFirstUplink( now - rx );
-            } else if ( (now - rx) > 2_000 || ( now - packetTime ) > mqttConfig.getChirpstackDedupDelayMs() ) {
-                // late packet can be due to hotspot clock this is why it's good to check
-                // the window reception is "deduplication_delay" parameter
-                if ( ( now - packetTime ) > mqttConfig.getChirpstackDedupDelayMs() ) {
-                    prometeusService.addLoRaLateUplink(now - packetTime);
-                    // We need to invoice this packet
+                dedup = new ToDedup();
+                dedup.firstGatewayId = uf.getRxInfo().getGatewayId();
+                dedup.firstArrivalTime = now;
+                dedup.key = spayload;
+                dedup.duplicates = 1;
+                dedup.duplicatesInvoiced = 0;
+                dedup.isJoin = isJoin;
+                if (!isJoin) {
                     // Packet is
                     // 40 XX XX XX XX YY ZZ ZZ
-                        // where XX are DevAddr reversed byte order
-                        // YY FCtrl
-                        // ZZ FCnt
-                    String adr = "";
-                    String fCnt = "";
-                    if ( payload.length > 8 ) {
-                        adr = HexaConverters.byteToHexString(payload[4]) +
-                              HexaConverters.byteToHexString(payload[3]) +
-                              HexaConverters.byteToHexString(payload[2]) +
-                              HexaConverters.byteToHexString(payload[1]);
-                        fCnt= HexaConverters.byteToHexString(payload[6]) +
-                              HexaConverters.byteToHexString(payload[7]);
-                    }
-                    log.info("Late Payload "+HexaConverters.byteToHexString(payload)+" - "+(now - packetTime)+"ms for 0x"+adr+" and FCnt "+fCnt);
+                    // where XX are DevAddr reversed byte order
+                    // YY FCtrl
+                    // ZZ FCnt
+                    dedup.deviceEui = null;
+                    dedup.tenantId = null;
+                    dedup.devAddr = HexaConverters.byteToHexString(payload[4]) +
+                        HexaConverters.byteToHexString(payload[3]) +
+                        HexaConverters.byteToHexString(payload[2]) +
+                        HexaConverters.byteToHexString(payload[1]);
+                    dedup.fCnt= Stuff.getIntFromByte(payload[6])*256 + Stuff.getIntFromByte(payload[7]);
+                    dedup.dataSz = 0;
                 } else {
-                    log.debug("Late HPR of Hotspot "+HexaConverters.byteToHexString(payload));
+                    dedup._deviceEui = new byte[8]; // reverse the bytes of the address
+                    for (int i = 0; i < 8; i++) {dedup._deviceEui[i] = payload[(9 + 8 - 1) - i]; }
+                    dedup.deviceEui = HexaConverters.byteToHexString(dedup._deviceEui);
+                    dedup.tenantId = null;
+                    dedup.devAddr = null;
+                    dedup.fCnt = 0;
+                    dedup.dataSz = 23;
                 }
+                synchronized (lockPacketDedup) {
+                    packetDedup.put(spayload, dedup);
+                }
+                if ( isJoin ) {
+                    log.info("New join detected from "+dedup.firstGatewayId+" for device "+dedup.deviceEui);
+                } else {
+                    log.info("New Uplink detected from "+dedup.firstGatewayId+" for devaddr "+dedup.devAddr+" with fCnt "+dedup.fCnt);
+                }
+                prometeusService.addLoRaFirstUplink( now - rx );
+            } else {
+                // update the stat on the packet
+                dedup.duplicates++;
+                // update the late stats
+                if ( (now - dedup.firstArrivalTime) > mqttConfig.getChirpstackDedupDelayMs() ) {
+                    prometeusService.addLoRaLateUplink(now - dedup.firstArrivalTime);
+                }
+
             }
 
             // count packets received at gateway level (invoiced by HPR, potentially rejected by LNS)
@@ -438,6 +514,7 @@ public class MqttListener implements MqttCallback {
             }
 
             // Measure uplink confirmed processing time
+            // Based on GW time, so it's an approximation
             if ( (payload[0] & 0xC0) == 0x80 && uf.getRxInfo().getTime().getSeconds() > 0 ) {
                 // header for confirmed frame - compute elapse time in ms
                 prometeusService.addLoRaUplinkConf(
@@ -449,20 +526,17 @@ public class MqttListener implements MqttCallback {
             // Manage DC count for Join Requests
             if ( isJoin ) {
                 // possible Join Request
-                byte[] _dev = new byte[8]; // reverse the bytes of the address
-                for (int i = 0; i < 8; i++) {_dev[i] = payload[(9 + 8 - 1) - i]; }
-                String devEUI = HexaConverters.byteToHexString(_dev);
                 String region = topicName.substring(0, topicName.indexOf("/"));
                 DeviceDedup d;
                 synchronized (lockJoinDedup) {
-                    d = dedupHashMap.get(devEUI);
+                    d = dedupHashMap.get(dedup.deviceEui);
                 }
                 if (d == null || (now - d.lastSeen) > Now.ONE_MINUTE) {
                     // found a new join for that device
                     if ( d == null ) {
                         d = new DeviceDedup();
                         d.count = 1;
-                        d.devEui = devEUI;
+                        d.devEui = dedup.deviceEui;
                         d.lastSeen = now;
                     } else {
                         // new session but we keep the structure
@@ -470,22 +544,20 @@ public class MqttListener implements MqttCallback {
                         d.count++;
                     }
                     synchronized (lockJoinDedup) {
-                        dedupHashMap.put(devEUI, d);
+                        dedupHashMap.put(dedup.deviceEui, d);
                     }
 
                     if ( mqttConfig.getHeliumZoneDetectionEnable()  ) {
                         // ... push to process, this is synchronous action, can be long
                         // and delay the rest of the timing, rare but could be optimized.
                         log.debug("Found a join request for " + d.devEui + " for region " + region);
-                        roamingService.processJoinMessage(_dev, d.devEui, region);
+                        roamingService.processJoinMessage(dedup._deviceEui, d.devEui, region);
                     }
                 } else {
                     // count a new Join to invoice
                     d.count++;
                 }
-
             }
-
 
 // =================================================
 // INTERNAL ASYNCHRONOUS MESSAGES
