@@ -436,9 +436,7 @@ public class MqttListener implements MqttCallback {
 
         } else if (  topicName.matches(".*/gateway/.*/event/up$") ) {
             long now = Now.NowUtcMs();
-
-            log.info("Frame :"+HexaConverters.byteToHexString(message.getPayload()));
-
+            
             UplinkFrame uf = UplinkFrame.parseFrom(message.getPayload());
             // 00 9A2E3DD7EFF98160 9861BFC396F98160 75AB   D683 EED2
             //       app eui (rev)   dev eui (rev)  nonce  MIC  CRC
@@ -476,7 +474,7 @@ public class MqttListener implements MqttCallback {
                         HexaConverters.byteToHexString(payload[3]) +
                         HexaConverters.byteToHexString(payload[2]) +
                         HexaConverters.byteToHexString(payload[1]);
-                    dedup.fCnt= Stuff.getIntFromByte(payload[6])*256 + Stuff.getIntFromByte(payload[7]);
+                    dedup.fCnt= Stuff.getIntFromByte(payload[7])*256 + Stuff.getIntFromByte(payload[6]);
                     dedup.dataSz = 0;
                 } else {
                     dedup._deviceEui = new byte[8]; // reverse the bytes of the address
