@@ -379,9 +379,14 @@ public class MqttListener implements MqttCallback {
                 Optional<ToDedup> theDedup;
                 synchronized (lockRecentPacketDedup) {
                     theDedup = recentPacketDedup.parallelStream().filter( dedup -> {
-                            if (dedup.fCnt == up.getfCnt() && !dedup.isJoin && dedup.deviceEui == null && dedup.devAddr.compareToIgnoreCase(up.getDevAddr()) == 0) {
-                                for (UplinkEventRxInfo gw : up.getRxInfo()) {
-                                    if (gw.getGatewayId().compareToIgnoreCase(dedup.firstGatewayId) == 0) return true;
+                            if (dedup.fCnt == up.getfCnt() && !dedup.isJoin && dedup.devAddr.compareToIgnoreCase(up.getDevAddr()) == 0) {
+                                if ( dedup.deviceEui != null && dedup.deviceEui.compareToIgnoreCase(up.getDeviceInfo().getDevEui()) == 0 ) {
+                                    return true;
+                                } else {
+                                    for (UplinkEventRxInfo gw : up.getRxInfo()) {
+                                        if (gw.getGatewayId().compareToIgnoreCase(dedup.firstGatewayId) == 0)
+                                            return true;
+                                    }
                                 }
                             }
                             return false;
@@ -391,9 +396,13 @@ public class MqttListener implements MqttCallback {
                 if (theDedup.isEmpty()) {
                     log.warn("Uplink not found in the recent history... deep search");
                     theDedup = packetDedup.values().parallelStream().filter(dedup -> {
-                        if (dedup.fCnt == up.getfCnt() && !dedup.isJoin && dedup.deviceEui == null && dedup.devAddr.compareToIgnoreCase(up.getDevAddr()) == 0) {
-                            for (UplinkEventRxInfo gw : up.getRxInfo()) {
-                                if (gw.getGatewayId().compareToIgnoreCase(dedup.firstGatewayId) == 0) return true;
+                        if (dedup.fCnt == up.getfCnt() && !dedup.isJoin && dedup.devAddr.compareToIgnoreCase(up.getDevAddr()) == 0) {
+                            if ( dedup.deviceEui != null && dedup.deviceEui.compareToIgnoreCase(up.getDeviceInfo().getDevEui()) == 0 ) {
+                                return true;
+                            } else {
+                                for (UplinkEventRxInfo gw : up.getRxInfo()) {
+                                    if (gw.getGatewayId().compareToIgnoreCase(dedup.firstGatewayId) == 0) return true;
+                                }
                             }
                         }
                         return false;
@@ -403,11 +412,16 @@ public class MqttListener implements MqttCallback {
                 // give the information for lte packet invoice later
                 if ( theDedup.isPresent() ) {
                     ToDedup d = theDedup.get();
-                    d.deviceEui = up.getDeviceInfo().getDevEui();
-                    d.tenantId = up.getDeviceInfo().getTenantId();
-                    d.duplicatesInvoiced = up.getRxInfo().size(); // this is a total invoiced ( first + duplicate )
-                    d.dataSz = dataSz;
-                    log.debug("Found packet for dedup "+up.getDeviceInfo().getDevEui()+" fCnt "+up.getfCnt()+" devAddr "+up.getDevAddr()+" invoiced "+d.duplicatesInvoiced);
+                    if ( d.deviceEui == null ) {
+                        d.deviceEui = up.getDeviceInfo().getDevEui();
+                        d.tenantId = up.getDeviceInfo().getTenantId();
+                        d.duplicatesInvoiced = up.getRxInfo().size(); // this is a total invoiced ( first + duplicate )
+                        d.dataSz = dataSz;
+                        log.debug("Found packet for dedup " + up.getDeviceInfo().getDevEui() + " fCnt " + up.getfCnt() + " devAddr " + up.getDevAddr() + " invoiced " + d.duplicatesInvoiced);
+                    } else {
+                        // packet already known, chirpstack considered this late packet as a new packet
+                        d.duplicatesInvoiced += up.getRxInfo().size();
+                    }
                 } else {
                     log.warn("Found a packet invoiced with no dedup reference "+up.getDeviceInfo().getDevEui()+" with fCnt "+up.getfCnt()+" and devAddr "+up.getDevAddr());
                 }
