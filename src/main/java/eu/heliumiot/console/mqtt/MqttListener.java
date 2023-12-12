@@ -231,6 +231,8 @@ public class MqttListener implements MqttCallback {
 
     private final Object lockPacketDedup = new Object();
     private final Object lockRecentPacketDedup = new Object();
+    private final Object lockPreprocessedPacketDedup = new Object();
+
     protected static class ToDedup {
         public long firstArrivalTime;       // server time for first of the packets
         public boolean isJoin;              // true when a join packet
@@ -248,6 +250,7 @@ public class MqttListener implements MqttCallback {
 
     protected HashMap<String,ToDedup> packetDedup = new HashMap<>();
     protected LinkedList<ToDedup> recentPacketDedup = new LinkedList<>();
+    protected ArrayList<ToDedup> preprocessedPacketDedup = new ArrayList<>();
 
     protected class ToInvoice {
         public String devEui;
@@ -329,7 +332,29 @@ public class MqttListener implements MqttCallback {
                             d.duplicates - d.duplicatesInvoiced
                         );
                     } else if ( d.deviceEui == null ) {
-                        log.warn("Found a packetDedup without uplink event for "+d.devAddr+" from "+d.firstGatewayId+" with "+d.duplicates+" dup");
+                        // search in the preprocessed
+                        boolean found = false;
+                        for ( ToDedup _d : preprocessedPacketDedup ) {
+                            if ( !d.isJoin && d.fCnt == _d.fCnt && d.devAddr.compareToIgnoreCase(_d.devAddr) == 0 && Math.abs(d.firstArrivalTime - _d.firstArrivalTime) < 20_000 ) {
+                                // it may be the same, process it
+                                prometeusService.addLoRaUplink(
+                                    0,
+                                    _d.dataSz,
+                                    false,
+                                    d.duplicates - _d.duplicatesInvoiced
+                                );
+                                heliumTenantService.processUplink(
+                                    _d.tenantId,
+                                    _d.deviceEui,
+                                    _d.dataSz,
+                                    false,
+                                    d.duplicates - _d.duplicatesInvoiced
+                                );
+                                found = true;
+                                break;
+                            }
+                        }
+                        if ( !found ) log.warn("Found a packetDedup without uplink event for "+d.devAddr+" / "+d.fCnt+" from "+d.firstGatewayId+" with "+d.duplicates+" dup");
                     }
                 }
 
@@ -340,6 +365,18 @@ public class MqttListener implements MqttCallback {
                     }
                 }
                 if ( isFull ) log.warn("PacketDedup is running full, new size "+packetDedup.size());
+
+                ArrayList<ToDedup> toRemovePre = new ArrayList<>();
+                for ( ToDedup _d : preprocessedPacketDedup ) {
+                    if ( (now - _d.firstArrivalTime) > HPR_PACKET_WINDOW_TIMEOUT ) {
+                        toRemovePre.add(_d);
+                    }
+                }
+                synchronized (lockPreprocessedPacketDedup) {
+                    for ( ToDedup _d : toRemovePre ) {
+                        preprocessedPacketDedup.remove(_d);
+                    }
+                }
                 lastCleanLateDedup = now;
             }
         } finally {
@@ -423,7 +460,25 @@ public class MqttListener implements MqttCallback {
                         d.duplicatesInvoiced += up.getRxInfo().size();
                     }
                 } else {
-                    log.warn("Found a packet invoiced with no dedup reference "+up.getDeviceInfo().getDevEui()+" with fCnt "+up.getfCnt()+" and devAddr "+up.getDevAddr());
+                    // It's possible the processing of the frames is late compared to uplink
+                    // so the entry is not yet existing.
+                    // we can have a reconciliation when cache is cleaned as the same entry exist with no association
+                    // make a table of this and then in the case of not found association we can reconciliate it.
+                    log.debug("Found a packet invoiced with no dedup reference "+up.getDeviceInfo().getDevEui()+" with fCnt "+up.getfCnt()+" and devAddr "+up.getDevAddr());
+                    ToDedup d = new ToDedup();
+                    d.deviceEui = up.getDeviceInfo().getDevEui();
+                    d.tenantId = up.getDeviceInfo().getTenantId();
+                    d.duplicatesInvoiced = up.getRxInfo().size(); // this is a total invoiced ( first + duplicate )
+                    d.dataSz = dataSz;
+                    d.firstGatewayId = up.getRxInfo().get(0).getGatewayId();
+                    d.firstArrivalTime = Now.NowUtcMs();
+                    d.key = null;
+                    d.duplicates = 0;
+                    d.isJoin = false;
+                    synchronized (lockPreprocessedPacketDedup) {
+                        if ( preprocessedPacketDedup.size() < 1000 ) this.preprocessedPacketDedup.add(d);
+                        else log.warn("preprocessedPacketDedup is full");
+                    }
                 }
 
             } catch (JsonProcessingException x) {
