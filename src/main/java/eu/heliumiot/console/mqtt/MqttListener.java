@@ -431,7 +431,7 @@ public class MqttListener implements MqttCallback {
                 }
                 // Eventually a deep search on the whole history
                 if (theDedup.isEmpty()) {
-                    log.warn("Uplink not found in the recent history... deep search");
+                    log.debug("Uplink not found in the recent history... deep search");
                     theDedup = packetDedup.values().parallelStream().filter(dedup -> {
                         if (dedup.fCnt == up.getfCnt() && !dedup.isJoin && dedup.devAddr.compareToIgnoreCase(up.getDevAddr()) == 0) {
                             if ( dedup.deviceEui != null && dedup.deviceEui.compareToIgnoreCase(up.getDeviceInfo().getDevEui()) == 0 ) {
@@ -606,7 +606,7 @@ public class MqttListener implements MqttCallback {
                 // update the late stats
                 if ( (now - dedup.firstArrivalTime) > mqttConfig.getChirpstackDedupDelayMs() ) {
                     prometeusService.addLoRaLateUplink(now - dedup.firstArrivalTime);
-                    log.info("Late uplink arriving for devaddr "+dedup.devAddr+" with fCnt "+dedup.fCnt+" after "+(now - dedup.firstArrivalTime)+"ms from "+uf.getRxInfo().getGatewayId());
+                    log.debug("Late uplink arriving for devaddr "+dedup.devAddr+" with fCnt "+dedup.fCnt+" after "+(now - dedup.firstArrivalTime)+"ms from "+uf.getRxInfo().getGatewayId());
                 } else {
                     log.debug("OnTime uplink arriving for devaddr "+dedup.devAddr+" with fCnt "+dedup.fCnt);
                 }
