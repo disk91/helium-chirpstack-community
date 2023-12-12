@@ -49,7 +49,7 @@ public class RedisDeviceEventStreamListener {
     @PostConstruct
     public void setupRedisStreamMetaListener() {
         log.info("Init setupRedisStreamEventListener");
-        String connectionString = redisConfiguration.isRedisSsl() ? "rediss://" : "redis://";
+        String connectionString = "redis"+(redisConfiguration.isRedisSsl() ? "s" : "")+"://";
         if (redisConfiguration.getRedisUsername().length() > 0) {
             connectionString += redisConfiguration.getRedisUsername() + ":" + redisConfiguration.getRedisPassword() + "@";
         }
@@ -57,11 +57,11 @@ public class RedisDeviceEventStreamListener {
         redisClient = RedisClient.create(connectionString);
 
         redisClient.setOptions(ClientOptions.builder()
+            .protocolVersion(ProtocolVersion.RESP3)
             .pingBeforeActivateConnection(true)
             .socketOptions(SocketOptions.builder()
                 .keepAlive(true)
                 .build())
-            .protocolVersion(ProtocolVersion.RESP3)
             .build());
 
         RedisCodec<String, byte[]> codec = RedisCodec.of(new StringCodec(), new ByteArrayCodec());
