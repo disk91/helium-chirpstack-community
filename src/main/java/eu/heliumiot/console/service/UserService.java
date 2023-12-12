@@ -845,12 +845,14 @@ public class UserService {
         if ( us.size() > 0 ) {
             us.forEach( u -> {
                 UserCacheService.UserCacheElement uc = userCacheService.getUserById(u.getUserId().toString());
-                executeEmail.execute(
-                    uc.user.getEmail(),
-                    bodyEmail_en+this.bottomEmail_en,
-                    "["+consoleConfig.getHeliumConsoleName()+"] Low DC balance on one of your tenants",
-                    consoleConfig.getHeliumMailFrom()
-                );
+                if ( uc.user.isActive() ) {
+                    executeEmail.execute(
+                        uc.user.getEmail(),
+                        bodyEmail_en + this.bottomEmail_en,
+                        "[" + consoleConfig.getHeliumConsoleName() + "] Low DC balance on one of your tenants",
+                        consoleConfig.getHeliumMailFrom()
+                    );
+                }
             });
         } else {
             log.info("Try to fire Dc alarm on a tenant w/o admins");
