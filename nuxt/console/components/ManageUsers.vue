@@ -32,9 +32,9 @@
                       @click="onLineClick(row)"
                       class="m0" 
                       pill 
-                      variant="outline-secondary"
+                      :variant="getVariant(row)"
                       style="font-size:0.5rem;margin:2px;"
-                      :disabled=false
+                      :disabled="row.item.disable"
             >
               {{ $t('tsl_ban_user') }} 
             </b-button>
@@ -156,6 +156,13 @@ export default Vue.extend({
                        this.users = [];
                        this.isBusy = false;
                     })
+            }
+        },
+        getVariant(row : any) : string {
+            if ( row.item.disable ) {
+                return "secondary";
+            } else {
+                return "outline-secondary";
             }
         },
         onLineClick(row : any) {

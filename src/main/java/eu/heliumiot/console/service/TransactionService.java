@@ -134,6 +134,10 @@ public class TransactionService {
     @Autowired
     protected EncryptionHelper encryptionHelper;
 
+    @Autowired
+    protected SafetyService safetyService;
+
+
     private static Gson gson = new Gson();
 
     /**
@@ -175,6 +179,11 @@ public class TransactionService {
         if (req.getDcs() < ts.getDcMin()) {
             log.warn("PurchaseDC - attempt to send invalid DCs qty :" + (req.getDcs()) + " vs " + (ts.getDcMin()));
             throw new ITParseException("stripe_invalid_qty");
+        }
+
+        if ( ! safetyService.trustStripeTransaction(user, userIp, req) ) {
+            log.warn("PurchaseDC - rejected");
+            throw new ITParseException("stripe_disable");
         }
 
         t.setType(HTRANSACTION_TYPE_STRIPE);

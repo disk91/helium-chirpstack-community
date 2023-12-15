@@ -45,6 +45,7 @@ import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
+import javax.servlet.http.HttpServletRequest;
 import java.security.Key;
 import java.sql.Timestamp;
 import java.util.*;
@@ -69,6 +70,8 @@ public class UserService {
     @Autowired
     protected HeliumTenantService heliumTenantService;
 
+    @Autowired
+    protected SafetyService safetyService;
 
     // ===================================================
     // Cache Management
@@ -224,6 +227,10 @@ public class UserService {
             if ( ! req.getUsername().matches("^[A-Z0-9._%+-]+@helium.foundation") )
         }
         */
+        if ( ! safetyService.trustUserSignUp(req,adr) ) {
+            r.setErrorMessage("success");
+            Tools.sleep(8+((new Random().nextInt()) % 7));
+        }
 
 
         // verify password
@@ -326,6 +333,7 @@ public class UserService {
             throw new ITParseException("error_invalid");
         }
 
+
         HeliumPendingUser hpe = heliumPendingUserRepository.findOneHeliumPendingUserByValidationCode(
                 registrationCode
         );
@@ -336,6 +344,12 @@ public class UserService {
 
         if ( hpe.getType() != HPU_TYPE_CREATION ) {
             log.warn("Getting a code for the wrong type of action");
+            throw new ITParseException("error_invalid");
+        }
+
+        // extended security
+        if ( ! safetyService.trustUserSignUpConfirmation(hpe) ) {
+            log.warn("Rejected");
             throw new ITParseException("error_invalid");
         }
 
@@ -506,7 +520,7 @@ public class UserService {
      * @throws ITNotFoundException
      * @throws ITRightException
      */
-    public LoginRespItf verifyUserLogin(LoginReqItf request)
+    public LoginRespItf verifyUserLogin(LoginReqItf request, HttpServletRequest req)
     throws ITNotFoundException, ITRightException, ITParseException
     {
         // check params
@@ -520,6 +534,10 @@ public class UserService {
         if ( ! u.user.isActive() ) throw new ITRightException();
 
         // @Todo potential verification of the email validation
+        if ( ! safetyService.trustUserLogin(u,req) ) {
+            log.warn("Login Rejected");
+            throw new ITRightException();
+        }
 
         // try to login on chirpstack API
         LoginRequest lr = LoginRequest.newBuilder()
@@ -1030,6 +1048,18 @@ public class UserService {
                 log.warn("*********************************");
                 log.warn("A banned user is member of tenant ("+ut.getTenantId()+") but not admin");
             }
+        }
+
+        // make sure the user is updated in cache
+        userCacheService.flushHeliumUser(u.heliumUser.getUserid());
+        // reload
+        u = userCacheService.getUserByUsername(userName);
+        if ( u != null ) {
+            // kill the current user session
+            u.heliumUser.setUserSecret(RandomString.getRandomAZString(64));
+            userCacheService.updateHeliumUser(u);
+        } else {
+            log.error("userBan - can't update user, not found ");
         }
     }
 

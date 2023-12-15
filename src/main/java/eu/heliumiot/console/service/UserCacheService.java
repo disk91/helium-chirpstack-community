@@ -133,4 +133,8 @@ public class UserCacheService {
         this.heliumUserRepository.save(u.heliumUser);
         this.userCache.put(u,u.heliumUser.getUserid());
     }
+
+    public void flushHeliumUser(String userId) {
+        this.userCache.remove(userId, true);
+    }
 }
