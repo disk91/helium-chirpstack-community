@@ -32,6 +32,7 @@ public class SafetyService {
 
     @PostConstruct
     private void initSafetyService() {
+        log.info("initSafetyService - init");
         // get the ToR exit server list from project
         // https://check.torproject.org/torbulkexitlist
         torIps = new ArrayList<>();
@@ -88,7 +89,7 @@ public class SafetyService {
 
     public boolean trustUserLogin(UserCacheService.UserCacheElement u, HttpServletRequest req) {
         if (isBanedIp(req.getHeader("x-real-ip"))) {
-            log.warn(">>> The user "+u.user.getEmail()+" use a Tor of Banned IP");
+            log.warn(">>> The user "+u.user.getEmail()+" uses a Tor of Banned IP");
         }
         return true;
     }
