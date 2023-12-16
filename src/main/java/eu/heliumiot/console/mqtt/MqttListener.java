@@ -302,9 +302,9 @@ public class MqttListener implements MqttCallback {
             }
 
             // clean the dedup packets
-            if (packetDedup.size() > PACKET_DEDUP_MAXSZ || ( now - lastCleanLateDedup ) > 8 * Now.ONE_MINUTE) {
-                boolean isFull = ( packetDedup.size() > PACKET_DEDUP_MAXSZ );
-                if ( isFull ) log.warn("PacketDedup is running full "+packetDedup.size());
+            if (packetDedup.size() > PACKET_DEDUP_MAXSZ || (now - lastCleanLateDedup) > 8 * Now.ONE_MINUTE) {
+                boolean isFull = (packetDedup.size() > PACKET_DEDUP_MAXSZ);
+                if (isFull) log.warn("PacketDedup is running full " + packetDedup.size());
 
                 // identify what to be removed
                 List<ToDedup> toRemove;
@@ -312,12 +312,12 @@ public class MqttListener implements MqttCallback {
                     toRemove = packetDedup.values().parallelStream().filter(dedup -> (!isFull && (now - dedup.firstArrivalTime) > HPR_PACKET_WINDOW_TIMEOUT)
                         || (isFull && (now - dedup.firstArrivalTime) > HPR_PACKET_FULL_TIMEOUT)).collect(Collectors.toList());
                 }
-                log.info("cleanDedupCache - Found "+toRemove.size()+" packets to clean");
+                log.info("cleanDedupCache - Found " + toRemove.size() + " packets to clean");
 
                 // process invoicing
-                for ( ToDedup d : toRemove ) {
-                    if ( !d.isJoin && d.duplicatesInvoiced < d.duplicates && d.deviceEui != null && d.tenantId != null ) {
-                        log.info("cleanDedupCache - Found device to invoice late packets "+d.deviceEui+" ("+(d.duplicates-d.duplicatesInvoiced)+") fCnt "+d.fCnt);
+                for (ToDedup d : toRemove) {
+                    if (!d.isJoin && d.duplicatesInvoiced < d.duplicates && d.deviceEui != null && d.tenantId != null) {
+                        log.info("cleanDedupCache - Found device to invoice late packets " + d.deviceEui + " (" + (d.duplicates - d.duplicatesInvoiced) + ") fCnt " + d.fCnt);
                         prometeusService.addLoRaUplink(
                             0,
                             d.dataSz,
@@ -331,11 +331,11 @@ public class MqttListener implements MqttCallback {
                             false,
                             d.duplicates - d.duplicatesInvoiced
                         );
-                    } else if ( d.deviceEui == null ) {
+                    } else if (d.deviceEui == null) {
                         // search in the preprocessed
                         boolean found = false;
-                        for ( ToDedup _d : preprocessedPacketDedup ) {
-                            if ( !d.isJoin && d.fCnt == _d.fCnt && d.devAddr.compareToIgnoreCase(_d.devAddr) == 0 && Math.abs(d.firstArrivalTime - _d.firstArrivalTime) < 20_000 ) {
+                        for (ToDedup _d : preprocessedPacketDedup) {
+                            if (!d.isJoin && d.fCnt == _d.fCnt && d.devAddr.compareToIgnoreCase(_d.devAddr) == 0 && Math.abs(d.firstArrivalTime - _d.firstArrivalTime) < 20_000) {
                                 // it may be the same, process it
                                 prometeusService.addLoRaUplink(
                                     0,
@@ -354,31 +354,35 @@ public class MqttListener implements MqttCallback {
                                 break;
                             }
                         }
-                        if ( !found ) log.warn("Found a packetDedup without uplink event for "+d.devAddr+" / "+d.fCnt+" from "+d.firstGatewayId+" with "+d.duplicates+" dup");
+                        if (!found)
+                            log.warn("Found a packetDedup without uplink event for " + d.devAddr + " / " + d.fCnt + " from " + d.firstGatewayId + " with " + d.duplicates + " dup");
                     }
                 }
 
                 // clean
                 synchronized (lockPacketDedup) {
-                    for ( ToDedup d : toRemove ) {
+                    for (ToDedup d : toRemove) {
                         packetDedup.remove(d.key);
                     }
                 }
-                if ( isFull ) log.warn("PacketDedup is running full, new size "+packetDedup.size());
+                if (isFull) log.warn("PacketDedup is running full, new size " + packetDedup.size());
 
                 ArrayList<ToDedup> toRemovePre = new ArrayList<>();
-                for ( ToDedup _d : preprocessedPacketDedup ) {
-                    if ( (now - _d.firstArrivalTime) > HPR_PACKET_WINDOW_TIMEOUT ) {
+                for (ToDedup _d : preprocessedPacketDedup) {
+                    if ((now - _d.firstArrivalTime) > HPR_PACKET_WINDOW_TIMEOUT) {
                         toRemovePre.add(_d);
                     }
                 }
                 synchronized (lockPreprocessedPacketDedup) {
-                    for ( ToDedup _d : toRemovePre ) {
+                    for (ToDedup _d : toRemovePre) {
                         preprocessedPacketDedup.remove(_d);
                     }
                 }
                 lastCleanLateDedup = now;
             }
+        } catch ( Exception x) {
+            log.error("Exception in cleanDedupCche "+x.getMessage());
+            x.printStackTrace();
         } finally {
             --this.scheduleRunning;
         }
@@ -467,6 +471,7 @@ public class MqttListener implements MqttCallback {
                     log.debug("Found a packet invoiced with no dedup reference "+up.getDeviceInfo().getDevEui()+" with fCnt "+up.getfCnt()+" and devAddr "+up.getDevAddr());
                     ToDedup d = new ToDedup();
                     d.deviceEui = up.getDeviceInfo().getDevEui();
+                    d.devAddr = up.getDevAddr();
                     d.tenantId = up.getDeviceInfo().getTenantId();
                     d.duplicatesInvoiced = up.getRxInfo().size(); // this is a total invoiced ( first + duplicate )
                     d.dataSz = dataSz;
