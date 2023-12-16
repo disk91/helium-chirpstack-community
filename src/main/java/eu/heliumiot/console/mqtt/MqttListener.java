@@ -23,17 +23,11 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
-import com.google.protobuf.Value;
 import eu.heliumiot.console.ConsoleConfig;
 import eu.heliumiot.console.jpa.db.HeliumParameter;
-import eu.heliumiot.console.mqtt.api.HeliumDeviceActDeactItf;
-import eu.heliumiot.console.mqtt.api.HeliumDeviceStatItf;
-import eu.heliumiot.console.jpa.repository.TenantRepository;
-import eu.heliumiot.console.mqtt.api.HeliumTenantActDeactItf;
 import eu.heliumiot.console.service.*;
 import fr.ingeniousthings.tools.*;
 import io.chirpstack.api.gw.UplinkFrame;
-import io.chirpstack.json.DownlinkEvent;
 import io.chirpstack.json.JoinEvent;
 import io.chirpstack.json.UplinkEvent;
 import io.chirpstack.json.sub.UplinkEventRxInfo;
@@ -47,9 +41,7 @@ import org.eclipse.paho.client.mqttv3.*;
 import org.eclipse.paho.client.mqttv3.persist.MemoryPersistence;
 
 import javax.annotation.PostConstruct;
-import java.lang.reflect.Array;
 import java.util.*;
-import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
 import static eu.heliumiot.console.service.HeliumParameterService.PARAM_MQTT_CLIENT_ID;
@@ -317,7 +309,7 @@ public class MqttListener implements MqttCallback {
                 // process invoicing
                 for (ToDedup d : toRemove) {
                     if (!d.isJoin && d.duplicatesInvoiced < d.duplicates && d.deviceEui != null && d.tenantId != null) {
-                        log.info("cleanDedupCache - Found device to invoice late packets " + d.deviceEui + " (" + (d.duplicates - d.duplicatesInvoiced) + ") fCnt " + d.fCnt);
+                        log.info("cleanDedupCache - Found device to invoice late packets " + d.deviceEui + " (" + (d.duplicates - d.duplicatesInvoiced) + ") fCnt " + d.fCnt+ " devAdr "+d.devAddr);
                         prometeusService.addLoRaUplink(
                             0,
                             d.dataSz,
@@ -335,23 +327,28 @@ public class MqttListener implements MqttCallback {
                         // search in the preprocessed
                         boolean found = false;
                         for (ToDedup _d : preprocessedPacketDedup) {
-                            if (!d.isJoin && d.fCnt == _d.fCnt && d.devAddr.compareToIgnoreCase(_d.devAddr) == 0 && Math.abs(d.firstArrivalTime - _d.firstArrivalTime) < 20_000) {
-                                // it may be the same, process it
-                                prometeusService.addLoRaUplink(
-                                    0,
-                                    _d.dataSz,
-                                    false,
-                                    d.duplicates - _d.duplicatesInvoiced
-                                );
-                                heliumTenantService.processUplink(
-                                    _d.tenantId,
-                                    _d.deviceEui,
-                                    _d.dataSz,
-                                    false,
-                                    d.duplicates - _d.duplicatesInvoiced
-                                );
-                                found = true;
-                                break;
+                            if ( _d.devAddr != null ) {
+                                if (!d.isJoin && d.fCnt == _d.fCnt && d.devAddr.compareToIgnoreCase(_d.devAddr) == 0 && Math.abs(d.firstArrivalTime - _d.firstArrivalTime) < 20_000) {
+                                    // it may be the same, process it
+                                    log.info("cleanDedupCache - Searched device to invoice late packets " + _d.deviceEui + " (" + (_d.duplicates - _d.duplicatesInvoiced) + ") fCnt " + _d.fCnt+ " devAdr "+_d.devAddr);
+                                    prometeusService.addLoRaUplink(
+                                        0,
+                                        _d.dataSz,
+                                        false,
+                                        d.duplicates - _d.duplicatesInvoiced
+                                    );
+                                    heliumTenantService.processUplink(
+                                        _d.tenantId,
+                                        _d.deviceEui,
+                                        _d.dataSz,
+                                        false,
+                                        d.duplicates - _d.duplicatesInvoiced
+                                    );
+                                    found = true;
+                                    break;
+                                }
+                            } else {
+                                log.error("### Got a null devaddr ?? "+_d.fCnt+" "+_d.firstArrivalTime+" ");
                             }
                         }
                         if (!found)
