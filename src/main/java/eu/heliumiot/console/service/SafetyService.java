@@ -103,14 +103,19 @@ public class SafetyService {
             log.warn(">>> Blocked strip transaction for user "+u.user.getEmail()+" request from ToR or banned IP");
             return false;
         }
+        int cents = (int)( req.getCost() * 100 ) % 10;
+        if ( cents != 0 ) {
+            log.warn(">>> the cents are "+cents+" for "+u.user.getEmail());
+        }
         if ( this.isUntrustedEmail(u.user.getEmail()) ) {
             // classical pattern... an email like hotmail or gmail with a zero devices owned
             Slice<HeliumDevice> devices = heliumDeviceRepository.findHeliumDeviceByTenantUUID(req.getTenantUUID(), PageRequest.of(0, 5));
+            log.info(">>> devices "+devices.getSize()+ " for "+u.user.getEmail());
             if ( devices.getSize() == 0 ) {
                 log.warn(">>> Blocked stripe transaction for user "+u.user.getEmail()+" no devices");
                 return false;
             }
-        }
+        } else log.info(">>> Email ok "+u.user.getEmail());
         return true;
     }
 
@@ -119,7 +124,7 @@ public class SafetyService {
 
     protected boolean isUntrustedEmail(String email) {
         for ( String domain: untrustedDomains) {
-            if ( email.toLowerCase().matches(".*"+domain+".*") ) return true;
+            if ( email.toLowerCase().contains(domain) ) return true;
         }
         return false;
     }
