@@ -304,12 +304,12 @@ public class MqttListener implements MqttCallback {
                     toRemove = packetDedup.values().parallelStream().filter(dedup -> (!isFull && (now - dedup.firstArrivalTime) > HPR_PACKET_WINDOW_TIMEOUT)
                         || (isFull && (now - dedup.firstArrivalTime) > HPR_PACKET_FULL_TIMEOUT)).collect(Collectors.toList());
                 }
-                log.info("cleanDedupCache - Found " + toRemove.size() + " packets to clean");
+                log.debug("cleanDedupCache - Found " + toRemove.size() + " packets to clean");
 
                 // process invoicing
                 for (ToDedup d : toRemove) {
                     if (!d.isJoin && d.duplicatesInvoiced < d.duplicates && d.deviceEui != null && d.tenantId != null) {
-                        log.info("cleanDedupCache - Found device to invoice late packets " + d.deviceEui + " (" + (d.duplicates - d.duplicatesInvoiced) + ") fCnt " + d.fCnt+ " devAdr "+d.devAddr);
+                        log.debug("cleanDedupCache - Found device to invoice late packets " + d.deviceEui + " (" + (d.duplicates - d.duplicatesInvoiced) + ") fCnt " + d.fCnt+ " devAdr "+d.devAddr);
                         prometeusService.addLoRaUplink(
                             0,
                             d.dataSz,
@@ -330,7 +330,7 @@ public class MqttListener implements MqttCallback {
                             if ( _d.devAddr != null ) {
                                 if (!d.isJoin && d.fCnt == _d.fCnt && d.devAddr.compareToIgnoreCase(_d.devAddr) == 0 && Math.abs(d.firstArrivalTime - _d.firstArrivalTime) < 20_000) {
                                     // it may be the same, process it
-                                    log.info("cleanDedupCache - Searched device to invoice late packets " + _d.deviceEui + " (" + (_d.duplicates - _d.duplicatesInvoiced) + ") fCnt " + _d.fCnt+ " devAdr "+_d.devAddr);
+                                    log.debug("cleanDedupCache - Searched device to invoice late packets " + _d.deviceEui + " (" + (_d.duplicates - _d.duplicatesInvoiced) + ") fCnt " + _d.fCnt+ " devAdr "+_d.devAddr);
                                     prometeusService.addLoRaUplink(
                                         0,
                                         _d.dataSz,
