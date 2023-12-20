@@ -251,6 +251,8 @@ public class MqttListener implements MqttCallback {
 
     private long lastCleanJoinDedup = 0;
     private long lastCleanLateDedup = 0;
+
+    private boolean firstDedupRun = true;
     @Scheduled(fixedDelayString = "${helium.mqtt.dedup.scanPeriod}", initialDelay = 120_000) // default 10m
     protected void cleanDedupCache() {
         if ( this.requestToStop ) return;
@@ -293,6 +295,8 @@ public class MqttListener implements MqttCallback {
                 this.lastCleanJoinDedup = now;
             }
 
+            int postInvoiced = 0;
+            int notInvoicable = 0;
             // clean the dedup packets
             if (packetDedup.size() > PACKET_DEDUP_MAXSZ || (now - lastCleanLateDedup) > 8 * Now.ONE_MINUTE) {
                 boolean isFull = (packetDedup.size() > PACKET_DEDUP_MAXSZ);
@@ -323,12 +327,13 @@ public class MqttListener implements MqttCallback {
                             false,
                             d.duplicates - d.duplicatesInvoiced
                         );
+                        postInvoiced += (d.duplicates - d.duplicatesInvoiced);
                     } else if (d.deviceEui == null) {
                         // search in the preprocessed
                         boolean found = false;
                         for (ToDedup _d : preprocessedPacketDedup) {
                             if ( _d.devAddr != null ) {
-                                if (!d.isJoin && d.fCnt == _d.fCnt && d.devAddr.compareToIgnoreCase(_d.devAddr) == 0 && Math.abs(d.firstArrivalTime - _d.firstArrivalTime) < 20_000) {
+                                if (!d.isJoin && d.fCnt == _d.fCnt && d.devAddr.compareToIgnoreCase(_d.devAddr) == 0 && Math.abs(d.firstArrivalTime - _d.firstArrivalTime) < 30_000) {
                                     // it may be the same, process it
                                     log.debug("cleanDedupCache - Searched device to invoice late packets " + _d.deviceEui + " (" + (_d.duplicates - _d.duplicatesInvoiced) + ") fCnt " + _d.fCnt+ " devAdr "+_d.devAddr);
                                     prometeusService.addLoRaUplink(
@@ -344,6 +349,7 @@ public class MqttListener implements MqttCallback {
                                         false,
                                         d.duplicates - _d.duplicatesInvoiced
                                     );
+                                    postInvoiced = (d.duplicates - _d.duplicatesInvoiced);
                                     found = true;
                                     break;
                                 }
@@ -351,9 +357,17 @@ public class MqttListener implements MqttCallback {
                                 log.error("### Got a null devaddr ?? "+_d.fCnt+" "+_d.firstArrivalTime+" ");
                             }
                         }
-                        if (!found)
+                        if (!found && !firstDedupRun) {
+                            // don't print on first run it's normal
                             log.warn("Found a packetDedup without uplink event for " + d.devAddr + " / " + d.fCnt + " from " + d.firstGatewayId + " with " + d.duplicates + " dup");
+                            notInvoicable+=d.duplicates;
+                        }
                     }
+                }
+                if ( notInvoicable > 0 ) {
+                    log.warn("cleanDedupCache - late packets invoiced "+postInvoiced+" not invoiced "+notInvoicable);
+                } else {
+                    log.info("cleanDedupCache - late packets invoiced " + postInvoiced);
                 }
 
                 // clean
@@ -382,6 +396,7 @@ public class MqttListener implements MqttCallback {
             x.printStackTrace();
         } finally {
             --this.scheduleRunning;
+            this.firstDedupRun = false;
         }
     }
 
