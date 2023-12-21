@@ -1624,6 +1624,8 @@ public class NovaService {
                                 .setMaxCopies(SKFS_MAX_COPIES)
                                 .build();
                         updates.add(update);
+                    } else {
+                        log.error("Request to add skf with out-of-range devaddr");
                     }
                     actions++;
                 }
@@ -1646,7 +1648,10 @@ public class NovaService {
                                 .setMaxCopies(SKFS_MAX_COPIES)
                                 .build();
                         updates.add(update);
+                        log.info("*** Remove SKFS "+session.devAddr+" with session "+session.session+" in route "+routeId);
                         actions++;
+                    } else {
+                        log.error("Request to remove skf with out-of-range devaddr");
                     }
                 }
                 // execute
