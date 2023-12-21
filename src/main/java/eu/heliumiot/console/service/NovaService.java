@@ -159,7 +159,7 @@ public class NovaService {
             long start = Now.NowUtcMs();
             try {
                 log.info("Initial Route Refresh");
-
+                long cTemplate = heliumTenantSetupRepository.count();
                 // process all routes
                 int _i = 0, _j = 0;
                 List<HeliumTenantSetup> htss = null;
@@ -168,7 +168,7 @@ public class NovaService {
                     for ( HeliumTenantSetup hts : htss ) {
                         if ( hts.getRouteId() != null && !hts.isTemplate() ) {
                             // process one route
-                            log.info("["+_i+"/"+_j+"] Refreshing tenant "+hts.getTenantUUID()+ " route "+hts.getRouteId()); _j++;
+                            log.info("["+_i+"-"+_j+"/"+cTemplate+"] Refreshing tenant "+hts.getTenantUUID()+ " route "+hts.getRouteId()); _j++;
                             // search the route
                             route_v1 r = grpcGetOneRoute(hts.getRouteId());
                             if ( r == null ) { log.error("A known route does not exist"); continue; }
@@ -1625,7 +1625,7 @@ public class NovaService {
                                 .build();
                         updates.add(update);
                     } else {
-                        log.error("Request to add skf with out-of-range devaddr");
+                        log.warn("Request to add skf with out-of-range devaddr ("+Integer.toHexString(session.devAddr)+") in route "+routeId);
                     }
                     actions++;
                 }
@@ -1648,10 +1648,10 @@ public class NovaService {
                                 .setMaxCopies(SKFS_MAX_COPIES)
                                 .build();
                         updates.add(update);
-                        log.info("*** Remove SKFS "+session.devAddr+" with session "+session.session+" in route "+routeId);
+                        log.info("*** Remove SKFS "+session.devAddr+" with session "+Integer.toHexString(session.devAddr)+" in route "+routeId);
                         actions++;
                     } else {
-                        log.error("Request to remove skf with out-of-range devaddr");
+                        log.warn("Request to remove skf with out-of-range devaddr ("+Integer.toHexString(session.devAddr)+") in route "+routeId);
                     }
                 }
                 // execute
