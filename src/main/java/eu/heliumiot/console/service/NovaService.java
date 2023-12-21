@@ -162,7 +162,7 @@ public class NovaService {
                 log.info("Initial Route Refresh");
                 long cTemplate = heliumTenantSetupRepository.count();
                 // process all routes
-                int _i = 0, _j = 0;
+                int _i = 0, _j = 1;
                 Page<HeliumTenantSetup> htss = null;
                 do {
                     htss = heliumTenantSetupRepository.findAllByTemplate(false, PageRequest.of(_i,50));
