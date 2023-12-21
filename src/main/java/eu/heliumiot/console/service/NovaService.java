@@ -243,7 +243,10 @@ public class NovaService {
                        Tenant t = tenantRepository.findOneTenantById(UUID.fromString(hts.get(0).getTenantUUID()));
                        if ( t == null ) {
                            log.error("initialRouteCheck - route ("+r.getId()+") does not have tenant");
-                           // test - addDelayedRouteRemoval(r.getId());
+                           addDelayedRouteRemoval(r.getId());
+                           // not the best as TenantSetup use a cache but on restart we should
+                           // be in a situation where a deleted tenant is in cache
+                           heliumTenantSetupRepository.delete(hts.get(0));
                            toRemove++;
                        } else {
                            found++;
