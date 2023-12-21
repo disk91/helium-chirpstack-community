@@ -19,6 +19,7 @@ import org.bouncycastle.crypto.signers.Ed25519Signer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Slice;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -162,13 +163,13 @@ public class NovaService {
                 long cTemplate = heliumTenantSetupRepository.count();
                 // process all routes
                 int _i = 0, _j = 0;
-                List<HeliumTenantSetup> htss = null;
+                Page<HeliumTenantSetup> htss = null;
                 do {
                     htss = heliumTenantSetupRepository.findAllByTemplate(false, PageRequest.of(_i,50));
                     for ( HeliumTenantSetup hts : htss ) {
                         if ( hts.getRouteId() != null && !hts.isTemplate() ) {
                             // process one route
-                            log.info("["+_i+"-"+_j+"/"+cTemplate+"] Refreshing tenant "+hts.getTenantUUID()+ " route "+hts.getRouteId()); _j++;
+                            log.info("["+_i+"-"+_j+"/"+cTemplate+"] Refreshing tenant "+hts.getTenantUUID()+ " route "+hts.getRouteId());
                             // search the route
                             route_v1 r = grpcGetOneRoute(hts.getRouteId());
                             if ( r == null ) { log.error("A known route does not exist"); continue; }
@@ -201,9 +202,10 @@ public class NovaService {
                             if (!consoleConfig.isHeliumGrpcSkfEnable()) continue;
                             this.refreshOneRouteSkf(hts.getRouteId());
                         }
+                        _j++;
                     }
                     _i++;
-                } while ( htss != null && htss.size() > 0 );
+                } while ( htss.hasNext() );
 
             } finally {
                 this.runningJobs--;
@@ -839,7 +841,7 @@ public class NovaService {
             Tools.sleep(20_000);
 
             int _i = 0, _j = 0;
-            List<HeliumTenantSetup> htss = null;
+            Page<HeliumTenantSetup> htss = null;
             do {
                 htss = heliumTenantSetupRepository.findAllByTemplate(false, PageRequest.of(_i, 100));
                 for (HeliumTenantSetup hts : htss) {
@@ -850,7 +852,7 @@ public class NovaService {
                     }
                 }
                 _i++;
-            } while (htss != null && htss.size() > 0);
+            } while (htss.hasNext());
 
             oui.setLongValue(consoleConfig.getHeliumRouteOui());
             heliumParameterService.flushParameter(oui);
@@ -1465,7 +1467,6 @@ public class NovaService {
      * avoid DCs drain, we need to secure this with one dummy session key on every
      * route / devaddr. and we need to maintain that entry when the data are consolidated
      * @param routeId
-     * @param addr
      */
     public void grpcAddRandomSkf(String routeId) {
         // when emptySkf is rejected we don't need to add the dummy keys
@@ -1648,7 +1649,7 @@ public class NovaService {
                                 .setMaxCopies(SKFS_MAX_COPIES)
                                 .build();
                         updates.add(update);
-                        log.info("*** Remove SKFS "+session.devAddr+" with session "+Integer.toHexString(session.devAddr)+" in route "+routeId);
+                        log.debug("Remove SKFS "+session.devAddr+" with session "+Integer.toHexString(session.devAddr)+" in route "+routeId);
                         actions++;
                     } else {
                         log.warn("Request to remove skf with out-of-range devaddr ("+Integer.toHexString(session.devAddr)+") in route "+routeId);

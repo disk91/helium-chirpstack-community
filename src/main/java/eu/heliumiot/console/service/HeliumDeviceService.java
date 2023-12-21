@@ -659,7 +659,7 @@ public class HeliumDeviceService {
         int i = 0;
         long cTemplate = heliumTenantSetupRepository.count();
         long pTemplate = 0;
-        List<HeliumTenantSetup> htss = null;
+        Page<HeliumTenantSetup> htss = null;
         do {
             htss = heliumTenantSetupRepository.findAllByTemplate(false,PageRequest.of(i,50));
             for ( HeliumTenantSetup hts : htss ) {
@@ -674,7 +674,7 @@ public class HeliumDeviceService {
                 }
             }
             i++;
-        } while ( htss != null && htss.size() > 0 );
+        } while ( htss.hasNext() );
 
         resynced = true;
         novaService.setReadyForSessionRefresh(true);
