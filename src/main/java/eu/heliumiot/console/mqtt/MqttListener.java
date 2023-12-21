@@ -367,7 +367,7 @@ public class MqttListener implements MqttCallback {
                 if ( notInvoicable > 0 ) {
                     log.warn("cleanDedupCache - late packets invoiced "+postInvoiced+" not invoiced "+notInvoicable);
                 } else {
-                    log.info("cleanDedupCache - late packets invoiced " + postInvoiced);
+                    if ( postInvoiced > 0 ) log.info("cleanDedupCache - late packets invoiced " + postInvoiced);
                 }
 
                 // clean
