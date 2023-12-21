@@ -3,12 +3,10 @@ package eu.heliumiot.console.service;
 import com.google.protobuf.ByteString;
 import eu.heliumiot.console.ConsoleApplication;
 import eu.heliumiot.console.ConsoleConfig;
-import eu.heliumiot.console.jpa.db.HeliumDevice;
-import eu.heliumiot.console.jpa.db.HeliumParameter;
-import eu.heliumiot.console.jpa.db.HeliumTenantSetup;
-import eu.heliumiot.console.jpa.db.NovaDevice;
+import eu.heliumiot.console.jpa.db.*;
 import eu.heliumiot.console.jpa.repository.HeliumDeviceRepository;
 import eu.heliumiot.console.jpa.repository.HeliumTenantSetupRepository;
+import eu.heliumiot.console.jpa.repository.TenantRepository;
 import eu.heliumiot.console.redis.RedisDeviceRepository;
 import fr.ingeniousthings.tools.*;
 import io.chirpstack.api.internal.Internal;
@@ -215,6 +213,9 @@ public class NovaService {
         this.initialSessionRefreshDone = true;
     }
 
+    @Autowired
+    private TenantRepository tenantRepository;
+
     protected boolean initialRouteCheckDone = false;
     @Scheduled(fixedDelay = 120_000, initialDelay = 300_000)
     protected void initialRouteCheck() {
@@ -228,6 +229,7 @@ public class NovaService {
             int anotherServer=0;
             int found=0;
             int error=0;
+            int toRemove=0;
             for (route_v1 r : routes.getRoutesList()) {
                 if ( r.getServer().getHost().compareToIgnoreCase(consoleConfig.getHeliumRouteHost()) == 0 ){
                     // search if it has a tenant
@@ -235,12 +237,23 @@ public class NovaService {
                    if ( hts == null || hts.size() == 0 ) {
                        log.error("initialRouteCheck - route ("+r.getId()+") does not have tenant setup");
                        error++;
-                   } else found++;
+                   } else {
+                       // check if we have a corresponding tenant
+                       if ( hts.size() > 1 ) log.warn("Multiple tenant setup for a single route");
+                       Tenant t = tenantRepository.findOneTenantById(UUID.fromString(hts.get(0).getTenantUUID()));
+                       if ( t == null ) {
+                           log.error("initialRouteCheck - route ("+r.getId()+") does not have tenant");
+                           // test - addDelayedRouteRemoval(r.getId());
+                           toRemove++;
+                       } else {
+                           found++;
+                       }
+                   }
                 } else {
                     anotherServer++;
                 }
             }
-            log.info("initialRouteCheck - end of process - total("+routes.getRoutesCount()+") found("+found+") error("+error+") external("+anotherServer+")");
+            log.info("initialRouteCheck - end of process - total("+routes.getRoutesCount()+") found("+found+") removed("+toRemove+") error("+error+") external("+anotherServer+")");
             initialRouteCheckDone=true;
         } else {
             log.error("initialRouteCheck - problem in getting routes");

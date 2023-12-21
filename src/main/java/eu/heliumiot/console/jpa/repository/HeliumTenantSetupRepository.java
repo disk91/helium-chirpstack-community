@@ -22,6 +22,7 @@ package eu.heliumiot.console.jpa.repository;
 import eu.heliumiot.console.jpa.db.HeliumTenantSetup;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.stereotype.Repository;
 
@@ -45,5 +46,9 @@ public interface HeliumTenantSetupRepository extends PagingAndSortingRepository<
             int dcPerJoinRequest,
             Pageable pageable
     );
+
+    // Search tenant_setup (and route) not associated to tenant
+    @Query(value = "SELECT * FROM helium_tenant_setup LEFT JOIN tenant on UUID(helium_tenant_setup.tenantuuid) = tenant.id WHERE tenant.id IS NULL AND helium_tenant_setup.template IS FALSE", nativeQuery = true)
+    public List<HeliumTenantSetup> findMissingTenantSetup();
 
 }
