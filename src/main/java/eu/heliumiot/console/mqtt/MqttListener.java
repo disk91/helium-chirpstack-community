@@ -332,35 +332,41 @@ public class MqttListener implements MqttCallback {
                         // search in the preprocessed
                         boolean found = false;
                         for (ToDedup _d : preprocessedPacketDedup) {
-                            if ( _d.devAddr != null ) {
-                                if (!d.isJoin && d.fCnt == _d.fCnt && d.devAddr.compareToIgnoreCase(_d.devAddr) == 0 && Math.abs(d.firstArrivalTime - _d.firstArrivalTime) < 30_000) {
-                                    // it may be the same, process it
-                                    log.debug("cleanDedupCache - Searched device to invoice late packets " + _d.deviceEui + " (" + (_d.duplicates - _d.duplicatesInvoiced) + ") fCnt " + _d.fCnt+ " devAdr "+_d.devAddr);
-                                    prometeusService.addLoRaUplink(
-                                        0,
-                                        _d.dataSz,
-                                        false,
-                                        d.duplicates - _d.duplicatesInvoiced
-                                    );
-                                    heliumTenantService.processUplink(
-                                        _d.tenantId,
-                                        _d.deviceEui,
-                                        _d.dataSz,
-                                        false,
-                                        d.duplicates - _d.duplicatesInvoiced
-                                    );
-                                    postInvoiced = (d.duplicates - _d.duplicatesInvoiced);
-                                    found = true;
-                                    break;
+                            if (!d.isJoin) {
+                                if (_d.devAddr != null) {
+                                    if ( d.fCnt == _d.fCnt && d.devAddr.compareToIgnoreCase(_d.devAddr) == 0 ) {
+                                        if ( Math.abs(d.firstArrivalTime - _d.firstArrivalTime) < 30_000) {
+                                            // it may be the same, process it
+                                            log.debug("cleanDedupCache - Searched device to invoice late packets " + _d.deviceEui + " (" + (_d.duplicates - _d.duplicatesInvoiced) + ") fCnt " + _d.fCnt + " devAdr " + _d.devAddr);
+                                            prometeusService.addLoRaUplink(
+                                                0,
+                                                _d.dataSz,
+                                                false,
+                                                d.duplicates - _d.duplicatesInvoiced
+                                            );
+                                            heliumTenantService.processUplink(
+                                                _d.tenantId,
+                                                _d.deviceEui,
+                                                _d.dataSz,
+                                                false,
+                                                d.duplicates - _d.duplicatesInvoiced
+                                            );
+                                            postInvoiced = (d.duplicates - _d.duplicatesInvoiced);
+                                            found = true;
+                                            break;
+                                        } else {
+                                            log.info("cleanDedupCache - one found for "+d.devAddr+" / "+d.fCnt+" with long delay: "+Math.abs(d.firstArrivalTime - _d.firstArrivalTime));
+                                        }
+                                    }
+                                } else {
+                                    log.error("### Got a null devaddr ?? " + _d.fCnt + " " + _d.firstArrivalTime + " ");
                                 }
-                            } else {
-                                log.error("### Got a null devaddr ?? "+_d.fCnt+" "+_d.firstArrivalTime+" ");
                             }
                         }
-                        if (!found && !firstDedupRun) {
+                        if (!found && !firstDedupRun && !d.isJoin) {
                             // don't print on first run it's normal
                             log.warn("Found a packetDedup without uplink event for " + d.devAddr + " / " + d.fCnt + " from " + d.firstGatewayId + " with " + d.duplicates + " dup");
-                            notInvoicable+=d.duplicates;
+                            notInvoicable += d.duplicates;
                         }
                     }
                 }
