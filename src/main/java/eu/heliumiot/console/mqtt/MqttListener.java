@@ -204,12 +204,6 @@ public class MqttListener implements MqttCallback {
     protected HeliumTenantService heliumTenantService;
 
     @Autowired
-    protected HeliumDeviceStatService heliumDeviceStatService;
-
-    @Autowired
-    protected HeliumDeviceService heliumDeviceService;
-
-    @Autowired
     protected RoamingService roamingService;
 
     protected class DeviceDedup {
@@ -312,30 +306,30 @@ public class MqttListener implements MqttCallback {
 
                 // process invoicing
                 for (ToDedup d : toRemove) {
-                    if (!d.isJoin && d.duplicatesInvoiced < d.duplicates && d.deviceEui != null && d.tenantId != null) {
-                        log.debug("cleanDedupCache - Found device to invoice late packets " + d.deviceEui + " (" + (d.duplicates - d.duplicatesInvoiced) + ") fCnt " + d.fCnt+ " devAdr "+d.devAddr);
-                        prometeusService.addLoRaUplink(
-                            0,
-                            d.dataSz,
-                            false,
-                            d.duplicates - d.duplicatesInvoiced
-                        );
-                        heliumTenantService.processUplink(
-                            d.tenantId,
-                            d.deviceEui,
-                            d.dataSz,
-                            false,
-                            d.duplicates - d.duplicatesInvoiced
-                        );
-                        postInvoiced += (d.duplicates - d.duplicatesInvoiced);
-                    } else if (d.deviceEui == null) {
-                        // search in the preprocessed
-                        boolean found = false;
-                        for (ToDedup _d : preprocessedPacketDedup) {
-                            if (!d.isJoin) {
+                    if ( !d.isJoin ) {
+                        if (d.duplicatesInvoiced < d.duplicates && d.deviceEui != null && d.tenantId != null) {
+                            log.debug("cleanDedupCache - Found device to invoice late packets " + d.deviceEui + " (" + (d.duplicates - d.duplicatesInvoiced) + ") fCnt " + d.fCnt + " devAdr " + d.devAddr);
+                            prometeusService.addLoRaUplink(
+                                0,
+                                d.dataSz,
+                                false,
+                                d.duplicates - d.duplicatesInvoiced
+                            );
+                            heliumTenantService.processUplink(
+                                d.tenantId,
+                                d.deviceEui,
+                                d.dataSz,
+                                false,
+                                d.duplicates - d.duplicatesInvoiced
+                            );
+                            postInvoiced += (d.duplicates - d.duplicatesInvoiced);
+                        } else if (d.deviceEui == null) {
+                            // search in the preprocessed
+                            boolean found = false;
+                            for (ToDedup _d : preprocessedPacketDedup) {
                                 if (_d.devAddr != null) {
-                                    if ( d.fCnt == _d.fCnt && d.devAddr.compareToIgnoreCase(_d.devAddr) == 0 ) {
-                                        if ( Math.abs(d.firstArrivalTime - _d.firstArrivalTime) < 30_000) {
+                                    if (d.fCnt == _d.fCnt && d.devAddr.compareToIgnoreCase(_d.devAddr) == 0) {
+                                        if (Math.abs(d.firstArrivalTime - _d.firstArrivalTime) < 30_000) {
                                             // it may be the same, process it
                                             log.debug("cleanDedupCache - Searched device to invoice late packets " + _d.deviceEui + " (" + (_d.duplicates - _d.duplicatesInvoiced) + ") fCnt " + _d.fCnt + " devAdr " + _d.devAddr);
                                             prometeusService.addLoRaUplink(
@@ -355,18 +349,19 @@ public class MqttListener implements MqttCallback {
                                             found = true;
                                             break;
                                         } else {
-                                            log.info("cleanDedupCache - one found for "+d.devAddr+" / "+d.fCnt+" with long delay: "+Math.abs(d.firstArrivalTime - _d.firstArrivalTime));
+                                            log.info("cleanDedupCache - one found for " + d.devAddr + " / " + d.fCnt + " with long delay: " + Math.abs(d.firstArrivalTime - _d.firstArrivalTime));
                                         }
                                     }
                                 } else {
                                     log.error("### Got a null devaddr ?? " + _d.fCnt + " " + _d.firstArrivalTime + " ");
                                 }
                             }
-                        }
-                        if (!found && !firstDedupRun && !d.isJoin) {
-                            // don't print on first run it's normal
-                            log.warn("Found a packetDedup without uplink event for " + d.devAddr + " / " + d.fCnt + " from " + d.firstGatewayId + " with " + d.duplicates + " dup");
-                            notInvoicable += d.duplicates;
+                            if (!found && !firstDedupRun) {
+                                // don't print on first run it's normal
+                                log.warn("Found a packetDedup without uplink event for " + d.devAddr + " / " + d.fCnt +
+                                    " from " + d.firstGatewayId + " with " + d.duplicates + " dup");
+                                notInvoicable += d.duplicates;
+                            }
                         }
                     }
                 }
@@ -622,7 +617,11 @@ public class MqttListener implements MqttCallback {
                 } else {
                     log.debug("New Uplink detected from "+dedup.firstGatewayId+" for devaddr "+dedup.devAddr+" with fCnt "+dedup.fCnt);
                 }
-                prometeusService.addLoRaFirstUplink( now - rx );
+                if ( (now - rx) < 1_000 ) {
+                    // consider it as a gateway time error more than the reality of the travel time.
+                    // we could also measure the mqtt latency to correct the internal process duration
+                    prometeusService.addLoRaFirstUplink(now - rx);
+                }
             } else {
                 // update the stat on the packet
                 dedup.duplicates++;
@@ -725,6 +724,7 @@ public class MqttListener implements MqttCallback {
             //log.info("MQTT L - message "+message);
         }
         log.debug("MQTT L processing time "+(Now.NowUtcMs()-start)+"ms for "+topicName);
+        prometeusService.addLoRaMessageProcessing(Now.NowUtcMs()-start);
     }
 
 }
