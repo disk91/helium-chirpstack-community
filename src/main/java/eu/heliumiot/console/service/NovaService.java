@@ -381,6 +381,10 @@ public class NovaService {
                         String ntwSEncKey = HexaConverters.byteToHexString(s.getNwkSEncKey().toByteArray());
                         //log.debug("### Ntwks Key "+ntwSEncKey);
                         String devaddr = HexaConverters.byteToHexString(s.getDevAddr().toByteArray());
+                        // trace to identify all device for a given devaddr
+                        if ( devaddr.compareToIgnoreCase("480009b1") == 0 ) {
+                            log.info("### route: "+routeId+" dev: "+hd.getDeviceEui()+" devaddr: 0x"+devaddr);
+                        }
                         int iDevAddr = Stuff.hexStrToInt(devaddr);
                         boolean keep = false;
                         for (skf_v1 skf : inRouteSkfs) {
