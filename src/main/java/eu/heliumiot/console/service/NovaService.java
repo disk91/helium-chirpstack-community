@@ -382,9 +382,9 @@ public class NovaService {
                         //log.debug("### Ntwks Key "+ntwSEncKey);
                         String devaddr = HexaConverters.byteToHexString(s.getDevAddr().toByteArray());
                         // trace to identify all device for a given devaddr
-                        if ( devaddr.compareToIgnoreCase("480009b1") == 0 ) {
-                            log.info("### route: "+routeId+" dev: "+hd.getDeviceEui()+" devaddr: 0x"+devaddr);
-                        }
+                        //if ( devaddr.compareToIgnoreCase("480009b1") == 0 ) {
+                        //    log.info("### route: "+routeId+" dev: "+hd.getDeviceEui()+" devaddr: 0x"+devaddr);
+                        // }
                         int iDevAddr = Stuff.hexStrToInt(devaddr);
                         boolean keep = false;
                         for (skf_v1 skf : inRouteSkfs) {
@@ -1630,7 +1630,7 @@ public class NovaService {
                                 .build();
                         updates.add(update);
                     } else {
-                        log.warn("Request to add skf with out-of-range devaddr ("+Integer.toHexString(session.devAddr)+") in route "+routeId);
+                        log.debug("Request to add skf with out-of-range devaddr ("+Integer.toHexString(session.devAddr)+") in route "+routeId);
                     }
                     actions++;
                 }
@@ -1656,7 +1656,7 @@ public class NovaService {
                         log.debug("Remove SKFS "+session.devAddr+" with session "+Integer.toHexString(session.devAddr)+" in route "+routeId);
                         actions++;
                     } else {
-                        log.warn("Request to remove skf with out-of-range devaddr ("+Integer.toHexString(session.devAddr)+") in route "+routeId);
+                        log.debug("Request to remove skf with out-of-range devaddr ("+Integer.toHexString(session.devAddr)+") in route "+routeId);
                     }
                 }
                 // execute

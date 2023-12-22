@@ -571,7 +571,7 @@ public class PrometeusService {
         Gauge.builder("cons.lora.process", getLoRaMessageProcessed())
             .description("Number of the LoRa Frame event processed in Mqtt listener")
             .register(registry);
-        
+
     }
 
     @Autowired
