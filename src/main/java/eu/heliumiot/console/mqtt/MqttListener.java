@@ -46,6 +46,13 @@ import java.util.stream.Collectors;
 
 import static eu.heliumiot.console.service.HeliumParameterService.PARAM_MQTT_CLIENT_ID;
 
+// @TODO
+// process message differently to manage a local priority queue for the up event and then the
+// invoicing. That way we can have messages processed in the right order and limit the deep search
+// also getting a better control of the queue and correct the time of flight with a slower delay
+// coming from the processing time variation.
+// on stop we will need to properly close subscription and clean queues.
+
 @Component
 public class MqttListener implements MqttCallback {
     private final Logger log = LoggerFactory.getLogger(this.getClass());
@@ -246,7 +253,6 @@ public class MqttListener implements MqttCallback {
     private long lastCleanJoinDedup = 0;
     private long lastCleanLateDedup = 0;
 
-    private boolean firstDedupRun = true;
     @Scheduled(fixedDelayString = "${helium.mqtt.dedup.scanPeriod}", initialDelay = 120_000) // default 10m
     protected void cleanDedupCache() {
         if ( this.requestToStop ) return;
@@ -356,9 +362,8 @@ public class MqttListener implements MqttCallback {
                                     log.error("### Got a null devaddr ?? " + _d.fCnt + " " + _d.firstArrivalTime + " ");
                                 }
                             }
-                            if (!found && !firstDedupRun) {
-                                // don't print on first run it's normal
-                                log.warn("Found a packetDedup without uplink event for " + d.devAddr + " / " + d.fCnt +
+                            if (!found) {
+                                log.debug("Found a packetDedup without uplink event for " + d.devAddr + " / " + d.fCnt +
                                     " from " + d.firstGatewayId + " with " + d.duplicates + " dup");
                                 notInvoicable += d.duplicates;
                             }
@@ -397,7 +402,6 @@ public class MqttListener implements MqttCallback {
             x.printStackTrace();
         } finally {
             --this.scheduleRunning;
-            this.firstDedupRun = false;
         }
     }
 
@@ -447,6 +451,8 @@ public class MqttListener implements MqttCallback {
                     }).findFirst();
                 }
                 // Eventually a deep search on the whole history
+                // This is mostly the case for the late packets to reattach the right one
+                // But also happen when chirpstack event comes before the up event.
                 if (theDedup.isEmpty()) {
                     log.debug("Uplink not found in the recent history... deep search");
                     theDedup = packetDedup.values().parallelStream().filter(dedup -> {
@@ -463,7 +469,7 @@ public class MqttListener implements MqttCallback {
                     }).findFirst();
                 }
 
-                // give the information for lte packet invoice later
+                // give the information for late packet invoice later
                 if ( theDedup.isPresent() ) {
                     ToDedup d = theDedup.get();
                     if ( d.deviceEui == null ) {
@@ -686,34 +692,6 @@ public class MqttListener implements MqttCallback {
                     d.count++;
                 }
             }
-
-// =================================================
-// INTERNAL ASYNCHRONOUS MESSAGES
-// =================================================
-/* managed in the second listner to avoid impacting these topic processing
-        } else if ( topicName.matches("helium/device/stats/.*") ) {
-            HeliumDeviceStatItf e = mapper.readValue(message.toString(), HeliumDeviceStatItf.class);
-            heliumDeviceStatService.updateDeviceStat(e);
-            prometeusService.delDelayedStatUpdate();
-        } else if ( topicName.matches("helium/device/deactivate/.*") ) {
-            HeliumDeviceActDeactItf e = mapper.readValue(message.toString(), HeliumDeviceActDeactItf.class);
-            heliumDeviceService.processDeviceDeactivation(e);
-            prometeusService.delDelayedStatUpdate();
-        } else if ( topicName.matches("helium/device/activate/.*") ) {
-            HeliumDeviceActDeactItf e = mapper.readValue(message.toString(), HeliumDeviceActDeactItf.class);
-            heliumDeviceService.processDeviceReactivation(e);
-            prometeusService.delDelayedStatUpdate();
-        } else if ( topicName.matches("helium/tenant/manage/.*") ) {
-            HeliumTenantActDeactItf e = mapper.readValue(message.toString(), HeliumTenantActDeactItf.class);
-            if( e.isActivateTenant() ) {
-                heliumDeviceService.processTenantReactivation(e.getTenantId());
-            } else if ( e.isDeactivateTenant() ) {
-                heliumDeviceService.processTenantDeactivation(e.getTenantId());
-            } else {
-                log.error("Invalid state for manage tenant request");
-            }
-            prometeusService.delDelayedStatUpdate();
- */
 // =================================================
 // OTHERS
 // =================================================
@@ -726,5 +704,4 @@ public class MqttListener implements MqttCallback {
         log.debug("MQTT L processing time "+(Now.NowUtcMs()-start)+"ms for "+topicName);
         prometeusService.addLoRaMessageProcessing(Now.NowUtcMs()-start);
     }
-
 }
