@@ -168,7 +168,7 @@
                     @click="runMigration()"
                     style="text-align: center;font-size:1.0rem;"
             >
-                    {{ $t('mig_start_migrate_1') }} {{ devicesToBeMigated }} {{ $t('mig_start_migrate_2') }}
+                    {{ $t('mig_start_migrate_1_button') }} {{ devicesToBeMigated }} {{ $t('mig_start_migrate_2_button') }}
                     <b-icon icon="caret-right-square" variant="white" class="ml-2"></b-icon>
             </b-button>
 
@@ -180,7 +180,7 @@
                     style="text-align: center;font-size:1.0rem;"
             >
                     <b-icon icon="reply" variant="white" class="ml-2"></b-icon>
-                    {{ $t('mig_stop_migrate') }}
+                    {{ $t('mig_stop_migrate_button') }}
             </b-button>
 
             <b-progress v-if="isMigrationRunning" class="my-2" :max="devicesToBeMigated" show-value>

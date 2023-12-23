@@ -45,7 +45,7 @@
                       variant="outline-secondary"
                       style="font-size:0.5rem;margin:2px;"
             >
-              {{ $t('tsl_edit') }} 
+              {{ $t('tsl_edit_button') }} 
             </b-button>
           </template>
 
@@ -298,7 +298,7 @@ export default Vue.extend({
             tenantDetails : {} as TenantTemplate,
             fields : [
                 {key: 'credit', label : this.$t('tsl_credit')},
-                {key: 'edit', label : this.$t('tsl_edit')},
+                {key: 'edit', label : this.$t('tsl_edit_button')},
                 {key: 'tenantName', sortable: false, label : this.$t('tsl_tenantName')},
                 {key: 'ownerEmail', sortable: false, label : this.$t('tsl_ownerEmail')},
                 {key: 'dcBalance', sortable: false, label : this.$t('tsl_dcBalance')},

@@ -58,7 +58,7 @@
                  :disabled="disableCancelTab"
               >
                 <template #title> 
-                  <b-icon icon="backspace" variant="danger"></b-icon> <span class="text-danger">{{ $t('mig_cancel') }}</span>
+                  <b-icon icon="backspace" variant="danger"></b-icon> <span class="text-danger">{{ $t('mig_cancel_button') }}</span>
                 </template>                
               </b-tab>
             

@@ -153,7 +153,7 @@
                             size="sm"
                             @click="updateUser()"
                     >
-                    {{ $t('profile_upt_but') }}
+                    {{ $t('profile_update_button') }}
                     </b-button>
                     <b-card-text class="small mb-2 text-danger" v-show="errorMessageMod!=''">
                         <b-icon icon="exclamation-circle-fill" variant="danger"></b-icon>

@@ -28,7 +28,7 @@
                       variant="outline-secondary"
                       style="font-size:0.5rem;margin:2px;"
             >
-              {{ $t('tsl_edit') }} 
+              {{ $t('tsl_edit_button') }} 
             </b-button>
           </template>
 
@@ -251,7 +251,7 @@
           templates : [],
           template : {} as TenantTemplate,
           fields : [
-            {key: 'edit', label : this.$t('tsl_edit')},
+            {key: 'edit', label : this.$t('tsl_edit_button')},
             {key: 'tenantUUID', sortable: true, label : this.$t('tsl_tenantUUID')},
             {key: 'signupAllowed', sortable: false, label : this.$t('tsl_signupAllowed')},
             {key: 'maxDevices', sortable: false, label : this.$t('tsl_maxDevices')},

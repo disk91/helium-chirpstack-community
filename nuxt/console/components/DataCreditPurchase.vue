@@ -123,7 +123,7 @@
                         style="text-align: left;font-size:0.8rem;"
                     >
                         <b-icon icon="reply" variant="secondary"></b-icon>
-                        {{ $t('dc_trans_cancel') }}
+                        {{ $t('dc_trans_cancel_button') }}
                     </b-button>
                 </b-col>
                 <b-col cols="6" class="py-2" style="font-size:0.8rem;">

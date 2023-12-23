@@ -86,7 +86,7 @@
                             size="sm"
                             @click="updateSetup()"
                     >
-                    {{ $t('inv_upt_but') }}
+                    {{ $t('inv_update_button') }}
                     </b-button>
                     <b-card-text class="small mb-2 text-danger" v-show="errorMessage!=''">
                         <b-icon icon="exclamation-circle-fill" variant="danger"></b-icon>

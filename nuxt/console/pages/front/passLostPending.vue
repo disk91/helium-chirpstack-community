@@ -25,7 +25,7 @@
                   <b>{{ $t('passlost_pmessage_2') }}</b>
               </b-card-text>
               <b-card-text class="small">
-                  {{ $t('passlost_pmessage_3') }}
+                  {{ $t('check_email_spam_message') }}
               </b-card-text>
             </b-card>
         </div>

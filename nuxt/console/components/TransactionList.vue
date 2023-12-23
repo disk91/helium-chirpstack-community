@@ -3,7 +3,7 @@
         <b-row col="3" class="mb-3">
             <b-col cols="12" class="py-1" style="font-size:0.8rem;">
                 <b-card
-                        :header="$t('dc_payment_histo')"
+                        :header="$t('dc_payment_history')"
                         class="ml-0 DataCredit"
                 >
                 <b-row>

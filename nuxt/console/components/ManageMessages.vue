@@ -28,7 +28,7 @@
                       variant="outline-secondary"
                       style="font-size:0.5rem;margin:2px;"
             >
-              {{ $t('tsl_edit') }} 
+              {{ $t('tsl_edit_button') }} 
             </b-button>
           </template>
 
@@ -164,7 +164,7 @@
           messages : [],
           message : {} as Message,
           fields : [
-            {key: 'edit', label : this.$t('tsl_edit')},
+            {key: 'edit', label : this.$t('tsl_edit_button')},
             {key: 'index', sortable: false, label : this.$t('tmes_index'), formatter : "dateFormatter"},
             {key: 'type', sortable: false, label : this.$t('tmes_type'), formatter: "typeFormatter"},
             {key: 'category', sortable: false, label : this.$t('tmes_category'), formatter: "categoryFormatter"},
