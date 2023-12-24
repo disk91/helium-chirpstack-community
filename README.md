@@ -107,6 +107,11 @@ IoT device fleet purpose, without restriction.
 Specific licences can be obtained by contacting the Author. Any reuse of this code-source needs to be indicated and modifications/addition need to 
 be publicly published, even when small pieces of code or architecture are reused as requested by GPLv3.
 
+## Credits
+Thank you to the following persons contributing to the project
+- [DeflaeAwning](https://github.com/DeflateAwning) for fixing grammar and improving english translations.
+
+
 ## Misc
 - Nova service GRPC proto can be found on - https://github.com/helium/proto/blob/master/src/service/iot_config.proto
 - Protoc - https://github.com/protocolbuffers/protobuf
