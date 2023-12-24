@@ -470,7 +470,7 @@ export default Vue.extend({
                         .then ((ret:string) =>{
                             if ( ret == "" ) {
                                 // activate device on chirpstack
-                                if ( this.consoleObject.oui == this.chirpstackObject.oui ) {
+                                if ( dev.rawDevice.oui == this.chirpstackObject.oui ) {
                                     this.chirpstackObject.activatedevice(dev)
                                     .then ( (ret:string) => {
                                         if ( ret == "" ) {
@@ -486,7 +486,7 @@ export default Vue.extend({
                                         }
                                     })
                                 } else {
-                                    console.log("Not the same OUI "+this.consoleObject.oui+" / "+this.chirpstackObject.oui);
+                                    console.log("Not the same OUI "+dev.rawDevice.oui+" / "+this.chirpstackObject.oui);
                                     dev.status = 3;
                                     this.devicesMigrated++;
                                 }
