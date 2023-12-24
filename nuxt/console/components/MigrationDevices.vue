@@ -486,7 +486,6 @@ export default Vue.extend({
                                         }
                                     })
                                 } else {
-                                    console.log("Not the same OUI "+dev.rawDevice.oui+" / "+this.chirpstackObject.oui);
                                     dev.status = 3;
                                     this.devicesMigrated++;
                                 }
