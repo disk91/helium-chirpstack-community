@@ -3,7 +3,7 @@
 ![screenshot](homepage.png)
 
 - Follow progress and roadmap on the [project board](https://github.com/users/disk91/projects/1/views/1)
-- Test in on the live demo site [dev.helium-iot.eu](https://dev.helium-iot.eu)
+- Live console [console.helium-iot.xyz](https://console.helium-iot.xyz)
 
 ### Features (development in progress)
 
