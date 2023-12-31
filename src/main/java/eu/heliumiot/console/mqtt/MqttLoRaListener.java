@@ -144,6 +144,7 @@ public class MqttLoRaListener implements MqttCallback {
                     e.messageType = MSG_TYPE_CHIPSTACK;
                     e.topic = s;
                     chipstackQueue.add(e);
+                    prometeusService.chirpstackQueueSet(chipstackQueue.size());
                     log.debug("MQTT LL Add one message from chirpstack, queue size "+chipstackQueue.size());
                 }
             };
@@ -158,6 +159,7 @@ public class MqttLoRaListener implements MqttCallback {
                     e.messageType = MSG_TYPE_BRIDGE;
                     e.topic = s;
                     bridgeQueue.add(e);
+                    prometeusService.bridgeQueueSet(bridgeQueue.size());
                     log.debug("MQTT LL Add one message from bridge, queue size "+bridgeQueue.size());
                 }
             };
@@ -266,13 +268,16 @@ public class MqttLoRaListener implements MqttCallback {
                 if ( b == null && c == null ) break;
                 if ( b == null ) {
                     e = chipstackQueue.poll();
+                    prometeusService.chirpstackQueueSet(chipstackQueue.size());
                 } else if ( c == null ) {
                     e = bridgeQueue.poll();
+                    prometeusService.bridgeQueueSet(bridgeQueue.size());
                 } else {
                     if ( c.arrivalTime < ( now - 5_000) ) {
                         // security on processing the chirpstack event and billing (event if this situation should
                         // no be reached, but if bridge queue is going really slow)
                         e = chipstackQueue.poll();
+                        prometeusService.chirpstackQueueSet(chipstackQueue.size());
                         if ( (now - lastErrorLog) > 30_000 ) {
                             log.error("MQTT LL Chirpstack event processing delayed by +5s");
                             lastErrorLog = now;
@@ -281,8 +286,10 @@ public class MqttLoRaListener implements MqttCallback {
                         if (b.arrivalTime < (c.arrivalTime + 100)) {
                             // give priority on bridge processing based on arrival time with 100ms advantage
                             e = bridgeQueue.poll();
+                            prometeusService.bridgeQueueSet(bridgeQueue.size());
                         } else {
                             e = chipstackQueue.poll();
+                            prometeusService.chirpstackQueueSet(chipstackQueue.size());
                         }
                     }
                 }
