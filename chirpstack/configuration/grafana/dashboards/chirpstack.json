@@ -29,7 +29,7 @@
   "liveNow": false,
   "panels": [
     {
-      "collapsed": true,
+      "collapsed": false,
       "gridPos": {
         "h": 1,
         "w": 24,
@@ -38,7 +38,7 @@
       },
       "id": 87,
       "panels": [],
-      "title": "Environment",
+      "title": "Env Name",
       "type": "row"
     },
     {
@@ -1326,7 +1326,7 @@
         ]
       },
       "gridPos": {
-        "h": 4,
+        "h": 6,
         "w": 9,
         "x": 0,
         "y": 21
@@ -1402,7 +1402,7 @@
         "overrides": []
       },
       "gridPos": {
-        "h": 4,
+        "h": 6,
         "w": 3,
         "x": 9,
         "y": 21
@@ -1467,7 +1467,7 @@
         "overrides": []
       },
       "gridPos": {
-        "h": 4,
+        "h": 6,
         "w": 3,
         "x": 12,
         "y": 21
@@ -1532,7 +1532,7 @@
         "overrides": []
       },
       "gridPos": {
-        "h": 4,
+        "h": 6,
         "w": 3,
         "x": 15,
         "y": 21
@@ -1832,7 +1832,7 @@
         "h": 4,
         "w": 9,
         "x": 0,
-        "y": 25
+        "y": 27
       },
       "id": 93,
       "options": {
@@ -1947,7 +1947,7 @@
         "h": 4,
         "w": 9,
         "x": 9,
-        "y": 25
+        "y": 27
       },
       "id": 94,
       "options": {
@@ -1982,12 +1982,161 @@
       "type": "timeseries"
     },
     {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "PBFA97CFB590B2093"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": -1,
+            "drawStyle": "line",
+            "fillOpacity": 15,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "stepBefore",
+            "lineStyle": {
+              "fill": "solid"
+            },
+            "lineWidth": 1,
+            "pointSize": 3,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "never",
+            "spanNulls": true,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Device creation"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "semi-dark-blue",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Device Deletion"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "semi-dark-red",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 6,
+        "x": 18,
+        "y": 27
+      },
+      "id": 95,
+      "options": {
+        "legend": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "PBFA97CFB590B2093"
+          },
+          "disableTextWrap": false,
+          "editorMode": "code",
+          "expr": "cons_mqtt_chirpstack_qsz",
+          "fullMetaSearch": false,
+          "includeNullMetadata": true,
+          "legendFormat": "chirp_evt_q",
+          "range": true,
+          "refId": "A",
+          "useBackend": false
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "PBFA97CFB590B2093"
+          },
+          "disableTextWrap": false,
+          "editorMode": "code",
+          "expr": "-cons_mqtt_bridge_qsz",
+          "fullMetaSearch": false,
+          "hide": false,
+          "includeNullMetadata": true,
+          "legendFormat": "bridge_evt_q",
+          "range": true,
+          "refId": "B",
+          "useBackend": false
+        }
+      ],
+      "title": "Mqtt event Queue Size (best is 0)",
+      "type": "timeseries"
+    },
+    {
       "collapsed": false,
       "gridPos": {
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 29
+        "y": 31
       },
       "id": 89,
       "panels": [],
@@ -2087,7 +2236,7 @@
         "h": 5,
         "w": 9,
         "x": 0,
-        "y": 30
+        "y": 32
       },
       "id": 90,
       "options": {
@@ -2265,7 +2414,7 @@
         "h": 5,
         "w": 9,
         "x": 9,
-        "y": 30
+        "y": 32
       },
       "id": 91,
       "options": {
@@ -2516,7 +2665,7 @@
         "h": 5,
         "w": 6,
         "x": 18,
-        "y": 30
+        "y": 32
       },
       "id": 92,
       "options": {
@@ -2575,7 +2724,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 35
+        "y": 37
       },
       "id": 24,
       "panels": [],
@@ -2645,7 +2794,7 @@
         "h": 7,
         "w": 9,
         "x": 0,
-        "y": 36
+        "y": 38
       },
       "id": 26,
       "options": {
@@ -2752,7 +2901,7 @@
         "h": 3,
         "w": 5,
         "x": 9,
-        "y": 36
+        "y": 38
       },
       "id": 28,
       "options": {
@@ -2845,7 +2994,7 @@
         "h": 4,
         "w": 5,
         "x": 9,
-        "y": 39
+        "y": 41
       },
       "id": 30,
       "options": {
@@ -2882,7 +3031,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 43
+        "y": 45
       },
       "id": 41,
       "panels": [],
@@ -2936,8 +3085,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -2953,7 +3101,7 @@
         "h": 4,
         "w": 9,
         "x": 0,
-        "y": 44
+        "y": 46
       },
       "id": 43,
       "options": {
@@ -3021,8 +3169,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "light-red",
@@ -3037,7 +3184,7 @@
         "h": 4,
         "w": 5,
         "x": 9,
-        "y": 44
+        "y": 46
       },
       "id": 45,
       "options": {
@@ -3124,8 +3271,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -3172,7 +3318,7 @@
         "h": 8,
         "w": 10,
         "x": 14,
-        "y": 44
+        "y": 46
       },
       "id": 66,
       "options": {
@@ -3261,8 +3407,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -3277,7 +3422,7 @@
         "h": 4,
         "w": 7,
         "x": 0,
-        "y": 48
+        "y": 50
       },
       "id": 68,
       "options": {
@@ -3354,8 +3499,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -3370,7 +3514,7 @@
         "h": 4,
         "w": 7,
         "x": 7,
-        "y": 48
+        "y": 50
       },
       "id": 69,
       "options": {
@@ -3407,7 +3551,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 52
+        "y": 54
       },
       "id": 32,
       "panels": [],
@@ -3476,7 +3620,7 @@
         "h": 4,
         "w": 8,
         "x": 0,
-        "y": 53
+        "y": 55
       },
       "id": 34,
       "options": {
@@ -3569,7 +3713,7 @@
         "h": 4,
         "w": 8,
         "x": 8,
-        "y": 53
+        "y": 55
       },
       "id": 36,
       "options": {
@@ -3662,7 +3806,7 @@
         "h": 4,
         "w": 8,
         "x": 16,
-        "y": 53
+        "y": 55
       },
       "id": 37,
       "options": {
@@ -3755,7 +3899,7 @@
         "h": 4,
         "w": 8,
         "x": 0,
-        "y": 57
+        "y": 59
       },
       "id": 35,
       "options": {
@@ -3848,7 +3992,7 @@
         "h": 4,
         "w": 8,
         "x": 8,
-        "y": 57
+        "y": 59
       },
       "id": 38,
       "options": {
@@ -3941,7 +4085,7 @@
         "h": 4,
         "w": 8,
         "x": 16,
-        "y": 57
+        "y": 59
       },
       "id": 39,
       "options": {
@@ -4033,7 +4177,7 @@
         "h": 4,
         "w": 8,
         "x": 0,
-        "y": 61
+        "y": 63
       },
       "id": 61,
       "options": {
@@ -4114,7 +4258,7 @@
         "h": 4,
         "w": 8,
         "x": 8,
-        "y": 61
+        "y": 63
       },
       "id": 62,
       "options": {
@@ -4222,7 +4366,7 @@
         "h": 4,
         "w": 5,
         "x": 16,
-        "y": 61
+        "y": 63
       },
       "id": 76,
       "options": {
@@ -4288,7 +4432,7 @@
         "h": 4,
         "w": 3,
         "x": 21,
-        "y": 61
+        "y": 63
       },
       "id": 78,
       "options": {
@@ -4328,7 +4472,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 65
+        "y": 67
       },
       "id": 6,
       "panels": [],
@@ -4397,7 +4541,7 @@
         "h": 7,
         "w": 24,
         "x": 0,
-        "y": 66
+        "y": 68
       },
       "id": 4,
       "options": {
@@ -4493,7 +4637,7 @@
         "h": 7,
         "w": 24,
         "x": 0,
-        "y": 73
+        "y": 75
       },
       "id": 2,
       "options": {
@@ -4535,7 +4679,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 80
+        "y": 82
       },
       "id": 8,
       "panels": [],
@@ -4603,7 +4747,7 @@
         "h": 8,
         "w": 10,
         "x": 0,
-        "y": 81
+        "y": 83
       },
       "id": 10,
       "options": {
@@ -4715,7 +4859,7 @@
         "h": 5,
         "w": 3,
         "x": 10,
-        "y": 81
+        "y": 83
       },
       "id": 12,
       "options": {
@@ -4785,7 +4929,7 @@
         "h": 3,
         "w": 3,
         "x": 13,
-        "y": 81
+        "y": 83
       },
       "id": 20,
       "options": {
@@ -4879,7 +5023,7 @@
         "h": 8,
         "w": 8,
         "x": 16,
-        "y": 81
+        "y": 83
       },
       "id": 16,
       "options": {
@@ -4953,7 +5097,7 @@
         "h": 3,
         "w": 3,
         "x": 13,
-        "y": 84
+        "y": 86
       },
       "id": 22,
       "options": {
@@ -5015,7 +5159,7 @@
         "h": 3,
         "w": 3,
         "x": 10,
-        "y": 86
+        "y": 88
       },
       "id": 14,
       "options": {
@@ -5080,7 +5224,7 @@
         "h": 2,
         "w": 3,
         "x": 13,
-        "y": 87
+        "y": 89
       },
       "id": 18,
       "options": {
@@ -5130,6 +5274,6 @@
   "timezone": "",
   "title": "Chirpstack",
   "uid": "6pIR3ibVz",
-  "version": 24,
+  "version": 25,
   "weekStart": ""
 }
