@@ -46,13 +46,6 @@ import java.util.stream.Collectors;
 
 import static eu.heliumiot.console.service.HeliumParameterService.PARAM_MQTT_CLIENT_ID;
 
-// @TODO
-// process message differently to manage a local priority queue for the up event and then the
-// invoicing. That way we can have messages processed in the right order and limit the deep search
-// also getting a better control of the queue and correct the time of flight with a slower delay
-// coming from the processing time variation.
-// on stop we will need to properly close subscription and clean queues.
-
 @Component
 public class MqttListener implements MqttCallback {
     private final Logger log = LoggerFactory.getLogger(this.getClass());
@@ -105,6 +98,9 @@ public class MqttListener implements MqttCallback {
     @PostConstruct
     public MqttClient initMqtt() {
 
+        // for doing nothing in background
+        this.requestToStop = true;
+/*
         HeliumParameter mqttClientId = heliumParameterService.getParameter(PARAM_MQTT_CLIENT_ID);
         this.clientId = mqttConfig.getMqttId()+mqttClientId.getStrValue();
         this.persistence = new MemoryPersistence();
@@ -130,6 +126,7 @@ public class MqttListener implements MqttCallback {
         } catch (MqttException me) {
             log.error("MQTT L Init ERROR : "+me.getMessage());
         }
+        */
         return this.mqttClient;
     }
 
@@ -161,10 +158,6 @@ public class MqttListener implements MqttCallback {
 
 
     private boolean pendingReconnection = false;
-    /*
-     * (non-Javadoc)
-     * @see org.eclipse.paho.client.mqttv3.MqttCallback#connectionLost(java.lang.Throwable)
-     */
     @Override
     public void connectionLost(Throwable arg0) {
         log.error("MQTT L - Connection Lost");
@@ -198,10 +191,6 @@ public class MqttListener implements MqttCallback {
     }
 
 
-    /*
-     * (non-Javadoc)
-     * @see org.eclipse.paho.client.mqttv3.MqttCallback#deliveryComplete(org.eclipse.paho.client.mqttv3.IMqttDeliveryToken)
-     */
     @Override
     public void deliveryComplete(IMqttDeliveryToken arg0) {
         // log.info("MQTT L - delivery completed");
