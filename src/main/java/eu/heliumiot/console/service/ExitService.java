@@ -22,7 +22,7 @@ package eu.heliumiot.console.service;
 
 import eu.heliumiot.console.ConsoleApplication;
 import eu.heliumiot.console.mqtt.MqttHeliumListener;
-import eu.heliumiot.console.mqtt.MqttListener;
+import eu.heliumiot.console.mqtt.MqttLoRaListener;
 import eu.heliumiot.console.mqtt.MqttSender;
 import eu.heliumiot.console.redis.RedisDeviceEventStreamListener;
 import eu.heliumiot.console.redis.RedisDeviceFrameStreamListener;
@@ -53,7 +53,7 @@ public class ExitService {
     private HeliumDeviceService heliumDeviceService;
 
     @Autowired
-    private MqttListener mqttListener;
+    private MqttLoRaListener mqttListener;
 
     @Autowired
     private MqttHeliumListener mqttHeliumListener;
