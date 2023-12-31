@@ -302,7 +302,7 @@ public class MqttLoRaListener implements MqttCallback {
                     }
                 }
             }
-            log.debug("MQTT LL - All proceeded");
+            //log.debug("MQTT LL - All proceeded");
         } catch (Exception x) {
             log.error("MQTT LL Exception in message processing "+x.getMessage());
             x.printStackTrace();
@@ -448,10 +448,19 @@ public class MqttLoRaListener implements MqttCallback {
                 dedup.duplicates++;
                 // update the late stats
                 if ((e.arrivalTime - dedup.firstArrivalTime) > mqttConfig.getChirpstackDedupDelayMs()) {
-                    prometeusService.addLoRaLateUplink(now - dedup.firstArrivalTime);
-                    log.debug("Late uplink arriving for devaddr " + dedup.devAddr + " with fCnt " + dedup.fCnt + " after " + (now - dedup.firstArrivalTime) + "ms from " + uf.getRxInfo().getGatewayId());
+                    if ( !isJoin) {
+                        prometeusService.addLoRaLateUplink(now - dedup.firstArrivalTime);
+                        log.debug("Late uplink arriving for devaddr " + dedup.devAddr + " with fCnt " + dedup.fCnt + " after " + (now - dedup.firstArrivalTime) + "ms from " + uf.getRxInfo().getGatewayId());
+                    } else {
+                        // join
+                        log.debug("Late join arriving for devEui " + dedup.deviceEui + " after " + (now - dedup.firstArrivalTime) + "ms from " + uf.getRxInfo().getGatewayId());
+                    }
                 } else {
-                    log.debug("OnTime uplink arriving for devaddr " + dedup.devAddr + " with fCnt " + dedup.fCnt);
+                    if ( !isJoin ) {
+                        log.debug("OnTime uplink arriving for devaddr " + dedup.devAddr + " with fCnt " + dedup.fCnt);
+                    } else {
+                        log.debug("OnTime join arriving for deveui " + dedup.deviceEui);
+                    }
                 }
             }
 
