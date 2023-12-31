@@ -109,7 +109,7 @@ be publicly published, even when small pieces of code or architecture are reused
 
 ## Credits
 Thank you to the following persons contributing to the project
-- [DeflaeAwning](https://github.com/DeflateAwning) for fixing grammar and improving english translations.
+- [DeflateAwning](https://github.com/DeflateAwning) for fixing grammar and improving english translations.
 
 
 ## Misc
