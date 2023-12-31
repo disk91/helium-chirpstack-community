@@ -255,11 +255,11 @@ public class MqttLoRaListener implements MqttCallback {
             scheduleRunning++;
         }
         try {
-            /**
-             * We want to give a priority on the bridge processing but in the same time not
-             * having the chiprstack messages not proceeded, so let's consider we want a maximum
-             * late for a Chirpstack message of 5s after arrival and bridge fresher than the chirpstack messages
-             */
+            //
+            // We want to give a priority on the bridge processing but in the same time not
+            // having the Chiprstack messages not proceeded, so let's consider we want a maximum
+            // late for a Chirpstack message of 5s after arrival and bridge fresher than the Chirpstack messages
+            //
             while ( chipstackQueue.size() > 0 || bridgeQueue.size() > 0 ) {
                 long now = Now.NowUtcMs();
                 MqttEvent c = chipstackQueue.peek();
@@ -583,7 +583,7 @@ public class MqttLoRaListener implements MqttCallback {
                     // This is mostly the case for the late packets to reattach the right one
                     // But also happen when chirpstack event comes before the up event.
                     if (theDedup.isEmpty()) {
-                        log.debug("Uplink not found in the recent history... deep search");
+                        log.warn("Uplink not found in the recent history... deep search");
                         theDedup = packetDedup.values().parallelStream().filter(dedup -> {
                             if (dedup.fCnt == up.getfCnt() && !dedup.isJoin && dedup.devAddr.compareToIgnoreCase(up.getDevAddr()) == 0) {
                                 if (dedup.deviceEui != null && dedup.deviceEui.compareToIgnoreCase(up.getDeviceInfo().getDevEui()) == 0) {
@@ -617,7 +617,7 @@ public class MqttLoRaListener implements MqttCallback {
                         // so the entry is not yet existing.
                         // we can have a reconciliation when cache is cleaned as the same entry exist with no association
                         // make a table of this and then in the case of not found association we can reconciliate it.
-                        log.debug("Found a packet invoiced with no dedup reference " + up.getDeviceInfo().getDevEui() + " with fCnt " + up.getfCnt() + " and devAddr " + up.getDevAddr());
+                        log.warn("Found a packet invoiced with no dedup reference " + up.getDeviceInfo().getDevEui() + " with fCnt " + up.getfCnt() + " and devAddr " + up.getDevAddr());
                         ToDedup d = new ToDedup();
                         d.deviceEui = up.getDeviceInfo().getDevEui();
                         d.devAddr = up.getDevAddr();
@@ -787,7 +787,7 @@ public class MqttLoRaListener implements MqttCallback {
                                 }
                             }
                             if (!found) {
-                                log.debug("Found a packetDedup without uplink event for " + d.devAddr + " / " + d.fCnt +
+                                log.warn("Found a packetDedup without uplink event for " + d.devAddr + " / " + d.fCnt +
                                     " from " + d.firstGatewayId + " with " + d.duplicates + " dup");
                                 notInvoicable += d.duplicates;
                             }
@@ -822,7 +822,7 @@ public class MqttLoRaListener implements MqttCallback {
                 lastCleanLateDedup = now;
             }
         } catch ( Exception x) {
-            log.error("MQTT LL - Exception in cleanDedupCche "+x.getMessage());
+            log.error("MQTT LL - Exception in cleanDedupCache "+x.getMessage());
             x.printStackTrace();
         } finally {
             synchronized (scheduleRunningLock) {
