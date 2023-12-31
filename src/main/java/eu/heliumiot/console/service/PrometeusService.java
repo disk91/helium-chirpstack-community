@@ -250,6 +250,18 @@ public class PrometeusService {
     protected Supplier<Number> getRoamingTotalDuration() { return ()->roamingTotalDurationMs; }
     protected Supplier<Number> getRoamingCount() { return ()->roamingCount; }
 
+    // ============================================================
+    // Listener queue state
+    private long bridgeQueueSize = 0;
+    private long chirpstackQueueSize = 0;
+
+    public void bridgeQueueSet(int size) { this.bridgeQueueSize = size; }
+    public void chirpstackQueueSet(int size) { this.chirpstackQueueSize = size; }
+
+    protected Supplier<Number> getBridgeQueueSize() { return ()->bridgeQueueSize; }
+    protected Supplier<Number> getChirpstackQueueSize() { return ()->chirpstackQueueSize; }
+
+
     // =============================================================
     // Prometheus interface
 
@@ -571,7 +583,12 @@ public class PrometeusService {
         Gauge.builder("cons.lora.process", getLoRaMessageProcessed())
             .description("Number of the LoRa Frame event processed in Mqtt listener")
             .register(registry);
-
+        Gauge.builder("cons.mqtt.bridge.qsz", getBridgeQueueSize())
+            .description("Number of mqtt event from bridge waiting for being processed")
+            .register(registry);
+        Gauge.builder("cons.mqtt.chirpstack.qsz", getChirpstackQueueSize())
+            .description("Number of mqtt event from Chirpstack waiting for being processed")
+            .register(registry);
     }
 
     @Autowired
