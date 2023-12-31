@@ -309,7 +309,7 @@
 
   "mig_title" : "Migrate devices from Helium legacy console",
   "mig_setup" : "Setup API",
-  "mig_chirpstack" : "Setup Chripstack",
+  "mig_chirpstack" : "Setup Chirpstack",
   "mig_setup_apiexplained_1" : "You need to <b>create an API key</b> from the legacy helium console to authorized our service to access your data and migrate your devices. The API key is not stored in our backend services during the operations.",
   "mig_setup_apiexplained_2" : "To create the API key, go to your previous <b>helium console / profile and create</b> an API key ",
   "mig_setup_apiexplained_3" : "Once created, your API key needs to be validated, <b>check your mailbox</b>.",
@@ -336,7 +336,7 @@
   "mig_err_api_key_delete" : "Internal error, impossible to delete previous Api Key",
   "mig_err_api_key_create" : "Internal error, impossible to create the Api Key",
   "mig_err_empty_tenants" : "No tenant found, you need to create one",
-  "mig_err_invalid_bearer" : "Invalid chripstack authentication, try to logout / login",
+  "mig_err_invalid_bearer" : "Invalid Chirpstack authentication, try to logout / login",
   "mig_err_undefined" : "Error during Api Key creation, try later",
   "mig_loaded_eu868" : "EU868:",
   "mig_loaded_au915" : "AU915:",
@@ -411,7 +411,7 @@
   "mig_loaded_integration" : "Integrations",
   "mig_setup_integration_select" : "Select integration to be applied",
   "mig_select_integation" : "Select Integration",
-  "mig_setup_integration_info" : "Currenlty not all the type of integration are supported for migration, the list only displays what is supported.",
+  "mig_setup_integration_info" : "Currently not all the type of integration are supported for migration, the list only displays what is supported.",
 
   "bcopy_card_title" : "Multi-buy / frame copy",
   "bcopy_parameter" : "Parameter", 
