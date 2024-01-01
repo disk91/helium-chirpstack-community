@@ -252,14 +252,22 @@ public class PrometeusService {
 
     // ============================================================
     // Listener queue state
-    private long bridgeQueueSize = 0;
-    private long chirpstackQueueSize = 0;
+    private long bridgeQueueSize = 0;       // store the max until read
+    private long chirpstackQueueSize = 0;   // store the max until read
 
-    public void bridgeQueueSet(int size) { this.bridgeQueueSize = size; }
-    public void chirpstackQueueSet(int size) { this.chirpstackQueueSize = size; }
+    public void bridgeQueueSet(int size) { if (size > this.bridgeQueueSize) this.bridgeQueueSize = size; }
+    public void chirpstackQueueSet(int size) { if ( size > this.chirpstackQueueSize) this.chirpstackQueueSize = size; }
 
-    protected Supplier<Number> getBridgeQueueSize() { return ()->bridgeQueueSize; }
-    protected Supplier<Number> getChirpstackQueueSize() { return ()->chirpstackQueueSize; }
+    protected Supplier<Number> getBridgeQueueSize() {
+        long t = bridgeQueueSize;
+        this.bridgeQueueSize = 0;
+        return ()->t;
+    }
+    protected Supplier<Number> getChirpstackQueueSize() {
+        long t = chirpstackQueueSize;
+        this.chirpstackQueueSize = 0;
+        return ()->t;
+    }
 
 
     // =============================================================

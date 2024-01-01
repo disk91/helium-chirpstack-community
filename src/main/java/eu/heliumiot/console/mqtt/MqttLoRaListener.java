@@ -5,6 +5,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.google.protobuf.InvalidProtocolBufferException;
+import com.google.type.DateTime;
 import eu.heliumiot.console.ConsoleConfig;
 import eu.heliumiot.console.jpa.db.HeliumParameter;
 import eu.heliumiot.console.service.HeliumParameterService;
@@ -267,15 +268,23 @@ public class MqttLoRaListener implements MqttCallback {
                 MqttEvent e;
                 if ( b == null && c == null ) break;
                 if ( b == null ) {
-                    e = chipstackQueue.poll();
-                    prometeusService.chirpstackQueueSet(chipstackQueue.size());
+                    if ( c.arrivalTime < (now - 500) ) {
+                        // we want to make sure bridge had time to process events
+                        // not a problem to delay a bit the chirpstack queue processing
+                        // for getting stuff in the right order, even if it should ...
+                        e = chipstackQueue.poll();
+                        prometeusService.chirpstackQueueSet(chipstackQueue.size());
+                    } else {
+                        Tools.sleep(10);
+                        continue; // try again
+                    }
                 } else if ( c == null ) {
                     e = bridgeQueue.poll();
                     prometeusService.bridgeQueueSet(bridgeQueue.size());
                 } else {
                     if ( c.arrivalTime < ( now - 5_000) ) {
                         // security on processing the chirpstack event and billing (event if this situation should
-                        // no be reached, but if bridge queue is going really slow)
+                        // not be reached, but if bridge queue is going really slow)
                         e = chipstackQueue.poll();
                         prometeusService.chirpstackQueueSet(chipstackQueue.size());
                         if ( (now - lastErrorLog) > 30_000 ) {
@@ -283,8 +292,8 @@ public class MqttLoRaListener implements MqttCallback {
                             lastErrorLog = now;
                         }
                     } else {
-                        if (b.arrivalTime < (c.arrivalTime + 100)) {
-                            // give priority on bridge processing based on arrival time with 100ms advantage
+                        if (b.arrivalTime < (c.arrivalTime + 200)) {
+                            // give priority on bridge processing based on arrival time with 200ms advantage
                             e = bridgeQueue.poll();
                             prometeusService.bridgeQueueSet(bridgeQueue.size());
                         } else {
@@ -423,7 +432,7 @@ public class MqttLoRaListener implements MqttCallback {
                             recentPacketDedup.removeFirst();
                         }
                     }
-                    log.debug("First uplink arriving for devaddr " + dedup.devAddr + " with fCnt " + dedup.fCnt + " after " + (now - dedup.firstArrivalTime) + "ms from " + uf.getRxInfo().getGatewayId());
+                    log.info("First uplink arriving for devaddr " + dedup.devAddr + " with fCnt " + dedup.fCnt + " after " + (now - dedup.firstArrivalTime) + "ms from " + uf.getRxInfo().getGatewayId());
                 } else {
                     // The join case
                     dedup._deviceEui = new byte[8]; // reverse the bytes of the address
@@ -553,7 +562,7 @@ public class MqttLoRaListener implements MqttCallback {
                         true,
                         up.getRxInfo().size() - 1
                     );
-                    log.debug("UPLINK Dev: " + up.getDeviceInfo().getDevEui() + " Adr:" + up.getDevAddr() + " duplicates:" + up.getRxInfo().size() + " size: " + Base64.decode(up.getData()).length);
+                    log.info("UPLINK Dev: " + up.getDeviceInfo().getDevEui() + " Adr:" + up.getDevAddr() + " duplicates:" + up.getRxInfo().size() + " size: " + Base64.decode(up.getData()).length);
                     heliumTenantService.processUplink(
                         up.getDeviceInfo().getTenantId(),
                         up.getDeviceInfo().getDevEui(),
