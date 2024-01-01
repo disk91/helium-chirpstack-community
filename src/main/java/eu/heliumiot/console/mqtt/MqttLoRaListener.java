@@ -57,7 +57,11 @@ public class MqttLoRaListener implements MqttCallback {
         public String topic;
     }
     protected ConcurrentLinkedQueue<MqttEvent> bridgeQueue = new ConcurrentLinkedQueue<MqttEvent>();
+    protected int bridgeQSz = 0;
+    protected final Object bridgeQSzLock = new Object();
     protected ConcurrentLinkedQueue<MqttEvent> chipstackQueue = new ConcurrentLinkedQueue<MqttEvent>();
+    protected int chirpstackQSz = 0;
+    protected final Object chirpstackQSzLock = new Object();
 
 
     // =================================================================
@@ -145,8 +149,11 @@ public class MqttLoRaListener implements MqttCallback {
                     e.messageType = MSG_TYPE_CHIPSTACK;
                     e.topic = s;
                     chipstackQueue.add(e);
-                    prometeusService.chirpstackQueueSet(chipstackQueue.size());
-                    log.debug("MQTT LL Add one message from chirpstack, queue size "+chipstackQueue.size());
+                    synchronized(chirpstackQSzLock) {
+                        chirpstackQSz++;
+                    }
+                    prometeusService.chirpstackQueueSet(chirpstackQSz);
+                    log.debug("MQTT LL Add one message from chirpstack, queue size "+chirpstackQSz);
                 }
             };
 
@@ -160,8 +167,11 @@ public class MqttLoRaListener implements MqttCallback {
                     e.messageType = MSG_TYPE_BRIDGE;
                     e.topic = s;
                     bridgeQueue.add(e);
-                    prometeusService.bridgeQueueSet(bridgeQueue.size());
-                    log.debug("MQTT LL Add one message from bridge, queue size "+bridgeQueue.size());
+                    synchronized(bridgeQSzLock) {
+                        bridgeQSz++;
+                    }
+                    prometeusService.bridgeQueueSet(bridgeQSz);
+                    log.debug("MQTT LL Add one message from bridge, queue size "+bridgeQSz);
                 }
             };
             this.connect();
@@ -251,7 +261,7 @@ public class MqttLoRaListener implements MqttCallback {
     private long lastErrorLog = 0;
     @Scheduled(fixedDelay = 20) // forever until all queue empty
     protected void processQueues() {
-        if ( requestToStop && chipstackQueue.size() == 0 && bridgeQueue.size() == 0 ) return;
+        if ( requestToStop && chirpstackQSz == 0 && bridgeQSz == 0 ) return;
         synchronized (scheduleRunningLock) {
             scheduleRunning++;
         }
@@ -261,32 +271,37 @@ public class MqttLoRaListener implements MqttCallback {
             // having the Chiprstack messages not proceeded, so let's consider we want a maximum
             // late for a Chirpstack message of 5s after arrival and bridge fresher than the Chirpstack messages
             //
-            while ( chipstackQueue.size() > 0 || bridgeQueue.size() > 0 ) {
+            while ( chirpstackQSz > 0 || bridgeQSz > 0 ) {
                 long now = Now.NowUtcMs();
                 MqttEvent c = chipstackQueue.peek();
                 MqttEvent b = bridgeQueue.peek();
                 MqttEvent e;
                 if ( b == null && c == null ) break;
                 if ( b == null ) {
+                    //synchronized(bridgeQSzLock) {bridgeQSz=0;} // not sure as it is asynchronous
                     if ( c.arrivalTime < (now - 100) ) {
                         // we want to make sure bridge had time to process events
                         // not a problem to delay a bit the chirpstack queue processing
                         // for getting stuff in the right order, even if it should ...
                         e = chipstackQueue.poll();
-                        prometeusService.chirpstackQueueSet(chipstackQueue.size());
+                        synchronized(chirpstackQSzLock) {chirpstackQSz--;}
+                        prometeusService.chirpstackQueueSet(chirpstackQSz);
                     } else {
                         Tools.sleep(10);
                         continue; // try again
                     }
                 } else if ( c == null ) {
+                    // synchronized(chirpstackQSzLock) {chirpstackQSz=0;}
                     e = bridgeQueue.poll();
-                    prometeusService.bridgeQueueSet(bridgeQueue.size());
+                    synchronized(bridgeQSzLock) {bridgeQSz--;}
+                    prometeusService.bridgeQueueSet(bridgeQSz);
                 } else {
                     if ( c.arrivalTime < ( now - 5_000) ) {
                         // security on processing the chirpstack event and billing (event if this situation should
                         // not be reached, but if bridge queue is going really slow)
                         e = chipstackQueue.poll();
-                        prometeusService.chirpstackQueueSet(chipstackQueue.size());
+                        synchronized(chirpstackQSzLock) {chirpstackQSz--;}
+                        prometeusService.chirpstackQueueSet(chirpstackQSz);
                         if ( (now - lastErrorLog) > 30_000 ) {
                             log.error("MQTT LL Chirpstack event processing delayed by +5s");
                             lastErrorLog = now;
@@ -295,10 +310,12 @@ public class MqttLoRaListener implements MqttCallback {
                         if (b.arrivalTime < (c.arrivalTime + 100)) {
                             // give priority on bridge processing based on arrival time with 100ms advantage
                             e = bridgeQueue.poll();
-                            prometeusService.bridgeQueueSet(bridgeQueue.size());
+                            synchronized(bridgeQSzLock) {bridgeQSz--;}
+                            prometeusService.bridgeQueueSet(bridgeQSz);
                         } else {
                             e = chipstackQueue.poll();
-                            prometeusService.chirpstackQueueSet(chipstackQueue.size());
+                            synchronized(chirpstackQSzLock){chirpstackQSz--;}
+                            prometeusService.chirpstackQueueSet(chirpstackQSz);
                         }
                     }
                 }
@@ -311,9 +328,9 @@ public class MqttLoRaListener implements MqttCallback {
                     log.error("MQTT LL invalid type of message (should not be here)");
                 }
                 // some post checks
-                if ( chipstackQueue.size() > 500 || bridgeQueue.size() > 500 ) {
+                if ( chirpstackQSz > 500 || bridgeQSz > 500 ) {
                     if ( (now - lastErrorLog) > 30_000 || (lastErrorLog == now)) {
-                        log.error("MQTT LL Queues are becoming too big (chirp: "+chipstackQueue.size()+") (bridg: "+bridgeQueue.size()+")");
+                        log.error("MQTT LL Queues are becoming too big (chirp: "+chirpstackQSz+") (bridg: "+bridgeQSz+")");
                         lastErrorLog = now;
                     }
                 }
