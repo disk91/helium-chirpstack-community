@@ -108,7 +108,6 @@ public class MqttSender implements MqttCallback {
     public void stop() {
         try {
             this.mqttClient.disconnect();
-            this.mqttClient.disconnect();
             this.mqttClient.close();
         } catch (MqttException me) {
             log.error("MQTT S ERROR :"+me.getMessage());
