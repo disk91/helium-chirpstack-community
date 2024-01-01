@@ -562,7 +562,7 @@ public class MqttLoRaListener implements MqttCallback {
                         true,
                         up.getRxInfo().size() - 1
                     );
-                    log.info("UPLINK Dev: " + up.getDeviceInfo().getDevEui() + " Adr:" + up.getDevAddr() + " duplicates:" + up.getRxInfo().size() + " size: " + Base64.decode(up.getData()).length);
+                    log.info("UPLINK Dev: " + up.getDeviceInfo().getDevEui() + " Adr:" + up.getDevAddr() + " Fcnt:"+up.getfCnt()+"("+(up.getfCnt()&0xFFFF)+") duplicates:" + up.getRxInfo().size() + " size: " + Base64.decode(up.getData()).length);
                     heliumTenantService.processUplink(
                         up.getDeviceInfo().getTenantId(),
                         up.getDeviceInfo().getDevEui(),
@@ -575,7 +575,7 @@ public class MqttLoRaListener implements MqttCallback {
                     Optional<ToDedup> theDedup;
                     synchronized (lockRecentPacketDedup) {
                         theDedup = recentPacketDedup.parallelStream().filter(dedup -> {
-                            if (dedup.fCnt == up.getfCnt() && !dedup.isJoin && dedup.devAddr.compareToIgnoreCase(up.getDevAddr()) == 0) {
+                            if (dedup.fCnt == (up.getfCnt() & 0xFFFF) && !dedup.isJoin && dedup.devAddr.compareToIgnoreCase(up.getDevAddr()) == 0) {
                                 if (dedup.deviceEui != null && dedup.deviceEui.compareToIgnoreCase(up.getDeviceInfo().getDevEui()) == 0) {
                                     return true;
                                 } else {
@@ -594,7 +594,7 @@ public class MqttLoRaListener implements MqttCallback {
                     if (theDedup.isEmpty()) {
                         log.warn("Uplink not found in the recent history... deep search");
                         theDedup = packetDedup.values().parallelStream().filter(dedup -> {
-                            if (dedup.fCnt == up.getfCnt() && !dedup.isJoin && dedup.devAddr.compareToIgnoreCase(up.getDevAddr()) == 0) {
+                            if (dedup.fCnt == (up.getfCnt() & 0xFFFF) && !dedup.isJoin && dedup.devAddr.compareToIgnoreCase(up.getDevAddr()) == 0) {
                                 if (dedup.deviceEui != null && dedup.deviceEui.compareToIgnoreCase(up.getDeviceInfo().getDevEui()) == 0) {
                                     return true;
                                 } else {
@@ -629,6 +629,7 @@ public class MqttLoRaListener implements MqttCallback {
                         log.warn("Found a packet invoiced with no dedup reference " + up.getDeviceInfo().getDevEui() + " with fCnt " + up.getfCnt() + " and devAddr " + up.getDevAddr());
                         ToDedup d = new ToDedup();
                         d.deviceEui = up.getDeviceInfo().getDevEui();
+                        d.fCnt = up.getfCnt() & 0xFFFF;
                         d.devAddr = up.getDevAddr();
                         d.tenantId = up.getDeviceInfo().getTenantId();
                         d.duplicatesInvoiced = up.getRxInfo().size(); // this is a total invoiced ( first + duplicate )
