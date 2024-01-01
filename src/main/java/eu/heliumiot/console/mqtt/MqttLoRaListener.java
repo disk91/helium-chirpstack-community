@@ -606,6 +606,7 @@ public class MqttLoRaListener implements MqttCallback {
                             }
                             return false;
                         }).findFirst();
+                        if (theDedup.isPresent()) log.warn("Uplink found in recent histo");
                     }
 
                     // give the information for late packet invoice later
