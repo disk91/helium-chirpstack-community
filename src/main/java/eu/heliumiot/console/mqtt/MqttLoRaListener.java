@@ -170,9 +170,9 @@ public class MqttLoRaListener implements MqttCallback {
             this.mapper.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
             this.mapper.configure(SerializationFeature.FAIL_ON_SELF_REFERENCES, false);
 
-            log.info("MQTT L Starting Mqtt listener");
+            log.info("MQTT LL Starting Mqtt listener");
         } catch (MqttException me) {
-            log.error("MQTT L Init ERROR : " + me.getMessage());
+            log.error("MQTT LL Init ERROR : " + me.getMessage());
         }
         return this.mqttClient;
     }
@@ -222,7 +222,7 @@ public class MqttLoRaListener implements MqttCallback {
 
     @Override
     public void deliveryComplete(IMqttDeliveryToken arg0) {
-        // log.info("MQTT L - delivery completed");
+        // log.info("MQTT LL - delivery completed");
     }
 
     @Override
@@ -230,11 +230,11 @@ public class MqttLoRaListener implements MqttCallback {
         log.error("MQTT LL - Connection Lost");
         try {
             // immediate retry, then will be async
-            log.error("MQTT L - Direct reconnecting");
+            log.error("MQTT LL - Direct reconnecting");
             this.connect();
-            log.error("MQTT L - Direct reconnected");
+            log.error("MQTT LL - Direct reconnected");
         } catch (MqttException me) {
-            log.warn("MQTT L - Direct reconnection failed - " + me.getMessage());
+            log.warn("MQTT LL - Direct reconnection failed - " + me.getMessage());
             pendingReconnection = true;
         }
         prometeusService.addMqttConnectionLoss();
@@ -533,7 +533,7 @@ public class MqttLoRaListener implements MqttCallback {
                     d.count++;
                 }
             }
-            log.debug("MQTT L processing time "+(Now.NowUtcMs()-now)+"ms for "+e.topic);
+            log.debug("MQTT LL processing time "+(Now.NowUtcMs()-now)+"ms for "+e.topic);
             prometeusService.addLoRaMessageProcessing(Now.NowUtcMs()-now);
         } catch (InvalidProtocolBufferException x) {
             log.error("MQTT LL - Impossible to parse raw message from bridge");
@@ -592,7 +592,7 @@ public class MqttLoRaListener implements MqttCallback {
                     // This is mostly the case for the late packets to reattach the right one
                     // But also happen when chirpstack event comes before the up event.
                     if (theDedup.isEmpty()) {
-                        log.warn("Uplink not found in the recent history... deep search");
+                        log.debug("Uplink not found in the recent history... deep search");
                         theDedup = packetDedup.values().parallelStream().filter(dedup -> {
                             if (dedup.fCnt == (up.getfCnt() & 0xFFFF) && !dedup.isJoin && dedup.devAddr.compareToIgnoreCase(up.getDevAddr()) == 0) {
                                 if (dedup.deviceEui != null && dedup.deviceEui.compareToIgnoreCase(up.getDeviceInfo().getDevEui()) == 0) {
@@ -606,7 +606,7 @@ public class MqttLoRaListener implements MqttCallback {
                             }
                             return false;
                         }).findFirst();
-                        if (theDedup.isPresent()) log.warn("Uplink found in recent histo");
+                        //if (theDedup.isPresent()) log.warn("Uplink found in recent histo");
                     }
 
                     // give the information for late packet invoice later
@@ -647,7 +647,7 @@ public class MqttLoRaListener implements MqttCallback {
                     }
 
                 } catch (JsonProcessingException x) {
-                    log.error("MQTT L - failed to parse App uplink - " + x.getMessage());
+                    log.error("MQTT LL - failed to parse App uplink - " + x.getMessage());
                     x.printStackTrace();
                 } catch (Exception x) {
                     x.printStackTrace();
@@ -663,17 +663,17 @@ public class MqttLoRaListener implements MqttCallback {
                     );
                     prometeusService.addLoRaJoin();
                 } catch (JsonProcessingException x) {
-                    log.error("MQTT L - failed to parse App JOIN - " + x.getMessage());
+                    log.error("MQTT LL - failed to parse App JOIN - " + x.getMessage());
                     x.printStackTrace();
                 } catch (Exception x) {
                     x.printStackTrace();
                 }
             } else {
                 // standard json messages
-                log.debug("MQTT L - MessageArrived on "+e.topic);
-                //log.info("MQTT L - message "+message);
+                log.debug("MQTT LL - MessageArrived on "+e.topic);
+                //log.info("MQTT LL - message "+message);
             }
-            log.debug("MQTT L processing time "+(Now.NowUtcMs()-now)+"ms for "+e.topic);
+            log.debug("MQTT LL processing time "+(Now.NowUtcMs()-now)+"ms for "+e.topic);
             prometeusService.addLoRaMessageProcessing(Now.NowUtcMs()-now);
 
         } catch (Exception x) {
@@ -790,7 +790,7 @@ public class MqttLoRaListener implements MqttCallback {
                                             found = true;
                                             break;
                                         } else {
-                                            log.info("cleanDedupCache - one found for " + d.devAddr + " / " + d.fCnt + " with long delay: " + Math.abs(d.firstArrivalTime - _d.firstArrivalTime));
+                                            log.warn("cleanDedupCache - Unattributed packet " + d.devAddr + " / " + d.fCnt + " with long delay: " + Math.abs(d.firstArrivalTime - _d.firstArrivalTime));
                                         }
                                     }
                                 } else {
@@ -808,7 +808,7 @@ public class MqttLoRaListener implements MqttCallback {
                 if ( notInvoicable > 0 ) {
                     log.warn("MQTT LL - cleanDedupCache - late packets invoiced "+postInvoiced+" not invoiced "+notInvoicable);
                 } else {
-                    if ( postInvoiced > 0 ) log.info("MQTT LL - cleanDedupCache - late packets invoiced " + postInvoiced);
+                    if ( postInvoiced > 0 ) log.debug("MQTT LL - cleanDedupCache - late packets invoiced " + postInvoiced);
                 }
 
                 // clean
