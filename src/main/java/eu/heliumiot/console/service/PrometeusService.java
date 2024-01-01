@@ -259,14 +259,19 @@ public class PrometeusService {
     public void chirpstackQueueSet(int size) { if ( size > this.chirpstackQueueSize) this.chirpstackQueueSize = size; }
 
     protected Supplier<Number> getBridgeQueueSize() {
-        long t = bridgeQueueSize;
-        this.bridgeQueueSize = 0;
-        return ()->t;
+        return () -> {
+            Number t = this.bridgeQueueSize;
+            this.bridgeQueueSize = 0;
+            return t;
+        };
     }
+    
     protected Supplier<Number> getChirpstackQueueSize() {
-        long t = chirpstackQueueSize;
-        this.chirpstackQueueSize = 0;
-        return ()->t;
+        return () -> {
+            Number t = this.chirpstackQueueSize;
+            this.chirpstackQueueSize = 0;
+            return t;
+        };
     }
 
 
