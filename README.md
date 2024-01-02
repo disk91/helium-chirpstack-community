@@ -108,7 +108,7 @@ Specific licences can be obtained by contacting the Author. Any reuse of this co
 be publicly published, even when small pieces of code or architecture are reused as requested by GPLv3.
 
 ## Credits
-Thank you to the following persons contributing to the project
+Thank you to the following persons contributing to the project:
 - [DeflateAwning](https://github.com/DeflateAwning) for fixing grammar and improving english translations.
 
 
