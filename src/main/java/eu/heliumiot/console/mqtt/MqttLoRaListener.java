@@ -5,7 +5,6 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.google.protobuf.InvalidProtocolBufferException;
-import com.google.type.DateTime;
 import eu.heliumiot.console.ConsoleConfig;
 import eu.heliumiot.console.jpa.db.HeliumParameter;
 import eu.heliumiot.console.service.HeliumParameterService;
@@ -296,26 +295,19 @@ public class MqttLoRaListener implements MqttCallback {
                     synchronized(bridgeQSzLock) {bridgeQSz--;}
                     prometeusService.bridgeQueueSet(bridgeQSz);
                 } else {
-                    if ( c.arrivalTime < ( now - 5_000) ) {
-                        // security on processing the chirpstack event and billing (event if this situation should
-                        // not be reached, but if bridge queue is going really slow)
+                    if (b.arrivalTime < (c.arrivalTime + 200)) {
+                        // give priority on bridge processing based on arrival time with 200ms advantage
+                        e = bridgeQueue.poll();
+                        synchronized(bridgeQSzLock) {bridgeQSz--;}
+                        prometeusService.bridgeQueueSet(bridgeQSz);
+                    } else {
+                        // no risk of deadlock as C is processed when older than bridge + 100ms
                         e = chipstackQueue.poll();
-                        synchronized(chirpstackQSzLock) {chirpstackQSz--;}
+                        synchronized(chirpstackQSzLock){chirpstackQSz--;}
                         prometeusService.chirpstackQueueSet(chirpstackQSz);
-                        if ( (now - lastErrorLog) > 30_000 ) {
+                        if ( (now - e.arrivalTime ) > 5_000 && (now - lastErrorLog) > 30_000 ) {
                             log.error("MQTT LL Chirpstack event processing delayed by +5s");
                             lastErrorLog = now;
-                        }
-                    } else {
-                        if (b.arrivalTime < (c.arrivalTime + 100)) {
-                            // give priority on bridge processing based on arrival time with 100ms advantage
-                            e = bridgeQueue.poll();
-                            synchronized(bridgeQSzLock) {bridgeQSz--;}
-                            prometeusService.bridgeQueueSet(bridgeQSz);
-                        } else {
-                            e = chipstackQueue.poll();
-                            synchronized(chirpstackQSzLock){chirpstackQSz--;}
-                            prometeusService.chirpstackQueueSet(chirpstackQSz);
                         }
                     }
                 }
