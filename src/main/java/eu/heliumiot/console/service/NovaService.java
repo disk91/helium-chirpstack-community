@@ -31,14 +31,15 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.*;
+import java.util.concurrent.TimeUnit;
 
 @Service
 public class NovaService {
 
     private final Logger log = LoggerFactory.getLogger(this.getClass());
 
-    // @TODO - reverse this to 0
     protected static final int SKFS_MAX_COPIES = 0;
+    protected static final int GRPC_NOVA_API_TIMEOUT = 10;  // 10s timeout for GPRC to not be blocking
     @Autowired
     protected RedisDeviceRepository redisDeviceRepository;
 
@@ -879,6 +880,7 @@ public class NovaService {
                     consoleConfig.getHeliumGrpcPort()
             ).usePlaintext().build();
             orgGrpc.orgBlockingStub stub = orgGrpc.newBlockingStub(channel);
+            stub = stub.withDeadlineAfter(GRPC_NOVA_API_TIMEOUT, TimeUnit.SECONDS);
 
             org_get_req_v1 getToSign = org_get_req_v1.newBuilder()
                     .setOui(consoleConfig.getHeliumRouteOui())
@@ -917,6 +919,7 @@ public class NovaService {
                     consoleConfig.getHeliumGrpcPort()
             ).usePlaintext().build();
             routeGrpc.routeBlockingStub stub = routeGrpc.newBlockingStub(channel);
+            stub = stub.withDeadlineAfter(GRPC_NOVA_API_TIMEOUT, TimeUnit.SECONDS);
 
             route_delete_req_v1 delToSign = route_delete_req_v1.newBuilder()
                     .setId(routeId)
@@ -991,6 +994,8 @@ public class NovaService {
                     consoleConfig.getHeliumGrpcPort()
             ).usePlaintext().build();
             routeGrpc.routeBlockingStub stub = routeGrpc.newBlockingStub(channel);
+            stub = stub.withDeadlineAfter(GRPC_NOVA_API_TIMEOUT, TimeUnit.SECONDS);
+
             routeGrpc.routeStub stubAdr = routeGrpc.newStub(channel);
 
             ArrayList<protocol_gwmp_mapping_v1> regions = new ArrayList<>();
@@ -1126,6 +1131,7 @@ public class NovaService {
                     consoleConfig.getHeliumGrpcPort()
             ).usePlaintext().build();
             routeGrpc.routeBlockingStub stub = routeGrpc.newBlockingStub(channel);
+            stub = stub.withDeadlineAfter(GRPC_NOVA_API_TIMEOUT, TimeUnit.SECONDS);
 
             long now = Now.NowUtcMs();
             route_get_req_v1 requestToSign = route_get_req_v1.newBuilder()
@@ -1180,6 +1186,7 @@ public class NovaService {
                     consoleConfig.getHeliumGrpcPort()
             ).usePlaintext().build();
             routeGrpc.routeBlockingStub stub = routeGrpc.newBlockingStub(channel);
+            stub = stub.withDeadlineAfter(GRPC_NOVA_API_TIMEOUT, TimeUnit.SECONDS);
 
             server_v1 server = oldRoute.getServer();
             if ( updServer ) {
@@ -1257,6 +1264,7 @@ public class NovaService {
                     consoleConfig.getHeliumGrpcPort()
             ).usePlaintext().build();
             routeGrpc.routeBlockingStub stub = routeGrpc.newBlockingStub(channel);
+            stub = stub.withDeadlineAfter(GRPC_NOVA_API_TIMEOUT, TimeUnit.SECONDS);
 
             long now = Now.NowUtcMs();
             route_get_euis_req_v1 requestToSign = route_get_euis_req_v1.newBuilder()
@@ -1308,6 +1316,7 @@ public class NovaService {
                     consoleConfig.getHeliumGrpcPort()
             ).usePlaintext().build();
             routeGrpc.routeBlockingStub stub = routeGrpc.newBlockingStub(channel);
+            stub = stub.withDeadlineAfter(GRPC_NOVA_API_TIMEOUT, TimeUnit.SECONDS);
 
             long now = Now.NowUtcMs();
             route_list_req_v1 requestToSign = route_list_req_v1.newBuilder()
@@ -1514,6 +1523,7 @@ public class NovaService {
                     consoleConfig.getHeliumGrpcPort()
             ).usePlaintext().build();
             routeGrpc.routeBlockingStub stub = routeGrpc.newBlockingStub(channel);
+            stub = stub.withDeadlineAfter(GRPC_NOVA_API_TIMEOUT, TimeUnit.SECONDS);
 
             long now = Now.NowUtcMs();
             Iterator<skf_v1> response;
@@ -1604,6 +1614,7 @@ public class NovaService {
                 consoleConfig.getHeliumGrpcPort()
         ).usePlaintext().build();
         routeGrpc.routeBlockingStub stub = routeGrpc.newBlockingStub(channel);
+        stub = stub.withDeadlineAfter(GRPC_NOVA_API_TIMEOUT, TimeUnit.SECONDS);
         try {
 
             long now = Now.NowUtcMs();
