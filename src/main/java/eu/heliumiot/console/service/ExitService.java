@@ -161,7 +161,7 @@ public class ExitService {
         log.info("Exit - completed");
         this.exiting = true;
         try {
-            // not ideal but let some time to finish everythings
+            // not ideal but let some time to finish everything
             Thread.sleep(1_000);
         } catch (InterruptedException e) {};
         ConsoleApplication.exit();

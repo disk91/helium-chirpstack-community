@@ -23,6 +23,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
+import java.util.Enumeration;
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Supplier;
@@ -101,6 +102,7 @@ public abstract class ObjectCache<K, T extends ClonnableObject<T>> {
             this.unsaved = unsaved;
         }
     }
+
     protected ConcurrentHashMap<K, CachedObject<K,T>> cache;
     protected long maxCacheSize;
     protected long cacheSize;
@@ -152,6 +154,7 @@ public abstract class ObjectCache<K, T extends ClonnableObject<T>> {
         this.tooLong = false;
         this.inAsyncSync = false;
         this.inClean = false;
+        this.expirationMs = expirationMs;
     }
 
     public boolean isTooLong() {
@@ -179,6 +182,10 @@ public abstract class ObjectCache<K, T extends ClonnableObject<T>> {
     public abstract void bulkCacheUpdate(List<T> objects);
 
     private final Logger log = LoggerFactory.getLogger(this.getClass());
+
+    public Enumeration<K> list() {
+        return this.cache.keys();
+    }
 
     public T get(K key) {
         long start = Now.NanoTime();
@@ -340,6 +347,14 @@ public abstract class ObjectCache<K, T extends ClonnableObject<T>> {
         long realCount = 0;
         for (CachedObject<K,T> c : this.cache.values() ) {
             realCount++;
+            // recheck the last access as score is not updated when an entry
+            // is not anymore accessed
+            long cachedPeriod = now - c.getLastAccessTime();
+            if ( cachedPeriod > Now.ONE_HOUR ) c.setScore(-1000);
+            else if ( cachedPeriod > 15*Now.ONE_MINUTE ) c.setScore(c.getScore() - 500);
+            else if ( cachedPeriod >  1*Now.ONE_MINUTE ) c.setScore((int)(c.getScore() - 30*(cachedPeriod/Now.ONE_MINUTE)));
+            else c.setScore((int)(c.getScore() - 5*(cachedPeriod/1000)));
+
             if ( c.getScore() >= -900 ){
                 if ( c.getScore() >= 1000 ) {
                     countValues[1899]++;
@@ -387,7 +402,9 @@ public abstract class ObjectCache<K, T extends ClonnableObject<T>> {
         }
 
         // Update stats
-        this.lastGCDurationMs = (Now.NanoTime() - start)/1000;
+        this.lastGCDurationMs = (Now.NanoTime() - start)/1_000_000;
+        log.info("End of cache clean, removed: "+keysToBeRemoved.size()+" updated: "+keysToBeUpdated.size()+" in: "+this.lastGCDurationMs+"ms");
+
         this.inClean = false;
     }
 
@@ -415,7 +432,7 @@ public abstract class ObjectCache<K, T extends ClonnableObject<T>> {
 
             if ( (Now.NowUtcMs() - lastLog) > 10_000 ) {
                 lastLog = Now.NowUtcMs();
-                log.info("CacheObject - flush "+((100*progress)/this.cacheSize)+"% total "+progress);
+                log.info("CacheObject - flush ("+this.name+") "+((100*progress)/this.cacheSize)+"% total "+progress+" over 10s");
             }
 
         }
