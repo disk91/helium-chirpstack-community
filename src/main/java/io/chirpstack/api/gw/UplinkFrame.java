@@ -19,33 +19,28 @@ private static final long serialVersionUID = 0L;
     phyPayload_ = com.google.protobuf.ByteString.EMPTY;
   }
 
-  @Override
+  @java.lang.Override
   @SuppressWarnings({"unused"})
-  protected Object newInstance(
+  protected java.lang.Object newInstance(
       UnusedPrivateParameter unused) {
     return new UplinkFrame();
   }
 
-  @Override
-  public final com.google.protobuf.UnknownFieldSet
-  getUnknownFields() {
-    return this.unknownFields;
-  }
   public static final com.google.protobuf.Descriptors.Descriptor
       getDescriptor() {
-    return GatewayProto.internal_static_gw_UplinkFrame_descriptor;
+    return io.chirpstack.api.gw.GatewayProto.internal_static_gw_UplinkFrame_descriptor;
   }
 
-  @Override
-  protected FieldAccessorTable
+  @java.lang.Override
+  protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
       internalGetFieldAccessorTable() {
-    return GatewayProto.internal_static_gw_UplinkFrame_fieldAccessorTable
+    return io.chirpstack.api.gw.GatewayProto.internal_static_gw_UplinkFrame_fieldAccessorTable
         .ensureFieldAccessorsInitialized(
-            UplinkFrame.class, Builder.class);
+            io.chirpstack.api.gw.UplinkFrame.class, io.chirpstack.api.gw.UplinkFrame.Builder.class);
   }
 
   public static final int PHY_PAYLOAD_FIELD_NUMBER = 1;
-  private com.google.protobuf.ByteString phyPayload_;
+  private com.google.protobuf.ByteString phyPayload_ = com.google.protobuf.ByteString.EMPTY;
   /**
    * <pre>
    * PHYPayload.
@@ -54,13 +49,13 @@ private static final long serialVersionUID = 0L;
    * <code>bytes phy_payload = 1;</code>
    * @return The phyPayload.
    */
-  @Override
+  @java.lang.Override
   public com.google.protobuf.ByteString getPhyPayload() {
     return phyPayload_;
   }
 
   public static final int TX_INFO_LEGACY_FIELD_NUMBER = 2;
-  private UplinkTxInfoLegacy txInfoLegacy_;
+  private io.chirpstack.api.gw.UplinkTxInfoLegacy txInfoLegacy_;
   /**
    * <pre>
    * TX meta-data (deprecated).
@@ -69,7 +64,7 @@ private static final long serialVersionUID = 0L;
    * <code>.gw.UplinkTxInfoLegacy tx_info_legacy = 2;</code>
    * @return Whether the txInfoLegacy field is set.
    */
-  @Override
+  @java.lang.Override
   public boolean hasTxInfoLegacy() {
     return txInfoLegacy_ != null;
   }
@@ -81,9 +76,9 @@ private static final long serialVersionUID = 0L;
    * <code>.gw.UplinkTxInfoLegacy tx_info_legacy = 2;</code>
    * @return The txInfoLegacy.
    */
-  @Override
-  public UplinkTxInfoLegacy getTxInfoLegacy() {
-    return txInfoLegacy_ == null ? UplinkTxInfoLegacy.getDefaultInstance() : txInfoLegacy_;
+  @java.lang.Override
+  public io.chirpstack.api.gw.UplinkTxInfoLegacy getTxInfoLegacy() {
+    return txInfoLegacy_ == null ? io.chirpstack.api.gw.UplinkTxInfoLegacy.getDefaultInstance() : txInfoLegacy_;
   }
   /**
    * <pre>
@@ -92,13 +87,13 @@ private static final long serialVersionUID = 0L;
    *
    * <code>.gw.UplinkTxInfoLegacy tx_info_legacy = 2;</code>
    */
-  @Override
-  public UplinkTxInfoLegacyOrBuilder getTxInfoLegacyOrBuilder() {
-    return getTxInfoLegacy();
+  @java.lang.Override
+  public io.chirpstack.api.gw.UplinkTxInfoLegacyOrBuilder getTxInfoLegacyOrBuilder() {
+    return txInfoLegacy_ == null ? io.chirpstack.api.gw.UplinkTxInfoLegacy.getDefaultInstance() : txInfoLegacy_;
   }
 
   public static final int RX_INFO_LEGACY_FIELD_NUMBER = 3;
-  private UplinkRxInfoLegacy rxInfoLegacy_;
+  private io.chirpstack.api.gw.UplinkRxInfoLegacy rxInfoLegacy_;
   /**
    * <pre>
    * RX meta-data (deprecated).
@@ -107,7 +102,7 @@ private static final long serialVersionUID = 0L;
    * <code>.gw.UplinkRxInfoLegacy rx_info_legacy = 3;</code>
    * @return Whether the rxInfoLegacy field is set.
    */
-  @Override
+  @java.lang.Override
   public boolean hasRxInfoLegacy() {
     return rxInfoLegacy_ != null;
   }
@@ -119,9 +114,9 @@ private static final long serialVersionUID = 0L;
    * <code>.gw.UplinkRxInfoLegacy rx_info_legacy = 3;</code>
    * @return The rxInfoLegacy.
    */
-  @Override
-  public UplinkRxInfoLegacy getRxInfoLegacy() {
-    return rxInfoLegacy_ == null ? UplinkRxInfoLegacy.getDefaultInstance() : rxInfoLegacy_;
+  @java.lang.Override
+  public io.chirpstack.api.gw.UplinkRxInfoLegacy getRxInfoLegacy() {
+    return rxInfoLegacy_ == null ? io.chirpstack.api.gw.UplinkRxInfoLegacy.getDefaultInstance() : rxInfoLegacy_;
   }
   /**
    * <pre>
@@ -130,13 +125,13 @@ private static final long serialVersionUID = 0L;
    *
    * <code>.gw.UplinkRxInfoLegacy rx_info_legacy = 3;</code>
    */
-  @Override
-  public UplinkRxInfoLegacyOrBuilder getRxInfoLegacyOrBuilder() {
-    return getRxInfoLegacy();
+  @java.lang.Override
+  public io.chirpstack.api.gw.UplinkRxInfoLegacyOrBuilder getRxInfoLegacyOrBuilder() {
+    return rxInfoLegacy_ == null ? io.chirpstack.api.gw.UplinkRxInfoLegacy.getDefaultInstance() : rxInfoLegacy_;
   }
 
   public static final int TX_INFO_FIELD_NUMBER = 4;
-  private UplinkTxInfo txInfo_;
+  private io.chirpstack.api.gw.UplinkTxInfo txInfo_;
   /**
    * <pre>
    * Tx meta-data.
@@ -145,7 +140,7 @@ private static final long serialVersionUID = 0L;
    * <code>.gw.UplinkTxInfo tx_info = 4;</code>
    * @return Whether the txInfo field is set.
    */
-  @Override
+  @java.lang.Override
   public boolean hasTxInfo() {
     return txInfo_ != null;
   }
@@ -157,9 +152,9 @@ private static final long serialVersionUID = 0L;
    * <code>.gw.UplinkTxInfo tx_info = 4;</code>
    * @return The txInfo.
    */
-  @Override
-  public UplinkTxInfo getTxInfo() {
-    return txInfo_ == null ? UplinkTxInfo.getDefaultInstance() : txInfo_;
+  @java.lang.Override
+  public io.chirpstack.api.gw.UplinkTxInfo getTxInfo() {
+    return txInfo_ == null ? io.chirpstack.api.gw.UplinkTxInfo.getDefaultInstance() : txInfo_;
   }
   /**
    * <pre>
@@ -168,13 +163,13 @@ private static final long serialVersionUID = 0L;
    *
    * <code>.gw.UplinkTxInfo tx_info = 4;</code>
    */
-  @Override
-  public UplinkTxInfoOrBuilder getTxInfoOrBuilder() {
-    return getTxInfo();
+  @java.lang.Override
+  public io.chirpstack.api.gw.UplinkTxInfoOrBuilder getTxInfoOrBuilder() {
+    return txInfo_ == null ? io.chirpstack.api.gw.UplinkTxInfo.getDefaultInstance() : txInfo_;
   }
 
   public static final int RX_INFO_FIELD_NUMBER = 5;
-  private UplinkRxInfo rxInfo_;
+  private io.chirpstack.api.gw.UplinkRxInfo rxInfo_;
   /**
    * <pre>
    * Rx meta-data.
@@ -183,7 +178,7 @@ private static final long serialVersionUID = 0L;
    * <code>.gw.UplinkRxInfo rx_info = 5;</code>
    * @return Whether the rxInfo field is set.
    */
-  @Override
+  @java.lang.Override
   public boolean hasRxInfo() {
     return rxInfo_ != null;
   }
@@ -195,9 +190,9 @@ private static final long serialVersionUID = 0L;
    * <code>.gw.UplinkRxInfo rx_info = 5;</code>
    * @return The rxInfo.
    */
-  @Override
-  public UplinkRxInfo getRxInfo() {
-    return rxInfo_ == null ? UplinkRxInfo.getDefaultInstance() : rxInfo_;
+  @java.lang.Override
+  public io.chirpstack.api.gw.UplinkRxInfo getRxInfo() {
+    return rxInfo_ == null ? io.chirpstack.api.gw.UplinkRxInfo.getDefaultInstance() : rxInfo_;
   }
   /**
    * <pre>
@@ -206,13 +201,13 @@ private static final long serialVersionUID = 0L;
    *
    * <code>.gw.UplinkRxInfo rx_info = 5;</code>
    */
-  @Override
-  public UplinkRxInfoOrBuilder getRxInfoOrBuilder() {
-    return getRxInfo();
+  @java.lang.Override
+  public io.chirpstack.api.gw.UplinkRxInfoOrBuilder getRxInfoOrBuilder() {
+    return rxInfo_ == null ? io.chirpstack.api.gw.UplinkRxInfo.getDefaultInstance() : rxInfo_;
   }
 
   private byte memoizedIsInitialized = -1;
-  @Override
+  @java.lang.Override
   public final boolean isInitialized() {
     byte isInitialized = memoizedIsInitialized;
     if (isInitialized == 1) return true;
@@ -222,7 +217,7 @@ private static final long serialVersionUID = 0L;
     return true;
   }
 
-  @Override
+  @java.lang.Override
   public void writeTo(com.google.protobuf.CodedOutputStream output)
                       throws java.io.IOException {
     if (!phyPayload_.isEmpty()) {
@@ -243,7 +238,7 @@ private static final long serialVersionUID = 0L;
     getUnknownFields().writeTo(output);
   }
 
-  @Override
+  @java.lang.Override
   public int getSerializedSize() {
     int size = memoizedSize;
     if (size != -1) return size;
@@ -274,15 +269,15 @@ private static final long serialVersionUID = 0L;
     return size;
   }
 
-  @Override
-  public boolean equals(final Object obj) {
+  @java.lang.Override
+  public boolean equals(final java.lang.Object obj) {
     if (obj == this) {
      return true;
     }
-    if (!(obj instanceof UplinkFrame)) {
+    if (!(obj instanceof io.chirpstack.api.gw.UplinkFrame)) {
       return super.equals(obj);
     }
-    UplinkFrame other = (UplinkFrame) obj;
+    io.chirpstack.api.gw.UplinkFrame other = (io.chirpstack.api.gw.UplinkFrame) obj;
 
     if (!getPhyPayload()
         .equals(other.getPhyPayload())) return false;
@@ -310,7 +305,7 @@ private static final long serialVersionUID = 0L;
     return true;
   }
 
-  @Override
+  @java.lang.Override
   public int hashCode() {
     if (memoizedHashCode != 0) {
       return memoizedHashCode;
@@ -340,69 +335,69 @@ private static final long serialVersionUID = 0L;
     return hash;
   }
 
-  public static UplinkFrame parseFrom(
+  public static io.chirpstack.api.gw.UplinkFrame parseFrom(
       java.nio.ByteBuffer data)
       throws com.google.protobuf.InvalidProtocolBufferException {
     return PARSER.parseFrom(data);
   }
-  public static UplinkFrame parseFrom(
+  public static io.chirpstack.api.gw.UplinkFrame parseFrom(
       java.nio.ByteBuffer data,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws com.google.protobuf.InvalidProtocolBufferException {
     return PARSER.parseFrom(data, extensionRegistry);
   }
-  public static UplinkFrame parseFrom(
+  public static io.chirpstack.api.gw.UplinkFrame parseFrom(
       com.google.protobuf.ByteString data)
       throws com.google.protobuf.InvalidProtocolBufferException {
     return PARSER.parseFrom(data);
   }
-  public static UplinkFrame parseFrom(
+  public static io.chirpstack.api.gw.UplinkFrame parseFrom(
       com.google.protobuf.ByteString data,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws com.google.protobuf.InvalidProtocolBufferException {
     return PARSER.parseFrom(data, extensionRegistry);
   }
-  public static UplinkFrame parseFrom(byte[] data)
+  public static io.chirpstack.api.gw.UplinkFrame parseFrom(byte[] data)
       throws com.google.protobuf.InvalidProtocolBufferException {
     return PARSER.parseFrom(data);
   }
-  public static UplinkFrame parseFrom(
+  public static io.chirpstack.api.gw.UplinkFrame parseFrom(
       byte[] data,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws com.google.protobuf.InvalidProtocolBufferException {
     return PARSER.parseFrom(data, extensionRegistry);
   }
-  public static UplinkFrame parseFrom(java.io.InputStream input)
+  public static io.chirpstack.api.gw.UplinkFrame parseFrom(java.io.InputStream input)
       throws java.io.IOException {
     return com.google.protobuf.GeneratedMessageV3
         .parseWithIOException(PARSER, input);
   }
-  public static UplinkFrame parseFrom(
+  public static io.chirpstack.api.gw.UplinkFrame parseFrom(
       java.io.InputStream input,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws java.io.IOException {
     return com.google.protobuf.GeneratedMessageV3
         .parseWithIOException(PARSER, input, extensionRegistry);
   }
-  public static UplinkFrame parseDelimitedFrom(java.io.InputStream input)
+  public static io.chirpstack.api.gw.UplinkFrame parseDelimitedFrom(java.io.InputStream input)
       throws java.io.IOException {
     return com.google.protobuf.GeneratedMessageV3
         .parseDelimitedWithIOException(PARSER, input);
   }
-  public static UplinkFrame parseDelimitedFrom(
+  public static io.chirpstack.api.gw.UplinkFrame parseDelimitedFrom(
       java.io.InputStream input,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws java.io.IOException {
     return com.google.protobuf.GeneratedMessageV3
         .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
   }
-  public static UplinkFrame parseFrom(
+  public static io.chirpstack.api.gw.UplinkFrame parseFrom(
       com.google.protobuf.CodedInputStream input)
       throws java.io.IOException {
     return com.google.protobuf.GeneratedMessageV3
         .parseWithIOException(PARSER, input);
   }
-  public static UplinkFrame parseFrom(
+  public static io.chirpstack.api.gw.UplinkFrame parseFrom(
       com.google.protobuf.CodedInputStream input,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws java.io.IOException {
@@ -410,23 +405,23 @@ private static final long serialVersionUID = 0L;
         .parseWithIOException(PARSER, input, extensionRegistry);
   }
 
-  @Override
+  @java.lang.Override
   public Builder newBuilderForType() { return newBuilder(); }
   public static Builder newBuilder() {
     return DEFAULT_INSTANCE.toBuilder();
   }
-  public static Builder newBuilder(UplinkFrame prototype) {
+  public static Builder newBuilder(io.chirpstack.api.gw.UplinkFrame prototype) {
     return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
   }
-  @Override
+  @java.lang.Override
   public Builder toBuilder() {
     return this == DEFAULT_INSTANCE
         ? new Builder() : new Builder().mergeFrom(this);
   }
 
-  @Override
+  @java.lang.Override
   protected Builder newBuilderForType(
-      BuilderParent parent) {
+      com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
     Builder builder = new Builder(parent);
     return builder;
   }
@@ -436,18 +431,18 @@ private static final long serialVersionUID = 0L;
   public static final class Builder extends
       com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
       // @@protoc_insertion_point(builder_implements:gw.UplinkFrame)
-      UplinkFrameOrBuilder {
+      io.chirpstack.api.gw.UplinkFrameOrBuilder {
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
-      return GatewayProto.internal_static_gw_UplinkFrame_descriptor;
+      return io.chirpstack.api.gw.GatewayProto.internal_static_gw_UplinkFrame_descriptor;
     }
 
-    @Override
-    protected FieldAccessorTable
+    @java.lang.Override
+    protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
         internalGetFieldAccessorTable() {
-      return GatewayProto.internal_static_gw_UplinkFrame_fieldAccessorTable
+      return io.chirpstack.api.gw.GatewayProto.internal_static_gw_UplinkFrame_fieldAccessorTable
           .ensureFieldAccessorsInitialized(
-              UplinkFrame.class, Builder.class);
+              io.chirpstack.api.gw.UplinkFrame.class, io.chirpstack.api.gw.UplinkFrame.Builder.class);
     }
 
     // Construct using io.chirpstack.api.gw.UplinkFrame.newBuilder()
@@ -456,134 +451,105 @@ private static final long serialVersionUID = 0L;
     }
 
     private Builder(
-        BuilderParent parent) {
+        com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
       super(parent);
 
     }
-    @Override
+    @java.lang.Override
     public Builder clear() {
       super.clear();
+      bitField0_ = 0;
       phyPayload_ = com.google.protobuf.ByteString.EMPTY;
-
-      if (txInfoLegacyBuilder_ == null) {
-        txInfoLegacy_ = null;
-      } else {
-        txInfoLegacy_ = null;
+      txInfoLegacy_ = null;
+      if (txInfoLegacyBuilder_ != null) {
+        txInfoLegacyBuilder_.dispose();
         txInfoLegacyBuilder_ = null;
       }
-      if (rxInfoLegacyBuilder_ == null) {
-        rxInfoLegacy_ = null;
-      } else {
-        rxInfoLegacy_ = null;
+      rxInfoLegacy_ = null;
+      if (rxInfoLegacyBuilder_ != null) {
+        rxInfoLegacyBuilder_.dispose();
         rxInfoLegacyBuilder_ = null;
       }
-      if (txInfoBuilder_ == null) {
-        txInfo_ = null;
-      } else {
-        txInfo_ = null;
+      txInfo_ = null;
+      if (txInfoBuilder_ != null) {
+        txInfoBuilder_.dispose();
         txInfoBuilder_ = null;
       }
-      if (rxInfoBuilder_ == null) {
-        rxInfo_ = null;
-      } else {
-        rxInfo_ = null;
+      rxInfo_ = null;
+      if (rxInfoBuilder_ != null) {
+        rxInfoBuilder_.dispose();
         rxInfoBuilder_ = null;
       }
       return this;
     }
 
-    @Override
+    @java.lang.Override
     public com.google.protobuf.Descriptors.Descriptor
         getDescriptorForType() {
-      return GatewayProto.internal_static_gw_UplinkFrame_descriptor;
+      return io.chirpstack.api.gw.GatewayProto.internal_static_gw_UplinkFrame_descriptor;
     }
 
-    @Override
-    public UplinkFrame getDefaultInstanceForType() {
-      return UplinkFrame.getDefaultInstance();
+    @java.lang.Override
+    public io.chirpstack.api.gw.UplinkFrame getDefaultInstanceForType() {
+      return io.chirpstack.api.gw.UplinkFrame.getDefaultInstance();
     }
 
-    @Override
-    public UplinkFrame build() {
-      UplinkFrame result = buildPartial();
+    @java.lang.Override
+    public io.chirpstack.api.gw.UplinkFrame build() {
+      io.chirpstack.api.gw.UplinkFrame result = buildPartial();
       if (!result.isInitialized()) {
         throw newUninitializedMessageException(result);
       }
       return result;
     }
 
-    @Override
-    public UplinkFrame buildPartial() {
-      UplinkFrame result = new UplinkFrame(this);
-      result.phyPayload_ = phyPayload_;
-      if (txInfoLegacyBuilder_ == null) {
-        result.txInfoLegacy_ = txInfoLegacy_;
-      } else {
-        result.txInfoLegacy_ = txInfoLegacyBuilder_.build();
-      }
-      if (rxInfoLegacyBuilder_ == null) {
-        result.rxInfoLegacy_ = rxInfoLegacy_;
-      } else {
-        result.rxInfoLegacy_ = rxInfoLegacyBuilder_.build();
-      }
-      if (txInfoBuilder_ == null) {
-        result.txInfo_ = txInfo_;
-      } else {
-        result.txInfo_ = txInfoBuilder_.build();
-      }
-      if (rxInfoBuilder_ == null) {
-        result.rxInfo_ = rxInfo_;
-      } else {
-        result.rxInfo_ = rxInfoBuilder_.build();
-      }
+    @java.lang.Override
+    public io.chirpstack.api.gw.UplinkFrame buildPartial() {
+      io.chirpstack.api.gw.UplinkFrame result = new io.chirpstack.api.gw.UplinkFrame(this);
+      if (bitField0_ != 0) { buildPartial0(result); }
       onBuilt();
       return result;
     }
 
-    @Override
-    public Builder clone() {
-      return super.clone();
+    private void buildPartial0(io.chirpstack.api.gw.UplinkFrame result) {
+      int from_bitField0_ = bitField0_;
+      if (((from_bitField0_ & 0x00000001) != 0)) {
+        result.phyPayload_ = phyPayload_;
+      }
+      if (((from_bitField0_ & 0x00000002) != 0)) {
+        result.txInfoLegacy_ = txInfoLegacyBuilder_ == null
+            ? txInfoLegacy_
+            : txInfoLegacyBuilder_.build();
+      }
+      if (((from_bitField0_ & 0x00000004) != 0)) {
+        result.rxInfoLegacy_ = rxInfoLegacyBuilder_ == null
+            ? rxInfoLegacy_
+            : rxInfoLegacyBuilder_.build();
+      }
+      if (((from_bitField0_ & 0x00000008) != 0)) {
+        result.txInfo_ = txInfoBuilder_ == null
+            ? txInfo_
+            : txInfoBuilder_.build();
+      }
+      if (((from_bitField0_ & 0x00000010) != 0)) {
+        result.rxInfo_ = rxInfoBuilder_ == null
+            ? rxInfo_
+            : rxInfoBuilder_.build();
+      }
     }
-    @Override
-    public Builder setField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        Object value) {
-      return super.setField(field, value);
-    }
-    @Override
-    public Builder clearField(
-        com.google.protobuf.Descriptors.FieldDescriptor field) {
-      return super.clearField(field);
-    }
-    @Override
-    public Builder clearOneof(
-        com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-      return super.clearOneof(oneof);
-    }
-    @Override
-    public Builder setRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        int index, Object value) {
-      return super.setRepeatedField(field, index, value);
-    }
-    @Override
-    public Builder addRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        Object value) {
-      return super.addRepeatedField(field, value);
-    }
-    @Override
+
+    @java.lang.Override
     public Builder mergeFrom(com.google.protobuf.Message other) {
-      if (other instanceof UplinkFrame) {
-        return mergeFrom((UplinkFrame)other);
+      if (other instanceof io.chirpstack.api.gw.UplinkFrame) {
+        return mergeFrom((io.chirpstack.api.gw.UplinkFrame)other);
       } else {
         super.mergeFrom(other);
         return this;
       }
     }
 
-    public Builder mergeFrom(UplinkFrame other) {
-      if (other == UplinkFrame.getDefaultInstance()) return this;
+    public Builder mergeFrom(io.chirpstack.api.gw.UplinkFrame other) {
+      if (other == io.chirpstack.api.gw.UplinkFrame.getDefaultInstance()) return this;
       if (other.getPhyPayload() != com.google.protobuf.ByteString.EMPTY) {
         setPhyPayload(other.getPhyPayload());
       }
@@ -604,18 +570,18 @@ private static final long serialVersionUID = 0L;
       return this;
     }
 
-    @Override
+    @java.lang.Override
     public final boolean isInitialized() {
       return true;
     }
 
-    @Override
+    @java.lang.Override
     public Builder mergeFrom(
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
       if (extensionRegistry == null) {
-        throw new NullPointerException();
+        throw new java.lang.NullPointerException();
       }
       try {
         boolean done = false;
@@ -627,35 +593,35 @@ private static final long serialVersionUID = 0L;
               break;
             case 10: {
               phyPayload_ = input.readBytes();
-
+              bitField0_ |= 0x00000001;
               break;
             } // case 10
             case 18: {
               input.readMessage(
                   getTxInfoLegacyFieldBuilder().getBuilder(),
                   extensionRegistry);
-
+              bitField0_ |= 0x00000002;
               break;
             } // case 18
             case 26: {
               input.readMessage(
                   getRxInfoLegacyFieldBuilder().getBuilder(),
                   extensionRegistry);
-
+              bitField0_ |= 0x00000004;
               break;
             } // case 26
             case 34: {
               input.readMessage(
                   getTxInfoFieldBuilder().getBuilder(),
                   extensionRegistry);
-
+              bitField0_ |= 0x00000008;
               break;
             } // case 34
             case 42: {
               input.readMessage(
                   getRxInfoFieldBuilder().getBuilder(),
                   extensionRegistry);
-
+              bitField0_ |= 0x00000010;
               break;
             } // case 42
             default: {
@@ -673,6 +639,7 @@ private static final long serialVersionUID = 0L;
       } // finally
       return this;
     }
+    private int bitField0_;
 
     private com.google.protobuf.ByteString phyPayload_ = com.google.protobuf.ByteString.EMPTY;
     /**
@@ -683,7 +650,7 @@ private static final long serialVersionUID = 0L;
      * <code>bytes phy_payload = 1;</code>
      * @return The phyPayload.
      */
-    @Override
+    @java.lang.Override
     public com.google.protobuf.ByteString getPhyPayload() {
       return phyPayload_;
     }
@@ -697,11 +664,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setPhyPayload(com.google.protobuf.ByteString value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  
+      if (value == null) { throw new NullPointerException(); }
       phyPayload_ = value;
+      bitField0_ |= 0x00000001;
       onChanged();
       return this;
     }
@@ -714,15 +679,15 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder clearPhyPayload() {
-      
+      bitField0_ = (bitField0_ & ~0x00000001);
       phyPayload_ = getDefaultInstance().getPhyPayload();
       onChanged();
       return this;
     }
 
-    private UplinkTxInfoLegacy txInfoLegacy_;
+    private io.chirpstack.api.gw.UplinkTxInfoLegacy txInfoLegacy_;
     private com.google.protobuf.SingleFieldBuilderV3<
-        UplinkTxInfoLegacy, UplinkTxInfoLegacy.Builder, UplinkTxInfoLegacyOrBuilder> txInfoLegacyBuilder_;
+        io.chirpstack.api.gw.UplinkTxInfoLegacy, io.chirpstack.api.gw.UplinkTxInfoLegacy.Builder, io.chirpstack.api.gw.UplinkTxInfoLegacyOrBuilder> txInfoLegacyBuilder_;
     /**
      * <pre>
      * TX meta-data (deprecated).
@@ -732,7 +697,7 @@ private static final long serialVersionUID = 0L;
      * @return Whether the txInfoLegacy field is set.
      */
     public boolean hasTxInfoLegacy() {
-      return txInfoLegacyBuilder_ != null || txInfoLegacy_ != null;
+      return ((bitField0_ & 0x00000002) != 0);
     }
     /**
      * <pre>
@@ -742,9 +707,9 @@ private static final long serialVersionUID = 0L;
      * <code>.gw.UplinkTxInfoLegacy tx_info_legacy = 2;</code>
      * @return The txInfoLegacy.
      */
-    public UplinkTxInfoLegacy getTxInfoLegacy() {
+    public io.chirpstack.api.gw.UplinkTxInfoLegacy getTxInfoLegacy() {
       if (txInfoLegacyBuilder_ == null) {
-        return txInfoLegacy_ == null ? UplinkTxInfoLegacy.getDefaultInstance() : txInfoLegacy_;
+        return txInfoLegacy_ == null ? io.chirpstack.api.gw.UplinkTxInfoLegacy.getDefaultInstance() : txInfoLegacy_;
       } else {
         return txInfoLegacyBuilder_.getMessage();
       }
@@ -756,17 +721,17 @@ private static final long serialVersionUID = 0L;
      *
      * <code>.gw.UplinkTxInfoLegacy tx_info_legacy = 2;</code>
      */
-    public Builder setTxInfoLegacy(UplinkTxInfoLegacy value) {
+    public Builder setTxInfoLegacy(io.chirpstack.api.gw.UplinkTxInfoLegacy value) {
       if (txInfoLegacyBuilder_ == null) {
         if (value == null) {
           throw new NullPointerException();
         }
         txInfoLegacy_ = value;
-        onChanged();
       } else {
         txInfoLegacyBuilder_.setMessage(value);
       }
-
+      bitField0_ |= 0x00000002;
+      onChanged();
       return this;
     }
     /**
@@ -777,14 +742,14 @@ private static final long serialVersionUID = 0L;
      * <code>.gw.UplinkTxInfoLegacy tx_info_legacy = 2;</code>
      */
     public Builder setTxInfoLegacy(
-        UplinkTxInfoLegacy.Builder builderForValue) {
+        io.chirpstack.api.gw.UplinkTxInfoLegacy.Builder builderForValue) {
       if (txInfoLegacyBuilder_ == null) {
         txInfoLegacy_ = builderForValue.build();
-        onChanged();
       } else {
         txInfoLegacyBuilder_.setMessage(builderForValue.build());
       }
-
+      bitField0_ |= 0x00000002;
+      onChanged();
       return this;
     }
     /**
@@ -794,19 +759,20 @@ private static final long serialVersionUID = 0L;
      *
      * <code>.gw.UplinkTxInfoLegacy tx_info_legacy = 2;</code>
      */
-    public Builder mergeTxInfoLegacy(UplinkTxInfoLegacy value) {
+    public Builder mergeTxInfoLegacy(io.chirpstack.api.gw.UplinkTxInfoLegacy value) {
       if (txInfoLegacyBuilder_ == null) {
-        if (txInfoLegacy_ != null) {
-          txInfoLegacy_ =
-            UplinkTxInfoLegacy.newBuilder(txInfoLegacy_).mergeFrom(value).buildPartial();
+        if (((bitField0_ & 0x00000002) != 0) &&
+          txInfoLegacy_ != null &&
+          txInfoLegacy_ != io.chirpstack.api.gw.UplinkTxInfoLegacy.getDefaultInstance()) {
+          getTxInfoLegacyBuilder().mergeFrom(value);
         } else {
           txInfoLegacy_ = value;
         }
-        onChanged();
       } else {
         txInfoLegacyBuilder_.mergeFrom(value);
       }
-
+      bitField0_ |= 0x00000002;
+      onChanged();
       return this;
     }
     /**
@@ -817,14 +783,13 @@ private static final long serialVersionUID = 0L;
      * <code>.gw.UplinkTxInfoLegacy tx_info_legacy = 2;</code>
      */
     public Builder clearTxInfoLegacy() {
-      if (txInfoLegacyBuilder_ == null) {
-        txInfoLegacy_ = null;
-        onChanged();
-      } else {
-        txInfoLegacy_ = null;
+      bitField0_ = (bitField0_ & ~0x00000002);
+      txInfoLegacy_ = null;
+      if (txInfoLegacyBuilder_ != null) {
+        txInfoLegacyBuilder_.dispose();
         txInfoLegacyBuilder_ = null;
       }
-
+      onChanged();
       return this;
     }
     /**
@@ -834,8 +799,8 @@ private static final long serialVersionUID = 0L;
      *
      * <code>.gw.UplinkTxInfoLegacy tx_info_legacy = 2;</code>
      */
-    public UplinkTxInfoLegacy.Builder getTxInfoLegacyBuilder() {
-      
+    public io.chirpstack.api.gw.UplinkTxInfoLegacy.Builder getTxInfoLegacyBuilder() {
+      bitField0_ |= 0x00000002;
       onChanged();
       return getTxInfoLegacyFieldBuilder().getBuilder();
     }
@@ -846,12 +811,12 @@ private static final long serialVersionUID = 0L;
      *
      * <code>.gw.UplinkTxInfoLegacy tx_info_legacy = 2;</code>
      */
-    public UplinkTxInfoLegacyOrBuilder getTxInfoLegacyOrBuilder() {
+    public io.chirpstack.api.gw.UplinkTxInfoLegacyOrBuilder getTxInfoLegacyOrBuilder() {
       if (txInfoLegacyBuilder_ != null) {
         return txInfoLegacyBuilder_.getMessageOrBuilder();
       } else {
         return txInfoLegacy_ == null ?
-            UplinkTxInfoLegacy.getDefaultInstance() : txInfoLegacy_;
+            io.chirpstack.api.gw.UplinkTxInfoLegacy.getDefaultInstance() : txInfoLegacy_;
       }
     }
     /**
@@ -862,11 +827,11 @@ private static final long serialVersionUID = 0L;
      * <code>.gw.UplinkTxInfoLegacy tx_info_legacy = 2;</code>
      */
     private com.google.protobuf.SingleFieldBuilderV3<
-        UplinkTxInfoLegacy, UplinkTxInfoLegacy.Builder, UplinkTxInfoLegacyOrBuilder>
+        io.chirpstack.api.gw.UplinkTxInfoLegacy, io.chirpstack.api.gw.UplinkTxInfoLegacy.Builder, io.chirpstack.api.gw.UplinkTxInfoLegacyOrBuilder> 
         getTxInfoLegacyFieldBuilder() {
       if (txInfoLegacyBuilder_ == null) {
         txInfoLegacyBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
-            UplinkTxInfoLegacy, UplinkTxInfoLegacy.Builder, UplinkTxInfoLegacyOrBuilder>(
+            io.chirpstack.api.gw.UplinkTxInfoLegacy, io.chirpstack.api.gw.UplinkTxInfoLegacy.Builder, io.chirpstack.api.gw.UplinkTxInfoLegacyOrBuilder>(
                 getTxInfoLegacy(),
                 getParentForChildren(),
                 isClean());
@@ -875,9 +840,9 @@ private static final long serialVersionUID = 0L;
       return txInfoLegacyBuilder_;
     }
 
-    private UplinkRxInfoLegacy rxInfoLegacy_;
+    private io.chirpstack.api.gw.UplinkRxInfoLegacy rxInfoLegacy_;
     private com.google.protobuf.SingleFieldBuilderV3<
-        UplinkRxInfoLegacy, UplinkRxInfoLegacy.Builder, UplinkRxInfoLegacyOrBuilder> rxInfoLegacyBuilder_;
+        io.chirpstack.api.gw.UplinkRxInfoLegacy, io.chirpstack.api.gw.UplinkRxInfoLegacy.Builder, io.chirpstack.api.gw.UplinkRxInfoLegacyOrBuilder> rxInfoLegacyBuilder_;
     /**
      * <pre>
      * RX meta-data (deprecated).
@@ -887,7 +852,7 @@ private static final long serialVersionUID = 0L;
      * @return Whether the rxInfoLegacy field is set.
      */
     public boolean hasRxInfoLegacy() {
-      return rxInfoLegacyBuilder_ != null || rxInfoLegacy_ != null;
+      return ((bitField0_ & 0x00000004) != 0);
     }
     /**
      * <pre>
@@ -897,9 +862,9 @@ private static final long serialVersionUID = 0L;
      * <code>.gw.UplinkRxInfoLegacy rx_info_legacy = 3;</code>
      * @return The rxInfoLegacy.
      */
-    public UplinkRxInfoLegacy getRxInfoLegacy() {
+    public io.chirpstack.api.gw.UplinkRxInfoLegacy getRxInfoLegacy() {
       if (rxInfoLegacyBuilder_ == null) {
-        return rxInfoLegacy_ == null ? UplinkRxInfoLegacy.getDefaultInstance() : rxInfoLegacy_;
+        return rxInfoLegacy_ == null ? io.chirpstack.api.gw.UplinkRxInfoLegacy.getDefaultInstance() : rxInfoLegacy_;
       } else {
         return rxInfoLegacyBuilder_.getMessage();
       }
@@ -911,17 +876,17 @@ private static final long serialVersionUID = 0L;
      *
      * <code>.gw.UplinkRxInfoLegacy rx_info_legacy = 3;</code>
      */
-    public Builder setRxInfoLegacy(UplinkRxInfoLegacy value) {
+    public Builder setRxInfoLegacy(io.chirpstack.api.gw.UplinkRxInfoLegacy value) {
       if (rxInfoLegacyBuilder_ == null) {
         if (value == null) {
           throw new NullPointerException();
         }
         rxInfoLegacy_ = value;
-        onChanged();
       } else {
         rxInfoLegacyBuilder_.setMessage(value);
       }
-
+      bitField0_ |= 0x00000004;
+      onChanged();
       return this;
     }
     /**
@@ -932,14 +897,14 @@ private static final long serialVersionUID = 0L;
      * <code>.gw.UplinkRxInfoLegacy rx_info_legacy = 3;</code>
      */
     public Builder setRxInfoLegacy(
-        UplinkRxInfoLegacy.Builder builderForValue) {
+        io.chirpstack.api.gw.UplinkRxInfoLegacy.Builder builderForValue) {
       if (rxInfoLegacyBuilder_ == null) {
         rxInfoLegacy_ = builderForValue.build();
-        onChanged();
       } else {
         rxInfoLegacyBuilder_.setMessage(builderForValue.build());
       }
-
+      bitField0_ |= 0x00000004;
+      onChanged();
       return this;
     }
     /**
@@ -949,19 +914,20 @@ private static final long serialVersionUID = 0L;
      *
      * <code>.gw.UplinkRxInfoLegacy rx_info_legacy = 3;</code>
      */
-    public Builder mergeRxInfoLegacy(UplinkRxInfoLegacy value) {
+    public Builder mergeRxInfoLegacy(io.chirpstack.api.gw.UplinkRxInfoLegacy value) {
       if (rxInfoLegacyBuilder_ == null) {
-        if (rxInfoLegacy_ != null) {
-          rxInfoLegacy_ =
-            UplinkRxInfoLegacy.newBuilder(rxInfoLegacy_).mergeFrom(value).buildPartial();
+        if (((bitField0_ & 0x00000004) != 0) &&
+          rxInfoLegacy_ != null &&
+          rxInfoLegacy_ != io.chirpstack.api.gw.UplinkRxInfoLegacy.getDefaultInstance()) {
+          getRxInfoLegacyBuilder().mergeFrom(value);
         } else {
           rxInfoLegacy_ = value;
         }
-        onChanged();
       } else {
         rxInfoLegacyBuilder_.mergeFrom(value);
       }
-
+      bitField0_ |= 0x00000004;
+      onChanged();
       return this;
     }
     /**
@@ -972,14 +938,13 @@ private static final long serialVersionUID = 0L;
      * <code>.gw.UplinkRxInfoLegacy rx_info_legacy = 3;</code>
      */
     public Builder clearRxInfoLegacy() {
-      if (rxInfoLegacyBuilder_ == null) {
-        rxInfoLegacy_ = null;
-        onChanged();
-      } else {
-        rxInfoLegacy_ = null;
+      bitField0_ = (bitField0_ & ~0x00000004);
+      rxInfoLegacy_ = null;
+      if (rxInfoLegacyBuilder_ != null) {
+        rxInfoLegacyBuilder_.dispose();
         rxInfoLegacyBuilder_ = null;
       }
-
+      onChanged();
       return this;
     }
     /**
@@ -989,8 +954,8 @@ private static final long serialVersionUID = 0L;
      *
      * <code>.gw.UplinkRxInfoLegacy rx_info_legacy = 3;</code>
      */
-    public UplinkRxInfoLegacy.Builder getRxInfoLegacyBuilder() {
-      
+    public io.chirpstack.api.gw.UplinkRxInfoLegacy.Builder getRxInfoLegacyBuilder() {
+      bitField0_ |= 0x00000004;
       onChanged();
       return getRxInfoLegacyFieldBuilder().getBuilder();
     }
@@ -1001,12 +966,12 @@ private static final long serialVersionUID = 0L;
      *
      * <code>.gw.UplinkRxInfoLegacy rx_info_legacy = 3;</code>
      */
-    public UplinkRxInfoLegacyOrBuilder getRxInfoLegacyOrBuilder() {
+    public io.chirpstack.api.gw.UplinkRxInfoLegacyOrBuilder getRxInfoLegacyOrBuilder() {
       if (rxInfoLegacyBuilder_ != null) {
         return rxInfoLegacyBuilder_.getMessageOrBuilder();
       } else {
         return rxInfoLegacy_ == null ?
-            UplinkRxInfoLegacy.getDefaultInstance() : rxInfoLegacy_;
+            io.chirpstack.api.gw.UplinkRxInfoLegacy.getDefaultInstance() : rxInfoLegacy_;
       }
     }
     /**
@@ -1017,11 +982,11 @@ private static final long serialVersionUID = 0L;
      * <code>.gw.UplinkRxInfoLegacy rx_info_legacy = 3;</code>
      */
     private com.google.protobuf.SingleFieldBuilderV3<
-        UplinkRxInfoLegacy, UplinkRxInfoLegacy.Builder, UplinkRxInfoLegacyOrBuilder>
+        io.chirpstack.api.gw.UplinkRxInfoLegacy, io.chirpstack.api.gw.UplinkRxInfoLegacy.Builder, io.chirpstack.api.gw.UplinkRxInfoLegacyOrBuilder> 
         getRxInfoLegacyFieldBuilder() {
       if (rxInfoLegacyBuilder_ == null) {
         rxInfoLegacyBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
-            UplinkRxInfoLegacy, UplinkRxInfoLegacy.Builder, UplinkRxInfoLegacyOrBuilder>(
+            io.chirpstack.api.gw.UplinkRxInfoLegacy, io.chirpstack.api.gw.UplinkRxInfoLegacy.Builder, io.chirpstack.api.gw.UplinkRxInfoLegacyOrBuilder>(
                 getRxInfoLegacy(),
                 getParentForChildren(),
                 isClean());
@@ -1030,9 +995,9 @@ private static final long serialVersionUID = 0L;
       return rxInfoLegacyBuilder_;
     }
 
-    private UplinkTxInfo txInfo_;
+    private io.chirpstack.api.gw.UplinkTxInfo txInfo_;
     private com.google.protobuf.SingleFieldBuilderV3<
-        UplinkTxInfo, UplinkTxInfo.Builder, UplinkTxInfoOrBuilder> txInfoBuilder_;
+        io.chirpstack.api.gw.UplinkTxInfo, io.chirpstack.api.gw.UplinkTxInfo.Builder, io.chirpstack.api.gw.UplinkTxInfoOrBuilder> txInfoBuilder_;
     /**
      * <pre>
      * Tx meta-data.
@@ -1042,7 +1007,7 @@ private static final long serialVersionUID = 0L;
      * @return Whether the txInfo field is set.
      */
     public boolean hasTxInfo() {
-      return txInfoBuilder_ != null || txInfo_ != null;
+      return ((bitField0_ & 0x00000008) != 0);
     }
     /**
      * <pre>
@@ -1052,9 +1017,9 @@ private static final long serialVersionUID = 0L;
      * <code>.gw.UplinkTxInfo tx_info = 4;</code>
      * @return The txInfo.
      */
-    public UplinkTxInfo getTxInfo() {
+    public io.chirpstack.api.gw.UplinkTxInfo getTxInfo() {
       if (txInfoBuilder_ == null) {
-        return txInfo_ == null ? UplinkTxInfo.getDefaultInstance() : txInfo_;
+        return txInfo_ == null ? io.chirpstack.api.gw.UplinkTxInfo.getDefaultInstance() : txInfo_;
       } else {
         return txInfoBuilder_.getMessage();
       }
@@ -1066,17 +1031,17 @@ private static final long serialVersionUID = 0L;
      *
      * <code>.gw.UplinkTxInfo tx_info = 4;</code>
      */
-    public Builder setTxInfo(UplinkTxInfo value) {
+    public Builder setTxInfo(io.chirpstack.api.gw.UplinkTxInfo value) {
       if (txInfoBuilder_ == null) {
         if (value == null) {
           throw new NullPointerException();
         }
         txInfo_ = value;
-        onChanged();
       } else {
         txInfoBuilder_.setMessage(value);
       }
-
+      bitField0_ |= 0x00000008;
+      onChanged();
       return this;
     }
     /**
@@ -1087,14 +1052,14 @@ private static final long serialVersionUID = 0L;
      * <code>.gw.UplinkTxInfo tx_info = 4;</code>
      */
     public Builder setTxInfo(
-        UplinkTxInfo.Builder builderForValue) {
+        io.chirpstack.api.gw.UplinkTxInfo.Builder builderForValue) {
       if (txInfoBuilder_ == null) {
         txInfo_ = builderForValue.build();
-        onChanged();
       } else {
         txInfoBuilder_.setMessage(builderForValue.build());
       }
-
+      bitField0_ |= 0x00000008;
+      onChanged();
       return this;
     }
     /**
@@ -1104,19 +1069,20 @@ private static final long serialVersionUID = 0L;
      *
      * <code>.gw.UplinkTxInfo tx_info = 4;</code>
      */
-    public Builder mergeTxInfo(UplinkTxInfo value) {
+    public Builder mergeTxInfo(io.chirpstack.api.gw.UplinkTxInfo value) {
       if (txInfoBuilder_ == null) {
-        if (txInfo_ != null) {
-          txInfo_ =
-            UplinkTxInfo.newBuilder(txInfo_).mergeFrom(value).buildPartial();
+        if (((bitField0_ & 0x00000008) != 0) &&
+          txInfo_ != null &&
+          txInfo_ != io.chirpstack.api.gw.UplinkTxInfo.getDefaultInstance()) {
+          getTxInfoBuilder().mergeFrom(value);
         } else {
           txInfo_ = value;
         }
-        onChanged();
       } else {
         txInfoBuilder_.mergeFrom(value);
       }
-
+      bitField0_ |= 0x00000008;
+      onChanged();
       return this;
     }
     /**
@@ -1127,14 +1093,13 @@ private static final long serialVersionUID = 0L;
      * <code>.gw.UplinkTxInfo tx_info = 4;</code>
      */
     public Builder clearTxInfo() {
-      if (txInfoBuilder_ == null) {
-        txInfo_ = null;
-        onChanged();
-      } else {
-        txInfo_ = null;
+      bitField0_ = (bitField0_ & ~0x00000008);
+      txInfo_ = null;
+      if (txInfoBuilder_ != null) {
+        txInfoBuilder_.dispose();
         txInfoBuilder_ = null;
       }
-
+      onChanged();
       return this;
     }
     /**
@@ -1144,8 +1109,8 @@ private static final long serialVersionUID = 0L;
      *
      * <code>.gw.UplinkTxInfo tx_info = 4;</code>
      */
-    public UplinkTxInfo.Builder getTxInfoBuilder() {
-      
+    public io.chirpstack.api.gw.UplinkTxInfo.Builder getTxInfoBuilder() {
+      bitField0_ |= 0x00000008;
       onChanged();
       return getTxInfoFieldBuilder().getBuilder();
     }
@@ -1156,12 +1121,12 @@ private static final long serialVersionUID = 0L;
      *
      * <code>.gw.UplinkTxInfo tx_info = 4;</code>
      */
-    public UplinkTxInfoOrBuilder getTxInfoOrBuilder() {
+    public io.chirpstack.api.gw.UplinkTxInfoOrBuilder getTxInfoOrBuilder() {
       if (txInfoBuilder_ != null) {
         return txInfoBuilder_.getMessageOrBuilder();
       } else {
         return txInfo_ == null ?
-            UplinkTxInfo.getDefaultInstance() : txInfo_;
+            io.chirpstack.api.gw.UplinkTxInfo.getDefaultInstance() : txInfo_;
       }
     }
     /**
@@ -1172,11 +1137,11 @@ private static final long serialVersionUID = 0L;
      * <code>.gw.UplinkTxInfo tx_info = 4;</code>
      */
     private com.google.protobuf.SingleFieldBuilderV3<
-        UplinkTxInfo, UplinkTxInfo.Builder, UplinkTxInfoOrBuilder>
+        io.chirpstack.api.gw.UplinkTxInfo, io.chirpstack.api.gw.UplinkTxInfo.Builder, io.chirpstack.api.gw.UplinkTxInfoOrBuilder> 
         getTxInfoFieldBuilder() {
       if (txInfoBuilder_ == null) {
         txInfoBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
-            UplinkTxInfo, UplinkTxInfo.Builder, UplinkTxInfoOrBuilder>(
+            io.chirpstack.api.gw.UplinkTxInfo, io.chirpstack.api.gw.UplinkTxInfo.Builder, io.chirpstack.api.gw.UplinkTxInfoOrBuilder>(
                 getTxInfo(),
                 getParentForChildren(),
                 isClean());
@@ -1185,9 +1150,9 @@ private static final long serialVersionUID = 0L;
       return txInfoBuilder_;
     }
 
-    private UplinkRxInfo rxInfo_;
+    private io.chirpstack.api.gw.UplinkRxInfo rxInfo_;
     private com.google.protobuf.SingleFieldBuilderV3<
-        UplinkRxInfo, UplinkRxInfo.Builder, UplinkRxInfoOrBuilder> rxInfoBuilder_;
+        io.chirpstack.api.gw.UplinkRxInfo, io.chirpstack.api.gw.UplinkRxInfo.Builder, io.chirpstack.api.gw.UplinkRxInfoOrBuilder> rxInfoBuilder_;
     /**
      * <pre>
      * Rx meta-data.
@@ -1197,7 +1162,7 @@ private static final long serialVersionUID = 0L;
      * @return Whether the rxInfo field is set.
      */
     public boolean hasRxInfo() {
-      return rxInfoBuilder_ != null || rxInfo_ != null;
+      return ((bitField0_ & 0x00000010) != 0);
     }
     /**
      * <pre>
@@ -1207,9 +1172,9 @@ private static final long serialVersionUID = 0L;
      * <code>.gw.UplinkRxInfo rx_info = 5;</code>
      * @return The rxInfo.
      */
-    public UplinkRxInfo getRxInfo() {
+    public io.chirpstack.api.gw.UplinkRxInfo getRxInfo() {
       if (rxInfoBuilder_ == null) {
-        return rxInfo_ == null ? UplinkRxInfo.getDefaultInstance() : rxInfo_;
+        return rxInfo_ == null ? io.chirpstack.api.gw.UplinkRxInfo.getDefaultInstance() : rxInfo_;
       } else {
         return rxInfoBuilder_.getMessage();
       }
@@ -1221,17 +1186,17 @@ private static final long serialVersionUID = 0L;
      *
      * <code>.gw.UplinkRxInfo rx_info = 5;</code>
      */
-    public Builder setRxInfo(UplinkRxInfo value) {
+    public Builder setRxInfo(io.chirpstack.api.gw.UplinkRxInfo value) {
       if (rxInfoBuilder_ == null) {
         if (value == null) {
           throw new NullPointerException();
         }
         rxInfo_ = value;
-        onChanged();
       } else {
         rxInfoBuilder_.setMessage(value);
       }
-
+      bitField0_ |= 0x00000010;
+      onChanged();
       return this;
     }
     /**
@@ -1242,14 +1207,14 @@ private static final long serialVersionUID = 0L;
      * <code>.gw.UplinkRxInfo rx_info = 5;</code>
      */
     public Builder setRxInfo(
-        UplinkRxInfo.Builder builderForValue) {
+        io.chirpstack.api.gw.UplinkRxInfo.Builder builderForValue) {
       if (rxInfoBuilder_ == null) {
         rxInfo_ = builderForValue.build();
-        onChanged();
       } else {
         rxInfoBuilder_.setMessage(builderForValue.build());
       }
-
+      bitField0_ |= 0x00000010;
+      onChanged();
       return this;
     }
     /**
@@ -1259,19 +1224,20 @@ private static final long serialVersionUID = 0L;
      *
      * <code>.gw.UplinkRxInfo rx_info = 5;</code>
      */
-    public Builder mergeRxInfo(UplinkRxInfo value) {
+    public Builder mergeRxInfo(io.chirpstack.api.gw.UplinkRxInfo value) {
       if (rxInfoBuilder_ == null) {
-        if (rxInfo_ != null) {
-          rxInfo_ =
-            UplinkRxInfo.newBuilder(rxInfo_).mergeFrom(value).buildPartial();
+        if (((bitField0_ & 0x00000010) != 0) &&
+          rxInfo_ != null &&
+          rxInfo_ != io.chirpstack.api.gw.UplinkRxInfo.getDefaultInstance()) {
+          getRxInfoBuilder().mergeFrom(value);
         } else {
           rxInfo_ = value;
         }
-        onChanged();
       } else {
         rxInfoBuilder_.mergeFrom(value);
       }
-
+      bitField0_ |= 0x00000010;
+      onChanged();
       return this;
     }
     /**
@@ -1282,14 +1248,13 @@ private static final long serialVersionUID = 0L;
      * <code>.gw.UplinkRxInfo rx_info = 5;</code>
      */
     public Builder clearRxInfo() {
-      if (rxInfoBuilder_ == null) {
-        rxInfo_ = null;
-        onChanged();
-      } else {
-        rxInfo_ = null;
+      bitField0_ = (bitField0_ & ~0x00000010);
+      rxInfo_ = null;
+      if (rxInfoBuilder_ != null) {
+        rxInfoBuilder_.dispose();
         rxInfoBuilder_ = null;
       }
-
+      onChanged();
       return this;
     }
     /**
@@ -1299,8 +1264,8 @@ private static final long serialVersionUID = 0L;
      *
      * <code>.gw.UplinkRxInfo rx_info = 5;</code>
      */
-    public UplinkRxInfo.Builder getRxInfoBuilder() {
-      
+    public io.chirpstack.api.gw.UplinkRxInfo.Builder getRxInfoBuilder() {
+      bitField0_ |= 0x00000010;
       onChanged();
       return getRxInfoFieldBuilder().getBuilder();
     }
@@ -1311,12 +1276,12 @@ private static final long serialVersionUID = 0L;
      *
      * <code>.gw.UplinkRxInfo rx_info = 5;</code>
      */
-    public UplinkRxInfoOrBuilder getRxInfoOrBuilder() {
+    public io.chirpstack.api.gw.UplinkRxInfoOrBuilder getRxInfoOrBuilder() {
       if (rxInfoBuilder_ != null) {
         return rxInfoBuilder_.getMessageOrBuilder();
       } else {
         return rxInfo_ == null ?
-            UplinkRxInfo.getDefaultInstance() : rxInfo_;
+            io.chirpstack.api.gw.UplinkRxInfo.getDefaultInstance() : rxInfo_;
       }
     }
     /**
@@ -1327,11 +1292,11 @@ private static final long serialVersionUID = 0L;
      * <code>.gw.UplinkRxInfo rx_info = 5;</code>
      */
     private com.google.protobuf.SingleFieldBuilderV3<
-        UplinkRxInfo, UplinkRxInfo.Builder, UplinkRxInfoOrBuilder>
+        io.chirpstack.api.gw.UplinkRxInfo, io.chirpstack.api.gw.UplinkRxInfo.Builder, io.chirpstack.api.gw.UplinkRxInfoOrBuilder> 
         getRxInfoFieldBuilder() {
       if (rxInfoBuilder_ == null) {
         rxInfoBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
-            UplinkRxInfo, UplinkRxInfo.Builder, UplinkRxInfoOrBuilder>(
+            io.chirpstack.api.gw.UplinkRxInfo, io.chirpstack.api.gw.UplinkRxInfo.Builder, io.chirpstack.api.gw.UplinkRxInfoOrBuilder>(
                 getRxInfo(),
                 getParentForChildren(),
                 isClean());
@@ -1339,13 +1304,13 @@ private static final long serialVersionUID = 0L;
       }
       return rxInfoBuilder_;
     }
-    @Override
+    @java.lang.Override
     public final Builder setUnknownFields(
         final com.google.protobuf.UnknownFieldSet unknownFields) {
       return super.setUnknownFields(unknownFields);
     }
 
-    @Override
+    @java.lang.Override
     public final Builder mergeUnknownFields(
         final com.google.protobuf.UnknownFieldSet unknownFields) {
       return super.mergeUnknownFields(unknownFields);
@@ -1356,18 +1321,18 @@ private static final long serialVersionUID = 0L;
   }
 
   // @@protoc_insertion_point(class_scope:gw.UplinkFrame)
-  private static final UplinkFrame DEFAULT_INSTANCE;
+  private static final io.chirpstack.api.gw.UplinkFrame DEFAULT_INSTANCE;
   static {
-    DEFAULT_INSTANCE = new UplinkFrame();
+    DEFAULT_INSTANCE = new io.chirpstack.api.gw.UplinkFrame();
   }
 
-  public static UplinkFrame getDefaultInstance() {
+  public static io.chirpstack.api.gw.UplinkFrame getDefaultInstance() {
     return DEFAULT_INSTANCE;
   }
 
   private static final com.google.protobuf.Parser<UplinkFrame>
       PARSER = new com.google.protobuf.AbstractParser<UplinkFrame>() {
-    @Override
+    @java.lang.Override
     public UplinkFrame parsePartialFrom(
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
@@ -1391,13 +1356,13 @@ private static final long serialVersionUID = 0L;
     return PARSER;
   }
 
-  @Override
+  @java.lang.Override
   public com.google.protobuf.Parser<UplinkFrame> getParserForType() {
     return PARSER;
   }
 
-  @Override
-  public UplinkFrame getDefaultInstanceForType() {
+  @java.lang.Override
+  public io.chirpstack.api.gw.UplinkFrame getDefaultInstanceForType() {
     return DEFAULT_INSTANCE;
   }
 

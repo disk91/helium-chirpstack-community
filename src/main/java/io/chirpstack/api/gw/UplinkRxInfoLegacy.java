@@ -23,25 +23,20 @@ private static final long serialVersionUID = 0L;
     crcStatus_ = 0;
   }
 
-  @Override
+  @java.lang.Override
   @SuppressWarnings({"unused"})
-  protected Object newInstance(
+  protected java.lang.Object newInstance(
       UnusedPrivateParameter unused) {
     return new UplinkRxInfoLegacy();
   }
 
-  @Override
-  public final com.google.protobuf.UnknownFieldSet
-  getUnknownFields() {
-    return this.unknownFields;
-  }
   public static final com.google.protobuf.Descriptors.Descriptor
       getDescriptor() {
-    return GatewayProto.internal_static_gw_UplinkRxInfoLegacy_descriptor;
+    return io.chirpstack.api.gw.GatewayProto.internal_static_gw_UplinkRxInfoLegacy_descriptor;
   }
 
   @SuppressWarnings({"rawtypes"})
-  @Override
+  @java.lang.Override
   protected com.google.protobuf.MapField internalGetMapField(
       int number) {
     switch (number) {
@@ -52,19 +47,20 @@ private static final long serialVersionUID = 0L;
             "Invalid map field number: " + number);
     }
   }
-  @Override
-  protected FieldAccessorTable
+  @java.lang.Override
+  protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
       internalGetFieldAccessorTable() {
-    return GatewayProto.internal_static_gw_UplinkRxInfoLegacy_fieldAccessorTable
+    return io.chirpstack.api.gw.GatewayProto.internal_static_gw_UplinkRxInfoLegacy_fieldAccessorTable
         .ensureFieldAccessorsInitialized(
-            UplinkRxInfoLegacy.class, Builder.class);
+            io.chirpstack.api.gw.UplinkRxInfoLegacy.class, io.chirpstack.api.gw.UplinkRxInfoLegacy.Builder.class);
   }
 
   private int fineTimestampCase_ = 0;
-  private Object fineTimestamp_;
+  @SuppressWarnings("serial")
+  private java.lang.Object fineTimestamp_;
   public enum FineTimestampCase
       implements com.google.protobuf.Internal.EnumLite,
-          InternalOneOfEnum {
+          com.google.protobuf.AbstractMessage.InternalOneOfEnum {
     ENCRYPTED_FINE_TIMESTAMP(13),
     PLAIN_FINE_TIMESTAMP(14),
     FINETIMESTAMP_NOT_SET(0);
@@ -77,7 +73,7 @@ private static final long serialVersionUID = 0L;
      * @return The enum associated with the given number.
      * @deprecated Use {@link #forNumber(int)} instead.
      */
-    @Deprecated
+    @java.lang.Deprecated
     public static FineTimestampCase valueOf(int value) {
       return forNumber(value);
     }
@@ -102,7 +98,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int GATEWAY_ID_FIELD_NUMBER = 1;
-  private com.google.protobuf.ByteString gatewayId_;
+  private com.google.protobuf.ByteString gatewayId_ = com.google.protobuf.ByteString.EMPTY;
   /**
    * <pre>
    * Gateway ID.
@@ -111,7 +107,7 @@ private static final long serialVersionUID = 0L;
    * <code>bytes gateway_id = 1;</code>
    * @return The gatewayId.
    */
-  @Override
+  @java.lang.Override
   public com.google.protobuf.ByteString getGatewayId() {
     return gatewayId_;
   }
@@ -126,7 +122,7 @@ private static final long serialVersionUID = 0L;
    * <code>.google.protobuf.Timestamp time = 2;</code>
    * @return Whether the time field is set.
    */
-  @Override
+  @java.lang.Override
   public boolean hasTime() {
     return time_ != null;
   }
@@ -138,7 +134,7 @@ private static final long serialVersionUID = 0L;
    * <code>.google.protobuf.Timestamp time = 2;</code>
    * @return The time.
    */
-  @Override
+  @java.lang.Override
   public com.google.protobuf.Timestamp getTime() {
     return time_ == null ? com.google.protobuf.Timestamp.getDefaultInstance() : time_;
   }
@@ -149,9 +145,9 @@ private static final long serialVersionUID = 0L;
    *
    * <code>.google.protobuf.Timestamp time = 2;</code>
    */
-  @Override
+  @java.lang.Override
   public com.google.protobuf.TimestampOrBuilder getTimeOrBuilder() {
-    return getTime();
+    return time_ == null ? com.google.protobuf.Timestamp.getDefaultInstance() : time_;
   }
 
   public static final int TIME_SINCE_GPS_EPOCH_FIELD_NUMBER = 3;
@@ -164,7 +160,7 @@ private static final long serialVersionUID = 0L;
    * <code>.google.protobuf.Duration time_since_gps_epoch = 3;</code>
    * @return Whether the timeSinceGpsEpoch field is set.
    */
-  @Override
+  @java.lang.Override
   public boolean hasTimeSinceGpsEpoch() {
     return timeSinceGpsEpoch_ != null;
   }
@@ -176,7 +172,7 @@ private static final long serialVersionUID = 0L;
    * <code>.google.protobuf.Duration time_since_gps_epoch = 3;</code>
    * @return The timeSinceGpsEpoch.
    */
-  @Override
+  @java.lang.Override
   public com.google.protobuf.Duration getTimeSinceGpsEpoch() {
     return timeSinceGpsEpoch_ == null ? com.google.protobuf.Duration.getDefaultInstance() : timeSinceGpsEpoch_;
   }
@@ -187,13 +183,13 @@ private static final long serialVersionUID = 0L;
    *
    * <code>.google.protobuf.Duration time_since_gps_epoch = 3;</code>
    */
-  @Override
+  @java.lang.Override
   public com.google.protobuf.DurationOrBuilder getTimeSinceGpsEpochOrBuilder() {
-    return getTimeSinceGpsEpoch();
+    return timeSinceGpsEpoch_ == null ? com.google.protobuf.Duration.getDefaultInstance() : timeSinceGpsEpoch_;
   }
 
   public static final int RSSI_FIELD_NUMBER = 5;
-  private int rssi_;
+  private int rssi_ = 0;
   /**
    * <pre>
    * RSSI.
@@ -202,13 +198,13 @@ private static final long serialVersionUID = 0L;
    * <code>int32 rssi = 5;</code>
    * @return The rssi.
    */
-  @Override
+  @java.lang.Override
   public int getRssi() {
     return rssi_;
   }
 
   public static final int LORA_SNR_FIELD_NUMBER = 6;
-  private double loraSnr_;
+  private double loraSnr_ = 0D;
   /**
    * <pre>
    * LoRa SNR.
@@ -217,13 +213,13 @@ private static final long serialVersionUID = 0L;
    * <code>double lora_snr = 6;</code>
    * @return The loraSnr.
    */
-  @Override
+  @java.lang.Override
   public double getLoraSnr() {
     return loraSnr_;
   }
 
   public static final int CHANNEL_FIELD_NUMBER = 7;
-  private int channel_;
+  private int channel_ = 0;
   /**
    * <pre>
    * Channel.
@@ -232,13 +228,13 @@ private static final long serialVersionUID = 0L;
    * <code>uint32 channel = 7;</code>
    * @return The channel.
    */
-  @Override
+  @java.lang.Override
   public int getChannel() {
     return channel_;
   }
 
   public static final int RF_CHAIN_FIELD_NUMBER = 8;
-  private int rfChain_;
+  private int rfChain_ = 0;
   /**
    * <pre>
    * RF Chain.
@@ -247,13 +243,13 @@ private static final long serialVersionUID = 0L;
    * <code>uint32 rf_chain = 8;</code>
    * @return The rfChain.
    */
-  @Override
+  @java.lang.Override
   public int getRfChain() {
     return rfChain_;
   }
 
   public static final int BOARD_FIELD_NUMBER = 9;
-  private int board_;
+  private int board_ = 0;
   /**
    * <pre>
    * Board.
@@ -262,13 +258,13 @@ private static final long serialVersionUID = 0L;
    * <code>uint32 board = 9;</code>
    * @return The board.
    */
-  @Override
+  @java.lang.Override
   public int getBoard() {
     return board_;
   }
 
   public static final int ANTENNA_FIELD_NUMBER = 10;
-  private int antenna_;
+  private int antenna_ = 0;
   /**
    * <pre>
    * Antenna.
@@ -277,7 +273,7 @@ private static final long serialVersionUID = 0L;
    * <code>uint32 antenna = 10;</code>
    * @return The antenna.
    */
-  @Override
+  @java.lang.Override
   public int getAntenna() {
     return antenna_;
   }
@@ -292,7 +288,7 @@ private static final long serialVersionUID = 0L;
    * <code>.common.Location location = 11;</code>
    * @return Whether the location field is set.
    */
-  @Override
+  @java.lang.Override
   public boolean hasLocation() {
     return location_ != null;
   }
@@ -304,7 +300,7 @@ private static final long serialVersionUID = 0L;
    * <code>.common.Location location = 11;</code>
    * @return The location.
    */
-  @Override
+  @java.lang.Override
   public io.chirpstack.api.Location getLocation() {
     return location_ == null ? io.chirpstack.api.Location.getDefaultInstance() : location_;
   }
@@ -315,13 +311,13 @@ private static final long serialVersionUID = 0L;
    *
    * <code>.common.Location location = 11;</code>
    */
-  @Override
+  @java.lang.Override
   public io.chirpstack.api.LocationOrBuilder getLocationOrBuilder() {
-    return getLocation();
+    return location_ == null ? io.chirpstack.api.Location.getDefaultInstance() : location_;
   }
 
   public static final int FINE_TIMESTAMP_TYPE_FIELD_NUMBER = 12;
-  private int fineTimestampType_;
+  private int fineTimestampType_ = 0;
   /**
    * <pre>
    * Fine-timestamp type.
@@ -330,7 +326,7 @@ private static final long serialVersionUID = 0L;
    * <code>.gw.FineTimestampType fine_timestamp_type = 12;</code>
    * @return The enum numeric value on the wire for fineTimestampType.
    */
-  @Override public int getFineTimestampTypeValue() {
+  @java.lang.Override public int getFineTimestampTypeValue() {
     return fineTimestampType_;
   }
   /**
@@ -341,10 +337,9 @@ private static final long serialVersionUID = 0L;
    * <code>.gw.FineTimestampType fine_timestamp_type = 12;</code>
    * @return The fineTimestampType.
    */
-  @Override public FineTimestampType getFineTimestampType() {
-    @SuppressWarnings("deprecation")
-    FineTimestampType result = FineTimestampType.valueOf(fineTimestampType_);
-    return result == null ? FineTimestampType.UNRECOGNIZED : result;
+  @java.lang.Override public io.chirpstack.api.gw.FineTimestampType getFineTimestampType() {
+    io.chirpstack.api.gw.FineTimestampType result = io.chirpstack.api.gw.FineTimestampType.forNumber(fineTimestampType_);
+    return result == null ? io.chirpstack.api.gw.FineTimestampType.UNRECOGNIZED : result;
   }
 
   public static final int ENCRYPTED_FINE_TIMESTAMP_FIELD_NUMBER = 13;
@@ -356,7 +351,7 @@ private static final long serialVersionUID = 0L;
    * <code>.gw.EncryptedFineTimestamp encrypted_fine_timestamp = 13;</code>
    * @return Whether the encryptedFineTimestamp field is set.
    */
-  @Override
+  @java.lang.Override
   public boolean hasEncryptedFineTimestamp() {
     return fineTimestampCase_ == 13;
   }
@@ -368,12 +363,12 @@ private static final long serialVersionUID = 0L;
    * <code>.gw.EncryptedFineTimestamp encrypted_fine_timestamp = 13;</code>
    * @return The encryptedFineTimestamp.
    */
-  @Override
-  public EncryptedFineTimestamp getEncryptedFineTimestamp() {
+  @java.lang.Override
+  public io.chirpstack.api.gw.EncryptedFineTimestamp getEncryptedFineTimestamp() {
     if (fineTimestampCase_ == 13) {
-       return (EncryptedFineTimestamp) fineTimestamp_;
+       return (io.chirpstack.api.gw.EncryptedFineTimestamp) fineTimestamp_;
     }
-    return EncryptedFineTimestamp.getDefaultInstance();
+    return io.chirpstack.api.gw.EncryptedFineTimestamp.getDefaultInstance();
   }
   /**
    * <pre>
@@ -382,12 +377,12 @@ private static final long serialVersionUID = 0L;
    *
    * <code>.gw.EncryptedFineTimestamp encrypted_fine_timestamp = 13;</code>
    */
-  @Override
-  public EncryptedFineTimestampOrBuilder getEncryptedFineTimestampOrBuilder() {
+  @java.lang.Override
+  public io.chirpstack.api.gw.EncryptedFineTimestampOrBuilder getEncryptedFineTimestampOrBuilder() {
     if (fineTimestampCase_ == 13) {
-       return (EncryptedFineTimestamp) fineTimestamp_;
+       return (io.chirpstack.api.gw.EncryptedFineTimestamp) fineTimestamp_;
     }
-    return EncryptedFineTimestamp.getDefaultInstance();
+    return io.chirpstack.api.gw.EncryptedFineTimestamp.getDefaultInstance();
   }
 
   public static final int PLAIN_FINE_TIMESTAMP_FIELD_NUMBER = 14;
@@ -399,7 +394,7 @@ private static final long serialVersionUID = 0L;
    * <code>.gw.PlainFineTimestamp plain_fine_timestamp = 14;</code>
    * @return Whether the plainFineTimestamp field is set.
    */
-  @Override
+  @java.lang.Override
   public boolean hasPlainFineTimestamp() {
     return fineTimestampCase_ == 14;
   }
@@ -411,12 +406,12 @@ private static final long serialVersionUID = 0L;
    * <code>.gw.PlainFineTimestamp plain_fine_timestamp = 14;</code>
    * @return The plainFineTimestamp.
    */
-  @Override
-  public PlainFineTimestamp getPlainFineTimestamp() {
+  @java.lang.Override
+  public io.chirpstack.api.gw.PlainFineTimestamp getPlainFineTimestamp() {
     if (fineTimestampCase_ == 14) {
-       return (PlainFineTimestamp) fineTimestamp_;
+       return (io.chirpstack.api.gw.PlainFineTimestamp) fineTimestamp_;
     }
-    return PlainFineTimestamp.getDefaultInstance();
+    return io.chirpstack.api.gw.PlainFineTimestamp.getDefaultInstance();
   }
   /**
    * <pre>
@@ -425,16 +420,16 @@ private static final long serialVersionUID = 0L;
    *
    * <code>.gw.PlainFineTimestamp plain_fine_timestamp = 14;</code>
    */
-  @Override
-  public PlainFineTimestampOrBuilder getPlainFineTimestampOrBuilder() {
+  @java.lang.Override
+  public io.chirpstack.api.gw.PlainFineTimestampOrBuilder getPlainFineTimestampOrBuilder() {
     if (fineTimestampCase_ == 14) {
-       return (PlainFineTimestamp) fineTimestamp_;
+       return (io.chirpstack.api.gw.PlainFineTimestamp) fineTimestamp_;
     }
-    return PlainFineTimestamp.getDefaultInstance();
+    return io.chirpstack.api.gw.PlainFineTimestamp.getDefaultInstance();
   }
 
   public static final int CONTEXT_FIELD_NUMBER = 15;
-  private com.google.protobuf.ByteString context_;
+  private com.google.protobuf.ByteString context_ = com.google.protobuf.ByteString.EMPTY;
   /**
    * <pre>
    * Gateway specific context.
@@ -443,29 +438,30 @@ private static final long serialVersionUID = 0L;
    * <code>bytes context = 15;</code>
    * @return The context.
    */
-  @Override
+  @java.lang.Override
   public com.google.protobuf.ByteString getContext() {
     return context_;
   }
 
   public static final int UPLINK_ID_FIELD_NUMBER = 16;
-  private com.google.protobuf.ByteString uplinkId_;
+  private com.google.protobuf.ByteString uplinkId_ = com.google.protobuf.ByteString.EMPTY;
   /**
    * <pre>
    * Uplink ID (UUID bytes).
-   * Unique and random ID which can be used to correlate the uplink across multiple logs.
+   * Unique and random ID which can be used to correlate the uplink across
+   * multiple logs.
    * </pre>
    *
    * <code>bytes uplink_id = 16;</code>
    * @return The uplinkId.
    */
-  @Override
+  @java.lang.Override
   public com.google.protobuf.ByteString getUplinkId() {
     return uplinkId_;
   }
 
   public static final int CRC_STATUS_FIELD_NUMBER = 17;
-  private int crcStatus_;
+  private int crcStatus_ = 0;
   /**
    * <pre>
    * CRC status.
@@ -474,7 +470,7 @@ private static final long serialVersionUID = 0L;
    * <code>.gw.CRCStatus crc_status = 17;</code>
    * @return The enum numeric value on the wire for crcStatus.
    */
-  @Override public int getCrcStatusValue() {
+  @java.lang.Override public int getCrcStatusValue() {
     return crcStatus_;
   }
   /**
@@ -485,27 +481,27 @@ private static final long serialVersionUID = 0L;
    * <code>.gw.CRCStatus crc_status = 17;</code>
    * @return The crcStatus.
    */
-  @Override public CRCStatus getCrcStatus() {
-    @SuppressWarnings("deprecation")
-    CRCStatus result = CRCStatus.valueOf(crcStatus_);
-    return result == null ? CRCStatus.UNRECOGNIZED : result;
+  @java.lang.Override public io.chirpstack.api.gw.CRCStatus getCrcStatus() {
+    io.chirpstack.api.gw.CRCStatus result = io.chirpstack.api.gw.CRCStatus.forNumber(crcStatus_);
+    return result == null ? io.chirpstack.api.gw.CRCStatus.UNRECOGNIZED : result;
   }
 
   public static final int METADATA_FIELD_NUMBER = 18;
   private static final class MetadataDefaultEntryHolder {
     static final com.google.protobuf.MapEntry<
-        String, String> defaultEntry =
+        java.lang.String, java.lang.String> defaultEntry =
             com.google.protobuf.MapEntry
-            .<String, String>newDefaultInstance(
-                GatewayProto.internal_static_gw_UplinkRxInfoLegacy_MetadataEntry_descriptor,
+            .<java.lang.String, java.lang.String>newDefaultInstance(
+                io.chirpstack.api.gw.GatewayProto.internal_static_gw_UplinkRxInfoLegacy_MetadataEntry_descriptor, 
                 com.google.protobuf.WireFormat.FieldType.STRING,
                 "",
                 com.google.protobuf.WireFormat.FieldType.STRING,
                 "");
   }
+  @SuppressWarnings("serial")
   private com.google.protobuf.MapField<
-      String, String> metadata_;
-  private com.google.protobuf.MapField<String, String>
+      java.lang.String, java.lang.String> metadata_;
+  private com.google.protobuf.MapField<java.lang.String, java.lang.String>
   internalGetMetadata() {
     if (metadata_ == null) {
       return com.google.protobuf.MapField.emptyMapField(
@@ -513,7 +509,6 @@ private static final long serialVersionUID = 0L;
     }
     return metadata_;
   }
-
   public int getMetadataCount() {
     return internalGetMetadata().getMap().size();
   }
@@ -524,19 +519,18 @@ private static final long serialVersionUID = 0L;
    *
    * <code>map&lt;string, string&gt; metadata = 18;</code>
    */
-
-  @Override
+  @java.lang.Override
   public boolean containsMetadata(
-      String key) {
+      java.lang.String key) {
     if (key == null) { throw new NullPointerException("map key"); }
     return internalGetMetadata().getMap().containsKey(key);
   }
   /**
    * Use {@link #getMetadataMap()} instead.
    */
-  @Override
-  @Deprecated
-  public java.util.Map<String, String> getMetadata() {
+  @java.lang.Override
+  @java.lang.Deprecated
+  public java.util.Map<java.lang.String, java.lang.String> getMetadata() {
     return getMetadataMap();
   }
   /**
@@ -546,9 +540,8 @@ private static final long serialVersionUID = 0L;
    *
    * <code>map&lt;string, string&gt; metadata = 18;</code>
    */
-  @Override
-
-  public java.util.Map<String, String> getMetadataMap() {
+  @java.lang.Override
+  public java.util.Map<java.lang.String, java.lang.String> getMetadataMap() {
     return internalGetMetadata().getMap();
   }
   /**
@@ -558,13 +551,14 @@ private static final long serialVersionUID = 0L;
    *
    * <code>map&lt;string, string&gt; metadata = 18;</code>
    */
-  @Override
-
-  public String getMetadataOrDefault(
-      String key,
-      String defaultValue) {
+  @java.lang.Override
+  public /* nullable */
+java.lang.String getMetadataOrDefault(
+      java.lang.String key,
+      /* nullable */
+java.lang.String defaultValue) {
     if (key == null) { throw new NullPointerException("map key"); }
-    java.util.Map<String, String> map =
+    java.util.Map<java.lang.String, java.lang.String> map =
         internalGetMetadata().getMap();
     return map.containsKey(key) ? map.get(key) : defaultValue;
   }
@@ -575,21 +569,20 @@ private static final long serialVersionUID = 0L;
    *
    * <code>map&lt;string, string&gt; metadata = 18;</code>
    */
-  @Override
-
-  public String getMetadataOrThrow(
-      String key) {
+  @java.lang.Override
+  public java.lang.String getMetadataOrThrow(
+      java.lang.String key) {
     if (key == null) { throw new NullPointerException("map key"); }
-    java.util.Map<String, String> map =
+    java.util.Map<java.lang.String, java.lang.String> map =
         internalGetMetadata().getMap();
     if (!map.containsKey(key)) {
-      throw new IllegalArgumentException();
+      throw new java.lang.IllegalArgumentException();
     }
     return map.get(key);
   }
 
   private byte memoizedIsInitialized = -1;
-  @Override
+  @java.lang.Override
   public final boolean isInitialized() {
     byte isInitialized = memoizedIsInitialized;
     if (isInitialized == 1) return true;
@@ -599,7 +592,7 @@ private static final long serialVersionUID = 0L;
     return true;
   }
 
-  @Override
+  @java.lang.Override
   public void writeTo(com.google.protobuf.CodedOutputStream output)
                       throws java.io.IOException {
     if (!gatewayId_.isEmpty()) {
@@ -614,7 +607,7 @@ private static final long serialVersionUID = 0L;
     if (rssi_ != 0) {
       output.writeInt32(5, rssi_);
     }
-    if (Double.doubleToRawLongBits(loraSnr_) != 0) {
+    if (java.lang.Double.doubleToRawLongBits(loraSnr_) != 0) {
       output.writeDouble(6, loraSnr_);
     }
     if (channel_ != 0) {
@@ -632,14 +625,14 @@ private static final long serialVersionUID = 0L;
     if (location_ != null) {
       output.writeMessage(11, getLocation());
     }
-    if (fineTimestampType_ != FineTimestampType.NONE.getNumber()) {
+    if (fineTimestampType_ != io.chirpstack.api.gw.FineTimestampType.NONE.getNumber()) {
       output.writeEnum(12, fineTimestampType_);
     }
     if (fineTimestampCase_ == 13) {
-      output.writeMessage(13, (EncryptedFineTimestamp) fineTimestamp_);
+      output.writeMessage(13, (io.chirpstack.api.gw.EncryptedFineTimestamp) fineTimestamp_);
     }
     if (fineTimestampCase_ == 14) {
-      output.writeMessage(14, (PlainFineTimestamp) fineTimestamp_);
+      output.writeMessage(14, (io.chirpstack.api.gw.PlainFineTimestamp) fineTimestamp_);
     }
     if (!context_.isEmpty()) {
       output.writeBytes(15, context_);
@@ -647,7 +640,7 @@ private static final long serialVersionUID = 0L;
     if (!uplinkId_.isEmpty()) {
       output.writeBytes(16, uplinkId_);
     }
-    if (crcStatus_ != CRCStatus.NO_CRC.getNumber()) {
+    if (crcStatus_ != io.chirpstack.api.gw.CRCStatus.NO_CRC.getNumber()) {
       output.writeEnum(17, crcStatus_);
     }
     com.google.protobuf.GeneratedMessageV3
@@ -659,7 +652,7 @@ private static final long serialVersionUID = 0L;
     getUnknownFields().writeTo(output);
   }
 
-  @Override
+  @java.lang.Override
   public int getSerializedSize() {
     int size = memoizedSize;
     if (size != -1) return size;
@@ -681,7 +674,7 @@ private static final long serialVersionUID = 0L;
       size += com.google.protobuf.CodedOutputStream
         .computeInt32Size(5, rssi_);
     }
-    if (Double.doubleToRawLongBits(loraSnr_) != 0) {
+    if (java.lang.Double.doubleToRawLongBits(loraSnr_) != 0) {
       size += com.google.protobuf.CodedOutputStream
         .computeDoubleSize(6, loraSnr_);
     }
@@ -705,17 +698,17 @@ private static final long serialVersionUID = 0L;
       size += com.google.protobuf.CodedOutputStream
         .computeMessageSize(11, getLocation());
     }
-    if (fineTimestampType_ != FineTimestampType.NONE.getNumber()) {
+    if (fineTimestampType_ != io.chirpstack.api.gw.FineTimestampType.NONE.getNumber()) {
       size += com.google.protobuf.CodedOutputStream
         .computeEnumSize(12, fineTimestampType_);
     }
     if (fineTimestampCase_ == 13) {
       size += com.google.protobuf.CodedOutputStream
-        .computeMessageSize(13, (EncryptedFineTimestamp) fineTimestamp_);
+        .computeMessageSize(13, (io.chirpstack.api.gw.EncryptedFineTimestamp) fineTimestamp_);
     }
     if (fineTimestampCase_ == 14) {
       size += com.google.protobuf.CodedOutputStream
-        .computeMessageSize(14, (PlainFineTimestamp) fineTimestamp_);
+        .computeMessageSize(14, (io.chirpstack.api.gw.PlainFineTimestamp) fineTimestamp_);
     }
     if (!context_.isEmpty()) {
       size += com.google.protobuf.CodedOutputStream
@@ -725,13 +718,13 @@ private static final long serialVersionUID = 0L;
       size += com.google.protobuf.CodedOutputStream
         .computeBytesSize(16, uplinkId_);
     }
-    if (crcStatus_ != CRCStatus.NO_CRC.getNumber()) {
+    if (crcStatus_ != io.chirpstack.api.gw.CRCStatus.NO_CRC.getNumber()) {
       size += com.google.protobuf.CodedOutputStream
         .computeEnumSize(17, crcStatus_);
     }
-    for (java.util.Map.Entry<String, String> entry
+    for (java.util.Map.Entry<java.lang.String, java.lang.String> entry
          : internalGetMetadata().getMap().entrySet()) {
-      com.google.protobuf.MapEntry<String, String>
+      com.google.protobuf.MapEntry<java.lang.String, java.lang.String>
       metadata__ = MetadataDefaultEntryHolder.defaultEntry.newBuilderForType()
           .setKey(entry.getKey())
           .setValue(entry.getValue())
@@ -744,15 +737,15 @@ private static final long serialVersionUID = 0L;
     return size;
   }
 
-  @Override
-  public boolean equals(final Object obj) {
+  @java.lang.Override
+  public boolean equals(final java.lang.Object obj) {
     if (obj == this) {
      return true;
     }
-    if (!(obj instanceof UplinkRxInfoLegacy)) {
+    if (!(obj instanceof io.chirpstack.api.gw.UplinkRxInfoLegacy)) {
       return super.equals(obj);
     }
-    UplinkRxInfoLegacy other = (UplinkRxInfoLegacy) obj;
+    io.chirpstack.api.gw.UplinkRxInfoLegacy other = (io.chirpstack.api.gw.UplinkRxInfoLegacy) obj;
 
     if (!getGatewayId()
         .equals(other.getGatewayId())) return false;
@@ -768,8 +761,8 @@ private static final long serialVersionUID = 0L;
     }
     if (getRssi()
         != other.getRssi()) return false;
-    if (Double.doubleToLongBits(getLoraSnr())
-        != Double.doubleToLongBits(
+    if (java.lang.Double.doubleToLongBits(getLoraSnr())
+        != java.lang.Double.doubleToLongBits(
             other.getLoraSnr())) return false;
     if (getChannel()
         != other.getChannel()) return false;
@@ -809,7 +802,7 @@ private static final long serialVersionUID = 0L;
     return true;
   }
 
-  @Override
+  @java.lang.Override
   public int hashCode() {
     if (memoizedHashCode != 0) {
       return memoizedHashCode;
@@ -830,7 +823,7 @@ private static final long serialVersionUID = 0L;
     hash = (53 * hash) + getRssi();
     hash = (37 * hash) + LORA_SNR_FIELD_NUMBER;
     hash = (53 * hash) + com.google.protobuf.Internal.hashLong(
-        Double.doubleToLongBits(getLoraSnr()));
+        java.lang.Double.doubleToLongBits(getLoraSnr()));
     hash = (37 * hash) + CHANNEL_FIELD_NUMBER;
     hash = (53 * hash) + getChannel();
     hash = (37 * hash) + RF_CHAIN_FIELD_NUMBER;
@@ -872,69 +865,69 @@ private static final long serialVersionUID = 0L;
     return hash;
   }
 
-  public static UplinkRxInfoLegacy parseFrom(
+  public static io.chirpstack.api.gw.UplinkRxInfoLegacy parseFrom(
       java.nio.ByteBuffer data)
       throws com.google.protobuf.InvalidProtocolBufferException {
     return PARSER.parseFrom(data);
   }
-  public static UplinkRxInfoLegacy parseFrom(
+  public static io.chirpstack.api.gw.UplinkRxInfoLegacy parseFrom(
       java.nio.ByteBuffer data,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws com.google.protobuf.InvalidProtocolBufferException {
     return PARSER.parseFrom(data, extensionRegistry);
   }
-  public static UplinkRxInfoLegacy parseFrom(
+  public static io.chirpstack.api.gw.UplinkRxInfoLegacy parseFrom(
       com.google.protobuf.ByteString data)
       throws com.google.protobuf.InvalidProtocolBufferException {
     return PARSER.parseFrom(data);
   }
-  public static UplinkRxInfoLegacy parseFrom(
+  public static io.chirpstack.api.gw.UplinkRxInfoLegacy parseFrom(
       com.google.protobuf.ByteString data,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws com.google.protobuf.InvalidProtocolBufferException {
     return PARSER.parseFrom(data, extensionRegistry);
   }
-  public static UplinkRxInfoLegacy parseFrom(byte[] data)
+  public static io.chirpstack.api.gw.UplinkRxInfoLegacy parseFrom(byte[] data)
       throws com.google.protobuf.InvalidProtocolBufferException {
     return PARSER.parseFrom(data);
   }
-  public static UplinkRxInfoLegacy parseFrom(
+  public static io.chirpstack.api.gw.UplinkRxInfoLegacy parseFrom(
       byte[] data,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws com.google.protobuf.InvalidProtocolBufferException {
     return PARSER.parseFrom(data, extensionRegistry);
   }
-  public static UplinkRxInfoLegacy parseFrom(java.io.InputStream input)
+  public static io.chirpstack.api.gw.UplinkRxInfoLegacy parseFrom(java.io.InputStream input)
       throws java.io.IOException {
     return com.google.protobuf.GeneratedMessageV3
         .parseWithIOException(PARSER, input);
   }
-  public static UplinkRxInfoLegacy parseFrom(
+  public static io.chirpstack.api.gw.UplinkRxInfoLegacy parseFrom(
       java.io.InputStream input,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws java.io.IOException {
     return com.google.protobuf.GeneratedMessageV3
         .parseWithIOException(PARSER, input, extensionRegistry);
   }
-  public static UplinkRxInfoLegacy parseDelimitedFrom(java.io.InputStream input)
+  public static io.chirpstack.api.gw.UplinkRxInfoLegacy parseDelimitedFrom(java.io.InputStream input)
       throws java.io.IOException {
     return com.google.protobuf.GeneratedMessageV3
         .parseDelimitedWithIOException(PARSER, input);
   }
-  public static UplinkRxInfoLegacy parseDelimitedFrom(
+  public static io.chirpstack.api.gw.UplinkRxInfoLegacy parseDelimitedFrom(
       java.io.InputStream input,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws java.io.IOException {
     return com.google.protobuf.GeneratedMessageV3
         .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
   }
-  public static UplinkRxInfoLegacy parseFrom(
+  public static io.chirpstack.api.gw.UplinkRxInfoLegacy parseFrom(
       com.google.protobuf.CodedInputStream input)
       throws java.io.IOException {
     return com.google.protobuf.GeneratedMessageV3
         .parseWithIOException(PARSER, input);
   }
-  public static UplinkRxInfoLegacy parseFrom(
+  public static io.chirpstack.api.gw.UplinkRxInfoLegacy parseFrom(
       com.google.protobuf.CodedInputStream input,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws java.io.IOException {
@@ -942,23 +935,23 @@ private static final long serialVersionUID = 0L;
         .parseWithIOException(PARSER, input, extensionRegistry);
   }
 
-  @Override
+  @java.lang.Override
   public Builder newBuilderForType() { return newBuilder(); }
   public static Builder newBuilder() {
     return DEFAULT_INSTANCE.toBuilder();
   }
-  public static Builder newBuilder(UplinkRxInfoLegacy prototype) {
+  public static Builder newBuilder(io.chirpstack.api.gw.UplinkRxInfoLegacy prototype) {
     return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
   }
-  @Override
+  @java.lang.Override
   public Builder toBuilder() {
     return this == DEFAULT_INSTANCE
         ? new Builder() : new Builder().mergeFrom(this);
   }
 
-  @Override
+  @java.lang.Override
   protected Builder newBuilderForType(
-      BuilderParent parent) {
+      com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
     Builder builder = new Builder(parent);
     return builder;
   }
@@ -968,10 +961,10 @@ private static final long serialVersionUID = 0L;
   public static final class Builder extends
       com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
       // @@protoc_insertion_point(builder_implements:gw.UplinkRxInfoLegacy)
-      UplinkRxInfoLegacyOrBuilder {
+      io.chirpstack.api.gw.UplinkRxInfoLegacyOrBuilder {
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
-      return GatewayProto.internal_static_gw_UplinkRxInfoLegacy_descriptor;
+      return io.chirpstack.api.gw.GatewayProto.internal_static_gw_UplinkRxInfoLegacy_descriptor;
     }
 
     @SuppressWarnings({"rawtypes"})
@@ -996,12 +989,12 @@ private static final long serialVersionUID = 0L;
               "Invalid map field number: " + number);
       }
     }
-    @Override
-    protected FieldAccessorTable
+    @java.lang.Override
+    protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
         internalGetFieldAccessorTable() {
-      return GatewayProto.internal_static_gw_UplinkRxInfoLegacy_fieldAccessorTable
+      return io.chirpstack.api.gw.GatewayProto.internal_static_gw_UplinkRxInfoLegacy_fieldAccessorTable
           .ensureFieldAccessorsInitialized(
-              UplinkRxInfoLegacy.class, Builder.class);
+              io.chirpstack.api.gw.UplinkRxInfoLegacy.class, io.chirpstack.api.gw.UplinkRxInfoLegacy.Builder.class);
     }
 
     // Construct using io.chirpstack.api.gw.UplinkRxInfoLegacy.newBuilder()
@@ -1010,47 +1003,37 @@ private static final long serialVersionUID = 0L;
     }
 
     private Builder(
-        BuilderParent parent) {
+        com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
       super(parent);
 
     }
-    @Override
+    @java.lang.Override
     public Builder clear() {
       super.clear();
+      bitField0_ = 0;
       gatewayId_ = com.google.protobuf.ByteString.EMPTY;
-
-      if (timeBuilder_ == null) {
-        time_ = null;
-      } else {
-        time_ = null;
+      time_ = null;
+      if (timeBuilder_ != null) {
+        timeBuilder_.dispose();
         timeBuilder_ = null;
       }
-      if (timeSinceGpsEpochBuilder_ == null) {
-        timeSinceGpsEpoch_ = null;
-      } else {
-        timeSinceGpsEpoch_ = null;
+      timeSinceGpsEpoch_ = null;
+      if (timeSinceGpsEpochBuilder_ != null) {
+        timeSinceGpsEpochBuilder_.dispose();
         timeSinceGpsEpochBuilder_ = null;
       }
       rssi_ = 0;
-
       loraSnr_ = 0D;
-
       channel_ = 0;
-
       rfChain_ = 0;
-
       board_ = 0;
-
       antenna_ = 0;
-
-      if (locationBuilder_ == null) {
-        location_ = null;
-      } else {
-        location_ = null;
+      location_ = null;
+      if (locationBuilder_ != null) {
+        locationBuilder_.dispose();
         locationBuilder_ = null;
       }
       fineTimestampType_ = 0;
-
       if (encryptedFineTimestampBuilder_ != null) {
         encryptedFineTimestampBuilder_.clear();
       }
@@ -1058,132 +1041,124 @@ private static final long serialVersionUID = 0L;
         plainFineTimestampBuilder_.clear();
       }
       context_ = com.google.protobuf.ByteString.EMPTY;
-
       uplinkId_ = com.google.protobuf.ByteString.EMPTY;
-
       crcStatus_ = 0;
-
       internalGetMutableMetadata().clear();
       fineTimestampCase_ = 0;
       fineTimestamp_ = null;
       return this;
     }
 
-    @Override
+    @java.lang.Override
     public com.google.protobuf.Descriptors.Descriptor
         getDescriptorForType() {
-      return GatewayProto.internal_static_gw_UplinkRxInfoLegacy_descriptor;
+      return io.chirpstack.api.gw.GatewayProto.internal_static_gw_UplinkRxInfoLegacy_descriptor;
     }
 
-    @Override
-    public UplinkRxInfoLegacy getDefaultInstanceForType() {
-      return UplinkRxInfoLegacy.getDefaultInstance();
+    @java.lang.Override
+    public io.chirpstack.api.gw.UplinkRxInfoLegacy getDefaultInstanceForType() {
+      return io.chirpstack.api.gw.UplinkRxInfoLegacy.getDefaultInstance();
     }
 
-    @Override
-    public UplinkRxInfoLegacy build() {
-      UplinkRxInfoLegacy result = buildPartial();
+    @java.lang.Override
+    public io.chirpstack.api.gw.UplinkRxInfoLegacy build() {
+      io.chirpstack.api.gw.UplinkRxInfoLegacy result = buildPartial();
       if (!result.isInitialized()) {
         throw newUninitializedMessageException(result);
       }
       return result;
     }
 
-    @Override
-    public UplinkRxInfoLegacy buildPartial() {
-      UplinkRxInfoLegacy result = new UplinkRxInfoLegacy(this);
-      int from_bitField0_ = bitField0_;
-      result.gatewayId_ = gatewayId_;
-      if (timeBuilder_ == null) {
-        result.time_ = time_;
-      } else {
-        result.time_ = timeBuilder_.build();
-      }
-      if (timeSinceGpsEpochBuilder_ == null) {
-        result.timeSinceGpsEpoch_ = timeSinceGpsEpoch_;
-      } else {
-        result.timeSinceGpsEpoch_ = timeSinceGpsEpochBuilder_.build();
-      }
-      result.rssi_ = rssi_;
-      result.loraSnr_ = loraSnr_;
-      result.channel_ = channel_;
-      result.rfChain_ = rfChain_;
-      result.board_ = board_;
-      result.antenna_ = antenna_;
-      if (locationBuilder_ == null) {
-        result.location_ = location_;
-      } else {
-        result.location_ = locationBuilder_.build();
-      }
-      result.fineTimestampType_ = fineTimestampType_;
-      if (fineTimestampCase_ == 13) {
-        if (encryptedFineTimestampBuilder_ == null) {
-          result.fineTimestamp_ = fineTimestamp_;
-        } else {
-          result.fineTimestamp_ = encryptedFineTimestampBuilder_.build();
-        }
-      }
-      if (fineTimestampCase_ == 14) {
-        if (plainFineTimestampBuilder_ == null) {
-          result.fineTimestamp_ = fineTimestamp_;
-        } else {
-          result.fineTimestamp_ = plainFineTimestampBuilder_.build();
-        }
-      }
-      result.context_ = context_;
-      result.uplinkId_ = uplinkId_;
-      result.crcStatus_ = crcStatus_;
-      result.metadata_ = internalGetMetadata();
-      result.metadata_.makeImmutable();
-      result.fineTimestampCase_ = fineTimestampCase_;
+    @java.lang.Override
+    public io.chirpstack.api.gw.UplinkRxInfoLegacy buildPartial() {
+      io.chirpstack.api.gw.UplinkRxInfoLegacy result = new io.chirpstack.api.gw.UplinkRxInfoLegacy(this);
+      if (bitField0_ != 0) { buildPartial0(result); }
+      buildPartialOneofs(result);
       onBuilt();
       return result;
     }
 
-    @Override
-    public Builder clone() {
-      return super.clone();
+    private void buildPartial0(io.chirpstack.api.gw.UplinkRxInfoLegacy result) {
+      int from_bitField0_ = bitField0_;
+      if (((from_bitField0_ & 0x00000001) != 0)) {
+        result.gatewayId_ = gatewayId_;
+      }
+      if (((from_bitField0_ & 0x00000002) != 0)) {
+        result.time_ = timeBuilder_ == null
+            ? time_
+            : timeBuilder_.build();
+      }
+      if (((from_bitField0_ & 0x00000004) != 0)) {
+        result.timeSinceGpsEpoch_ = timeSinceGpsEpochBuilder_ == null
+            ? timeSinceGpsEpoch_
+            : timeSinceGpsEpochBuilder_.build();
+      }
+      if (((from_bitField0_ & 0x00000008) != 0)) {
+        result.rssi_ = rssi_;
+      }
+      if (((from_bitField0_ & 0x00000010) != 0)) {
+        result.loraSnr_ = loraSnr_;
+      }
+      if (((from_bitField0_ & 0x00000020) != 0)) {
+        result.channel_ = channel_;
+      }
+      if (((from_bitField0_ & 0x00000040) != 0)) {
+        result.rfChain_ = rfChain_;
+      }
+      if (((from_bitField0_ & 0x00000080) != 0)) {
+        result.board_ = board_;
+      }
+      if (((from_bitField0_ & 0x00000100) != 0)) {
+        result.antenna_ = antenna_;
+      }
+      if (((from_bitField0_ & 0x00000200) != 0)) {
+        result.location_ = locationBuilder_ == null
+            ? location_
+            : locationBuilder_.build();
+      }
+      if (((from_bitField0_ & 0x00000400) != 0)) {
+        result.fineTimestampType_ = fineTimestampType_;
+      }
+      if (((from_bitField0_ & 0x00002000) != 0)) {
+        result.context_ = context_;
+      }
+      if (((from_bitField0_ & 0x00004000) != 0)) {
+        result.uplinkId_ = uplinkId_;
+      }
+      if (((from_bitField0_ & 0x00008000) != 0)) {
+        result.crcStatus_ = crcStatus_;
+      }
+      if (((from_bitField0_ & 0x00010000) != 0)) {
+        result.metadata_ = internalGetMetadata();
+        result.metadata_.makeImmutable();
+      }
     }
-    @Override
-    public Builder setField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        Object value) {
-      return super.setField(field, value);
+
+    private void buildPartialOneofs(io.chirpstack.api.gw.UplinkRxInfoLegacy result) {
+      result.fineTimestampCase_ = fineTimestampCase_;
+      result.fineTimestamp_ = this.fineTimestamp_;
+      if (fineTimestampCase_ == 13 &&
+          encryptedFineTimestampBuilder_ != null) {
+        result.fineTimestamp_ = encryptedFineTimestampBuilder_.build();
+      }
+      if (fineTimestampCase_ == 14 &&
+          plainFineTimestampBuilder_ != null) {
+        result.fineTimestamp_ = plainFineTimestampBuilder_.build();
+      }
     }
-    @Override
-    public Builder clearField(
-        com.google.protobuf.Descriptors.FieldDescriptor field) {
-      return super.clearField(field);
-    }
-    @Override
-    public Builder clearOneof(
-        com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-      return super.clearOneof(oneof);
-    }
-    @Override
-    public Builder setRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        int index, Object value) {
-      return super.setRepeatedField(field, index, value);
-    }
-    @Override
-    public Builder addRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        Object value) {
-      return super.addRepeatedField(field, value);
-    }
-    @Override
+
+    @java.lang.Override
     public Builder mergeFrom(com.google.protobuf.Message other) {
-      if (other instanceof UplinkRxInfoLegacy) {
-        return mergeFrom((UplinkRxInfoLegacy)other);
+      if (other instanceof io.chirpstack.api.gw.UplinkRxInfoLegacy) {
+        return mergeFrom((io.chirpstack.api.gw.UplinkRxInfoLegacy)other);
       } else {
         super.mergeFrom(other);
         return this;
       }
     }
 
-    public Builder mergeFrom(UplinkRxInfoLegacy other) {
-      if (other == UplinkRxInfoLegacy.getDefaultInstance()) return this;
+    public Builder mergeFrom(io.chirpstack.api.gw.UplinkRxInfoLegacy other) {
+      if (other == io.chirpstack.api.gw.UplinkRxInfoLegacy.getDefaultInstance()) return this;
       if (other.getGatewayId() != com.google.protobuf.ByteString.EMPTY) {
         setGatewayId(other.getGatewayId());
       }
@@ -1228,6 +1203,7 @@ private static final long serialVersionUID = 0L;
       }
       internalGetMutableMetadata().mergeFrom(
           other.internalGetMetadata());
+      bitField0_ |= 0x00010000;
       switch (other.getFineTimestampCase()) {
         case ENCRYPTED_FINE_TIMESTAMP: {
           mergeEncryptedFineTimestamp(other.getEncryptedFineTimestamp());
@@ -1246,18 +1222,18 @@ private static final long serialVersionUID = 0L;
       return this;
     }
 
-    @Override
+    @java.lang.Override
     public final boolean isInitialized() {
       return true;
     }
 
-    @Override
+    @java.lang.Override
     public Builder mergeFrom(
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
       if (extensionRegistry == null) {
-        throw new NullPointerException();
+        throw new java.lang.NullPointerException();
       }
       try {
         boolean done = false;
@@ -1269,63 +1245,63 @@ private static final long serialVersionUID = 0L;
               break;
             case 10: {
               gatewayId_ = input.readBytes();
-
+              bitField0_ |= 0x00000001;
               break;
             } // case 10
             case 18: {
               input.readMessage(
                   getTimeFieldBuilder().getBuilder(),
                   extensionRegistry);
-
+              bitField0_ |= 0x00000002;
               break;
             } // case 18
             case 26: {
               input.readMessage(
                   getTimeSinceGpsEpochFieldBuilder().getBuilder(),
                   extensionRegistry);
-
+              bitField0_ |= 0x00000004;
               break;
             } // case 26
             case 40: {
               rssi_ = input.readInt32();
-
+              bitField0_ |= 0x00000008;
               break;
             } // case 40
             case 49: {
               loraSnr_ = input.readDouble();
-
+              bitField0_ |= 0x00000010;
               break;
             } // case 49
             case 56: {
               channel_ = input.readUInt32();
-
+              bitField0_ |= 0x00000020;
               break;
             } // case 56
             case 64: {
               rfChain_ = input.readUInt32();
-
+              bitField0_ |= 0x00000040;
               break;
             } // case 64
             case 72: {
               board_ = input.readUInt32();
-
+              bitField0_ |= 0x00000080;
               break;
             } // case 72
             case 80: {
               antenna_ = input.readUInt32();
-
+              bitField0_ |= 0x00000100;
               break;
             } // case 80
             case 90: {
               input.readMessage(
                   getLocationFieldBuilder().getBuilder(),
                   extensionRegistry);
-
+              bitField0_ |= 0x00000200;
               break;
             } // case 90
             case 96: {
               fineTimestampType_ = input.readEnum();
-
+              bitField0_ |= 0x00000400;
               break;
             } // case 96
             case 106: {
@@ -1344,25 +1320,26 @@ private static final long serialVersionUID = 0L;
             } // case 114
             case 122: {
               context_ = input.readBytes();
-
+              bitField0_ |= 0x00002000;
               break;
             } // case 122
             case 130: {
               uplinkId_ = input.readBytes();
-
+              bitField0_ |= 0x00004000;
               break;
             } // case 130
             case 136: {
               crcStatus_ = input.readEnum();
-
+              bitField0_ |= 0x00008000;
               break;
             } // case 136
             case 146: {
-              com.google.protobuf.MapEntry<String, String>
+              com.google.protobuf.MapEntry<java.lang.String, java.lang.String>
               metadata__ = input.readMessage(
                   MetadataDefaultEntryHolder.defaultEntry.getParserForType(), extensionRegistry);
               internalGetMutableMetadata().getMutableMap().put(
                   metadata__.getKey(), metadata__.getValue());
+              bitField0_ |= 0x00010000;
               break;
             } // case 146
             default: {
@@ -1381,7 +1358,7 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     private int fineTimestampCase_ = 0;
-    private Object fineTimestamp_;
+    private java.lang.Object fineTimestamp_;
     public FineTimestampCase
         getFineTimestampCase() {
       return FineTimestampCase.forNumber(
@@ -1406,7 +1383,7 @@ private static final long serialVersionUID = 0L;
      * <code>bytes gateway_id = 1;</code>
      * @return The gatewayId.
      */
-    @Override
+    @java.lang.Override
     public com.google.protobuf.ByteString getGatewayId() {
       return gatewayId_;
     }
@@ -1420,11 +1397,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setGatewayId(com.google.protobuf.ByteString value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  
+      if (value == null) { throw new NullPointerException(); }
       gatewayId_ = value;
+      bitField0_ |= 0x00000001;
       onChanged();
       return this;
     }
@@ -1437,7 +1412,7 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder clearGatewayId() {
-      
+      bitField0_ = (bitField0_ & ~0x00000001);
       gatewayId_ = getDefaultInstance().getGatewayId();
       onChanged();
       return this;
@@ -1455,7 +1430,7 @@ private static final long serialVersionUID = 0L;
      * @return Whether the time field is set.
      */
     public boolean hasTime() {
-      return timeBuilder_ != null || time_ != null;
+      return ((bitField0_ & 0x00000002) != 0);
     }
     /**
      * <pre>
@@ -1485,11 +1460,11 @@ private static final long serialVersionUID = 0L;
           throw new NullPointerException();
         }
         time_ = value;
-        onChanged();
       } else {
         timeBuilder_.setMessage(value);
       }
-
+      bitField0_ |= 0x00000002;
+      onChanged();
       return this;
     }
     /**
@@ -1503,11 +1478,11 @@ private static final long serialVersionUID = 0L;
         com.google.protobuf.Timestamp.Builder builderForValue) {
       if (timeBuilder_ == null) {
         time_ = builderForValue.build();
-        onChanged();
       } else {
         timeBuilder_.setMessage(builderForValue.build());
       }
-
+      bitField0_ |= 0x00000002;
+      onChanged();
       return this;
     }
     /**
@@ -1519,17 +1494,18 @@ private static final long serialVersionUID = 0L;
      */
     public Builder mergeTime(com.google.protobuf.Timestamp value) {
       if (timeBuilder_ == null) {
-        if (time_ != null) {
-          time_ =
-            com.google.protobuf.Timestamp.newBuilder(time_).mergeFrom(value).buildPartial();
+        if (((bitField0_ & 0x00000002) != 0) &&
+          time_ != null &&
+          time_ != com.google.protobuf.Timestamp.getDefaultInstance()) {
+          getTimeBuilder().mergeFrom(value);
         } else {
           time_ = value;
         }
-        onChanged();
       } else {
         timeBuilder_.mergeFrom(value);
       }
-
+      bitField0_ |= 0x00000002;
+      onChanged();
       return this;
     }
     /**
@@ -1540,14 +1516,13 @@ private static final long serialVersionUID = 0L;
      * <code>.google.protobuf.Timestamp time = 2;</code>
      */
     public Builder clearTime() {
-      if (timeBuilder_ == null) {
-        time_ = null;
-        onChanged();
-      } else {
-        time_ = null;
+      bitField0_ = (bitField0_ & ~0x00000002);
+      time_ = null;
+      if (timeBuilder_ != null) {
+        timeBuilder_.dispose();
         timeBuilder_ = null;
       }
-
+      onChanged();
       return this;
     }
     /**
@@ -1558,7 +1533,7 @@ private static final long serialVersionUID = 0L;
      * <code>.google.protobuf.Timestamp time = 2;</code>
      */
     public com.google.protobuf.Timestamp.Builder getTimeBuilder() {
-      
+      bitField0_ |= 0x00000002;
       onChanged();
       return getTimeFieldBuilder().getBuilder();
     }
@@ -1610,7 +1585,7 @@ private static final long serialVersionUID = 0L;
      * @return Whether the timeSinceGpsEpoch field is set.
      */
     public boolean hasTimeSinceGpsEpoch() {
-      return timeSinceGpsEpochBuilder_ != null || timeSinceGpsEpoch_ != null;
+      return ((bitField0_ & 0x00000004) != 0);
     }
     /**
      * <pre>
@@ -1640,11 +1615,11 @@ private static final long serialVersionUID = 0L;
           throw new NullPointerException();
         }
         timeSinceGpsEpoch_ = value;
-        onChanged();
       } else {
         timeSinceGpsEpochBuilder_.setMessage(value);
       }
-
+      bitField0_ |= 0x00000004;
+      onChanged();
       return this;
     }
     /**
@@ -1658,11 +1633,11 @@ private static final long serialVersionUID = 0L;
         com.google.protobuf.Duration.Builder builderForValue) {
       if (timeSinceGpsEpochBuilder_ == null) {
         timeSinceGpsEpoch_ = builderForValue.build();
-        onChanged();
       } else {
         timeSinceGpsEpochBuilder_.setMessage(builderForValue.build());
       }
-
+      bitField0_ |= 0x00000004;
+      onChanged();
       return this;
     }
     /**
@@ -1674,17 +1649,18 @@ private static final long serialVersionUID = 0L;
      */
     public Builder mergeTimeSinceGpsEpoch(com.google.protobuf.Duration value) {
       if (timeSinceGpsEpochBuilder_ == null) {
-        if (timeSinceGpsEpoch_ != null) {
-          timeSinceGpsEpoch_ =
-            com.google.protobuf.Duration.newBuilder(timeSinceGpsEpoch_).mergeFrom(value).buildPartial();
+        if (((bitField0_ & 0x00000004) != 0) &&
+          timeSinceGpsEpoch_ != null &&
+          timeSinceGpsEpoch_ != com.google.protobuf.Duration.getDefaultInstance()) {
+          getTimeSinceGpsEpochBuilder().mergeFrom(value);
         } else {
           timeSinceGpsEpoch_ = value;
         }
-        onChanged();
       } else {
         timeSinceGpsEpochBuilder_.mergeFrom(value);
       }
-
+      bitField0_ |= 0x00000004;
+      onChanged();
       return this;
     }
     /**
@@ -1695,14 +1671,13 @@ private static final long serialVersionUID = 0L;
      * <code>.google.protobuf.Duration time_since_gps_epoch = 3;</code>
      */
     public Builder clearTimeSinceGpsEpoch() {
-      if (timeSinceGpsEpochBuilder_ == null) {
-        timeSinceGpsEpoch_ = null;
-        onChanged();
-      } else {
-        timeSinceGpsEpoch_ = null;
+      bitField0_ = (bitField0_ & ~0x00000004);
+      timeSinceGpsEpoch_ = null;
+      if (timeSinceGpsEpochBuilder_ != null) {
+        timeSinceGpsEpochBuilder_.dispose();
         timeSinceGpsEpochBuilder_ = null;
       }
-
+      onChanged();
       return this;
     }
     /**
@@ -1713,7 +1688,7 @@ private static final long serialVersionUID = 0L;
      * <code>.google.protobuf.Duration time_since_gps_epoch = 3;</code>
      */
     public com.google.protobuf.Duration.Builder getTimeSinceGpsEpochBuilder() {
-      
+      bitField0_ |= 0x00000004;
       onChanged();
       return getTimeSinceGpsEpochFieldBuilder().getBuilder();
     }
@@ -1762,7 +1737,7 @@ private static final long serialVersionUID = 0L;
      * <code>int32 rssi = 5;</code>
      * @return The rssi.
      */
-    @Override
+    @java.lang.Override
     public int getRssi() {
       return rssi_;
     }
@@ -1776,8 +1751,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setRssi(int value) {
-      
+
       rssi_ = value;
+      bitField0_ |= 0x00000008;
       onChanged();
       return this;
     }
@@ -1790,7 +1766,7 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder clearRssi() {
-      
+      bitField0_ = (bitField0_ & ~0x00000008);
       rssi_ = 0;
       onChanged();
       return this;
@@ -1805,7 +1781,7 @@ private static final long serialVersionUID = 0L;
      * <code>double lora_snr = 6;</code>
      * @return The loraSnr.
      */
-    @Override
+    @java.lang.Override
     public double getLoraSnr() {
       return loraSnr_;
     }
@@ -1819,8 +1795,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setLoraSnr(double value) {
-      
+
       loraSnr_ = value;
+      bitField0_ |= 0x00000010;
       onChanged();
       return this;
     }
@@ -1833,7 +1810,7 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder clearLoraSnr() {
-      
+      bitField0_ = (bitField0_ & ~0x00000010);
       loraSnr_ = 0D;
       onChanged();
       return this;
@@ -1848,7 +1825,7 @@ private static final long serialVersionUID = 0L;
      * <code>uint32 channel = 7;</code>
      * @return The channel.
      */
-    @Override
+    @java.lang.Override
     public int getChannel() {
       return channel_;
     }
@@ -1862,8 +1839,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setChannel(int value) {
-      
+
       channel_ = value;
+      bitField0_ |= 0x00000020;
       onChanged();
       return this;
     }
@@ -1876,7 +1854,7 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder clearChannel() {
-      
+      bitField0_ = (bitField0_ & ~0x00000020);
       channel_ = 0;
       onChanged();
       return this;
@@ -1891,7 +1869,7 @@ private static final long serialVersionUID = 0L;
      * <code>uint32 rf_chain = 8;</code>
      * @return The rfChain.
      */
-    @Override
+    @java.lang.Override
     public int getRfChain() {
       return rfChain_;
     }
@@ -1905,8 +1883,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setRfChain(int value) {
-      
+
       rfChain_ = value;
+      bitField0_ |= 0x00000040;
       onChanged();
       return this;
     }
@@ -1919,7 +1898,7 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder clearRfChain() {
-      
+      bitField0_ = (bitField0_ & ~0x00000040);
       rfChain_ = 0;
       onChanged();
       return this;
@@ -1934,7 +1913,7 @@ private static final long serialVersionUID = 0L;
      * <code>uint32 board = 9;</code>
      * @return The board.
      */
-    @Override
+    @java.lang.Override
     public int getBoard() {
       return board_;
     }
@@ -1948,8 +1927,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setBoard(int value) {
-      
+
       board_ = value;
+      bitField0_ |= 0x00000080;
       onChanged();
       return this;
     }
@@ -1962,7 +1942,7 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder clearBoard() {
-      
+      bitField0_ = (bitField0_ & ~0x00000080);
       board_ = 0;
       onChanged();
       return this;
@@ -1977,7 +1957,7 @@ private static final long serialVersionUID = 0L;
      * <code>uint32 antenna = 10;</code>
      * @return The antenna.
      */
-    @Override
+    @java.lang.Override
     public int getAntenna() {
       return antenna_;
     }
@@ -1991,8 +1971,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setAntenna(int value) {
-      
+
       antenna_ = value;
+      bitField0_ |= 0x00000100;
       onChanged();
       return this;
     }
@@ -2005,7 +1986,7 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder clearAntenna() {
-      
+      bitField0_ = (bitField0_ & ~0x00000100);
       antenna_ = 0;
       onChanged();
       return this;
@@ -2023,7 +2004,7 @@ private static final long serialVersionUID = 0L;
      * @return Whether the location field is set.
      */
     public boolean hasLocation() {
-      return locationBuilder_ != null || location_ != null;
+      return ((bitField0_ & 0x00000200) != 0);
     }
     /**
      * <pre>
@@ -2053,11 +2034,11 @@ private static final long serialVersionUID = 0L;
           throw new NullPointerException();
         }
         location_ = value;
-        onChanged();
       } else {
         locationBuilder_.setMessage(value);
       }
-
+      bitField0_ |= 0x00000200;
+      onChanged();
       return this;
     }
     /**
@@ -2071,11 +2052,11 @@ private static final long serialVersionUID = 0L;
         io.chirpstack.api.Location.Builder builderForValue) {
       if (locationBuilder_ == null) {
         location_ = builderForValue.build();
-        onChanged();
       } else {
         locationBuilder_.setMessage(builderForValue.build());
       }
-
+      bitField0_ |= 0x00000200;
+      onChanged();
       return this;
     }
     /**
@@ -2087,17 +2068,18 @@ private static final long serialVersionUID = 0L;
      */
     public Builder mergeLocation(io.chirpstack.api.Location value) {
       if (locationBuilder_ == null) {
-        if (location_ != null) {
-          location_ =
-            io.chirpstack.api.Location.newBuilder(location_).mergeFrom(value).buildPartial();
+        if (((bitField0_ & 0x00000200) != 0) &&
+          location_ != null &&
+          location_ != io.chirpstack.api.Location.getDefaultInstance()) {
+          getLocationBuilder().mergeFrom(value);
         } else {
           location_ = value;
         }
-        onChanged();
       } else {
         locationBuilder_.mergeFrom(value);
       }
-
+      bitField0_ |= 0x00000200;
+      onChanged();
       return this;
     }
     /**
@@ -2108,14 +2090,13 @@ private static final long serialVersionUID = 0L;
      * <code>.common.Location location = 11;</code>
      */
     public Builder clearLocation() {
-      if (locationBuilder_ == null) {
-        location_ = null;
-        onChanged();
-      } else {
-        location_ = null;
+      bitField0_ = (bitField0_ & ~0x00000200);
+      location_ = null;
+      if (locationBuilder_ != null) {
+        locationBuilder_.dispose();
         locationBuilder_ = null;
       }
-
+      onChanged();
       return this;
     }
     /**
@@ -2126,7 +2107,7 @@ private static final long serialVersionUID = 0L;
      * <code>.common.Location location = 11;</code>
      */
     public io.chirpstack.api.Location.Builder getLocationBuilder() {
-      
+      bitField0_ |= 0x00000200;
       onChanged();
       return getLocationFieldBuilder().getBuilder();
     }
@@ -2175,7 +2156,7 @@ private static final long serialVersionUID = 0L;
      * <code>.gw.FineTimestampType fine_timestamp_type = 12;</code>
      * @return The enum numeric value on the wire for fineTimestampType.
      */
-    @Override public int getFineTimestampTypeValue() {
+    @java.lang.Override public int getFineTimestampTypeValue() {
       return fineTimestampType_;
     }
     /**
@@ -2188,8 +2169,8 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setFineTimestampTypeValue(int value) {
-      
       fineTimestampType_ = value;
+      bitField0_ |= 0x00000400;
       onChanged();
       return this;
     }
@@ -2201,11 +2182,10 @@ private static final long serialVersionUID = 0L;
      * <code>.gw.FineTimestampType fine_timestamp_type = 12;</code>
      * @return The fineTimestampType.
      */
-    @Override
-    public FineTimestampType getFineTimestampType() {
-      @SuppressWarnings("deprecation")
-      FineTimestampType result = FineTimestampType.valueOf(fineTimestampType_);
-      return result == null ? FineTimestampType.UNRECOGNIZED : result;
+    @java.lang.Override
+    public io.chirpstack.api.gw.FineTimestampType getFineTimestampType() {
+      io.chirpstack.api.gw.FineTimestampType result = io.chirpstack.api.gw.FineTimestampType.forNumber(fineTimestampType_);
+      return result == null ? io.chirpstack.api.gw.FineTimestampType.UNRECOGNIZED : result;
     }
     /**
      * <pre>
@@ -2216,11 +2196,11 @@ private static final long serialVersionUID = 0L;
      * @param value The fineTimestampType to set.
      * @return This builder for chaining.
      */
-    public Builder setFineTimestampType(FineTimestampType value) {
+    public Builder setFineTimestampType(io.chirpstack.api.gw.FineTimestampType value) {
       if (value == null) {
         throw new NullPointerException();
       }
-      
+      bitField0_ |= 0x00000400;
       fineTimestampType_ = value.getNumber();
       onChanged();
       return this;
@@ -2234,14 +2214,14 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder clearFineTimestampType() {
-      
+      bitField0_ = (bitField0_ & ~0x00000400);
       fineTimestampType_ = 0;
       onChanged();
       return this;
     }
 
     private com.google.protobuf.SingleFieldBuilderV3<
-        EncryptedFineTimestamp, EncryptedFineTimestamp.Builder, EncryptedFineTimestampOrBuilder> encryptedFineTimestampBuilder_;
+        io.chirpstack.api.gw.EncryptedFineTimestamp, io.chirpstack.api.gw.EncryptedFineTimestamp.Builder, io.chirpstack.api.gw.EncryptedFineTimestampOrBuilder> encryptedFineTimestampBuilder_;
     /**
      * <pre>
      * Encrypted fine-timestamp data.
@@ -2250,7 +2230,7 @@ private static final long serialVersionUID = 0L;
      * <code>.gw.EncryptedFineTimestamp encrypted_fine_timestamp = 13;</code>
      * @return Whether the encryptedFineTimestamp field is set.
      */
-    @Override
+    @java.lang.Override
     public boolean hasEncryptedFineTimestamp() {
       return fineTimestampCase_ == 13;
     }
@@ -2262,18 +2242,18 @@ private static final long serialVersionUID = 0L;
      * <code>.gw.EncryptedFineTimestamp encrypted_fine_timestamp = 13;</code>
      * @return The encryptedFineTimestamp.
      */
-    @Override
-    public EncryptedFineTimestamp getEncryptedFineTimestamp() {
+    @java.lang.Override
+    public io.chirpstack.api.gw.EncryptedFineTimestamp getEncryptedFineTimestamp() {
       if (encryptedFineTimestampBuilder_ == null) {
         if (fineTimestampCase_ == 13) {
-          return (EncryptedFineTimestamp) fineTimestamp_;
+          return (io.chirpstack.api.gw.EncryptedFineTimestamp) fineTimestamp_;
         }
-        return EncryptedFineTimestamp.getDefaultInstance();
+        return io.chirpstack.api.gw.EncryptedFineTimestamp.getDefaultInstance();
       } else {
         if (fineTimestampCase_ == 13) {
           return encryptedFineTimestampBuilder_.getMessage();
         }
-        return EncryptedFineTimestamp.getDefaultInstance();
+        return io.chirpstack.api.gw.EncryptedFineTimestamp.getDefaultInstance();
       }
     }
     /**
@@ -2283,7 +2263,7 @@ private static final long serialVersionUID = 0L;
      *
      * <code>.gw.EncryptedFineTimestamp encrypted_fine_timestamp = 13;</code>
      */
-    public Builder setEncryptedFineTimestamp(EncryptedFineTimestamp value) {
+    public Builder setEncryptedFineTimestamp(io.chirpstack.api.gw.EncryptedFineTimestamp value) {
       if (encryptedFineTimestampBuilder_ == null) {
         if (value == null) {
           throw new NullPointerException();
@@ -2304,7 +2284,7 @@ private static final long serialVersionUID = 0L;
      * <code>.gw.EncryptedFineTimestamp encrypted_fine_timestamp = 13;</code>
      */
     public Builder setEncryptedFineTimestamp(
-        EncryptedFineTimestamp.Builder builderForValue) {
+        io.chirpstack.api.gw.EncryptedFineTimestamp.Builder builderForValue) {
       if (encryptedFineTimestampBuilder_ == null) {
         fineTimestamp_ = builderForValue.build();
         onChanged();
@@ -2321,11 +2301,11 @@ private static final long serialVersionUID = 0L;
      *
      * <code>.gw.EncryptedFineTimestamp encrypted_fine_timestamp = 13;</code>
      */
-    public Builder mergeEncryptedFineTimestamp(EncryptedFineTimestamp value) {
+    public Builder mergeEncryptedFineTimestamp(io.chirpstack.api.gw.EncryptedFineTimestamp value) {
       if (encryptedFineTimestampBuilder_ == null) {
         if (fineTimestampCase_ == 13 &&
-            fineTimestamp_ != EncryptedFineTimestamp.getDefaultInstance()) {
-          fineTimestamp_ = EncryptedFineTimestamp.newBuilder((EncryptedFineTimestamp) fineTimestamp_)
+            fineTimestamp_ != io.chirpstack.api.gw.EncryptedFineTimestamp.getDefaultInstance()) {
+          fineTimestamp_ = io.chirpstack.api.gw.EncryptedFineTimestamp.newBuilder((io.chirpstack.api.gw.EncryptedFineTimestamp) fineTimestamp_)
               .mergeFrom(value).buildPartial();
         } else {
           fineTimestamp_ = value;
@@ -2371,7 +2351,7 @@ private static final long serialVersionUID = 0L;
      *
      * <code>.gw.EncryptedFineTimestamp encrypted_fine_timestamp = 13;</code>
      */
-    public EncryptedFineTimestamp.Builder getEncryptedFineTimestampBuilder() {
+    public io.chirpstack.api.gw.EncryptedFineTimestamp.Builder getEncryptedFineTimestampBuilder() {
       return getEncryptedFineTimestampFieldBuilder().getBuilder();
     }
     /**
@@ -2381,15 +2361,15 @@ private static final long serialVersionUID = 0L;
      *
      * <code>.gw.EncryptedFineTimestamp encrypted_fine_timestamp = 13;</code>
      */
-    @Override
-    public EncryptedFineTimestampOrBuilder getEncryptedFineTimestampOrBuilder() {
+    @java.lang.Override
+    public io.chirpstack.api.gw.EncryptedFineTimestampOrBuilder getEncryptedFineTimestampOrBuilder() {
       if ((fineTimestampCase_ == 13) && (encryptedFineTimestampBuilder_ != null)) {
         return encryptedFineTimestampBuilder_.getMessageOrBuilder();
       } else {
         if (fineTimestampCase_ == 13) {
-          return (EncryptedFineTimestamp) fineTimestamp_;
+          return (io.chirpstack.api.gw.EncryptedFineTimestamp) fineTimestamp_;
         }
-        return EncryptedFineTimestamp.getDefaultInstance();
+        return io.chirpstack.api.gw.EncryptedFineTimestamp.getDefaultInstance();
       }
     }
     /**
@@ -2400,26 +2380,26 @@ private static final long serialVersionUID = 0L;
      * <code>.gw.EncryptedFineTimestamp encrypted_fine_timestamp = 13;</code>
      */
     private com.google.protobuf.SingleFieldBuilderV3<
-        EncryptedFineTimestamp, EncryptedFineTimestamp.Builder, EncryptedFineTimestampOrBuilder>
+        io.chirpstack.api.gw.EncryptedFineTimestamp, io.chirpstack.api.gw.EncryptedFineTimestamp.Builder, io.chirpstack.api.gw.EncryptedFineTimestampOrBuilder> 
         getEncryptedFineTimestampFieldBuilder() {
       if (encryptedFineTimestampBuilder_ == null) {
         if (!(fineTimestampCase_ == 13)) {
-          fineTimestamp_ = EncryptedFineTimestamp.getDefaultInstance();
+          fineTimestamp_ = io.chirpstack.api.gw.EncryptedFineTimestamp.getDefaultInstance();
         }
         encryptedFineTimestampBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
-            EncryptedFineTimestamp, EncryptedFineTimestamp.Builder, EncryptedFineTimestampOrBuilder>(
-                (EncryptedFineTimestamp) fineTimestamp_,
+            io.chirpstack.api.gw.EncryptedFineTimestamp, io.chirpstack.api.gw.EncryptedFineTimestamp.Builder, io.chirpstack.api.gw.EncryptedFineTimestampOrBuilder>(
+                (io.chirpstack.api.gw.EncryptedFineTimestamp) fineTimestamp_,
                 getParentForChildren(),
                 isClean());
         fineTimestamp_ = null;
       }
       fineTimestampCase_ = 13;
-      onChanged();;
+      onChanged();
       return encryptedFineTimestampBuilder_;
     }
 
     private com.google.protobuf.SingleFieldBuilderV3<
-        PlainFineTimestamp, PlainFineTimestamp.Builder, PlainFineTimestampOrBuilder> plainFineTimestampBuilder_;
+        io.chirpstack.api.gw.PlainFineTimestamp, io.chirpstack.api.gw.PlainFineTimestamp.Builder, io.chirpstack.api.gw.PlainFineTimestampOrBuilder> plainFineTimestampBuilder_;
     /**
      * <pre>
      * Plain fine-timestamp data.
@@ -2428,7 +2408,7 @@ private static final long serialVersionUID = 0L;
      * <code>.gw.PlainFineTimestamp plain_fine_timestamp = 14;</code>
      * @return Whether the plainFineTimestamp field is set.
      */
-    @Override
+    @java.lang.Override
     public boolean hasPlainFineTimestamp() {
       return fineTimestampCase_ == 14;
     }
@@ -2440,18 +2420,18 @@ private static final long serialVersionUID = 0L;
      * <code>.gw.PlainFineTimestamp plain_fine_timestamp = 14;</code>
      * @return The plainFineTimestamp.
      */
-    @Override
-    public PlainFineTimestamp getPlainFineTimestamp() {
+    @java.lang.Override
+    public io.chirpstack.api.gw.PlainFineTimestamp getPlainFineTimestamp() {
       if (plainFineTimestampBuilder_ == null) {
         if (fineTimestampCase_ == 14) {
-          return (PlainFineTimestamp) fineTimestamp_;
+          return (io.chirpstack.api.gw.PlainFineTimestamp) fineTimestamp_;
         }
-        return PlainFineTimestamp.getDefaultInstance();
+        return io.chirpstack.api.gw.PlainFineTimestamp.getDefaultInstance();
       } else {
         if (fineTimestampCase_ == 14) {
           return plainFineTimestampBuilder_.getMessage();
         }
-        return PlainFineTimestamp.getDefaultInstance();
+        return io.chirpstack.api.gw.PlainFineTimestamp.getDefaultInstance();
       }
     }
     /**
@@ -2461,7 +2441,7 @@ private static final long serialVersionUID = 0L;
      *
      * <code>.gw.PlainFineTimestamp plain_fine_timestamp = 14;</code>
      */
-    public Builder setPlainFineTimestamp(PlainFineTimestamp value) {
+    public Builder setPlainFineTimestamp(io.chirpstack.api.gw.PlainFineTimestamp value) {
       if (plainFineTimestampBuilder_ == null) {
         if (value == null) {
           throw new NullPointerException();
@@ -2482,7 +2462,7 @@ private static final long serialVersionUID = 0L;
      * <code>.gw.PlainFineTimestamp plain_fine_timestamp = 14;</code>
      */
     public Builder setPlainFineTimestamp(
-        PlainFineTimestamp.Builder builderForValue) {
+        io.chirpstack.api.gw.PlainFineTimestamp.Builder builderForValue) {
       if (plainFineTimestampBuilder_ == null) {
         fineTimestamp_ = builderForValue.build();
         onChanged();
@@ -2499,11 +2479,11 @@ private static final long serialVersionUID = 0L;
      *
      * <code>.gw.PlainFineTimestamp plain_fine_timestamp = 14;</code>
      */
-    public Builder mergePlainFineTimestamp(PlainFineTimestamp value) {
+    public Builder mergePlainFineTimestamp(io.chirpstack.api.gw.PlainFineTimestamp value) {
       if (plainFineTimestampBuilder_ == null) {
         if (fineTimestampCase_ == 14 &&
-            fineTimestamp_ != PlainFineTimestamp.getDefaultInstance()) {
-          fineTimestamp_ = PlainFineTimestamp.newBuilder((PlainFineTimestamp) fineTimestamp_)
+            fineTimestamp_ != io.chirpstack.api.gw.PlainFineTimestamp.getDefaultInstance()) {
+          fineTimestamp_ = io.chirpstack.api.gw.PlainFineTimestamp.newBuilder((io.chirpstack.api.gw.PlainFineTimestamp) fineTimestamp_)
               .mergeFrom(value).buildPartial();
         } else {
           fineTimestamp_ = value;
@@ -2549,7 +2529,7 @@ private static final long serialVersionUID = 0L;
      *
      * <code>.gw.PlainFineTimestamp plain_fine_timestamp = 14;</code>
      */
-    public PlainFineTimestamp.Builder getPlainFineTimestampBuilder() {
+    public io.chirpstack.api.gw.PlainFineTimestamp.Builder getPlainFineTimestampBuilder() {
       return getPlainFineTimestampFieldBuilder().getBuilder();
     }
     /**
@@ -2559,15 +2539,15 @@ private static final long serialVersionUID = 0L;
      *
      * <code>.gw.PlainFineTimestamp plain_fine_timestamp = 14;</code>
      */
-    @Override
-    public PlainFineTimestampOrBuilder getPlainFineTimestampOrBuilder() {
+    @java.lang.Override
+    public io.chirpstack.api.gw.PlainFineTimestampOrBuilder getPlainFineTimestampOrBuilder() {
       if ((fineTimestampCase_ == 14) && (plainFineTimestampBuilder_ != null)) {
         return plainFineTimestampBuilder_.getMessageOrBuilder();
       } else {
         if (fineTimestampCase_ == 14) {
-          return (PlainFineTimestamp) fineTimestamp_;
+          return (io.chirpstack.api.gw.PlainFineTimestamp) fineTimestamp_;
         }
-        return PlainFineTimestamp.getDefaultInstance();
+        return io.chirpstack.api.gw.PlainFineTimestamp.getDefaultInstance();
       }
     }
     /**
@@ -2578,21 +2558,21 @@ private static final long serialVersionUID = 0L;
      * <code>.gw.PlainFineTimestamp plain_fine_timestamp = 14;</code>
      */
     private com.google.protobuf.SingleFieldBuilderV3<
-        PlainFineTimestamp, PlainFineTimestamp.Builder, PlainFineTimestampOrBuilder>
+        io.chirpstack.api.gw.PlainFineTimestamp, io.chirpstack.api.gw.PlainFineTimestamp.Builder, io.chirpstack.api.gw.PlainFineTimestampOrBuilder> 
         getPlainFineTimestampFieldBuilder() {
       if (plainFineTimestampBuilder_ == null) {
         if (!(fineTimestampCase_ == 14)) {
-          fineTimestamp_ = PlainFineTimestamp.getDefaultInstance();
+          fineTimestamp_ = io.chirpstack.api.gw.PlainFineTimestamp.getDefaultInstance();
         }
         plainFineTimestampBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
-            PlainFineTimestamp, PlainFineTimestamp.Builder, PlainFineTimestampOrBuilder>(
-                (PlainFineTimestamp) fineTimestamp_,
+            io.chirpstack.api.gw.PlainFineTimestamp, io.chirpstack.api.gw.PlainFineTimestamp.Builder, io.chirpstack.api.gw.PlainFineTimestampOrBuilder>(
+                (io.chirpstack.api.gw.PlainFineTimestamp) fineTimestamp_,
                 getParentForChildren(),
                 isClean());
         fineTimestamp_ = null;
       }
       fineTimestampCase_ = 14;
-      onChanged();;
+      onChanged();
       return plainFineTimestampBuilder_;
     }
 
@@ -2605,7 +2585,7 @@ private static final long serialVersionUID = 0L;
      * <code>bytes context = 15;</code>
      * @return The context.
      */
-    @Override
+    @java.lang.Override
     public com.google.protobuf.ByteString getContext() {
       return context_;
     }
@@ -2619,11 +2599,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setContext(com.google.protobuf.ByteString value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  
+      if (value == null) { throw new NullPointerException(); }
       context_ = value;
+      bitField0_ |= 0x00002000;
       onChanged();
       return this;
     }
@@ -2636,7 +2614,7 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder clearContext() {
-      
+      bitField0_ = (bitField0_ & ~0x00002000);
       context_ = getDefaultInstance().getContext();
       onChanged();
       return this;
@@ -2646,20 +2624,22 @@ private static final long serialVersionUID = 0L;
     /**
      * <pre>
      * Uplink ID (UUID bytes).
-     * Unique and random ID which can be used to correlate the uplink across multiple logs.
+     * Unique and random ID which can be used to correlate the uplink across
+     * multiple logs.
      * </pre>
      *
      * <code>bytes uplink_id = 16;</code>
      * @return The uplinkId.
      */
-    @Override
+    @java.lang.Override
     public com.google.protobuf.ByteString getUplinkId() {
       return uplinkId_;
     }
     /**
      * <pre>
      * Uplink ID (UUID bytes).
-     * Unique and random ID which can be used to correlate the uplink across multiple logs.
+     * Unique and random ID which can be used to correlate the uplink across
+     * multiple logs.
      * </pre>
      *
      * <code>bytes uplink_id = 16;</code>
@@ -2667,25 +2647,24 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setUplinkId(com.google.protobuf.ByteString value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  
+      if (value == null) { throw new NullPointerException(); }
       uplinkId_ = value;
+      bitField0_ |= 0x00004000;
       onChanged();
       return this;
     }
     /**
      * <pre>
      * Uplink ID (UUID bytes).
-     * Unique and random ID which can be used to correlate the uplink across multiple logs.
+     * Unique and random ID which can be used to correlate the uplink across
+     * multiple logs.
      * </pre>
      *
      * <code>bytes uplink_id = 16;</code>
      * @return This builder for chaining.
      */
     public Builder clearUplinkId() {
-      
+      bitField0_ = (bitField0_ & ~0x00004000);
       uplinkId_ = getDefaultInstance().getUplinkId();
       onChanged();
       return this;
@@ -2700,7 +2679,7 @@ private static final long serialVersionUID = 0L;
      * <code>.gw.CRCStatus crc_status = 17;</code>
      * @return The enum numeric value on the wire for crcStatus.
      */
-    @Override public int getCrcStatusValue() {
+    @java.lang.Override public int getCrcStatusValue() {
       return crcStatus_;
     }
     /**
@@ -2713,8 +2692,8 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setCrcStatusValue(int value) {
-      
       crcStatus_ = value;
+      bitField0_ |= 0x00008000;
       onChanged();
       return this;
     }
@@ -2726,11 +2705,10 @@ private static final long serialVersionUID = 0L;
      * <code>.gw.CRCStatus crc_status = 17;</code>
      * @return The crcStatus.
      */
-    @Override
-    public CRCStatus getCrcStatus() {
-      @SuppressWarnings("deprecation")
-      CRCStatus result = CRCStatus.valueOf(crcStatus_);
-      return result == null ? CRCStatus.UNRECOGNIZED : result;
+    @java.lang.Override
+    public io.chirpstack.api.gw.CRCStatus getCrcStatus() {
+      io.chirpstack.api.gw.CRCStatus result = io.chirpstack.api.gw.CRCStatus.forNumber(crcStatus_);
+      return result == null ? io.chirpstack.api.gw.CRCStatus.UNRECOGNIZED : result;
     }
     /**
      * <pre>
@@ -2741,11 +2719,11 @@ private static final long serialVersionUID = 0L;
      * @param value The crcStatus to set.
      * @return This builder for chaining.
      */
-    public Builder setCrcStatus(CRCStatus value) {
+    public Builder setCrcStatus(io.chirpstack.api.gw.CRCStatus value) {
       if (value == null) {
         throw new NullPointerException();
       }
-      
+      bitField0_ |= 0x00008000;
       crcStatus_ = value.getNumber();
       onChanged();
       return this;
@@ -2759,25 +2737,24 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder clearCrcStatus() {
-      
+      bitField0_ = (bitField0_ & ~0x00008000);
       crcStatus_ = 0;
       onChanged();
       return this;
     }
 
     private com.google.protobuf.MapField<
-        String, String> metadata_;
-    private com.google.protobuf.MapField<String, String>
-    internalGetMetadata() {
+        java.lang.String, java.lang.String> metadata_;
+    private com.google.protobuf.MapField<java.lang.String, java.lang.String>
+        internalGetMetadata() {
       if (metadata_ == null) {
         return com.google.protobuf.MapField.emptyMapField(
             MetadataDefaultEntryHolder.defaultEntry);
       }
       return metadata_;
     }
-    private com.google.protobuf.MapField<String, String>
-    internalGetMutableMetadata() {
-      onChanged();;
+    private com.google.protobuf.MapField<java.lang.String, java.lang.String>
+        internalGetMutableMetadata() {
       if (metadata_ == null) {
         metadata_ = com.google.protobuf.MapField.newMapField(
             MetadataDefaultEntryHolder.defaultEntry);
@@ -2785,9 +2762,10 @@ private static final long serialVersionUID = 0L;
       if (!metadata_.isMutable()) {
         metadata_ = metadata_.copy();
       }
+      bitField0_ |= 0x00010000;
+      onChanged();
       return metadata_;
     }
-
     public int getMetadataCount() {
       return internalGetMetadata().getMap().size();
     }
@@ -2798,19 +2776,18 @@ private static final long serialVersionUID = 0L;
      *
      * <code>map&lt;string, string&gt; metadata = 18;</code>
      */
-
-    @Override
+    @java.lang.Override
     public boolean containsMetadata(
-        String key) {
+        java.lang.String key) {
       if (key == null) { throw new NullPointerException("map key"); }
       return internalGetMetadata().getMap().containsKey(key);
     }
     /**
      * Use {@link #getMetadataMap()} instead.
      */
-    @Override
-    @Deprecated
-    public java.util.Map<String, String> getMetadata() {
+    @java.lang.Override
+    @java.lang.Deprecated
+    public java.util.Map<java.lang.String, java.lang.String> getMetadata() {
       return getMetadataMap();
     }
     /**
@@ -2820,9 +2797,8 @@ private static final long serialVersionUID = 0L;
      *
      * <code>map&lt;string, string&gt; metadata = 18;</code>
      */
-    @Override
-
-    public java.util.Map<String, String> getMetadataMap() {
+    @java.lang.Override
+    public java.util.Map<java.lang.String, java.lang.String> getMetadataMap() {
       return internalGetMetadata().getMap();
     }
     /**
@@ -2832,13 +2808,14 @@ private static final long serialVersionUID = 0L;
      *
      * <code>map&lt;string, string&gt; metadata = 18;</code>
      */
-    @Override
-
-    public String getMetadataOrDefault(
-        String key,
-        String defaultValue) {
+    @java.lang.Override
+    public /* nullable */
+java.lang.String getMetadataOrDefault(
+        java.lang.String key,
+        /* nullable */
+java.lang.String defaultValue) {
       if (key == null) { throw new NullPointerException("map key"); }
-      java.util.Map<String, String> map =
+      java.util.Map<java.lang.String, java.lang.String> map =
           internalGetMetadata().getMap();
       return map.containsKey(key) ? map.get(key) : defaultValue;
     }
@@ -2849,20 +2826,19 @@ private static final long serialVersionUID = 0L;
      *
      * <code>map&lt;string, string&gt; metadata = 18;</code>
      */
-    @Override
-
-    public String getMetadataOrThrow(
-        String key) {
+    @java.lang.Override
+    public java.lang.String getMetadataOrThrow(
+        java.lang.String key) {
       if (key == null) { throw new NullPointerException("map key"); }
-      java.util.Map<String, String> map =
+      java.util.Map<java.lang.String, java.lang.String> map =
           internalGetMetadata().getMap();
       if (!map.containsKey(key)) {
-        throw new IllegalArgumentException();
+        throw new java.lang.IllegalArgumentException();
       }
       return map.get(key);
     }
-
     public Builder clearMetadata() {
+      bitField0_ = (bitField0_ & ~0x00010000);
       internalGetMutableMetadata().getMutableMap()
           .clear();
       return this;
@@ -2874,9 +2850,8 @@ private static final long serialVersionUID = 0L;
      *
      * <code>map&lt;string, string&gt; metadata = 18;</code>
      */
-
     public Builder removeMetadata(
-        String key) {
+        java.lang.String key) {
       if (key == null) { throw new NullPointerException("map key"); }
       internalGetMutableMetadata().getMutableMap()
           .remove(key);
@@ -2885,9 +2860,10 @@ private static final long serialVersionUID = 0L;
     /**
      * Use alternate mutation accessors instead.
      */
-    @Deprecated
-    public java.util.Map<String, String>
-    getMutableMetadata() {
+    @java.lang.Deprecated
+    public java.util.Map<java.lang.String, java.lang.String>
+        getMutableMetadata() {
+      bitField0_ |= 0x00010000;
       return internalGetMutableMetadata().getMutableMap();
     }
     /**
@@ -2898,15 +2874,13 @@ private static final long serialVersionUID = 0L;
      * <code>map&lt;string, string&gt; metadata = 18;</code>
      */
     public Builder putMetadata(
-        String key,
-        String value) {
+        java.lang.String key,
+        java.lang.String value) {
       if (key == null) { throw new NullPointerException("map key"); }
-      if (value == null) {
-  throw new NullPointerException("map value");
-}
-
+      if (value == null) { throw new NullPointerException("map value"); }
       internalGetMutableMetadata().getMutableMap()
           .put(key, value);
+      bitField0_ |= 0x00010000;
       return this;
     }
     /**
@@ -2916,20 +2890,20 @@ private static final long serialVersionUID = 0L;
      *
      * <code>map&lt;string, string&gt; metadata = 18;</code>
      */
-
     public Builder putAllMetadata(
-        java.util.Map<String, String> values) {
+        java.util.Map<java.lang.String, java.lang.String> values) {
       internalGetMutableMetadata().getMutableMap()
           .putAll(values);
+      bitField0_ |= 0x00010000;
       return this;
     }
-    @Override
+    @java.lang.Override
     public final Builder setUnknownFields(
         final com.google.protobuf.UnknownFieldSet unknownFields) {
       return super.setUnknownFields(unknownFields);
     }
 
-    @Override
+    @java.lang.Override
     public final Builder mergeUnknownFields(
         final com.google.protobuf.UnknownFieldSet unknownFields) {
       return super.mergeUnknownFields(unknownFields);
@@ -2940,18 +2914,18 @@ private static final long serialVersionUID = 0L;
   }
 
   // @@protoc_insertion_point(class_scope:gw.UplinkRxInfoLegacy)
-  private static final UplinkRxInfoLegacy DEFAULT_INSTANCE;
+  private static final io.chirpstack.api.gw.UplinkRxInfoLegacy DEFAULT_INSTANCE;
   static {
-    DEFAULT_INSTANCE = new UplinkRxInfoLegacy();
+    DEFAULT_INSTANCE = new io.chirpstack.api.gw.UplinkRxInfoLegacy();
   }
 
-  public static UplinkRxInfoLegacy getDefaultInstance() {
+  public static io.chirpstack.api.gw.UplinkRxInfoLegacy getDefaultInstance() {
     return DEFAULT_INSTANCE;
   }
 
   private static final com.google.protobuf.Parser<UplinkRxInfoLegacy>
       PARSER = new com.google.protobuf.AbstractParser<UplinkRxInfoLegacy>() {
-    @Override
+    @java.lang.Override
     public UplinkRxInfoLegacy parsePartialFrom(
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
@@ -2975,13 +2949,13 @@ private static final long serialVersionUID = 0L;
     return PARSER;
   }
 
-  @Override
+  @java.lang.Override
   public com.google.protobuf.Parser<UplinkRxInfoLegacy> getParserForType() {
     return PARSER;
   }
 
-  @Override
-  public UplinkRxInfoLegacy getDefaultInstanceForType() {
+  @java.lang.Override
+  public io.chirpstack.api.gw.UplinkRxInfoLegacy getDefaultInstanceForType() {
     return DEFAULT_INSTANCE;
   }
 

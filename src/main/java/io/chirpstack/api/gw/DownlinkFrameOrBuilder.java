@@ -39,7 +39,7 @@ public interface DownlinkFrameOrBuilder extends
    *
    * <code>repeated .gw.DownlinkFrameItem items = 5;</code>
    */
-  java.util.List<DownlinkFrameItem>
+  java.util.List<io.chirpstack.api.gw.DownlinkFrameItem> 
       getItemsList();
   /**
    * <pre>
@@ -52,7 +52,7 @@ public interface DownlinkFrameOrBuilder extends
    *
    * <code>repeated .gw.DownlinkFrameItem items = 5;</code>
    */
-  DownlinkFrameItem getItems(int index);
+  io.chirpstack.api.gw.DownlinkFrameItem getItems(int index);
   /**
    * <pre>
    * Downlink frame items.
@@ -76,7 +76,7 @@ public interface DownlinkFrameOrBuilder extends
    *
    * <code>repeated .gw.DownlinkFrameItem items = 5;</code>
    */
-  java.util.List<? extends DownlinkFrameItemOrBuilder>
+  java.util.List<? extends io.chirpstack.api.gw.DownlinkFrameItemOrBuilder> 
       getItemsOrBuilderList();
   /**
    * <pre>
@@ -89,7 +89,7 @@ public interface DownlinkFrameOrBuilder extends
    *
    * <code>repeated .gw.DownlinkFrameItem items = 5;</code>
    */
-  DownlinkFrameItemOrBuilder getItemsOrBuilder(
+  io.chirpstack.api.gw.DownlinkFrameItemOrBuilder getItemsOrBuilder(
       int index);
 
   /**
@@ -111,7 +111,7 @@ public interface DownlinkFrameOrBuilder extends
    * <code>string gateway_id = 7;</code>
    * @return The gatewayId.
    */
-  String getGatewayId();
+  java.lang.String getGatewayId();
   /**
    * <pre>
    * Gateway ID.

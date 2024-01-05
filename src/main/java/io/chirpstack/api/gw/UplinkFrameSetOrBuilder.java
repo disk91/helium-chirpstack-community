@@ -34,7 +34,7 @@ public interface UplinkFrameSetOrBuilder extends
    * <code>.gw.UplinkTxInfo tx_info = 2;</code>
    * @return The txInfo.
    */
-  UplinkTxInfo getTxInfo();
+  io.chirpstack.api.gw.UplinkTxInfo getTxInfo();
   /**
    * <pre>
    * TX meta-data.
@@ -42,7 +42,7 @@ public interface UplinkFrameSetOrBuilder extends
    *
    * <code>.gw.UplinkTxInfo tx_info = 2;</code>
    */
-  UplinkTxInfoOrBuilder getTxInfoOrBuilder();
+  io.chirpstack.api.gw.UplinkTxInfoOrBuilder getTxInfoOrBuilder();
 
   /**
    * <pre>
@@ -51,7 +51,7 @@ public interface UplinkFrameSetOrBuilder extends
    *
    * <code>repeated .gw.UplinkRxInfo rx_info = 3;</code>
    */
-  java.util.List<UplinkRxInfo>
+  java.util.List<io.chirpstack.api.gw.UplinkRxInfo> 
       getRxInfoList();
   /**
    * <pre>
@@ -60,7 +60,7 @@ public interface UplinkFrameSetOrBuilder extends
    *
    * <code>repeated .gw.UplinkRxInfo rx_info = 3;</code>
    */
-  UplinkRxInfo getRxInfo(int index);
+  io.chirpstack.api.gw.UplinkRxInfo getRxInfo(int index);
   /**
    * <pre>
    * RX meta-data set.
@@ -76,7 +76,7 @@ public interface UplinkFrameSetOrBuilder extends
    *
    * <code>repeated .gw.UplinkRxInfo rx_info = 3;</code>
    */
-  java.util.List<? extends UplinkRxInfoOrBuilder>
+  java.util.List<? extends io.chirpstack.api.gw.UplinkRxInfoOrBuilder> 
       getRxInfoOrBuilderList();
   /**
    * <pre>
@@ -85,6 +85,6 @@ public interface UplinkFrameSetOrBuilder extends
    *
    * <code>repeated .gw.UplinkRxInfo rx_info = 3;</code>
    */
-  UplinkRxInfoOrBuilder getRxInfoOrBuilder(
+  io.chirpstack.api.gw.UplinkRxInfoOrBuilder getRxInfoOrBuilder(
       int index);
 }

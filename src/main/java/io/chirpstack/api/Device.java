@@ -21,6 +21,7 @@ private static final long serialVersionUID = 0L;
     description_ = "";
     applicationId_ = "";
     deviceProfileId_ = "";
+    joinEui_ = "";
   }
 
   @Override
@@ -296,7 +297,8 @@ private static final long serialVersionUID = 0L;
   private boolean skipFcntCheck_ = false;
   /**
    * <pre>
-   * Skip frame-counter checks (this is insecure, but could be helpful for debugging).
+   * Skip frame-counter checks (this is insecure, but could be helpful for
+   * debugging).
    * </pre>
    *
    * <code>bool skip_fcnt_check = 6;</code>
@@ -458,8 +460,8 @@ String defaultValue) {
   /**
    * <pre>
    * Tags (user defined).
-   * These tags are exposed in the event payloads or to integration. Tags are
-   * intended for aggregation and filtering.
+   * These tags can be used to add additional information to the device.
+   * These tags are exposed in all the integration events.
    * </pre>
    *
    * <code>map&lt;string, string&gt; tags = 9;</code>
@@ -481,8 +483,8 @@ String defaultValue) {
   /**
    * <pre>
    * Tags (user defined).
-   * These tags are exposed in the event payloads or to integration. Tags are
-   * intended for aggregation and filtering.
+   * These tags can be used to add additional information to the device.
+   * These tags are exposed in all the integration events.
    * </pre>
    *
    * <code>map&lt;string, string&gt; tags = 9;</code>
@@ -494,8 +496,8 @@ String defaultValue) {
   /**
    * <pre>
    * Tags (user defined).
-   * These tags are exposed in the event payloads or to integration. Tags are
-   * intended for aggregation and filtering.
+   * These tags can be used to add additional information to the device.
+   * These tags are exposed in all the integration events.
    * </pre>
    *
    * <code>map&lt;string, string&gt; tags = 9;</code>
@@ -514,8 +516,8 @@ String defaultValue) {
   /**
    * <pre>
    * Tags (user defined).
-   * These tags are exposed in the event payloads or to integration. Tags are
-   * intended for aggregation and filtering.
+   * These tags can be used to add additional information to the device.
+   * These tags are exposed in all the integration events.
    * </pre>
    *
    * <code>map&lt;string, string&gt; tags = 9;</code>
@@ -530,6 +532,61 @@ String defaultValue) {
       throw new IllegalArgumentException();
     }
     return map.get(key);
+  }
+
+  public static final int JOIN_EUI_FIELD_NUMBER = 10;
+  @SuppressWarnings("serial")
+  private volatile Object joinEui_ = "";
+  /**
+   * <pre>
+   * JoinEUI (optional, EUI64).
+   * This field will be automatically set / updated on OTAA. However, in some
+   * cases it must be pre-configured. For example to allow OTAA using a Relay.
+   * In this case the Relay needs to know the JoinEUI + DevEUI combinations
+   * of the devices for which it needs to forward uplinks.
+   * </pre>
+   *
+   * <code>string join_eui = 10;</code>
+   * @return The joinEui.
+   */
+  @Override
+  public String getJoinEui() {
+    Object ref = joinEui_;
+    if (ref instanceof String) {
+      return (String) ref;
+    } else {
+      com.google.protobuf.ByteString bs = 
+          (com.google.protobuf.ByteString) ref;
+      String s = bs.toStringUtf8();
+      joinEui_ = s;
+      return s;
+    }
+  }
+  /**
+   * <pre>
+   * JoinEUI (optional, EUI64).
+   * This field will be automatically set / updated on OTAA. However, in some
+   * cases it must be pre-configured. For example to allow OTAA using a Relay.
+   * In this case the Relay needs to know the JoinEUI + DevEUI combinations
+   * of the devices for which it needs to forward uplinks.
+   * </pre>
+   *
+   * <code>string join_eui = 10;</code>
+   * @return The bytes for joinEui.
+   */
+  @Override
+  public com.google.protobuf.ByteString
+      getJoinEuiBytes() {
+    Object ref = joinEui_;
+    if (ref instanceof String) {
+      com.google.protobuf.ByteString b = 
+          com.google.protobuf.ByteString.copyFromUtf8(
+              (String) ref);
+      joinEui_ = b;
+      return b;
+    } else {
+      return (com.google.protobuf.ByteString) ref;
+    }
   }
 
   private byte memoizedIsInitialized = -1;
@@ -579,6 +636,9 @@ String defaultValue) {
         internalGetTags(),
         TagsDefaultEntryHolder.defaultEntry,
         9);
+    if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(joinEui_)) {
+      com.google.protobuf.GeneratedMessageV3.writeString(output, 10, joinEui_);
+    }
     getUnknownFields().writeTo(output);
   }
 
@@ -631,6 +691,9 @@ String defaultValue) {
       size += com.google.protobuf.CodedOutputStream
           .computeMessageSize(9, tags__);
     }
+    if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(joinEui_)) {
+      size += com.google.protobuf.GeneratedMessageV3.computeStringSize(10, joinEui_);
+    }
     size += getUnknownFields().getSerializedSize();
     memoizedSize = size;
     return size;
@@ -664,6 +727,8 @@ String defaultValue) {
         other.internalGetVariables())) return false;
     if (!internalGetTags().equals(
         other.internalGetTags())) return false;
+    if (!getJoinEui()
+        .equals(other.getJoinEui())) return false;
     if (!getUnknownFields().equals(other.getUnknownFields())) return false;
     return true;
   }
@@ -699,6 +764,8 @@ String defaultValue) {
       hash = (37 * hash) + TAGS_FIELD_NUMBER;
       hash = (53 * hash) + internalGetTags().hashCode();
     }
+    hash = (37 * hash) + JOIN_EUI_FIELD_NUMBER;
+    hash = (53 * hash) + getJoinEui().hashCode();
     hash = (29 * hash) + getUnknownFields().hashCode();
     memoizedHashCode = hash;
     return hash;
@@ -863,6 +930,7 @@ String defaultValue) {
       isDisabled_ = false;
       internalGetMutableVariables().clear();
       internalGetMutableTags().clear();
+      joinEui_ = "";
       return this;
     }
 
@@ -925,6 +993,9 @@ String defaultValue) {
         result.tags_ = internalGetTags();
         result.tags_.makeImmutable();
       }
+      if (((from_bitField0_ & 0x00000200) != 0)) {
+        result.joinEui_ = joinEui_;
+      }
     }
 
     @Override
@@ -976,6 +1047,11 @@ String defaultValue) {
       internalGetMutableTags().mergeFrom(
           other.internalGetTags());
       bitField0_ |= 0x00000100;
+      if (!other.getJoinEui().isEmpty()) {
+        joinEui_ = other.joinEui_;
+        bitField0_ |= 0x00000200;
+        onChanged();
+      }
       this.mergeUnknownFields(other.getUnknownFields());
       onChanged();
       return this;
@@ -1055,6 +1131,11 @@ String defaultValue) {
               bitField0_ |= 0x00000100;
               break;
             } // case 74
+            case 82: {
+              joinEui_ = input.readStringRequireUtf8();
+              bitField0_ |= 0x00000200;
+              break;
+            } // case 82
             default: {
               if (!super.parseUnknownField(input, extensionRegistry, tag)) {
                 done = true; // was an endgroup tag
@@ -1535,7 +1616,8 @@ String defaultValue) {
     private boolean skipFcntCheck_ ;
     /**
      * <pre>
-     * Skip frame-counter checks (this is insecure, but could be helpful for debugging).
+     * Skip frame-counter checks (this is insecure, but could be helpful for
+     * debugging).
      * </pre>
      *
      * <code>bool skip_fcnt_check = 6;</code>
@@ -1547,7 +1629,8 @@ String defaultValue) {
     }
     /**
      * <pre>
-     * Skip frame-counter checks (this is insecure, but could be helpful for debugging).
+     * Skip frame-counter checks (this is insecure, but could be helpful for
+     * debugging).
      * </pre>
      *
      * <code>bool skip_fcnt_check = 6;</code>
@@ -1563,7 +1646,8 @@ String defaultValue) {
     }
     /**
      * <pre>
-     * Skip frame-counter checks (this is insecure, but could be helpful for debugging).
+     * Skip frame-counter checks (this is insecure, but could be helpful for
+     * debugging).
      * </pre>
      *
      * <code>bool skip_fcnt_check = 6;</code>
@@ -1825,8 +1909,8 @@ String defaultValue) {
     /**
      * <pre>
      * Tags (user defined).
-     * These tags are exposed in the event payloads or to integration. Tags are
-     * intended for aggregation and filtering.
+     * These tags can be used to add additional information to the device.
+     * These tags are exposed in all the integration events.
      * </pre>
      *
      * <code>map&lt;string, string&gt; tags = 9;</code>
@@ -1848,8 +1932,8 @@ String defaultValue) {
     /**
      * <pre>
      * Tags (user defined).
-     * These tags are exposed in the event payloads or to integration. Tags are
-     * intended for aggregation and filtering.
+     * These tags can be used to add additional information to the device.
+     * These tags are exposed in all the integration events.
      * </pre>
      *
      * <code>map&lt;string, string&gt; tags = 9;</code>
@@ -1861,8 +1945,8 @@ String defaultValue) {
     /**
      * <pre>
      * Tags (user defined).
-     * These tags are exposed in the event payloads or to integration. Tags are
-     * intended for aggregation and filtering.
+     * These tags can be used to add additional information to the device.
+     * These tags are exposed in all the integration events.
      * </pre>
      *
      * <code>map&lt;string, string&gt; tags = 9;</code>
@@ -1881,8 +1965,8 @@ String defaultValue) {
     /**
      * <pre>
      * Tags (user defined).
-     * These tags are exposed in the event payloads or to integration. Tags are
-     * intended for aggregation and filtering.
+     * These tags can be used to add additional information to the device.
+     * These tags are exposed in all the integration events.
      * </pre>
      *
      * <code>map&lt;string, string&gt; tags = 9;</code>
@@ -1907,8 +1991,8 @@ String defaultValue) {
     /**
      * <pre>
      * Tags (user defined).
-     * These tags are exposed in the event payloads or to integration. Tags are
-     * intended for aggregation and filtering.
+     * These tags can be used to add additional information to the device.
+     * These tags are exposed in all the integration events.
      * </pre>
      *
      * <code>map&lt;string, string&gt; tags = 9;</code>
@@ -1932,8 +2016,8 @@ String defaultValue) {
     /**
      * <pre>
      * Tags (user defined).
-     * These tags are exposed in the event payloads or to integration. Tags are
-     * intended for aggregation and filtering.
+     * These tags can be used to add additional information to the device.
+     * These tags are exposed in all the integration events.
      * </pre>
      *
      * <code>map&lt;string, string&gt; tags = 9;</code>
@@ -1951,8 +2035,8 @@ String defaultValue) {
     /**
      * <pre>
      * Tags (user defined).
-     * These tags are exposed in the event payloads or to integration. Tags are
-     * intended for aggregation and filtering.
+     * These tags can be used to add additional information to the device.
+     * These tags are exposed in all the integration events.
      * </pre>
      *
      * <code>map&lt;string, string&gt; tags = 9;</code>
@@ -1962,6 +2046,118 @@ String defaultValue) {
       internalGetMutableTags().getMutableMap()
           .putAll(values);
       bitField0_ |= 0x00000100;
+      return this;
+    }
+
+    private Object joinEui_ = "";
+    /**
+     * <pre>
+     * JoinEUI (optional, EUI64).
+     * This field will be automatically set / updated on OTAA. However, in some
+     * cases it must be pre-configured. For example to allow OTAA using a Relay.
+     * In this case the Relay needs to know the JoinEUI + DevEUI combinations
+     * of the devices for which it needs to forward uplinks.
+     * </pre>
+     *
+     * <code>string join_eui = 10;</code>
+     * @return The joinEui.
+     */
+    public String getJoinEui() {
+      Object ref = joinEui_;
+      if (!(ref instanceof String)) {
+        com.google.protobuf.ByteString bs =
+            (com.google.protobuf.ByteString) ref;
+        String s = bs.toStringUtf8();
+        joinEui_ = s;
+        return s;
+      } else {
+        return (String) ref;
+      }
+    }
+    /**
+     * <pre>
+     * JoinEUI (optional, EUI64).
+     * This field will be automatically set / updated on OTAA. However, in some
+     * cases it must be pre-configured. For example to allow OTAA using a Relay.
+     * In this case the Relay needs to know the JoinEUI + DevEUI combinations
+     * of the devices for which it needs to forward uplinks.
+     * </pre>
+     *
+     * <code>string join_eui = 10;</code>
+     * @return The bytes for joinEui.
+     */
+    public com.google.protobuf.ByteString
+        getJoinEuiBytes() {
+      Object ref = joinEui_;
+      if (ref instanceof String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (String) ref);
+        joinEui_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+    /**
+     * <pre>
+     * JoinEUI (optional, EUI64).
+     * This field will be automatically set / updated on OTAA. However, in some
+     * cases it must be pre-configured. For example to allow OTAA using a Relay.
+     * In this case the Relay needs to know the JoinEUI + DevEUI combinations
+     * of the devices for which it needs to forward uplinks.
+     * </pre>
+     *
+     * <code>string join_eui = 10;</code>
+     * @param value The joinEui to set.
+     * @return This builder for chaining.
+     */
+    public Builder setJoinEui(
+        String value) {
+      if (value == null) { throw new NullPointerException(); }
+      joinEui_ = value;
+      bitField0_ |= 0x00000200;
+      onChanged();
+      return this;
+    }
+    /**
+     * <pre>
+     * JoinEUI (optional, EUI64).
+     * This field will be automatically set / updated on OTAA. However, in some
+     * cases it must be pre-configured. For example to allow OTAA using a Relay.
+     * In this case the Relay needs to know the JoinEUI + DevEUI combinations
+     * of the devices for which it needs to forward uplinks.
+     * </pre>
+     *
+     * <code>string join_eui = 10;</code>
+     * @return This builder for chaining.
+     */
+    public Builder clearJoinEui() {
+      joinEui_ = getDefaultInstance().getJoinEui();
+      bitField0_ = (bitField0_ & ~0x00000200);
+      onChanged();
+      return this;
+    }
+    /**
+     * <pre>
+     * JoinEUI (optional, EUI64).
+     * This field will be automatically set / updated on OTAA. However, in some
+     * cases it must be pre-configured. For example to allow OTAA using a Relay.
+     * In this case the Relay needs to know the JoinEUI + DevEUI combinations
+     * of the devices for which it needs to forward uplinks.
+     * </pre>
+     *
+     * <code>string join_eui = 10;</code>
+     * @param value The bytes for joinEui to set.
+     * @return This builder for chaining.
+     */
+    public Builder setJoinEuiBytes(
+        com.google.protobuf.ByteString value) {
+      if (value == null) { throw new NullPointerException(); }
+      checkByteStringIsUtf8(value);
+      joinEui_ = value;
+      bitField0_ |= 0x00000200;
+      onChanged();
       return this;
     }
     @Override

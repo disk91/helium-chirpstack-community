@@ -24,7 +24,7 @@ public interface PerModulationCountOrBuilder extends
    * <code>.gw.Modulation modulation = 1;</code>
    * @return The modulation.
    */
-  Modulation getModulation();
+  io.chirpstack.api.gw.Modulation getModulation();
   /**
    * <pre>
    * Modulation.
@@ -32,7 +32,7 @@ public interface PerModulationCountOrBuilder extends
    *
    * <code>.gw.Modulation modulation = 1;</code>
    */
-  ModulationOrBuilder getModulationOrBuilder();
+  io.chirpstack.api.gw.ModulationOrBuilder getModulationOrBuilder();
 
   /**
    * <pre>

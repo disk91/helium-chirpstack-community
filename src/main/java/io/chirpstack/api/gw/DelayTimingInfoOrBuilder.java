@@ -10,7 +10,8 @@ public interface DelayTimingInfoOrBuilder extends
   /**
    * <pre>
    * Delay (duration).
-   * The delay will be added to the gateway internal timing, provided by the context object.
+   * The delay will be added to the gateway internal timing, provided by the
+   * context object.
    * </pre>
    *
    * <code>.google.protobuf.Duration delay = 1;</code>
@@ -20,7 +21,8 @@ public interface DelayTimingInfoOrBuilder extends
   /**
    * <pre>
    * Delay (duration).
-   * The delay will be added to the gateway internal timing, provided by the context object.
+   * The delay will be added to the gateway internal timing, provided by the
+   * context object.
    * </pre>
    *
    * <code>.google.protobuf.Duration delay = 1;</code>
@@ -30,7 +32,8 @@ public interface DelayTimingInfoOrBuilder extends
   /**
    * <pre>
    * Delay (duration).
-   * The delay will be added to the gateway internal timing, provided by the context object.
+   * The delay will be added to the gateway internal timing, provided by the
+   * context object.
    * </pre>
    *
    * <code>.google.protobuf.Duration delay = 1;</code>

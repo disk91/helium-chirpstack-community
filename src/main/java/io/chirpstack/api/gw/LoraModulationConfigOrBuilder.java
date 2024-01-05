@@ -36,7 +36,7 @@ public interface LoraModulationConfigOrBuilder extends
    * <code>repeated uint32 spreading_factors = 2;</code>
    * @return A list containing the spreadingFactors.
    */
-  java.util.List<Integer> getSpreadingFactorsList();
+  java.util.List<java.lang.Integer> getSpreadingFactorsList();
   /**
    * <pre>
    * Spreading-factors.

@@ -18,36 +18,32 @@ private static final long serialVersionUID = 0L;
   private Modulation() {
   }
 
-  @Override
+  @java.lang.Override
   @SuppressWarnings({"unused"})
-  protected Object newInstance(
+  protected java.lang.Object newInstance(
       UnusedPrivateParameter unused) {
     return new Modulation();
   }
 
-  @Override
-  public final com.google.protobuf.UnknownFieldSet
-  getUnknownFields() {
-    return this.unknownFields;
-  }
   public static final com.google.protobuf.Descriptors.Descriptor
       getDescriptor() {
-    return GatewayProto.internal_static_gw_Modulation_descriptor;
+    return io.chirpstack.api.gw.GatewayProto.internal_static_gw_Modulation_descriptor;
   }
 
-  @Override
-  protected FieldAccessorTable
+  @java.lang.Override
+  protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
       internalGetFieldAccessorTable() {
-    return GatewayProto.internal_static_gw_Modulation_fieldAccessorTable
+    return io.chirpstack.api.gw.GatewayProto.internal_static_gw_Modulation_fieldAccessorTable
         .ensureFieldAccessorsInitialized(
-            Modulation.class, Builder.class);
+            io.chirpstack.api.gw.Modulation.class, io.chirpstack.api.gw.Modulation.Builder.class);
   }
 
   private int parametersCase_ = 0;
-  private Object parameters_;
+  @SuppressWarnings("serial")
+  private java.lang.Object parameters_;
   public enum ParametersCase
       implements com.google.protobuf.Internal.EnumLite,
-          InternalOneOfEnum {
+          com.google.protobuf.AbstractMessage.InternalOneOfEnum {
     LORA(3),
     FSK(4),
     LR_FHSS(5),
@@ -61,7 +57,7 @@ private static final long serialVersionUID = 0L;
      * @return The enum associated with the given number.
      * @deprecated Use {@link #forNumber(int)} instead.
      */
-    @Deprecated
+    @java.lang.Deprecated
     public static ParametersCase valueOf(int value) {
       return forNumber(value);
     }
@@ -95,7 +91,7 @@ private static final long serialVersionUID = 0L;
    * <code>.gw.LoraModulationInfo lora = 3;</code>
    * @return Whether the lora field is set.
    */
-  @Override
+  @java.lang.Override
   public boolean hasLora() {
     return parametersCase_ == 3;
   }
@@ -107,12 +103,12 @@ private static final long serialVersionUID = 0L;
    * <code>.gw.LoraModulationInfo lora = 3;</code>
    * @return The lora.
    */
-  @Override
-  public LoraModulationInfo getLora() {
+  @java.lang.Override
+  public io.chirpstack.api.gw.LoraModulationInfo getLora() {
     if (parametersCase_ == 3) {
-       return (LoraModulationInfo) parameters_;
+       return (io.chirpstack.api.gw.LoraModulationInfo) parameters_;
     }
-    return LoraModulationInfo.getDefaultInstance();
+    return io.chirpstack.api.gw.LoraModulationInfo.getDefaultInstance();
   }
   /**
    * <pre>
@@ -121,12 +117,12 @@ private static final long serialVersionUID = 0L;
    *
    * <code>.gw.LoraModulationInfo lora = 3;</code>
    */
-  @Override
-  public LoraModulationInfoOrBuilder getLoraOrBuilder() {
+  @java.lang.Override
+  public io.chirpstack.api.gw.LoraModulationInfoOrBuilder getLoraOrBuilder() {
     if (parametersCase_ == 3) {
-       return (LoraModulationInfo) parameters_;
+       return (io.chirpstack.api.gw.LoraModulationInfo) parameters_;
     }
-    return LoraModulationInfo.getDefaultInstance();
+    return io.chirpstack.api.gw.LoraModulationInfo.getDefaultInstance();
   }
 
   public static final int FSK_FIELD_NUMBER = 4;
@@ -138,7 +134,7 @@ private static final long serialVersionUID = 0L;
    * <code>.gw.FskModulationInfo fsk = 4;</code>
    * @return Whether the fsk field is set.
    */
-  @Override
+  @java.lang.Override
   public boolean hasFsk() {
     return parametersCase_ == 4;
   }
@@ -150,12 +146,12 @@ private static final long serialVersionUID = 0L;
    * <code>.gw.FskModulationInfo fsk = 4;</code>
    * @return The fsk.
    */
-  @Override
-  public FskModulationInfo getFsk() {
+  @java.lang.Override
+  public io.chirpstack.api.gw.FskModulationInfo getFsk() {
     if (parametersCase_ == 4) {
-       return (FskModulationInfo) parameters_;
+       return (io.chirpstack.api.gw.FskModulationInfo) parameters_;
     }
-    return FskModulationInfo.getDefaultInstance();
+    return io.chirpstack.api.gw.FskModulationInfo.getDefaultInstance();
   }
   /**
    * <pre>
@@ -164,12 +160,12 @@ private static final long serialVersionUID = 0L;
    *
    * <code>.gw.FskModulationInfo fsk = 4;</code>
    */
-  @Override
-  public FskModulationInfoOrBuilder getFskOrBuilder() {
+  @java.lang.Override
+  public io.chirpstack.api.gw.FskModulationInfoOrBuilder getFskOrBuilder() {
     if (parametersCase_ == 4) {
-       return (FskModulationInfo) parameters_;
+       return (io.chirpstack.api.gw.FskModulationInfo) parameters_;
     }
-    return FskModulationInfo.getDefaultInstance();
+    return io.chirpstack.api.gw.FskModulationInfo.getDefaultInstance();
   }
 
   public static final int LR_FHSS_FIELD_NUMBER = 5;
@@ -181,7 +177,7 @@ private static final long serialVersionUID = 0L;
    * <code>.gw.LrFhssModulationInfo lr_fhss = 5;</code>
    * @return Whether the lrFhss field is set.
    */
-  @Override
+  @java.lang.Override
   public boolean hasLrFhss() {
     return parametersCase_ == 5;
   }
@@ -193,12 +189,12 @@ private static final long serialVersionUID = 0L;
    * <code>.gw.LrFhssModulationInfo lr_fhss = 5;</code>
    * @return The lrFhss.
    */
-  @Override
-  public LrFhssModulationInfo getLrFhss() {
+  @java.lang.Override
+  public io.chirpstack.api.gw.LrFhssModulationInfo getLrFhss() {
     if (parametersCase_ == 5) {
-       return (LrFhssModulationInfo) parameters_;
+       return (io.chirpstack.api.gw.LrFhssModulationInfo) parameters_;
     }
-    return LrFhssModulationInfo.getDefaultInstance();
+    return io.chirpstack.api.gw.LrFhssModulationInfo.getDefaultInstance();
   }
   /**
    * <pre>
@@ -207,16 +203,16 @@ private static final long serialVersionUID = 0L;
    *
    * <code>.gw.LrFhssModulationInfo lr_fhss = 5;</code>
    */
-  @Override
-  public LrFhssModulationInfoOrBuilder getLrFhssOrBuilder() {
+  @java.lang.Override
+  public io.chirpstack.api.gw.LrFhssModulationInfoOrBuilder getLrFhssOrBuilder() {
     if (parametersCase_ == 5) {
-       return (LrFhssModulationInfo) parameters_;
+       return (io.chirpstack.api.gw.LrFhssModulationInfo) parameters_;
     }
-    return LrFhssModulationInfo.getDefaultInstance();
+    return io.chirpstack.api.gw.LrFhssModulationInfo.getDefaultInstance();
   }
 
   private byte memoizedIsInitialized = -1;
-  @Override
+  @java.lang.Override
   public final boolean isInitialized() {
     byte isInitialized = memoizedIsInitialized;
     if (isInitialized == 1) return true;
@@ -226,22 +222,22 @@ private static final long serialVersionUID = 0L;
     return true;
   }
 
-  @Override
+  @java.lang.Override
   public void writeTo(com.google.protobuf.CodedOutputStream output)
                       throws java.io.IOException {
     if (parametersCase_ == 3) {
-      output.writeMessage(3, (LoraModulationInfo) parameters_);
+      output.writeMessage(3, (io.chirpstack.api.gw.LoraModulationInfo) parameters_);
     }
     if (parametersCase_ == 4) {
-      output.writeMessage(4, (FskModulationInfo) parameters_);
+      output.writeMessage(4, (io.chirpstack.api.gw.FskModulationInfo) parameters_);
     }
     if (parametersCase_ == 5) {
-      output.writeMessage(5, (LrFhssModulationInfo) parameters_);
+      output.writeMessage(5, (io.chirpstack.api.gw.LrFhssModulationInfo) parameters_);
     }
     getUnknownFields().writeTo(output);
   }
 
-  @Override
+  @java.lang.Override
   public int getSerializedSize() {
     int size = memoizedSize;
     if (size != -1) return size;
@@ -249,30 +245,30 @@ private static final long serialVersionUID = 0L;
     size = 0;
     if (parametersCase_ == 3) {
       size += com.google.protobuf.CodedOutputStream
-        .computeMessageSize(3, (LoraModulationInfo) parameters_);
+        .computeMessageSize(3, (io.chirpstack.api.gw.LoraModulationInfo) parameters_);
     }
     if (parametersCase_ == 4) {
       size += com.google.protobuf.CodedOutputStream
-        .computeMessageSize(4, (FskModulationInfo) parameters_);
+        .computeMessageSize(4, (io.chirpstack.api.gw.FskModulationInfo) parameters_);
     }
     if (parametersCase_ == 5) {
       size += com.google.protobuf.CodedOutputStream
-        .computeMessageSize(5, (LrFhssModulationInfo) parameters_);
+        .computeMessageSize(5, (io.chirpstack.api.gw.LrFhssModulationInfo) parameters_);
     }
     size += getUnknownFields().getSerializedSize();
     memoizedSize = size;
     return size;
   }
 
-  @Override
-  public boolean equals(final Object obj) {
+  @java.lang.Override
+  public boolean equals(final java.lang.Object obj) {
     if (obj == this) {
      return true;
     }
-    if (!(obj instanceof Modulation)) {
+    if (!(obj instanceof io.chirpstack.api.gw.Modulation)) {
       return super.equals(obj);
     }
-    Modulation other = (Modulation) obj;
+    io.chirpstack.api.gw.Modulation other = (io.chirpstack.api.gw.Modulation) obj;
 
     if (!getParametersCase().equals(other.getParametersCase())) return false;
     switch (parametersCase_) {
@@ -295,7 +291,7 @@ private static final long serialVersionUID = 0L;
     return true;
   }
 
-  @Override
+  @java.lang.Override
   public int hashCode() {
     if (memoizedHashCode != 0) {
       return memoizedHashCode;
@@ -323,69 +319,69 @@ private static final long serialVersionUID = 0L;
     return hash;
   }
 
-  public static Modulation parseFrom(
+  public static io.chirpstack.api.gw.Modulation parseFrom(
       java.nio.ByteBuffer data)
       throws com.google.protobuf.InvalidProtocolBufferException {
     return PARSER.parseFrom(data);
   }
-  public static Modulation parseFrom(
+  public static io.chirpstack.api.gw.Modulation parseFrom(
       java.nio.ByteBuffer data,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws com.google.protobuf.InvalidProtocolBufferException {
     return PARSER.parseFrom(data, extensionRegistry);
   }
-  public static Modulation parseFrom(
+  public static io.chirpstack.api.gw.Modulation parseFrom(
       com.google.protobuf.ByteString data)
       throws com.google.protobuf.InvalidProtocolBufferException {
     return PARSER.parseFrom(data);
   }
-  public static Modulation parseFrom(
+  public static io.chirpstack.api.gw.Modulation parseFrom(
       com.google.protobuf.ByteString data,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws com.google.protobuf.InvalidProtocolBufferException {
     return PARSER.parseFrom(data, extensionRegistry);
   }
-  public static Modulation parseFrom(byte[] data)
+  public static io.chirpstack.api.gw.Modulation parseFrom(byte[] data)
       throws com.google.protobuf.InvalidProtocolBufferException {
     return PARSER.parseFrom(data);
   }
-  public static Modulation parseFrom(
+  public static io.chirpstack.api.gw.Modulation parseFrom(
       byte[] data,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws com.google.protobuf.InvalidProtocolBufferException {
     return PARSER.parseFrom(data, extensionRegistry);
   }
-  public static Modulation parseFrom(java.io.InputStream input)
+  public static io.chirpstack.api.gw.Modulation parseFrom(java.io.InputStream input)
       throws java.io.IOException {
     return com.google.protobuf.GeneratedMessageV3
         .parseWithIOException(PARSER, input);
   }
-  public static Modulation parseFrom(
+  public static io.chirpstack.api.gw.Modulation parseFrom(
       java.io.InputStream input,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws java.io.IOException {
     return com.google.protobuf.GeneratedMessageV3
         .parseWithIOException(PARSER, input, extensionRegistry);
   }
-  public static Modulation parseDelimitedFrom(java.io.InputStream input)
+  public static io.chirpstack.api.gw.Modulation parseDelimitedFrom(java.io.InputStream input)
       throws java.io.IOException {
     return com.google.protobuf.GeneratedMessageV3
         .parseDelimitedWithIOException(PARSER, input);
   }
-  public static Modulation parseDelimitedFrom(
+  public static io.chirpstack.api.gw.Modulation parseDelimitedFrom(
       java.io.InputStream input,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws java.io.IOException {
     return com.google.protobuf.GeneratedMessageV3
         .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
   }
-  public static Modulation parseFrom(
+  public static io.chirpstack.api.gw.Modulation parseFrom(
       com.google.protobuf.CodedInputStream input)
       throws java.io.IOException {
     return com.google.protobuf.GeneratedMessageV3
         .parseWithIOException(PARSER, input);
   }
-  public static Modulation parseFrom(
+  public static io.chirpstack.api.gw.Modulation parseFrom(
       com.google.protobuf.CodedInputStream input,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws java.io.IOException {
@@ -393,23 +389,23 @@ private static final long serialVersionUID = 0L;
         .parseWithIOException(PARSER, input, extensionRegistry);
   }
 
-  @Override
+  @java.lang.Override
   public Builder newBuilderForType() { return newBuilder(); }
   public static Builder newBuilder() {
     return DEFAULT_INSTANCE.toBuilder();
   }
-  public static Builder newBuilder(Modulation prototype) {
+  public static Builder newBuilder(io.chirpstack.api.gw.Modulation prototype) {
     return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
   }
-  @Override
+  @java.lang.Override
   public Builder toBuilder() {
     return this == DEFAULT_INSTANCE
         ? new Builder() : new Builder().mergeFrom(this);
   }
 
-  @Override
+  @java.lang.Override
   protected Builder newBuilderForType(
-      BuilderParent parent) {
+      com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
     Builder builder = new Builder(parent);
     return builder;
   }
@@ -419,18 +415,18 @@ private static final long serialVersionUID = 0L;
   public static final class Builder extends
       com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
       // @@protoc_insertion_point(builder_implements:gw.Modulation)
-      ModulationOrBuilder {
+      io.chirpstack.api.gw.ModulationOrBuilder {
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
-      return GatewayProto.internal_static_gw_Modulation_descriptor;
+      return io.chirpstack.api.gw.GatewayProto.internal_static_gw_Modulation_descriptor;
     }
 
-    @Override
-    protected FieldAccessorTable
+    @java.lang.Override
+    protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
         internalGetFieldAccessorTable() {
-      return GatewayProto.internal_static_gw_Modulation_fieldAccessorTable
+      return io.chirpstack.api.gw.GatewayProto.internal_static_gw_Modulation_fieldAccessorTable
           .ensureFieldAccessorsInitialized(
-              Modulation.class, Builder.class);
+              io.chirpstack.api.gw.Modulation.class, io.chirpstack.api.gw.Modulation.Builder.class);
     }
 
     // Construct using io.chirpstack.api.gw.Modulation.newBuilder()
@@ -439,13 +435,14 @@ private static final long serialVersionUID = 0L;
     }
 
     private Builder(
-        BuilderParent parent) {
+        com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
       super(parent);
 
     }
-    @Override
+    @java.lang.Override
     public Builder clear() {
       super.clear();
+      bitField0_ = 0;
       if (loraBuilder_ != null) {
         loraBuilder_.clear();
       }
@@ -460,99 +457,68 @@ private static final long serialVersionUID = 0L;
       return this;
     }
 
-    @Override
+    @java.lang.Override
     public com.google.protobuf.Descriptors.Descriptor
         getDescriptorForType() {
-      return GatewayProto.internal_static_gw_Modulation_descriptor;
+      return io.chirpstack.api.gw.GatewayProto.internal_static_gw_Modulation_descriptor;
     }
 
-    @Override
-    public Modulation getDefaultInstanceForType() {
-      return Modulation.getDefaultInstance();
+    @java.lang.Override
+    public io.chirpstack.api.gw.Modulation getDefaultInstanceForType() {
+      return io.chirpstack.api.gw.Modulation.getDefaultInstance();
     }
 
-    @Override
-    public Modulation build() {
-      Modulation result = buildPartial();
+    @java.lang.Override
+    public io.chirpstack.api.gw.Modulation build() {
+      io.chirpstack.api.gw.Modulation result = buildPartial();
       if (!result.isInitialized()) {
         throw newUninitializedMessageException(result);
       }
       return result;
     }
 
-    @Override
-    public Modulation buildPartial() {
-      Modulation result = new Modulation(this);
-      if (parametersCase_ == 3) {
-        if (loraBuilder_ == null) {
-          result.parameters_ = parameters_;
-        } else {
-          result.parameters_ = loraBuilder_.build();
-        }
-      }
-      if (parametersCase_ == 4) {
-        if (fskBuilder_ == null) {
-          result.parameters_ = parameters_;
-        } else {
-          result.parameters_ = fskBuilder_.build();
-        }
-      }
-      if (parametersCase_ == 5) {
-        if (lrFhssBuilder_ == null) {
-          result.parameters_ = parameters_;
-        } else {
-          result.parameters_ = lrFhssBuilder_.build();
-        }
-      }
-      result.parametersCase_ = parametersCase_;
+    @java.lang.Override
+    public io.chirpstack.api.gw.Modulation buildPartial() {
+      io.chirpstack.api.gw.Modulation result = new io.chirpstack.api.gw.Modulation(this);
+      if (bitField0_ != 0) { buildPartial0(result); }
+      buildPartialOneofs(result);
       onBuilt();
       return result;
     }
 
-    @Override
-    public Builder clone() {
-      return super.clone();
+    private void buildPartial0(io.chirpstack.api.gw.Modulation result) {
+      int from_bitField0_ = bitField0_;
     }
-    @Override
-    public Builder setField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        Object value) {
-      return super.setField(field, value);
+
+    private void buildPartialOneofs(io.chirpstack.api.gw.Modulation result) {
+      result.parametersCase_ = parametersCase_;
+      result.parameters_ = this.parameters_;
+      if (parametersCase_ == 3 &&
+          loraBuilder_ != null) {
+        result.parameters_ = loraBuilder_.build();
+      }
+      if (parametersCase_ == 4 &&
+          fskBuilder_ != null) {
+        result.parameters_ = fskBuilder_.build();
+      }
+      if (parametersCase_ == 5 &&
+          lrFhssBuilder_ != null) {
+        result.parameters_ = lrFhssBuilder_.build();
+      }
     }
-    @Override
-    public Builder clearField(
-        com.google.protobuf.Descriptors.FieldDescriptor field) {
-      return super.clearField(field);
-    }
-    @Override
-    public Builder clearOneof(
-        com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-      return super.clearOneof(oneof);
-    }
-    @Override
-    public Builder setRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        int index, Object value) {
-      return super.setRepeatedField(field, index, value);
-    }
-    @Override
-    public Builder addRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        Object value) {
-      return super.addRepeatedField(field, value);
-    }
-    @Override
+
+    @java.lang.Override
     public Builder mergeFrom(com.google.protobuf.Message other) {
-      if (other instanceof Modulation) {
-        return mergeFrom((Modulation)other);
+      if (other instanceof io.chirpstack.api.gw.Modulation) {
+        return mergeFrom((io.chirpstack.api.gw.Modulation)other);
       } else {
         super.mergeFrom(other);
         return this;
       }
     }
 
-    public Builder mergeFrom(Modulation other) {
-      if (other == Modulation.getDefaultInstance()) return this;
+    public Builder mergeFrom(io.chirpstack.api.gw.Modulation other) {
+      if (other == io.chirpstack.api.gw.Modulation.getDefaultInstance()) return this;
       switch (other.getParametersCase()) {
         case LORA: {
           mergeLora(other.getLora());
@@ -575,18 +541,18 @@ private static final long serialVersionUID = 0L;
       return this;
     }
 
-    @Override
+    @java.lang.Override
     public final boolean isInitialized() {
       return true;
     }
 
-    @Override
+    @java.lang.Override
     public Builder mergeFrom(
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
       if (extensionRegistry == null) {
-        throw new NullPointerException();
+        throw new java.lang.NullPointerException();
       }
       try {
         boolean done = false;
@@ -633,7 +599,7 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     private int parametersCase_ = 0;
-    private Object parameters_;
+    private java.lang.Object parameters_;
     public ParametersCase
         getParametersCase() {
       return ParametersCase.forNumber(
@@ -647,9 +613,10 @@ private static final long serialVersionUID = 0L;
       return this;
     }
 
+    private int bitField0_;
 
     private com.google.protobuf.SingleFieldBuilderV3<
-        LoraModulationInfo, LoraModulationInfo.Builder, LoraModulationInfoOrBuilder> loraBuilder_;
+        io.chirpstack.api.gw.LoraModulationInfo, io.chirpstack.api.gw.LoraModulationInfo.Builder, io.chirpstack.api.gw.LoraModulationInfoOrBuilder> loraBuilder_;
     /**
      * <pre>
      * LoRa modulation information.
@@ -658,7 +625,7 @@ private static final long serialVersionUID = 0L;
      * <code>.gw.LoraModulationInfo lora = 3;</code>
      * @return Whether the lora field is set.
      */
-    @Override
+    @java.lang.Override
     public boolean hasLora() {
       return parametersCase_ == 3;
     }
@@ -670,18 +637,18 @@ private static final long serialVersionUID = 0L;
      * <code>.gw.LoraModulationInfo lora = 3;</code>
      * @return The lora.
      */
-    @Override
-    public LoraModulationInfo getLora() {
+    @java.lang.Override
+    public io.chirpstack.api.gw.LoraModulationInfo getLora() {
       if (loraBuilder_ == null) {
         if (parametersCase_ == 3) {
-          return (LoraModulationInfo) parameters_;
+          return (io.chirpstack.api.gw.LoraModulationInfo) parameters_;
         }
-        return LoraModulationInfo.getDefaultInstance();
+        return io.chirpstack.api.gw.LoraModulationInfo.getDefaultInstance();
       } else {
         if (parametersCase_ == 3) {
           return loraBuilder_.getMessage();
         }
-        return LoraModulationInfo.getDefaultInstance();
+        return io.chirpstack.api.gw.LoraModulationInfo.getDefaultInstance();
       }
     }
     /**
@@ -691,7 +658,7 @@ private static final long serialVersionUID = 0L;
      *
      * <code>.gw.LoraModulationInfo lora = 3;</code>
      */
-    public Builder setLora(LoraModulationInfo value) {
+    public Builder setLora(io.chirpstack.api.gw.LoraModulationInfo value) {
       if (loraBuilder_ == null) {
         if (value == null) {
           throw new NullPointerException();
@@ -712,7 +679,7 @@ private static final long serialVersionUID = 0L;
      * <code>.gw.LoraModulationInfo lora = 3;</code>
      */
     public Builder setLora(
-        LoraModulationInfo.Builder builderForValue) {
+        io.chirpstack.api.gw.LoraModulationInfo.Builder builderForValue) {
       if (loraBuilder_ == null) {
         parameters_ = builderForValue.build();
         onChanged();
@@ -729,11 +696,11 @@ private static final long serialVersionUID = 0L;
      *
      * <code>.gw.LoraModulationInfo lora = 3;</code>
      */
-    public Builder mergeLora(LoraModulationInfo value) {
+    public Builder mergeLora(io.chirpstack.api.gw.LoraModulationInfo value) {
       if (loraBuilder_ == null) {
         if (parametersCase_ == 3 &&
-            parameters_ != LoraModulationInfo.getDefaultInstance()) {
-          parameters_ = LoraModulationInfo.newBuilder((LoraModulationInfo) parameters_)
+            parameters_ != io.chirpstack.api.gw.LoraModulationInfo.getDefaultInstance()) {
+          parameters_ = io.chirpstack.api.gw.LoraModulationInfo.newBuilder((io.chirpstack.api.gw.LoraModulationInfo) parameters_)
               .mergeFrom(value).buildPartial();
         } else {
           parameters_ = value;
@@ -779,7 +746,7 @@ private static final long serialVersionUID = 0L;
      *
      * <code>.gw.LoraModulationInfo lora = 3;</code>
      */
-    public LoraModulationInfo.Builder getLoraBuilder() {
+    public io.chirpstack.api.gw.LoraModulationInfo.Builder getLoraBuilder() {
       return getLoraFieldBuilder().getBuilder();
     }
     /**
@@ -789,15 +756,15 @@ private static final long serialVersionUID = 0L;
      *
      * <code>.gw.LoraModulationInfo lora = 3;</code>
      */
-    @Override
-    public LoraModulationInfoOrBuilder getLoraOrBuilder() {
+    @java.lang.Override
+    public io.chirpstack.api.gw.LoraModulationInfoOrBuilder getLoraOrBuilder() {
       if ((parametersCase_ == 3) && (loraBuilder_ != null)) {
         return loraBuilder_.getMessageOrBuilder();
       } else {
         if (parametersCase_ == 3) {
-          return (LoraModulationInfo) parameters_;
+          return (io.chirpstack.api.gw.LoraModulationInfo) parameters_;
         }
-        return LoraModulationInfo.getDefaultInstance();
+        return io.chirpstack.api.gw.LoraModulationInfo.getDefaultInstance();
       }
     }
     /**
@@ -808,26 +775,26 @@ private static final long serialVersionUID = 0L;
      * <code>.gw.LoraModulationInfo lora = 3;</code>
      */
     private com.google.protobuf.SingleFieldBuilderV3<
-        LoraModulationInfo, LoraModulationInfo.Builder, LoraModulationInfoOrBuilder>
+        io.chirpstack.api.gw.LoraModulationInfo, io.chirpstack.api.gw.LoraModulationInfo.Builder, io.chirpstack.api.gw.LoraModulationInfoOrBuilder> 
         getLoraFieldBuilder() {
       if (loraBuilder_ == null) {
         if (!(parametersCase_ == 3)) {
-          parameters_ = LoraModulationInfo.getDefaultInstance();
+          parameters_ = io.chirpstack.api.gw.LoraModulationInfo.getDefaultInstance();
         }
         loraBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
-            LoraModulationInfo, LoraModulationInfo.Builder, LoraModulationInfoOrBuilder>(
-                (LoraModulationInfo) parameters_,
+            io.chirpstack.api.gw.LoraModulationInfo, io.chirpstack.api.gw.LoraModulationInfo.Builder, io.chirpstack.api.gw.LoraModulationInfoOrBuilder>(
+                (io.chirpstack.api.gw.LoraModulationInfo) parameters_,
                 getParentForChildren(),
                 isClean());
         parameters_ = null;
       }
       parametersCase_ = 3;
-      onChanged();;
+      onChanged();
       return loraBuilder_;
     }
 
     private com.google.protobuf.SingleFieldBuilderV3<
-        FskModulationInfo, FskModulationInfo.Builder, FskModulationInfoOrBuilder> fskBuilder_;
+        io.chirpstack.api.gw.FskModulationInfo, io.chirpstack.api.gw.FskModulationInfo.Builder, io.chirpstack.api.gw.FskModulationInfoOrBuilder> fskBuilder_;
     /**
      * <pre>
      * FSK modulation information.
@@ -836,7 +803,7 @@ private static final long serialVersionUID = 0L;
      * <code>.gw.FskModulationInfo fsk = 4;</code>
      * @return Whether the fsk field is set.
      */
-    @Override
+    @java.lang.Override
     public boolean hasFsk() {
       return parametersCase_ == 4;
     }
@@ -848,18 +815,18 @@ private static final long serialVersionUID = 0L;
      * <code>.gw.FskModulationInfo fsk = 4;</code>
      * @return The fsk.
      */
-    @Override
-    public FskModulationInfo getFsk() {
+    @java.lang.Override
+    public io.chirpstack.api.gw.FskModulationInfo getFsk() {
       if (fskBuilder_ == null) {
         if (parametersCase_ == 4) {
-          return (FskModulationInfo) parameters_;
+          return (io.chirpstack.api.gw.FskModulationInfo) parameters_;
         }
-        return FskModulationInfo.getDefaultInstance();
+        return io.chirpstack.api.gw.FskModulationInfo.getDefaultInstance();
       } else {
         if (parametersCase_ == 4) {
           return fskBuilder_.getMessage();
         }
-        return FskModulationInfo.getDefaultInstance();
+        return io.chirpstack.api.gw.FskModulationInfo.getDefaultInstance();
       }
     }
     /**
@@ -869,7 +836,7 @@ private static final long serialVersionUID = 0L;
      *
      * <code>.gw.FskModulationInfo fsk = 4;</code>
      */
-    public Builder setFsk(FskModulationInfo value) {
+    public Builder setFsk(io.chirpstack.api.gw.FskModulationInfo value) {
       if (fskBuilder_ == null) {
         if (value == null) {
           throw new NullPointerException();
@@ -890,7 +857,7 @@ private static final long serialVersionUID = 0L;
      * <code>.gw.FskModulationInfo fsk = 4;</code>
      */
     public Builder setFsk(
-        FskModulationInfo.Builder builderForValue) {
+        io.chirpstack.api.gw.FskModulationInfo.Builder builderForValue) {
       if (fskBuilder_ == null) {
         parameters_ = builderForValue.build();
         onChanged();
@@ -907,11 +874,11 @@ private static final long serialVersionUID = 0L;
      *
      * <code>.gw.FskModulationInfo fsk = 4;</code>
      */
-    public Builder mergeFsk(FskModulationInfo value) {
+    public Builder mergeFsk(io.chirpstack.api.gw.FskModulationInfo value) {
       if (fskBuilder_ == null) {
         if (parametersCase_ == 4 &&
-            parameters_ != FskModulationInfo.getDefaultInstance()) {
-          parameters_ = FskModulationInfo.newBuilder((FskModulationInfo) parameters_)
+            parameters_ != io.chirpstack.api.gw.FskModulationInfo.getDefaultInstance()) {
+          parameters_ = io.chirpstack.api.gw.FskModulationInfo.newBuilder((io.chirpstack.api.gw.FskModulationInfo) parameters_)
               .mergeFrom(value).buildPartial();
         } else {
           parameters_ = value;
@@ -957,7 +924,7 @@ private static final long serialVersionUID = 0L;
      *
      * <code>.gw.FskModulationInfo fsk = 4;</code>
      */
-    public FskModulationInfo.Builder getFskBuilder() {
+    public io.chirpstack.api.gw.FskModulationInfo.Builder getFskBuilder() {
       return getFskFieldBuilder().getBuilder();
     }
     /**
@@ -967,15 +934,15 @@ private static final long serialVersionUID = 0L;
      *
      * <code>.gw.FskModulationInfo fsk = 4;</code>
      */
-    @Override
-    public FskModulationInfoOrBuilder getFskOrBuilder() {
+    @java.lang.Override
+    public io.chirpstack.api.gw.FskModulationInfoOrBuilder getFskOrBuilder() {
       if ((parametersCase_ == 4) && (fskBuilder_ != null)) {
         return fskBuilder_.getMessageOrBuilder();
       } else {
         if (parametersCase_ == 4) {
-          return (FskModulationInfo) parameters_;
+          return (io.chirpstack.api.gw.FskModulationInfo) parameters_;
         }
-        return FskModulationInfo.getDefaultInstance();
+        return io.chirpstack.api.gw.FskModulationInfo.getDefaultInstance();
       }
     }
     /**
@@ -986,26 +953,26 @@ private static final long serialVersionUID = 0L;
      * <code>.gw.FskModulationInfo fsk = 4;</code>
      */
     private com.google.protobuf.SingleFieldBuilderV3<
-        FskModulationInfo, FskModulationInfo.Builder, FskModulationInfoOrBuilder>
+        io.chirpstack.api.gw.FskModulationInfo, io.chirpstack.api.gw.FskModulationInfo.Builder, io.chirpstack.api.gw.FskModulationInfoOrBuilder> 
         getFskFieldBuilder() {
       if (fskBuilder_ == null) {
         if (!(parametersCase_ == 4)) {
-          parameters_ = FskModulationInfo.getDefaultInstance();
+          parameters_ = io.chirpstack.api.gw.FskModulationInfo.getDefaultInstance();
         }
         fskBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
-            FskModulationInfo, FskModulationInfo.Builder, FskModulationInfoOrBuilder>(
-                (FskModulationInfo) parameters_,
+            io.chirpstack.api.gw.FskModulationInfo, io.chirpstack.api.gw.FskModulationInfo.Builder, io.chirpstack.api.gw.FskModulationInfoOrBuilder>(
+                (io.chirpstack.api.gw.FskModulationInfo) parameters_,
                 getParentForChildren(),
                 isClean());
         parameters_ = null;
       }
       parametersCase_ = 4;
-      onChanged();;
+      onChanged();
       return fskBuilder_;
     }
 
     private com.google.protobuf.SingleFieldBuilderV3<
-        LrFhssModulationInfo, LrFhssModulationInfo.Builder, LrFhssModulationInfoOrBuilder> lrFhssBuilder_;
+        io.chirpstack.api.gw.LrFhssModulationInfo, io.chirpstack.api.gw.LrFhssModulationInfo.Builder, io.chirpstack.api.gw.LrFhssModulationInfoOrBuilder> lrFhssBuilder_;
     /**
      * <pre>
      * LR-FHSS modulation information.
@@ -1014,7 +981,7 @@ private static final long serialVersionUID = 0L;
      * <code>.gw.LrFhssModulationInfo lr_fhss = 5;</code>
      * @return Whether the lrFhss field is set.
      */
-    @Override
+    @java.lang.Override
     public boolean hasLrFhss() {
       return parametersCase_ == 5;
     }
@@ -1026,18 +993,18 @@ private static final long serialVersionUID = 0L;
      * <code>.gw.LrFhssModulationInfo lr_fhss = 5;</code>
      * @return The lrFhss.
      */
-    @Override
-    public LrFhssModulationInfo getLrFhss() {
+    @java.lang.Override
+    public io.chirpstack.api.gw.LrFhssModulationInfo getLrFhss() {
       if (lrFhssBuilder_ == null) {
         if (parametersCase_ == 5) {
-          return (LrFhssModulationInfo) parameters_;
+          return (io.chirpstack.api.gw.LrFhssModulationInfo) parameters_;
         }
-        return LrFhssModulationInfo.getDefaultInstance();
+        return io.chirpstack.api.gw.LrFhssModulationInfo.getDefaultInstance();
       } else {
         if (parametersCase_ == 5) {
           return lrFhssBuilder_.getMessage();
         }
-        return LrFhssModulationInfo.getDefaultInstance();
+        return io.chirpstack.api.gw.LrFhssModulationInfo.getDefaultInstance();
       }
     }
     /**
@@ -1047,7 +1014,7 @@ private static final long serialVersionUID = 0L;
      *
      * <code>.gw.LrFhssModulationInfo lr_fhss = 5;</code>
      */
-    public Builder setLrFhss(LrFhssModulationInfo value) {
+    public Builder setLrFhss(io.chirpstack.api.gw.LrFhssModulationInfo value) {
       if (lrFhssBuilder_ == null) {
         if (value == null) {
           throw new NullPointerException();
@@ -1068,7 +1035,7 @@ private static final long serialVersionUID = 0L;
      * <code>.gw.LrFhssModulationInfo lr_fhss = 5;</code>
      */
     public Builder setLrFhss(
-        LrFhssModulationInfo.Builder builderForValue) {
+        io.chirpstack.api.gw.LrFhssModulationInfo.Builder builderForValue) {
       if (lrFhssBuilder_ == null) {
         parameters_ = builderForValue.build();
         onChanged();
@@ -1085,11 +1052,11 @@ private static final long serialVersionUID = 0L;
      *
      * <code>.gw.LrFhssModulationInfo lr_fhss = 5;</code>
      */
-    public Builder mergeLrFhss(LrFhssModulationInfo value) {
+    public Builder mergeLrFhss(io.chirpstack.api.gw.LrFhssModulationInfo value) {
       if (lrFhssBuilder_ == null) {
         if (parametersCase_ == 5 &&
-            parameters_ != LrFhssModulationInfo.getDefaultInstance()) {
-          parameters_ = LrFhssModulationInfo.newBuilder((LrFhssModulationInfo) parameters_)
+            parameters_ != io.chirpstack.api.gw.LrFhssModulationInfo.getDefaultInstance()) {
+          parameters_ = io.chirpstack.api.gw.LrFhssModulationInfo.newBuilder((io.chirpstack.api.gw.LrFhssModulationInfo) parameters_)
               .mergeFrom(value).buildPartial();
         } else {
           parameters_ = value;
@@ -1135,7 +1102,7 @@ private static final long serialVersionUID = 0L;
      *
      * <code>.gw.LrFhssModulationInfo lr_fhss = 5;</code>
      */
-    public LrFhssModulationInfo.Builder getLrFhssBuilder() {
+    public io.chirpstack.api.gw.LrFhssModulationInfo.Builder getLrFhssBuilder() {
       return getLrFhssFieldBuilder().getBuilder();
     }
     /**
@@ -1145,15 +1112,15 @@ private static final long serialVersionUID = 0L;
      *
      * <code>.gw.LrFhssModulationInfo lr_fhss = 5;</code>
      */
-    @Override
-    public LrFhssModulationInfoOrBuilder getLrFhssOrBuilder() {
+    @java.lang.Override
+    public io.chirpstack.api.gw.LrFhssModulationInfoOrBuilder getLrFhssOrBuilder() {
       if ((parametersCase_ == 5) && (lrFhssBuilder_ != null)) {
         return lrFhssBuilder_.getMessageOrBuilder();
       } else {
         if (parametersCase_ == 5) {
-          return (LrFhssModulationInfo) parameters_;
+          return (io.chirpstack.api.gw.LrFhssModulationInfo) parameters_;
         }
-        return LrFhssModulationInfo.getDefaultInstance();
+        return io.chirpstack.api.gw.LrFhssModulationInfo.getDefaultInstance();
       }
     }
     /**
@@ -1164,30 +1131,30 @@ private static final long serialVersionUID = 0L;
      * <code>.gw.LrFhssModulationInfo lr_fhss = 5;</code>
      */
     private com.google.protobuf.SingleFieldBuilderV3<
-        LrFhssModulationInfo, LrFhssModulationInfo.Builder, LrFhssModulationInfoOrBuilder>
+        io.chirpstack.api.gw.LrFhssModulationInfo, io.chirpstack.api.gw.LrFhssModulationInfo.Builder, io.chirpstack.api.gw.LrFhssModulationInfoOrBuilder> 
         getLrFhssFieldBuilder() {
       if (lrFhssBuilder_ == null) {
         if (!(parametersCase_ == 5)) {
-          parameters_ = LrFhssModulationInfo.getDefaultInstance();
+          parameters_ = io.chirpstack.api.gw.LrFhssModulationInfo.getDefaultInstance();
         }
         lrFhssBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
-            LrFhssModulationInfo, LrFhssModulationInfo.Builder, LrFhssModulationInfoOrBuilder>(
-                (LrFhssModulationInfo) parameters_,
+            io.chirpstack.api.gw.LrFhssModulationInfo, io.chirpstack.api.gw.LrFhssModulationInfo.Builder, io.chirpstack.api.gw.LrFhssModulationInfoOrBuilder>(
+                (io.chirpstack.api.gw.LrFhssModulationInfo) parameters_,
                 getParentForChildren(),
                 isClean());
         parameters_ = null;
       }
       parametersCase_ = 5;
-      onChanged();;
+      onChanged();
       return lrFhssBuilder_;
     }
-    @Override
+    @java.lang.Override
     public final Builder setUnknownFields(
         final com.google.protobuf.UnknownFieldSet unknownFields) {
       return super.setUnknownFields(unknownFields);
     }
 
-    @Override
+    @java.lang.Override
     public final Builder mergeUnknownFields(
         final com.google.protobuf.UnknownFieldSet unknownFields) {
       return super.mergeUnknownFields(unknownFields);
@@ -1198,18 +1165,18 @@ private static final long serialVersionUID = 0L;
   }
 
   // @@protoc_insertion_point(class_scope:gw.Modulation)
-  private static final Modulation DEFAULT_INSTANCE;
+  private static final io.chirpstack.api.gw.Modulation DEFAULT_INSTANCE;
   static {
-    DEFAULT_INSTANCE = new Modulation();
+    DEFAULT_INSTANCE = new io.chirpstack.api.gw.Modulation();
   }
 
-  public static Modulation getDefaultInstance() {
+  public static io.chirpstack.api.gw.Modulation getDefaultInstance() {
     return DEFAULT_INSTANCE;
   }
 
   private static final com.google.protobuf.Parser<Modulation>
       PARSER = new com.google.protobuf.AbstractParser<Modulation>() {
-    @Override
+    @java.lang.Override
     public Modulation parsePartialFrom(
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
@@ -1233,13 +1200,13 @@ private static final long serialVersionUID = 0L;
     return PARSER;
   }
 
-  @Override
+  @java.lang.Override
   public com.google.protobuf.Parser<Modulation> getParserForType() {
     return PARSER;
   }
 
-  @Override
-  public Modulation getDefaultInstanceForType() {
+  @java.lang.Override
+  public io.chirpstack.api.gw.Modulation getDefaultInstanceForType() {
     return DEFAULT_INSTANCE;
   }
 

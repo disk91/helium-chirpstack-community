@@ -229,7 +229,8 @@ private static final long serialVersionUID = 0L;
   /**
    * <pre>
    * Is pending.
-   * This is set to true when the downlink is pending.
+   * This is set by ChirpStack to true when the downlink is pending (e.g. it
+   * has been sent, but a confirmation is still pending).
    * </pre>
    *
    * <code>bool is_pending = 7;</code>
@@ -245,7 +246,8 @@ private static final long serialVersionUID = 0L;
   /**
    * <pre>
    * Downlink frame-counter.
-   * This is set when the payload has been sent as downlink.
+   * Do not set this for plain-text data payloads. It will be automatically set
+   * by ChirpStack when the payload has been sent as downlink.
    * </pre>
    *
    * <code>uint32 f_cnt_down = 8;</code>
@@ -254,6 +256,24 @@ private static final long serialVersionUID = 0L;
   @Override
   public int getFCntDown() {
     return fCntDown_;
+  }
+
+  public static final int IS_ENCRYPTED_FIELD_NUMBER = 9;
+  private boolean isEncrypted_ = false;
+  /**
+   * <pre>
+   * Is encrypted.
+   * This must be set to true if the end-application has already encrypted
+   * the data payload. In this case, the f_cnt_down field must be set to
+   * the corresponding frame-counter which has been used during the encryption.
+   * </pre>
+   *
+   * <code>bool is_encrypted = 9;</code>
+   * @return The isEncrypted.
+   */
+  @Override
+  public boolean getIsEncrypted() {
+    return isEncrypted_;
   }
 
   private byte memoizedIsInitialized = -1;
@@ -294,6 +314,9 @@ private static final long serialVersionUID = 0L;
     if (fCntDown_ != 0) {
       output.writeUInt32(8, fCntDown_);
     }
+    if (isEncrypted_ != false) {
+      output.writeBool(9, isEncrypted_);
+    }
     getUnknownFields().writeTo(output);
   }
 
@@ -333,6 +356,10 @@ private static final long serialVersionUID = 0L;
       size += com.google.protobuf.CodedOutputStream
         .computeUInt32Size(8, fCntDown_);
     }
+    if (isEncrypted_ != false) {
+      size += com.google.protobuf.CodedOutputStream
+        .computeBoolSize(9, isEncrypted_);
+    }
     size += getUnknownFields().getSerializedSize();
     memoizedSize = size;
     return size;
@@ -367,6 +394,8 @@ private static final long serialVersionUID = 0L;
         != other.getIsPending()) return false;
     if (getFCntDown()
         != other.getFCntDown()) return false;
+    if (getIsEncrypted()
+        != other.getIsEncrypted()) return false;
     if (!getUnknownFields().equals(other.getUnknownFields())) return false;
     return true;
   }
@@ -398,6 +427,9 @@ private static final long serialVersionUID = 0L;
         getIsPending());
     hash = (37 * hash) + F_CNT_DOWN_FIELD_NUMBER;
     hash = (53 * hash) + getFCntDown();
+    hash = (37 * hash) + IS_ENCRYPTED_FIELD_NUMBER;
+    hash = (53 * hash) + com.google.protobuf.Internal.hashBoolean(
+        getIsEncrypted());
     hash = (29 * hash) + getUnknownFields().hashCode();
     memoizedHashCode = hash;
     return hash;
@@ -539,6 +571,7 @@ private static final long serialVersionUID = 0L;
       }
       isPending_ = false;
       fCntDown_ = 0;
+      isEncrypted_ = false;
       return this;
     }
 
@@ -598,6 +631,9 @@ private static final long serialVersionUID = 0L;
       if (((from_bitField0_ & 0x00000080) != 0)) {
         result.fCntDown_ = fCntDown_;
       }
+      if (((from_bitField0_ & 0x00000100) != 0)) {
+        result.isEncrypted_ = isEncrypted_;
+      }
     }
 
     @Override
@@ -639,6 +675,9 @@ private static final long serialVersionUID = 0L;
       }
       if (other.getFCntDown() != 0) {
         setFCntDown(other.getFCntDown());
+      }
+      if (other.getIsEncrypted() != false) {
+        setIsEncrypted(other.getIsEncrypted());
       }
       this.mergeUnknownFields(other.getUnknownFields());
       onChanged();
@@ -708,6 +747,11 @@ private static final long serialVersionUID = 0L;
               bitField0_ |= 0x00000080;
               break;
             } // case 64
+            case 72: {
+              isEncrypted_ = input.readBool();
+              bitField0_ |= 0x00000100;
+              break;
+            } // case 72
             default: {
               if (!super.parseUnknownField(input, extensionRegistry, tag)) {
                 done = true; // was an endgroup tag
@@ -1217,7 +1261,8 @@ private static final long serialVersionUID = 0L;
     /**
      * <pre>
      * Is pending.
-     * This is set to true when the downlink is pending.
+     * This is set by ChirpStack to true when the downlink is pending (e.g. it
+     * has been sent, but a confirmation is still pending).
      * </pre>
      *
      * <code>bool is_pending = 7;</code>
@@ -1230,7 +1275,8 @@ private static final long serialVersionUID = 0L;
     /**
      * <pre>
      * Is pending.
-     * This is set to true when the downlink is pending.
+     * This is set by ChirpStack to true when the downlink is pending (e.g. it
+     * has been sent, but a confirmation is still pending).
      * </pre>
      *
      * <code>bool is_pending = 7;</code>
@@ -1247,7 +1293,8 @@ private static final long serialVersionUID = 0L;
     /**
      * <pre>
      * Is pending.
-     * This is set to true when the downlink is pending.
+     * This is set by ChirpStack to true when the downlink is pending (e.g. it
+     * has been sent, but a confirmation is still pending).
      * </pre>
      *
      * <code>bool is_pending = 7;</code>
@@ -1264,7 +1311,8 @@ private static final long serialVersionUID = 0L;
     /**
      * <pre>
      * Downlink frame-counter.
-     * This is set when the payload has been sent as downlink.
+     * Do not set this for plain-text data payloads. It will be automatically set
+     * by ChirpStack when the payload has been sent as downlink.
      * </pre>
      *
      * <code>uint32 f_cnt_down = 8;</code>
@@ -1277,7 +1325,8 @@ private static final long serialVersionUID = 0L;
     /**
      * <pre>
      * Downlink frame-counter.
-     * This is set when the payload has been sent as downlink.
+     * Do not set this for plain-text data payloads. It will be automatically set
+     * by ChirpStack when the payload has been sent as downlink.
      * </pre>
      *
      * <code>uint32 f_cnt_down = 8;</code>
@@ -1294,7 +1343,8 @@ private static final long serialVersionUID = 0L;
     /**
      * <pre>
      * Downlink frame-counter.
-     * This is set when the payload has been sent as downlink.
+     * Do not set this for plain-text data payloads. It will be automatically set
+     * by ChirpStack when the payload has been sent as downlink.
      * </pre>
      *
      * <code>uint32 f_cnt_down = 8;</code>
@@ -1303,6 +1353,59 @@ private static final long serialVersionUID = 0L;
     public Builder clearFCntDown() {
       bitField0_ = (bitField0_ & ~0x00000080);
       fCntDown_ = 0;
+      onChanged();
+      return this;
+    }
+
+    private boolean isEncrypted_ ;
+    /**
+     * <pre>
+     * Is encrypted.
+     * This must be set to true if the end-application has already encrypted
+     * the data payload. In this case, the f_cnt_down field must be set to
+     * the corresponding frame-counter which has been used during the encryption.
+     * </pre>
+     *
+     * <code>bool is_encrypted = 9;</code>
+     * @return The isEncrypted.
+     */
+    @Override
+    public boolean getIsEncrypted() {
+      return isEncrypted_;
+    }
+    /**
+     * <pre>
+     * Is encrypted.
+     * This must be set to true if the end-application has already encrypted
+     * the data payload. In this case, the f_cnt_down field must be set to
+     * the corresponding frame-counter which has been used during the encryption.
+     * </pre>
+     *
+     * <code>bool is_encrypted = 9;</code>
+     * @param value The isEncrypted to set.
+     * @return This builder for chaining.
+     */
+    public Builder setIsEncrypted(boolean value) {
+
+      isEncrypted_ = value;
+      bitField0_ |= 0x00000100;
+      onChanged();
+      return this;
+    }
+    /**
+     * <pre>
+     * Is encrypted.
+     * This must be set to true if the end-application has already encrypted
+     * the data payload. In this case, the f_cnt_down field must be set to
+     * the corresponding frame-counter which has been used during the encryption.
+     * </pre>
+     *
+     * <code>bool is_encrypted = 9;</code>
+     * @return This builder for chaining.
+     */
+    public Builder clearIsEncrypted() {
+      bitField0_ = (bitField0_ & ~0x00000100);
+      isEncrypted_ = false;
       onChanged();
       return this;
     }

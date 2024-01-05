@@ -289,8 +289,8 @@ public final class InternalProto {
         new com.google.protobuf.Descriptors.FileDescriptor[] {
           com.google.protobuf.TimestampProto.getDescriptor(),
           com.google.protobuf.EmptyProto.getDescriptor(),
-          io.chirpstack.api.CommonProto.getDescriptor(),
-          io.chirpstack.api.UserProto.getDescriptor(),
+          CommonProto.getDescriptor(),
+          UserProto.getDescriptor(),
         });
     internal_static_api_ApiKey_descriptor =
       getDescriptor().getMessageTypes().get(0);
@@ -486,8 +486,8 @@ public final class InternalProto {
         new String[] { "Frequency", "DrMin", "DrMax", });
     com.google.protobuf.TimestampProto.getDescriptor();
     com.google.protobuf.EmptyProto.getDescriptor();
-    io.chirpstack.api.CommonProto.getDescriptor();
-    io.chirpstack.api.UserProto.getDescriptor();
+    CommonProto.getDescriptor();
+    UserProto.getDescriptor();
   }
 
   // @@protoc_insertion_point(outer_class_scope)

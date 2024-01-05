@@ -26,7 +26,8 @@ public enum TxAckStatus
   OK(1),
   /**
    * <pre>
-   * Rejected because it was already too late to program this packet for downlink.
+   * Rejected because it was already too late to program this packet for
+   * downlink.
    * </pre>
    *
    * <code>TOO_LATE = 2;</code>
@@ -42,7 +43,8 @@ public enum TxAckStatus
   TOO_EARLY(3),
   /**
    * <pre>
-   * Rejected because there was already a packet programmed in requested timeframe.
+   * Rejected because there was already a packet programmed in requested
+   * timeframe.
    * </pre>
    *
    * <code>COLLISION_PACKET = 4;</code>
@@ -117,7 +119,8 @@ public enum TxAckStatus
   public static final int OK_VALUE = 1;
   /**
    * <pre>
-   * Rejected because it was already too late to program this packet for downlink.
+   * Rejected because it was already too late to program this packet for
+   * downlink.
    * </pre>
    *
    * <code>TOO_LATE = 2;</code>
@@ -133,7 +136,8 @@ public enum TxAckStatus
   public static final int TOO_EARLY_VALUE = 3;
   /**
    * <pre>
-   * Rejected because there was already a packet programmed in requested timeframe.
+   * Rejected because there was already a packet programmed in requested
+   * timeframe.
    * </pre>
    *
    * <code>COLLISION_PACKET = 4;</code>
@@ -191,7 +195,7 @@ public enum TxAckStatus
 
   public final int getNumber() {
     if (this == UNRECOGNIZED) {
-      throw new IllegalArgumentException(
+      throw new java.lang.IllegalArgumentException(
           "Can't get the number of an unknown enum value.");
     }
     return value;
@@ -202,7 +206,7 @@ public enum TxAckStatus
    * @return The enum associated with the given numeric wire value.
    * @deprecated Use {@link #forNumber(int)} instead.
    */
-  @Deprecated
+  @java.lang.Deprecated
   public static TxAckStatus valueOf(int value) {
     return forNumber(value);
   }
@@ -243,7 +247,7 @@ public enum TxAckStatus
   public final com.google.protobuf.Descriptors.EnumValueDescriptor
       getValueDescriptor() {
     if (this == UNRECOGNIZED) {
-      throw new IllegalStateException(
+      throw new java.lang.IllegalStateException(
           "Can't get the descriptor of an unrecognized enum value.");
     }
     return getDescriptor().getValues().get(ordinal());
@@ -254,7 +258,7 @@ public enum TxAckStatus
   }
   public static final com.google.protobuf.Descriptors.EnumDescriptor
       getDescriptor() {
-    return GatewayProto.getDescriptor().getEnumTypes().get(4);
+    return io.chirpstack.api.gw.GatewayProto.getDescriptor().getEnumTypes().get(4);
   }
 
   private static final TxAckStatus[] VALUES = values();
@@ -262,7 +266,7 @@ public enum TxAckStatus
   public static TxAckStatus valueOf(
       com.google.protobuf.Descriptors.EnumValueDescriptor desc) {
     if (desc.getType() != getDescriptor()) {
-      throw new IllegalArgumentException(
+      throw new java.lang.IllegalArgumentException(
         "EnumValueDescriptor is not for this type.");
     }
     if (desc.getIndex() == -1) {

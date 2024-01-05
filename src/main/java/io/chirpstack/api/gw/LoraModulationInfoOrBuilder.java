@@ -35,7 +35,7 @@ public interface LoraModulationInfoOrBuilder extends
    * <code>string code_rate_legacy = 3;</code>
    * @return The codeRateLegacy.
    */
-  String getCodeRateLegacy();
+  java.lang.String getCodeRateLegacy();
   /**
    * <pre>
    * Code-rate.
@@ -64,7 +64,7 @@ public interface LoraModulationInfoOrBuilder extends
    * <code>.gw.CodeRate code_rate = 5;</code>
    * @return The codeRate.
    */
-  CodeRate getCodeRate();
+  io.chirpstack.api.gw.CodeRate getCodeRate();
 
   /**
    * <pre>
@@ -75,4 +75,25 @@ public interface LoraModulationInfoOrBuilder extends
    * @return The polarizationInversion.
    */
   boolean getPolarizationInversion();
+
+  /**
+   * <pre>
+   * Preamble length (for TX).
+   * </pre>
+   *
+   * <code>uint32 preamble = 6;</code>
+   * @return The preamble.
+   */
+  int getPreamble();
+
+  /**
+   * <pre>
+   *  No CRC (for TX).
+   * If true, do not send a CRC in the packet.
+   * </pre>
+   *
+   * <code>bool no_crc = 7;</code>
+   * @return The noCrc.
+   */
+  boolean getNoCrc();
 }

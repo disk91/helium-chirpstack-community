@@ -26,7 +26,7 @@ public interface ConnStateOrBuilder extends
    * <code>string gateway_id = 3;</code>
    * @return The gatewayId.
    */
-  String getGatewayId();
+  java.lang.String getGatewayId();
   /**
    * <pre>
    * Gateway ID.
@@ -47,5 +47,5 @@ public interface ConnStateOrBuilder extends
    * <code>.gw.ConnState.State state = 2;</code>
    * @return The state.
    */
-  ConnState.State getState();
+  io.chirpstack.api.gw.ConnState.State getState();
 }

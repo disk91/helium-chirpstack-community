@@ -113,7 +113,8 @@ public interface DeviceQueueItemOrBuilder extends
   /**
    * <pre>
    * Is pending.
-   * This is set to true when the downlink is pending.
+   * This is set by ChirpStack to true when the downlink is pending (e.g. it
+   * has been sent, but a confirmation is still pending).
    * </pre>
    *
    * <code>bool is_pending = 7;</code>
@@ -124,11 +125,25 @@ public interface DeviceQueueItemOrBuilder extends
   /**
    * <pre>
    * Downlink frame-counter.
-   * This is set when the payload has been sent as downlink.
+   * Do not set this for plain-text data payloads. It will be automatically set
+   * by ChirpStack when the payload has been sent as downlink.
    * </pre>
    *
    * <code>uint32 f_cnt_down = 8;</code>
    * @return The fCntDown.
    */
   int getFCntDown();
+
+  /**
+   * <pre>
+   * Is encrypted.
+   * This must be set to true if the end-application has already encrypted
+   * the data payload. In this case, the f_cnt_down field must be set to
+   * the corresponding frame-counter which has been used during the encryption.
+   * </pre>
+   *
+   * <code>bool is_encrypted = 9;</code>
+   * @return The isEncrypted.
+   */
+  boolean getIsEncrypted();
 }

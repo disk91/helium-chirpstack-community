@@ -53,7 +53,7 @@ public interface UplinkTxInfoLegacyOrBuilder extends
    * <code>.gw.LoraModulationInfo lora_modulation_info = 3;</code>
    * @return The loraModulationInfo.
    */
-  LoraModulationInfo getLoraModulationInfo();
+  io.chirpstack.api.gw.LoraModulationInfo getLoraModulationInfo();
   /**
    * <pre>
    * LoRa modulation information.
@@ -61,7 +61,7 @@ public interface UplinkTxInfoLegacyOrBuilder extends
    *
    * <code>.gw.LoraModulationInfo lora_modulation_info = 3;</code>
    */
-  LoraModulationInfoOrBuilder getLoraModulationInfoOrBuilder();
+  io.chirpstack.api.gw.LoraModulationInfoOrBuilder getLoraModulationInfoOrBuilder();
 
   /**
    * <pre>
@@ -80,7 +80,7 @@ public interface UplinkTxInfoLegacyOrBuilder extends
    * <code>.gw.FskModulationInfo fsk_modulation_info = 4;</code>
    * @return The fskModulationInfo.
    */
-  FskModulationInfo getFskModulationInfo();
+  io.chirpstack.api.gw.FskModulationInfo getFskModulationInfo();
   /**
    * <pre>
    * FSK modulation information.
@@ -88,7 +88,7 @@ public interface UplinkTxInfoLegacyOrBuilder extends
    *
    * <code>.gw.FskModulationInfo fsk_modulation_info = 4;</code>
    */
-  FskModulationInfoOrBuilder getFskModulationInfoOrBuilder();
+  io.chirpstack.api.gw.FskModulationInfoOrBuilder getFskModulationInfoOrBuilder();
 
   /**
    * <pre>
@@ -107,7 +107,7 @@ public interface UplinkTxInfoLegacyOrBuilder extends
    * <code>.gw.LrFhssModulationInfo lr_fhss_modulation_info = 5;</code>
    * @return The lrFhssModulationInfo.
    */
-  LrFhssModulationInfo getLrFhssModulationInfo();
+  io.chirpstack.api.gw.LrFhssModulationInfo getLrFhssModulationInfo();
   /**
    * <pre>
    * LR-FHSS modulation information.
@@ -115,7 +115,7 @@ public interface UplinkTxInfoLegacyOrBuilder extends
    *
    * <code>.gw.LrFhssModulationInfo lr_fhss_modulation_info = 5;</code>
    */
-  LrFhssModulationInfoOrBuilder getLrFhssModulationInfoOrBuilder();
+  io.chirpstack.api.gw.LrFhssModulationInfoOrBuilder getLrFhssModulationInfoOrBuilder();
 
-  public UplinkTxInfoLegacy.ModulationInfoCase getModulationInfoCase();
+  io.chirpstack.api.gw.UplinkTxInfoLegacy.ModulationInfoCase getModulationInfoCase();
 }

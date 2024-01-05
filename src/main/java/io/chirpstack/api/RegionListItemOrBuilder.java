@@ -44,7 +44,7 @@ public interface RegionListItemOrBuilder extends
    * <code>.common.Region region = 2;</code>
    * @return The region.
    */
-  io.chirpstack.api.Region getRegion();
+  Region getRegion();
 
   /**
    * <pre>

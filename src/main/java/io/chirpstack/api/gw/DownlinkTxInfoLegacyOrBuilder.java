@@ -30,7 +30,7 @@ public interface DownlinkTxInfoLegacyOrBuilder extends
 
   /**
    * <pre>
-   * TX power (in dBm).
+   * TX power (in dBm EIRP).
    * </pre>
    *
    * <code>int32 power = 6;</code>
@@ -74,7 +74,7 @@ public interface DownlinkTxInfoLegacyOrBuilder extends
    * <code>.gw.LoraModulationInfo lora_modulation_info = 8;</code>
    * @return The loraModulationInfo.
    */
-  LoraModulationInfo getLoraModulationInfo();
+  io.chirpstack.api.gw.LoraModulationInfo getLoraModulationInfo();
   /**
    * <pre>
    * LoRa modulation information.
@@ -82,7 +82,7 @@ public interface DownlinkTxInfoLegacyOrBuilder extends
    *
    * <code>.gw.LoraModulationInfo lora_modulation_info = 8;</code>
    */
-  LoraModulationInfoOrBuilder getLoraModulationInfoOrBuilder();
+  io.chirpstack.api.gw.LoraModulationInfoOrBuilder getLoraModulationInfoOrBuilder();
 
   /**
    * <pre>
@@ -101,7 +101,7 @@ public interface DownlinkTxInfoLegacyOrBuilder extends
    * <code>.gw.FskModulationInfo fsk_modulation_info = 9;</code>
    * @return The fskModulationInfo.
    */
-  FskModulationInfo getFskModulationInfo();
+  io.chirpstack.api.gw.FskModulationInfo getFskModulationInfo();
   /**
    * <pre>
    * FSK modulation information.
@@ -109,7 +109,7 @@ public interface DownlinkTxInfoLegacyOrBuilder extends
    *
    * <code>.gw.FskModulationInfo fsk_modulation_info = 9;</code>
    */
-  FskModulationInfoOrBuilder getFskModulationInfoOrBuilder();
+  io.chirpstack.api.gw.FskModulationInfoOrBuilder getFskModulationInfoOrBuilder();
 
   /**
    * <pre>
@@ -148,7 +148,7 @@ public interface DownlinkTxInfoLegacyOrBuilder extends
    * <code>.gw.DownlinkTiming timing = 12;</code>
    * @return The timing.
    */
-  DownlinkTiming getTiming();
+  io.chirpstack.api.gw.DownlinkTiming getTiming();
 
   /**
    * <pre>
@@ -167,7 +167,7 @@ public interface DownlinkTxInfoLegacyOrBuilder extends
    * <code>.gw.ImmediatelyTimingInfo immediately_timing_info = 13;</code>
    * @return The immediatelyTimingInfo.
    */
-  ImmediatelyTimingInfo getImmediatelyTimingInfo();
+  io.chirpstack.api.gw.ImmediatelyTimingInfo getImmediatelyTimingInfo();
   /**
    * <pre>
    * Immediately timing information.
@@ -175,7 +175,7 @@ public interface DownlinkTxInfoLegacyOrBuilder extends
    *
    * <code>.gw.ImmediatelyTimingInfo immediately_timing_info = 13;</code>
    */
-  ImmediatelyTimingInfoOrBuilder getImmediatelyTimingInfoOrBuilder();
+  io.chirpstack.api.gw.ImmediatelyTimingInfoOrBuilder getImmediatelyTimingInfoOrBuilder();
 
   /**
    * <pre>
@@ -194,7 +194,7 @@ public interface DownlinkTxInfoLegacyOrBuilder extends
    * <code>.gw.DelayTimingInfo delay_timing_info = 14;</code>
    * @return The delayTimingInfo.
    */
-  DelayTimingInfo getDelayTimingInfo();
+  io.chirpstack.api.gw.DelayTimingInfo getDelayTimingInfo();
   /**
    * <pre>
    * Context based delay timing information.
@@ -202,7 +202,7 @@ public interface DownlinkTxInfoLegacyOrBuilder extends
    *
    * <code>.gw.DelayTimingInfo delay_timing_info = 14;</code>
    */
-  DelayTimingInfoOrBuilder getDelayTimingInfoOrBuilder();
+  io.chirpstack.api.gw.DelayTimingInfoOrBuilder getDelayTimingInfoOrBuilder();
 
   /**
    * <pre>
@@ -221,7 +221,7 @@ public interface DownlinkTxInfoLegacyOrBuilder extends
    * <code>.gw.GPSEpochTimingInfo gps_epoch_timing_info = 15;</code>
    * @return The gpsEpochTimingInfo.
    */
-  GPSEpochTimingInfo getGpsEpochTimingInfo();
+  io.chirpstack.api.gw.GPSEpochTimingInfo getGpsEpochTimingInfo();
   /**
    * <pre>
    * GPS Epoch timing information.
@@ -229,7 +229,7 @@ public interface DownlinkTxInfoLegacyOrBuilder extends
    *
    * <code>.gw.GPSEpochTimingInfo gps_epoch_timing_info = 15;</code>
    */
-  GPSEpochTimingInfoOrBuilder getGpsEpochTimingInfoOrBuilder();
+  io.chirpstack.api.gw.GPSEpochTimingInfoOrBuilder getGpsEpochTimingInfoOrBuilder();
 
   /**
    * <pre>
@@ -242,7 +242,7 @@ public interface DownlinkTxInfoLegacyOrBuilder extends
    */
   com.google.protobuf.ByteString getContext();
 
-  public DownlinkTxInfoLegacy.ModulationInfoCase getModulationInfoCase();
+  io.chirpstack.api.gw.DownlinkTxInfoLegacy.ModulationInfoCase getModulationInfoCase();
 
-  public DownlinkTxInfoLegacy.TimingInfoCase getTimingInfoCase();
+  io.chirpstack.api.gw.DownlinkTxInfoLegacy.TimingInfoCase getTimingInfoCase();
 }

@@ -40,7 +40,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int USER_FIELD_NUMBER = 1;
-  private io.chirpstack.api.User user_;
+  private User user_;
   /**
    * <pre>
    * User object.
@@ -62,8 +62,8 @@ private static final long serialVersionUID = 0L;
    * @return The user.
    */
   @Override
-  public io.chirpstack.api.User getUser() {
-    return user_ == null ? io.chirpstack.api.User.getDefaultInstance() : user_;
+  public User getUser() {
+    return user_ == null ? User.getDefaultInstance() : user_;
   }
   /**
    * <pre>
@@ -73,8 +73,8 @@ private static final long serialVersionUID = 0L;
    * <code>.api.User user = 1;</code>
    */
   @Override
-  public io.chirpstack.api.UserOrBuilder getUserOrBuilder() {
-    return user_ == null ? io.chirpstack.api.User.getDefaultInstance() : user_;
+  public UserOrBuilder getUserOrBuilder() {
+    return user_ == null ? User.getDefaultInstance() : user_;
   }
 
   public static final int TENANTS_FIELD_NUMBER = 3;
@@ -514,9 +514,9 @@ private static final long serialVersionUID = 0L;
     }
     private int bitField0_;
 
-    private io.chirpstack.api.User user_;
+    private User user_;
     private com.google.protobuf.SingleFieldBuilderV3<
-        io.chirpstack.api.User, io.chirpstack.api.User.Builder, io.chirpstack.api.UserOrBuilder> userBuilder_;
+        User, User.Builder, UserOrBuilder> userBuilder_;
     /**
      * <pre>
      * User object.
@@ -536,9 +536,9 @@ private static final long serialVersionUID = 0L;
      * <code>.api.User user = 1;</code>
      * @return The user.
      */
-    public io.chirpstack.api.User getUser() {
+    public User getUser() {
       if (userBuilder_ == null) {
-        return user_ == null ? io.chirpstack.api.User.getDefaultInstance() : user_;
+        return user_ == null ? User.getDefaultInstance() : user_;
       } else {
         return userBuilder_.getMessage();
       }
@@ -550,7 +550,7 @@ private static final long serialVersionUID = 0L;
      *
      * <code>.api.User user = 1;</code>
      */
-    public Builder setUser(io.chirpstack.api.User value) {
+    public Builder setUser(User value) {
       if (userBuilder_ == null) {
         if (value == null) {
           throw new NullPointerException();
@@ -571,7 +571,7 @@ private static final long serialVersionUID = 0L;
      * <code>.api.User user = 1;</code>
      */
     public Builder setUser(
-        io.chirpstack.api.User.Builder builderForValue) {
+        User.Builder builderForValue) {
       if (userBuilder_ == null) {
         user_ = builderForValue.build();
       } else {
@@ -588,11 +588,11 @@ private static final long serialVersionUID = 0L;
      *
      * <code>.api.User user = 1;</code>
      */
-    public Builder mergeUser(io.chirpstack.api.User value) {
+    public Builder mergeUser(User value) {
       if (userBuilder_ == null) {
         if (((bitField0_ & 0x00000001) != 0) &&
           user_ != null &&
-          user_ != io.chirpstack.api.User.getDefaultInstance()) {
+          user_ != User.getDefaultInstance()) {
           getUserBuilder().mergeFrom(value);
         } else {
           user_ = value;
@@ -628,7 +628,7 @@ private static final long serialVersionUID = 0L;
      *
      * <code>.api.User user = 1;</code>
      */
-    public io.chirpstack.api.User.Builder getUserBuilder() {
+    public User.Builder getUserBuilder() {
       bitField0_ |= 0x00000001;
       onChanged();
       return getUserFieldBuilder().getBuilder();
@@ -640,12 +640,12 @@ private static final long serialVersionUID = 0L;
      *
      * <code>.api.User user = 1;</code>
      */
-    public io.chirpstack.api.UserOrBuilder getUserOrBuilder() {
+    public UserOrBuilder getUserOrBuilder() {
       if (userBuilder_ != null) {
         return userBuilder_.getMessageOrBuilder();
       } else {
         return user_ == null ?
-            io.chirpstack.api.User.getDefaultInstance() : user_;
+            User.getDefaultInstance() : user_;
       }
     }
     /**
@@ -656,11 +656,11 @@ private static final long serialVersionUID = 0L;
      * <code>.api.User user = 1;</code>
      */
     private com.google.protobuf.SingleFieldBuilderV3<
-        io.chirpstack.api.User, io.chirpstack.api.User.Builder, io.chirpstack.api.UserOrBuilder> 
+        User, User.Builder, UserOrBuilder>
         getUserFieldBuilder() {
       if (userBuilder_ == null) {
         userBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
-            io.chirpstack.api.User, io.chirpstack.api.User.Builder, io.chirpstack.api.UserOrBuilder>(
+            User, User.Builder, UserOrBuilder>(
                 getUser(),
                 getParentForChildren(),
                 isClean());

@@ -15,7 +15,7 @@ public interface UplinkRxInfoOrBuilder extends
    * <code>string gateway_id = 1;</code>
    * @return The gatewayId.
    */
-  String getGatewayId();
+  java.lang.String getGatewayId();
   /**
    * <pre>
    * Gateway ID.
@@ -39,34 +39,61 @@ public interface UplinkRxInfoOrBuilder extends
 
   /**
    * <pre>
-   * RX time (only set when the gateway has a GPS module).
+   * Gateway RX time (set if the gateway has a GNSS module).
    * </pre>
    *
-   * <code>.google.protobuf.Timestamp time = 3;</code>
-   * @return Whether the time field is set.
+   * <code>.google.protobuf.Timestamp gw_time = 3;</code>
+   * @return Whether the gwTime field is set.
    */
-  boolean hasTime();
+  boolean hasGwTime();
   /**
    * <pre>
-   * RX time (only set when the gateway has a GPS module).
+   * Gateway RX time (set if the gateway has a GNSS module).
    * </pre>
    *
-   * <code>.google.protobuf.Timestamp time = 3;</code>
-   * @return The time.
+   * <code>.google.protobuf.Timestamp gw_time = 3;</code>
+   * @return The gwTime.
    */
-  com.google.protobuf.Timestamp getTime();
+  com.google.protobuf.Timestamp getGwTime();
   /**
    * <pre>
-   * RX time (only set when the gateway has a GPS module).
+   * Gateway RX time (set if the gateway has a GNSS module).
    * </pre>
    *
-   * <code>.google.protobuf.Timestamp time = 3;</code>
+   * <code>.google.protobuf.Timestamp gw_time = 3;</code>
    */
-  com.google.protobuf.TimestampOrBuilder getTimeOrBuilder();
+  com.google.protobuf.TimestampOrBuilder getGwTimeOrBuilder();
 
   /**
    * <pre>
-   * RX time since GPS epoch (only set when the gateway has a GPS module).
+   * Network Server RX time (set by the NS on receiving the uplink).
+   * </pre>
+   *
+   * <code>.google.protobuf.Timestamp ns_time = 17;</code>
+   * @return Whether the nsTime field is set.
+   */
+  boolean hasNsTime();
+  /**
+   * <pre>
+   * Network Server RX time (set by the NS on receiving the uplink).
+   * </pre>
+   *
+   * <code>.google.protobuf.Timestamp ns_time = 17;</code>
+   * @return The nsTime.
+   */
+  com.google.protobuf.Timestamp getNsTime();
+  /**
+   * <pre>
+   * Network Server RX time (set by the NS on receiving the uplink).
+   * </pre>
+   *
+   * <code>.google.protobuf.Timestamp ns_time = 17;</code>
+   */
+  com.google.protobuf.TimestampOrBuilder getNsTimeOrBuilder();
+
+  /**
+   * <pre>
+   * RX time as time since GPS epoch (set if the gateway has a GNSS module).
    * </pre>
    *
    * <code>.google.protobuf.Duration time_since_gps_epoch = 4;</code>
@@ -75,7 +102,7 @@ public interface UplinkRxInfoOrBuilder extends
   boolean hasTimeSinceGpsEpoch();
   /**
    * <pre>
-   * RX time since GPS epoch (only set when the gateway has a GPS module).
+   * RX time as time since GPS epoch (set if the gateway has a GNSS module).
    * </pre>
    *
    * <code>.google.protobuf.Duration time_since_gps_epoch = 4;</code>
@@ -84,7 +111,7 @@ public interface UplinkRxInfoOrBuilder extends
   com.google.protobuf.Duration getTimeSinceGpsEpoch();
   /**
    * <pre>
-   * RX time since GPS epoch (only set when the gateway has a GPS module).
+   * RX time as time since GPS epoch (set if the gateway has a GNSS module).
    * </pre>
    *
    * <code>.google.protobuf.Duration time_since_gps_epoch = 4;</code>
@@ -222,28 +249,74 @@ public interface UplinkRxInfoOrBuilder extends
 
   /**
    * <pre>
-   * Properties.
+   * Additional gateway meta-data.
    * </pre>
    *
-   * <code>.google.protobuf.Struct metadata = 14;</code>
-   * @return Whether the metadata field is set.
+   * <code>map&lt;string, string&gt; metadata = 15;</code>
    */
-  boolean hasMetadata();
+  int getMetadataCount();
   /**
    * <pre>
-   * Properties.
+   * Additional gateway meta-data.
    * </pre>
    *
-   * <code>.google.protobuf.Struct metadata = 14;</code>
-   * @return The metadata.
+   * <code>map&lt;string, string&gt; metadata = 15;</code>
    */
-  com.google.protobuf.Struct getMetadata();
+  boolean containsMetadata(
+      java.lang.String key);
+  /**
+   * Use {@link #getMetadataMap()} instead.
+   */
+  @java.lang.Deprecated
+  java.util.Map<java.lang.String, java.lang.String>
+  getMetadata();
   /**
    * <pre>
-   * Properties.
+   * Additional gateway meta-data.
    * </pre>
    *
-   * <code>.google.protobuf.Struct metadata = 14;</code>
+   * <code>map&lt;string, string&gt; metadata = 15;</code>
    */
-  com.google.protobuf.StructOrBuilder getMetadataOrBuilder();
+  java.util.Map<java.lang.String, java.lang.String>
+  getMetadataMap();
+  /**
+   * <pre>
+   * Additional gateway meta-data.
+   * </pre>
+   *
+   * <code>map&lt;string, string&gt; metadata = 15;</code>
+   */
+  /* nullable */
+java.lang.String getMetadataOrDefault(
+      java.lang.String key,
+      /* nullable */
+java.lang.String defaultValue);
+  /**
+   * <pre>
+   * Additional gateway meta-data.
+   * </pre>
+   *
+   * <code>map&lt;string, string&gt; metadata = 15;</code>
+   */
+  java.lang.String getMetadataOrThrow(
+      java.lang.String key);
+
+  /**
+   * <pre>
+   * CRC status.
+   * </pre>
+   *
+   * <code>.gw.CRCStatus crc_status = 16;</code>
+   * @return The enum numeric value on the wire for crcStatus.
+   */
+  int getCrcStatusValue();
+  /**
+   * <pre>
+   * CRC status.
+   * </pre>
+   *
+   * <code>.gw.CRCStatus crc_status = 16;</code>
+   * @return The crcStatus.
+   */
+  io.chirpstack.api.gw.CRCStatus getCrcStatus();
 }

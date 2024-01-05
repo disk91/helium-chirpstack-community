@@ -23,33 +23,28 @@ private static final long serialVersionUID = 0L;
     error_ = "";
   }
 
-  @Override
+  @java.lang.Override
   @SuppressWarnings({"unused"})
-  protected Object newInstance(
+  protected java.lang.Object newInstance(
       UnusedPrivateParameter unused) {
     return new GatewayCommandExecResponse();
   }
 
-  @Override
-  public final com.google.protobuf.UnknownFieldSet
-  getUnknownFields() {
-    return this.unknownFields;
-  }
   public static final com.google.protobuf.Descriptors.Descriptor
       getDescriptor() {
-    return GatewayProto.internal_static_gw_GatewayCommandExecResponse_descriptor;
+    return io.chirpstack.api.gw.GatewayProto.internal_static_gw_GatewayCommandExecResponse_descriptor;
   }
 
-  @Override
-  protected FieldAccessorTable
+  @java.lang.Override
+  protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
       internalGetFieldAccessorTable() {
-    return GatewayProto.internal_static_gw_GatewayCommandExecResponse_fieldAccessorTable
+    return io.chirpstack.api.gw.GatewayProto.internal_static_gw_GatewayCommandExecResponse_fieldAccessorTable
         .ensureFieldAccessorsInitialized(
-            GatewayCommandExecResponse.class, Builder.class);
+            io.chirpstack.api.gw.GatewayCommandExecResponse.class, io.chirpstack.api.gw.GatewayCommandExecResponse.Builder.class);
   }
 
   public static final int GATEWAY_ID_LEGACY_FIELD_NUMBER = 1;
-  private com.google.protobuf.ByteString gatewayIdLegacy_;
+  private com.google.protobuf.ByteString gatewayIdLegacy_ = com.google.protobuf.ByteString.EMPTY;
   /**
    * <pre>
    * Gateway ID.
@@ -59,13 +54,14 @@ private static final long serialVersionUID = 0L;
    * <code>bytes gateway_id_legacy = 1;</code>
    * @return The gatewayIdLegacy.
    */
-  @Override
+  @java.lang.Override
   public com.google.protobuf.ByteString getGatewayIdLegacy() {
     return gatewayIdLegacy_;
   }
 
   public static final int GATEWAY_ID_FIELD_NUMBER = 6;
-  private volatile Object gatewayId_;
+  @SuppressWarnings("serial")
+  private volatile java.lang.Object gatewayId_ = "";
   /**
    * <pre>
    * Gateway ID.
@@ -74,15 +70,15 @@ private static final long serialVersionUID = 0L;
    * <code>string gateway_id = 6;</code>
    * @return The gatewayId.
    */
-  @Override
-  public String getGatewayId() {
-    Object ref = gatewayId_;
-    if (ref instanceof String) {
-      return (String) ref;
+  @java.lang.Override
+  public java.lang.String getGatewayId() {
+    java.lang.Object ref = gatewayId_;
+    if (ref instanceof java.lang.String) {
+      return (java.lang.String) ref;
     } else {
       com.google.protobuf.ByteString bs = 
           (com.google.protobuf.ByteString) ref;
-      String s = bs.toStringUtf8();
+      java.lang.String s = bs.toStringUtf8();
       gatewayId_ = s;
       return s;
     }
@@ -95,14 +91,14 @@ private static final long serialVersionUID = 0L;
    * <code>string gateway_id = 6;</code>
    * @return The bytes for gatewayId.
    */
-  @Override
+  @java.lang.Override
   public com.google.protobuf.ByteString
       getGatewayIdBytes() {
-    Object ref = gatewayId_;
-    if (ref instanceof String) {
+    java.lang.Object ref = gatewayId_;
+    if (ref instanceof java.lang.String) {
       com.google.protobuf.ByteString b = 
           com.google.protobuf.ByteString.copyFromUtf8(
-              (String) ref);
+              (java.lang.String) ref);
       gatewayId_ = b;
       return b;
     } else {
@@ -111,7 +107,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int EXEC_ID_FIELD_NUMBER = 7;
-  private int execId_;
+  private int execId_ = 0;
   /**
    * <pre>
    * Execution request ID.
@@ -120,13 +116,13 @@ private static final long serialVersionUID = 0L;
    * <code>uint32 exec_id = 7;</code>
    * @return The execId.
    */
-  @Override
+  @java.lang.Override
   public int getExecId() {
     return execId_;
   }
 
   public static final int STDOUT_FIELD_NUMBER = 3;
-  private com.google.protobuf.ByteString stdout_;
+  private com.google.protobuf.ByteString stdout_ = com.google.protobuf.ByteString.EMPTY;
   /**
    * <pre>
    * Standard output.
@@ -135,13 +131,13 @@ private static final long serialVersionUID = 0L;
    * <code>bytes stdout = 3;</code>
    * @return The stdout.
    */
-  @Override
+  @java.lang.Override
   public com.google.protobuf.ByteString getStdout() {
     return stdout_;
   }
 
   public static final int STDERR_FIELD_NUMBER = 4;
-  private com.google.protobuf.ByteString stderr_;
+  private com.google.protobuf.ByteString stderr_ = com.google.protobuf.ByteString.EMPTY;
   /**
    * <pre>
    * Standard error.
@@ -150,13 +146,14 @@ private static final long serialVersionUID = 0L;
    * <code>bytes stderr = 4;</code>
    * @return The stderr.
    */
-  @Override
+  @java.lang.Override
   public com.google.protobuf.ByteString getStderr() {
     return stderr_;
   }
 
   public static final int ERROR_FIELD_NUMBER = 5;
-  private volatile Object error_;
+  @SuppressWarnings("serial")
+  private volatile java.lang.Object error_ = "";
   /**
    * <pre>
    * Error message.
@@ -165,15 +162,15 @@ private static final long serialVersionUID = 0L;
    * <code>string error = 5;</code>
    * @return The error.
    */
-  @Override
-  public String getError() {
-    Object ref = error_;
-    if (ref instanceof String) {
-      return (String) ref;
+  @java.lang.Override
+  public java.lang.String getError() {
+    java.lang.Object ref = error_;
+    if (ref instanceof java.lang.String) {
+      return (java.lang.String) ref;
     } else {
       com.google.protobuf.ByteString bs = 
           (com.google.protobuf.ByteString) ref;
-      String s = bs.toStringUtf8();
+      java.lang.String s = bs.toStringUtf8();
       error_ = s;
       return s;
     }
@@ -186,14 +183,14 @@ private static final long serialVersionUID = 0L;
    * <code>string error = 5;</code>
    * @return The bytes for error.
    */
-  @Override
+  @java.lang.Override
   public com.google.protobuf.ByteString
       getErrorBytes() {
-    Object ref = error_;
-    if (ref instanceof String) {
+    java.lang.Object ref = error_;
+    if (ref instanceof java.lang.String) {
       com.google.protobuf.ByteString b = 
           com.google.protobuf.ByteString.copyFromUtf8(
-              (String) ref);
+              (java.lang.String) ref);
       error_ = b;
       return b;
     } else {
@@ -202,7 +199,7 @@ private static final long serialVersionUID = 0L;
   }
 
   private byte memoizedIsInitialized = -1;
-  @Override
+  @java.lang.Override
   public final boolean isInitialized() {
     byte isInitialized = memoizedIsInitialized;
     if (isInitialized == 1) return true;
@@ -212,7 +209,7 @@ private static final long serialVersionUID = 0L;
     return true;
   }
 
-  @Override
+  @java.lang.Override
   public void writeTo(com.google.protobuf.CodedOutputStream output)
                       throws java.io.IOException {
     if (!gatewayIdLegacy_.isEmpty()) {
@@ -236,7 +233,7 @@ private static final long serialVersionUID = 0L;
     getUnknownFields().writeTo(output);
   }
 
-  @Override
+  @java.lang.Override
   public int getSerializedSize() {
     int size = memoizedSize;
     if (size != -1) return size;
@@ -269,15 +266,15 @@ private static final long serialVersionUID = 0L;
     return size;
   }
 
-  @Override
-  public boolean equals(final Object obj) {
+  @java.lang.Override
+  public boolean equals(final java.lang.Object obj) {
     if (obj == this) {
      return true;
     }
-    if (!(obj instanceof GatewayCommandExecResponse)) {
+    if (!(obj instanceof io.chirpstack.api.gw.GatewayCommandExecResponse)) {
       return super.equals(obj);
     }
-    GatewayCommandExecResponse other = (GatewayCommandExecResponse) obj;
+    io.chirpstack.api.gw.GatewayCommandExecResponse other = (io.chirpstack.api.gw.GatewayCommandExecResponse) obj;
 
     if (!getGatewayIdLegacy()
         .equals(other.getGatewayIdLegacy())) return false;
@@ -295,7 +292,7 @@ private static final long serialVersionUID = 0L;
     return true;
   }
 
-  @Override
+  @java.lang.Override
   public int hashCode() {
     if (memoizedHashCode != 0) {
       return memoizedHashCode;
@@ -319,69 +316,69 @@ private static final long serialVersionUID = 0L;
     return hash;
   }
 
-  public static GatewayCommandExecResponse parseFrom(
+  public static io.chirpstack.api.gw.GatewayCommandExecResponse parseFrom(
       java.nio.ByteBuffer data)
       throws com.google.protobuf.InvalidProtocolBufferException {
     return PARSER.parseFrom(data);
   }
-  public static GatewayCommandExecResponse parseFrom(
+  public static io.chirpstack.api.gw.GatewayCommandExecResponse parseFrom(
       java.nio.ByteBuffer data,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws com.google.protobuf.InvalidProtocolBufferException {
     return PARSER.parseFrom(data, extensionRegistry);
   }
-  public static GatewayCommandExecResponse parseFrom(
+  public static io.chirpstack.api.gw.GatewayCommandExecResponse parseFrom(
       com.google.protobuf.ByteString data)
       throws com.google.protobuf.InvalidProtocolBufferException {
     return PARSER.parseFrom(data);
   }
-  public static GatewayCommandExecResponse parseFrom(
+  public static io.chirpstack.api.gw.GatewayCommandExecResponse parseFrom(
       com.google.protobuf.ByteString data,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws com.google.protobuf.InvalidProtocolBufferException {
     return PARSER.parseFrom(data, extensionRegistry);
   }
-  public static GatewayCommandExecResponse parseFrom(byte[] data)
+  public static io.chirpstack.api.gw.GatewayCommandExecResponse parseFrom(byte[] data)
       throws com.google.protobuf.InvalidProtocolBufferException {
     return PARSER.parseFrom(data);
   }
-  public static GatewayCommandExecResponse parseFrom(
+  public static io.chirpstack.api.gw.GatewayCommandExecResponse parseFrom(
       byte[] data,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws com.google.protobuf.InvalidProtocolBufferException {
     return PARSER.parseFrom(data, extensionRegistry);
   }
-  public static GatewayCommandExecResponse parseFrom(java.io.InputStream input)
+  public static io.chirpstack.api.gw.GatewayCommandExecResponse parseFrom(java.io.InputStream input)
       throws java.io.IOException {
     return com.google.protobuf.GeneratedMessageV3
         .parseWithIOException(PARSER, input);
   }
-  public static GatewayCommandExecResponse parseFrom(
+  public static io.chirpstack.api.gw.GatewayCommandExecResponse parseFrom(
       java.io.InputStream input,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws java.io.IOException {
     return com.google.protobuf.GeneratedMessageV3
         .parseWithIOException(PARSER, input, extensionRegistry);
   }
-  public static GatewayCommandExecResponse parseDelimitedFrom(java.io.InputStream input)
+  public static io.chirpstack.api.gw.GatewayCommandExecResponse parseDelimitedFrom(java.io.InputStream input)
       throws java.io.IOException {
     return com.google.protobuf.GeneratedMessageV3
         .parseDelimitedWithIOException(PARSER, input);
   }
-  public static GatewayCommandExecResponse parseDelimitedFrom(
+  public static io.chirpstack.api.gw.GatewayCommandExecResponse parseDelimitedFrom(
       java.io.InputStream input,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws java.io.IOException {
     return com.google.protobuf.GeneratedMessageV3
         .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
   }
-  public static GatewayCommandExecResponse parseFrom(
+  public static io.chirpstack.api.gw.GatewayCommandExecResponse parseFrom(
       com.google.protobuf.CodedInputStream input)
       throws java.io.IOException {
     return com.google.protobuf.GeneratedMessageV3
         .parseWithIOException(PARSER, input);
   }
-  public static GatewayCommandExecResponse parseFrom(
+  public static io.chirpstack.api.gw.GatewayCommandExecResponse parseFrom(
       com.google.protobuf.CodedInputStream input,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws java.io.IOException {
@@ -389,23 +386,23 @@ private static final long serialVersionUID = 0L;
         .parseWithIOException(PARSER, input, extensionRegistry);
   }
 
-  @Override
+  @java.lang.Override
   public Builder newBuilderForType() { return newBuilder(); }
   public static Builder newBuilder() {
     return DEFAULT_INSTANCE.toBuilder();
   }
-  public static Builder newBuilder(GatewayCommandExecResponse prototype) {
+  public static Builder newBuilder(io.chirpstack.api.gw.GatewayCommandExecResponse prototype) {
     return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
   }
-  @Override
+  @java.lang.Override
   public Builder toBuilder() {
     return this == DEFAULT_INSTANCE
         ? new Builder() : new Builder().mergeFrom(this);
   }
 
-  @Override
+  @java.lang.Override
   protected Builder newBuilderForType(
-      BuilderParent parent) {
+      com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
     Builder builder = new Builder(parent);
     return builder;
   }
@@ -415,18 +412,18 @@ private static final long serialVersionUID = 0L;
   public static final class Builder extends
       com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
       // @@protoc_insertion_point(builder_implements:gw.GatewayCommandExecResponse)
-      GatewayCommandExecResponseOrBuilder {
+      io.chirpstack.api.gw.GatewayCommandExecResponseOrBuilder {
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
-      return GatewayProto.internal_static_gw_GatewayCommandExecResponse_descriptor;
+      return io.chirpstack.api.gw.GatewayProto.internal_static_gw_GatewayCommandExecResponse_descriptor;
     }
 
-    @Override
-    protected FieldAccessorTable
+    @java.lang.Override
+    protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
         internalGetFieldAccessorTable() {
-      return GatewayProto.internal_static_gw_GatewayCommandExecResponse_fieldAccessorTable
+      return io.chirpstack.api.gw.GatewayProto.internal_static_gw_GatewayCommandExecResponse_fieldAccessorTable
           .ensureFieldAccessorsInitialized(
-              GatewayCommandExecResponse.class, Builder.class);
+              io.chirpstack.api.gw.GatewayCommandExecResponse.class, io.chirpstack.api.gw.GatewayCommandExecResponse.Builder.class);
     }
 
     // Construct using io.chirpstack.api.gw.GatewayCommandExecResponse.newBuilder()
@@ -435,110 +432,91 @@ private static final long serialVersionUID = 0L;
     }
 
     private Builder(
-        BuilderParent parent) {
+        com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
       super(parent);
 
     }
-    @Override
+    @java.lang.Override
     public Builder clear() {
       super.clear();
+      bitField0_ = 0;
       gatewayIdLegacy_ = com.google.protobuf.ByteString.EMPTY;
-
       gatewayId_ = "";
-
       execId_ = 0;
-
       stdout_ = com.google.protobuf.ByteString.EMPTY;
-
       stderr_ = com.google.protobuf.ByteString.EMPTY;
-
       error_ = "";
-
       return this;
     }
 
-    @Override
+    @java.lang.Override
     public com.google.protobuf.Descriptors.Descriptor
         getDescriptorForType() {
-      return GatewayProto.internal_static_gw_GatewayCommandExecResponse_descriptor;
+      return io.chirpstack.api.gw.GatewayProto.internal_static_gw_GatewayCommandExecResponse_descriptor;
     }
 
-    @Override
-    public GatewayCommandExecResponse getDefaultInstanceForType() {
-      return GatewayCommandExecResponse.getDefaultInstance();
+    @java.lang.Override
+    public io.chirpstack.api.gw.GatewayCommandExecResponse getDefaultInstanceForType() {
+      return io.chirpstack.api.gw.GatewayCommandExecResponse.getDefaultInstance();
     }
 
-    @Override
-    public GatewayCommandExecResponse build() {
-      GatewayCommandExecResponse result = buildPartial();
+    @java.lang.Override
+    public io.chirpstack.api.gw.GatewayCommandExecResponse build() {
+      io.chirpstack.api.gw.GatewayCommandExecResponse result = buildPartial();
       if (!result.isInitialized()) {
         throw newUninitializedMessageException(result);
       }
       return result;
     }
 
-    @Override
-    public GatewayCommandExecResponse buildPartial() {
-      GatewayCommandExecResponse result = new GatewayCommandExecResponse(this);
-      result.gatewayIdLegacy_ = gatewayIdLegacy_;
-      result.gatewayId_ = gatewayId_;
-      result.execId_ = execId_;
-      result.stdout_ = stdout_;
-      result.stderr_ = stderr_;
-      result.error_ = error_;
+    @java.lang.Override
+    public io.chirpstack.api.gw.GatewayCommandExecResponse buildPartial() {
+      io.chirpstack.api.gw.GatewayCommandExecResponse result = new io.chirpstack.api.gw.GatewayCommandExecResponse(this);
+      if (bitField0_ != 0) { buildPartial0(result); }
       onBuilt();
       return result;
     }
 
-    @Override
-    public Builder clone() {
-      return super.clone();
+    private void buildPartial0(io.chirpstack.api.gw.GatewayCommandExecResponse result) {
+      int from_bitField0_ = bitField0_;
+      if (((from_bitField0_ & 0x00000001) != 0)) {
+        result.gatewayIdLegacy_ = gatewayIdLegacy_;
+      }
+      if (((from_bitField0_ & 0x00000002) != 0)) {
+        result.gatewayId_ = gatewayId_;
+      }
+      if (((from_bitField0_ & 0x00000004) != 0)) {
+        result.execId_ = execId_;
+      }
+      if (((from_bitField0_ & 0x00000008) != 0)) {
+        result.stdout_ = stdout_;
+      }
+      if (((from_bitField0_ & 0x00000010) != 0)) {
+        result.stderr_ = stderr_;
+      }
+      if (((from_bitField0_ & 0x00000020) != 0)) {
+        result.error_ = error_;
+      }
     }
-    @Override
-    public Builder setField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        Object value) {
-      return super.setField(field, value);
-    }
-    @Override
-    public Builder clearField(
-        com.google.protobuf.Descriptors.FieldDescriptor field) {
-      return super.clearField(field);
-    }
-    @Override
-    public Builder clearOneof(
-        com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-      return super.clearOneof(oneof);
-    }
-    @Override
-    public Builder setRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        int index, Object value) {
-      return super.setRepeatedField(field, index, value);
-    }
-    @Override
-    public Builder addRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        Object value) {
-      return super.addRepeatedField(field, value);
-    }
-    @Override
+
+    @java.lang.Override
     public Builder mergeFrom(com.google.protobuf.Message other) {
-      if (other instanceof GatewayCommandExecResponse) {
-        return mergeFrom((GatewayCommandExecResponse)other);
+      if (other instanceof io.chirpstack.api.gw.GatewayCommandExecResponse) {
+        return mergeFrom((io.chirpstack.api.gw.GatewayCommandExecResponse)other);
       } else {
         super.mergeFrom(other);
         return this;
       }
     }
 
-    public Builder mergeFrom(GatewayCommandExecResponse other) {
-      if (other == GatewayCommandExecResponse.getDefaultInstance()) return this;
+    public Builder mergeFrom(io.chirpstack.api.gw.GatewayCommandExecResponse other) {
+      if (other == io.chirpstack.api.gw.GatewayCommandExecResponse.getDefaultInstance()) return this;
       if (other.getGatewayIdLegacy() != com.google.protobuf.ByteString.EMPTY) {
         setGatewayIdLegacy(other.getGatewayIdLegacy());
       }
       if (!other.getGatewayId().isEmpty()) {
         gatewayId_ = other.gatewayId_;
+        bitField0_ |= 0x00000002;
         onChanged();
       }
       if (other.getExecId() != 0) {
@@ -552,6 +530,7 @@ private static final long serialVersionUID = 0L;
       }
       if (!other.getError().isEmpty()) {
         error_ = other.error_;
+        bitField0_ |= 0x00000020;
         onChanged();
       }
       this.mergeUnknownFields(other.getUnknownFields());
@@ -559,18 +538,18 @@ private static final long serialVersionUID = 0L;
       return this;
     }
 
-    @Override
+    @java.lang.Override
     public final boolean isInitialized() {
       return true;
     }
 
-    @Override
+    @java.lang.Override
     public Builder mergeFrom(
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
       if (extensionRegistry == null) {
-        throw new NullPointerException();
+        throw new java.lang.NullPointerException();
       }
       try {
         boolean done = false;
@@ -582,32 +561,32 @@ private static final long serialVersionUID = 0L;
               break;
             case 10: {
               gatewayIdLegacy_ = input.readBytes();
-
+              bitField0_ |= 0x00000001;
               break;
             } // case 10
             case 26: {
               stdout_ = input.readBytes();
-
+              bitField0_ |= 0x00000008;
               break;
             } // case 26
             case 34: {
               stderr_ = input.readBytes();
-
+              bitField0_ |= 0x00000010;
               break;
             } // case 34
             case 42: {
               error_ = input.readStringRequireUtf8();
-
+              bitField0_ |= 0x00000020;
               break;
             } // case 42
             case 50: {
               gatewayId_ = input.readStringRequireUtf8();
-
+              bitField0_ |= 0x00000002;
               break;
             } // case 50
             case 56: {
               execId_ = input.readUInt32();
-
+              bitField0_ |= 0x00000004;
               break;
             } // case 56
             default: {
@@ -625,6 +604,7 @@ private static final long serialVersionUID = 0L;
       } // finally
       return this;
     }
+    private int bitField0_;
 
     private com.google.protobuf.ByteString gatewayIdLegacy_ = com.google.protobuf.ByteString.EMPTY;
     /**
@@ -636,7 +616,7 @@ private static final long serialVersionUID = 0L;
      * <code>bytes gateway_id_legacy = 1;</code>
      * @return The gatewayIdLegacy.
      */
-    @Override
+    @java.lang.Override
     public com.google.protobuf.ByteString getGatewayIdLegacy() {
       return gatewayIdLegacy_;
     }
@@ -651,11 +631,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setGatewayIdLegacy(com.google.protobuf.ByteString value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  
+      if (value == null) { throw new NullPointerException(); }
       gatewayIdLegacy_ = value;
+      bitField0_ |= 0x00000001;
       onChanged();
       return this;
     }
@@ -669,13 +647,13 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder clearGatewayIdLegacy() {
-      
+      bitField0_ = (bitField0_ & ~0x00000001);
       gatewayIdLegacy_ = getDefaultInstance().getGatewayIdLegacy();
       onChanged();
       return this;
     }
 
-    private Object gatewayId_ = "";
+    private java.lang.Object gatewayId_ = "";
     /**
      * <pre>
      * Gateway ID.
@@ -684,16 +662,16 @@ private static final long serialVersionUID = 0L;
      * <code>string gateway_id = 6;</code>
      * @return The gatewayId.
      */
-    public String getGatewayId() {
-      Object ref = gatewayId_;
-      if (!(ref instanceof String)) {
+    public java.lang.String getGatewayId() {
+      java.lang.Object ref = gatewayId_;
+      if (!(ref instanceof java.lang.String)) {
         com.google.protobuf.ByteString bs =
             (com.google.protobuf.ByteString) ref;
-        String s = bs.toStringUtf8();
+        java.lang.String s = bs.toStringUtf8();
         gatewayId_ = s;
         return s;
       } else {
-        return (String) ref;
+        return (java.lang.String) ref;
       }
     }
     /**
@@ -706,11 +684,11 @@ private static final long serialVersionUID = 0L;
      */
     public com.google.protobuf.ByteString
         getGatewayIdBytes() {
-      Object ref = gatewayId_;
+      java.lang.Object ref = gatewayId_;
       if (ref instanceof String) {
         com.google.protobuf.ByteString b = 
             com.google.protobuf.ByteString.copyFromUtf8(
-                (String) ref);
+                (java.lang.String) ref);
         gatewayId_ = b;
         return b;
       } else {
@@ -727,12 +705,10 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setGatewayId(
-        String value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  
+        java.lang.String value) {
+      if (value == null) { throw new NullPointerException(); }
       gatewayId_ = value;
+      bitField0_ |= 0x00000002;
       onChanged();
       return this;
     }
@@ -745,8 +721,8 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder clearGatewayId() {
-      
       gatewayId_ = getDefaultInstance().getGatewayId();
+      bitField0_ = (bitField0_ & ~0x00000002);
       onChanged();
       return this;
     }
@@ -761,12 +737,10 @@ private static final long serialVersionUID = 0L;
      */
     public Builder setGatewayIdBytes(
         com.google.protobuf.ByteString value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  checkByteStringIsUtf8(value);
-      
+      if (value == null) { throw new NullPointerException(); }
+      checkByteStringIsUtf8(value);
       gatewayId_ = value;
+      bitField0_ |= 0x00000002;
       onChanged();
       return this;
     }
@@ -780,7 +754,7 @@ private static final long serialVersionUID = 0L;
      * <code>uint32 exec_id = 7;</code>
      * @return The execId.
      */
-    @Override
+    @java.lang.Override
     public int getExecId() {
       return execId_;
     }
@@ -794,8 +768,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setExecId(int value) {
-      
+
       execId_ = value;
+      bitField0_ |= 0x00000004;
       onChanged();
       return this;
     }
@@ -808,7 +783,7 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder clearExecId() {
-      
+      bitField0_ = (bitField0_ & ~0x00000004);
       execId_ = 0;
       onChanged();
       return this;
@@ -823,7 +798,7 @@ private static final long serialVersionUID = 0L;
      * <code>bytes stdout = 3;</code>
      * @return The stdout.
      */
-    @Override
+    @java.lang.Override
     public com.google.protobuf.ByteString getStdout() {
       return stdout_;
     }
@@ -837,11 +812,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setStdout(com.google.protobuf.ByteString value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  
+      if (value == null) { throw new NullPointerException(); }
       stdout_ = value;
+      bitField0_ |= 0x00000008;
       onChanged();
       return this;
     }
@@ -854,7 +827,7 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder clearStdout() {
-      
+      bitField0_ = (bitField0_ & ~0x00000008);
       stdout_ = getDefaultInstance().getStdout();
       onChanged();
       return this;
@@ -869,7 +842,7 @@ private static final long serialVersionUID = 0L;
      * <code>bytes stderr = 4;</code>
      * @return The stderr.
      */
-    @Override
+    @java.lang.Override
     public com.google.protobuf.ByteString getStderr() {
       return stderr_;
     }
@@ -883,11 +856,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setStderr(com.google.protobuf.ByteString value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  
+      if (value == null) { throw new NullPointerException(); }
       stderr_ = value;
+      bitField0_ |= 0x00000010;
       onChanged();
       return this;
     }
@@ -900,13 +871,13 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder clearStderr() {
-      
+      bitField0_ = (bitField0_ & ~0x00000010);
       stderr_ = getDefaultInstance().getStderr();
       onChanged();
       return this;
     }
 
-    private Object error_ = "";
+    private java.lang.Object error_ = "";
     /**
      * <pre>
      * Error message.
@@ -915,16 +886,16 @@ private static final long serialVersionUID = 0L;
      * <code>string error = 5;</code>
      * @return The error.
      */
-    public String getError() {
-      Object ref = error_;
-      if (!(ref instanceof String)) {
+    public java.lang.String getError() {
+      java.lang.Object ref = error_;
+      if (!(ref instanceof java.lang.String)) {
         com.google.protobuf.ByteString bs =
             (com.google.protobuf.ByteString) ref;
-        String s = bs.toStringUtf8();
+        java.lang.String s = bs.toStringUtf8();
         error_ = s;
         return s;
       } else {
-        return (String) ref;
+        return (java.lang.String) ref;
       }
     }
     /**
@@ -937,11 +908,11 @@ private static final long serialVersionUID = 0L;
      */
     public com.google.protobuf.ByteString
         getErrorBytes() {
-      Object ref = error_;
+      java.lang.Object ref = error_;
       if (ref instanceof String) {
         com.google.protobuf.ByteString b = 
             com.google.protobuf.ByteString.copyFromUtf8(
-                (String) ref);
+                (java.lang.String) ref);
         error_ = b;
         return b;
       } else {
@@ -958,12 +929,10 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setError(
-        String value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  
+        java.lang.String value) {
+      if (value == null) { throw new NullPointerException(); }
       error_ = value;
+      bitField0_ |= 0x00000020;
       onChanged();
       return this;
     }
@@ -976,8 +945,8 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder clearError() {
-      
       error_ = getDefaultInstance().getError();
+      bitField0_ = (bitField0_ & ~0x00000020);
       onChanged();
       return this;
     }
@@ -992,22 +961,20 @@ private static final long serialVersionUID = 0L;
      */
     public Builder setErrorBytes(
         com.google.protobuf.ByteString value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  checkByteStringIsUtf8(value);
-      
+      if (value == null) { throw new NullPointerException(); }
+      checkByteStringIsUtf8(value);
       error_ = value;
+      bitField0_ |= 0x00000020;
       onChanged();
       return this;
     }
-    @Override
+    @java.lang.Override
     public final Builder setUnknownFields(
         final com.google.protobuf.UnknownFieldSet unknownFields) {
       return super.setUnknownFields(unknownFields);
     }
 
-    @Override
+    @java.lang.Override
     public final Builder mergeUnknownFields(
         final com.google.protobuf.UnknownFieldSet unknownFields) {
       return super.mergeUnknownFields(unknownFields);
@@ -1018,18 +985,18 @@ private static final long serialVersionUID = 0L;
   }
 
   // @@protoc_insertion_point(class_scope:gw.GatewayCommandExecResponse)
-  private static final GatewayCommandExecResponse DEFAULT_INSTANCE;
+  private static final io.chirpstack.api.gw.GatewayCommandExecResponse DEFAULT_INSTANCE;
   static {
-    DEFAULT_INSTANCE = new GatewayCommandExecResponse();
+    DEFAULT_INSTANCE = new io.chirpstack.api.gw.GatewayCommandExecResponse();
   }
 
-  public static GatewayCommandExecResponse getDefaultInstance() {
+  public static io.chirpstack.api.gw.GatewayCommandExecResponse getDefaultInstance() {
     return DEFAULT_INSTANCE;
   }
 
   private static final com.google.protobuf.Parser<GatewayCommandExecResponse>
       PARSER = new com.google.protobuf.AbstractParser<GatewayCommandExecResponse>() {
-    @Override
+    @java.lang.Override
     public GatewayCommandExecResponse parsePartialFrom(
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
@@ -1053,13 +1020,13 @@ private static final long serialVersionUID = 0L;
     return PARSER;
   }
 
-  @Override
+  @java.lang.Override
   public com.google.protobuf.Parser<GatewayCommandExecResponse> getParserForType() {
     return PARSER;
   }
 
-  @Override
-  public GatewayCommandExecResponse getDefaultInstanceForType() {
+  @java.lang.Override
+  public io.chirpstack.api.gw.GatewayCommandExecResponse getDefaultInstanceForType() {
     return DEFAULT_INSTANCE;
   }
 

@@ -175,7 +175,7 @@ public interface UplinkRxInfoLegacyOrBuilder extends
    * <code>.gw.FineTimestampType fine_timestamp_type = 12;</code>
    * @return The fineTimestampType.
    */
-  FineTimestampType getFineTimestampType();
+  io.chirpstack.api.gw.FineTimestampType getFineTimestampType();
 
   /**
    * <pre>
@@ -194,7 +194,7 @@ public interface UplinkRxInfoLegacyOrBuilder extends
    * <code>.gw.EncryptedFineTimestamp encrypted_fine_timestamp = 13;</code>
    * @return The encryptedFineTimestamp.
    */
-  EncryptedFineTimestamp getEncryptedFineTimestamp();
+  io.chirpstack.api.gw.EncryptedFineTimestamp getEncryptedFineTimestamp();
   /**
    * <pre>
    * Encrypted fine-timestamp data.
@@ -202,7 +202,7 @@ public interface UplinkRxInfoLegacyOrBuilder extends
    *
    * <code>.gw.EncryptedFineTimestamp encrypted_fine_timestamp = 13;</code>
    */
-  EncryptedFineTimestampOrBuilder getEncryptedFineTimestampOrBuilder();
+  io.chirpstack.api.gw.EncryptedFineTimestampOrBuilder getEncryptedFineTimestampOrBuilder();
 
   /**
    * <pre>
@@ -221,7 +221,7 @@ public interface UplinkRxInfoLegacyOrBuilder extends
    * <code>.gw.PlainFineTimestamp plain_fine_timestamp = 14;</code>
    * @return The plainFineTimestamp.
    */
-  PlainFineTimestamp getPlainFineTimestamp();
+  io.chirpstack.api.gw.PlainFineTimestamp getPlainFineTimestamp();
   /**
    * <pre>
    * Plain fine-timestamp data.
@@ -229,7 +229,7 @@ public interface UplinkRxInfoLegacyOrBuilder extends
    *
    * <code>.gw.PlainFineTimestamp plain_fine_timestamp = 14;</code>
    */
-  PlainFineTimestampOrBuilder getPlainFineTimestampOrBuilder();
+  io.chirpstack.api.gw.PlainFineTimestampOrBuilder getPlainFineTimestampOrBuilder();
 
   /**
    * <pre>
@@ -244,7 +244,8 @@ public interface UplinkRxInfoLegacyOrBuilder extends
   /**
    * <pre>
    * Uplink ID (UUID bytes).
-   * Unique and random ID which can be used to correlate the uplink across multiple logs.
+   * Unique and random ID which can be used to correlate the uplink across
+   * multiple logs.
    * </pre>
    *
    * <code>bytes uplink_id = 16;</code>
@@ -269,7 +270,7 @@ public interface UplinkRxInfoLegacyOrBuilder extends
    * <code>.gw.CRCStatus crc_status = 17;</code>
    * @return The crcStatus.
    */
-  CRCStatus getCrcStatus();
+  io.chirpstack.api.gw.CRCStatus getCrcStatus();
 
   /**
    * <pre>
@@ -287,12 +288,12 @@ public interface UplinkRxInfoLegacyOrBuilder extends
    * <code>map&lt;string, string&gt; metadata = 18;</code>
    */
   boolean containsMetadata(
-      String key);
+      java.lang.String key);
   /**
    * Use {@link #getMetadataMap()} instead.
    */
-  @Deprecated
-  java.util.Map<String, String>
+  @java.lang.Deprecated
+  java.util.Map<java.lang.String, java.lang.String>
   getMetadata();
   /**
    * <pre>
@@ -301,7 +302,7 @@ public interface UplinkRxInfoLegacyOrBuilder extends
    *
    * <code>map&lt;string, string&gt; metadata = 18;</code>
    */
-  java.util.Map<String, String>
+  java.util.Map<java.lang.String, java.lang.String>
   getMetadataMap();
   /**
    * <pre>
@@ -310,12 +311,11 @@ public interface UplinkRxInfoLegacyOrBuilder extends
    *
    * <code>map&lt;string, string&gt; metadata = 18;</code>
    */
-
   /* nullable */
-String getMetadataOrDefault(
-      String key,
+java.lang.String getMetadataOrDefault(
+      java.lang.String key,
       /* nullable */
-String defaultValue);
+java.lang.String defaultValue);
   /**
    * <pre>
    * Optional meta-data map.
@@ -323,9 +323,8 @@ String defaultValue);
    *
    * <code>map&lt;string, string&gt; metadata = 18;</code>
    */
+  java.lang.String getMetadataOrThrow(
+      java.lang.String key);
 
-  String getMetadataOrThrow(
-      String key);
-
-  public UplinkRxInfoLegacy.FineTimestampCase getFineTimestampCase();
+  io.chirpstack.api.gw.UplinkRxInfoLegacy.FineTimestampCase getFineTimestampCase();
 }

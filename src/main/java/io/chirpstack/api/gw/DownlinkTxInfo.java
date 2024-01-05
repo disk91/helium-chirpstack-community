@@ -19,33 +19,28 @@ private static final long serialVersionUID = 0L;
     context_ = com.google.protobuf.ByteString.EMPTY;
   }
 
-  @Override
+  @java.lang.Override
   @SuppressWarnings({"unused"})
-  protected Object newInstance(
+  protected java.lang.Object newInstance(
       UnusedPrivateParameter unused) {
     return new DownlinkTxInfo();
   }
 
-  @Override
-  public final com.google.protobuf.UnknownFieldSet
-  getUnknownFields() {
-    return this.unknownFields;
-  }
   public static final com.google.protobuf.Descriptors.Descriptor
       getDescriptor() {
-    return GatewayProto.internal_static_gw_DownlinkTxInfo_descriptor;
+    return io.chirpstack.api.gw.GatewayProto.internal_static_gw_DownlinkTxInfo_descriptor;
   }
 
-  @Override
-  protected FieldAccessorTable
+  @java.lang.Override
+  protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
       internalGetFieldAccessorTable() {
-    return GatewayProto.internal_static_gw_DownlinkTxInfo_fieldAccessorTable
+    return io.chirpstack.api.gw.GatewayProto.internal_static_gw_DownlinkTxInfo_fieldAccessorTable
         .ensureFieldAccessorsInitialized(
-            DownlinkTxInfo.class, Builder.class);
+            io.chirpstack.api.gw.DownlinkTxInfo.class, io.chirpstack.api.gw.DownlinkTxInfo.Builder.class);
   }
 
   public static final int FREQUENCY_FIELD_NUMBER = 1;
-  private int frequency_;
+  private int frequency_ = 0;
   /**
    * <pre>
    * TX frequency (in Hz).
@@ -54,28 +49,28 @@ private static final long serialVersionUID = 0L;
    * <code>uint32 frequency = 1;</code>
    * @return The frequency.
    */
-  @Override
+  @java.lang.Override
   public int getFrequency() {
     return frequency_;
   }
 
   public static final int POWER_FIELD_NUMBER = 2;
-  private int power_;
+  private int power_ = 0;
   /**
    * <pre>
-   * TX power (in dBm).
+   * TX power (in dBm EIRP).
    * </pre>
    *
    * <code>int32 power = 2;</code>
    * @return The power.
    */
-  @Override
+  @java.lang.Override
   public int getPower() {
     return power_;
   }
 
   public static final int MODULATION_FIELD_NUMBER = 3;
-  private Modulation modulation_;
+  private io.chirpstack.api.gw.Modulation modulation_;
   /**
    * <pre>
    * Modulation.
@@ -84,7 +79,7 @@ private static final long serialVersionUID = 0L;
    * <code>.gw.Modulation modulation = 3;</code>
    * @return Whether the modulation field is set.
    */
-  @Override
+  @java.lang.Override
   public boolean hasModulation() {
     return modulation_ != null;
   }
@@ -96,9 +91,9 @@ private static final long serialVersionUID = 0L;
    * <code>.gw.Modulation modulation = 3;</code>
    * @return The modulation.
    */
-  @Override
-  public Modulation getModulation() {
-    return modulation_ == null ? Modulation.getDefaultInstance() : modulation_;
+  @java.lang.Override
+  public io.chirpstack.api.gw.Modulation getModulation() {
+    return modulation_ == null ? io.chirpstack.api.gw.Modulation.getDefaultInstance() : modulation_;
   }
   /**
    * <pre>
@@ -107,13 +102,13 @@ private static final long serialVersionUID = 0L;
    *
    * <code>.gw.Modulation modulation = 3;</code>
    */
-  @Override
-  public ModulationOrBuilder getModulationOrBuilder() {
-    return getModulation();
+  @java.lang.Override
+  public io.chirpstack.api.gw.ModulationOrBuilder getModulationOrBuilder() {
+    return modulation_ == null ? io.chirpstack.api.gw.Modulation.getDefaultInstance() : modulation_;
   }
 
   public static final int BOARD_FIELD_NUMBER = 4;
-  private int board_;
+  private int board_ = 0;
   /**
    * <pre>
    * The board identifier for emitting the frame.
@@ -122,13 +117,13 @@ private static final long serialVersionUID = 0L;
    * <code>uint32 board = 4;</code>
    * @return The board.
    */
-  @Override
+  @java.lang.Override
   public int getBoard() {
     return board_;
   }
 
   public static final int ANTENNA_FIELD_NUMBER = 5;
-  private int antenna_;
+  private int antenna_ = 0;
   /**
    * <pre>
    * The antenna identifier for emitting the frame.
@@ -137,13 +132,13 @@ private static final long serialVersionUID = 0L;
    * <code>uint32 antenna = 5;</code>
    * @return The antenna.
    */
-  @Override
+  @java.lang.Override
   public int getAntenna() {
     return antenna_;
   }
 
   public static final int TIMING_FIELD_NUMBER = 6;
-  private Timing timing_;
+  private io.chirpstack.api.gw.Timing timing_;
   /**
    * <pre>
    * Timing.
@@ -152,7 +147,7 @@ private static final long serialVersionUID = 0L;
    * <code>.gw.Timing timing = 6;</code>
    * @return Whether the timing field is set.
    */
-  @Override
+  @java.lang.Override
   public boolean hasTiming() {
     return timing_ != null;
   }
@@ -164,9 +159,9 @@ private static final long serialVersionUID = 0L;
    * <code>.gw.Timing timing = 6;</code>
    * @return The timing.
    */
-  @Override
-  public Timing getTiming() {
-    return timing_ == null ? Timing.getDefaultInstance() : timing_;
+  @java.lang.Override
+  public io.chirpstack.api.gw.Timing getTiming() {
+    return timing_ == null ? io.chirpstack.api.gw.Timing.getDefaultInstance() : timing_;
   }
   /**
    * <pre>
@@ -175,13 +170,13 @@ private static final long serialVersionUID = 0L;
    *
    * <code>.gw.Timing timing = 6;</code>
    */
-  @Override
-  public TimingOrBuilder getTimingOrBuilder() {
-    return getTiming();
+  @java.lang.Override
+  public io.chirpstack.api.gw.TimingOrBuilder getTimingOrBuilder() {
+    return timing_ == null ? io.chirpstack.api.gw.Timing.getDefaultInstance() : timing_;
   }
 
   public static final int CONTEXT_FIELD_NUMBER = 7;
-  private com.google.protobuf.ByteString context_;
+  private com.google.protobuf.ByteString context_ = com.google.protobuf.ByteString.EMPTY;
   /**
    * <pre>
    * Gateway specific context.
@@ -191,13 +186,13 @@ private static final long serialVersionUID = 0L;
    * <code>bytes context = 7;</code>
    * @return The context.
    */
-  @Override
+  @java.lang.Override
   public com.google.protobuf.ByteString getContext() {
     return context_;
   }
 
   private byte memoizedIsInitialized = -1;
-  @Override
+  @java.lang.Override
   public final boolean isInitialized() {
     byte isInitialized = memoizedIsInitialized;
     if (isInitialized == 1) return true;
@@ -207,7 +202,7 @@ private static final long serialVersionUID = 0L;
     return true;
   }
 
-  @Override
+  @java.lang.Override
   public void writeTo(com.google.protobuf.CodedOutputStream output)
                       throws java.io.IOException {
     if (frequency_ != 0) {
@@ -234,7 +229,7 @@ private static final long serialVersionUID = 0L;
     getUnknownFields().writeTo(output);
   }
 
-  @Override
+  @java.lang.Override
   public int getSerializedSize() {
     int size = memoizedSize;
     if (size != -1) return size;
@@ -273,15 +268,15 @@ private static final long serialVersionUID = 0L;
     return size;
   }
 
-  @Override
-  public boolean equals(final Object obj) {
+  @java.lang.Override
+  public boolean equals(final java.lang.Object obj) {
     if (obj == this) {
      return true;
     }
-    if (!(obj instanceof DownlinkTxInfo)) {
+    if (!(obj instanceof io.chirpstack.api.gw.DownlinkTxInfo)) {
       return super.equals(obj);
     }
-    DownlinkTxInfo other = (DownlinkTxInfo) obj;
+    io.chirpstack.api.gw.DownlinkTxInfo other = (io.chirpstack.api.gw.DownlinkTxInfo) obj;
 
     if (getFrequency()
         != other.getFrequency()) return false;
@@ -307,7 +302,7 @@ private static final long serialVersionUID = 0L;
     return true;
   }
 
-  @Override
+  @java.lang.Override
   public int hashCode() {
     if (memoizedHashCode != 0) {
       return memoizedHashCode;
@@ -337,69 +332,69 @@ private static final long serialVersionUID = 0L;
     return hash;
   }
 
-  public static DownlinkTxInfo parseFrom(
+  public static io.chirpstack.api.gw.DownlinkTxInfo parseFrom(
       java.nio.ByteBuffer data)
       throws com.google.protobuf.InvalidProtocolBufferException {
     return PARSER.parseFrom(data);
   }
-  public static DownlinkTxInfo parseFrom(
+  public static io.chirpstack.api.gw.DownlinkTxInfo parseFrom(
       java.nio.ByteBuffer data,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws com.google.protobuf.InvalidProtocolBufferException {
     return PARSER.parseFrom(data, extensionRegistry);
   }
-  public static DownlinkTxInfo parseFrom(
+  public static io.chirpstack.api.gw.DownlinkTxInfo parseFrom(
       com.google.protobuf.ByteString data)
       throws com.google.protobuf.InvalidProtocolBufferException {
     return PARSER.parseFrom(data);
   }
-  public static DownlinkTxInfo parseFrom(
+  public static io.chirpstack.api.gw.DownlinkTxInfo parseFrom(
       com.google.protobuf.ByteString data,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws com.google.protobuf.InvalidProtocolBufferException {
     return PARSER.parseFrom(data, extensionRegistry);
   }
-  public static DownlinkTxInfo parseFrom(byte[] data)
+  public static io.chirpstack.api.gw.DownlinkTxInfo parseFrom(byte[] data)
       throws com.google.protobuf.InvalidProtocolBufferException {
     return PARSER.parseFrom(data);
   }
-  public static DownlinkTxInfo parseFrom(
+  public static io.chirpstack.api.gw.DownlinkTxInfo parseFrom(
       byte[] data,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws com.google.protobuf.InvalidProtocolBufferException {
     return PARSER.parseFrom(data, extensionRegistry);
   }
-  public static DownlinkTxInfo parseFrom(java.io.InputStream input)
+  public static io.chirpstack.api.gw.DownlinkTxInfo parseFrom(java.io.InputStream input)
       throws java.io.IOException {
     return com.google.protobuf.GeneratedMessageV3
         .parseWithIOException(PARSER, input);
   }
-  public static DownlinkTxInfo parseFrom(
+  public static io.chirpstack.api.gw.DownlinkTxInfo parseFrom(
       java.io.InputStream input,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws java.io.IOException {
     return com.google.protobuf.GeneratedMessageV3
         .parseWithIOException(PARSER, input, extensionRegistry);
   }
-  public static DownlinkTxInfo parseDelimitedFrom(java.io.InputStream input)
+  public static io.chirpstack.api.gw.DownlinkTxInfo parseDelimitedFrom(java.io.InputStream input)
       throws java.io.IOException {
     return com.google.protobuf.GeneratedMessageV3
         .parseDelimitedWithIOException(PARSER, input);
   }
-  public static DownlinkTxInfo parseDelimitedFrom(
+  public static io.chirpstack.api.gw.DownlinkTxInfo parseDelimitedFrom(
       java.io.InputStream input,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws java.io.IOException {
     return com.google.protobuf.GeneratedMessageV3
         .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
   }
-  public static DownlinkTxInfo parseFrom(
+  public static io.chirpstack.api.gw.DownlinkTxInfo parseFrom(
       com.google.protobuf.CodedInputStream input)
       throws java.io.IOException {
     return com.google.protobuf.GeneratedMessageV3
         .parseWithIOException(PARSER, input);
   }
-  public static DownlinkTxInfo parseFrom(
+  public static io.chirpstack.api.gw.DownlinkTxInfo parseFrom(
       com.google.protobuf.CodedInputStream input,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws java.io.IOException {
@@ -407,23 +402,23 @@ private static final long serialVersionUID = 0L;
         .parseWithIOException(PARSER, input, extensionRegistry);
   }
 
-  @Override
+  @java.lang.Override
   public Builder newBuilderForType() { return newBuilder(); }
   public static Builder newBuilder() {
     return DEFAULT_INSTANCE.toBuilder();
   }
-  public static Builder newBuilder(DownlinkTxInfo prototype) {
+  public static Builder newBuilder(io.chirpstack.api.gw.DownlinkTxInfo prototype) {
     return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
   }
-  @Override
+  @java.lang.Override
   public Builder toBuilder() {
     return this == DEFAULT_INSTANCE
         ? new Builder() : new Builder().mergeFrom(this);
   }
 
-  @Override
+  @java.lang.Override
   protected Builder newBuilderForType(
-      BuilderParent parent) {
+      com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
     Builder builder = new Builder(parent);
     return builder;
   }
@@ -433,18 +428,18 @@ private static final long serialVersionUID = 0L;
   public static final class Builder extends
       com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
       // @@protoc_insertion_point(builder_implements:gw.DownlinkTxInfo)
-      DownlinkTxInfoOrBuilder {
+      io.chirpstack.api.gw.DownlinkTxInfoOrBuilder {
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
-      return GatewayProto.internal_static_gw_DownlinkTxInfo_descriptor;
+      return io.chirpstack.api.gw.GatewayProto.internal_static_gw_DownlinkTxInfo_descriptor;
     }
 
-    @Override
-    protected FieldAccessorTable
+    @java.lang.Override
+    protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
         internalGetFieldAccessorTable() {
-      return GatewayProto.internal_static_gw_DownlinkTxInfo_fieldAccessorTable
+      return io.chirpstack.api.gw.GatewayProto.internal_static_gw_DownlinkTxInfo_fieldAccessorTable
           .ensureFieldAccessorsInitialized(
-              DownlinkTxInfo.class, Builder.class);
+              io.chirpstack.api.gw.DownlinkTxInfo.class, io.chirpstack.api.gw.DownlinkTxInfo.Builder.class);
     }
 
     // Construct using io.chirpstack.api.gw.DownlinkTxInfo.newBuilder()
@@ -453,124 +448,101 @@ private static final long serialVersionUID = 0L;
     }
 
     private Builder(
-        BuilderParent parent) {
+        com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
       super(parent);
 
     }
-    @Override
+    @java.lang.Override
     public Builder clear() {
       super.clear();
+      bitField0_ = 0;
       frequency_ = 0;
-
       power_ = 0;
-
-      if (modulationBuilder_ == null) {
-        modulation_ = null;
-      } else {
-        modulation_ = null;
+      modulation_ = null;
+      if (modulationBuilder_ != null) {
+        modulationBuilder_.dispose();
         modulationBuilder_ = null;
       }
       board_ = 0;
-
       antenna_ = 0;
-
-      if (timingBuilder_ == null) {
-        timing_ = null;
-      } else {
-        timing_ = null;
+      timing_ = null;
+      if (timingBuilder_ != null) {
+        timingBuilder_.dispose();
         timingBuilder_ = null;
       }
       context_ = com.google.protobuf.ByteString.EMPTY;
-
       return this;
     }
 
-    @Override
+    @java.lang.Override
     public com.google.protobuf.Descriptors.Descriptor
         getDescriptorForType() {
-      return GatewayProto.internal_static_gw_DownlinkTxInfo_descriptor;
+      return io.chirpstack.api.gw.GatewayProto.internal_static_gw_DownlinkTxInfo_descriptor;
     }
 
-    @Override
-    public DownlinkTxInfo getDefaultInstanceForType() {
-      return DownlinkTxInfo.getDefaultInstance();
+    @java.lang.Override
+    public io.chirpstack.api.gw.DownlinkTxInfo getDefaultInstanceForType() {
+      return io.chirpstack.api.gw.DownlinkTxInfo.getDefaultInstance();
     }
 
-    @Override
-    public DownlinkTxInfo build() {
-      DownlinkTxInfo result = buildPartial();
+    @java.lang.Override
+    public io.chirpstack.api.gw.DownlinkTxInfo build() {
+      io.chirpstack.api.gw.DownlinkTxInfo result = buildPartial();
       if (!result.isInitialized()) {
         throw newUninitializedMessageException(result);
       }
       return result;
     }
 
-    @Override
-    public DownlinkTxInfo buildPartial() {
-      DownlinkTxInfo result = new DownlinkTxInfo(this);
-      result.frequency_ = frequency_;
-      result.power_ = power_;
-      if (modulationBuilder_ == null) {
-        result.modulation_ = modulation_;
-      } else {
-        result.modulation_ = modulationBuilder_.build();
-      }
-      result.board_ = board_;
-      result.antenna_ = antenna_;
-      if (timingBuilder_ == null) {
-        result.timing_ = timing_;
-      } else {
-        result.timing_ = timingBuilder_.build();
-      }
-      result.context_ = context_;
+    @java.lang.Override
+    public io.chirpstack.api.gw.DownlinkTxInfo buildPartial() {
+      io.chirpstack.api.gw.DownlinkTxInfo result = new io.chirpstack.api.gw.DownlinkTxInfo(this);
+      if (bitField0_ != 0) { buildPartial0(result); }
       onBuilt();
       return result;
     }
 
-    @Override
-    public Builder clone() {
-      return super.clone();
+    private void buildPartial0(io.chirpstack.api.gw.DownlinkTxInfo result) {
+      int from_bitField0_ = bitField0_;
+      if (((from_bitField0_ & 0x00000001) != 0)) {
+        result.frequency_ = frequency_;
+      }
+      if (((from_bitField0_ & 0x00000002) != 0)) {
+        result.power_ = power_;
+      }
+      if (((from_bitField0_ & 0x00000004) != 0)) {
+        result.modulation_ = modulationBuilder_ == null
+            ? modulation_
+            : modulationBuilder_.build();
+      }
+      if (((from_bitField0_ & 0x00000008) != 0)) {
+        result.board_ = board_;
+      }
+      if (((from_bitField0_ & 0x00000010) != 0)) {
+        result.antenna_ = antenna_;
+      }
+      if (((from_bitField0_ & 0x00000020) != 0)) {
+        result.timing_ = timingBuilder_ == null
+            ? timing_
+            : timingBuilder_.build();
+      }
+      if (((from_bitField0_ & 0x00000040) != 0)) {
+        result.context_ = context_;
+      }
     }
-    @Override
-    public Builder setField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        Object value) {
-      return super.setField(field, value);
-    }
-    @Override
-    public Builder clearField(
-        com.google.protobuf.Descriptors.FieldDescriptor field) {
-      return super.clearField(field);
-    }
-    @Override
-    public Builder clearOneof(
-        com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-      return super.clearOneof(oneof);
-    }
-    @Override
-    public Builder setRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        int index, Object value) {
-      return super.setRepeatedField(field, index, value);
-    }
-    @Override
-    public Builder addRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        Object value) {
-      return super.addRepeatedField(field, value);
-    }
-    @Override
+
+    @java.lang.Override
     public Builder mergeFrom(com.google.protobuf.Message other) {
-      if (other instanceof DownlinkTxInfo) {
-        return mergeFrom((DownlinkTxInfo)other);
+      if (other instanceof io.chirpstack.api.gw.DownlinkTxInfo) {
+        return mergeFrom((io.chirpstack.api.gw.DownlinkTxInfo)other);
       } else {
         super.mergeFrom(other);
         return this;
       }
     }
 
-    public Builder mergeFrom(DownlinkTxInfo other) {
-      if (other == DownlinkTxInfo.getDefaultInstance()) return this;
+    public Builder mergeFrom(io.chirpstack.api.gw.DownlinkTxInfo other) {
+      if (other == io.chirpstack.api.gw.DownlinkTxInfo.getDefaultInstance()) return this;
       if (other.getFrequency() != 0) {
         setFrequency(other.getFrequency());
       }
@@ -597,18 +569,18 @@ private static final long serialVersionUID = 0L;
       return this;
     }
 
-    @Override
+    @java.lang.Override
     public final boolean isInitialized() {
       return true;
     }
 
-    @Override
+    @java.lang.Override
     public Builder mergeFrom(
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
       if (extensionRegistry == null) {
-        throw new NullPointerException();
+        throw new java.lang.NullPointerException();
       }
       try {
         boolean done = false;
@@ -620,41 +592,41 @@ private static final long serialVersionUID = 0L;
               break;
             case 8: {
               frequency_ = input.readUInt32();
-
+              bitField0_ |= 0x00000001;
               break;
             } // case 8
             case 16: {
               power_ = input.readInt32();
-
+              bitField0_ |= 0x00000002;
               break;
             } // case 16
             case 26: {
               input.readMessage(
                   getModulationFieldBuilder().getBuilder(),
                   extensionRegistry);
-
+              bitField0_ |= 0x00000004;
               break;
             } // case 26
             case 32: {
               board_ = input.readUInt32();
-
+              bitField0_ |= 0x00000008;
               break;
             } // case 32
             case 40: {
               antenna_ = input.readUInt32();
-
+              bitField0_ |= 0x00000010;
               break;
             } // case 40
             case 50: {
               input.readMessage(
                   getTimingFieldBuilder().getBuilder(),
                   extensionRegistry);
-
+              bitField0_ |= 0x00000020;
               break;
             } // case 50
             case 58: {
               context_ = input.readBytes();
-
+              bitField0_ |= 0x00000040;
               break;
             } // case 58
             default: {
@@ -672,6 +644,7 @@ private static final long serialVersionUID = 0L;
       } // finally
       return this;
     }
+    private int bitField0_;
 
     private int frequency_ ;
     /**
@@ -682,7 +655,7 @@ private static final long serialVersionUID = 0L;
      * <code>uint32 frequency = 1;</code>
      * @return The frequency.
      */
-    @Override
+    @java.lang.Override
     public int getFrequency() {
       return frequency_;
     }
@@ -696,8 +669,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setFrequency(int value) {
-      
+
       frequency_ = value;
+      bitField0_ |= 0x00000001;
       onChanged();
       return this;
     }
@@ -710,7 +684,7 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder clearFrequency() {
-      
+      bitField0_ = (bitField0_ & ~0x00000001);
       frequency_ = 0;
       onChanged();
       return this;
@@ -719,19 +693,19 @@ private static final long serialVersionUID = 0L;
     private int power_ ;
     /**
      * <pre>
-     * TX power (in dBm).
+     * TX power (in dBm EIRP).
      * </pre>
      *
      * <code>int32 power = 2;</code>
      * @return The power.
      */
-    @Override
+    @java.lang.Override
     public int getPower() {
       return power_;
     }
     /**
      * <pre>
-     * TX power (in dBm).
+     * TX power (in dBm EIRP).
      * </pre>
      *
      * <code>int32 power = 2;</code>
@@ -739,29 +713,30 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setPower(int value) {
-      
+
       power_ = value;
+      bitField0_ |= 0x00000002;
       onChanged();
       return this;
     }
     /**
      * <pre>
-     * TX power (in dBm).
+     * TX power (in dBm EIRP).
      * </pre>
      *
      * <code>int32 power = 2;</code>
      * @return This builder for chaining.
      */
     public Builder clearPower() {
-      
+      bitField0_ = (bitField0_ & ~0x00000002);
       power_ = 0;
       onChanged();
       return this;
     }
 
-    private Modulation modulation_;
+    private io.chirpstack.api.gw.Modulation modulation_;
     private com.google.protobuf.SingleFieldBuilderV3<
-        Modulation, Modulation.Builder, ModulationOrBuilder> modulationBuilder_;
+        io.chirpstack.api.gw.Modulation, io.chirpstack.api.gw.Modulation.Builder, io.chirpstack.api.gw.ModulationOrBuilder> modulationBuilder_;
     /**
      * <pre>
      * Modulation.
@@ -771,7 +746,7 @@ private static final long serialVersionUID = 0L;
      * @return Whether the modulation field is set.
      */
     public boolean hasModulation() {
-      return modulationBuilder_ != null || modulation_ != null;
+      return ((bitField0_ & 0x00000004) != 0);
     }
     /**
      * <pre>
@@ -781,9 +756,9 @@ private static final long serialVersionUID = 0L;
      * <code>.gw.Modulation modulation = 3;</code>
      * @return The modulation.
      */
-    public Modulation getModulation() {
+    public io.chirpstack.api.gw.Modulation getModulation() {
       if (modulationBuilder_ == null) {
-        return modulation_ == null ? Modulation.getDefaultInstance() : modulation_;
+        return modulation_ == null ? io.chirpstack.api.gw.Modulation.getDefaultInstance() : modulation_;
       } else {
         return modulationBuilder_.getMessage();
       }
@@ -795,17 +770,17 @@ private static final long serialVersionUID = 0L;
      *
      * <code>.gw.Modulation modulation = 3;</code>
      */
-    public Builder setModulation(Modulation value) {
+    public Builder setModulation(io.chirpstack.api.gw.Modulation value) {
       if (modulationBuilder_ == null) {
         if (value == null) {
           throw new NullPointerException();
         }
         modulation_ = value;
-        onChanged();
       } else {
         modulationBuilder_.setMessage(value);
       }
-
+      bitField0_ |= 0x00000004;
+      onChanged();
       return this;
     }
     /**
@@ -816,14 +791,14 @@ private static final long serialVersionUID = 0L;
      * <code>.gw.Modulation modulation = 3;</code>
      */
     public Builder setModulation(
-        Modulation.Builder builderForValue) {
+        io.chirpstack.api.gw.Modulation.Builder builderForValue) {
       if (modulationBuilder_ == null) {
         modulation_ = builderForValue.build();
-        onChanged();
       } else {
         modulationBuilder_.setMessage(builderForValue.build());
       }
-
+      bitField0_ |= 0x00000004;
+      onChanged();
       return this;
     }
     /**
@@ -833,19 +808,20 @@ private static final long serialVersionUID = 0L;
      *
      * <code>.gw.Modulation modulation = 3;</code>
      */
-    public Builder mergeModulation(Modulation value) {
+    public Builder mergeModulation(io.chirpstack.api.gw.Modulation value) {
       if (modulationBuilder_ == null) {
-        if (modulation_ != null) {
-          modulation_ =
-            Modulation.newBuilder(modulation_).mergeFrom(value).buildPartial();
+        if (((bitField0_ & 0x00000004) != 0) &&
+          modulation_ != null &&
+          modulation_ != io.chirpstack.api.gw.Modulation.getDefaultInstance()) {
+          getModulationBuilder().mergeFrom(value);
         } else {
           modulation_ = value;
         }
-        onChanged();
       } else {
         modulationBuilder_.mergeFrom(value);
       }
-
+      bitField0_ |= 0x00000004;
+      onChanged();
       return this;
     }
     /**
@@ -856,14 +832,13 @@ private static final long serialVersionUID = 0L;
      * <code>.gw.Modulation modulation = 3;</code>
      */
     public Builder clearModulation() {
-      if (modulationBuilder_ == null) {
-        modulation_ = null;
-        onChanged();
-      } else {
-        modulation_ = null;
+      bitField0_ = (bitField0_ & ~0x00000004);
+      modulation_ = null;
+      if (modulationBuilder_ != null) {
+        modulationBuilder_.dispose();
         modulationBuilder_ = null;
       }
-
+      onChanged();
       return this;
     }
     /**
@@ -873,8 +848,8 @@ private static final long serialVersionUID = 0L;
      *
      * <code>.gw.Modulation modulation = 3;</code>
      */
-    public Modulation.Builder getModulationBuilder() {
-      
+    public io.chirpstack.api.gw.Modulation.Builder getModulationBuilder() {
+      bitField0_ |= 0x00000004;
       onChanged();
       return getModulationFieldBuilder().getBuilder();
     }
@@ -885,12 +860,12 @@ private static final long serialVersionUID = 0L;
      *
      * <code>.gw.Modulation modulation = 3;</code>
      */
-    public ModulationOrBuilder getModulationOrBuilder() {
+    public io.chirpstack.api.gw.ModulationOrBuilder getModulationOrBuilder() {
       if (modulationBuilder_ != null) {
         return modulationBuilder_.getMessageOrBuilder();
       } else {
         return modulation_ == null ?
-            Modulation.getDefaultInstance() : modulation_;
+            io.chirpstack.api.gw.Modulation.getDefaultInstance() : modulation_;
       }
     }
     /**
@@ -901,11 +876,11 @@ private static final long serialVersionUID = 0L;
      * <code>.gw.Modulation modulation = 3;</code>
      */
     private com.google.protobuf.SingleFieldBuilderV3<
-        Modulation, Modulation.Builder, ModulationOrBuilder>
+        io.chirpstack.api.gw.Modulation, io.chirpstack.api.gw.Modulation.Builder, io.chirpstack.api.gw.ModulationOrBuilder> 
         getModulationFieldBuilder() {
       if (modulationBuilder_ == null) {
         modulationBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
-            Modulation, Modulation.Builder, ModulationOrBuilder>(
+            io.chirpstack.api.gw.Modulation, io.chirpstack.api.gw.Modulation.Builder, io.chirpstack.api.gw.ModulationOrBuilder>(
                 getModulation(),
                 getParentForChildren(),
                 isClean());
@@ -923,7 +898,7 @@ private static final long serialVersionUID = 0L;
      * <code>uint32 board = 4;</code>
      * @return The board.
      */
-    @Override
+    @java.lang.Override
     public int getBoard() {
       return board_;
     }
@@ -937,8 +912,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setBoard(int value) {
-      
+
       board_ = value;
+      bitField0_ |= 0x00000008;
       onChanged();
       return this;
     }
@@ -951,7 +927,7 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder clearBoard() {
-      
+      bitField0_ = (bitField0_ & ~0x00000008);
       board_ = 0;
       onChanged();
       return this;
@@ -966,7 +942,7 @@ private static final long serialVersionUID = 0L;
      * <code>uint32 antenna = 5;</code>
      * @return The antenna.
      */
-    @Override
+    @java.lang.Override
     public int getAntenna() {
       return antenna_;
     }
@@ -980,8 +956,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setAntenna(int value) {
-      
+
       antenna_ = value;
+      bitField0_ |= 0x00000010;
       onChanged();
       return this;
     }
@@ -994,15 +971,15 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder clearAntenna() {
-      
+      bitField0_ = (bitField0_ & ~0x00000010);
       antenna_ = 0;
       onChanged();
       return this;
     }
 
-    private Timing timing_;
+    private io.chirpstack.api.gw.Timing timing_;
     private com.google.protobuf.SingleFieldBuilderV3<
-        Timing, Timing.Builder, TimingOrBuilder> timingBuilder_;
+        io.chirpstack.api.gw.Timing, io.chirpstack.api.gw.Timing.Builder, io.chirpstack.api.gw.TimingOrBuilder> timingBuilder_;
     /**
      * <pre>
      * Timing.
@@ -1012,7 +989,7 @@ private static final long serialVersionUID = 0L;
      * @return Whether the timing field is set.
      */
     public boolean hasTiming() {
-      return timingBuilder_ != null || timing_ != null;
+      return ((bitField0_ & 0x00000020) != 0);
     }
     /**
      * <pre>
@@ -1022,9 +999,9 @@ private static final long serialVersionUID = 0L;
      * <code>.gw.Timing timing = 6;</code>
      * @return The timing.
      */
-    public Timing getTiming() {
+    public io.chirpstack.api.gw.Timing getTiming() {
       if (timingBuilder_ == null) {
-        return timing_ == null ? Timing.getDefaultInstance() : timing_;
+        return timing_ == null ? io.chirpstack.api.gw.Timing.getDefaultInstance() : timing_;
       } else {
         return timingBuilder_.getMessage();
       }
@@ -1036,17 +1013,17 @@ private static final long serialVersionUID = 0L;
      *
      * <code>.gw.Timing timing = 6;</code>
      */
-    public Builder setTiming(Timing value) {
+    public Builder setTiming(io.chirpstack.api.gw.Timing value) {
       if (timingBuilder_ == null) {
         if (value == null) {
           throw new NullPointerException();
         }
         timing_ = value;
-        onChanged();
       } else {
         timingBuilder_.setMessage(value);
       }
-
+      bitField0_ |= 0x00000020;
+      onChanged();
       return this;
     }
     /**
@@ -1057,14 +1034,14 @@ private static final long serialVersionUID = 0L;
      * <code>.gw.Timing timing = 6;</code>
      */
     public Builder setTiming(
-        Timing.Builder builderForValue) {
+        io.chirpstack.api.gw.Timing.Builder builderForValue) {
       if (timingBuilder_ == null) {
         timing_ = builderForValue.build();
-        onChanged();
       } else {
         timingBuilder_.setMessage(builderForValue.build());
       }
-
+      bitField0_ |= 0x00000020;
+      onChanged();
       return this;
     }
     /**
@@ -1074,19 +1051,20 @@ private static final long serialVersionUID = 0L;
      *
      * <code>.gw.Timing timing = 6;</code>
      */
-    public Builder mergeTiming(Timing value) {
+    public Builder mergeTiming(io.chirpstack.api.gw.Timing value) {
       if (timingBuilder_ == null) {
-        if (timing_ != null) {
-          timing_ =
-            Timing.newBuilder(timing_).mergeFrom(value).buildPartial();
+        if (((bitField0_ & 0x00000020) != 0) &&
+          timing_ != null &&
+          timing_ != io.chirpstack.api.gw.Timing.getDefaultInstance()) {
+          getTimingBuilder().mergeFrom(value);
         } else {
           timing_ = value;
         }
-        onChanged();
       } else {
         timingBuilder_.mergeFrom(value);
       }
-
+      bitField0_ |= 0x00000020;
+      onChanged();
       return this;
     }
     /**
@@ -1097,14 +1075,13 @@ private static final long serialVersionUID = 0L;
      * <code>.gw.Timing timing = 6;</code>
      */
     public Builder clearTiming() {
-      if (timingBuilder_ == null) {
-        timing_ = null;
-        onChanged();
-      } else {
-        timing_ = null;
+      bitField0_ = (bitField0_ & ~0x00000020);
+      timing_ = null;
+      if (timingBuilder_ != null) {
+        timingBuilder_.dispose();
         timingBuilder_ = null;
       }
-
+      onChanged();
       return this;
     }
     /**
@@ -1114,8 +1091,8 @@ private static final long serialVersionUID = 0L;
      *
      * <code>.gw.Timing timing = 6;</code>
      */
-    public Timing.Builder getTimingBuilder() {
-      
+    public io.chirpstack.api.gw.Timing.Builder getTimingBuilder() {
+      bitField0_ |= 0x00000020;
       onChanged();
       return getTimingFieldBuilder().getBuilder();
     }
@@ -1126,12 +1103,12 @@ private static final long serialVersionUID = 0L;
      *
      * <code>.gw.Timing timing = 6;</code>
      */
-    public TimingOrBuilder getTimingOrBuilder() {
+    public io.chirpstack.api.gw.TimingOrBuilder getTimingOrBuilder() {
       if (timingBuilder_ != null) {
         return timingBuilder_.getMessageOrBuilder();
       } else {
         return timing_ == null ?
-            Timing.getDefaultInstance() : timing_;
+            io.chirpstack.api.gw.Timing.getDefaultInstance() : timing_;
       }
     }
     /**
@@ -1142,11 +1119,11 @@ private static final long serialVersionUID = 0L;
      * <code>.gw.Timing timing = 6;</code>
      */
     private com.google.protobuf.SingleFieldBuilderV3<
-        Timing, Timing.Builder, TimingOrBuilder>
+        io.chirpstack.api.gw.Timing, io.chirpstack.api.gw.Timing.Builder, io.chirpstack.api.gw.TimingOrBuilder> 
         getTimingFieldBuilder() {
       if (timingBuilder_ == null) {
         timingBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
-            Timing, Timing.Builder, TimingOrBuilder>(
+            io.chirpstack.api.gw.Timing, io.chirpstack.api.gw.Timing.Builder, io.chirpstack.api.gw.TimingOrBuilder>(
                 getTiming(),
                 getParentForChildren(),
                 isClean());
@@ -1165,7 +1142,7 @@ private static final long serialVersionUID = 0L;
      * <code>bytes context = 7;</code>
      * @return The context.
      */
-    @Override
+    @java.lang.Override
     public com.google.protobuf.ByteString getContext() {
       return context_;
     }
@@ -1180,11 +1157,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setContext(com.google.protobuf.ByteString value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  
+      if (value == null) { throw new NullPointerException(); }
       context_ = value;
+      bitField0_ |= 0x00000040;
       onChanged();
       return this;
     }
@@ -1198,18 +1173,18 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder clearContext() {
-      
+      bitField0_ = (bitField0_ & ~0x00000040);
       context_ = getDefaultInstance().getContext();
       onChanged();
       return this;
     }
-    @Override
+    @java.lang.Override
     public final Builder setUnknownFields(
         final com.google.protobuf.UnknownFieldSet unknownFields) {
       return super.setUnknownFields(unknownFields);
     }
 
-    @Override
+    @java.lang.Override
     public final Builder mergeUnknownFields(
         final com.google.protobuf.UnknownFieldSet unknownFields) {
       return super.mergeUnknownFields(unknownFields);
@@ -1220,18 +1195,18 @@ private static final long serialVersionUID = 0L;
   }
 
   // @@protoc_insertion_point(class_scope:gw.DownlinkTxInfo)
-  private static final DownlinkTxInfo DEFAULT_INSTANCE;
+  private static final io.chirpstack.api.gw.DownlinkTxInfo DEFAULT_INSTANCE;
   static {
-    DEFAULT_INSTANCE = new DownlinkTxInfo();
+    DEFAULT_INSTANCE = new io.chirpstack.api.gw.DownlinkTxInfo();
   }
 
-  public static DownlinkTxInfo getDefaultInstance() {
+  public static io.chirpstack.api.gw.DownlinkTxInfo getDefaultInstance() {
     return DEFAULT_INSTANCE;
   }
 
   private static final com.google.protobuf.Parser<DownlinkTxInfo>
       PARSER = new com.google.protobuf.AbstractParser<DownlinkTxInfo>() {
-    @Override
+    @java.lang.Override
     public DownlinkTxInfo parsePartialFrom(
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
@@ -1255,13 +1230,13 @@ private static final long serialVersionUID = 0L;
     return PARSER;
   }
 
-  @Override
+  @java.lang.Override
   public com.google.protobuf.Parser<DownlinkTxInfo> getParserForType() {
     return PARSER;
   }
 
-  @Override
-  public DownlinkTxInfo getDefaultInstanceForType() {
+  @java.lang.Override
+  public io.chirpstack.api.gw.DownlinkTxInfo getDefaultInstanceForType() {
     return DEFAULT_INSTANCE;
   }
 

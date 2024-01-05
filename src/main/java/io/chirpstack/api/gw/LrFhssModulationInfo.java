@@ -20,33 +20,28 @@ private static final long serialVersionUID = 0L;
     codeRate_ = 0;
   }
 
-  @Override
+  @java.lang.Override
   @SuppressWarnings({"unused"})
-  protected Object newInstance(
+  protected java.lang.Object newInstance(
       UnusedPrivateParameter unused) {
     return new LrFhssModulationInfo();
   }
 
-  @Override
-  public final com.google.protobuf.UnknownFieldSet
-  getUnknownFields() {
-    return this.unknownFields;
-  }
   public static final com.google.protobuf.Descriptors.Descriptor
       getDescriptor() {
-    return GatewayProto.internal_static_gw_LrFhssModulationInfo_descriptor;
+    return io.chirpstack.api.gw.GatewayProto.internal_static_gw_LrFhssModulationInfo_descriptor;
   }
 
-  @Override
-  protected FieldAccessorTable
+  @java.lang.Override
+  protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
       internalGetFieldAccessorTable() {
-    return GatewayProto.internal_static_gw_LrFhssModulationInfo_fieldAccessorTable
+    return io.chirpstack.api.gw.GatewayProto.internal_static_gw_LrFhssModulationInfo_fieldAccessorTable
         .ensureFieldAccessorsInitialized(
-            LrFhssModulationInfo.class, Builder.class);
+            io.chirpstack.api.gw.LrFhssModulationInfo.class, io.chirpstack.api.gw.LrFhssModulationInfo.Builder.class);
   }
 
   public static final int OPERATING_CHANNEL_WIDTH_FIELD_NUMBER = 1;
-  private int operatingChannelWidth_;
+  private int operatingChannelWidth_ = 0;
   /**
    * <pre>
    * Operating channel width (OCW) in Hz.
@@ -55,13 +50,14 @@ private static final long serialVersionUID = 0L;
    * <code>uint32 operating_channel_width = 1;</code>
    * @return The operatingChannelWidth.
    */
-  @Override
+  @java.lang.Override
   public int getOperatingChannelWidth() {
     return operatingChannelWidth_;
   }
 
   public static final int CODE_RATE_LEGACY_FIELD_NUMBER = 2;
-  private volatile Object codeRateLegacy_;
+  @SuppressWarnings("serial")
+  private volatile java.lang.Object codeRateLegacy_ = "";
   /**
    * <pre>
    * Code-rate.
@@ -71,15 +67,15 @@ private static final long serialVersionUID = 0L;
    * <code>string code_rate_legacy = 2;</code>
    * @return The codeRateLegacy.
    */
-  @Override
-  public String getCodeRateLegacy() {
-    Object ref = codeRateLegacy_;
-    if (ref instanceof String) {
-      return (String) ref;
+  @java.lang.Override
+  public java.lang.String getCodeRateLegacy() {
+    java.lang.Object ref = codeRateLegacy_;
+    if (ref instanceof java.lang.String) {
+      return (java.lang.String) ref;
     } else {
       com.google.protobuf.ByteString bs = 
           (com.google.protobuf.ByteString) ref;
-      String s = bs.toStringUtf8();
+      java.lang.String s = bs.toStringUtf8();
       codeRateLegacy_ = s;
       return s;
     }
@@ -93,14 +89,14 @@ private static final long serialVersionUID = 0L;
    * <code>string code_rate_legacy = 2;</code>
    * @return The bytes for codeRateLegacy.
    */
-  @Override
+  @java.lang.Override
   public com.google.protobuf.ByteString
       getCodeRateLegacyBytes() {
-    Object ref = codeRateLegacy_;
-    if (ref instanceof String) {
+    java.lang.Object ref = codeRateLegacy_;
+    if (ref instanceof java.lang.String) {
       com.google.protobuf.ByteString b = 
           com.google.protobuf.ByteString.copyFromUtf8(
-              (String) ref);
+              (java.lang.String) ref);
       codeRateLegacy_ = b;
       return b;
     } else {
@@ -109,7 +105,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int CODE_RATE_FIELD_NUMBER = 4;
-  private int codeRate_;
+  private int codeRate_ = 0;
   /**
    * <pre>
    * Code-rate.
@@ -118,7 +114,7 @@ private static final long serialVersionUID = 0L;
    * <code>.gw.CodeRate code_rate = 4;</code>
    * @return The enum numeric value on the wire for codeRate.
    */
-  @Override public int getCodeRateValue() {
+  @java.lang.Override public int getCodeRateValue() {
     return codeRate_;
   }
   /**
@@ -129,14 +125,13 @@ private static final long serialVersionUID = 0L;
    * <code>.gw.CodeRate code_rate = 4;</code>
    * @return The codeRate.
    */
-  @Override public CodeRate getCodeRate() {
-    @SuppressWarnings("deprecation")
-    CodeRate result = CodeRate.valueOf(codeRate_);
-    return result == null ? CodeRate.UNRECOGNIZED : result;
+  @java.lang.Override public io.chirpstack.api.gw.CodeRate getCodeRate() {
+    io.chirpstack.api.gw.CodeRate result = io.chirpstack.api.gw.CodeRate.forNumber(codeRate_);
+    return result == null ? io.chirpstack.api.gw.CodeRate.UNRECOGNIZED : result;
   }
 
   public static final int GRID_STEPS_FIELD_NUMBER = 3;
-  private int gridSteps_;
+  private int gridSteps_ = 0;
   /**
    * <pre>
    * Hopping grid number of steps.
@@ -145,13 +140,13 @@ private static final long serialVersionUID = 0L;
    * <code>uint32 grid_steps = 3;</code>
    * @return The gridSteps.
    */
-  @Override
+  @java.lang.Override
   public int getGridSteps() {
     return gridSteps_;
   }
 
   private byte memoizedIsInitialized = -1;
-  @Override
+  @java.lang.Override
   public final boolean isInitialized() {
     byte isInitialized = memoizedIsInitialized;
     if (isInitialized == 1) return true;
@@ -161,7 +156,7 @@ private static final long serialVersionUID = 0L;
     return true;
   }
 
-  @Override
+  @java.lang.Override
   public void writeTo(com.google.protobuf.CodedOutputStream output)
                       throws java.io.IOException {
     if (operatingChannelWidth_ != 0) {
@@ -173,13 +168,13 @@ private static final long serialVersionUID = 0L;
     if (gridSteps_ != 0) {
       output.writeUInt32(3, gridSteps_);
     }
-    if (codeRate_ != CodeRate.CR_UNDEFINED.getNumber()) {
+    if (codeRate_ != io.chirpstack.api.gw.CodeRate.CR_UNDEFINED.getNumber()) {
       output.writeEnum(4, codeRate_);
     }
     getUnknownFields().writeTo(output);
   }
 
-  @Override
+  @java.lang.Override
   public int getSerializedSize() {
     int size = memoizedSize;
     if (size != -1) return size;
@@ -196,7 +191,7 @@ private static final long serialVersionUID = 0L;
       size += com.google.protobuf.CodedOutputStream
         .computeUInt32Size(3, gridSteps_);
     }
-    if (codeRate_ != CodeRate.CR_UNDEFINED.getNumber()) {
+    if (codeRate_ != io.chirpstack.api.gw.CodeRate.CR_UNDEFINED.getNumber()) {
       size += com.google.protobuf.CodedOutputStream
         .computeEnumSize(4, codeRate_);
     }
@@ -205,15 +200,15 @@ private static final long serialVersionUID = 0L;
     return size;
   }
 
-  @Override
-  public boolean equals(final Object obj) {
+  @java.lang.Override
+  public boolean equals(final java.lang.Object obj) {
     if (obj == this) {
      return true;
     }
-    if (!(obj instanceof LrFhssModulationInfo)) {
+    if (!(obj instanceof io.chirpstack.api.gw.LrFhssModulationInfo)) {
       return super.equals(obj);
     }
-    LrFhssModulationInfo other = (LrFhssModulationInfo) obj;
+    io.chirpstack.api.gw.LrFhssModulationInfo other = (io.chirpstack.api.gw.LrFhssModulationInfo) obj;
 
     if (getOperatingChannelWidth()
         != other.getOperatingChannelWidth()) return false;
@@ -226,7 +221,7 @@ private static final long serialVersionUID = 0L;
     return true;
   }
 
-  @Override
+  @java.lang.Override
   public int hashCode() {
     if (memoizedHashCode != 0) {
       return memoizedHashCode;
@@ -246,69 +241,69 @@ private static final long serialVersionUID = 0L;
     return hash;
   }
 
-  public static LrFhssModulationInfo parseFrom(
+  public static io.chirpstack.api.gw.LrFhssModulationInfo parseFrom(
       java.nio.ByteBuffer data)
       throws com.google.protobuf.InvalidProtocolBufferException {
     return PARSER.parseFrom(data);
   }
-  public static LrFhssModulationInfo parseFrom(
+  public static io.chirpstack.api.gw.LrFhssModulationInfo parseFrom(
       java.nio.ByteBuffer data,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws com.google.protobuf.InvalidProtocolBufferException {
     return PARSER.parseFrom(data, extensionRegistry);
   }
-  public static LrFhssModulationInfo parseFrom(
+  public static io.chirpstack.api.gw.LrFhssModulationInfo parseFrom(
       com.google.protobuf.ByteString data)
       throws com.google.protobuf.InvalidProtocolBufferException {
     return PARSER.parseFrom(data);
   }
-  public static LrFhssModulationInfo parseFrom(
+  public static io.chirpstack.api.gw.LrFhssModulationInfo parseFrom(
       com.google.protobuf.ByteString data,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws com.google.protobuf.InvalidProtocolBufferException {
     return PARSER.parseFrom(data, extensionRegistry);
   }
-  public static LrFhssModulationInfo parseFrom(byte[] data)
+  public static io.chirpstack.api.gw.LrFhssModulationInfo parseFrom(byte[] data)
       throws com.google.protobuf.InvalidProtocolBufferException {
     return PARSER.parseFrom(data);
   }
-  public static LrFhssModulationInfo parseFrom(
+  public static io.chirpstack.api.gw.LrFhssModulationInfo parseFrom(
       byte[] data,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws com.google.protobuf.InvalidProtocolBufferException {
     return PARSER.parseFrom(data, extensionRegistry);
   }
-  public static LrFhssModulationInfo parseFrom(java.io.InputStream input)
+  public static io.chirpstack.api.gw.LrFhssModulationInfo parseFrom(java.io.InputStream input)
       throws java.io.IOException {
     return com.google.protobuf.GeneratedMessageV3
         .parseWithIOException(PARSER, input);
   }
-  public static LrFhssModulationInfo parseFrom(
+  public static io.chirpstack.api.gw.LrFhssModulationInfo parseFrom(
       java.io.InputStream input,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws java.io.IOException {
     return com.google.protobuf.GeneratedMessageV3
         .parseWithIOException(PARSER, input, extensionRegistry);
   }
-  public static LrFhssModulationInfo parseDelimitedFrom(java.io.InputStream input)
+  public static io.chirpstack.api.gw.LrFhssModulationInfo parseDelimitedFrom(java.io.InputStream input)
       throws java.io.IOException {
     return com.google.protobuf.GeneratedMessageV3
         .parseDelimitedWithIOException(PARSER, input);
   }
-  public static LrFhssModulationInfo parseDelimitedFrom(
+  public static io.chirpstack.api.gw.LrFhssModulationInfo parseDelimitedFrom(
       java.io.InputStream input,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws java.io.IOException {
     return com.google.protobuf.GeneratedMessageV3
         .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
   }
-  public static LrFhssModulationInfo parseFrom(
+  public static io.chirpstack.api.gw.LrFhssModulationInfo parseFrom(
       com.google.protobuf.CodedInputStream input)
       throws java.io.IOException {
     return com.google.protobuf.GeneratedMessageV3
         .parseWithIOException(PARSER, input);
   }
-  public static LrFhssModulationInfo parseFrom(
+  public static io.chirpstack.api.gw.LrFhssModulationInfo parseFrom(
       com.google.protobuf.CodedInputStream input,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws java.io.IOException {
@@ -316,23 +311,23 @@ private static final long serialVersionUID = 0L;
         .parseWithIOException(PARSER, input, extensionRegistry);
   }
 
-  @Override
+  @java.lang.Override
   public Builder newBuilderForType() { return newBuilder(); }
   public static Builder newBuilder() {
     return DEFAULT_INSTANCE.toBuilder();
   }
-  public static Builder newBuilder(LrFhssModulationInfo prototype) {
+  public static Builder newBuilder(io.chirpstack.api.gw.LrFhssModulationInfo prototype) {
     return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
   }
-  @Override
+  @java.lang.Override
   public Builder toBuilder() {
     return this == DEFAULT_INSTANCE
         ? new Builder() : new Builder().mergeFrom(this);
   }
 
-  @Override
+  @java.lang.Override
   protected Builder newBuilderForType(
-      BuilderParent parent) {
+      com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
     Builder builder = new Builder(parent);
     return builder;
   }
@@ -342,18 +337,18 @@ private static final long serialVersionUID = 0L;
   public static final class Builder extends
       com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
       // @@protoc_insertion_point(builder_implements:gw.LrFhssModulationInfo)
-      LrFhssModulationInfoOrBuilder {
+      io.chirpstack.api.gw.LrFhssModulationInfoOrBuilder {
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
-      return GatewayProto.internal_static_gw_LrFhssModulationInfo_descriptor;
+      return io.chirpstack.api.gw.GatewayProto.internal_static_gw_LrFhssModulationInfo_descriptor;
     }
 
-    @Override
-    protected FieldAccessorTable
+    @java.lang.Override
+    protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
         internalGetFieldAccessorTable() {
-      return GatewayProto.internal_static_gw_LrFhssModulationInfo_fieldAccessorTable
+      return io.chirpstack.api.gw.GatewayProto.internal_static_gw_LrFhssModulationInfo_fieldAccessorTable
           .ensureFieldAccessorsInitialized(
-              LrFhssModulationInfo.class, Builder.class);
+              io.chirpstack.api.gw.LrFhssModulationInfo.class, io.chirpstack.api.gw.LrFhssModulationInfo.Builder.class);
     }
 
     // Construct using io.chirpstack.api.gw.LrFhssModulationInfo.newBuilder()
@@ -362,104 +357,83 @@ private static final long serialVersionUID = 0L;
     }
 
     private Builder(
-        BuilderParent parent) {
+        com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
       super(parent);
 
     }
-    @Override
+    @java.lang.Override
     public Builder clear() {
       super.clear();
+      bitField0_ = 0;
       operatingChannelWidth_ = 0;
-
       codeRateLegacy_ = "";
-
       codeRate_ = 0;
-
       gridSteps_ = 0;
-
       return this;
     }
 
-    @Override
+    @java.lang.Override
     public com.google.protobuf.Descriptors.Descriptor
         getDescriptorForType() {
-      return GatewayProto.internal_static_gw_LrFhssModulationInfo_descriptor;
+      return io.chirpstack.api.gw.GatewayProto.internal_static_gw_LrFhssModulationInfo_descriptor;
     }
 
-    @Override
-    public LrFhssModulationInfo getDefaultInstanceForType() {
-      return LrFhssModulationInfo.getDefaultInstance();
+    @java.lang.Override
+    public io.chirpstack.api.gw.LrFhssModulationInfo getDefaultInstanceForType() {
+      return io.chirpstack.api.gw.LrFhssModulationInfo.getDefaultInstance();
     }
 
-    @Override
-    public LrFhssModulationInfo build() {
-      LrFhssModulationInfo result = buildPartial();
+    @java.lang.Override
+    public io.chirpstack.api.gw.LrFhssModulationInfo build() {
+      io.chirpstack.api.gw.LrFhssModulationInfo result = buildPartial();
       if (!result.isInitialized()) {
         throw newUninitializedMessageException(result);
       }
       return result;
     }
 
-    @Override
-    public LrFhssModulationInfo buildPartial() {
-      LrFhssModulationInfo result = new LrFhssModulationInfo(this);
-      result.operatingChannelWidth_ = operatingChannelWidth_;
-      result.codeRateLegacy_ = codeRateLegacy_;
-      result.codeRate_ = codeRate_;
-      result.gridSteps_ = gridSteps_;
+    @java.lang.Override
+    public io.chirpstack.api.gw.LrFhssModulationInfo buildPartial() {
+      io.chirpstack.api.gw.LrFhssModulationInfo result = new io.chirpstack.api.gw.LrFhssModulationInfo(this);
+      if (bitField0_ != 0) { buildPartial0(result); }
       onBuilt();
       return result;
     }
 
-    @Override
-    public Builder clone() {
-      return super.clone();
+    private void buildPartial0(io.chirpstack.api.gw.LrFhssModulationInfo result) {
+      int from_bitField0_ = bitField0_;
+      if (((from_bitField0_ & 0x00000001) != 0)) {
+        result.operatingChannelWidth_ = operatingChannelWidth_;
+      }
+      if (((from_bitField0_ & 0x00000002) != 0)) {
+        result.codeRateLegacy_ = codeRateLegacy_;
+      }
+      if (((from_bitField0_ & 0x00000004) != 0)) {
+        result.codeRate_ = codeRate_;
+      }
+      if (((from_bitField0_ & 0x00000008) != 0)) {
+        result.gridSteps_ = gridSteps_;
+      }
     }
-    @Override
-    public Builder setField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        Object value) {
-      return super.setField(field, value);
-    }
-    @Override
-    public Builder clearField(
-        com.google.protobuf.Descriptors.FieldDescriptor field) {
-      return super.clearField(field);
-    }
-    @Override
-    public Builder clearOneof(
-        com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-      return super.clearOneof(oneof);
-    }
-    @Override
-    public Builder setRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        int index, Object value) {
-      return super.setRepeatedField(field, index, value);
-    }
-    @Override
-    public Builder addRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        Object value) {
-      return super.addRepeatedField(field, value);
-    }
-    @Override
+
+    @java.lang.Override
     public Builder mergeFrom(com.google.protobuf.Message other) {
-      if (other instanceof LrFhssModulationInfo) {
-        return mergeFrom((LrFhssModulationInfo)other);
+      if (other instanceof io.chirpstack.api.gw.LrFhssModulationInfo) {
+        return mergeFrom((io.chirpstack.api.gw.LrFhssModulationInfo)other);
       } else {
         super.mergeFrom(other);
         return this;
       }
     }
 
-    public Builder mergeFrom(LrFhssModulationInfo other) {
-      if (other == LrFhssModulationInfo.getDefaultInstance()) return this;
+    public Builder mergeFrom(io.chirpstack.api.gw.LrFhssModulationInfo other) {
+      if (other == io.chirpstack.api.gw.LrFhssModulationInfo.getDefaultInstance()) return this;
       if (other.getOperatingChannelWidth() != 0) {
         setOperatingChannelWidth(other.getOperatingChannelWidth());
       }
       if (!other.getCodeRateLegacy().isEmpty()) {
         codeRateLegacy_ = other.codeRateLegacy_;
+        bitField0_ |= 0x00000002;
         onChanged();
       }
       if (other.codeRate_ != 0) {
@@ -473,18 +447,18 @@ private static final long serialVersionUID = 0L;
       return this;
     }
 
-    @Override
+    @java.lang.Override
     public final boolean isInitialized() {
       return true;
     }
 
-    @Override
+    @java.lang.Override
     public Builder mergeFrom(
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
       if (extensionRegistry == null) {
-        throw new NullPointerException();
+        throw new java.lang.NullPointerException();
       }
       try {
         boolean done = false;
@@ -496,22 +470,22 @@ private static final long serialVersionUID = 0L;
               break;
             case 8: {
               operatingChannelWidth_ = input.readUInt32();
-
+              bitField0_ |= 0x00000001;
               break;
             } // case 8
             case 18: {
               codeRateLegacy_ = input.readStringRequireUtf8();
-
+              bitField0_ |= 0x00000002;
               break;
             } // case 18
             case 24: {
               gridSteps_ = input.readUInt32();
-
+              bitField0_ |= 0x00000008;
               break;
             } // case 24
             case 32: {
               codeRate_ = input.readEnum();
-
+              bitField0_ |= 0x00000004;
               break;
             } // case 32
             default: {
@@ -529,6 +503,7 @@ private static final long serialVersionUID = 0L;
       } // finally
       return this;
     }
+    private int bitField0_;
 
     private int operatingChannelWidth_ ;
     /**
@@ -539,7 +514,7 @@ private static final long serialVersionUID = 0L;
      * <code>uint32 operating_channel_width = 1;</code>
      * @return The operatingChannelWidth.
      */
-    @Override
+    @java.lang.Override
     public int getOperatingChannelWidth() {
       return operatingChannelWidth_;
     }
@@ -553,8 +528,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setOperatingChannelWidth(int value) {
-      
+
       operatingChannelWidth_ = value;
+      bitField0_ |= 0x00000001;
       onChanged();
       return this;
     }
@@ -567,13 +543,13 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder clearOperatingChannelWidth() {
-      
+      bitField0_ = (bitField0_ & ~0x00000001);
       operatingChannelWidth_ = 0;
       onChanged();
       return this;
     }
 
-    private Object codeRateLegacy_ = "";
+    private java.lang.Object codeRateLegacy_ = "";
     /**
      * <pre>
      * Code-rate.
@@ -583,16 +559,16 @@ private static final long serialVersionUID = 0L;
      * <code>string code_rate_legacy = 2;</code>
      * @return The codeRateLegacy.
      */
-    public String getCodeRateLegacy() {
-      Object ref = codeRateLegacy_;
-      if (!(ref instanceof String)) {
+    public java.lang.String getCodeRateLegacy() {
+      java.lang.Object ref = codeRateLegacy_;
+      if (!(ref instanceof java.lang.String)) {
         com.google.protobuf.ByteString bs =
             (com.google.protobuf.ByteString) ref;
-        String s = bs.toStringUtf8();
+        java.lang.String s = bs.toStringUtf8();
         codeRateLegacy_ = s;
         return s;
       } else {
-        return (String) ref;
+        return (java.lang.String) ref;
       }
     }
     /**
@@ -606,11 +582,11 @@ private static final long serialVersionUID = 0L;
      */
     public com.google.protobuf.ByteString
         getCodeRateLegacyBytes() {
-      Object ref = codeRateLegacy_;
+      java.lang.Object ref = codeRateLegacy_;
       if (ref instanceof String) {
         com.google.protobuf.ByteString b = 
             com.google.protobuf.ByteString.copyFromUtf8(
-                (String) ref);
+                (java.lang.String) ref);
         codeRateLegacy_ = b;
         return b;
       } else {
@@ -628,12 +604,10 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setCodeRateLegacy(
-        String value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  
+        java.lang.String value) {
+      if (value == null) { throw new NullPointerException(); }
       codeRateLegacy_ = value;
+      bitField0_ |= 0x00000002;
       onChanged();
       return this;
     }
@@ -647,8 +621,8 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder clearCodeRateLegacy() {
-      
       codeRateLegacy_ = getDefaultInstance().getCodeRateLegacy();
+      bitField0_ = (bitField0_ & ~0x00000002);
       onChanged();
       return this;
     }
@@ -664,12 +638,10 @@ private static final long serialVersionUID = 0L;
      */
     public Builder setCodeRateLegacyBytes(
         com.google.protobuf.ByteString value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  checkByteStringIsUtf8(value);
-      
+      if (value == null) { throw new NullPointerException(); }
+      checkByteStringIsUtf8(value);
       codeRateLegacy_ = value;
+      bitField0_ |= 0x00000002;
       onChanged();
       return this;
     }
@@ -683,7 +655,7 @@ private static final long serialVersionUID = 0L;
      * <code>.gw.CodeRate code_rate = 4;</code>
      * @return The enum numeric value on the wire for codeRate.
      */
-    @Override public int getCodeRateValue() {
+    @java.lang.Override public int getCodeRateValue() {
       return codeRate_;
     }
     /**
@@ -696,8 +668,8 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setCodeRateValue(int value) {
-      
       codeRate_ = value;
+      bitField0_ |= 0x00000004;
       onChanged();
       return this;
     }
@@ -709,11 +681,10 @@ private static final long serialVersionUID = 0L;
      * <code>.gw.CodeRate code_rate = 4;</code>
      * @return The codeRate.
      */
-    @Override
-    public CodeRate getCodeRate() {
-      @SuppressWarnings("deprecation")
-      CodeRate result = CodeRate.valueOf(codeRate_);
-      return result == null ? CodeRate.UNRECOGNIZED : result;
+    @java.lang.Override
+    public io.chirpstack.api.gw.CodeRate getCodeRate() {
+      io.chirpstack.api.gw.CodeRate result = io.chirpstack.api.gw.CodeRate.forNumber(codeRate_);
+      return result == null ? io.chirpstack.api.gw.CodeRate.UNRECOGNIZED : result;
     }
     /**
      * <pre>
@@ -724,11 +695,11 @@ private static final long serialVersionUID = 0L;
      * @param value The codeRate to set.
      * @return This builder for chaining.
      */
-    public Builder setCodeRate(CodeRate value) {
+    public Builder setCodeRate(io.chirpstack.api.gw.CodeRate value) {
       if (value == null) {
         throw new NullPointerException();
       }
-      
+      bitField0_ |= 0x00000004;
       codeRate_ = value.getNumber();
       onChanged();
       return this;
@@ -742,7 +713,7 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder clearCodeRate() {
-      
+      bitField0_ = (bitField0_ & ~0x00000004);
       codeRate_ = 0;
       onChanged();
       return this;
@@ -757,7 +728,7 @@ private static final long serialVersionUID = 0L;
      * <code>uint32 grid_steps = 3;</code>
      * @return The gridSteps.
      */
-    @Override
+    @java.lang.Override
     public int getGridSteps() {
       return gridSteps_;
     }
@@ -771,8 +742,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setGridSteps(int value) {
-      
+
       gridSteps_ = value;
+      bitField0_ |= 0x00000008;
       onChanged();
       return this;
     }
@@ -785,18 +757,18 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder clearGridSteps() {
-      
+      bitField0_ = (bitField0_ & ~0x00000008);
       gridSteps_ = 0;
       onChanged();
       return this;
     }
-    @Override
+    @java.lang.Override
     public final Builder setUnknownFields(
         final com.google.protobuf.UnknownFieldSet unknownFields) {
       return super.setUnknownFields(unknownFields);
     }
 
-    @Override
+    @java.lang.Override
     public final Builder mergeUnknownFields(
         final com.google.protobuf.UnknownFieldSet unknownFields) {
       return super.mergeUnknownFields(unknownFields);
@@ -807,18 +779,18 @@ private static final long serialVersionUID = 0L;
   }
 
   // @@protoc_insertion_point(class_scope:gw.LrFhssModulationInfo)
-  private static final LrFhssModulationInfo DEFAULT_INSTANCE;
+  private static final io.chirpstack.api.gw.LrFhssModulationInfo DEFAULT_INSTANCE;
   static {
-    DEFAULT_INSTANCE = new LrFhssModulationInfo();
+    DEFAULT_INSTANCE = new io.chirpstack.api.gw.LrFhssModulationInfo();
   }
 
-  public static LrFhssModulationInfo getDefaultInstance() {
+  public static io.chirpstack.api.gw.LrFhssModulationInfo getDefaultInstance() {
     return DEFAULT_INSTANCE;
   }
 
   private static final com.google.protobuf.Parser<LrFhssModulationInfo>
       PARSER = new com.google.protobuf.AbstractParser<LrFhssModulationInfo>() {
-    @Override
+    @java.lang.Override
     public LrFhssModulationInfo parsePartialFrom(
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
@@ -842,13 +814,13 @@ private static final long serialVersionUID = 0L;
     return PARSER;
   }
 
-  @Override
+  @java.lang.Override
   public com.google.protobuf.Parser<LrFhssModulationInfo> getParserForType() {
     return PARSER;
   }
 
-  @Override
-  public LrFhssModulationInfo getDefaultInstanceForType() {
+  @java.lang.Override
+  public io.chirpstack.api.gw.LrFhssModulationInfo getDefaultInstanceForType() {
     return DEFAULT_INSTANCE;
   }
 

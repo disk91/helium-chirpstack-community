@@ -24,7 +24,7 @@ public interface ModulationOrBuilder extends
    * <code>.gw.LoraModulationInfo lora = 3;</code>
    * @return The lora.
    */
-  LoraModulationInfo getLora();
+  io.chirpstack.api.gw.LoraModulationInfo getLora();
   /**
    * <pre>
    * LoRa modulation information.
@@ -32,7 +32,7 @@ public interface ModulationOrBuilder extends
    *
    * <code>.gw.LoraModulationInfo lora = 3;</code>
    */
-  LoraModulationInfoOrBuilder getLoraOrBuilder();
+  io.chirpstack.api.gw.LoraModulationInfoOrBuilder getLoraOrBuilder();
 
   /**
    * <pre>
@@ -51,7 +51,7 @@ public interface ModulationOrBuilder extends
    * <code>.gw.FskModulationInfo fsk = 4;</code>
    * @return The fsk.
    */
-  FskModulationInfo getFsk();
+  io.chirpstack.api.gw.FskModulationInfo getFsk();
   /**
    * <pre>
    * FSK modulation information.
@@ -59,7 +59,7 @@ public interface ModulationOrBuilder extends
    *
    * <code>.gw.FskModulationInfo fsk = 4;</code>
    */
-  FskModulationInfoOrBuilder getFskOrBuilder();
+  io.chirpstack.api.gw.FskModulationInfoOrBuilder getFskOrBuilder();
 
   /**
    * <pre>
@@ -78,7 +78,7 @@ public interface ModulationOrBuilder extends
    * <code>.gw.LrFhssModulationInfo lr_fhss = 5;</code>
    * @return The lrFhss.
    */
-  LrFhssModulationInfo getLrFhss();
+  io.chirpstack.api.gw.LrFhssModulationInfo getLrFhss();
   /**
    * <pre>
    * LR-FHSS modulation information.
@@ -86,7 +86,7 @@ public interface ModulationOrBuilder extends
    *
    * <code>.gw.LrFhssModulationInfo lr_fhss = 5;</code>
    */
-  LrFhssModulationInfoOrBuilder getLrFhssOrBuilder();
+  io.chirpstack.api.gw.LrFhssModulationInfoOrBuilder getLrFhssOrBuilder();
 
-  public Modulation.ParametersCase getParametersCase();
+  io.chirpstack.api.gw.Modulation.ParametersCase getParametersCase();
 }

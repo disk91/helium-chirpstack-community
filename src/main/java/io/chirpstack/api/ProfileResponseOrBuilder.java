@@ -24,7 +24,7 @@ public interface ProfileResponseOrBuilder extends
    * <code>.api.User user = 1;</code>
    * @return The user.
    */
-  io.chirpstack.api.User getUser();
+  User getUser();
   /**
    * <pre>
    * User object.
@@ -32,7 +32,7 @@ public interface ProfileResponseOrBuilder extends
    *
    * <code>.api.User user = 1;</code>
    */
-  io.chirpstack.api.UserOrBuilder getUserOrBuilder();
+  UserOrBuilder getUserOrBuilder();
 
   /**
    * <pre>

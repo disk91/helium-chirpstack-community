@@ -26,7 +26,7 @@ public interface GatewayConfigurationOrBuilder extends
    * <code>string gateway_id = 5;</code>
    * @return The gatewayId.
    */
-  String getGatewayId();
+  java.lang.String getGatewayId();
   /**
    * <pre>
    * Gateway ID.
@@ -46,7 +46,7 @@ public interface GatewayConfigurationOrBuilder extends
    * <code>string version = 2;</code>
    * @return The version.
    */
-  String getVersion();
+  java.lang.String getVersion();
   /**
    * <pre>
    * Configuration version.
@@ -65,7 +65,7 @@ public interface GatewayConfigurationOrBuilder extends
    *
    * <code>repeated .gw.ChannelConfiguration channels = 3;</code>
    */
-  java.util.List<ChannelConfiguration>
+  java.util.List<io.chirpstack.api.gw.ChannelConfiguration> 
       getChannelsList();
   /**
    * <pre>
@@ -74,7 +74,7 @@ public interface GatewayConfigurationOrBuilder extends
    *
    * <code>repeated .gw.ChannelConfiguration channels = 3;</code>
    */
-  ChannelConfiguration getChannels(int index);
+  io.chirpstack.api.gw.ChannelConfiguration getChannels(int index);
   /**
    * <pre>
    * Channels.
@@ -90,7 +90,7 @@ public interface GatewayConfigurationOrBuilder extends
    *
    * <code>repeated .gw.ChannelConfiguration channels = 3;</code>
    */
-  java.util.List<? extends ChannelConfigurationOrBuilder>
+  java.util.List<? extends io.chirpstack.api.gw.ChannelConfigurationOrBuilder> 
       getChannelsOrBuilderList();
   /**
    * <pre>
@@ -99,7 +99,7 @@ public interface GatewayConfigurationOrBuilder extends
    *
    * <code>repeated .gw.ChannelConfiguration channels = 3;</code>
    */
-  ChannelConfigurationOrBuilder getChannelsOrBuilder(
+  io.chirpstack.api.gw.ChannelConfigurationOrBuilder getChannelsOrBuilder(
       int index);
 
   /**

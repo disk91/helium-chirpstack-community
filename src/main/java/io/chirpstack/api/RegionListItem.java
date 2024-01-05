@@ -109,9 +109,9 @@ private static final long serialVersionUID = 0L;
    * <code>.common.Region region = 2;</code>
    * @return The region.
    */
-  @Override public io.chirpstack.api.Region getRegion() {
-    io.chirpstack.api.Region result = io.chirpstack.api.Region.forNumber(region_);
-    return result == null ? io.chirpstack.api.Region.UNRECOGNIZED : result;
+  @Override public Region getRegion() {
+    Region result = Region.forNumber(region_);
+    return result == null ? Region.UNRECOGNIZED : result;
   }
 
   public static final int DESCRIPTION_FIELD_NUMBER = 3;
@@ -178,7 +178,7 @@ private static final long serialVersionUID = 0L;
     if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(id_)) {
       com.google.protobuf.GeneratedMessageV3.writeString(output, 1, id_);
     }
-    if (region_ != io.chirpstack.api.Region.EU868.getNumber()) {
+    if (region_ != Region.EU868.getNumber()) {
       output.writeEnum(2, region_);
     }
     if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(description_)) {
@@ -196,7 +196,7 @@ private static final long serialVersionUID = 0L;
     if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(id_)) {
       size += com.google.protobuf.GeneratedMessageV3.computeStringSize(1, id_);
     }
-    if (region_ != io.chirpstack.api.Region.EU868.getNumber()) {
+    if (region_ != Region.EU868.getNumber()) {
       size += com.google.protobuf.CodedOutputStream
         .computeEnumSize(2, region_);
     }
@@ -627,9 +627,9 @@ private static final long serialVersionUID = 0L;
      * @return The region.
      */
     @Override
-    public io.chirpstack.api.Region getRegion() {
-      io.chirpstack.api.Region result = io.chirpstack.api.Region.forNumber(region_);
-      return result == null ? io.chirpstack.api.Region.UNRECOGNIZED : result;
+    public Region getRegion() {
+      Region result = Region.forNumber(region_);
+      return result == null ? Region.UNRECOGNIZED : result;
     }
     /**
      * <pre>
@@ -640,7 +640,7 @@ private static final long serialVersionUID = 0L;
      * @param value The region to set.
      * @return This builder for chaining.
      */
-    public Builder setRegion(io.chirpstack.api.Region value) {
+    public Builder setRegion(Region value) {
       if (value == null) {
         throw new NullPointerException();
       }

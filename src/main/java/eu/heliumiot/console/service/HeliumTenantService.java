@@ -27,6 +27,7 @@ import eu.heliumiot.console.ConsoleConfig;
 import eu.heliumiot.console.api.interfaces.*;
 import eu.heliumiot.console.chirpstack.ChirpstackApiAccess;
 import eu.heliumiot.console.jpa.db.*;
+import eu.heliumiot.console.jpa.db.Tenant;
 import eu.heliumiot.console.jpa.db.UserTenant;
 import eu.heliumiot.console.jpa.repository.*;
 import eu.heliumiot.console.mqtt.MqttSender;
@@ -37,8 +38,8 @@ import fr.ingeniousthings.tools.ITNotFoundException;
 import fr.ingeniousthings.tools.ITParseException;
 import fr.ingeniousthings.tools.ITRightException;
 import fr.ingeniousthings.tools.Now;
-import io.chirpstack.restapi.*;
-import io.chirpstack.restapi.Tenant;
+import io.chirpstack.api.*;
+import io.chirpstack.api.ApiKey;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -900,13 +901,14 @@ public class HeliumTenantService {
         if ( uts.size() >= hts.getMaxOwnedTenants() ) throw new ITParseException("error_max_tenant");
 
         // Lets create the tenant first
-        Tenant tenant = Tenant.newBuilder()
+        io.chirpstack.api.Tenant tenant = io.chirpstack.api.Tenant.newBuilder()
                 .setName(req.getTenantName())
                 .setDescription("Other user tenant")
                 .setCanHaveGateways(false)
                 .setMaxDeviceCount(hts.getMaxDevices())
                 .setMaxGatewayCount(0)
-                .setPrivateGateways(false)
+                .setPrivateGatewaysDown(false)
+                .setPrivateGatewaysUp(false)
                 .build();
 
         CreateTenantRequest tenantReq = CreateTenantRequest.newBuilder()
@@ -1405,7 +1407,7 @@ public class HeliumTenantService {
         try {
 
             // Create a new Api key
-            io.chirpstack.restapi.ApiKey a = io.chirpstack.restapi.ApiKey.newBuilder()
+            io.chirpstack.api.ApiKey a = io.chirpstack.api.ApiKey.newBuilder()
                     .setTenantId(tenantUUID)
                     .setName("MigrationKey")
                     .setIsAdmin(false)
@@ -1483,7 +1485,7 @@ public class HeliumTenantService {
             );
             ListApiKeysResponse resp = ListApiKeysResponse.parseFrom(respB);
             if ( resp != null ) {
-                for ( io.chirpstack.restapi.ApiKey a : resp.getResultList() ) {
+                for (ApiKey a : resp.getResultList() ) {
                     if ( a.getName().compareToIgnoreCase("MigrationKey") == 0 ) {
                         // destroy the previous ApiKey
                         DeleteApiKeyRequest dar = DeleteApiKeyRequest.newBuilder()

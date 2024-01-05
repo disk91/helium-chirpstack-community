@@ -5,7 +5,7 @@ import eu.heliumiot.console.service.HeliumTenantService;
 import eu.heliumiot.console.service.PrometeusService;
 import fr.ingeniousthings.tools.HexaConverters;
 import fr.ingeniousthings.tools.Now;
-import io.chirpstack.api.DownlinkFrameLog;
+import io.chirpstack.api.stream.DownlinkFrameLog;
 import io.lettuce.core.*;
 import io.lettuce.core.api.StatefulRedisConnection;
 import io.lettuce.core.api.sync.RedisCommands;

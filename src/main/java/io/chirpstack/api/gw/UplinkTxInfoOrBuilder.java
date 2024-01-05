@@ -34,7 +34,7 @@ public interface UplinkTxInfoOrBuilder extends
    * <code>.gw.Modulation modulation = 2;</code>
    * @return The modulation.
    */
-  Modulation getModulation();
+  io.chirpstack.api.gw.Modulation getModulation();
   /**
    * <pre>
    * Modulation.
@@ -42,5 +42,5 @@ public interface UplinkTxInfoOrBuilder extends
    *
    * <code>.gw.Modulation modulation = 2;</code>
    */
-  ModulationOrBuilder getModulationOrBuilder();
+  io.chirpstack.api.gw.ModulationOrBuilder getModulationOrBuilder();
 }

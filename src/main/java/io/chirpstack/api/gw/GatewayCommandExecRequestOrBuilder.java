@@ -26,7 +26,7 @@ public interface GatewayCommandExecRequestOrBuilder extends
    * <code>string gateway_id = 6;</code>
    * @return The gatewayId.
    */
-  String getGatewayId();
+  java.lang.String getGatewayId();
   /**
    * <pre>
    * Gateway ID.
@@ -41,17 +41,19 @@ public interface GatewayCommandExecRequestOrBuilder extends
   /**
    * <pre>
    * Command to execute.
-   * This command must be pre-configured in the LoRa Gateway Bridge configuration.
+   * This command must be pre-configured in the LoRa Gateway Bridge
+   * configuration.
    * </pre>
    *
    * <code>string command = 2;</code>
    * @return The command.
    */
-  String getCommand();
+  java.lang.String getCommand();
   /**
    * <pre>
    * Command to execute.
-   * This command must be pre-configured in the LoRa Gateway Bridge configuration.
+   * This command must be pre-configured in the LoRa Gateway Bridge
+   * configuration.
    * </pre>
    *
    * <code>string command = 2;</code>
@@ -98,12 +100,12 @@ public interface GatewayCommandExecRequestOrBuilder extends
    * <code>map&lt;string, string&gt; environment = 5;</code>
    */
   boolean containsEnvironment(
-      String key);
+      java.lang.String key);
   /**
    * Use {@link #getEnvironmentMap()} instead.
    */
-  @Deprecated
-  java.util.Map<String, String>
+  @java.lang.Deprecated
+  java.util.Map<java.lang.String, java.lang.String>
   getEnvironment();
   /**
    * <pre>
@@ -112,7 +114,7 @@ public interface GatewayCommandExecRequestOrBuilder extends
    *
    * <code>map&lt;string, string&gt; environment = 5;</code>
    */
-  java.util.Map<String, String>
+  java.util.Map<java.lang.String, java.lang.String>
   getEnvironmentMap();
   /**
    * <pre>
@@ -121,12 +123,11 @@ public interface GatewayCommandExecRequestOrBuilder extends
    *
    * <code>map&lt;string, string&gt; environment = 5;</code>
    */
-
   /* nullable */
-String getEnvironmentOrDefault(
-      String key,
+java.lang.String getEnvironmentOrDefault(
+      java.lang.String key,
       /* nullable */
-String defaultValue);
+java.lang.String defaultValue);
   /**
    * <pre>
    * Environment variables.
@@ -134,7 +135,6 @@ String defaultValue);
    *
    * <code>map&lt;string, string&gt; environment = 5;</code>
    */
-
-  String getEnvironmentOrThrow(
-      String key);
+  java.lang.String getEnvironmentOrThrow(
+      java.lang.String key);
 }

@@ -26,7 +26,7 @@ public interface LrFhssModulationInfoOrBuilder extends
    * <code>string code_rate_legacy = 2;</code>
    * @return The codeRateLegacy.
    */
-  String getCodeRateLegacy();
+  java.lang.String getCodeRateLegacy();
   /**
    * <pre>
    * Code-rate.
@@ -56,7 +56,7 @@ public interface LrFhssModulationInfoOrBuilder extends
    * <code>.gw.CodeRate code_rate = 4;</code>
    * @return The codeRate.
    */
-  CodeRate getCodeRate();
+  io.chirpstack.api.gw.CodeRate getCodeRate();
 
   /**
    * <pre>

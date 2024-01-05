@@ -18,36 +18,32 @@ private static final long serialVersionUID = 0L;
   private Timing() {
   }
 
-  @Override
+  @java.lang.Override
   @SuppressWarnings({"unused"})
-  protected Object newInstance(
+  protected java.lang.Object newInstance(
       UnusedPrivateParameter unused) {
     return new Timing();
   }
 
-  @Override
-  public final com.google.protobuf.UnknownFieldSet
-  getUnknownFields() {
-    return this.unknownFields;
-  }
   public static final com.google.protobuf.Descriptors.Descriptor
       getDescriptor() {
-    return GatewayProto.internal_static_gw_Timing_descriptor;
+    return io.chirpstack.api.gw.GatewayProto.internal_static_gw_Timing_descriptor;
   }
 
-  @Override
-  protected FieldAccessorTable
+  @java.lang.Override
+  protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
       internalGetFieldAccessorTable() {
-    return GatewayProto.internal_static_gw_Timing_fieldAccessorTable
+    return io.chirpstack.api.gw.GatewayProto.internal_static_gw_Timing_fieldAccessorTable
         .ensureFieldAccessorsInitialized(
-            Timing.class, Builder.class);
+            io.chirpstack.api.gw.Timing.class, io.chirpstack.api.gw.Timing.Builder.class);
   }
 
   private int parametersCase_ = 0;
-  private Object parameters_;
+  @SuppressWarnings("serial")
+  private java.lang.Object parameters_;
   public enum ParametersCase
       implements com.google.protobuf.Internal.EnumLite,
-          InternalOneOfEnum {
+          com.google.protobuf.AbstractMessage.InternalOneOfEnum {
     IMMEDIATELY(1),
     DELAY(2),
     GPS_EPOCH(3),
@@ -61,7 +57,7 @@ private static final long serialVersionUID = 0L;
      * @return The enum associated with the given number.
      * @deprecated Use {@link #forNumber(int)} instead.
      */
-    @Deprecated
+    @java.lang.Deprecated
     public static ParametersCase valueOf(int value) {
       return forNumber(value);
     }
@@ -95,7 +91,7 @@ private static final long serialVersionUID = 0L;
    * <code>.gw.ImmediatelyTimingInfo immediately = 1;</code>
    * @return Whether the immediately field is set.
    */
-  @Override
+  @java.lang.Override
   public boolean hasImmediately() {
     return parametersCase_ == 1;
   }
@@ -107,12 +103,12 @@ private static final long serialVersionUID = 0L;
    * <code>.gw.ImmediatelyTimingInfo immediately = 1;</code>
    * @return The immediately.
    */
-  @Override
-  public ImmediatelyTimingInfo getImmediately() {
+  @java.lang.Override
+  public io.chirpstack.api.gw.ImmediatelyTimingInfo getImmediately() {
     if (parametersCase_ == 1) {
-       return (ImmediatelyTimingInfo) parameters_;
+       return (io.chirpstack.api.gw.ImmediatelyTimingInfo) parameters_;
     }
-    return ImmediatelyTimingInfo.getDefaultInstance();
+    return io.chirpstack.api.gw.ImmediatelyTimingInfo.getDefaultInstance();
   }
   /**
    * <pre>
@@ -121,12 +117,12 @@ private static final long serialVersionUID = 0L;
    *
    * <code>.gw.ImmediatelyTimingInfo immediately = 1;</code>
    */
-  @Override
-  public ImmediatelyTimingInfoOrBuilder getImmediatelyOrBuilder() {
+  @java.lang.Override
+  public io.chirpstack.api.gw.ImmediatelyTimingInfoOrBuilder getImmediatelyOrBuilder() {
     if (parametersCase_ == 1) {
-       return (ImmediatelyTimingInfo) parameters_;
+       return (io.chirpstack.api.gw.ImmediatelyTimingInfo) parameters_;
     }
-    return ImmediatelyTimingInfo.getDefaultInstance();
+    return io.chirpstack.api.gw.ImmediatelyTimingInfo.getDefaultInstance();
   }
 
   public static final int DELAY_FIELD_NUMBER = 2;
@@ -138,7 +134,7 @@ private static final long serialVersionUID = 0L;
    * <code>.gw.DelayTimingInfo delay = 2;</code>
    * @return Whether the delay field is set.
    */
-  @Override
+  @java.lang.Override
   public boolean hasDelay() {
     return parametersCase_ == 2;
   }
@@ -150,12 +146,12 @@ private static final long serialVersionUID = 0L;
    * <code>.gw.DelayTimingInfo delay = 2;</code>
    * @return The delay.
    */
-  @Override
-  public DelayTimingInfo getDelay() {
+  @java.lang.Override
+  public io.chirpstack.api.gw.DelayTimingInfo getDelay() {
     if (parametersCase_ == 2) {
-       return (DelayTimingInfo) parameters_;
+       return (io.chirpstack.api.gw.DelayTimingInfo) parameters_;
     }
-    return DelayTimingInfo.getDefaultInstance();
+    return io.chirpstack.api.gw.DelayTimingInfo.getDefaultInstance();
   }
   /**
    * <pre>
@@ -164,12 +160,12 @@ private static final long serialVersionUID = 0L;
    *
    * <code>.gw.DelayTimingInfo delay = 2;</code>
    */
-  @Override
-  public DelayTimingInfoOrBuilder getDelayOrBuilder() {
+  @java.lang.Override
+  public io.chirpstack.api.gw.DelayTimingInfoOrBuilder getDelayOrBuilder() {
     if (parametersCase_ == 2) {
-       return (DelayTimingInfo) parameters_;
+       return (io.chirpstack.api.gw.DelayTimingInfo) parameters_;
     }
-    return DelayTimingInfo.getDefaultInstance();
+    return io.chirpstack.api.gw.DelayTimingInfo.getDefaultInstance();
   }
 
   public static final int GPS_EPOCH_FIELD_NUMBER = 3;
@@ -181,7 +177,7 @@ private static final long serialVersionUID = 0L;
    * <code>.gw.GPSEpochTimingInfo gps_epoch = 3;</code>
    * @return Whether the gpsEpoch field is set.
    */
-  @Override
+  @java.lang.Override
   public boolean hasGpsEpoch() {
     return parametersCase_ == 3;
   }
@@ -193,12 +189,12 @@ private static final long serialVersionUID = 0L;
    * <code>.gw.GPSEpochTimingInfo gps_epoch = 3;</code>
    * @return The gpsEpoch.
    */
-  @Override
-  public GPSEpochTimingInfo getGpsEpoch() {
+  @java.lang.Override
+  public io.chirpstack.api.gw.GPSEpochTimingInfo getGpsEpoch() {
     if (parametersCase_ == 3) {
-       return (GPSEpochTimingInfo) parameters_;
+       return (io.chirpstack.api.gw.GPSEpochTimingInfo) parameters_;
     }
-    return GPSEpochTimingInfo.getDefaultInstance();
+    return io.chirpstack.api.gw.GPSEpochTimingInfo.getDefaultInstance();
   }
   /**
    * <pre>
@@ -207,16 +203,16 @@ private static final long serialVersionUID = 0L;
    *
    * <code>.gw.GPSEpochTimingInfo gps_epoch = 3;</code>
    */
-  @Override
-  public GPSEpochTimingInfoOrBuilder getGpsEpochOrBuilder() {
+  @java.lang.Override
+  public io.chirpstack.api.gw.GPSEpochTimingInfoOrBuilder getGpsEpochOrBuilder() {
     if (parametersCase_ == 3) {
-       return (GPSEpochTimingInfo) parameters_;
+       return (io.chirpstack.api.gw.GPSEpochTimingInfo) parameters_;
     }
-    return GPSEpochTimingInfo.getDefaultInstance();
+    return io.chirpstack.api.gw.GPSEpochTimingInfo.getDefaultInstance();
   }
 
   private byte memoizedIsInitialized = -1;
-  @Override
+  @java.lang.Override
   public final boolean isInitialized() {
     byte isInitialized = memoizedIsInitialized;
     if (isInitialized == 1) return true;
@@ -226,22 +222,22 @@ private static final long serialVersionUID = 0L;
     return true;
   }
 
-  @Override
+  @java.lang.Override
   public void writeTo(com.google.protobuf.CodedOutputStream output)
                       throws java.io.IOException {
     if (parametersCase_ == 1) {
-      output.writeMessage(1, (ImmediatelyTimingInfo) parameters_);
+      output.writeMessage(1, (io.chirpstack.api.gw.ImmediatelyTimingInfo) parameters_);
     }
     if (parametersCase_ == 2) {
-      output.writeMessage(2, (DelayTimingInfo) parameters_);
+      output.writeMessage(2, (io.chirpstack.api.gw.DelayTimingInfo) parameters_);
     }
     if (parametersCase_ == 3) {
-      output.writeMessage(3, (GPSEpochTimingInfo) parameters_);
+      output.writeMessage(3, (io.chirpstack.api.gw.GPSEpochTimingInfo) parameters_);
     }
     getUnknownFields().writeTo(output);
   }
 
-  @Override
+  @java.lang.Override
   public int getSerializedSize() {
     int size = memoizedSize;
     if (size != -1) return size;
@@ -249,30 +245,30 @@ private static final long serialVersionUID = 0L;
     size = 0;
     if (parametersCase_ == 1) {
       size += com.google.protobuf.CodedOutputStream
-        .computeMessageSize(1, (ImmediatelyTimingInfo) parameters_);
+        .computeMessageSize(1, (io.chirpstack.api.gw.ImmediatelyTimingInfo) parameters_);
     }
     if (parametersCase_ == 2) {
       size += com.google.protobuf.CodedOutputStream
-        .computeMessageSize(2, (DelayTimingInfo) parameters_);
+        .computeMessageSize(2, (io.chirpstack.api.gw.DelayTimingInfo) parameters_);
     }
     if (parametersCase_ == 3) {
       size += com.google.protobuf.CodedOutputStream
-        .computeMessageSize(3, (GPSEpochTimingInfo) parameters_);
+        .computeMessageSize(3, (io.chirpstack.api.gw.GPSEpochTimingInfo) parameters_);
     }
     size += getUnknownFields().getSerializedSize();
     memoizedSize = size;
     return size;
   }
 
-  @Override
-  public boolean equals(final Object obj) {
+  @java.lang.Override
+  public boolean equals(final java.lang.Object obj) {
     if (obj == this) {
      return true;
     }
-    if (!(obj instanceof Timing)) {
+    if (!(obj instanceof io.chirpstack.api.gw.Timing)) {
       return super.equals(obj);
     }
-    Timing other = (Timing) obj;
+    io.chirpstack.api.gw.Timing other = (io.chirpstack.api.gw.Timing) obj;
 
     if (!getParametersCase().equals(other.getParametersCase())) return false;
     switch (parametersCase_) {
@@ -295,7 +291,7 @@ private static final long serialVersionUID = 0L;
     return true;
   }
 
-  @Override
+  @java.lang.Override
   public int hashCode() {
     if (memoizedHashCode != 0) {
       return memoizedHashCode;
@@ -323,69 +319,69 @@ private static final long serialVersionUID = 0L;
     return hash;
   }
 
-  public static Timing parseFrom(
+  public static io.chirpstack.api.gw.Timing parseFrom(
       java.nio.ByteBuffer data)
       throws com.google.protobuf.InvalidProtocolBufferException {
     return PARSER.parseFrom(data);
   }
-  public static Timing parseFrom(
+  public static io.chirpstack.api.gw.Timing parseFrom(
       java.nio.ByteBuffer data,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws com.google.protobuf.InvalidProtocolBufferException {
     return PARSER.parseFrom(data, extensionRegistry);
   }
-  public static Timing parseFrom(
+  public static io.chirpstack.api.gw.Timing parseFrom(
       com.google.protobuf.ByteString data)
       throws com.google.protobuf.InvalidProtocolBufferException {
     return PARSER.parseFrom(data);
   }
-  public static Timing parseFrom(
+  public static io.chirpstack.api.gw.Timing parseFrom(
       com.google.protobuf.ByteString data,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws com.google.protobuf.InvalidProtocolBufferException {
     return PARSER.parseFrom(data, extensionRegistry);
   }
-  public static Timing parseFrom(byte[] data)
+  public static io.chirpstack.api.gw.Timing parseFrom(byte[] data)
       throws com.google.protobuf.InvalidProtocolBufferException {
     return PARSER.parseFrom(data);
   }
-  public static Timing parseFrom(
+  public static io.chirpstack.api.gw.Timing parseFrom(
       byte[] data,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws com.google.protobuf.InvalidProtocolBufferException {
     return PARSER.parseFrom(data, extensionRegistry);
   }
-  public static Timing parseFrom(java.io.InputStream input)
+  public static io.chirpstack.api.gw.Timing parseFrom(java.io.InputStream input)
       throws java.io.IOException {
     return com.google.protobuf.GeneratedMessageV3
         .parseWithIOException(PARSER, input);
   }
-  public static Timing parseFrom(
+  public static io.chirpstack.api.gw.Timing parseFrom(
       java.io.InputStream input,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws java.io.IOException {
     return com.google.protobuf.GeneratedMessageV3
         .parseWithIOException(PARSER, input, extensionRegistry);
   }
-  public static Timing parseDelimitedFrom(java.io.InputStream input)
+  public static io.chirpstack.api.gw.Timing parseDelimitedFrom(java.io.InputStream input)
       throws java.io.IOException {
     return com.google.protobuf.GeneratedMessageV3
         .parseDelimitedWithIOException(PARSER, input);
   }
-  public static Timing parseDelimitedFrom(
+  public static io.chirpstack.api.gw.Timing parseDelimitedFrom(
       java.io.InputStream input,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws java.io.IOException {
     return com.google.protobuf.GeneratedMessageV3
         .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
   }
-  public static Timing parseFrom(
+  public static io.chirpstack.api.gw.Timing parseFrom(
       com.google.protobuf.CodedInputStream input)
       throws java.io.IOException {
     return com.google.protobuf.GeneratedMessageV3
         .parseWithIOException(PARSER, input);
   }
-  public static Timing parseFrom(
+  public static io.chirpstack.api.gw.Timing parseFrom(
       com.google.protobuf.CodedInputStream input,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws java.io.IOException {
@@ -393,23 +389,23 @@ private static final long serialVersionUID = 0L;
         .parseWithIOException(PARSER, input, extensionRegistry);
   }
 
-  @Override
+  @java.lang.Override
   public Builder newBuilderForType() { return newBuilder(); }
   public static Builder newBuilder() {
     return DEFAULT_INSTANCE.toBuilder();
   }
-  public static Builder newBuilder(Timing prototype) {
+  public static Builder newBuilder(io.chirpstack.api.gw.Timing prototype) {
     return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
   }
-  @Override
+  @java.lang.Override
   public Builder toBuilder() {
     return this == DEFAULT_INSTANCE
         ? new Builder() : new Builder().mergeFrom(this);
   }
 
-  @Override
+  @java.lang.Override
   protected Builder newBuilderForType(
-      BuilderParent parent) {
+      com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
     Builder builder = new Builder(parent);
     return builder;
   }
@@ -419,18 +415,18 @@ private static final long serialVersionUID = 0L;
   public static final class Builder extends
       com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
       // @@protoc_insertion_point(builder_implements:gw.Timing)
-      TimingOrBuilder {
+      io.chirpstack.api.gw.TimingOrBuilder {
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
-      return GatewayProto.internal_static_gw_Timing_descriptor;
+      return io.chirpstack.api.gw.GatewayProto.internal_static_gw_Timing_descriptor;
     }
 
-    @Override
-    protected FieldAccessorTable
+    @java.lang.Override
+    protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
         internalGetFieldAccessorTable() {
-      return GatewayProto.internal_static_gw_Timing_fieldAccessorTable
+      return io.chirpstack.api.gw.GatewayProto.internal_static_gw_Timing_fieldAccessorTable
           .ensureFieldAccessorsInitialized(
-              Timing.class, Builder.class);
+              io.chirpstack.api.gw.Timing.class, io.chirpstack.api.gw.Timing.Builder.class);
     }
 
     // Construct using io.chirpstack.api.gw.Timing.newBuilder()
@@ -439,13 +435,14 @@ private static final long serialVersionUID = 0L;
     }
 
     private Builder(
-        BuilderParent parent) {
+        com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
       super(parent);
 
     }
-    @Override
+    @java.lang.Override
     public Builder clear() {
       super.clear();
+      bitField0_ = 0;
       if (immediatelyBuilder_ != null) {
         immediatelyBuilder_.clear();
       }
@@ -460,99 +457,68 @@ private static final long serialVersionUID = 0L;
       return this;
     }
 
-    @Override
+    @java.lang.Override
     public com.google.protobuf.Descriptors.Descriptor
         getDescriptorForType() {
-      return GatewayProto.internal_static_gw_Timing_descriptor;
+      return io.chirpstack.api.gw.GatewayProto.internal_static_gw_Timing_descriptor;
     }
 
-    @Override
-    public Timing getDefaultInstanceForType() {
-      return Timing.getDefaultInstance();
+    @java.lang.Override
+    public io.chirpstack.api.gw.Timing getDefaultInstanceForType() {
+      return io.chirpstack.api.gw.Timing.getDefaultInstance();
     }
 
-    @Override
-    public Timing build() {
-      Timing result = buildPartial();
+    @java.lang.Override
+    public io.chirpstack.api.gw.Timing build() {
+      io.chirpstack.api.gw.Timing result = buildPartial();
       if (!result.isInitialized()) {
         throw newUninitializedMessageException(result);
       }
       return result;
     }
 
-    @Override
-    public Timing buildPartial() {
-      Timing result = new Timing(this);
-      if (parametersCase_ == 1) {
-        if (immediatelyBuilder_ == null) {
-          result.parameters_ = parameters_;
-        } else {
-          result.parameters_ = immediatelyBuilder_.build();
-        }
-      }
-      if (parametersCase_ == 2) {
-        if (delayBuilder_ == null) {
-          result.parameters_ = parameters_;
-        } else {
-          result.parameters_ = delayBuilder_.build();
-        }
-      }
-      if (parametersCase_ == 3) {
-        if (gpsEpochBuilder_ == null) {
-          result.parameters_ = parameters_;
-        } else {
-          result.parameters_ = gpsEpochBuilder_.build();
-        }
-      }
-      result.parametersCase_ = parametersCase_;
+    @java.lang.Override
+    public io.chirpstack.api.gw.Timing buildPartial() {
+      io.chirpstack.api.gw.Timing result = new io.chirpstack.api.gw.Timing(this);
+      if (bitField0_ != 0) { buildPartial0(result); }
+      buildPartialOneofs(result);
       onBuilt();
       return result;
     }
 
-    @Override
-    public Builder clone() {
-      return super.clone();
+    private void buildPartial0(io.chirpstack.api.gw.Timing result) {
+      int from_bitField0_ = bitField0_;
     }
-    @Override
-    public Builder setField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        Object value) {
-      return super.setField(field, value);
+
+    private void buildPartialOneofs(io.chirpstack.api.gw.Timing result) {
+      result.parametersCase_ = parametersCase_;
+      result.parameters_ = this.parameters_;
+      if (parametersCase_ == 1 &&
+          immediatelyBuilder_ != null) {
+        result.parameters_ = immediatelyBuilder_.build();
+      }
+      if (parametersCase_ == 2 &&
+          delayBuilder_ != null) {
+        result.parameters_ = delayBuilder_.build();
+      }
+      if (parametersCase_ == 3 &&
+          gpsEpochBuilder_ != null) {
+        result.parameters_ = gpsEpochBuilder_.build();
+      }
     }
-    @Override
-    public Builder clearField(
-        com.google.protobuf.Descriptors.FieldDescriptor field) {
-      return super.clearField(field);
-    }
-    @Override
-    public Builder clearOneof(
-        com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-      return super.clearOneof(oneof);
-    }
-    @Override
-    public Builder setRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        int index, Object value) {
-      return super.setRepeatedField(field, index, value);
-    }
-    @Override
-    public Builder addRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        Object value) {
-      return super.addRepeatedField(field, value);
-    }
-    @Override
+
+    @java.lang.Override
     public Builder mergeFrom(com.google.protobuf.Message other) {
-      if (other instanceof Timing) {
-        return mergeFrom((Timing)other);
+      if (other instanceof io.chirpstack.api.gw.Timing) {
+        return mergeFrom((io.chirpstack.api.gw.Timing)other);
       } else {
         super.mergeFrom(other);
         return this;
       }
     }
 
-    public Builder mergeFrom(Timing other) {
-      if (other == Timing.getDefaultInstance()) return this;
+    public Builder mergeFrom(io.chirpstack.api.gw.Timing other) {
+      if (other == io.chirpstack.api.gw.Timing.getDefaultInstance()) return this;
       switch (other.getParametersCase()) {
         case IMMEDIATELY: {
           mergeImmediately(other.getImmediately());
@@ -575,18 +541,18 @@ private static final long serialVersionUID = 0L;
       return this;
     }
 
-    @Override
+    @java.lang.Override
     public final boolean isInitialized() {
       return true;
     }
 
-    @Override
+    @java.lang.Override
     public Builder mergeFrom(
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
       if (extensionRegistry == null) {
-        throw new NullPointerException();
+        throw new java.lang.NullPointerException();
       }
       try {
         boolean done = false;
@@ -633,7 +599,7 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     private int parametersCase_ = 0;
-    private Object parameters_;
+    private java.lang.Object parameters_;
     public ParametersCase
         getParametersCase() {
       return ParametersCase.forNumber(
@@ -647,9 +613,10 @@ private static final long serialVersionUID = 0L;
       return this;
     }
 
+    private int bitField0_;
 
     private com.google.protobuf.SingleFieldBuilderV3<
-        ImmediatelyTimingInfo, ImmediatelyTimingInfo.Builder, ImmediatelyTimingInfoOrBuilder> immediatelyBuilder_;
+        io.chirpstack.api.gw.ImmediatelyTimingInfo, io.chirpstack.api.gw.ImmediatelyTimingInfo.Builder, io.chirpstack.api.gw.ImmediatelyTimingInfoOrBuilder> immediatelyBuilder_;
     /**
      * <pre>
      * Immediately timing information.
@@ -658,7 +625,7 @@ private static final long serialVersionUID = 0L;
      * <code>.gw.ImmediatelyTimingInfo immediately = 1;</code>
      * @return Whether the immediately field is set.
      */
-    @Override
+    @java.lang.Override
     public boolean hasImmediately() {
       return parametersCase_ == 1;
     }
@@ -670,18 +637,18 @@ private static final long serialVersionUID = 0L;
      * <code>.gw.ImmediatelyTimingInfo immediately = 1;</code>
      * @return The immediately.
      */
-    @Override
-    public ImmediatelyTimingInfo getImmediately() {
+    @java.lang.Override
+    public io.chirpstack.api.gw.ImmediatelyTimingInfo getImmediately() {
       if (immediatelyBuilder_ == null) {
         if (parametersCase_ == 1) {
-          return (ImmediatelyTimingInfo) parameters_;
+          return (io.chirpstack.api.gw.ImmediatelyTimingInfo) parameters_;
         }
-        return ImmediatelyTimingInfo.getDefaultInstance();
+        return io.chirpstack.api.gw.ImmediatelyTimingInfo.getDefaultInstance();
       } else {
         if (parametersCase_ == 1) {
           return immediatelyBuilder_.getMessage();
         }
-        return ImmediatelyTimingInfo.getDefaultInstance();
+        return io.chirpstack.api.gw.ImmediatelyTimingInfo.getDefaultInstance();
       }
     }
     /**
@@ -691,7 +658,7 @@ private static final long serialVersionUID = 0L;
      *
      * <code>.gw.ImmediatelyTimingInfo immediately = 1;</code>
      */
-    public Builder setImmediately(ImmediatelyTimingInfo value) {
+    public Builder setImmediately(io.chirpstack.api.gw.ImmediatelyTimingInfo value) {
       if (immediatelyBuilder_ == null) {
         if (value == null) {
           throw new NullPointerException();
@@ -712,7 +679,7 @@ private static final long serialVersionUID = 0L;
      * <code>.gw.ImmediatelyTimingInfo immediately = 1;</code>
      */
     public Builder setImmediately(
-        ImmediatelyTimingInfo.Builder builderForValue) {
+        io.chirpstack.api.gw.ImmediatelyTimingInfo.Builder builderForValue) {
       if (immediatelyBuilder_ == null) {
         parameters_ = builderForValue.build();
         onChanged();
@@ -729,11 +696,11 @@ private static final long serialVersionUID = 0L;
      *
      * <code>.gw.ImmediatelyTimingInfo immediately = 1;</code>
      */
-    public Builder mergeImmediately(ImmediatelyTimingInfo value) {
+    public Builder mergeImmediately(io.chirpstack.api.gw.ImmediatelyTimingInfo value) {
       if (immediatelyBuilder_ == null) {
         if (parametersCase_ == 1 &&
-            parameters_ != ImmediatelyTimingInfo.getDefaultInstance()) {
-          parameters_ = ImmediatelyTimingInfo.newBuilder((ImmediatelyTimingInfo) parameters_)
+            parameters_ != io.chirpstack.api.gw.ImmediatelyTimingInfo.getDefaultInstance()) {
+          parameters_ = io.chirpstack.api.gw.ImmediatelyTimingInfo.newBuilder((io.chirpstack.api.gw.ImmediatelyTimingInfo) parameters_)
               .mergeFrom(value).buildPartial();
         } else {
           parameters_ = value;
@@ -779,7 +746,7 @@ private static final long serialVersionUID = 0L;
      *
      * <code>.gw.ImmediatelyTimingInfo immediately = 1;</code>
      */
-    public ImmediatelyTimingInfo.Builder getImmediatelyBuilder() {
+    public io.chirpstack.api.gw.ImmediatelyTimingInfo.Builder getImmediatelyBuilder() {
       return getImmediatelyFieldBuilder().getBuilder();
     }
     /**
@@ -789,15 +756,15 @@ private static final long serialVersionUID = 0L;
      *
      * <code>.gw.ImmediatelyTimingInfo immediately = 1;</code>
      */
-    @Override
-    public ImmediatelyTimingInfoOrBuilder getImmediatelyOrBuilder() {
+    @java.lang.Override
+    public io.chirpstack.api.gw.ImmediatelyTimingInfoOrBuilder getImmediatelyOrBuilder() {
       if ((parametersCase_ == 1) && (immediatelyBuilder_ != null)) {
         return immediatelyBuilder_.getMessageOrBuilder();
       } else {
         if (parametersCase_ == 1) {
-          return (ImmediatelyTimingInfo) parameters_;
+          return (io.chirpstack.api.gw.ImmediatelyTimingInfo) parameters_;
         }
-        return ImmediatelyTimingInfo.getDefaultInstance();
+        return io.chirpstack.api.gw.ImmediatelyTimingInfo.getDefaultInstance();
       }
     }
     /**
@@ -808,26 +775,26 @@ private static final long serialVersionUID = 0L;
      * <code>.gw.ImmediatelyTimingInfo immediately = 1;</code>
      */
     private com.google.protobuf.SingleFieldBuilderV3<
-        ImmediatelyTimingInfo, ImmediatelyTimingInfo.Builder, ImmediatelyTimingInfoOrBuilder>
+        io.chirpstack.api.gw.ImmediatelyTimingInfo, io.chirpstack.api.gw.ImmediatelyTimingInfo.Builder, io.chirpstack.api.gw.ImmediatelyTimingInfoOrBuilder> 
         getImmediatelyFieldBuilder() {
       if (immediatelyBuilder_ == null) {
         if (!(parametersCase_ == 1)) {
-          parameters_ = ImmediatelyTimingInfo.getDefaultInstance();
+          parameters_ = io.chirpstack.api.gw.ImmediatelyTimingInfo.getDefaultInstance();
         }
         immediatelyBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
-            ImmediatelyTimingInfo, ImmediatelyTimingInfo.Builder, ImmediatelyTimingInfoOrBuilder>(
-                (ImmediatelyTimingInfo) parameters_,
+            io.chirpstack.api.gw.ImmediatelyTimingInfo, io.chirpstack.api.gw.ImmediatelyTimingInfo.Builder, io.chirpstack.api.gw.ImmediatelyTimingInfoOrBuilder>(
+                (io.chirpstack.api.gw.ImmediatelyTimingInfo) parameters_,
                 getParentForChildren(),
                 isClean());
         parameters_ = null;
       }
       parametersCase_ = 1;
-      onChanged();;
+      onChanged();
       return immediatelyBuilder_;
     }
 
     private com.google.protobuf.SingleFieldBuilderV3<
-        DelayTimingInfo, DelayTimingInfo.Builder, DelayTimingInfoOrBuilder> delayBuilder_;
+        io.chirpstack.api.gw.DelayTimingInfo, io.chirpstack.api.gw.DelayTimingInfo.Builder, io.chirpstack.api.gw.DelayTimingInfoOrBuilder> delayBuilder_;
     /**
      * <pre>
      * Context based delay timing information.
@@ -836,7 +803,7 @@ private static final long serialVersionUID = 0L;
      * <code>.gw.DelayTimingInfo delay = 2;</code>
      * @return Whether the delay field is set.
      */
-    @Override
+    @java.lang.Override
     public boolean hasDelay() {
       return parametersCase_ == 2;
     }
@@ -848,18 +815,18 @@ private static final long serialVersionUID = 0L;
      * <code>.gw.DelayTimingInfo delay = 2;</code>
      * @return The delay.
      */
-    @Override
-    public DelayTimingInfo getDelay() {
+    @java.lang.Override
+    public io.chirpstack.api.gw.DelayTimingInfo getDelay() {
       if (delayBuilder_ == null) {
         if (parametersCase_ == 2) {
-          return (DelayTimingInfo) parameters_;
+          return (io.chirpstack.api.gw.DelayTimingInfo) parameters_;
         }
-        return DelayTimingInfo.getDefaultInstance();
+        return io.chirpstack.api.gw.DelayTimingInfo.getDefaultInstance();
       } else {
         if (parametersCase_ == 2) {
           return delayBuilder_.getMessage();
         }
-        return DelayTimingInfo.getDefaultInstance();
+        return io.chirpstack.api.gw.DelayTimingInfo.getDefaultInstance();
       }
     }
     /**
@@ -869,7 +836,7 @@ private static final long serialVersionUID = 0L;
      *
      * <code>.gw.DelayTimingInfo delay = 2;</code>
      */
-    public Builder setDelay(DelayTimingInfo value) {
+    public Builder setDelay(io.chirpstack.api.gw.DelayTimingInfo value) {
       if (delayBuilder_ == null) {
         if (value == null) {
           throw new NullPointerException();
@@ -890,7 +857,7 @@ private static final long serialVersionUID = 0L;
      * <code>.gw.DelayTimingInfo delay = 2;</code>
      */
     public Builder setDelay(
-        DelayTimingInfo.Builder builderForValue) {
+        io.chirpstack.api.gw.DelayTimingInfo.Builder builderForValue) {
       if (delayBuilder_ == null) {
         parameters_ = builderForValue.build();
         onChanged();
@@ -907,11 +874,11 @@ private static final long serialVersionUID = 0L;
      *
      * <code>.gw.DelayTimingInfo delay = 2;</code>
      */
-    public Builder mergeDelay(DelayTimingInfo value) {
+    public Builder mergeDelay(io.chirpstack.api.gw.DelayTimingInfo value) {
       if (delayBuilder_ == null) {
         if (parametersCase_ == 2 &&
-            parameters_ != DelayTimingInfo.getDefaultInstance()) {
-          parameters_ = DelayTimingInfo.newBuilder((DelayTimingInfo) parameters_)
+            parameters_ != io.chirpstack.api.gw.DelayTimingInfo.getDefaultInstance()) {
+          parameters_ = io.chirpstack.api.gw.DelayTimingInfo.newBuilder((io.chirpstack.api.gw.DelayTimingInfo) parameters_)
               .mergeFrom(value).buildPartial();
         } else {
           parameters_ = value;
@@ -957,7 +924,7 @@ private static final long serialVersionUID = 0L;
      *
      * <code>.gw.DelayTimingInfo delay = 2;</code>
      */
-    public DelayTimingInfo.Builder getDelayBuilder() {
+    public io.chirpstack.api.gw.DelayTimingInfo.Builder getDelayBuilder() {
       return getDelayFieldBuilder().getBuilder();
     }
     /**
@@ -967,15 +934,15 @@ private static final long serialVersionUID = 0L;
      *
      * <code>.gw.DelayTimingInfo delay = 2;</code>
      */
-    @Override
-    public DelayTimingInfoOrBuilder getDelayOrBuilder() {
+    @java.lang.Override
+    public io.chirpstack.api.gw.DelayTimingInfoOrBuilder getDelayOrBuilder() {
       if ((parametersCase_ == 2) && (delayBuilder_ != null)) {
         return delayBuilder_.getMessageOrBuilder();
       } else {
         if (parametersCase_ == 2) {
-          return (DelayTimingInfo) parameters_;
+          return (io.chirpstack.api.gw.DelayTimingInfo) parameters_;
         }
-        return DelayTimingInfo.getDefaultInstance();
+        return io.chirpstack.api.gw.DelayTimingInfo.getDefaultInstance();
       }
     }
     /**
@@ -986,26 +953,26 @@ private static final long serialVersionUID = 0L;
      * <code>.gw.DelayTimingInfo delay = 2;</code>
      */
     private com.google.protobuf.SingleFieldBuilderV3<
-        DelayTimingInfo, DelayTimingInfo.Builder, DelayTimingInfoOrBuilder>
+        io.chirpstack.api.gw.DelayTimingInfo, io.chirpstack.api.gw.DelayTimingInfo.Builder, io.chirpstack.api.gw.DelayTimingInfoOrBuilder> 
         getDelayFieldBuilder() {
       if (delayBuilder_ == null) {
         if (!(parametersCase_ == 2)) {
-          parameters_ = DelayTimingInfo.getDefaultInstance();
+          parameters_ = io.chirpstack.api.gw.DelayTimingInfo.getDefaultInstance();
         }
         delayBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
-            DelayTimingInfo, DelayTimingInfo.Builder, DelayTimingInfoOrBuilder>(
-                (DelayTimingInfo) parameters_,
+            io.chirpstack.api.gw.DelayTimingInfo, io.chirpstack.api.gw.DelayTimingInfo.Builder, io.chirpstack.api.gw.DelayTimingInfoOrBuilder>(
+                (io.chirpstack.api.gw.DelayTimingInfo) parameters_,
                 getParentForChildren(),
                 isClean());
         parameters_ = null;
       }
       parametersCase_ = 2;
-      onChanged();;
+      onChanged();
       return delayBuilder_;
     }
 
     private com.google.protobuf.SingleFieldBuilderV3<
-        GPSEpochTimingInfo, GPSEpochTimingInfo.Builder, GPSEpochTimingInfoOrBuilder> gpsEpochBuilder_;
+        io.chirpstack.api.gw.GPSEpochTimingInfo, io.chirpstack.api.gw.GPSEpochTimingInfo.Builder, io.chirpstack.api.gw.GPSEpochTimingInfoOrBuilder> gpsEpochBuilder_;
     /**
      * <pre>
      * GPS Epoch timing information.
@@ -1014,7 +981,7 @@ private static final long serialVersionUID = 0L;
      * <code>.gw.GPSEpochTimingInfo gps_epoch = 3;</code>
      * @return Whether the gpsEpoch field is set.
      */
-    @Override
+    @java.lang.Override
     public boolean hasGpsEpoch() {
       return parametersCase_ == 3;
     }
@@ -1026,18 +993,18 @@ private static final long serialVersionUID = 0L;
      * <code>.gw.GPSEpochTimingInfo gps_epoch = 3;</code>
      * @return The gpsEpoch.
      */
-    @Override
-    public GPSEpochTimingInfo getGpsEpoch() {
+    @java.lang.Override
+    public io.chirpstack.api.gw.GPSEpochTimingInfo getGpsEpoch() {
       if (gpsEpochBuilder_ == null) {
         if (parametersCase_ == 3) {
-          return (GPSEpochTimingInfo) parameters_;
+          return (io.chirpstack.api.gw.GPSEpochTimingInfo) parameters_;
         }
-        return GPSEpochTimingInfo.getDefaultInstance();
+        return io.chirpstack.api.gw.GPSEpochTimingInfo.getDefaultInstance();
       } else {
         if (parametersCase_ == 3) {
           return gpsEpochBuilder_.getMessage();
         }
-        return GPSEpochTimingInfo.getDefaultInstance();
+        return io.chirpstack.api.gw.GPSEpochTimingInfo.getDefaultInstance();
       }
     }
     /**
@@ -1047,7 +1014,7 @@ private static final long serialVersionUID = 0L;
      *
      * <code>.gw.GPSEpochTimingInfo gps_epoch = 3;</code>
      */
-    public Builder setGpsEpoch(GPSEpochTimingInfo value) {
+    public Builder setGpsEpoch(io.chirpstack.api.gw.GPSEpochTimingInfo value) {
       if (gpsEpochBuilder_ == null) {
         if (value == null) {
           throw new NullPointerException();
@@ -1068,7 +1035,7 @@ private static final long serialVersionUID = 0L;
      * <code>.gw.GPSEpochTimingInfo gps_epoch = 3;</code>
      */
     public Builder setGpsEpoch(
-        GPSEpochTimingInfo.Builder builderForValue) {
+        io.chirpstack.api.gw.GPSEpochTimingInfo.Builder builderForValue) {
       if (gpsEpochBuilder_ == null) {
         parameters_ = builderForValue.build();
         onChanged();
@@ -1085,11 +1052,11 @@ private static final long serialVersionUID = 0L;
      *
      * <code>.gw.GPSEpochTimingInfo gps_epoch = 3;</code>
      */
-    public Builder mergeGpsEpoch(GPSEpochTimingInfo value) {
+    public Builder mergeGpsEpoch(io.chirpstack.api.gw.GPSEpochTimingInfo value) {
       if (gpsEpochBuilder_ == null) {
         if (parametersCase_ == 3 &&
-            parameters_ != GPSEpochTimingInfo.getDefaultInstance()) {
-          parameters_ = GPSEpochTimingInfo.newBuilder((GPSEpochTimingInfo) parameters_)
+            parameters_ != io.chirpstack.api.gw.GPSEpochTimingInfo.getDefaultInstance()) {
+          parameters_ = io.chirpstack.api.gw.GPSEpochTimingInfo.newBuilder((io.chirpstack.api.gw.GPSEpochTimingInfo) parameters_)
               .mergeFrom(value).buildPartial();
         } else {
           parameters_ = value;
@@ -1135,7 +1102,7 @@ private static final long serialVersionUID = 0L;
      *
      * <code>.gw.GPSEpochTimingInfo gps_epoch = 3;</code>
      */
-    public GPSEpochTimingInfo.Builder getGpsEpochBuilder() {
+    public io.chirpstack.api.gw.GPSEpochTimingInfo.Builder getGpsEpochBuilder() {
       return getGpsEpochFieldBuilder().getBuilder();
     }
     /**
@@ -1145,15 +1112,15 @@ private static final long serialVersionUID = 0L;
      *
      * <code>.gw.GPSEpochTimingInfo gps_epoch = 3;</code>
      */
-    @Override
-    public GPSEpochTimingInfoOrBuilder getGpsEpochOrBuilder() {
+    @java.lang.Override
+    public io.chirpstack.api.gw.GPSEpochTimingInfoOrBuilder getGpsEpochOrBuilder() {
       if ((parametersCase_ == 3) && (gpsEpochBuilder_ != null)) {
         return gpsEpochBuilder_.getMessageOrBuilder();
       } else {
         if (parametersCase_ == 3) {
-          return (GPSEpochTimingInfo) parameters_;
+          return (io.chirpstack.api.gw.GPSEpochTimingInfo) parameters_;
         }
-        return GPSEpochTimingInfo.getDefaultInstance();
+        return io.chirpstack.api.gw.GPSEpochTimingInfo.getDefaultInstance();
       }
     }
     /**
@@ -1164,30 +1131,30 @@ private static final long serialVersionUID = 0L;
      * <code>.gw.GPSEpochTimingInfo gps_epoch = 3;</code>
      */
     private com.google.protobuf.SingleFieldBuilderV3<
-        GPSEpochTimingInfo, GPSEpochTimingInfo.Builder, GPSEpochTimingInfoOrBuilder>
+        io.chirpstack.api.gw.GPSEpochTimingInfo, io.chirpstack.api.gw.GPSEpochTimingInfo.Builder, io.chirpstack.api.gw.GPSEpochTimingInfoOrBuilder> 
         getGpsEpochFieldBuilder() {
       if (gpsEpochBuilder_ == null) {
         if (!(parametersCase_ == 3)) {
-          parameters_ = GPSEpochTimingInfo.getDefaultInstance();
+          parameters_ = io.chirpstack.api.gw.GPSEpochTimingInfo.getDefaultInstance();
         }
         gpsEpochBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
-            GPSEpochTimingInfo, GPSEpochTimingInfo.Builder, GPSEpochTimingInfoOrBuilder>(
-                (GPSEpochTimingInfo) parameters_,
+            io.chirpstack.api.gw.GPSEpochTimingInfo, io.chirpstack.api.gw.GPSEpochTimingInfo.Builder, io.chirpstack.api.gw.GPSEpochTimingInfoOrBuilder>(
+                (io.chirpstack.api.gw.GPSEpochTimingInfo) parameters_,
                 getParentForChildren(),
                 isClean());
         parameters_ = null;
       }
       parametersCase_ = 3;
-      onChanged();;
+      onChanged();
       return gpsEpochBuilder_;
     }
-    @Override
+    @java.lang.Override
     public final Builder setUnknownFields(
         final com.google.protobuf.UnknownFieldSet unknownFields) {
       return super.setUnknownFields(unknownFields);
     }
 
-    @Override
+    @java.lang.Override
     public final Builder mergeUnknownFields(
         final com.google.protobuf.UnknownFieldSet unknownFields) {
       return super.mergeUnknownFields(unknownFields);
@@ -1198,18 +1165,18 @@ private static final long serialVersionUID = 0L;
   }
 
   // @@protoc_insertion_point(class_scope:gw.Timing)
-  private static final Timing DEFAULT_INSTANCE;
+  private static final io.chirpstack.api.gw.Timing DEFAULT_INSTANCE;
   static {
-    DEFAULT_INSTANCE = new Timing();
+    DEFAULT_INSTANCE = new io.chirpstack.api.gw.Timing();
   }
 
-  public static Timing getDefaultInstance() {
+  public static io.chirpstack.api.gw.Timing getDefaultInstance() {
     return DEFAULT_INSTANCE;
   }
 
   private static final com.google.protobuf.Parser<Timing>
       PARSER = new com.google.protobuf.AbstractParser<Timing>() {
-    @Override
+    @java.lang.Override
     public Timing parsePartialFrom(
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
@@ -1233,13 +1200,13 @@ private static final long serialVersionUID = 0L;
     return PARSER;
   }
 
-  @Override
+  @java.lang.Override
   public com.google.protobuf.Parser<Timing> getParserForType() {
     return PARSER;
   }
 
-  @Override
-  public Timing getDefaultInstanceForType() {
+  @java.lang.Override
+  public io.chirpstack.api.gw.Timing getDefaultInstanceForType() {
     return DEFAULT_INSTANCE;
   }
 

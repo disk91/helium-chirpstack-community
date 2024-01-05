@@ -32,9 +32,9 @@ import eu.heliumiot.console.tools.EncryptionHelper;
 import eu.heliumiot.console.tools.ExecuteEmail;
 import fr.ingeniousthings.tools.*;
 import fr.ingeniousthings.tools.Claims;
-import io.chirpstack.restapi.*;
-import io.chirpstack.restapi.Tenant;
-import io.chirpstack.restapi.UserTenant;
+import io.chirpstack.api.*;
+import io.chirpstack.api.Tenant;
+import io.chirpstack.api.UserTenant;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
 import org.postgresql.shaded.com.ongres.scram.common.bouncycastle.base64.Base64;
@@ -372,13 +372,14 @@ public class UserService {
         heads.add("authorization", "Bearer "+consoleConfig.getChirpstackApiAdminKey());
 
         // Lets create the tenant first
-        Tenant tenant = Tenant.newBuilder()
+        io.chirpstack.api.Tenant tenant = io.chirpstack.api.Tenant.newBuilder()
                 .setName(hpe.getTenantName())
                 .setDescription("Default user tenant")
                 .setCanHaveGateways(false)
                 .setMaxDeviceCount(hts.getMaxDevices())
                 .setMaxGatewayCount(0)
-                .setPrivateGateways(false)
+                .setPrivateGatewaysDown(false)
+                .setPrivateGatewaysUp(false)
                 .build();
 
         CreateTenantRequest tenantReq = CreateTenantRequest.newBuilder()
@@ -422,7 +423,7 @@ public class UserService {
             }
         }
 
-        io.chirpstack.restapi.User user = io.chirpstack.restapi.User.newBuilder()
+        io.chirpstack.api.User user = io.chirpstack.api.User.newBuilder()
                 .setEmail(hpe.getUsername())
                 .setIsActive(activate)
                 .setIsAdmin(false)
@@ -998,13 +999,13 @@ public class UserService {
         }
 
         // Disable the user, then he won't be able to reset password
-        io.chirpstack.restapi.User user = io.chirpstack.restapi.User.newBuilder()
+        io.chirpstack.api.User user = io.chirpstack.api.User.newBuilder()
             .setId(u.user.getId().toString())
             .setEmail(u.user.getEmail())
             .setIsActive(false)
             .setIsAdmin(false)
             .build();
-        io.chirpstack.restapi.UpdateUserRequest cur = io.chirpstack.restapi.UpdateUserRequest.newBuilder()
+        io.chirpstack.api.UpdateUserRequest cur = io.chirpstack.api.UpdateUserRequest.newBuilder()
             .setUser(user)
             .build();
         try {

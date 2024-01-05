@@ -24,5 +24,5 @@ public interface DownlinkTxAckItemOrBuilder extends
    * <code>.gw.TxAckStatus status = 1;</code>
    * @return The status.
    */
-  TxAckStatus getStatus();
+  io.chirpstack.api.gw.TxAckStatus getStatus();
 }

@@ -75,10 +75,11 @@ public final class CommonProto {
       "I\020\004\022\025\n\021GEO_RESOLVER_GNSS\020\005\022\025\n\021GEO_RESOLV" +
       "ER_WIFI\020\006*+\n\013Aggregation\022\010\n\004HOUR\020\000\022\007\n\003DA" +
       "Y\020\001\022\t\n\005MONTH\020\002*2\n\nMetricKind\022\013\n\007COUNTER\020" +
-      "\000\022\014\n\010ABSOLUTE\020\001\022\t\n\005GAUGE\020\002Bi\n\021io.chirpst" +
-      "ack.apiB\013CommonProtoP\001Z1github.com/chirp" +
-      "stack/chirpstack/api/go/v4/common\252\002\021Chir" +
-      "pstack.Commonb\006proto3"
+      "\000\022\014\n\010ABSOLUTE\020\001\022\t\n\005GAUGE\020\002*4\n\013DeviceClas" +
+      "s\022\013\n\007CLASS_A\020\000\022\013\n\007CLASS_B\020\001\022\013\n\007CLASS_C\020\002" +
+      "Bi\n\021io.chirpstack.apiB\013CommonProtoP\001Z1gi" +
+      "thub.com/chirpstack/chirpstack/api/go/v4" +
+      "/common\252\002\021Chirpstack.Commonb\006proto3"
     };
     descriptor = com.google.protobuf.Descriptors.FileDescriptor
       .internalBuildGeneratedFileFrom(descriptorData,

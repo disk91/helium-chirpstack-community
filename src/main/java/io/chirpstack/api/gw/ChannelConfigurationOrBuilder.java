@@ -53,7 +53,7 @@ public interface ChannelConfigurationOrBuilder extends
    * <code>.gw.LoraModulationConfig lora_modulation_config = 3;</code>
    * @return The loraModulationConfig.
    */
-  LoraModulationConfig getLoraModulationConfig();
+  io.chirpstack.api.gw.LoraModulationConfig getLoraModulationConfig();
   /**
    * <pre>
    * LoRa modulation config.
@@ -61,7 +61,7 @@ public interface ChannelConfigurationOrBuilder extends
    *
    * <code>.gw.LoraModulationConfig lora_modulation_config = 3;</code>
    */
-  LoraModulationConfigOrBuilder getLoraModulationConfigOrBuilder();
+  io.chirpstack.api.gw.LoraModulationConfigOrBuilder getLoraModulationConfigOrBuilder();
 
   /**
    * <pre>
@@ -80,7 +80,7 @@ public interface ChannelConfigurationOrBuilder extends
    * <code>.gw.FskModulationConfig fsk_modulation_config = 4;</code>
    * @return The fskModulationConfig.
    */
-  FskModulationConfig getFskModulationConfig();
+  io.chirpstack.api.gw.FskModulationConfig getFskModulationConfig();
   /**
    * <pre>
    * FSK modulation config.
@@ -88,7 +88,7 @@ public interface ChannelConfigurationOrBuilder extends
    *
    * <code>.gw.FskModulationConfig fsk_modulation_config = 4;</code>
    */
-  FskModulationConfigOrBuilder getFskModulationConfigOrBuilder();
+  io.chirpstack.api.gw.FskModulationConfigOrBuilder getFskModulationConfigOrBuilder();
 
   /**
    * <pre>
@@ -110,5 +110,5 @@ public interface ChannelConfigurationOrBuilder extends
    */
   int getDemodulator();
 
-  public ChannelConfiguration.ModulationConfigCase getModulationConfigCase();
+  io.chirpstack.api.gw.ChannelConfiguration.ModulationConfigCase getModulationConfigCase();
 }

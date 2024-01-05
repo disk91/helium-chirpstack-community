@@ -20,25 +20,25 @@ public interface GetDeviceMetricsResponseOrBuilder extends
    * Use {@link #getMetricsMap()} instead.
    */
   @Deprecated
-  java.util.Map<String, io.chirpstack.api.Metric>
+  java.util.Map<String, Metric>
   getMetrics();
   /**
    * <code>map&lt;string, .common.Metric&gt; metrics = 1;</code>
    */
-  java.util.Map<String, io.chirpstack.api.Metric>
+  java.util.Map<String, Metric>
   getMetricsMap();
   /**
    * <code>map&lt;string, .common.Metric&gt; metrics = 1;</code>
    */
   /* nullable */
-io.chirpstack.api.Metric getMetricsOrDefault(
+Metric getMetricsOrDefault(
       String key,
       /* nullable */
-io.chirpstack.api.Metric defaultValue);
+Metric defaultValue);
   /**
    * <code>map&lt;string, .common.Metric&gt; metrics = 1;</code>
    */
-  io.chirpstack.api.Metric getMetricsOrThrow(
+  Metric getMetricsOrThrow(
       String key);
 
   /**
