@@ -70,7 +70,7 @@ export default {
     disablePurchase:process.env.DIS_DC_PURCHASE || 'false',
     disableNewTenant:process.env.DIS_NEW_TENANT || 'false',
     disableStatTenant:process.env.DIS_STAT_TENANT || 'false',
-    frontVersion:'7.0.0'
+    frontVersion:'8.0.0'
   },
 
   // env variables loaded accessible on the server side
