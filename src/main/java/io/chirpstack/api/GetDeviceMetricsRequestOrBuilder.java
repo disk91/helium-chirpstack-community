@@ -98,5 +98,5 @@ public interface GetDeviceMetricsRequestOrBuilder extends
    * <code>.common.Aggregation aggregation = 4;</code>
    * @return The aggregation.
    */
-  io.chirpstack.api.Aggregation getAggregation();
+  Aggregation getAggregation();
 }

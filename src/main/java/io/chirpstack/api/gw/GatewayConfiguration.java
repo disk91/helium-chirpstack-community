@@ -22,33 +22,28 @@ private static final long serialVersionUID = 0L;
     channels_ = java.util.Collections.emptyList();
   }
 
-  @Override
+  @java.lang.Override
   @SuppressWarnings({"unused"})
-  protected Object newInstance(
+  protected java.lang.Object newInstance(
       UnusedPrivateParameter unused) {
     return new GatewayConfiguration();
   }
 
-  @Override
-  public final com.google.protobuf.UnknownFieldSet
-  getUnknownFields() {
-    return this.unknownFields;
-  }
   public static final com.google.protobuf.Descriptors.Descriptor
       getDescriptor() {
-    return GatewayProto.internal_static_gw_GatewayConfiguration_descriptor;
+    return io.chirpstack.api.gw.GatewayProto.internal_static_gw_GatewayConfiguration_descriptor;
   }
 
-  @Override
-  protected FieldAccessorTable
+  @java.lang.Override
+  protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
       internalGetFieldAccessorTable() {
-    return GatewayProto.internal_static_gw_GatewayConfiguration_fieldAccessorTable
+    return io.chirpstack.api.gw.GatewayProto.internal_static_gw_GatewayConfiguration_fieldAccessorTable
         .ensureFieldAccessorsInitialized(
-            GatewayConfiguration.class, Builder.class);
+            io.chirpstack.api.gw.GatewayConfiguration.class, io.chirpstack.api.gw.GatewayConfiguration.Builder.class);
   }
 
   public static final int GATEWAY_ID_LEGACY_FIELD_NUMBER = 1;
-  private com.google.protobuf.ByteString gatewayIdLegacy_;
+  private com.google.protobuf.ByteString gatewayIdLegacy_ = com.google.protobuf.ByteString.EMPTY;
   /**
    * <pre>
    * Gateway ID.
@@ -58,13 +53,14 @@ private static final long serialVersionUID = 0L;
    * <code>bytes gateway_id_legacy = 1;</code>
    * @return The gatewayIdLegacy.
    */
-  @Override
+  @java.lang.Override
   public com.google.protobuf.ByteString getGatewayIdLegacy() {
     return gatewayIdLegacy_;
   }
 
   public static final int GATEWAY_ID_FIELD_NUMBER = 5;
-  private volatile Object gatewayId_;
+  @SuppressWarnings("serial")
+  private volatile java.lang.Object gatewayId_ = "";
   /**
    * <pre>
    * Gateway ID.
@@ -73,15 +69,15 @@ private static final long serialVersionUID = 0L;
    * <code>string gateway_id = 5;</code>
    * @return The gatewayId.
    */
-  @Override
-  public String getGatewayId() {
-    Object ref = gatewayId_;
-    if (ref instanceof String) {
-      return (String) ref;
+  @java.lang.Override
+  public java.lang.String getGatewayId() {
+    java.lang.Object ref = gatewayId_;
+    if (ref instanceof java.lang.String) {
+      return (java.lang.String) ref;
     } else {
       com.google.protobuf.ByteString bs = 
           (com.google.protobuf.ByteString) ref;
-      String s = bs.toStringUtf8();
+      java.lang.String s = bs.toStringUtf8();
       gatewayId_ = s;
       return s;
     }
@@ -94,14 +90,14 @@ private static final long serialVersionUID = 0L;
    * <code>string gateway_id = 5;</code>
    * @return The bytes for gatewayId.
    */
-  @Override
+  @java.lang.Override
   public com.google.protobuf.ByteString
       getGatewayIdBytes() {
-    Object ref = gatewayId_;
-    if (ref instanceof String) {
+    java.lang.Object ref = gatewayId_;
+    if (ref instanceof java.lang.String) {
       com.google.protobuf.ByteString b = 
           com.google.protobuf.ByteString.copyFromUtf8(
-              (String) ref);
+              (java.lang.String) ref);
       gatewayId_ = b;
       return b;
     } else {
@@ -110,7 +106,8 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int VERSION_FIELD_NUMBER = 2;
-  private volatile Object version_;
+  @SuppressWarnings("serial")
+  private volatile java.lang.Object version_ = "";
   /**
    * <pre>
    * Configuration version.
@@ -119,15 +116,15 @@ private static final long serialVersionUID = 0L;
    * <code>string version = 2;</code>
    * @return The version.
    */
-  @Override
-  public String getVersion() {
-    Object ref = version_;
-    if (ref instanceof String) {
-      return (String) ref;
+  @java.lang.Override
+  public java.lang.String getVersion() {
+    java.lang.Object ref = version_;
+    if (ref instanceof java.lang.String) {
+      return (java.lang.String) ref;
     } else {
       com.google.protobuf.ByteString bs = 
           (com.google.protobuf.ByteString) ref;
-      String s = bs.toStringUtf8();
+      java.lang.String s = bs.toStringUtf8();
       version_ = s;
       return s;
     }
@@ -140,14 +137,14 @@ private static final long serialVersionUID = 0L;
    * <code>string version = 2;</code>
    * @return The bytes for version.
    */
-  @Override
+  @java.lang.Override
   public com.google.protobuf.ByteString
       getVersionBytes() {
-    Object ref = version_;
-    if (ref instanceof String) {
+    java.lang.Object ref = version_;
+    if (ref instanceof java.lang.String) {
       com.google.protobuf.ByteString b = 
           com.google.protobuf.ByteString.copyFromUtf8(
-              (String) ref);
+              (java.lang.String) ref);
       version_ = b;
       return b;
     } else {
@@ -156,7 +153,8 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int CHANNELS_FIELD_NUMBER = 3;
-  private java.util.List<ChannelConfiguration> channels_;
+  @SuppressWarnings("serial")
+  private java.util.List<io.chirpstack.api.gw.ChannelConfiguration> channels_;
   /**
    * <pre>
    * Channels.
@@ -164,8 +162,8 @@ private static final long serialVersionUID = 0L;
    *
    * <code>repeated .gw.ChannelConfiguration channels = 3;</code>
    */
-  @Override
-  public java.util.List<ChannelConfiguration> getChannelsList() {
+  @java.lang.Override
+  public java.util.List<io.chirpstack.api.gw.ChannelConfiguration> getChannelsList() {
     return channels_;
   }
   /**
@@ -175,8 +173,8 @@ private static final long serialVersionUID = 0L;
    *
    * <code>repeated .gw.ChannelConfiguration channels = 3;</code>
    */
-  @Override
-  public java.util.List<? extends ChannelConfigurationOrBuilder>
+  @java.lang.Override
+  public java.util.List<? extends io.chirpstack.api.gw.ChannelConfigurationOrBuilder> 
       getChannelsOrBuilderList() {
     return channels_;
   }
@@ -187,7 +185,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>repeated .gw.ChannelConfiguration channels = 3;</code>
    */
-  @Override
+  @java.lang.Override
   public int getChannelsCount() {
     return channels_.size();
   }
@@ -198,8 +196,8 @@ private static final long serialVersionUID = 0L;
    *
    * <code>repeated .gw.ChannelConfiguration channels = 3;</code>
    */
-  @Override
-  public ChannelConfiguration getChannels(int index) {
+  @java.lang.Override
+  public io.chirpstack.api.gw.ChannelConfiguration getChannels(int index) {
     return channels_.get(index);
   }
   /**
@@ -209,8 +207,8 @@ private static final long serialVersionUID = 0L;
    *
    * <code>repeated .gw.ChannelConfiguration channels = 3;</code>
    */
-  @Override
-  public ChannelConfigurationOrBuilder getChannelsOrBuilder(
+  @java.lang.Override
+  public io.chirpstack.api.gw.ChannelConfigurationOrBuilder getChannelsOrBuilder(
       int index) {
     return channels_.get(index);
   }
@@ -225,7 +223,7 @@ private static final long serialVersionUID = 0L;
    * <code>.google.protobuf.Duration stats_interval = 4;</code>
    * @return Whether the statsInterval field is set.
    */
-  @Override
+  @java.lang.Override
   public boolean hasStatsInterval() {
     return statsInterval_ != null;
   }
@@ -237,7 +235,7 @@ private static final long serialVersionUID = 0L;
    * <code>.google.protobuf.Duration stats_interval = 4;</code>
    * @return The statsInterval.
    */
-  @Override
+  @java.lang.Override
   public com.google.protobuf.Duration getStatsInterval() {
     return statsInterval_ == null ? com.google.protobuf.Duration.getDefaultInstance() : statsInterval_;
   }
@@ -248,13 +246,13 @@ private static final long serialVersionUID = 0L;
    *
    * <code>.google.protobuf.Duration stats_interval = 4;</code>
    */
-  @Override
+  @java.lang.Override
   public com.google.protobuf.DurationOrBuilder getStatsIntervalOrBuilder() {
-    return getStatsInterval();
+    return statsInterval_ == null ? com.google.protobuf.Duration.getDefaultInstance() : statsInterval_;
   }
 
   private byte memoizedIsInitialized = -1;
-  @Override
+  @java.lang.Override
   public final boolean isInitialized() {
     byte isInitialized = memoizedIsInitialized;
     if (isInitialized == 1) return true;
@@ -264,7 +262,7 @@ private static final long serialVersionUID = 0L;
     return true;
   }
 
-  @Override
+  @java.lang.Override
   public void writeTo(com.google.protobuf.CodedOutputStream output)
                       throws java.io.IOException {
     if (!gatewayIdLegacy_.isEmpty()) {
@@ -285,7 +283,7 @@ private static final long serialVersionUID = 0L;
     getUnknownFields().writeTo(output);
   }
 
-  @Override
+  @java.lang.Override
   public int getSerializedSize() {
     int size = memoizedSize;
     if (size != -1) return size;
@@ -314,15 +312,15 @@ private static final long serialVersionUID = 0L;
     return size;
   }
 
-  @Override
-  public boolean equals(final Object obj) {
+  @java.lang.Override
+  public boolean equals(final java.lang.Object obj) {
     if (obj == this) {
      return true;
     }
-    if (!(obj instanceof GatewayConfiguration)) {
+    if (!(obj instanceof io.chirpstack.api.gw.GatewayConfiguration)) {
       return super.equals(obj);
     }
-    GatewayConfiguration other = (GatewayConfiguration) obj;
+    io.chirpstack.api.gw.GatewayConfiguration other = (io.chirpstack.api.gw.GatewayConfiguration) obj;
 
     if (!getGatewayIdLegacy()
         .equals(other.getGatewayIdLegacy())) return false;
@@ -341,7 +339,7 @@ private static final long serialVersionUID = 0L;
     return true;
   }
 
-  @Override
+  @java.lang.Override
   public int hashCode() {
     if (memoizedHashCode != 0) {
       return memoizedHashCode;
@@ -367,69 +365,69 @@ private static final long serialVersionUID = 0L;
     return hash;
   }
 
-  public static GatewayConfiguration parseFrom(
+  public static io.chirpstack.api.gw.GatewayConfiguration parseFrom(
       java.nio.ByteBuffer data)
       throws com.google.protobuf.InvalidProtocolBufferException {
     return PARSER.parseFrom(data);
   }
-  public static GatewayConfiguration parseFrom(
+  public static io.chirpstack.api.gw.GatewayConfiguration parseFrom(
       java.nio.ByteBuffer data,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws com.google.protobuf.InvalidProtocolBufferException {
     return PARSER.parseFrom(data, extensionRegistry);
   }
-  public static GatewayConfiguration parseFrom(
+  public static io.chirpstack.api.gw.GatewayConfiguration parseFrom(
       com.google.protobuf.ByteString data)
       throws com.google.protobuf.InvalidProtocolBufferException {
     return PARSER.parseFrom(data);
   }
-  public static GatewayConfiguration parseFrom(
+  public static io.chirpstack.api.gw.GatewayConfiguration parseFrom(
       com.google.protobuf.ByteString data,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws com.google.protobuf.InvalidProtocolBufferException {
     return PARSER.parseFrom(data, extensionRegistry);
   }
-  public static GatewayConfiguration parseFrom(byte[] data)
+  public static io.chirpstack.api.gw.GatewayConfiguration parseFrom(byte[] data)
       throws com.google.protobuf.InvalidProtocolBufferException {
     return PARSER.parseFrom(data);
   }
-  public static GatewayConfiguration parseFrom(
+  public static io.chirpstack.api.gw.GatewayConfiguration parseFrom(
       byte[] data,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws com.google.protobuf.InvalidProtocolBufferException {
     return PARSER.parseFrom(data, extensionRegistry);
   }
-  public static GatewayConfiguration parseFrom(java.io.InputStream input)
+  public static io.chirpstack.api.gw.GatewayConfiguration parseFrom(java.io.InputStream input)
       throws java.io.IOException {
     return com.google.protobuf.GeneratedMessageV3
         .parseWithIOException(PARSER, input);
   }
-  public static GatewayConfiguration parseFrom(
+  public static io.chirpstack.api.gw.GatewayConfiguration parseFrom(
       java.io.InputStream input,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws java.io.IOException {
     return com.google.protobuf.GeneratedMessageV3
         .parseWithIOException(PARSER, input, extensionRegistry);
   }
-  public static GatewayConfiguration parseDelimitedFrom(java.io.InputStream input)
+  public static io.chirpstack.api.gw.GatewayConfiguration parseDelimitedFrom(java.io.InputStream input)
       throws java.io.IOException {
     return com.google.protobuf.GeneratedMessageV3
         .parseDelimitedWithIOException(PARSER, input);
   }
-  public static GatewayConfiguration parseDelimitedFrom(
+  public static io.chirpstack.api.gw.GatewayConfiguration parseDelimitedFrom(
       java.io.InputStream input,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws java.io.IOException {
     return com.google.protobuf.GeneratedMessageV3
         .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
   }
-  public static GatewayConfiguration parseFrom(
+  public static io.chirpstack.api.gw.GatewayConfiguration parseFrom(
       com.google.protobuf.CodedInputStream input)
       throws java.io.IOException {
     return com.google.protobuf.GeneratedMessageV3
         .parseWithIOException(PARSER, input);
   }
-  public static GatewayConfiguration parseFrom(
+  public static io.chirpstack.api.gw.GatewayConfiguration parseFrom(
       com.google.protobuf.CodedInputStream input,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws java.io.IOException {
@@ -437,23 +435,23 @@ private static final long serialVersionUID = 0L;
         .parseWithIOException(PARSER, input, extensionRegistry);
   }
 
-  @Override
+  @java.lang.Override
   public Builder newBuilderForType() { return newBuilder(); }
   public static Builder newBuilder() {
     return DEFAULT_INSTANCE.toBuilder();
   }
-  public static Builder newBuilder(GatewayConfiguration prototype) {
+  public static Builder newBuilder(io.chirpstack.api.gw.GatewayConfiguration prototype) {
     return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
   }
-  @Override
+  @java.lang.Override
   public Builder toBuilder() {
     return this == DEFAULT_INSTANCE
         ? new Builder() : new Builder().mergeFrom(this);
   }
 
-  @Override
+  @java.lang.Override
   protected Builder newBuilderForType(
-      BuilderParent parent) {
+      com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
     Builder builder = new Builder(parent);
     return builder;
   }
@@ -463,18 +461,18 @@ private static final long serialVersionUID = 0L;
   public static final class Builder extends
       com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
       // @@protoc_insertion_point(builder_implements:gw.GatewayConfiguration)
-      GatewayConfigurationOrBuilder {
+      io.chirpstack.api.gw.GatewayConfigurationOrBuilder {
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
-      return GatewayProto.internal_static_gw_GatewayConfiguration_descriptor;
+      return io.chirpstack.api.gw.GatewayProto.internal_static_gw_GatewayConfiguration_descriptor;
     }
 
-    @Override
-    protected FieldAccessorTable
+    @java.lang.Override
+    protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
         internalGetFieldAccessorTable() {
-      return GatewayProto.internal_static_gw_GatewayConfiguration_fieldAccessorTable
+      return io.chirpstack.api.gw.GatewayProto.internal_static_gw_GatewayConfiguration_fieldAccessorTable
           .ensureFieldAccessorsInitialized(
-              GatewayConfiguration.class, Builder.class);
+              io.chirpstack.api.gw.GatewayConfiguration.class, io.chirpstack.api.gw.GatewayConfiguration.Builder.class);
     }
 
     // Construct using io.chirpstack.api.gw.GatewayConfiguration.newBuilder()
@@ -483,140 +481,121 @@ private static final long serialVersionUID = 0L;
     }
 
     private Builder(
-        BuilderParent parent) {
+        com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
       super(parent);
 
     }
-    @Override
+    @java.lang.Override
     public Builder clear() {
       super.clear();
+      bitField0_ = 0;
       gatewayIdLegacy_ = com.google.protobuf.ByteString.EMPTY;
-
       gatewayId_ = "";
-
       version_ = "";
-
       if (channelsBuilder_ == null) {
         channels_ = java.util.Collections.emptyList();
       } else {
         channels_ = null;
         channelsBuilder_.clear();
       }
-      bitField0_ = (bitField0_ & ~0x00000001);
-      if (statsIntervalBuilder_ == null) {
-        statsInterval_ = null;
-      } else {
-        statsInterval_ = null;
+      bitField0_ = (bitField0_ & ~0x00000008);
+      statsInterval_ = null;
+      if (statsIntervalBuilder_ != null) {
+        statsIntervalBuilder_.dispose();
         statsIntervalBuilder_ = null;
       }
       return this;
     }
 
-    @Override
+    @java.lang.Override
     public com.google.protobuf.Descriptors.Descriptor
         getDescriptorForType() {
-      return GatewayProto.internal_static_gw_GatewayConfiguration_descriptor;
+      return io.chirpstack.api.gw.GatewayProto.internal_static_gw_GatewayConfiguration_descriptor;
     }
 
-    @Override
-    public GatewayConfiguration getDefaultInstanceForType() {
-      return GatewayConfiguration.getDefaultInstance();
+    @java.lang.Override
+    public io.chirpstack.api.gw.GatewayConfiguration getDefaultInstanceForType() {
+      return io.chirpstack.api.gw.GatewayConfiguration.getDefaultInstance();
     }
 
-    @Override
-    public GatewayConfiguration build() {
-      GatewayConfiguration result = buildPartial();
+    @java.lang.Override
+    public io.chirpstack.api.gw.GatewayConfiguration build() {
+      io.chirpstack.api.gw.GatewayConfiguration result = buildPartial();
       if (!result.isInitialized()) {
         throw newUninitializedMessageException(result);
       }
       return result;
     }
 
-    @Override
-    public GatewayConfiguration buildPartial() {
-      GatewayConfiguration result = new GatewayConfiguration(this);
-      int from_bitField0_ = bitField0_;
-      result.gatewayIdLegacy_ = gatewayIdLegacy_;
-      result.gatewayId_ = gatewayId_;
-      result.version_ = version_;
+    @java.lang.Override
+    public io.chirpstack.api.gw.GatewayConfiguration buildPartial() {
+      io.chirpstack.api.gw.GatewayConfiguration result = new io.chirpstack.api.gw.GatewayConfiguration(this);
+      buildPartialRepeatedFields(result);
+      if (bitField0_ != 0) { buildPartial0(result); }
+      onBuilt();
+      return result;
+    }
+
+    private void buildPartialRepeatedFields(io.chirpstack.api.gw.GatewayConfiguration result) {
       if (channelsBuilder_ == null) {
-        if (((bitField0_ & 0x00000001) != 0)) {
+        if (((bitField0_ & 0x00000008) != 0)) {
           channels_ = java.util.Collections.unmodifiableList(channels_);
-          bitField0_ = (bitField0_ & ~0x00000001);
+          bitField0_ = (bitField0_ & ~0x00000008);
         }
         result.channels_ = channels_;
       } else {
         result.channels_ = channelsBuilder_.build();
       }
-      if (statsIntervalBuilder_ == null) {
-        result.statsInterval_ = statsInterval_;
-      } else {
-        result.statsInterval_ = statsIntervalBuilder_.build();
-      }
-      onBuilt();
-      return result;
     }
 
-    @Override
-    public Builder clone() {
-      return super.clone();
+    private void buildPartial0(io.chirpstack.api.gw.GatewayConfiguration result) {
+      int from_bitField0_ = bitField0_;
+      if (((from_bitField0_ & 0x00000001) != 0)) {
+        result.gatewayIdLegacy_ = gatewayIdLegacy_;
+      }
+      if (((from_bitField0_ & 0x00000002) != 0)) {
+        result.gatewayId_ = gatewayId_;
+      }
+      if (((from_bitField0_ & 0x00000004) != 0)) {
+        result.version_ = version_;
+      }
+      if (((from_bitField0_ & 0x00000010) != 0)) {
+        result.statsInterval_ = statsIntervalBuilder_ == null
+            ? statsInterval_
+            : statsIntervalBuilder_.build();
+      }
     }
-    @Override
-    public Builder setField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        Object value) {
-      return super.setField(field, value);
-    }
-    @Override
-    public Builder clearField(
-        com.google.protobuf.Descriptors.FieldDescriptor field) {
-      return super.clearField(field);
-    }
-    @Override
-    public Builder clearOneof(
-        com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-      return super.clearOneof(oneof);
-    }
-    @Override
-    public Builder setRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        int index, Object value) {
-      return super.setRepeatedField(field, index, value);
-    }
-    @Override
-    public Builder addRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        Object value) {
-      return super.addRepeatedField(field, value);
-    }
-    @Override
+
+    @java.lang.Override
     public Builder mergeFrom(com.google.protobuf.Message other) {
-      if (other instanceof GatewayConfiguration) {
-        return mergeFrom((GatewayConfiguration)other);
+      if (other instanceof io.chirpstack.api.gw.GatewayConfiguration) {
+        return mergeFrom((io.chirpstack.api.gw.GatewayConfiguration)other);
       } else {
         super.mergeFrom(other);
         return this;
       }
     }
 
-    public Builder mergeFrom(GatewayConfiguration other) {
-      if (other == GatewayConfiguration.getDefaultInstance()) return this;
+    public Builder mergeFrom(io.chirpstack.api.gw.GatewayConfiguration other) {
+      if (other == io.chirpstack.api.gw.GatewayConfiguration.getDefaultInstance()) return this;
       if (other.getGatewayIdLegacy() != com.google.protobuf.ByteString.EMPTY) {
         setGatewayIdLegacy(other.getGatewayIdLegacy());
       }
       if (!other.getGatewayId().isEmpty()) {
         gatewayId_ = other.gatewayId_;
+        bitField0_ |= 0x00000002;
         onChanged();
       }
       if (!other.getVersion().isEmpty()) {
         version_ = other.version_;
+        bitField0_ |= 0x00000004;
         onChanged();
       }
       if (channelsBuilder_ == null) {
         if (!other.channels_.isEmpty()) {
           if (channels_.isEmpty()) {
             channels_ = other.channels_;
-            bitField0_ = (bitField0_ & ~0x00000001);
+            bitField0_ = (bitField0_ & ~0x00000008);
           } else {
             ensureChannelsIsMutable();
             channels_.addAll(other.channels_);
@@ -629,7 +608,7 @@ private static final long serialVersionUID = 0L;
             channelsBuilder_.dispose();
             channelsBuilder_ = null;
             channels_ = other.channels_;
-            bitField0_ = (bitField0_ & ~0x00000001);
+            bitField0_ = (bitField0_ & ~0x00000008);
             channelsBuilder_ = 
               com.google.protobuf.GeneratedMessageV3.alwaysUseFieldBuilders ?
                  getChannelsFieldBuilder() : null;
@@ -646,18 +625,18 @@ private static final long serialVersionUID = 0L;
       return this;
     }
 
-    @Override
+    @java.lang.Override
     public final boolean isInitialized() {
       return true;
     }
 
-    @Override
+    @java.lang.Override
     public Builder mergeFrom(
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
       if (extensionRegistry == null) {
-        throw new NullPointerException();
+        throw new java.lang.NullPointerException();
       }
       try {
         boolean done = false;
@@ -669,18 +648,18 @@ private static final long serialVersionUID = 0L;
               break;
             case 10: {
               gatewayIdLegacy_ = input.readBytes();
-
+              bitField0_ |= 0x00000001;
               break;
             } // case 10
             case 18: {
               version_ = input.readStringRequireUtf8();
-
+              bitField0_ |= 0x00000004;
               break;
             } // case 18
             case 26: {
-              ChannelConfiguration m =
+              io.chirpstack.api.gw.ChannelConfiguration m =
                   input.readMessage(
-                      ChannelConfiguration.parser(),
+                      io.chirpstack.api.gw.ChannelConfiguration.parser(),
                       extensionRegistry);
               if (channelsBuilder_ == null) {
                 ensureChannelsIsMutable();
@@ -694,12 +673,12 @@ private static final long serialVersionUID = 0L;
               input.readMessage(
                   getStatsIntervalFieldBuilder().getBuilder(),
                   extensionRegistry);
-
+              bitField0_ |= 0x00000010;
               break;
             } // case 34
             case 42: {
               gatewayId_ = input.readStringRequireUtf8();
-
+              bitField0_ |= 0x00000002;
               break;
             } // case 42
             default: {
@@ -729,7 +708,7 @@ private static final long serialVersionUID = 0L;
      * <code>bytes gateway_id_legacy = 1;</code>
      * @return The gatewayIdLegacy.
      */
-    @Override
+    @java.lang.Override
     public com.google.protobuf.ByteString getGatewayIdLegacy() {
       return gatewayIdLegacy_;
     }
@@ -744,11 +723,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setGatewayIdLegacy(com.google.protobuf.ByteString value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  
+      if (value == null) { throw new NullPointerException(); }
       gatewayIdLegacy_ = value;
+      bitField0_ |= 0x00000001;
       onChanged();
       return this;
     }
@@ -762,13 +739,13 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder clearGatewayIdLegacy() {
-      
+      bitField0_ = (bitField0_ & ~0x00000001);
       gatewayIdLegacy_ = getDefaultInstance().getGatewayIdLegacy();
       onChanged();
       return this;
     }
 
-    private Object gatewayId_ = "";
+    private java.lang.Object gatewayId_ = "";
     /**
      * <pre>
      * Gateway ID.
@@ -777,16 +754,16 @@ private static final long serialVersionUID = 0L;
      * <code>string gateway_id = 5;</code>
      * @return The gatewayId.
      */
-    public String getGatewayId() {
-      Object ref = gatewayId_;
-      if (!(ref instanceof String)) {
+    public java.lang.String getGatewayId() {
+      java.lang.Object ref = gatewayId_;
+      if (!(ref instanceof java.lang.String)) {
         com.google.protobuf.ByteString bs =
             (com.google.protobuf.ByteString) ref;
-        String s = bs.toStringUtf8();
+        java.lang.String s = bs.toStringUtf8();
         gatewayId_ = s;
         return s;
       } else {
-        return (String) ref;
+        return (java.lang.String) ref;
       }
     }
     /**
@@ -799,11 +776,11 @@ private static final long serialVersionUID = 0L;
      */
     public com.google.protobuf.ByteString
         getGatewayIdBytes() {
-      Object ref = gatewayId_;
+      java.lang.Object ref = gatewayId_;
       if (ref instanceof String) {
         com.google.protobuf.ByteString b = 
             com.google.protobuf.ByteString.copyFromUtf8(
-                (String) ref);
+                (java.lang.String) ref);
         gatewayId_ = b;
         return b;
       } else {
@@ -820,12 +797,10 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setGatewayId(
-        String value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  
+        java.lang.String value) {
+      if (value == null) { throw new NullPointerException(); }
       gatewayId_ = value;
+      bitField0_ |= 0x00000002;
       onChanged();
       return this;
     }
@@ -838,8 +813,8 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder clearGatewayId() {
-      
       gatewayId_ = getDefaultInstance().getGatewayId();
+      bitField0_ = (bitField0_ & ~0x00000002);
       onChanged();
       return this;
     }
@@ -854,17 +829,15 @@ private static final long serialVersionUID = 0L;
      */
     public Builder setGatewayIdBytes(
         com.google.protobuf.ByteString value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  checkByteStringIsUtf8(value);
-      
+      if (value == null) { throw new NullPointerException(); }
+      checkByteStringIsUtf8(value);
       gatewayId_ = value;
+      bitField0_ |= 0x00000002;
       onChanged();
       return this;
     }
 
-    private Object version_ = "";
+    private java.lang.Object version_ = "";
     /**
      * <pre>
      * Configuration version.
@@ -873,16 +846,16 @@ private static final long serialVersionUID = 0L;
      * <code>string version = 2;</code>
      * @return The version.
      */
-    public String getVersion() {
-      Object ref = version_;
-      if (!(ref instanceof String)) {
+    public java.lang.String getVersion() {
+      java.lang.Object ref = version_;
+      if (!(ref instanceof java.lang.String)) {
         com.google.protobuf.ByteString bs =
             (com.google.protobuf.ByteString) ref;
-        String s = bs.toStringUtf8();
+        java.lang.String s = bs.toStringUtf8();
         version_ = s;
         return s;
       } else {
-        return (String) ref;
+        return (java.lang.String) ref;
       }
     }
     /**
@@ -895,11 +868,11 @@ private static final long serialVersionUID = 0L;
      */
     public com.google.protobuf.ByteString
         getVersionBytes() {
-      Object ref = version_;
+      java.lang.Object ref = version_;
       if (ref instanceof String) {
         com.google.protobuf.ByteString b = 
             com.google.protobuf.ByteString.copyFromUtf8(
-                (String) ref);
+                (java.lang.String) ref);
         version_ = b;
         return b;
       } else {
@@ -916,12 +889,10 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setVersion(
-        String value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  
+        java.lang.String value) {
+      if (value == null) { throw new NullPointerException(); }
       version_ = value;
+      bitField0_ |= 0x00000004;
       onChanged();
       return this;
     }
@@ -934,8 +905,8 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder clearVersion() {
-      
       version_ = getDefaultInstance().getVersion();
+      bitField0_ = (bitField0_ & ~0x00000004);
       onChanged();
       return this;
     }
@@ -950,27 +921,25 @@ private static final long serialVersionUID = 0L;
      */
     public Builder setVersionBytes(
         com.google.protobuf.ByteString value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  checkByteStringIsUtf8(value);
-      
+      if (value == null) { throw new NullPointerException(); }
+      checkByteStringIsUtf8(value);
       version_ = value;
+      bitField0_ |= 0x00000004;
       onChanged();
       return this;
     }
 
-    private java.util.List<ChannelConfiguration> channels_ =
+    private java.util.List<io.chirpstack.api.gw.ChannelConfiguration> channels_ =
       java.util.Collections.emptyList();
     private void ensureChannelsIsMutable() {
-      if (!((bitField0_ & 0x00000001) != 0)) {
-        channels_ = new java.util.ArrayList<ChannelConfiguration>(channels_);
-        bitField0_ |= 0x00000001;
+      if (!((bitField0_ & 0x00000008) != 0)) {
+        channels_ = new java.util.ArrayList<io.chirpstack.api.gw.ChannelConfiguration>(channels_);
+        bitField0_ |= 0x00000008;
        }
     }
 
     private com.google.protobuf.RepeatedFieldBuilderV3<
-        ChannelConfiguration, ChannelConfiguration.Builder, ChannelConfigurationOrBuilder> channelsBuilder_;
+        io.chirpstack.api.gw.ChannelConfiguration, io.chirpstack.api.gw.ChannelConfiguration.Builder, io.chirpstack.api.gw.ChannelConfigurationOrBuilder> channelsBuilder_;
 
     /**
      * <pre>
@@ -979,7 +948,7 @@ private static final long serialVersionUID = 0L;
      *
      * <code>repeated .gw.ChannelConfiguration channels = 3;</code>
      */
-    public java.util.List<ChannelConfiguration> getChannelsList() {
+    public java.util.List<io.chirpstack.api.gw.ChannelConfiguration> getChannelsList() {
       if (channelsBuilder_ == null) {
         return java.util.Collections.unmodifiableList(channels_);
       } else {
@@ -1007,7 +976,7 @@ private static final long serialVersionUID = 0L;
      *
      * <code>repeated .gw.ChannelConfiguration channels = 3;</code>
      */
-    public ChannelConfiguration getChannels(int index) {
+    public io.chirpstack.api.gw.ChannelConfiguration getChannels(int index) {
       if (channelsBuilder_ == null) {
         return channels_.get(index);
       } else {
@@ -1022,7 +991,7 @@ private static final long serialVersionUID = 0L;
      * <code>repeated .gw.ChannelConfiguration channels = 3;</code>
      */
     public Builder setChannels(
-        int index, ChannelConfiguration value) {
+        int index, io.chirpstack.api.gw.ChannelConfiguration value) {
       if (channelsBuilder_ == null) {
         if (value == null) {
           throw new NullPointerException();
@@ -1043,7 +1012,7 @@ private static final long serialVersionUID = 0L;
      * <code>repeated .gw.ChannelConfiguration channels = 3;</code>
      */
     public Builder setChannels(
-        int index, ChannelConfiguration.Builder builderForValue) {
+        int index, io.chirpstack.api.gw.ChannelConfiguration.Builder builderForValue) {
       if (channelsBuilder_ == null) {
         ensureChannelsIsMutable();
         channels_.set(index, builderForValue.build());
@@ -1060,7 +1029,7 @@ private static final long serialVersionUID = 0L;
      *
      * <code>repeated .gw.ChannelConfiguration channels = 3;</code>
      */
-    public Builder addChannels(ChannelConfiguration value) {
+    public Builder addChannels(io.chirpstack.api.gw.ChannelConfiguration value) {
       if (channelsBuilder_ == null) {
         if (value == null) {
           throw new NullPointerException();
@@ -1081,7 +1050,7 @@ private static final long serialVersionUID = 0L;
      * <code>repeated .gw.ChannelConfiguration channels = 3;</code>
      */
     public Builder addChannels(
-        int index, ChannelConfiguration value) {
+        int index, io.chirpstack.api.gw.ChannelConfiguration value) {
       if (channelsBuilder_ == null) {
         if (value == null) {
           throw new NullPointerException();
@@ -1102,7 +1071,7 @@ private static final long serialVersionUID = 0L;
      * <code>repeated .gw.ChannelConfiguration channels = 3;</code>
      */
     public Builder addChannels(
-        ChannelConfiguration.Builder builderForValue) {
+        io.chirpstack.api.gw.ChannelConfiguration.Builder builderForValue) {
       if (channelsBuilder_ == null) {
         ensureChannelsIsMutable();
         channels_.add(builderForValue.build());
@@ -1120,7 +1089,7 @@ private static final long serialVersionUID = 0L;
      * <code>repeated .gw.ChannelConfiguration channels = 3;</code>
      */
     public Builder addChannels(
-        int index, ChannelConfiguration.Builder builderForValue) {
+        int index, io.chirpstack.api.gw.ChannelConfiguration.Builder builderForValue) {
       if (channelsBuilder_ == null) {
         ensureChannelsIsMutable();
         channels_.add(index, builderForValue.build());
@@ -1138,7 +1107,7 @@ private static final long serialVersionUID = 0L;
      * <code>repeated .gw.ChannelConfiguration channels = 3;</code>
      */
     public Builder addAllChannels(
-        Iterable<? extends ChannelConfiguration> values) {
+        java.lang.Iterable<? extends io.chirpstack.api.gw.ChannelConfiguration> values) {
       if (channelsBuilder_ == null) {
         ensureChannelsIsMutable();
         com.google.protobuf.AbstractMessageLite.Builder.addAll(
@@ -1159,7 +1128,7 @@ private static final long serialVersionUID = 0L;
     public Builder clearChannels() {
       if (channelsBuilder_ == null) {
         channels_ = java.util.Collections.emptyList();
-        bitField0_ = (bitField0_ & ~0x00000001);
+        bitField0_ = (bitField0_ & ~0x00000008);
         onChanged();
       } else {
         channelsBuilder_.clear();
@@ -1190,7 +1159,7 @@ private static final long serialVersionUID = 0L;
      *
      * <code>repeated .gw.ChannelConfiguration channels = 3;</code>
      */
-    public ChannelConfiguration.Builder getChannelsBuilder(
+    public io.chirpstack.api.gw.ChannelConfiguration.Builder getChannelsBuilder(
         int index) {
       return getChannelsFieldBuilder().getBuilder(index);
     }
@@ -1201,7 +1170,7 @@ private static final long serialVersionUID = 0L;
      *
      * <code>repeated .gw.ChannelConfiguration channels = 3;</code>
      */
-    public ChannelConfigurationOrBuilder getChannelsOrBuilder(
+    public io.chirpstack.api.gw.ChannelConfigurationOrBuilder getChannelsOrBuilder(
         int index) {
       if (channelsBuilder_ == null) {
         return channels_.get(index);  } else {
@@ -1215,7 +1184,7 @@ private static final long serialVersionUID = 0L;
      *
      * <code>repeated .gw.ChannelConfiguration channels = 3;</code>
      */
-    public java.util.List<? extends ChannelConfigurationOrBuilder>
+    public java.util.List<? extends io.chirpstack.api.gw.ChannelConfigurationOrBuilder> 
          getChannelsOrBuilderList() {
       if (channelsBuilder_ != null) {
         return channelsBuilder_.getMessageOrBuilderList();
@@ -1230,9 +1199,9 @@ private static final long serialVersionUID = 0L;
      *
      * <code>repeated .gw.ChannelConfiguration channels = 3;</code>
      */
-    public ChannelConfiguration.Builder addChannelsBuilder() {
+    public io.chirpstack.api.gw.ChannelConfiguration.Builder addChannelsBuilder() {
       return getChannelsFieldBuilder().addBuilder(
-          ChannelConfiguration.getDefaultInstance());
+          io.chirpstack.api.gw.ChannelConfiguration.getDefaultInstance());
     }
     /**
      * <pre>
@@ -1241,10 +1210,10 @@ private static final long serialVersionUID = 0L;
      *
      * <code>repeated .gw.ChannelConfiguration channels = 3;</code>
      */
-    public ChannelConfiguration.Builder addChannelsBuilder(
+    public io.chirpstack.api.gw.ChannelConfiguration.Builder addChannelsBuilder(
         int index) {
       return getChannelsFieldBuilder().addBuilder(
-          index, ChannelConfiguration.getDefaultInstance());
+          index, io.chirpstack.api.gw.ChannelConfiguration.getDefaultInstance());
     }
     /**
      * <pre>
@@ -1253,18 +1222,18 @@ private static final long serialVersionUID = 0L;
      *
      * <code>repeated .gw.ChannelConfiguration channels = 3;</code>
      */
-    public java.util.List<ChannelConfiguration.Builder>
+    public java.util.List<io.chirpstack.api.gw.ChannelConfiguration.Builder> 
          getChannelsBuilderList() {
       return getChannelsFieldBuilder().getBuilderList();
     }
     private com.google.protobuf.RepeatedFieldBuilderV3<
-        ChannelConfiguration, ChannelConfiguration.Builder, ChannelConfigurationOrBuilder>
+        io.chirpstack.api.gw.ChannelConfiguration, io.chirpstack.api.gw.ChannelConfiguration.Builder, io.chirpstack.api.gw.ChannelConfigurationOrBuilder> 
         getChannelsFieldBuilder() {
       if (channelsBuilder_ == null) {
         channelsBuilder_ = new com.google.protobuf.RepeatedFieldBuilderV3<
-            ChannelConfiguration, ChannelConfiguration.Builder, ChannelConfigurationOrBuilder>(
+            io.chirpstack.api.gw.ChannelConfiguration, io.chirpstack.api.gw.ChannelConfiguration.Builder, io.chirpstack.api.gw.ChannelConfigurationOrBuilder>(
                 channels_,
-                ((bitField0_ & 0x00000001) != 0),
+                ((bitField0_ & 0x00000008) != 0),
                 getParentForChildren(),
                 isClean());
         channels_ = null;
@@ -1284,7 +1253,7 @@ private static final long serialVersionUID = 0L;
      * @return Whether the statsInterval field is set.
      */
     public boolean hasStatsInterval() {
-      return statsIntervalBuilder_ != null || statsInterval_ != null;
+      return ((bitField0_ & 0x00000010) != 0);
     }
     /**
      * <pre>
@@ -1314,11 +1283,11 @@ private static final long serialVersionUID = 0L;
           throw new NullPointerException();
         }
         statsInterval_ = value;
-        onChanged();
       } else {
         statsIntervalBuilder_.setMessage(value);
       }
-
+      bitField0_ |= 0x00000010;
+      onChanged();
       return this;
     }
     /**
@@ -1332,11 +1301,11 @@ private static final long serialVersionUID = 0L;
         com.google.protobuf.Duration.Builder builderForValue) {
       if (statsIntervalBuilder_ == null) {
         statsInterval_ = builderForValue.build();
-        onChanged();
       } else {
         statsIntervalBuilder_.setMessage(builderForValue.build());
       }
-
+      bitField0_ |= 0x00000010;
+      onChanged();
       return this;
     }
     /**
@@ -1348,17 +1317,18 @@ private static final long serialVersionUID = 0L;
      */
     public Builder mergeStatsInterval(com.google.protobuf.Duration value) {
       if (statsIntervalBuilder_ == null) {
-        if (statsInterval_ != null) {
-          statsInterval_ =
-            com.google.protobuf.Duration.newBuilder(statsInterval_).mergeFrom(value).buildPartial();
+        if (((bitField0_ & 0x00000010) != 0) &&
+          statsInterval_ != null &&
+          statsInterval_ != com.google.protobuf.Duration.getDefaultInstance()) {
+          getStatsIntervalBuilder().mergeFrom(value);
         } else {
           statsInterval_ = value;
         }
-        onChanged();
       } else {
         statsIntervalBuilder_.mergeFrom(value);
       }
-
+      bitField0_ |= 0x00000010;
+      onChanged();
       return this;
     }
     /**
@@ -1369,14 +1339,13 @@ private static final long serialVersionUID = 0L;
      * <code>.google.protobuf.Duration stats_interval = 4;</code>
      */
     public Builder clearStatsInterval() {
-      if (statsIntervalBuilder_ == null) {
-        statsInterval_ = null;
-        onChanged();
-      } else {
-        statsInterval_ = null;
+      bitField0_ = (bitField0_ & ~0x00000010);
+      statsInterval_ = null;
+      if (statsIntervalBuilder_ != null) {
+        statsIntervalBuilder_.dispose();
         statsIntervalBuilder_ = null;
       }
-
+      onChanged();
       return this;
     }
     /**
@@ -1387,7 +1356,7 @@ private static final long serialVersionUID = 0L;
      * <code>.google.protobuf.Duration stats_interval = 4;</code>
      */
     public com.google.protobuf.Duration.Builder getStatsIntervalBuilder() {
-      
+      bitField0_ |= 0x00000010;
       onChanged();
       return getStatsIntervalFieldBuilder().getBuilder();
     }
@@ -1426,13 +1395,13 @@ private static final long serialVersionUID = 0L;
       }
       return statsIntervalBuilder_;
     }
-    @Override
+    @java.lang.Override
     public final Builder setUnknownFields(
         final com.google.protobuf.UnknownFieldSet unknownFields) {
       return super.setUnknownFields(unknownFields);
     }
 
-    @Override
+    @java.lang.Override
     public final Builder mergeUnknownFields(
         final com.google.protobuf.UnknownFieldSet unknownFields) {
       return super.mergeUnknownFields(unknownFields);
@@ -1443,18 +1412,18 @@ private static final long serialVersionUID = 0L;
   }
 
   // @@protoc_insertion_point(class_scope:gw.GatewayConfiguration)
-  private static final GatewayConfiguration DEFAULT_INSTANCE;
+  private static final io.chirpstack.api.gw.GatewayConfiguration DEFAULT_INSTANCE;
   static {
-    DEFAULT_INSTANCE = new GatewayConfiguration();
+    DEFAULT_INSTANCE = new io.chirpstack.api.gw.GatewayConfiguration();
   }
 
-  public static GatewayConfiguration getDefaultInstance() {
+  public static io.chirpstack.api.gw.GatewayConfiguration getDefaultInstance() {
     return DEFAULT_INSTANCE;
   }
 
   private static final com.google.protobuf.Parser<GatewayConfiguration>
       PARSER = new com.google.protobuf.AbstractParser<GatewayConfiguration>() {
-    @Override
+    @java.lang.Override
     public GatewayConfiguration parsePartialFrom(
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
@@ -1478,13 +1447,13 @@ private static final long serialVersionUID = 0L;
     return PARSER;
   }
 
-  @Override
+  @java.lang.Override
   public com.google.protobuf.Parser<GatewayConfiguration> getParserForType() {
     return PARSER;
   }
 
-  @Override
-  public GatewayConfiguration getDefaultInstanceForType() {
+  @java.lang.Override
+  public io.chirpstack.api.gw.GatewayConfiguration getDefaultInstanceForType() {
     return DEFAULT_INSTANCE;
   }
 

@@ -34,7 +34,7 @@ public interface UplinkFrameOrBuilder extends
    * <code>.gw.UplinkTxInfoLegacy tx_info_legacy = 2;</code>
    * @return The txInfoLegacy.
    */
-  UplinkTxInfoLegacy getTxInfoLegacy();
+  io.chirpstack.api.gw.UplinkTxInfoLegacy getTxInfoLegacy();
   /**
    * <pre>
    * TX meta-data (deprecated).
@@ -42,7 +42,7 @@ public interface UplinkFrameOrBuilder extends
    *
    * <code>.gw.UplinkTxInfoLegacy tx_info_legacy = 2;</code>
    */
-  UplinkTxInfoLegacyOrBuilder getTxInfoLegacyOrBuilder();
+  io.chirpstack.api.gw.UplinkTxInfoLegacyOrBuilder getTxInfoLegacyOrBuilder();
 
   /**
    * <pre>
@@ -61,7 +61,7 @@ public interface UplinkFrameOrBuilder extends
    * <code>.gw.UplinkRxInfoLegacy rx_info_legacy = 3;</code>
    * @return The rxInfoLegacy.
    */
-  UplinkRxInfoLegacy getRxInfoLegacy();
+  io.chirpstack.api.gw.UplinkRxInfoLegacy getRxInfoLegacy();
   /**
    * <pre>
    * RX meta-data (deprecated).
@@ -69,7 +69,7 @@ public interface UplinkFrameOrBuilder extends
    *
    * <code>.gw.UplinkRxInfoLegacy rx_info_legacy = 3;</code>
    */
-  UplinkRxInfoLegacyOrBuilder getRxInfoLegacyOrBuilder();
+  io.chirpstack.api.gw.UplinkRxInfoLegacyOrBuilder getRxInfoLegacyOrBuilder();
 
   /**
    * <pre>
@@ -88,7 +88,7 @@ public interface UplinkFrameOrBuilder extends
    * <code>.gw.UplinkTxInfo tx_info = 4;</code>
    * @return The txInfo.
    */
-  UplinkTxInfo getTxInfo();
+  io.chirpstack.api.gw.UplinkTxInfo getTxInfo();
   /**
    * <pre>
    * Tx meta-data.
@@ -96,7 +96,7 @@ public interface UplinkFrameOrBuilder extends
    *
    * <code>.gw.UplinkTxInfo tx_info = 4;</code>
    */
-  UplinkTxInfoOrBuilder getTxInfoOrBuilder();
+  io.chirpstack.api.gw.UplinkTxInfoOrBuilder getTxInfoOrBuilder();
 
   /**
    * <pre>
@@ -115,7 +115,7 @@ public interface UplinkFrameOrBuilder extends
    * <code>.gw.UplinkRxInfo rx_info = 5;</code>
    * @return The rxInfo.
    */
-  UplinkRxInfo getRxInfo();
+  io.chirpstack.api.gw.UplinkRxInfo getRxInfo();
   /**
    * <pre>
    * Rx meta-data.
@@ -123,5 +123,5 @@ public interface UplinkFrameOrBuilder extends
    *
    * <code>.gw.UplinkRxInfo rx_info = 5;</code>
    */
-  UplinkRxInfoOrBuilder getRxInfoOrBuilder();
+  io.chirpstack.api.gw.UplinkRxInfoOrBuilder getRxInfoOrBuilder();
 }

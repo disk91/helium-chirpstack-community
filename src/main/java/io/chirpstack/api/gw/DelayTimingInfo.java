@@ -18,29 +18,24 @@ private static final long serialVersionUID = 0L;
   private DelayTimingInfo() {
   }
 
-  @Override
+  @java.lang.Override
   @SuppressWarnings({"unused"})
-  protected Object newInstance(
+  protected java.lang.Object newInstance(
       UnusedPrivateParameter unused) {
     return new DelayTimingInfo();
   }
 
-  @Override
-  public final com.google.protobuf.UnknownFieldSet
-  getUnknownFields() {
-    return this.unknownFields;
-  }
   public static final com.google.protobuf.Descriptors.Descriptor
       getDescriptor() {
-    return GatewayProto.internal_static_gw_DelayTimingInfo_descriptor;
+    return io.chirpstack.api.gw.GatewayProto.internal_static_gw_DelayTimingInfo_descriptor;
   }
 
-  @Override
-  protected FieldAccessorTable
+  @java.lang.Override
+  protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
       internalGetFieldAccessorTable() {
-    return GatewayProto.internal_static_gw_DelayTimingInfo_fieldAccessorTable
+    return io.chirpstack.api.gw.GatewayProto.internal_static_gw_DelayTimingInfo_fieldAccessorTable
         .ensureFieldAccessorsInitialized(
-            DelayTimingInfo.class, Builder.class);
+            io.chirpstack.api.gw.DelayTimingInfo.class, io.chirpstack.api.gw.DelayTimingInfo.Builder.class);
   }
 
   public static final int DELAY_FIELD_NUMBER = 1;
@@ -48,44 +43,47 @@ private static final long serialVersionUID = 0L;
   /**
    * <pre>
    * Delay (duration).
-   * The delay will be added to the gateway internal timing, provided by the context object.
+   * The delay will be added to the gateway internal timing, provided by the
+   * context object.
    * </pre>
    *
    * <code>.google.protobuf.Duration delay = 1;</code>
    * @return Whether the delay field is set.
    */
-  @Override
+  @java.lang.Override
   public boolean hasDelay() {
     return delay_ != null;
   }
   /**
    * <pre>
    * Delay (duration).
-   * The delay will be added to the gateway internal timing, provided by the context object.
+   * The delay will be added to the gateway internal timing, provided by the
+   * context object.
    * </pre>
    *
    * <code>.google.protobuf.Duration delay = 1;</code>
    * @return The delay.
    */
-  @Override
+  @java.lang.Override
   public com.google.protobuf.Duration getDelay() {
     return delay_ == null ? com.google.protobuf.Duration.getDefaultInstance() : delay_;
   }
   /**
    * <pre>
    * Delay (duration).
-   * The delay will be added to the gateway internal timing, provided by the context object.
+   * The delay will be added to the gateway internal timing, provided by the
+   * context object.
    * </pre>
    *
    * <code>.google.protobuf.Duration delay = 1;</code>
    */
-  @Override
+  @java.lang.Override
   public com.google.protobuf.DurationOrBuilder getDelayOrBuilder() {
-    return getDelay();
+    return delay_ == null ? com.google.protobuf.Duration.getDefaultInstance() : delay_;
   }
 
   private byte memoizedIsInitialized = -1;
-  @Override
+  @java.lang.Override
   public final boolean isInitialized() {
     byte isInitialized = memoizedIsInitialized;
     if (isInitialized == 1) return true;
@@ -95,7 +93,7 @@ private static final long serialVersionUID = 0L;
     return true;
   }
 
-  @Override
+  @java.lang.Override
   public void writeTo(com.google.protobuf.CodedOutputStream output)
                       throws java.io.IOException {
     if (delay_ != null) {
@@ -104,7 +102,7 @@ private static final long serialVersionUID = 0L;
     getUnknownFields().writeTo(output);
   }
 
-  @Override
+  @java.lang.Override
   public int getSerializedSize() {
     int size = memoizedSize;
     if (size != -1) return size;
@@ -119,15 +117,15 @@ private static final long serialVersionUID = 0L;
     return size;
   }
 
-  @Override
-  public boolean equals(final Object obj) {
+  @java.lang.Override
+  public boolean equals(final java.lang.Object obj) {
     if (obj == this) {
      return true;
     }
-    if (!(obj instanceof DelayTimingInfo)) {
+    if (!(obj instanceof io.chirpstack.api.gw.DelayTimingInfo)) {
       return super.equals(obj);
     }
-    DelayTimingInfo other = (DelayTimingInfo) obj;
+    io.chirpstack.api.gw.DelayTimingInfo other = (io.chirpstack.api.gw.DelayTimingInfo) obj;
 
     if (hasDelay() != other.hasDelay()) return false;
     if (hasDelay()) {
@@ -138,7 +136,7 @@ private static final long serialVersionUID = 0L;
     return true;
   }
 
-  @Override
+  @java.lang.Override
   public int hashCode() {
     if (memoizedHashCode != 0) {
       return memoizedHashCode;
@@ -154,69 +152,69 @@ private static final long serialVersionUID = 0L;
     return hash;
   }
 
-  public static DelayTimingInfo parseFrom(
+  public static io.chirpstack.api.gw.DelayTimingInfo parseFrom(
       java.nio.ByteBuffer data)
       throws com.google.protobuf.InvalidProtocolBufferException {
     return PARSER.parseFrom(data);
   }
-  public static DelayTimingInfo parseFrom(
+  public static io.chirpstack.api.gw.DelayTimingInfo parseFrom(
       java.nio.ByteBuffer data,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws com.google.protobuf.InvalidProtocolBufferException {
     return PARSER.parseFrom(data, extensionRegistry);
   }
-  public static DelayTimingInfo parseFrom(
+  public static io.chirpstack.api.gw.DelayTimingInfo parseFrom(
       com.google.protobuf.ByteString data)
       throws com.google.protobuf.InvalidProtocolBufferException {
     return PARSER.parseFrom(data);
   }
-  public static DelayTimingInfo parseFrom(
+  public static io.chirpstack.api.gw.DelayTimingInfo parseFrom(
       com.google.protobuf.ByteString data,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws com.google.protobuf.InvalidProtocolBufferException {
     return PARSER.parseFrom(data, extensionRegistry);
   }
-  public static DelayTimingInfo parseFrom(byte[] data)
+  public static io.chirpstack.api.gw.DelayTimingInfo parseFrom(byte[] data)
       throws com.google.protobuf.InvalidProtocolBufferException {
     return PARSER.parseFrom(data);
   }
-  public static DelayTimingInfo parseFrom(
+  public static io.chirpstack.api.gw.DelayTimingInfo parseFrom(
       byte[] data,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws com.google.protobuf.InvalidProtocolBufferException {
     return PARSER.parseFrom(data, extensionRegistry);
   }
-  public static DelayTimingInfo parseFrom(java.io.InputStream input)
+  public static io.chirpstack.api.gw.DelayTimingInfo parseFrom(java.io.InputStream input)
       throws java.io.IOException {
     return com.google.protobuf.GeneratedMessageV3
         .parseWithIOException(PARSER, input);
   }
-  public static DelayTimingInfo parseFrom(
+  public static io.chirpstack.api.gw.DelayTimingInfo parseFrom(
       java.io.InputStream input,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws java.io.IOException {
     return com.google.protobuf.GeneratedMessageV3
         .parseWithIOException(PARSER, input, extensionRegistry);
   }
-  public static DelayTimingInfo parseDelimitedFrom(java.io.InputStream input)
+  public static io.chirpstack.api.gw.DelayTimingInfo parseDelimitedFrom(java.io.InputStream input)
       throws java.io.IOException {
     return com.google.protobuf.GeneratedMessageV3
         .parseDelimitedWithIOException(PARSER, input);
   }
-  public static DelayTimingInfo parseDelimitedFrom(
+  public static io.chirpstack.api.gw.DelayTimingInfo parseDelimitedFrom(
       java.io.InputStream input,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws java.io.IOException {
     return com.google.protobuf.GeneratedMessageV3
         .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
   }
-  public static DelayTimingInfo parseFrom(
+  public static io.chirpstack.api.gw.DelayTimingInfo parseFrom(
       com.google.protobuf.CodedInputStream input)
       throws java.io.IOException {
     return com.google.protobuf.GeneratedMessageV3
         .parseWithIOException(PARSER, input);
   }
-  public static DelayTimingInfo parseFrom(
+  public static io.chirpstack.api.gw.DelayTimingInfo parseFrom(
       com.google.protobuf.CodedInputStream input,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws java.io.IOException {
@@ -224,23 +222,23 @@ private static final long serialVersionUID = 0L;
         .parseWithIOException(PARSER, input, extensionRegistry);
   }
 
-  @Override
+  @java.lang.Override
   public Builder newBuilderForType() { return newBuilder(); }
   public static Builder newBuilder() {
     return DEFAULT_INSTANCE.toBuilder();
   }
-  public static Builder newBuilder(DelayTimingInfo prototype) {
+  public static Builder newBuilder(io.chirpstack.api.gw.DelayTimingInfo prototype) {
     return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
   }
-  @Override
+  @java.lang.Override
   public Builder toBuilder() {
     return this == DEFAULT_INSTANCE
         ? new Builder() : new Builder().mergeFrom(this);
   }
 
-  @Override
+  @java.lang.Override
   protected Builder newBuilderForType(
-      BuilderParent parent) {
+      com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
     Builder builder = new Builder(parent);
     return builder;
   }
@@ -250,18 +248,18 @@ private static final long serialVersionUID = 0L;
   public static final class Builder extends
       com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
       // @@protoc_insertion_point(builder_implements:gw.DelayTimingInfo)
-      DelayTimingInfoOrBuilder {
+      io.chirpstack.api.gw.DelayTimingInfoOrBuilder {
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
-      return GatewayProto.internal_static_gw_DelayTimingInfo_descriptor;
+      return io.chirpstack.api.gw.GatewayProto.internal_static_gw_DelayTimingInfo_descriptor;
     }
 
-    @Override
-    protected FieldAccessorTable
+    @java.lang.Override
+    protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
         internalGetFieldAccessorTable() {
-      return GatewayProto.internal_static_gw_DelayTimingInfo_fieldAccessorTable
+      return io.chirpstack.api.gw.GatewayProto.internal_static_gw_DelayTimingInfo_fieldAccessorTable
           .ensureFieldAccessorsInitialized(
-              DelayTimingInfo.class, Builder.class);
+              io.chirpstack.api.gw.DelayTimingInfo.class, io.chirpstack.api.gw.DelayTimingInfo.Builder.class);
     }
 
     // Construct using io.chirpstack.api.gw.DelayTimingInfo.newBuilder()
@@ -270,98 +268,71 @@ private static final long serialVersionUID = 0L;
     }
 
     private Builder(
-        BuilderParent parent) {
+        com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
       super(parent);
 
     }
-    @Override
+    @java.lang.Override
     public Builder clear() {
       super.clear();
-      if (delayBuilder_ == null) {
-        delay_ = null;
-      } else {
-        delay_ = null;
+      bitField0_ = 0;
+      delay_ = null;
+      if (delayBuilder_ != null) {
+        delayBuilder_.dispose();
         delayBuilder_ = null;
       }
       return this;
     }
 
-    @Override
+    @java.lang.Override
     public com.google.protobuf.Descriptors.Descriptor
         getDescriptorForType() {
-      return GatewayProto.internal_static_gw_DelayTimingInfo_descriptor;
+      return io.chirpstack.api.gw.GatewayProto.internal_static_gw_DelayTimingInfo_descriptor;
     }
 
-    @Override
-    public DelayTimingInfo getDefaultInstanceForType() {
-      return DelayTimingInfo.getDefaultInstance();
+    @java.lang.Override
+    public io.chirpstack.api.gw.DelayTimingInfo getDefaultInstanceForType() {
+      return io.chirpstack.api.gw.DelayTimingInfo.getDefaultInstance();
     }
 
-    @Override
-    public DelayTimingInfo build() {
-      DelayTimingInfo result = buildPartial();
+    @java.lang.Override
+    public io.chirpstack.api.gw.DelayTimingInfo build() {
+      io.chirpstack.api.gw.DelayTimingInfo result = buildPartial();
       if (!result.isInitialized()) {
         throw newUninitializedMessageException(result);
       }
       return result;
     }
 
-    @Override
-    public DelayTimingInfo buildPartial() {
-      DelayTimingInfo result = new DelayTimingInfo(this);
-      if (delayBuilder_ == null) {
-        result.delay_ = delay_;
-      } else {
-        result.delay_ = delayBuilder_.build();
-      }
+    @java.lang.Override
+    public io.chirpstack.api.gw.DelayTimingInfo buildPartial() {
+      io.chirpstack.api.gw.DelayTimingInfo result = new io.chirpstack.api.gw.DelayTimingInfo(this);
+      if (bitField0_ != 0) { buildPartial0(result); }
       onBuilt();
       return result;
     }
 
-    @Override
-    public Builder clone() {
-      return super.clone();
+    private void buildPartial0(io.chirpstack.api.gw.DelayTimingInfo result) {
+      int from_bitField0_ = bitField0_;
+      if (((from_bitField0_ & 0x00000001) != 0)) {
+        result.delay_ = delayBuilder_ == null
+            ? delay_
+            : delayBuilder_.build();
+      }
     }
-    @Override
-    public Builder setField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        Object value) {
-      return super.setField(field, value);
-    }
-    @Override
-    public Builder clearField(
-        com.google.protobuf.Descriptors.FieldDescriptor field) {
-      return super.clearField(field);
-    }
-    @Override
-    public Builder clearOneof(
-        com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-      return super.clearOneof(oneof);
-    }
-    @Override
-    public Builder setRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        int index, Object value) {
-      return super.setRepeatedField(field, index, value);
-    }
-    @Override
-    public Builder addRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        Object value) {
-      return super.addRepeatedField(field, value);
-    }
-    @Override
+
+    @java.lang.Override
     public Builder mergeFrom(com.google.protobuf.Message other) {
-      if (other instanceof DelayTimingInfo) {
-        return mergeFrom((DelayTimingInfo)other);
+      if (other instanceof io.chirpstack.api.gw.DelayTimingInfo) {
+        return mergeFrom((io.chirpstack.api.gw.DelayTimingInfo)other);
       } else {
         super.mergeFrom(other);
         return this;
       }
     }
 
-    public Builder mergeFrom(DelayTimingInfo other) {
-      if (other == DelayTimingInfo.getDefaultInstance()) return this;
+    public Builder mergeFrom(io.chirpstack.api.gw.DelayTimingInfo other) {
+      if (other == io.chirpstack.api.gw.DelayTimingInfo.getDefaultInstance()) return this;
       if (other.hasDelay()) {
         mergeDelay(other.getDelay());
       }
@@ -370,18 +341,18 @@ private static final long serialVersionUID = 0L;
       return this;
     }
 
-    @Override
+    @java.lang.Override
     public final boolean isInitialized() {
       return true;
     }
 
-    @Override
+    @java.lang.Override
     public Builder mergeFrom(
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
       if (extensionRegistry == null) {
-        throw new NullPointerException();
+        throw new java.lang.NullPointerException();
       }
       try {
         boolean done = false;
@@ -395,7 +366,7 @@ private static final long serialVersionUID = 0L;
               input.readMessage(
                   getDelayFieldBuilder().getBuilder(),
                   extensionRegistry);
-
+              bitField0_ |= 0x00000001;
               break;
             } // case 10
             default: {
@@ -413,6 +384,7 @@ private static final long serialVersionUID = 0L;
       } // finally
       return this;
     }
+    private int bitField0_;
 
     private com.google.protobuf.Duration delay_;
     private com.google.protobuf.SingleFieldBuilderV3<
@@ -420,19 +392,21 @@ private static final long serialVersionUID = 0L;
     /**
      * <pre>
      * Delay (duration).
-     * The delay will be added to the gateway internal timing, provided by the context object.
+     * The delay will be added to the gateway internal timing, provided by the
+     * context object.
      * </pre>
      *
      * <code>.google.protobuf.Duration delay = 1;</code>
      * @return Whether the delay field is set.
      */
     public boolean hasDelay() {
-      return delayBuilder_ != null || delay_ != null;
+      return ((bitField0_ & 0x00000001) != 0);
     }
     /**
      * <pre>
      * Delay (duration).
-     * The delay will be added to the gateway internal timing, provided by the context object.
+     * The delay will be added to the gateway internal timing, provided by the
+     * context object.
      * </pre>
      *
      * <code>.google.protobuf.Duration delay = 1;</code>
@@ -448,7 +422,8 @@ private static final long serialVersionUID = 0L;
     /**
      * <pre>
      * Delay (duration).
-     * The delay will be added to the gateway internal timing, provided by the context object.
+     * The delay will be added to the gateway internal timing, provided by the
+     * context object.
      * </pre>
      *
      * <code>.google.protobuf.Duration delay = 1;</code>
@@ -459,17 +434,18 @@ private static final long serialVersionUID = 0L;
           throw new NullPointerException();
         }
         delay_ = value;
-        onChanged();
       } else {
         delayBuilder_.setMessage(value);
       }
-
+      bitField0_ |= 0x00000001;
+      onChanged();
       return this;
     }
     /**
      * <pre>
      * Delay (duration).
-     * The delay will be added to the gateway internal timing, provided by the context object.
+     * The delay will be added to the gateway internal timing, provided by the
+     * context object.
      * </pre>
      *
      * <code>.google.protobuf.Duration delay = 1;</code>
@@ -478,72 +454,76 @@ private static final long serialVersionUID = 0L;
         com.google.protobuf.Duration.Builder builderForValue) {
       if (delayBuilder_ == null) {
         delay_ = builderForValue.build();
-        onChanged();
       } else {
         delayBuilder_.setMessage(builderForValue.build());
       }
-
+      bitField0_ |= 0x00000001;
+      onChanged();
       return this;
     }
     /**
      * <pre>
      * Delay (duration).
-     * The delay will be added to the gateway internal timing, provided by the context object.
+     * The delay will be added to the gateway internal timing, provided by the
+     * context object.
      * </pre>
      *
      * <code>.google.protobuf.Duration delay = 1;</code>
      */
     public Builder mergeDelay(com.google.protobuf.Duration value) {
       if (delayBuilder_ == null) {
-        if (delay_ != null) {
-          delay_ =
-            com.google.protobuf.Duration.newBuilder(delay_).mergeFrom(value).buildPartial();
+        if (((bitField0_ & 0x00000001) != 0) &&
+          delay_ != null &&
+          delay_ != com.google.protobuf.Duration.getDefaultInstance()) {
+          getDelayBuilder().mergeFrom(value);
         } else {
           delay_ = value;
         }
-        onChanged();
       } else {
         delayBuilder_.mergeFrom(value);
       }
-
+      bitField0_ |= 0x00000001;
+      onChanged();
       return this;
     }
     /**
      * <pre>
      * Delay (duration).
-     * The delay will be added to the gateway internal timing, provided by the context object.
+     * The delay will be added to the gateway internal timing, provided by the
+     * context object.
      * </pre>
      *
      * <code>.google.protobuf.Duration delay = 1;</code>
      */
     public Builder clearDelay() {
-      if (delayBuilder_ == null) {
-        delay_ = null;
-        onChanged();
-      } else {
-        delay_ = null;
+      bitField0_ = (bitField0_ & ~0x00000001);
+      delay_ = null;
+      if (delayBuilder_ != null) {
+        delayBuilder_.dispose();
         delayBuilder_ = null;
       }
-
+      onChanged();
       return this;
     }
     /**
      * <pre>
      * Delay (duration).
-     * The delay will be added to the gateway internal timing, provided by the context object.
+     * The delay will be added to the gateway internal timing, provided by the
+     * context object.
      * </pre>
      *
      * <code>.google.protobuf.Duration delay = 1;</code>
      */
     public com.google.protobuf.Duration.Builder getDelayBuilder() {
-      
+      bitField0_ |= 0x00000001;
       onChanged();
       return getDelayFieldBuilder().getBuilder();
     }
     /**
      * <pre>
      * Delay (duration).
-     * The delay will be added to the gateway internal timing, provided by the context object.
+     * The delay will be added to the gateway internal timing, provided by the
+     * context object.
      * </pre>
      *
      * <code>.google.protobuf.Duration delay = 1;</code>
@@ -559,7 +539,8 @@ private static final long serialVersionUID = 0L;
     /**
      * <pre>
      * Delay (duration).
-     * The delay will be added to the gateway internal timing, provided by the context object.
+     * The delay will be added to the gateway internal timing, provided by the
+     * context object.
      * </pre>
      *
      * <code>.google.protobuf.Duration delay = 1;</code>
@@ -577,13 +558,13 @@ private static final long serialVersionUID = 0L;
       }
       return delayBuilder_;
     }
-    @Override
+    @java.lang.Override
     public final Builder setUnknownFields(
         final com.google.protobuf.UnknownFieldSet unknownFields) {
       return super.setUnknownFields(unknownFields);
     }
 
-    @Override
+    @java.lang.Override
     public final Builder mergeUnknownFields(
         final com.google.protobuf.UnknownFieldSet unknownFields) {
       return super.mergeUnknownFields(unknownFields);
@@ -594,18 +575,18 @@ private static final long serialVersionUID = 0L;
   }
 
   // @@protoc_insertion_point(class_scope:gw.DelayTimingInfo)
-  private static final DelayTimingInfo DEFAULT_INSTANCE;
+  private static final io.chirpstack.api.gw.DelayTimingInfo DEFAULT_INSTANCE;
   static {
-    DEFAULT_INSTANCE = new DelayTimingInfo();
+    DEFAULT_INSTANCE = new io.chirpstack.api.gw.DelayTimingInfo();
   }
 
-  public static DelayTimingInfo getDefaultInstance() {
+  public static io.chirpstack.api.gw.DelayTimingInfo getDefaultInstance() {
     return DEFAULT_INSTANCE;
   }
 
   private static final com.google.protobuf.Parser<DelayTimingInfo>
       PARSER = new com.google.protobuf.AbstractParser<DelayTimingInfo>() {
-    @Override
+    @java.lang.Override
     public DelayTimingInfo parsePartialFrom(
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
@@ -629,13 +610,13 @@ private static final long serialVersionUID = 0L;
     return PARSER;
   }
 
-  @Override
+  @java.lang.Override
   public com.google.protobuf.Parser<DelayTimingInfo> getParserForType() {
     return PARSER;
   }
 
-  @Override
-  public DelayTimingInfo getDefaultInstanceForType() {
+  @java.lang.Override
+  public io.chirpstack.api.gw.DelayTimingInfo getDefaultInstanceForType() {
     return DEFAULT_INSTANCE;
   }
 

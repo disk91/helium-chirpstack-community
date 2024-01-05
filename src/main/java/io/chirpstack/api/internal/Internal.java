@@ -3,6 +3,7 @@
 
 package io.chirpstack.api.internal;
 
+
 public final class Internal {
   private Internal() {}
   public static void registerAllExtensions(
@@ -126,6 +127,16 @@ public final class Internal {
 
     /**
      * <pre>
+     * JS Session Key ID.
+     * </pre>
+     *
+     * <code>bytes js_session_key_id = 42;</code>
+     * @return The jsSessionKeyId.
+     */
+    com.google.protobuf.ByteString getJsSessionKeyId();
+
+    /**
+     * <pre>
      * Uplink frame-counter.
      * </pre>
      *
@@ -156,7 +167,8 @@ public final class Internal {
 
     /**
      * <pre>
-     * Frame-counter holding the last confirmed downlink frame (n_f_cnt_down or a_f_cnt_down).
+     * Frame-counter holding the last confirmed downlink frame (n_f_cnt_down or
+     * a_f_cnt_down).
      * </pre>
      *
      * <code>uint32 conf_f_cnt = 12;</code>
@@ -264,7 +276,7 @@ public final class Internal {
      * Use {@link #getExtraUplinkChannelsMap()} instead.
      */
     @Deprecated
-    java.util.Map<Integer, Internal.DeviceSessionChannel>
+    java.util.Map<Integer, DeviceSessionChannel>
     getExtraUplinkChannels();
     /**
      * <pre>
@@ -273,7 +285,7 @@ public final class Internal {
      *
      * <code>map&lt;uint32, .internal.DeviceSessionChannel&gt; extra_uplink_channels = 19;</code>
      */
-    java.util.Map<Integer, Internal.DeviceSessionChannel>
+    java.util.Map<Integer, DeviceSessionChannel>
     getExtraUplinkChannelsMap();
     /**
      * <pre>
@@ -282,12 +294,11 @@ public final class Internal {
      *
      * <code>map&lt;uint32, .internal.DeviceSessionChannel&gt; extra_uplink_channels = 19;</code>
      */
-
     /* nullable */
-Internal.DeviceSessionChannel getExtraUplinkChannelsOrDefault(
+DeviceSessionChannel getExtraUplinkChannelsOrDefault(
         int key,
         /* nullable */
-Internal.DeviceSessionChannel defaultValue);
+DeviceSessionChannel defaultValue);
     /**
      * <pre>
      * Extra user-defined uplink channels.
@@ -295,8 +306,7 @@ Internal.DeviceSessionChannel defaultValue);
      *
      * <code>map&lt;uint32, .internal.DeviceSessionChannel&gt; extra_uplink_channels = 19;</code>
      */
-
-    Internal.DeviceSessionChannel getExtraUplinkChannelsOrThrow(
+    DeviceSessionChannel getExtraUplinkChannelsOrThrow(
         int key);
 
     /**
@@ -414,7 +424,7 @@ Internal.DeviceSessionChannel defaultValue);
      * <code>.internal.DeviceSession pending_rejoin_device_session = 29;</code>
      * @return The pendingRejoinDeviceSession.
      */
-    Internal.DeviceSession getPendingRejoinDeviceSession();
+    DeviceSession getPendingRejoinDeviceSession();
     /**
      * <pre>
      * Pending rejoin device-session contains a device-session which has not
@@ -423,28 +433,40 @@ Internal.DeviceSessionChannel defaultValue);
      *
      * <code>.internal.DeviceSession pending_rejoin_device_session = 29;</code>
      */
-    Internal.DeviceSessionOrBuilder getPendingRejoinDeviceSessionOrBuilder();
+    DeviceSessionOrBuilder getPendingRejoinDeviceSessionOrBuilder();
 
     /**
      * <pre>
      * Uplink history for ADR (last 20 uplink transmissions).
+     * This table is reset in case one of parameters has changed:
+     *   * DR
+     *   * TxPower
+     *   * NbTrans
      * </pre>
      *
      * <code>repeated .internal.UplinkAdrHistory uplink_adr_history = 30;</code>
      */
-    java.util.List<Internal.UplinkAdrHistory> 
+    java.util.List<UplinkAdrHistory> 
         getUplinkAdrHistoryList();
     /**
      * <pre>
      * Uplink history for ADR (last 20 uplink transmissions).
+     * This table is reset in case one of parameters has changed:
+     *   * DR
+     *   * TxPower
+     *   * NbTrans
      * </pre>
      *
      * <code>repeated .internal.UplinkAdrHistory uplink_adr_history = 30;</code>
      */
-    Internal.UplinkAdrHistory getUplinkAdrHistory(int index);
+    UplinkAdrHistory getUplinkAdrHistory(int index);
     /**
      * <pre>
      * Uplink history for ADR (last 20 uplink transmissions).
+     * This table is reset in case one of parameters has changed:
+     *   * DR
+     *   * TxPower
+     *   * NbTrans
      * </pre>
      *
      * <code>repeated .internal.UplinkAdrHistory uplink_adr_history = 30;</code>
@@ -453,20 +475,28 @@ Internal.DeviceSessionChannel defaultValue);
     /**
      * <pre>
      * Uplink history for ADR (last 20 uplink transmissions).
+     * This table is reset in case one of parameters has changed:
+     *   * DR
+     *   * TxPower
+     *   * NbTrans
      * </pre>
      *
      * <code>repeated .internal.UplinkAdrHistory uplink_adr_history = 30;</code>
      */
-    java.util.List<? extends Internal.UplinkAdrHistoryOrBuilder> 
+    java.util.List<? extends UplinkAdrHistoryOrBuilder> 
         getUplinkAdrHistoryOrBuilderList();
     /**
      * <pre>
      * Uplink history for ADR (last 20 uplink transmissions).
+     * This table is reset in case one of parameters has changed:
+     *   * DR
+     *   * TxPower
+     *   * NbTrans
      * </pre>
      *
      * <code>repeated .internal.UplinkAdrHistory uplink_adr_history = 30;</code>
      */
-    Internal.UplinkAdrHistoryOrBuilder getUplinkAdrHistoryOrBuilder(
+    UplinkAdrHistoryOrBuilder getUplinkAdrHistoryOrBuilder(
         int index);
 
     /**
@@ -508,7 +538,6 @@ Internal.DeviceSessionChannel defaultValue);
      *
      * <code>map&lt;uint32, uint32&gt; mac_command_error_count = 31;</code>
      */
-
     int getMacCommandErrorCountOrDefault(
         int key,
         int defaultValue);
@@ -519,7 +548,6 @@ Internal.DeviceSessionChannel defaultValue);
      *
      * <code>map&lt;uint32, uint32&gt; mac_command_error_count = 31;</code>
      */
-
     int getMacCommandErrorCountOrThrow(
         int key);
 
@@ -626,23 +654,50 @@ Internal.DeviceSessionChannel defaultValue);
 
     /**
      * <pre>
-     * Region name.
+     * Region configuration ID.
      * </pre>
      *
-     * <code>string region_name = 40;</code>
-     * @return The regionName.
+     * <code>string region_config_id = 40;</code>
+     * @return The regionConfigId.
      */
-    String getRegionName();
+    String getRegionConfigId();
     /**
      * <pre>
-     * Region name.
+     * Region configuration ID.
      * </pre>
      *
-     * <code>string region_name = 40;</code>
-     * @return The bytes for regionName.
+     * <code>string region_config_id = 40;</code>
+     * @return The bytes for regionConfigId.
      */
     com.google.protobuf.ByteString
-        getRegionNameBytes();
+        getRegionConfigIdBytes();
+
+    /**
+     * <pre>
+     * Relay state.
+     * </pre>
+     *
+     * <code>.internal.Relay relay = 41;</code>
+     * @return Whether the relay field is set.
+     */
+    boolean hasRelay();
+    /**
+     * <pre>
+     * Relay state.
+     * </pre>
+     *
+     * <code>.internal.Relay relay = 41;</code>
+     * @return The relay.
+     */
+    Relay getRelay();
+    /**
+     * <pre>
+     * Relay state.
+     * </pre>
+     *
+     * <code>.internal.Relay relay = 41;</code>
+     */
+    RelayOrBuilder getRelayOrBuilder();
   }
   /**
    * Protobuf type {@code internal.DeviceSession}
@@ -664,9 +719,10 @@ Internal.DeviceSessionChannel defaultValue);
       fNwkSIntKey_ = com.google.protobuf.ByteString.EMPTY;
       sNwkSIntKey_ = com.google.protobuf.ByteString.EMPTY;
       nwkSEncKey_ = com.google.protobuf.ByteString.EMPTY;
+      jsSessionKeyId_ = com.google.protobuf.ByteString.EMPTY;
       enabledUplinkChannelIndices_ = emptyIntList();
       uplinkAdrHistory_ = java.util.Collections.emptyList();
-      regionName_ = "";
+      regionConfigId_ = "";
     }
 
     @Override
@@ -676,14 +732,9 @@ Internal.DeviceSessionChannel defaultValue);
       return new DeviceSession();
     }
 
-    @Override
-    public final com.google.protobuf.UnknownFieldSet
-    getUnknownFields() {
-      return this.unknownFields;
-    }
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
-      return Internal.internal_static_internal_DeviceSession_descriptor;
+      return internal_static_internal_DeviceSession_descriptor;
     }
 
     @SuppressWarnings({"rawtypes"})
@@ -703,13 +754,13 @@ Internal.DeviceSessionChannel defaultValue);
     @Override
     protected FieldAccessorTable
         internalGetFieldAccessorTable() {
-      return Internal.internal_static_internal_DeviceSession_fieldAccessorTable
+      return internal_static_internal_DeviceSession_fieldAccessorTable
           .ensureFieldAccessorsInitialized(
-              Internal.DeviceSession.class, Internal.DeviceSession.Builder.class);
+              DeviceSession.class, DeviceSession.Builder.class);
     }
 
     public static final int DEV_EUI_FIELD_NUMBER = 1;
-    private com.google.protobuf.ByteString devEui_;
+    private com.google.protobuf.ByteString devEui_ = com.google.protobuf.ByteString.EMPTY;
     /**
      * <pre>
      * Device EUI.
@@ -724,7 +775,7 @@ Internal.DeviceSessionChannel defaultValue);
     }
 
     public static final int DEV_ADDR_FIELD_NUMBER = 2;
-    private com.google.protobuf.ByteString devAddr_;
+    private com.google.protobuf.ByteString devAddr_ = com.google.protobuf.ByteString.EMPTY;
     /**
      * <pre>
      * Device address.
@@ -739,7 +790,7 @@ Internal.DeviceSessionChannel defaultValue);
     }
 
     public static final int JOIN_EUI_FIELD_NUMBER = 3;
-    private com.google.protobuf.ByteString joinEui_;
+    private com.google.protobuf.ByteString joinEui_ = com.google.protobuf.ByteString.EMPTY;
     /**
      * <pre>
      * Join EUI.
@@ -754,7 +805,7 @@ Internal.DeviceSessionChannel defaultValue);
     }
 
     public static final int MAC_VERSION_FIELD_NUMBER = 4;
-    private int macVersion_;
+    private int macVersion_ = 0;
     /**
      * <pre>
      * LoRaWAN mac-version.
@@ -775,13 +826,12 @@ Internal.DeviceSessionChannel defaultValue);
      * @return The macVersion.
      */
     @Override public io.chirpstack.api.MacVersion getMacVersion() {
-      @SuppressWarnings("deprecation")
-      io.chirpstack.api.MacVersion result = io.chirpstack.api.MacVersion.valueOf(macVersion_);
+      io.chirpstack.api.MacVersion result = io.chirpstack.api.MacVersion.forNumber(macVersion_);
       return result == null ? io.chirpstack.api.MacVersion.UNRECOGNIZED : result;
     }
 
     public static final int F_NWK_S_INT_KEY_FIELD_NUMBER = 5;
-    private com.google.protobuf.ByteString fNwkSIntKey_;
+    private com.google.protobuf.ByteString fNwkSIntKey_ = com.google.protobuf.ByteString.EMPTY;
     /**
      * <pre>
      * FNwkSIntKey.
@@ -796,7 +846,7 @@ Internal.DeviceSessionChannel defaultValue);
     }
 
     public static final int S_NWK_S_INT_KEY_FIELD_NUMBER = 6;
-    private com.google.protobuf.ByteString sNwkSIntKey_;
+    private com.google.protobuf.ByteString sNwkSIntKey_ = com.google.protobuf.ByteString.EMPTY;
     /**
      * <pre>
      * SNwkSIntKey.
@@ -811,7 +861,7 @@ Internal.DeviceSessionChannel defaultValue);
     }
 
     public static final int NWK_S_ENC_KEY_FIELD_NUMBER = 7;
-    private com.google.protobuf.ByteString nwkSEncKey_;
+    private com.google.protobuf.ByteString nwkSEncKey_ = com.google.protobuf.ByteString.EMPTY;
     /**
      * <pre>
      * NwkSEncKey.
@@ -860,11 +910,26 @@ Internal.DeviceSessionChannel defaultValue);
      */
     @Override
     public io.chirpstack.api.KeyEnvelopeOrBuilder getAppSKeyOrBuilder() {
-      return getAppSKey();
+      return appSKey_ == null ? io.chirpstack.api.KeyEnvelope.getDefaultInstance() : appSKey_;
+    }
+
+    public static final int JS_SESSION_KEY_ID_FIELD_NUMBER = 42;
+    private com.google.protobuf.ByteString jsSessionKeyId_ = com.google.protobuf.ByteString.EMPTY;
+    /**
+     * <pre>
+     * JS Session Key ID.
+     * </pre>
+     *
+     * <code>bytes js_session_key_id = 42;</code>
+     * @return The jsSessionKeyId.
+     */
+    @Override
+    public com.google.protobuf.ByteString getJsSessionKeyId() {
+      return jsSessionKeyId_;
     }
 
     public static final int F_CNT_UP_FIELD_NUMBER = 9;
-    private int fCntUp_;
+    private int fCntUp_ = 0;
     /**
      * <pre>
      * Uplink frame-counter.
@@ -879,7 +944,7 @@ Internal.DeviceSessionChannel defaultValue);
     }
 
     public static final int N_F_CNT_DOWN_FIELD_NUMBER = 10;
-    private int nFCntDown_;
+    private int nFCntDown_ = 0;
     /**
      * <pre>
      * Downlink frame-counter (ns).
@@ -894,7 +959,7 @@ Internal.DeviceSessionChannel defaultValue);
     }
 
     public static final int A_F_CNT_DOWN_FIELD_NUMBER = 11;
-    private int aFCntDown_;
+    private int aFCntDown_ = 0;
     /**
      * <pre>
      * Downlink frame-counter (as).
@@ -909,10 +974,11 @@ Internal.DeviceSessionChannel defaultValue);
     }
 
     public static final int CONF_F_CNT_FIELD_NUMBER = 12;
-    private int confFCnt_;
+    private int confFCnt_ = 0;
     /**
      * <pre>
-     * Frame-counter holding the last confirmed downlink frame (n_f_cnt_down or a_f_cnt_down).
+     * Frame-counter holding the last confirmed downlink frame (n_f_cnt_down or
+     * a_f_cnt_down).
      * </pre>
      *
      * <code>uint32 conf_f_cnt = 12;</code>
@@ -924,7 +990,7 @@ Internal.DeviceSessionChannel defaultValue);
     }
 
     public static final int SKIP_F_CNT_CHECK_FIELD_NUMBER = 13;
-    private boolean skipFCntCheck_;
+    private boolean skipFCntCheck_ = false;
     /**
      * <pre>
      * Skip uplink frame-counter validation.
@@ -939,7 +1005,7 @@ Internal.DeviceSessionChannel defaultValue);
     }
 
     public static final int RX1_DELAY_FIELD_NUMBER = 14;
-    private int rx1Delay_;
+    private int rx1Delay_ = 0;
     /**
      * <pre>
      * RX1 delay.
@@ -954,7 +1020,7 @@ Internal.DeviceSessionChannel defaultValue);
     }
 
     public static final int RX1_DR_OFFSET_FIELD_NUMBER = 15;
-    private int rx1DrOffset_;
+    private int rx1DrOffset_ = 0;
     /**
      * <pre>
      * RX1 data-rate offset.
@@ -969,7 +1035,7 @@ Internal.DeviceSessionChannel defaultValue);
     }
 
     public static final int RX2_DR_FIELD_NUMBER = 16;
-    private int rx2Dr_;
+    private int rx2Dr_ = 0;
     /**
      * <pre>
      * RX2 data-rate.
@@ -984,7 +1050,7 @@ Internal.DeviceSessionChannel defaultValue);
     }
 
     public static final int RX2_FREQUENCY_FIELD_NUMBER = 17;
-    private int rx2Frequency_;
+    private int rx2Frequency_ = 0;
     /**
      * <pre>
      * RX2 frequency.
@@ -999,6 +1065,7 @@ Internal.DeviceSessionChannel defaultValue);
     }
 
     public static final int ENABLED_UPLINK_CHANNEL_INDICES_FIELD_NUMBER = 18;
+    @SuppressWarnings("serial")
     private com.google.protobuf.Internal.IntList enabledUplinkChannelIndices_;
     /**
      * <pre>
@@ -1041,18 +1108,19 @@ Internal.DeviceSessionChannel defaultValue);
     public static final int EXTRA_UPLINK_CHANNELS_FIELD_NUMBER = 19;
     private static final class ExtraUplinkChannelsDefaultEntryHolder {
       static final com.google.protobuf.MapEntry<
-          Integer, Internal.DeviceSessionChannel> defaultEntry =
+          Integer, DeviceSessionChannel> defaultEntry =
               com.google.protobuf.MapEntry
-              .<Integer, Internal.DeviceSessionChannel>newDefaultInstance(
-                  Internal.internal_static_internal_DeviceSession_ExtraUplinkChannelsEntry_descriptor, 
+              .<Integer, DeviceSessionChannel>newDefaultInstance(
+                  internal_static_internal_DeviceSession_ExtraUplinkChannelsEntry_descriptor, 
                   com.google.protobuf.WireFormat.FieldType.UINT32,
                   0,
                   com.google.protobuf.WireFormat.FieldType.MESSAGE,
-                  Internal.DeviceSessionChannel.getDefaultInstance());
+                  DeviceSessionChannel.getDefaultInstance());
     }
+    @SuppressWarnings("serial")
     private com.google.protobuf.MapField<
-        Integer, Internal.DeviceSessionChannel> extraUplinkChannels_;
-    private com.google.protobuf.MapField<Integer, Internal.DeviceSessionChannel>
+        Integer, DeviceSessionChannel> extraUplinkChannels_;
+    private com.google.protobuf.MapField<Integer, DeviceSessionChannel>
     internalGetExtraUplinkChannels() {
       if (extraUplinkChannels_ == null) {
         return com.google.protobuf.MapField.emptyMapField(
@@ -1060,7 +1128,6 @@ Internal.DeviceSessionChannel defaultValue);
       }
       return extraUplinkChannels_;
     }
-
     public int getExtraUplinkChannelsCount() {
       return internalGetExtraUplinkChannels().getMap().size();
     }
@@ -1071,11 +1138,10 @@ Internal.DeviceSessionChannel defaultValue);
      *
      * <code>map&lt;uint32, .internal.DeviceSessionChannel&gt; extra_uplink_channels = 19;</code>
      */
-
     @Override
     public boolean containsExtraUplinkChannels(
         int key) {
-      
+
       return internalGetExtraUplinkChannels().getMap().containsKey(key);
     }
     /**
@@ -1083,7 +1149,7 @@ Internal.DeviceSessionChannel defaultValue);
      */
     @Override
     @Deprecated
-    public java.util.Map<Integer, Internal.DeviceSessionChannel> getExtraUplinkChannels() {
+    public java.util.Map<Integer, DeviceSessionChannel> getExtraUplinkChannels() {
       return getExtraUplinkChannelsMap();
     }
     /**
@@ -1094,8 +1160,7 @@ Internal.DeviceSessionChannel defaultValue);
      * <code>map&lt;uint32, .internal.DeviceSessionChannel&gt; extra_uplink_channels = 19;</code>
      */
     @Override
-
-    public java.util.Map<Integer, Internal.DeviceSessionChannel> getExtraUplinkChannelsMap() {
+    public java.util.Map<Integer, DeviceSessionChannel> getExtraUplinkChannelsMap() {
       return internalGetExtraUplinkChannels().getMap();
     }
     /**
@@ -1106,12 +1171,13 @@ Internal.DeviceSessionChannel defaultValue);
      * <code>map&lt;uint32, .internal.DeviceSessionChannel&gt; extra_uplink_channels = 19;</code>
      */
     @Override
-
-    public Internal.DeviceSessionChannel getExtraUplinkChannelsOrDefault(
+    public /* nullable */
+DeviceSessionChannel getExtraUplinkChannelsOrDefault(
         int key,
-        Internal.DeviceSessionChannel defaultValue) {
-      
-      java.util.Map<Integer, Internal.DeviceSessionChannel> map =
+        /* nullable */
+DeviceSessionChannel defaultValue) {
+
+      java.util.Map<Integer, DeviceSessionChannel> map =
           internalGetExtraUplinkChannels().getMap();
       return map.containsKey(key) ? map.get(key) : defaultValue;
     }
@@ -1123,11 +1189,10 @@ Internal.DeviceSessionChannel defaultValue);
      * <code>map&lt;uint32, .internal.DeviceSessionChannel&gt; extra_uplink_channels = 19;</code>
      */
     @Override
-
-    public Internal.DeviceSessionChannel getExtraUplinkChannelsOrThrow(
+    public DeviceSessionChannel getExtraUplinkChannelsOrThrow(
         int key) {
-      
-      java.util.Map<Integer, Internal.DeviceSessionChannel> map =
+
+      java.util.Map<Integer, DeviceSessionChannel> map =
           internalGetExtraUplinkChannels().getMap();
       if (!map.containsKey(key)) {
         throw new IllegalArgumentException();
@@ -1136,7 +1201,7 @@ Internal.DeviceSessionChannel defaultValue);
     }
 
     public static final int CLASS_B_PING_SLOT_DR_FIELD_NUMBER = 20;
-    private int classBPingSlotDr_;
+    private int classBPingSlotDr_ = 0;
     /**
      * <pre>
      * Class-B ping-slot data-rate.
@@ -1151,7 +1216,7 @@ Internal.DeviceSessionChannel defaultValue);
     }
 
     public static final int CLASS_B_PING_SLOT_FREQ_FIELD_NUMBER = 21;
-    private int classBPingSlotFreq_;
+    private int classBPingSlotFreq_ = 0;
     /**
      * <pre>
      * Class-B ping-slot frequency.
@@ -1166,7 +1231,7 @@ Internal.DeviceSessionChannel defaultValue);
     }
 
     public static final int CLASS_B_PING_SLOT_NB_FIELD_NUMBER = 22;
-    private int classBPingSlotNb_;
+    private int classBPingSlotNb_ = 0;
     /**
      * <pre>
      * Class-B ping-slot nb.
@@ -1181,7 +1246,7 @@ Internal.DeviceSessionChannel defaultValue);
     }
 
     public static final int NB_TRANS_FIELD_NUMBER = 23;
-    private int nbTrans_;
+    private int nbTrans_ = 0;
     /**
      * <pre>
      * Nb. transmissions.
@@ -1196,7 +1261,7 @@ Internal.DeviceSessionChannel defaultValue);
     }
 
     public static final int TX_POWER_INDEX_FIELD_NUMBER = 24;
-    private int txPowerIndex_;
+    private int txPowerIndex_ = 0;
     /**
      * <pre>
      * TXPowerIndex which the node is using. The possible values are defined
@@ -1214,7 +1279,7 @@ Internal.DeviceSessionChannel defaultValue);
     }
 
     public static final int DR_FIELD_NUMBER = 25;
-    private int dr_;
+    private int dr_ = 0;
     /**
      * <pre>
      * DR defines the (last known) data-rate at which the node is operating.
@@ -1230,7 +1295,7 @@ Internal.DeviceSessionChannel defaultValue);
     }
 
     public static final int ADR_FIELD_NUMBER = 26;
-    private boolean adr_;
+    private boolean adr_ = false;
     /**
      * <pre>
      * ADR defines if the device has ADR enabled.
@@ -1245,7 +1310,7 @@ Internal.DeviceSessionChannel defaultValue);
     }
 
     public static final int MAX_SUPPORTED_TX_POWER_INDEX_FIELD_NUMBER = 27;
-    private int maxSupportedTxPowerIndex_;
+    private int maxSupportedTxPowerIndex_ = 0;
     /**
      * <pre>
      * MaxSupportedTXPowerIndex defines the maximum supported tx-power index
@@ -1261,7 +1326,7 @@ Internal.DeviceSessionChannel defaultValue);
     }
 
     public static final int MIN_SUPPORTED_TX_POWER_INDEX_FIELD_NUMBER = 28;
-    private int minSupportedTxPowerIndex_;
+    private int minSupportedTxPowerIndex_ = 0;
     /**
      * <pre>
      * MinSupportedTXPowerIndex defines the minimum supported tx-power index
@@ -1277,7 +1342,7 @@ Internal.DeviceSessionChannel defaultValue);
     }
 
     public static final int PENDING_REJOIN_DEVICE_SESSION_FIELD_NUMBER = 29;
-    private Internal.DeviceSession pendingRejoinDeviceSession_;
+    private DeviceSession pendingRejoinDeviceSession_;
     /**
      * <pre>
      * Pending rejoin device-session contains a device-session which has not
@@ -1301,8 +1366,8 @@ Internal.DeviceSessionChannel defaultValue);
      * @return The pendingRejoinDeviceSession.
      */
     @Override
-    public Internal.DeviceSession getPendingRejoinDeviceSession() {
-      return pendingRejoinDeviceSession_ == null ? Internal.DeviceSession.getDefaultInstance() : pendingRejoinDeviceSession_;
+    public DeviceSession getPendingRejoinDeviceSession() {
+      return pendingRejoinDeviceSession_ == null ? DeviceSession.getDefaultInstance() : pendingRejoinDeviceSession_;
     }
     /**
      * <pre>
@@ -1313,38 +1378,51 @@ Internal.DeviceSessionChannel defaultValue);
      * <code>.internal.DeviceSession pending_rejoin_device_session = 29;</code>
      */
     @Override
-    public Internal.DeviceSessionOrBuilder getPendingRejoinDeviceSessionOrBuilder() {
-      return getPendingRejoinDeviceSession();
+    public DeviceSessionOrBuilder getPendingRejoinDeviceSessionOrBuilder() {
+      return pendingRejoinDeviceSession_ == null ? DeviceSession.getDefaultInstance() : pendingRejoinDeviceSession_;
     }
 
     public static final int UPLINK_ADR_HISTORY_FIELD_NUMBER = 30;
-    private java.util.List<Internal.UplinkAdrHistory> uplinkAdrHistory_;
+    @SuppressWarnings("serial")
+    private java.util.List<UplinkAdrHistory> uplinkAdrHistory_;
     /**
      * <pre>
      * Uplink history for ADR (last 20 uplink transmissions).
+     * This table is reset in case one of parameters has changed:
+     *   * DR
+     *   * TxPower
+     *   * NbTrans
      * </pre>
      *
      * <code>repeated .internal.UplinkAdrHistory uplink_adr_history = 30;</code>
      */
     @Override
-    public java.util.List<Internal.UplinkAdrHistory> getUplinkAdrHistoryList() {
+    public java.util.List<UplinkAdrHistory> getUplinkAdrHistoryList() {
       return uplinkAdrHistory_;
     }
     /**
      * <pre>
      * Uplink history for ADR (last 20 uplink transmissions).
+     * This table is reset in case one of parameters has changed:
+     *   * DR
+     *   * TxPower
+     *   * NbTrans
      * </pre>
      *
      * <code>repeated .internal.UplinkAdrHistory uplink_adr_history = 30;</code>
      */
     @Override
-    public java.util.List<? extends Internal.UplinkAdrHistoryOrBuilder> 
+    public java.util.List<? extends UplinkAdrHistoryOrBuilder> 
         getUplinkAdrHistoryOrBuilderList() {
       return uplinkAdrHistory_;
     }
     /**
      * <pre>
      * Uplink history for ADR (last 20 uplink transmissions).
+     * This table is reset in case one of parameters has changed:
+     *   * DR
+     *   * TxPower
+     *   * NbTrans
      * </pre>
      *
      * <code>repeated .internal.UplinkAdrHistory uplink_adr_history = 30;</code>
@@ -1356,23 +1434,31 @@ Internal.DeviceSessionChannel defaultValue);
     /**
      * <pre>
      * Uplink history for ADR (last 20 uplink transmissions).
+     * This table is reset in case one of parameters has changed:
+     *   * DR
+     *   * TxPower
+     *   * NbTrans
      * </pre>
      *
      * <code>repeated .internal.UplinkAdrHistory uplink_adr_history = 30;</code>
      */
     @Override
-    public Internal.UplinkAdrHistory getUplinkAdrHistory(int index) {
+    public UplinkAdrHistory getUplinkAdrHistory(int index) {
       return uplinkAdrHistory_.get(index);
     }
     /**
      * <pre>
      * Uplink history for ADR (last 20 uplink transmissions).
+     * This table is reset in case one of parameters has changed:
+     *   * DR
+     *   * TxPower
+     *   * NbTrans
      * </pre>
      *
      * <code>repeated .internal.UplinkAdrHistory uplink_adr_history = 30;</code>
      */
     @Override
-    public Internal.UplinkAdrHistoryOrBuilder getUplinkAdrHistoryOrBuilder(
+    public UplinkAdrHistoryOrBuilder getUplinkAdrHistoryOrBuilder(
         int index) {
       return uplinkAdrHistory_.get(index);
     }
@@ -1383,12 +1469,13 @@ Internal.DeviceSessionChannel defaultValue);
           Integer, Integer> defaultEntry =
               com.google.protobuf.MapEntry
               .<Integer, Integer>newDefaultInstance(
-                  Internal.internal_static_internal_DeviceSession_MacCommandErrorCountEntry_descriptor, 
+                  internal_static_internal_DeviceSession_MacCommandErrorCountEntry_descriptor, 
                   com.google.protobuf.WireFormat.FieldType.UINT32,
                   0,
                   com.google.protobuf.WireFormat.FieldType.UINT32,
                   0);
     }
+    @SuppressWarnings("serial")
     private com.google.protobuf.MapField<
         Integer, Integer> macCommandErrorCount_;
     private com.google.protobuf.MapField<Integer, Integer>
@@ -1399,7 +1486,6 @@ Internal.DeviceSessionChannel defaultValue);
       }
       return macCommandErrorCount_;
     }
-
     public int getMacCommandErrorCountCount() {
       return internalGetMacCommandErrorCount().getMap().size();
     }
@@ -1410,11 +1496,10 @@ Internal.DeviceSessionChannel defaultValue);
      *
      * <code>map&lt;uint32, uint32&gt; mac_command_error_count = 31;</code>
      */
-
     @Override
     public boolean containsMacCommandErrorCount(
         int key) {
-      
+
       return internalGetMacCommandErrorCount().getMap().containsKey(key);
     }
     /**
@@ -1433,7 +1518,6 @@ Internal.DeviceSessionChannel defaultValue);
      * <code>map&lt;uint32, uint32&gt; mac_command_error_count = 31;</code>
      */
     @Override
-
     public java.util.Map<Integer, Integer> getMacCommandErrorCountMap() {
       return internalGetMacCommandErrorCount().getMap();
     }
@@ -1445,11 +1529,10 @@ Internal.DeviceSessionChannel defaultValue);
      * <code>map&lt;uint32, uint32&gt; mac_command_error_count = 31;</code>
      */
     @Override
-
     public int getMacCommandErrorCountOrDefault(
         int key,
         int defaultValue) {
-      
+
       java.util.Map<Integer, Integer> map =
           internalGetMacCommandErrorCount().getMap();
       return map.containsKey(key) ? map.get(key) : defaultValue;
@@ -1462,10 +1545,9 @@ Internal.DeviceSessionChannel defaultValue);
      * <code>map&lt;uint32, uint32&gt; mac_command_error_count = 31;</code>
      */
     @Override
-
     public int getMacCommandErrorCountOrThrow(
         int key) {
-      
+
       java.util.Map<Integer, Integer> map =
           internalGetMacCommandErrorCount().getMap();
       if (!map.containsKey(key)) {
@@ -1509,11 +1591,11 @@ Internal.DeviceSessionChannel defaultValue);
      */
     @Override
     public com.google.protobuf.TimestampOrBuilder getLastDeviceStatusRequestOrBuilder() {
-      return getLastDeviceStatusRequest();
+      return lastDeviceStatusRequest_ == null ? com.google.protobuf.Timestamp.getDefaultInstance() : lastDeviceStatusRequest_;
     }
 
     public static final int REJOIN_REQUEST_ENABLED_FIELD_NUMBER = 33;
-    private boolean rejoinRequestEnabled_;
+    private boolean rejoinRequestEnabled_ = false;
     /**
      * <pre>
      * RejoinRequestEnabled defines if the rejoin-request is enabled on the
@@ -1529,7 +1611,7 @@ Internal.DeviceSessionChannel defaultValue);
     }
 
     public static final int REJOIN_REQUEST_MAX_COUNT_N_FIELD_NUMBER = 34;
-    private int rejoinRequestMaxCountN_;
+    private int rejoinRequestMaxCountN_ = 0;
     /**
      * <pre>
      * RejoinRequestMaxCountN defines the 2^(C+4) uplink message interval for
@@ -1545,7 +1627,7 @@ Internal.DeviceSessionChannel defaultValue);
     }
 
     public static final int REJOIN_REQUEST_MAX_TIME_N_FIELD_NUMBER = 35;
-    private int rejoinRequestMaxTimeN_;
+    private int rejoinRequestMaxTimeN_ = 0;
     /**
      * <pre>
      * RejoinRequestMaxTimeN defines the 2^(T+10) time interval (seconds)
@@ -1561,7 +1643,7 @@ Internal.DeviceSessionChannel defaultValue);
     }
 
     public static final int REJOIN_COUNT_0_FIELD_NUMBER = 36;
-    private int rejoinCount0_;
+    private int rejoinCount0_ = 0;
     /**
      * <pre>
      * Rejoin counter (RJCount0).
@@ -1577,7 +1659,7 @@ Internal.DeviceSessionChannel defaultValue);
     }
 
     public static final int UPLINK_DWELL_TIME_400MS_FIELD_NUMBER = 37;
-    private boolean uplinkDwellTime400Ms_;
+    private boolean uplinkDwellTime400Ms_ = false;
     /**
      * <pre>
      * Uplink dwell time.
@@ -1592,7 +1674,7 @@ Internal.DeviceSessionChannel defaultValue);
     }
 
     public static final int DOWNLINK_DWELL_TIME_400MS_FIELD_NUMBER = 38;
-    private boolean downlinkDwellTime400Ms_;
+    private boolean downlinkDwellTime400Ms_ = false;
     /**
      * <pre>
      * Downlink dwell time.
@@ -1607,7 +1689,7 @@ Internal.DeviceSessionChannel defaultValue);
     }
 
     public static final int UPLINK_MAX_EIRP_INDEX_FIELD_NUMBER = 39;
-    private int uplinkMaxEirpIndex_;
+    private int uplinkMaxEirpIndex_ = 0;
     /**
      * <pre>
      * Uplink max. EIRP index.
@@ -1621,50 +1703,89 @@ Internal.DeviceSessionChannel defaultValue);
       return uplinkMaxEirpIndex_;
     }
 
-    public static final int REGION_NAME_FIELD_NUMBER = 40;
-    private volatile Object regionName_;
+    public static final int REGION_CONFIG_ID_FIELD_NUMBER = 40;
+    @SuppressWarnings("serial")
+    private volatile Object regionConfigId_ = "";
     /**
      * <pre>
-     * Region name.
+     * Region configuration ID.
      * </pre>
      *
-     * <code>string region_name = 40;</code>
-     * @return The regionName.
+     * <code>string region_config_id = 40;</code>
+     * @return The regionConfigId.
      */
     @Override
-    public String getRegionName() {
-      Object ref = regionName_;
+    public String getRegionConfigId() {
+      Object ref = regionConfigId_;
       if (ref instanceof String) {
         return (String) ref;
       } else {
         com.google.protobuf.ByteString bs = 
             (com.google.protobuf.ByteString) ref;
         String s = bs.toStringUtf8();
-        regionName_ = s;
+        regionConfigId_ = s;
         return s;
       }
     }
     /**
      * <pre>
-     * Region name.
+     * Region configuration ID.
      * </pre>
      *
-     * <code>string region_name = 40;</code>
-     * @return The bytes for regionName.
+     * <code>string region_config_id = 40;</code>
+     * @return The bytes for regionConfigId.
      */
     @Override
     public com.google.protobuf.ByteString
-        getRegionNameBytes() {
-      Object ref = regionName_;
+        getRegionConfigIdBytes() {
+      Object ref = regionConfigId_;
       if (ref instanceof String) {
         com.google.protobuf.ByteString b = 
             com.google.protobuf.ByteString.copyFromUtf8(
                 (String) ref);
-        regionName_ = b;
+        regionConfigId_ = b;
         return b;
       } else {
         return (com.google.protobuf.ByteString) ref;
       }
+    }
+
+    public static final int RELAY_FIELD_NUMBER = 41;
+    private Relay relay_;
+    /**
+     * <pre>
+     * Relay state.
+     * </pre>
+     *
+     * <code>.internal.Relay relay = 41;</code>
+     * @return Whether the relay field is set.
+     */
+    @Override
+    public boolean hasRelay() {
+      return relay_ != null;
+    }
+    /**
+     * <pre>
+     * Relay state.
+     * </pre>
+     *
+     * <code>.internal.Relay relay = 41;</code>
+     * @return The relay.
+     */
+    @Override
+    public Relay getRelay() {
+      return relay_ == null ? Relay.getDefaultInstance() : relay_;
+    }
+    /**
+     * <pre>
+     * Relay state.
+     * </pre>
+     *
+     * <code>.internal.Relay relay = 41;</code>
+     */
+    @Override
+    public RelayOrBuilder getRelayOrBuilder() {
+      return relay_ == null ? Relay.getDefaultInstance() : relay_;
     }
 
     private byte memoizedIsInitialized = -1;
@@ -1809,8 +1930,14 @@ Internal.DeviceSessionChannel defaultValue);
       if (uplinkMaxEirpIndex_ != 0) {
         output.writeUInt32(39, uplinkMaxEirpIndex_);
       }
-      if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(regionName_)) {
-        com.google.protobuf.GeneratedMessageV3.writeString(output, 40, regionName_);
+      if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(regionConfigId_)) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 40, regionConfigId_);
+      }
+      if (relay_ != null) {
+        output.writeMessage(41, getRelay());
+      }
+      if (!jsSessionKeyId_.isEmpty()) {
+        output.writeBytes(42, jsSessionKeyId_);
       }
       getUnknownFields().writeTo(output);
     }
@@ -1903,9 +2030,9 @@ Internal.DeviceSessionChannel defaultValue);
         }
         enabledUplinkChannelIndicesMemoizedSerializedSize = dataSize;
       }
-      for (java.util.Map.Entry<Integer, Internal.DeviceSessionChannel> entry
+      for (java.util.Map.Entry<Integer, DeviceSessionChannel> entry
            : internalGetExtraUplinkChannels().getMap().entrySet()) {
-        com.google.protobuf.MapEntry<Integer, Internal.DeviceSessionChannel>
+        com.google.protobuf.MapEntry<Integer, DeviceSessionChannel>
         extraUplinkChannels__ = ExtraUplinkChannelsDefaultEntryHolder.defaultEntry.newBuilderForType()
             .setKey(entry.getKey())
             .setValue(entry.getValue())
@@ -1999,8 +2126,16 @@ Internal.DeviceSessionChannel defaultValue);
         size += com.google.protobuf.CodedOutputStream
           .computeUInt32Size(39, uplinkMaxEirpIndex_);
       }
-      if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(regionName_)) {
-        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(40, regionName_);
+      if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(regionConfigId_)) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(40, regionConfigId_);
+      }
+      if (relay_ != null) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeMessageSize(41, getRelay());
+      }
+      if (!jsSessionKeyId_.isEmpty()) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBytesSize(42, jsSessionKeyId_);
       }
       size += getUnknownFields().getSerializedSize();
       memoizedSize = size;
@@ -2012,10 +2147,10 @@ Internal.DeviceSessionChannel defaultValue);
       if (obj == this) {
        return true;
       }
-      if (!(obj instanceof Internal.DeviceSession)) {
+      if (!(obj instanceof DeviceSession)) {
         return super.equals(obj);
       }
-      Internal.DeviceSession other = (Internal.DeviceSession) obj;
+      DeviceSession other = (DeviceSession) obj;
 
       if (!getDevEui()
           .equals(other.getDevEui())) return false;
@@ -2035,6 +2170,8 @@ Internal.DeviceSessionChannel defaultValue);
         if (!getAppSKey()
             .equals(other.getAppSKey())) return false;
       }
+      if (!getJsSessionKeyId()
+          .equals(other.getJsSessionKeyId())) return false;
       if (getFCntUp()
           != other.getFCntUp()) return false;
       if (getNFCntDown()
@@ -2103,8 +2240,13 @@ Internal.DeviceSessionChannel defaultValue);
           != other.getDownlinkDwellTime400Ms()) return false;
       if (getUplinkMaxEirpIndex()
           != other.getUplinkMaxEirpIndex()) return false;
-      if (!getRegionName()
-          .equals(other.getRegionName())) return false;
+      if (!getRegionConfigId()
+          .equals(other.getRegionConfigId())) return false;
+      if (hasRelay() != other.hasRelay()) return false;
+      if (hasRelay()) {
+        if (!getRelay()
+            .equals(other.getRelay())) return false;
+      }
       if (!getUnknownFields().equals(other.getUnknownFields())) return false;
       return true;
     }
@@ -2134,6 +2276,8 @@ Internal.DeviceSessionChannel defaultValue);
         hash = (37 * hash) + APP_S_KEY_FIELD_NUMBER;
         hash = (53 * hash) + getAppSKey().hashCode();
       }
+      hash = (37 * hash) + JS_SESSION_KEY_ID_FIELD_NUMBER;
+      hash = (53 * hash) + getJsSessionKeyId().hashCode();
       hash = (37 * hash) + F_CNT_UP_FIELD_NUMBER;
       hash = (53 * hash) + getFCntUp();
       hash = (37 * hash) + N_F_CNT_DOWN_FIELD_NUMBER;
@@ -2213,76 +2357,80 @@ Internal.DeviceSessionChannel defaultValue);
           getDownlinkDwellTime400Ms());
       hash = (37 * hash) + UPLINK_MAX_EIRP_INDEX_FIELD_NUMBER;
       hash = (53 * hash) + getUplinkMaxEirpIndex();
-      hash = (37 * hash) + REGION_NAME_FIELD_NUMBER;
-      hash = (53 * hash) + getRegionName().hashCode();
+      hash = (37 * hash) + REGION_CONFIG_ID_FIELD_NUMBER;
+      hash = (53 * hash) + getRegionConfigId().hashCode();
+      if (hasRelay()) {
+        hash = (37 * hash) + RELAY_FIELD_NUMBER;
+        hash = (53 * hash) + getRelay().hashCode();
+      }
       hash = (29 * hash) + getUnknownFields().hashCode();
       memoizedHashCode = hash;
       return hash;
     }
 
-    public static Internal.DeviceSession parseFrom(
+    public static DeviceSession parseFrom(
         java.nio.ByteBuffer data)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data);
     }
-    public static Internal.DeviceSession parseFrom(
+    public static DeviceSession parseFrom(
         java.nio.ByteBuffer data,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data, extensionRegistry);
     }
-    public static Internal.DeviceSession parseFrom(
+    public static DeviceSession parseFrom(
         com.google.protobuf.ByteString data)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data);
     }
-    public static Internal.DeviceSession parseFrom(
+    public static DeviceSession parseFrom(
         com.google.protobuf.ByteString data,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data, extensionRegistry);
     }
-    public static Internal.DeviceSession parseFrom(byte[] data)
+    public static DeviceSession parseFrom(byte[] data)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data);
     }
-    public static Internal.DeviceSession parseFrom(
+    public static DeviceSession parseFrom(
         byte[] data,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data, extensionRegistry);
     }
-    public static Internal.DeviceSession parseFrom(java.io.InputStream input)
+    public static DeviceSession parseFrom(java.io.InputStream input)
         throws java.io.IOException {
       return com.google.protobuf.GeneratedMessageV3
           .parseWithIOException(PARSER, input);
     }
-    public static Internal.DeviceSession parseFrom(
+    public static DeviceSession parseFrom(
         java.io.InputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
       return com.google.protobuf.GeneratedMessageV3
           .parseWithIOException(PARSER, input, extensionRegistry);
     }
-    public static Internal.DeviceSession parseDelimitedFrom(java.io.InputStream input)
+    public static DeviceSession parseDelimitedFrom(java.io.InputStream input)
         throws java.io.IOException {
       return com.google.protobuf.GeneratedMessageV3
           .parseDelimitedWithIOException(PARSER, input);
     }
-    public static Internal.DeviceSession parseDelimitedFrom(
+    public static DeviceSession parseDelimitedFrom(
         java.io.InputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
       return com.google.protobuf.GeneratedMessageV3
           .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
     }
-    public static Internal.DeviceSession parseFrom(
+    public static DeviceSession parseFrom(
         com.google.protobuf.CodedInputStream input)
         throws java.io.IOException {
       return com.google.protobuf.GeneratedMessageV3
           .parseWithIOException(PARSER, input);
     }
-    public static Internal.DeviceSession parseFrom(
+    public static DeviceSession parseFrom(
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
@@ -2295,7 +2443,7 @@ Internal.DeviceSessionChannel defaultValue);
     public static Builder newBuilder() {
       return DEFAULT_INSTANCE.toBuilder();
     }
-    public static Builder newBuilder(Internal.DeviceSession prototype) {
+    public static Builder newBuilder(DeviceSession prototype) {
       return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
     }
     @Override
@@ -2316,10 +2464,10 @@ Internal.DeviceSessionChannel defaultValue);
     public static final class Builder extends
         com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
         // @@protoc_insertion_point(builder_implements:internal.DeviceSession)
-        Internal.DeviceSessionOrBuilder {
+        DeviceSessionOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
-        return Internal.internal_static_internal_DeviceSession_descriptor;
+        return internal_static_internal_DeviceSession_descriptor;
       }
 
       @SuppressWarnings({"rawtypes"})
@@ -2351,12 +2499,12 @@ Internal.DeviceSessionChannel defaultValue);
       @Override
       protected FieldAccessorTable
           internalGetFieldAccessorTable() {
-        return Internal.internal_static_internal_DeviceSession_fieldAccessorTable
+        return internal_static_internal_DeviceSession_fieldAccessorTable
             .ensureFieldAccessorsInitialized(
-                Internal.DeviceSession.class, Internal.DeviceSession.Builder.class);
+                DeviceSession.class, DeviceSession.Builder.class);
       }
 
-      // Construct using Internal.DeviceSession.newBuilder()
+      // Construct using DeviceSession.newBuilder()
       private Builder() {
 
       }
@@ -2369,69 +2517,44 @@ Internal.DeviceSessionChannel defaultValue);
       @Override
       public Builder clear() {
         super.clear();
+        bitField0_ = 0;
+        bitField1_ = 0;
         devEui_ = com.google.protobuf.ByteString.EMPTY;
-
         devAddr_ = com.google.protobuf.ByteString.EMPTY;
-
         joinEui_ = com.google.protobuf.ByteString.EMPTY;
-
         macVersion_ = 0;
-
         fNwkSIntKey_ = com.google.protobuf.ByteString.EMPTY;
-
         sNwkSIntKey_ = com.google.protobuf.ByteString.EMPTY;
-
         nwkSEncKey_ = com.google.protobuf.ByteString.EMPTY;
-
-        if (appSKeyBuilder_ == null) {
-          appSKey_ = null;
-        } else {
-          appSKey_ = null;
+        appSKey_ = null;
+        if (appSKeyBuilder_ != null) {
+          appSKeyBuilder_.dispose();
           appSKeyBuilder_ = null;
         }
+        jsSessionKeyId_ = com.google.protobuf.ByteString.EMPTY;
         fCntUp_ = 0;
-
         nFCntDown_ = 0;
-
         aFCntDown_ = 0;
-
         confFCnt_ = 0;
-
         skipFCntCheck_ = false;
-
         rx1Delay_ = 0;
-
         rx1DrOffset_ = 0;
-
         rx2Dr_ = 0;
-
         rx2Frequency_ = 0;
-
         enabledUplinkChannelIndices_ = emptyIntList();
-        bitField0_ = (bitField0_ & ~0x00000001);
         internalGetMutableExtraUplinkChannels().clear();
         classBPingSlotDr_ = 0;
-
         classBPingSlotFreq_ = 0;
-
         classBPingSlotNb_ = 0;
-
         nbTrans_ = 0;
-
         txPowerIndex_ = 0;
-
         dr_ = 0;
-
         adr_ = false;
-
         maxSupportedTxPowerIndex_ = 0;
-
         minSupportedTxPowerIndex_ = 0;
-
-        if (pendingRejoinDeviceSessionBuilder_ == null) {
-          pendingRejoinDeviceSession_ = null;
-        } else {
-          pendingRejoinDeviceSession_ = null;
+        pendingRejoinDeviceSession_ = null;
+        if (pendingRejoinDeviceSessionBuilder_ != null) {
+          pendingRejoinDeviceSessionBuilder_.dispose();
           pendingRejoinDeviceSessionBuilder_ = null;
         }
         if (uplinkAdrHistoryBuilder_ == null) {
@@ -2440,47 +2563,43 @@ Internal.DeviceSessionChannel defaultValue);
           uplinkAdrHistory_ = null;
           uplinkAdrHistoryBuilder_.clear();
         }
-        bitField0_ = (bitField0_ & ~0x00000004);
+        bitField0_ = (bitField0_ & ~0x40000000);
         internalGetMutableMacCommandErrorCount().clear();
-        if (lastDeviceStatusRequestBuilder_ == null) {
-          lastDeviceStatusRequest_ = null;
-        } else {
-          lastDeviceStatusRequest_ = null;
+        lastDeviceStatusRequest_ = null;
+        if (lastDeviceStatusRequestBuilder_ != null) {
+          lastDeviceStatusRequestBuilder_.dispose();
           lastDeviceStatusRequestBuilder_ = null;
         }
         rejoinRequestEnabled_ = false;
-
         rejoinRequestMaxCountN_ = 0;
-
         rejoinRequestMaxTimeN_ = 0;
-
         rejoinCount0_ = 0;
-
         uplinkDwellTime400Ms_ = false;
-
         downlinkDwellTime400Ms_ = false;
-
         uplinkMaxEirpIndex_ = 0;
-
-        regionName_ = "";
-
+        regionConfigId_ = "";
+        relay_ = null;
+        if (relayBuilder_ != null) {
+          relayBuilder_.dispose();
+          relayBuilder_ = null;
+        }
         return this;
       }
 
       @Override
       public com.google.protobuf.Descriptors.Descriptor
           getDescriptorForType() {
-        return Internal.internal_static_internal_DeviceSession_descriptor;
+        return internal_static_internal_DeviceSession_descriptor;
       }
 
       @Override
-      public Internal.DeviceSession getDefaultInstanceForType() {
-        return Internal.DeviceSession.getDefaultInstance();
+      public DeviceSession getDefaultInstanceForType() {
+        return DeviceSession.getDefaultInstance();
       }
 
       @Override
-      public Internal.DeviceSession build() {
-        Internal.DeviceSession result = buildPartial();
+      public DeviceSession build() {
+        DeviceSession result = buildPartial();
         if (!result.isInitialized()) {
           throw newUninitializedMessageException(result);
         }
@@ -2488,123 +2607,182 @@ Internal.DeviceSessionChannel defaultValue);
       }
 
       @Override
-      public Internal.DeviceSession buildPartial() {
-        Internal.DeviceSession result = new Internal.DeviceSession(this);
-        int from_bitField0_ = bitField0_;
-        result.devEui_ = devEui_;
-        result.devAddr_ = devAddr_;
-        result.joinEui_ = joinEui_;
-        result.macVersion_ = macVersion_;
-        result.fNwkSIntKey_ = fNwkSIntKey_;
-        result.sNwkSIntKey_ = sNwkSIntKey_;
-        result.nwkSEncKey_ = nwkSEncKey_;
-        if (appSKeyBuilder_ == null) {
-          result.appSKey_ = appSKey_;
-        } else {
-          result.appSKey_ = appSKeyBuilder_.build();
-        }
-        result.fCntUp_ = fCntUp_;
-        result.nFCntDown_ = nFCntDown_;
-        result.aFCntDown_ = aFCntDown_;
-        result.confFCnt_ = confFCnt_;
-        result.skipFCntCheck_ = skipFCntCheck_;
-        result.rx1Delay_ = rx1Delay_;
-        result.rx1DrOffset_ = rx1DrOffset_;
-        result.rx2Dr_ = rx2Dr_;
-        result.rx2Frequency_ = rx2Frequency_;
-        if (((bitField0_ & 0x00000001) != 0)) {
+      public DeviceSession buildPartial() {
+        DeviceSession result = new DeviceSession(this);
+        buildPartialRepeatedFields(result);
+        if (bitField0_ != 0) { buildPartial0(result); }
+        if (bitField1_ != 0) { buildPartial1(result); }
+        onBuilt();
+        return result;
+      }
+
+      private void buildPartialRepeatedFields(DeviceSession result) {
+        if (((bitField0_ & 0x00040000) != 0)) {
           enabledUplinkChannelIndices_.makeImmutable();
-          bitField0_ = (bitField0_ & ~0x00000001);
+          bitField0_ = (bitField0_ & ~0x00040000);
         }
         result.enabledUplinkChannelIndices_ = enabledUplinkChannelIndices_;
-        result.extraUplinkChannels_ = internalGetExtraUplinkChannels();
-        result.extraUplinkChannels_.makeImmutable();
-        result.classBPingSlotDr_ = classBPingSlotDr_;
-        result.classBPingSlotFreq_ = classBPingSlotFreq_;
-        result.classBPingSlotNb_ = classBPingSlotNb_;
-        result.nbTrans_ = nbTrans_;
-        result.txPowerIndex_ = txPowerIndex_;
-        result.dr_ = dr_;
-        result.adr_ = adr_;
-        result.maxSupportedTxPowerIndex_ = maxSupportedTxPowerIndex_;
-        result.minSupportedTxPowerIndex_ = minSupportedTxPowerIndex_;
-        if (pendingRejoinDeviceSessionBuilder_ == null) {
-          result.pendingRejoinDeviceSession_ = pendingRejoinDeviceSession_;
-        } else {
-          result.pendingRejoinDeviceSession_ = pendingRejoinDeviceSessionBuilder_.build();
-        }
         if (uplinkAdrHistoryBuilder_ == null) {
-          if (((bitField0_ & 0x00000004) != 0)) {
+          if (((bitField0_ & 0x40000000) != 0)) {
             uplinkAdrHistory_ = java.util.Collections.unmodifiableList(uplinkAdrHistory_);
-            bitField0_ = (bitField0_ & ~0x00000004);
+            bitField0_ = (bitField0_ & ~0x40000000);
           }
           result.uplinkAdrHistory_ = uplinkAdrHistory_;
         } else {
           result.uplinkAdrHistory_ = uplinkAdrHistoryBuilder_.build();
         }
-        result.macCommandErrorCount_ = internalGetMacCommandErrorCount();
-        result.macCommandErrorCount_.makeImmutable();
-        if (lastDeviceStatusRequestBuilder_ == null) {
-          result.lastDeviceStatusRequest_ = lastDeviceStatusRequest_;
-        } else {
-          result.lastDeviceStatusRequest_ = lastDeviceStatusRequestBuilder_.build();
+      }
+
+      private void buildPartial0(DeviceSession result) {
+        int from_bitField0_ = bitField0_;
+        if (((from_bitField0_ & 0x00000001) != 0)) {
+          result.devEui_ = devEui_;
         }
-        result.rejoinRequestEnabled_ = rejoinRequestEnabled_;
-        result.rejoinRequestMaxCountN_ = rejoinRequestMaxCountN_;
-        result.rejoinRequestMaxTimeN_ = rejoinRequestMaxTimeN_;
-        result.rejoinCount0_ = rejoinCount0_;
-        result.uplinkDwellTime400Ms_ = uplinkDwellTime400Ms_;
-        result.downlinkDwellTime400Ms_ = downlinkDwellTime400Ms_;
-        result.uplinkMaxEirpIndex_ = uplinkMaxEirpIndex_;
-        result.regionName_ = regionName_;
-        onBuilt();
-        return result;
+        if (((from_bitField0_ & 0x00000002) != 0)) {
+          result.devAddr_ = devAddr_;
+        }
+        if (((from_bitField0_ & 0x00000004) != 0)) {
+          result.joinEui_ = joinEui_;
+        }
+        if (((from_bitField0_ & 0x00000008) != 0)) {
+          result.macVersion_ = macVersion_;
+        }
+        if (((from_bitField0_ & 0x00000010) != 0)) {
+          result.fNwkSIntKey_ = fNwkSIntKey_;
+        }
+        if (((from_bitField0_ & 0x00000020) != 0)) {
+          result.sNwkSIntKey_ = sNwkSIntKey_;
+        }
+        if (((from_bitField0_ & 0x00000040) != 0)) {
+          result.nwkSEncKey_ = nwkSEncKey_;
+        }
+        if (((from_bitField0_ & 0x00000080) != 0)) {
+          result.appSKey_ = appSKeyBuilder_ == null
+              ? appSKey_
+              : appSKeyBuilder_.build();
+        }
+        if (((from_bitField0_ & 0x00000100) != 0)) {
+          result.jsSessionKeyId_ = jsSessionKeyId_;
+        }
+        if (((from_bitField0_ & 0x00000200) != 0)) {
+          result.fCntUp_ = fCntUp_;
+        }
+        if (((from_bitField0_ & 0x00000400) != 0)) {
+          result.nFCntDown_ = nFCntDown_;
+        }
+        if (((from_bitField0_ & 0x00000800) != 0)) {
+          result.aFCntDown_ = aFCntDown_;
+        }
+        if (((from_bitField0_ & 0x00001000) != 0)) {
+          result.confFCnt_ = confFCnt_;
+        }
+        if (((from_bitField0_ & 0x00002000) != 0)) {
+          result.skipFCntCheck_ = skipFCntCheck_;
+        }
+        if (((from_bitField0_ & 0x00004000) != 0)) {
+          result.rx1Delay_ = rx1Delay_;
+        }
+        if (((from_bitField0_ & 0x00008000) != 0)) {
+          result.rx1DrOffset_ = rx1DrOffset_;
+        }
+        if (((from_bitField0_ & 0x00010000) != 0)) {
+          result.rx2Dr_ = rx2Dr_;
+        }
+        if (((from_bitField0_ & 0x00020000) != 0)) {
+          result.rx2Frequency_ = rx2Frequency_;
+        }
+        if (((from_bitField0_ & 0x00080000) != 0)) {
+          result.extraUplinkChannels_ = internalGetExtraUplinkChannels();
+          result.extraUplinkChannels_.makeImmutable();
+        }
+        if (((from_bitField0_ & 0x00100000) != 0)) {
+          result.classBPingSlotDr_ = classBPingSlotDr_;
+        }
+        if (((from_bitField0_ & 0x00200000) != 0)) {
+          result.classBPingSlotFreq_ = classBPingSlotFreq_;
+        }
+        if (((from_bitField0_ & 0x00400000) != 0)) {
+          result.classBPingSlotNb_ = classBPingSlotNb_;
+        }
+        if (((from_bitField0_ & 0x00800000) != 0)) {
+          result.nbTrans_ = nbTrans_;
+        }
+        if (((from_bitField0_ & 0x01000000) != 0)) {
+          result.txPowerIndex_ = txPowerIndex_;
+        }
+        if (((from_bitField0_ & 0x02000000) != 0)) {
+          result.dr_ = dr_;
+        }
+        if (((from_bitField0_ & 0x04000000) != 0)) {
+          result.adr_ = adr_;
+        }
+        if (((from_bitField0_ & 0x08000000) != 0)) {
+          result.maxSupportedTxPowerIndex_ = maxSupportedTxPowerIndex_;
+        }
+        if (((from_bitField0_ & 0x10000000) != 0)) {
+          result.minSupportedTxPowerIndex_ = minSupportedTxPowerIndex_;
+        }
+        if (((from_bitField0_ & 0x20000000) != 0)) {
+          result.pendingRejoinDeviceSession_ = pendingRejoinDeviceSessionBuilder_ == null
+              ? pendingRejoinDeviceSession_
+              : pendingRejoinDeviceSessionBuilder_.build();
+        }
+        if (((from_bitField0_ & 0x80000000) != 0)) {
+          result.macCommandErrorCount_ = internalGetMacCommandErrorCount();
+          result.macCommandErrorCount_.makeImmutable();
+        }
+      }
+
+      private void buildPartial1(DeviceSession result) {
+        int from_bitField1_ = bitField1_;
+        if (((from_bitField1_ & 0x00000001) != 0)) {
+          result.lastDeviceStatusRequest_ = lastDeviceStatusRequestBuilder_ == null
+              ? lastDeviceStatusRequest_
+              : lastDeviceStatusRequestBuilder_.build();
+        }
+        if (((from_bitField1_ & 0x00000002) != 0)) {
+          result.rejoinRequestEnabled_ = rejoinRequestEnabled_;
+        }
+        if (((from_bitField1_ & 0x00000004) != 0)) {
+          result.rejoinRequestMaxCountN_ = rejoinRequestMaxCountN_;
+        }
+        if (((from_bitField1_ & 0x00000008) != 0)) {
+          result.rejoinRequestMaxTimeN_ = rejoinRequestMaxTimeN_;
+        }
+        if (((from_bitField1_ & 0x00000010) != 0)) {
+          result.rejoinCount0_ = rejoinCount0_;
+        }
+        if (((from_bitField1_ & 0x00000020) != 0)) {
+          result.uplinkDwellTime400Ms_ = uplinkDwellTime400Ms_;
+        }
+        if (((from_bitField1_ & 0x00000040) != 0)) {
+          result.downlinkDwellTime400Ms_ = downlinkDwellTime400Ms_;
+        }
+        if (((from_bitField1_ & 0x00000080) != 0)) {
+          result.uplinkMaxEirpIndex_ = uplinkMaxEirpIndex_;
+        }
+        if (((from_bitField1_ & 0x00000100) != 0)) {
+          result.regionConfigId_ = regionConfigId_;
+        }
+        if (((from_bitField1_ & 0x00000200) != 0)) {
+          result.relay_ = relayBuilder_ == null
+              ? relay_
+              : relayBuilder_.build();
+        }
       }
 
       @Override
-      public Builder clone() {
-        return super.clone();
-      }
-      @Override
-      public Builder setField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          Object value) {
-        return super.setField(field, value);
-      }
-      @Override
-      public Builder clearField(
-          com.google.protobuf.Descriptors.FieldDescriptor field) {
-        return super.clearField(field);
-      }
-      @Override
-      public Builder clearOneof(
-          com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-        return super.clearOneof(oneof);
-      }
-      @Override
-      public Builder setRepeatedField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          int index, Object value) {
-        return super.setRepeatedField(field, index, value);
-      }
-      @Override
-      public Builder addRepeatedField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          Object value) {
-        return super.addRepeatedField(field, value);
-      }
-      @Override
       public Builder mergeFrom(com.google.protobuf.Message other) {
-        if (other instanceof Internal.DeviceSession) {
-          return mergeFrom((Internal.DeviceSession)other);
+        if (other instanceof DeviceSession) {
+          return mergeFrom((DeviceSession)other);
         } else {
           super.mergeFrom(other);
           return this;
         }
       }
 
-      public Builder mergeFrom(Internal.DeviceSession other) {
-        if (other == Internal.DeviceSession.getDefaultInstance()) return this;
+      public Builder mergeFrom(DeviceSession other) {
+        if (other == DeviceSession.getDefaultInstance()) return this;
         if (other.getDevEui() != com.google.protobuf.ByteString.EMPTY) {
           setDevEui(other.getDevEui());
         }
@@ -2628,6 +2806,9 @@ Internal.DeviceSessionChannel defaultValue);
         }
         if (other.hasAppSKey()) {
           mergeAppSKey(other.getAppSKey());
+        }
+        if (other.getJsSessionKeyId() != com.google.protobuf.ByteString.EMPTY) {
+          setJsSessionKeyId(other.getJsSessionKeyId());
         }
         if (other.getFCntUp() != 0) {
           setFCntUp(other.getFCntUp());
@@ -2659,7 +2840,7 @@ Internal.DeviceSessionChannel defaultValue);
         if (!other.enabledUplinkChannelIndices_.isEmpty()) {
           if (enabledUplinkChannelIndices_.isEmpty()) {
             enabledUplinkChannelIndices_ = other.enabledUplinkChannelIndices_;
-            bitField0_ = (bitField0_ & ~0x00000001);
+            bitField0_ = (bitField0_ & ~0x00040000);
           } else {
             ensureEnabledUplinkChannelIndicesIsMutable();
             enabledUplinkChannelIndices_.addAll(other.enabledUplinkChannelIndices_);
@@ -2668,6 +2849,7 @@ Internal.DeviceSessionChannel defaultValue);
         }
         internalGetMutableExtraUplinkChannels().mergeFrom(
             other.internalGetExtraUplinkChannels());
+        bitField0_ |= 0x00080000;
         if (other.getClassBPingSlotDr() != 0) {
           setClassBPingSlotDr(other.getClassBPingSlotDr());
         }
@@ -2702,7 +2884,7 @@ Internal.DeviceSessionChannel defaultValue);
           if (!other.uplinkAdrHistory_.isEmpty()) {
             if (uplinkAdrHistory_.isEmpty()) {
               uplinkAdrHistory_ = other.uplinkAdrHistory_;
-              bitField0_ = (bitField0_ & ~0x00000004);
+              bitField0_ = (bitField0_ & ~0x40000000);
             } else {
               ensureUplinkAdrHistoryIsMutable();
               uplinkAdrHistory_.addAll(other.uplinkAdrHistory_);
@@ -2715,7 +2897,7 @@ Internal.DeviceSessionChannel defaultValue);
               uplinkAdrHistoryBuilder_.dispose();
               uplinkAdrHistoryBuilder_ = null;
               uplinkAdrHistory_ = other.uplinkAdrHistory_;
-              bitField0_ = (bitField0_ & ~0x00000004);
+              bitField0_ = (bitField0_ & ~0x40000000);
               uplinkAdrHistoryBuilder_ = 
                 com.google.protobuf.GeneratedMessageV3.alwaysUseFieldBuilders ?
                    getUplinkAdrHistoryFieldBuilder() : null;
@@ -2726,6 +2908,7 @@ Internal.DeviceSessionChannel defaultValue);
         }
         internalGetMutableMacCommandErrorCount().mergeFrom(
             other.internalGetMacCommandErrorCount());
+        bitField0_ |= 0x80000000;
         if (other.hasLastDeviceStatusRequest()) {
           mergeLastDeviceStatusRequest(other.getLastDeviceStatusRequest());
         }
@@ -2750,9 +2933,13 @@ Internal.DeviceSessionChannel defaultValue);
         if (other.getUplinkMaxEirpIndex() != 0) {
           setUplinkMaxEirpIndex(other.getUplinkMaxEirpIndex());
         }
-        if (!other.getRegionName().isEmpty()) {
-          regionName_ = other.regionName_;
+        if (!other.getRegionConfigId().isEmpty()) {
+          regionConfigId_ = other.regionConfigId_;
+          bitField1_ |= 0x00000100;
           onChanged();
+        }
+        if (other.hasRelay()) {
+          mergeRelay(other.getRelay());
         }
         this.mergeUnknownFields(other.getUnknownFields());
         onChanged();
@@ -2782,89 +2969,89 @@ Internal.DeviceSessionChannel defaultValue);
                 break;
               case 10: {
                 devEui_ = input.readBytes();
-
+                bitField0_ |= 0x00000001;
                 break;
               } // case 10
               case 18: {
                 devAddr_ = input.readBytes();
-
+                bitField0_ |= 0x00000002;
                 break;
               } // case 18
               case 26: {
                 joinEui_ = input.readBytes();
-
+                bitField0_ |= 0x00000004;
                 break;
               } // case 26
               case 32: {
                 macVersion_ = input.readEnum();
-
+                bitField0_ |= 0x00000008;
                 break;
               } // case 32
               case 42: {
                 fNwkSIntKey_ = input.readBytes();
-
+                bitField0_ |= 0x00000010;
                 break;
               } // case 42
               case 50: {
                 sNwkSIntKey_ = input.readBytes();
-
+                bitField0_ |= 0x00000020;
                 break;
               } // case 50
               case 58: {
                 nwkSEncKey_ = input.readBytes();
-
+                bitField0_ |= 0x00000040;
                 break;
               } // case 58
               case 66: {
                 input.readMessage(
                     getAppSKeyFieldBuilder().getBuilder(),
                     extensionRegistry);
-
+                bitField0_ |= 0x00000080;
                 break;
               } // case 66
               case 72: {
                 fCntUp_ = input.readUInt32();
-
+                bitField0_ |= 0x00000200;
                 break;
               } // case 72
               case 80: {
                 nFCntDown_ = input.readUInt32();
-
+                bitField0_ |= 0x00000400;
                 break;
               } // case 80
               case 88: {
                 aFCntDown_ = input.readUInt32();
-
+                bitField0_ |= 0x00000800;
                 break;
               } // case 88
               case 96: {
                 confFCnt_ = input.readUInt32();
-
+                bitField0_ |= 0x00001000;
                 break;
               } // case 96
               case 104: {
                 skipFCntCheck_ = input.readBool();
-
+                bitField0_ |= 0x00002000;
                 break;
               } // case 104
               case 112: {
                 rx1Delay_ = input.readUInt32();
-
+                bitField0_ |= 0x00004000;
                 break;
               } // case 112
               case 120: {
                 rx1DrOffset_ = input.readUInt32();
-
+                bitField0_ |= 0x00008000;
                 break;
               } // case 120
               case 128: {
                 rx2Dr_ = input.readUInt32();
-
+                bitField0_ |= 0x00010000;
                 break;
               } // case 128
               case 136: {
                 rx2Frequency_ = input.readUInt32();
-
+                bitField0_ |= 0x00020000;
                 break;
               } // case 136
               case 144: {
@@ -2884,69 +3071,70 @@ Internal.DeviceSessionChannel defaultValue);
                 break;
               } // case 146
               case 154: {
-                com.google.protobuf.MapEntry<Integer, Internal.DeviceSessionChannel>
+                com.google.protobuf.MapEntry<Integer, DeviceSessionChannel>
                 extraUplinkChannels__ = input.readMessage(
                     ExtraUplinkChannelsDefaultEntryHolder.defaultEntry.getParserForType(), extensionRegistry);
                 internalGetMutableExtraUplinkChannels().getMutableMap().put(
                     extraUplinkChannels__.getKey(), extraUplinkChannels__.getValue());
+                bitField0_ |= 0x00080000;
                 break;
               } // case 154
               case 160: {
                 classBPingSlotDr_ = input.readUInt32();
-
+                bitField0_ |= 0x00100000;
                 break;
               } // case 160
               case 168: {
                 classBPingSlotFreq_ = input.readUInt32();
-
+                bitField0_ |= 0x00200000;
                 break;
               } // case 168
               case 176: {
                 classBPingSlotNb_ = input.readUInt32();
-
+                bitField0_ |= 0x00400000;
                 break;
               } // case 176
               case 184: {
                 nbTrans_ = input.readUInt32();
-
+                bitField0_ |= 0x00800000;
                 break;
               } // case 184
               case 192: {
                 txPowerIndex_ = input.readUInt32();
-
+                bitField0_ |= 0x01000000;
                 break;
               } // case 192
               case 200: {
                 dr_ = input.readUInt32();
-
+                bitField0_ |= 0x02000000;
                 break;
               } // case 200
               case 208: {
                 adr_ = input.readBool();
-
+                bitField0_ |= 0x04000000;
                 break;
               } // case 208
               case 216: {
                 maxSupportedTxPowerIndex_ = input.readUInt32();
-
+                bitField0_ |= 0x08000000;
                 break;
               } // case 216
               case 224: {
                 minSupportedTxPowerIndex_ = input.readUInt32();
-
+                bitField0_ |= 0x10000000;
                 break;
               } // case 224
               case 234: {
                 input.readMessage(
                     getPendingRejoinDeviceSessionFieldBuilder().getBuilder(),
                     extensionRegistry);
-
+                bitField0_ |= 0x20000000;
                 break;
               } // case 234
               case 242: {
-                Internal.UplinkAdrHistory m =
+                UplinkAdrHistory m =
                     input.readMessage(
-                        Internal.UplinkAdrHistory.parser(),
+                        UplinkAdrHistory.parser(),
                         extensionRegistry);
                 if (uplinkAdrHistoryBuilder_ == null) {
                   ensureUplinkAdrHistoryIsMutable();
@@ -2962,55 +3150,68 @@ Internal.DeviceSessionChannel defaultValue);
                     MacCommandErrorCountDefaultEntryHolder.defaultEntry.getParserForType(), extensionRegistry);
                 internalGetMutableMacCommandErrorCount().getMutableMap().put(
                     macCommandErrorCount__.getKey(), macCommandErrorCount__.getValue());
+                bitField0_ |= 0x80000000;
                 break;
               } // case 250
               case 258: {
                 input.readMessage(
                     getLastDeviceStatusRequestFieldBuilder().getBuilder(),
                     extensionRegistry);
-
+                bitField1_ |= 0x00000001;
                 break;
               } // case 258
               case 264: {
                 rejoinRequestEnabled_ = input.readBool();
-
+                bitField1_ |= 0x00000002;
                 break;
               } // case 264
               case 272: {
                 rejoinRequestMaxCountN_ = input.readUInt32();
-
+                bitField1_ |= 0x00000004;
                 break;
               } // case 272
               case 280: {
                 rejoinRequestMaxTimeN_ = input.readUInt32();
-
+                bitField1_ |= 0x00000008;
                 break;
               } // case 280
               case 288: {
                 rejoinCount0_ = input.readUInt32();
-
+                bitField1_ |= 0x00000010;
                 break;
               } // case 288
               case 296: {
                 uplinkDwellTime400Ms_ = input.readBool();
-
+                bitField1_ |= 0x00000020;
                 break;
               } // case 296
               case 304: {
                 downlinkDwellTime400Ms_ = input.readBool();
-
+                bitField1_ |= 0x00000040;
                 break;
               } // case 304
               case 312: {
                 uplinkMaxEirpIndex_ = input.readUInt32();
-
+                bitField1_ |= 0x00000080;
                 break;
               } // case 312
               case 322: {
-                regionName_ = input.readStringRequireUtf8();
-
+                regionConfigId_ = input.readStringRequireUtf8();
+                bitField1_ |= 0x00000100;
                 break;
               } // case 322
+              case 330: {
+                input.readMessage(
+                    getRelayFieldBuilder().getBuilder(),
+                    extensionRegistry);
+                bitField1_ |= 0x00000200;
+                break;
+              } // case 330
+              case 338: {
+                jsSessionKeyId_ = input.readBytes();
+                bitField0_ |= 0x00000100;
+                break;
+              } // case 338
               default: {
                 if (!super.parseUnknownField(input, extensionRegistry, tag)) {
                   done = true; // was an endgroup tag
@@ -3027,6 +3228,7 @@ Internal.DeviceSessionChannel defaultValue);
         return this;
       }
       private int bitField0_;
+      private int bitField1_;
 
       private com.google.protobuf.ByteString devEui_ = com.google.protobuf.ByteString.EMPTY;
       /**
@@ -3051,11 +3253,9 @@ Internal.DeviceSessionChannel defaultValue);
        * @return This builder for chaining.
        */
       public Builder setDevEui(com.google.protobuf.ByteString value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  
+        if (value == null) { throw new NullPointerException(); }
         devEui_ = value;
+        bitField0_ |= 0x00000001;
         onChanged();
         return this;
       }
@@ -3068,7 +3268,7 @@ Internal.DeviceSessionChannel defaultValue);
        * @return This builder for chaining.
        */
       public Builder clearDevEui() {
-        
+        bitField0_ = (bitField0_ & ~0x00000001);
         devEui_ = getDefaultInstance().getDevEui();
         onChanged();
         return this;
@@ -3097,11 +3297,9 @@ Internal.DeviceSessionChannel defaultValue);
        * @return This builder for chaining.
        */
       public Builder setDevAddr(com.google.protobuf.ByteString value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  
+        if (value == null) { throw new NullPointerException(); }
         devAddr_ = value;
+        bitField0_ |= 0x00000002;
         onChanged();
         return this;
       }
@@ -3114,7 +3312,7 @@ Internal.DeviceSessionChannel defaultValue);
        * @return This builder for chaining.
        */
       public Builder clearDevAddr() {
-        
+        bitField0_ = (bitField0_ & ~0x00000002);
         devAddr_ = getDefaultInstance().getDevAddr();
         onChanged();
         return this;
@@ -3143,11 +3341,9 @@ Internal.DeviceSessionChannel defaultValue);
        * @return This builder for chaining.
        */
       public Builder setJoinEui(com.google.protobuf.ByteString value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  
+        if (value == null) { throw new NullPointerException(); }
         joinEui_ = value;
+        bitField0_ |= 0x00000004;
         onChanged();
         return this;
       }
@@ -3160,7 +3356,7 @@ Internal.DeviceSessionChannel defaultValue);
        * @return This builder for chaining.
        */
       public Builder clearJoinEui() {
-        
+        bitField0_ = (bitField0_ & ~0x00000004);
         joinEui_ = getDefaultInstance().getJoinEui();
         onChanged();
         return this;
@@ -3188,8 +3384,8 @@ Internal.DeviceSessionChannel defaultValue);
        * @return This builder for chaining.
        */
       public Builder setMacVersionValue(int value) {
-        
         macVersion_ = value;
+        bitField0_ |= 0x00000008;
         onChanged();
         return this;
       }
@@ -3203,8 +3399,7 @@ Internal.DeviceSessionChannel defaultValue);
        */
       @Override
       public io.chirpstack.api.MacVersion getMacVersion() {
-        @SuppressWarnings("deprecation")
-        io.chirpstack.api.MacVersion result = io.chirpstack.api.MacVersion.valueOf(macVersion_);
+        io.chirpstack.api.MacVersion result = io.chirpstack.api.MacVersion.forNumber(macVersion_);
         return result == null ? io.chirpstack.api.MacVersion.UNRECOGNIZED : result;
       }
       /**
@@ -3220,7 +3415,7 @@ Internal.DeviceSessionChannel defaultValue);
         if (value == null) {
           throw new NullPointerException();
         }
-        
+        bitField0_ |= 0x00000008;
         macVersion_ = value.getNumber();
         onChanged();
         return this;
@@ -3234,7 +3429,7 @@ Internal.DeviceSessionChannel defaultValue);
        * @return This builder for chaining.
        */
       public Builder clearMacVersion() {
-        
+        bitField0_ = (bitField0_ & ~0x00000008);
         macVersion_ = 0;
         onChanged();
         return this;
@@ -3263,11 +3458,9 @@ Internal.DeviceSessionChannel defaultValue);
        * @return This builder for chaining.
        */
       public Builder setFNwkSIntKey(com.google.protobuf.ByteString value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  
+        if (value == null) { throw new NullPointerException(); }
         fNwkSIntKey_ = value;
+        bitField0_ |= 0x00000010;
         onChanged();
         return this;
       }
@@ -3280,7 +3473,7 @@ Internal.DeviceSessionChannel defaultValue);
        * @return This builder for chaining.
        */
       public Builder clearFNwkSIntKey() {
-        
+        bitField0_ = (bitField0_ & ~0x00000010);
         fNwkSIntKey_ = getDefaultInstance().getFNwkSIntKey();
         onChanged();
         return this;
@@ -3309,11 +3502,9 @@ Internal.DeviceSessionChannel defaultValue);
        * @return This builder for chaining.
        */
       public Builder setSNwkSIntKey(com.google.protobuf.ByteString value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  
+        if (value == null) { throw new NullPointerException(); }
         sNwkSIntKey_ = value;
+        bitField0_ |= 0x00000020;
         onChanged();
         return this;
       }
@@ -3326,7 +3517,7 @@ Internal.DeviceSessionChannel defaultValue);
        * @return This builder for chaining.
        */
       public Builder clearSNwkSIntKey() {
-        
+        bitField0_ = (bitField0_ & ~0x00000020);
         sNwkSIntKey_ = getDefaultInstance().getSNwkSIntKey();
         onChanged();
         return this;
@@ -3355,11 +3546,9 @@ Internal.DeviceSessionChannel defaultValue);
        * @return This builder for chaining.
        */
       public Builder setNwkSEncKey(com.google.protobuf.ByteString value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  
+        if (value == null) { throw new NullPointerException(); }
         nwkSEncKey_ = value;
+        bitField0_ |= 0x00000040;
         onChanged();
         return this;
       }
@@ -3372,7 +3561,7 @@ Internal.DeviceSessionChannel defaultValue);
        * @return This builder for chaining.
        */
       public Builder clearNwkSEncKey() {
-        
+        bitField0_ = (bitField0_ & ~0x00000040);
         nwkSEncKey_ = getDefaultInstance().getNwkSEncKey();
         onChanged();
         return this;
@@ -3390,7 +3579,7 @@ Internal.DeviceSessionChannel defaultValue);
        * @return Whether the appSKey field is set.
        */
       public boolean hasAppSKey() {
-        return appSKeyBuilder_ != null || appSKey_ != null;
+        return ((bitField0_ & 0x00000080) != 0);
       }
       /**
        * <pre>
@@ -3420,11 +3609,11 @@ Internal.DeviceSessionChannel defaultValue);
             throw new NullPointerException();
           }
           appSKey_ = value;
-          onChanged();
         } else {
           appSKeyBuilder_.setMessage(value);
         }
-
+        bitField0_ |= 0x00000080;
+        onChanged();
         return this;
       }
       /**
@@ -3438,11 +3627,11 @@ Internal.DeviceSessionChannel defaultValue);
           io.chirpstack.api.KeyEnvelope.Builder builderForValue) {
         if (appSKeyBuilder_ == null) {
           appSKey_ = builderForValue.build();
-          onChanged();
         } else {
           appSKeyBuilder_.setMessage(builderForValue.build());
         }
-
+        bitField0_ |= 0x00000080;
+        onChanged();
         return this;
       }
       /**
@@ -3454,17 +3643,18 @@ Internal.DeviceSessionChannel defaultValue);
        */
       public Builder mergeAppSKey(io.chirpstack.api.KeyEnvelope value) {
         if (appSKeyBuilder_ == null) {
-          if (appSKey_ != null) {
-            appSKey_ =
-              io.chirpstack.api.KeyEnvelope.newBuilder(appSKey_).mergeFrom(value).buildPartial();
+          if (((bitField0_ & 0x00000080) != 0) &&
+            appSKey_ != null &&
+            appSKey_ != io.chirpstack.api.KeyEnvelope.getDefaultInstance()) {
+            getAppSKeyBuilder().mergeFrom(value);
           } else {
             appSKey_ = value;
           }
-          onChanged();
         } else {
           appSKeyBuilder_.mergeFrom(value);
         }
-
+        bitField0_ |= 0x00000080;
+        onChanged();
         return this;
       }
       /**
@@ -3475,14 +3665,13 @@ Internal.DeviceSessionChannel defaultValue);
        * <code>.common.KeyEnvelope app_s_key = 8;</code>
        */
       public Builder clearAppSKey() {
-        if (appSKeyBuilder_ == null) {
-          appSKey_ = null;
-          onChanged();
-        } else {
-          appSKey_ = null;
+        bitField0_ = (bitField0_ & ~0x00000080);
+        appSKey_ = null;
+        if (appSKeyBuilder_ != null) {
+          appSKeyBuilder_.dispose();
           appSKeyBuilder_ = null;
         }
-
+        onChanged();
         return this;
       }
       /**
@@ -3493,7 +3682,7 @@ Internal.DeviceSessionChannel defaultValue);
        * <code>.common.KeyEnvelope app_s_key = 8;</code>
        */
       public io.chirpstack.api.KeyEnvelope.Builder getAppSKeyBuilder() {
-        
+        bitField0_ |= 0x00000080;
         onChanged();
         return getAppSKeyFieldBuilder().getBuilder();
       }
@@ -3533,6 +3722,50 @@ Internal.DeviceSessionChannel defaultValue);
         return appSKeyBuilder_;
       }
 
+      private com.google.protobuf.ByteString jsSessionKeyId_ = com.google.protobuf.ByteString.EMPTY;
+      /**
+       * <pre>
+       * JS Session Key ID.
+       * </pre>
+       *
+       * <code>bytes js_session_key_id = 42;</code>
+       * @return The jsSessionKeyId.
+       */
+      @Override
+      public com.google.protobuf.ByteString getJsSessionKeyId() {
+        return jsSessionKeyId_;
+      }
+      /**
+       * <pre>
+       * JS Session Key ID.
+       * </pre>
+       *
+       * <code>bytes js_session_key_id = 42;</code>
+       * @param value The jsSessionKeyId to set.
+       * @return This builder for chaining.
+       */
+      public Builder setJsSessionKeyId(com.google.protobuf.ByteString value) {
+        if (value == null) { throw new NullPointerException(); }
+        jsSessionKeyId_ = value;
+        bitField0_ |= 0x00000100;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * JS Session Key ID.
+       * </pre>
+       *
+       * <code>bytes js_session_key_id = 42;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearJsSessionKeyId() {
+        bitField0_ = (bitField0_ & ~0x00000100);
+        jsSessionKeyId_ = getDefaultInstance().getJsSessionKeyId();
+        onChanged();
+        return this;
+      }
+
       private int fCntUp_ ;
       /**
        * <pre>
@@ -3556,8 +3789,9 @@ Internal.DeviceSessionChannel defaultValue);
        * @return This builder for chaining.
        */
       public Builder setFCntUp(int value) {
-        
+
         fCntUp_ = value;
+        bitField0_ |= 0x00000200;
         onChanged();
         return this;
       }
@@ -3570,7 +3804,7 @@ Internal.DeviceSessionChannel defaultValue);
        * @return This builder for chaining.
        */
       public Builder clearFCntUp() {
-        
+        bitField0_ = (bitField0_ & ~0x00000200);
         fCntUp_ = 0;
         onChanged();
         return this;
@@ -3599,8 +3833,9 @@ Internal.DeviceSessionChannel defaultValue);
        * @return This builder for chaining.
        */
       public Builder setNFCntDown(int value) {
-        
+
         nFCntDown_ = value;
+        bitField0_ |= 0x00000400;
         onChanged();
         return this;
       }
@@ -3613,7 +3848,7 @@ Internal.DeviceSessionChannel defaultValue);
        * @return This builder for chaining.
        */
       public Builder clearNFCntDown() {
-        
+        bitField0_ = (bitField0_ & ~0x00000400);
         nFCntDown_ = 0;
         onChanged();
         return this;
@@ -3642,8 +3877,9 @@ Internal.DeviceSessionChannel defaultValue);
        * @return This builder for chaining.
        */
       public Builder setAFCntDown(int value) {
-        
+
         aFCntDown_ = value;
+        bitField0_ |= 0x00000800;
         onChanged();
         return this;
       }
@@ -3656,7 +3892,7 @@ Internal.DeviceSessionChannel defaultValue);
        * @return This builder for chaining.
        */
       public Builder clearAFCntDown() {
-        
+        bitField0_ = (bitField0_ & ~0x00000800);
         aFCntDown_ = 0;
         onChanged();
         return this;
@@ -3665,7 +3901,8 @@ Internal.DeviceSessionChannel defaultValue);
       private int confFCnt_ ;
       /**
        * <pre>
-       * Frame-counter holding the last confirmed downlink frame (n_f_cnt_down or a_f_cnt_down).
+       * Frame-counter holding the last confirmed downlink frame (n_f_cnt_down or
+       * a_f_cnt_down).
        * </pre>
        *
        * <code>uint32 conf_f_cnt = 12;</code>
@@ -3677,7 +3914,8 @@ Internal.DeviceSessionChannel defaultValue);
       }
       /**
        * <pre>
-       * Frame-counter holding the last confirmed downlink frame (n_f_cnt_down or a_f_cnt_down).
+       * Frame-counter holding the last confirmed downlink frame (n_f_cnt_down or
+       * a_f_cnt_down).
        * </pre>
        *
        * <code>uint32 conf_f_cnt = 12;</code>
@@ -3685,21 +3923,23 @@ Internal.DeviceSessionChannel defaultValue);
        * @return This builder for chaining.
        */
       public Builder setConfFCnt(int value) {
-        
+
         confFCnt_ = value;
+        bitField0_ |= 0x00001000;
         onChanged();
         return this;
       }
       /**
        * <pre>
-       * Frame-counter holding the last confirmed downlink frame (n_f_cnt_down or a_f_cnt_down).
+       * Frame-counter holding the last confirmed downlink frame (n_f_cnt_down or
+       * a_f_cnt_down).
        * </pre>
        *
        * <code>uint32 conf_f_cnt = 12;</code>
        * @return This builder for chaining.
        */
       public Builder clearConfFCnt() {
-        
+        bitField0_ = (bitField0_ & ~0x00001000);
         confFCnt_ = 0;
         onChanged();
         return this;
@@ -3728,8 +3968,9 @@ Internal.DeviceSessionChannel defaultValue);
        * @return This builder for chaining.
        */
       public Builder setSkipFCntCheck(boolean value) {
-        
+
         skipFCntCheck_ = value;
+        bitField0_ |= 0x00002000;
         onChanged();
         return this;
       }
@@ -3742,7 +3983,7 @@ Internal.DeviceSessionChannel defaultValue);
        * @return This builder for chaining.
        */
       public Builder clearSkipFCntCheck() {
-        
+        bitField0_ = (bitField0_ & ~0x00002000);
         skipFCntCheck_ = false;
         onChanged();
         return this;
@@ -3771,8 +4012,9 @@ Internal.DeviceSessionChannel defaultValue);
        * @return This builder for chaining.
        */
       public Builder setRx1Delay(int value) {
-        
+
         rx1Delay_ = value;
+        bitField0_ |= 0x00004000;
         onChanged();
         return this;
       }
@@ -3785,7 +4027,7 @@ Internal.DeviceSessionChannel defaultValue);
        * @return This builder for chaining.
        */
       public Builder clearRx1Delay() {
-        
+        bitField0_ = (bitField0_ & ~0x00004000);
         rx1Delay_ = 0;
         onChanged();
         return this;
@@ -3814,8 +4056,9 @@ Internal.DeviceSessionChannel defaultValue);
        * @return This builder for chaining.
        */
       public Builder setRx1DrOffset(int value) {
-        
+
         rx1DrOffset_ = value;
+        bitField0_ |= 0x00008000;
         onChanged();
         return this;
       }
@@ -3828,7 +4071,7 @@ Internal.DeviceSessionChannel defaultValue);
        * @return This builder for chaining.
        */
       public Builder clearRx1DrOffset() {
-        
+        bitField0_ = (bitField0_ & ~0x00008000);
         rx1DrOffset_ = 0;
         onChanged();
         return this;
@@ -3857,8 +4100,9 @@ Internal.DeviceSessionChannel defaultValue);
        * @return This builder for chaining.
        */
       public Builder setRx2Dr(int value) {
-        
+
         rx2Dr_ = value;
+        bitField0_ |= 0x00010000;
         onChanged();
         return this;
       }
@@ -3871,7 +4115,7 @@ Internal.DeviceSessionChannel defaultValue);
        * @return This builder for chaining.
        */
       public Builder clearRx2Dr() {
-        
+        bitField0_ = (bitField0_ & ~0x00010000);
         rx2Dr_ = 0;
         onChanged();
         return this;
@@ -3900,8 +4144,9 @@ Internal.DeviceSessionChannel defaultValue);
        * @return This builder for chaining.
        */
       public Builder setRx2Frequency(int value) {
-        
+
         rx2Frequency_ = value;
+        bitField0_ |= 0x00020000;
         onChanged();
         return this;
       }
@@ -3914,7 +4159,7 @@ Internal.DeviceSessionChannel defaultValue);
        * @return This builder for chaining.
        */
       public Builder clearRx2Frequency() {
-        
+        bitField0_ = (bitField0_ & ~0x00020000);
         rx2Frequency_ = 0;
         onChanged();
         return this;
@@ -3922,10 +4167,10 @@ Internal.DeviceSessionChannel defaultValue);
 
       private com.google.protobuf.Internal.IntList enabledUplinkChannelIndices_ = emptyIntList();
       private void ensureEnabledUplinkChannelIndicesIsMutable() {
-        if (!((bitField0_ & 0x00000001) != 0)) {
+        if (!((bitField0_ & 0x00040000) != 0)) {
           enabledUplinkChannelIndices_ = mutableCopy(enabledUplinkChannelIndices_);
-          bitField0_ |= 0x00000001;
-         }
+          bitField0_ |= 0x00040000;
+        }
       }
       /**
        * <pre>
@@ -3937,7 +4182,7 @@ Internal.DeviceSessionChannel defaultValue);
        */
       public java.util.List<Integer>
           getEnabledUplinkChannelIndicesList() {
-        return ((bitField0_ & 0x00000001) != 0) ?
+        return ((bitField0_ & 0x00040000) != 0) ?
                  java.util.Collections.unmodifiableList(enabledUplinkChannelIndices_) : enabledUplinkChannelIndices_;
       }
       /**
@@ -3975,6 +4220,7 @@ Internal.DeviceSessionChannel defaultValue);
        */
       public Builder setEnabledUplinkChannelIndices(
           int index, int value) {
+
         ensureEnabledUplinkChannelIndicesIsMutable();
         enabledUplinkChannelIndices_.setInt(index, value);
         onChanged();
@@ -3990,6 +4236,7 @@ Internal.DeviceSessionChannel defaultValue);
        * @return This builder for chaining.
        */
       public Builder addEnabledUplinkChannelIndices(int value) {
+
         ensureEnabledUplinkChannelIndicesIsMutable();
         enabledUplinkChannelIndices_.addInt(value);
         onChanged();
@@ -4022,24 +4269,23 @@ Internal.DeviceSessionChannel defaultValue);
        */
       public Builder clearEnabledUplinkChannelIndices() {
         enabledUplinkChannelIndices_ = emptyIntList();
-        bitField0_ = (bitField0_ & ~0x00000001);
+        bitField0_ = (bitField0_ & ~0x00040000);
         onChanged();
         return this;
       }
 
       private com.google.protobuf.MapField<
-          Integer, Internal.DeviceSessionChannel> extraUplinkChannels_;
-      private com.google.protobuf.MapField<Integer, Internal.DeviceSessionChannel>
-      internalGetExtraUplinkChannels() {
+          Integer, DeviceSessionChannel> extraUplinkChannels_;
+      private com.google.protobuf.MapField<Integer, DeviceSessionChannel>
+          internalGetExtraUplinkChannels() {
         if (extraUplinkChannels_ == null) {
           return com.google.protobuf.MapField.emptyMapField(
               ExtraUplinkChannelsDefaultEntryHolder.defaultEntry);
         }
         return extraUplinkChannels_;
       }
-      private com.google.protobuf.MapField<Integer, Internal.DeviceSessionChannel>
-      internalGetMutableExtraUplinkChannels() {
-        onChanged();;
+      private com.google.protobuf.MapField<Integer, DeviceSessionChannel>
+          internalGetMutableExtraUplinkChannels() {
         if (extraUplinkChannels_ == null) {
           extraUplinkChannels_ = com.google.protobuf.MapField.newMapField(
               ExtraUplinkChannelsDefaultEntryHolder.defaultEntry);
@@ -4047,9 +4293,10 @@ Internal.DeviceSessionChannel defaultValue);
         if (!extraUplinkChannels_.isMutable()) {
           extraUplinkChannels_ = extraUplinkChannels_.copy();
         }
+        bitField0_ |= 0x00080000;
+        onChanged();
         return extraUplinkChannels_;
       }
-
       public int getExtraUplinkChannelsCount() {
         return internalGetExtraUplinkChannels().getMap().size();
       }
@@ -4060,11 +4307,10 @@ Internal.DeviceSessionChannel defaultValue);
        *
        * <code>map&lt;uint32, .internal.DeviceSessionChannel&gt; extra_uplink_channels = 19;</code>
        */
-
       @Override
       public boolean containsExtraUplinkChannels(
           int key) {
-        
+
         return internalGetExtraUplinkChannels().getMap().containsKey(key);
       }
       /**
@@ -4072,7 +4318,7 @@ Internal.DeviceSessionChannel defaultValue);
        */
       @Override
       @Deprecated
-      public java.util.Map<Integer, Internal.DeviceSessionChannel> getExtraUplinkChannels() {
+      public java.util.Map<Integer, DeviceSessionChannel> getExtraUplinkChannels() {
         return getExtraUplinkChannelsMap();
       }
       /**
@@ -4083,8 +4329,7 @@ Internal.DeviceSessionChannel defaultValue);
        * <code>map&lt;uint32, .internal.DeviceSessionChannel&gt; extra_uplink_channels = 19;</code>
        */
       @Override
-
-      public java.util.Map<Integer, Internal.DeviceSessionChannel> getExtraUplinkChannelsMap() {
+      public java.util.Map<Integer, DeviceSessionChannel> getExtraUplinkChannelsMap() {
         return internalGetExtraUplinkChannels().getMap();
       }
       /**
@@ -4095,12 +4340,13 @@ Internal.DeviceSessionChannel defaultValue);
        * <code>map&lt;uint32, .internal.DeviceSessionChannel&gt; extra_uplink_channels = 19;</code>
        */
       @Override
-
-      public Internal.DeviceSessionChannel getExtraUplinkChannelsOrDefault(
+      public /* nullable */
+DeviceSessionChannel getExtraUplinkChannelsOrDefault(
           int key,
-          Internal.DeviceSessionChannel defaultValue) {
-        
-        java.util.Map<Integer, Internal.DeviceSessionChannel> map =
+          /* nullable */
+DeviceSessionChannel defaultValue) {
+
+        java.util.Map<Integer, DeviceSessionChannel> map =
             internalGetExtraUplinkChannels().getMap();
         return map.containsKey(key) ? map.get(key) : defaultValue;
       }
@@ -4112,19 +4358,18 @@ Internal.DeviceSessionChannel defaultValue);
        * <code>map&lt;uint32, .internal.DeviceSessionChannel&gt; extra_uplink_channels = 19;</code>
        */
       @Override
-
-      public Internal.DeviceSessionChannel getExtraUplinkChannelsOrThrow(
+      public DeviceSessionChannel getExtraUplinkChannelsOrThrow(
           int key) {
-        
-        java.util.Map<Integer, Internal.DeviceSessionChannel> map =
+
+        java.util.Map<Integer, DeviceSessionChannel> map =
             internalGetExtraUplinkChannels().getMap();
         if (!map.containsKey(key)) {
           throw new IllegalArgumentException();
         }
         return map.get(key);
       }
-
       public Builder clearExtraUplinkChannels() {
+        bitField0_ = (bitField0_ & ~0x00080000);
         internalGetMutableExtraUplinkChannels().getMutableMap()
             .clear();
         return this;
@@ -4136,10 +4381,9 @@ Internal.DeviceSessionChannel defaultValue);
        *
        * <code>map&lt;uint32, .internal.DeviceSessionChannel&gt; extra_uplink_channels = 19;</code>
        */
-
       public Builder removeExtraUplinkChannels(
           int key) {
-        
+
         internalGetMutableExtraUplinkChannels().getMutableMap()
             .remove(key);
         return this;
@@ -4148,8 +4392,9 @@ Internal.DeviceSessionChannel defaultValue);
        * Use alternate mutation accessors instead.
        */
       @Deprecated
-      public java.util.Map<Integer, Internal.DeviceSessionChannel>
-      getMutableExtraUplinkChannels() {
+      public java.util.Map<Integer, DeviceSessionChannel>
+          getMutableExtraUplinkChannels() {
+        bitField0_ |= 0x00080000;
         return internalGetMutableExtraUplinkChannels().getMutableMap();
       }
       /**
@@ -4161,14 +4406,12 @@ Internal.DeviceSessionChannel defaultValue);
        */
       public Builder putExtraUplinkChannels(
           int key,
-          Internal.DeviceSessionChannel value) {
-        
-        if (value == null) {
-  throw new NullPointerException("map value");
-}
+          DeviceSessionChannel value) {
 
+        if (value == null) { throw new NullPointerException("map value"); }
         internalGetMutableExtraUplinkChannels().getMutableMap()
             .put(key, value);
+        bitField0_ |= 0x00080000;
         return this;
       }
       /**
@@ -4178,11 +4421,11 @@ Internal.DeviceSessionChannel defaultValue);
        *
        * <code>map&lt;uint32, .internal.DeviceSessionChannel&gt; extra_uplink_channels = 19;</code>
        */
-
       public Builder putAllExtraUplinkChannels(
-          java.util.Map<Integer, Internal.DeviceSessionChannel> values) {
+          java.util.Map<Integer, DeviceSessionChannel> values) {
         internalGetMutableExtraUplinkChannels().getMutableMap()
             .putAll(values);
+        bitField0_ |= 0x00080000;
         return this;
       }
 
@@ -4209,8 +4452,9 @@ Internal.DeviceSessionChannel defaultValue);
        * @return This builder for chaining.
        */
       public Builder setClassBPingSlotDr(int value) {
-        
+
         classBPingSlotDr_ = value;
+        bitField0_ |= 0x00100000;
         onChanged();
         return this;
       }
@@ -4223,7 +4467,7 @@ Internal.DeviceSessionChannel defaultValue);
        * @return This builder for chaining.
        */
       public Builder clearClassBPingSlotDr() {
-        
+        bitField0_ = (bitField0_ & ~0x00100000);
         classBPingSlotDr_ = 0;
         onChanged();
         return this;
@@ -4252,8 +4496,9 @@ Internal.DeviceSessionChannel defaultValue);
        * @return This builder for chaining.
        */
       public Builder setClassBPingSlotFreq(int value) {
-        
+
         classBPingSlotFreq_ = value;
+        bitField0_ |= 0x00200000;
         onChanged();
         return this;
       }
@@ -4266,7 +4511,7 @@ Internal.DeviceSessionChannel defaultValue);
        * @return This builder for chaining.
        */
       public Builder clearClassBPingSlotFreq() {
-        
+        bitField0_ = (bitField0_ & ~0x00200000);
         classBPingSlotFreq_ = 0;
         onChanged();
         return this;
@@ -4295,8 +4540,9 @@ Internal.DeviceSessionChannel defaultValue);
        * @return This builder for chaining.
        */
       public Builder setClassBPingSlotNb(int value) {
-        
+
         classBPingSlotNb_ = value;
+        bitField0_ |= 0x00400000;
         onChanged();
         return this;
       }
@@ -4309,7 +4555,7 @@ Internal.DeviceSessionChannel defaultValue);
        * @return This builder for chaining.
        */
       public Builder clearClassBPingSlotNb() {
-        
+        bitField0_ = (bitField0_ & ~0x00400000);
         classBPingSlotNb_ = 0;
         onChanged();
         return this;
@@ -4338,8 +4584,9 @@ Internal.DeviceSessionChannel defaultValue);
        * @return This builder for chaining.
        */
       public Builder setNbTrans(int value) {
-        
+
         nbTrans_ = value;
+        bitField0_ |= 0x00800000;
         onChanged();
         return this;
       }
@@ -4352,7 +4599,7 @@ Internal.DeviceSessionChannel defaultValue);
        * @return This builder for chaining.
        */
       public Builder clearNbTrans() {
-        
+        bitField0_ = (bitField0_ & ~0x00800000);
         nbTrans_ = 0;
         onChanged();
         return this;
@@ -4387,8 +4634,9 @@ Internal.DeviceSessionChannel defaultValue);
        * @return This builder for chaining.
        */
       public Builder setTxPowerIndex(int value) {
-        
+
         txPowerIndex_ = value;
+        bitField0_ |= 0x01000000;
         onChanged();
         return this;
       }
@@ -4404,7 +4652,7 @@ Internal.DeviceSessionChannel defaultValue);
        * @return This builder for chaining.
        */
       public Builder clearTxPowerIndex() {
-        
+        bitField0_ = (bitField0_ & ~0x01000000);
         txPowerIndex_ = 0;
         onChanged();
         return this;
@@ -4435,8 +4683,9 @@ Internal.DeviceSessionChannel defaultValue);
        * @return This builder for chaining.
        */
       public Builder setDr(int value) {
-        
+
         dr_ = value;
+        bitField0_ |= 0x02000000;
         onChanged();
         return this;
       }
@@ -4450,7 +4699,7 @@ Internal.DeviceSessionChannel defaultValue);
        * @return This builder for chaining.
        */
       public Builder clearDr() {
-        
+        bitField0_ = (bitField0_ & ~0x02000000);
         dr_ = 0;
         onChanged();
         return this;
@@ -4479,8 +4728,9 @@ Internal.DeviceSessionChannel defaultValue);
        * @return This builder for chaining.
        */
       public Builder setAdr(boolean value) {
-        
+
         adr_ = value;
+        bitField0_ |= 0x04000000;
         onChanged();
         return this;
       }
@@ -4493,7 +4743,7 @@ Internal.DeviceSessionChannel defaultValue);
        * @return This builder for chaining.
        */
       public Builder clearAdr() {
-        
+        bitField0_ = (bitField0_ & ~0x04000000);
         adr_ = false;
         onChanged();
         return this;
@@ -4524,8 +4774,9 @@ Internal.DeviceSessionChannel defaultValue);
        * @return This builder for chaining.
        */
       public Builder setMaxSupportedTxPowerIndex(int value) {
-        
+
         maxSupportedTxPowerIndex_ = value;
+        bitField0_ |= 0x08000000;
         onChanged();
         return this;
       }
@@ -4539,7 +4790,7 @@ Internal.DeviceSessionChannel defaultValue);
        * @return This builder for chaining.
        */
       public Builder clearMaxSupportedTxPowerIndex() {
-        
+        bitField0_ = (bitField0_ & ~0x08000000);
         maxSupportedTxPowerIndex_ = 0;
         onChanged();
         return this;
@@ -4570,8 +4821,9 @@ Internal.DeviceSessionChannel defaultValue);
        * @return This builder for chaining.
        */
       public Builder setMinSupportedTxPowerIndex(int value) {
-        
+
         minSupportedTxPowerIndex_ = value;
+        bitField0_ |= 0x10000000;
         onChanged();
         return this;
       }
@@ -4585,15 +4837,15 @@ Internal.DeviceSessionChannel defaultValue);
        * @return This builder for chaining.
        */
       public Builder clearMinSupportedTxPowerIndex() {
-        
+        bitField0_ = (bitField0_ & ~0x10000000);
         minSupportedTxPowerIndex_ = 0;
         onChanged();
         return this;
       }
 
-      private Internal.DeviceSession pendingRejoinDeviceSession_;
+      private DeviceSession pendingRejoinDeviceSession_;
       private com.google.protobuf.SingleFieldBuilderV3<
-          Internal.DeviceSession, Internal.DeviceSession.Builder, Internal.DeviceSessionOrBuilder> pendingRejoinDeviceSessionBuilder_;
+          DeviceSession, DeviceSession.Builder, DeviceSessionOrBuilder> pendingRejoinDeviceSessionBuilder_;
       /**
        * <pre>
        * Pending rejoin device-session contains a device-session which has not
@@ -4604,7 +4856,7 @@ Internal.DeviceSessionChannel defaultValue);
        * @return Whether the pendingRejoinDeviceSession field is set.
        */
       public boolean hasPendingRejoinDeviceSession() {
-        return pendingRejoinDeviceSessionBuilder_ != null || pendingRejoinDeviceSession_ != null;
+        return ((bitField0_ & 0x20000000) != 0);
       }
       /**
        * <pre>
@@ -4615,9 +4867,9 @@ Internal.DeviceSessionChannel defaultValue);
        * <code>.internal.DeviceSession pending_rejoin_device_session = 29;</code>
        * @return The pendingRejoinDeviceSession.
        */
-      public Internal.DeviceSession getPendingRejoinDeviceSession() {
+      public DeviceSession getPendingRejoinDeviceSession() {
         if (pendingRejoinDeviceSessionBuilder_ == null) {
-          return pendingRejoinDeviceSession_ == null ? Internal.DeviceSession.getDefaultInstance() : pendingRejoinDeviceSession_;
+          return pendingRejoinDeviceSession_ == null ? DeviceSession.getDefaultInstance() : pendingRejoinDeviceSession_;
         } else {
           return pendingRejoinDeviceSessionBuilder_.getMessage();
         }
@@ -4630,17 +4882,17 @@ Internal.DeviceSessionChannel defaultValue);
        *
        * <code>.internal.DeviceSession pending_rejoin_device_session = 29;</code>
        */
-      public Builder setPendingRejoinDeviceSession(Internal.DeviceSession value) {
+      public Builder setPendingRejoinDeviceSession(DeviceSession value) {
         if (pendingRejoinDeviceSessionBuilder_ == null) {
           if (value == null) {
             throw new NullPointerException();
           }
           pendingRejoinDeviceSession_ = value;
-          onChanged();
         } else {
           pendingRejoinDeviceSessionBuilder_.setMessage(value);
         }
-
+        bitField0_ |= 0x20000000;
+        onChanged();
         return this;
       }
       /**
@@ -4652,14 +4904,14 @@ Internal.DeviceSessionChannel defaultValue);
        * <code>.internal.DeviceSession pending_rejoin_device_session = 29;</code>
        */
       public Builder setPendingRejoinDeviceSession(
-          Internal.DeviceSession.Builder builderForValue) {
+          DeviceSession.Builder builderForValue) {
         if (pendingRejoinDeviceSessionBuilder_ == null) {
           pendingRejoinDeviceSession_ = builderForValue.build();
-          onChanged();
         } else {
           pendingRejoinDeviceSessionBuilder_.setMessage(builderForValue.build());
         }
-
+        bitField0_ |= 0x20000000;
+        onChanged();
         return this;
       }
       /**
@@ -4670,19 +4922,20 @@ Internal.DeviceSessionChannel defaultValue);
        *
        * <code>.internal.DeviceSession pending_rejoin_device_session = 29;</code>
        */
-      public Builder mergePendingRejoinDeviceSession(Internal.DeviceSession value) {
+      public Builder mergePendingRejoinDeviceSession(DeviceSession value) {
         if (pendingRejoinDeviceSessionBuilder_ == null) {
-          if (pendingRejoinDeviceSession_ != null) {
-            pendingRejoinDeviceSession_ =
-              Internal.DeviceSession.newBuilder(pendingRejoinDeviceSession_).mergeFrom(value).buildPartial();
+          if (((bitField0_ & 0x20000000) != 0) &&
+            pendingRejoinDeviceSession_ != null &&
+            pendingRejoinDeviceSession_ != DeviceSession.getDefaultInstance()) {
+            getPendingRejoinDeviceSessionBuilder().mergeFrom(value);
           } else {
             pendingRejoinDeviceSession_ = value;
           }
-          onChanged();
         } else {
           pendingRejoinDeviceSessionBuilder_.mergeFrom(value);
         }
-
+        bitField0_ |= 0x20000000;
+        onChanged();
         return this;
       }
       /**
@@ -4694,14 +4947,13 @@ Internal.DeviceSessionChannel defaultValue);
        * <code>.internal.DeviceSession pending_rejoin_device_session = 29;</code>
        */
       public Builder clearPendingRejoinDeviceSession() {
-        if (pendingRejoinDeviceSessionBuilder_ == null) {
-          pendingRejoinDeviceSession_ = null;
-          onChanged();
-        } else {
-          pendingRejoinDeviceSession_ = null;
+        bitField0_ = (bitField0_ & ~0x20000000);
+        pendingRejoinDeviceSession_ = null;
+        if (pendingRejoinDeviceSessionBuilder_ != null) {
+          pendingRejoinDeviceSessionBuilder_.dispose();
           pendingRejoinDeviceSessionBuilder_ = null;
         }
-
+        onChanged();
         return this;
       }
       /**
@@ -4712,8 +4964,8 @@ Internal.DeviceSessionChannel defaultValue);
        *
        * <code>.internal.DeviceSession pending_rejoin_device_session = 29;</code>
        */
-      public Internal.DeviceSession.Builder getPendingRejoinDeviceSessionBuilder() {
-        
+      public DeviceSession.Builder getPendingRejoinDeviceSessionBuilder() {
+        bitField0_ |= 0x20000000;
         onChanged();
         return getPendingRejoinDeviceSessionFieldBuilder().getBuilder();
       }
@@ -4725,12 +4977,12 @@ Internal.DeviceSessionChannel defaultValue);
        *
        * <code>.internal.DeviceSession pending_rejoin_device_session = 29;</code>
        */
-      public Internal.DeviceSessionOrBuilder getPendingRejoinDeviceSessionOrBuilder() {
+      public DeviceSessionOrBuilder getPendingRejoinDeviceSessionOrBuilder() {
         if (pendingRejoinDeviceSessionBuilder_ != null) {
           return pendingRejoinDeviceSessionBuilder_.getMessageOrBuilder();
         } else {
           return pendingRejoinDeviceSession_ == null ?
-              Internal.DeviceSession.getDefaultInstance() : pendingRejoinDeviceSession_;
+              DeviceSession.getDefaultInstance() : pendingRejoinDeviceSession_;
         }
       }
       /**
@@ -4742,11 +4994,11 @@ Internal.DeviceSessionChannel defaultValue);
        * <code>.internal.DeviceSession pending_rejoin_device_session = 29;</code>
        */
       private com.google.protobuf.SingleFieldBuilderV3<
-          Internal.DeviceSession, Internal.DeviceSession.Builder, Internal.DeviceSessionOrBuilder> 
+          DeviceSession, DeviceSession.Builder, DeviceSessionOrBuilder> 
           getPendingRejoinDeviceSessionFieldBuilder() {
         if (pendingRejoinDeviceSessionBuilder_ == null) {
           pendingRejoinDeviceSessionBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
-              Internal.DeviceSession, Internal.DeviceSession.Builder, Internal.DeviceSessionOrBuilder>(
+              DeviceSession, DeviceSession.Builder, DeviceSessionOrBuilder>(
                   getPendingRejoinDeviceSession(),
                   getParentForChildren(),
                   isClean());
@@ -4755,26 +5007,30 @@ Internal.DeviceSessionChannel defaultValue);
         return pendingRejoinDeviceSessionBuilder_;
       }
 
-      private java.util.List<Internal.UplinkAdrHistory> uplinkAdrHistory_ =
+      private java.util.List<UplinkAdrHistory> uplinkAdrHistory_ =
         java.util.Collections.emptyList();
       private void ensureUplinkAdrHistoryIsMutable() {
-        if (!((bitField0_ & 0x00000004) != 0)) {
-          uplinkAdrHistory_ = new java.util.ArrayList<Internal.UplinkAdrHistory>(uplinkAdrHistory_);
-          bitField0_ |= 0x00000004;
+        if (!((bitField0_ & 0x40000000) != 0)) {
+          uplinkAdrHistory_ = new java.util.ArrayList<UplinkAdrHistory>(uplinkAdrHistory_);
+          bitField0_ |= 0x40000000;
          }
       }
 
       private com.google.protobuf.RepeatedFieldBuilderV3<
-          Internal.UplinkAdrHistory, Internal.UplinkAdrHistory.Builder, Internal.UplinkAdrHistoryOrBuilder> uplinkAdrHistoryBuilder_;
+          UplinkAdrHistory, UplinkAdrHistory.Builder, UplinkAdrHistoryOrBuilder> uplinkAdrHistoryBuilder_;
 
       /**
        * <pre>
        * Uplink history for ADR (last 20 uplink transmissions).
+       * This table is reset in case one of parameters has changed:
+       *   * DR
+       *   * TxPower
+       *   * NbTrans
        * </pre>
        *
        * <code>repeated .internal.UplinkAdrHistory uplink_adr_history = 30;</code>
        */
-      public java.util.List<Internal.UplinkAdrHistory> getUplinkAdrHistoryList() {
+      public java.util.List<UplinkAdrHistory> getUplinkAdrHistoryList() {
         if (uplinkAdrHistoryBuilder_ == null) {
           return java.util.Collections.unmodifiableList(uplinkAdrHistory_);
         } else {
@@ -4784,6 +5040,10 @@ Internal.DeviceSessionChannel defaultValue);
       /**
        * <pre>
        * Uplink history for ADR (last 20 uplink transmissions).
+       * This table is reset in case one of parameters has changed:
+       *   * DR
+       *   * TxPower
+       *   * NbTrans
        * </pre>
        *
        * <code>repeated .internal.UplinkAdrHistory uplink_adr_history = 30;</code>
@@ -4798,11 +5058,15 @@ Internal.DeviceSessionChannel defaultValue);
       /**
        * <pre>
        * Uplink history for ADR (last 20 uplink transmissions).
+       * This table is reset in case one of parameters has changed:
+       *   * DR
+       *   * TxPower
+       *   * NbTrans
        * </pre>
        *
        * <code>repeated .internal.UplinkAdrHistory uplink_adr_history = 30;</code>
        */
-      public Internal.UplinkAdrHistory getUplinkAdrHistory(int index) {
+      public UplinkAdrHistory getUplinkAdrHistory(int index) {
         if (uplinkAdrHistoryBuilder_ == null) {
           return uplinkAdrHistory_.get(index);
         } else {
@@ -4812,12 +5076,16 @@ Internal.DeviceSessionChannel defaultValue);
       /**
        * <pre>
        * Uplink history for ADR (last 20 uplink transmissions).
+       * This table is reset in case one of parameters has changed:
+       *   * DR
+       *   * TxPower
+       *   * NbTrans
        * </pre>
        *
        * <code>repeated .internal.UplinkAdrHistory uplink_adr_history = 30;</code>
        */
       public Builder setUplinkAdrHistory(
-          int index, Internal.UplinkAdrHistory value) {
+          int index, UplinkAdrHistory value) {
         if (uplinkAdrHistoryBuilder_ == null) {
           if (value == null) {
             throw new NullPointerException();
@@ -4833,12 +5101,16 @@ Internal.DeviceSessionChannel defaultValue);
       /**
        * <pre>
        * Uplink history for ADR (last 20 uplink transmissions).
+       * This table is reset in case one of parameters has changed:
+       *   * DR
+       *   * TxPower
+       *   * NbTrans
        * </pre>
        *
        * <code>repeated .internal.UplinkAdrHistory uplink_adr_history = 30;</code>
        */
       public Builder setUplinkAdrHistory(
-          int index, Internal.UplinkAdrHistory.Builder builderForValue) {
+          int index, UplinkAdrHistory.Builder builderForValue) {
         if (uplinkAdrHistoryBuilder_ == null) {
           ensureUplinkAdrHistoryIsMutable();
           uplinkAdrHistory_.set(index, builderForValue.build());
@@ -4851,11 +5123,15 @@ Internal.DeviceSessionChannel defaultValue);
       /**
        * <pre>
        * Uplink history for ADR (last 20 uplink transmissions).
+       * This table is reset in case one of parameters has changed:
+       *   * DR
+       *   * TxPower
+       *   * NbTrans
        * </pre>
        *
        * <code>repeated .internal.UplinkAdrHistory uplink_adr_history = 30;</code>
        */
-      public Builder addUplinkAdrHistory(Internal.UplinkAdrHistory value) {
+      public Builder addUplinkAdrHistory(UplinkAdrHistory value) {
         if (uplinkAdrHistoryBuilder_ == null) {
           if (value == null) {
             throw new NullPointerException();
@@ -4871,12 +5147,16 @@ Internal.DeviceSessionChannel defaultValue);
       /**
        * <pre>
        * Uplink history for ADR (last 20 uplink transmissions).
+       * This table is reset in case one of parameters has changed:
+       *   * DR
+       *   * TxPower
+       *   * NbTrans
        * </pre>
        *
        * <code>repeated .internal.UplinkAdrHistory uplink_adr_history = 30;</code>
        */
       public Builder addUplinkAdrHistory(
-          int index, Internal.UplinkAdrHistory value) {
+          int index, UplinkAdrHistory value) {
         if (uplinkAdrHistoryBuilder_ == null) {
           if (value == null) {
             throw new NullPointerException();
@@ -4892,12 +5172,16 @@ Internal.DeviceSessionChannel defaultValue);
       /**
        * <pre>
        * Uplink history for ADR (last 20 uplink transmissions).
+       * This table is reset in case one of parameters has changed:
+       *   * DR
+       *   * TxPower
+       *   * NbTrans
        * </pre>
        *
        * <code>repeated .internal.UplinkAdrHistory uplink_adr_history = 30;</code>
        */
       public Builder addUplinkAdrHistory(
-          Internal.UplinkAdrHistory.Builder builderForValue) {
+          UplinkAdrHistory.Builder builderForValue) {
         if (uplinkAdrHistoryBuilder_ == null) {
           ensureUplinkAdrHistoryIsMutable();
           uplinkAdrHistory_.add(builderForValue.build());
@@ -4910,12 +5194,16 @@ Internal.DeviceSessionChannel defaultValue);
       /**
        * <pre>
        * Uplink history for ADR (last 20 uplink transmissions).
+       * This table is reset in case one of parameters has changed:
+       *   * DR
+       *   * TxPower
+       *   * NbTrans
        * </pre>
        *
        * <code>repeated .internal.UplinkAdrHistory uplink_adr_history = 30;</code>
        */
       public Builder addUplinkAdrHistory(
-          int index, Internal.UplinkAdrHistory.Builder builderForValue) {
+          int index, UplinkAdrHistory.Builder builderForValue) {
         if (uplinkAdrHistoryBuilder_ == null) {
           ensureUplinkAdrHistoryIsMutable();
           uplinkAdrHistory_.add(index, builderForValue.build());
@@ -4928,12 +5216,16 @@ Internal.DeviceSessionChannel defaultValue);
       /**
        * <pre>
        * Uplink history for ADR (last 20 uplink transmissions).
+       * This table is reset in case one of parameters has changed:
+       *   * DR
+       *   * TxPower
+       *   * NbTrans
        * </pre>
        *
        * <code>repeated .internal.UplinkAdrHistory uplink_adr_history = 30;</code>
        */
       public Builder addAllUplinkAdrHistory(
-          Iterable<? extends Internal.UplinkAdrHistory> values) {
+          Iterable<? extends UplinkAdrHistory> values) {
         if (uplinkAdrHistoryBuilder_ == null) {
           ensureUplinkAdrHistoryIsMutable();
           com.google.protobuf.AbstractMessageLite.Builder.addAll(
@@ -4947,6 +5239,10 @@ Internal.DeviceSessionChannel defaultValue);
       /**
        * <pre>
        * Uplink history for ADR (last 20 uplink transmissions).
+       * This table is reset in case one of parameters has changed:
+       *   * DR
+       *   * TxPower
+       *   * NbTrans
        * </pre>
        *
        * <code>repeated .internal.UplinkAdrHistory uplink_adr_history = 30;</code>
@@ -4954,7 +5250,7 @@ Internal.DeviceSessionChannel defaultValue);
       public Builder clearUplinkAdrHistory() {
         if (uplinkAdrHistoryBuilder_ == null) {
           uplinkAdrHistory_ = java.util.Collections.emptyList();
-          bitField0_ = (bitField0_ & ~0x00000004);
+          bitField0_ = (bitField0_ & ~0x40000000);
           onChanged();
         } else {
           uplinkAdrHistoryBuilder_.clear();
@@ -4964,6 +5260,10 @@ Internal.DeviceSessionChannel defaultValue);
       /**
        * <pre>
        * Uplink history for ADR (last 20 uplink transmissions).
+       * This table is reset in case one of parameters has changed:
+       *   * DR
+       *   * TxPower
+       *   * NbTrans
        * </pre>
        *
        * <code>repeated .internal.UplinkAdrHistory uplink_adr_history = 30;</code>
@@ -4981,22 +5281,30 @@ Internal.DeviceSessionChannel defaultValue);
       /**
        * <pre>
        * Uplink history for ADR (last 20 uplink transmissions).
+       * This table is reset in case one of parameters has changed:
+       *   * DR
+       *   * TxPower
+       *   * NbTrans
        * </pre>
        *
        * <code>repeated .internal.UplinkAdrHistory uplink_adr_history = 30;</code>
        */
-      public Internal.UplinkAdrHistory.Builder getUplinkAdrHistoryBuilder(
+      public UplinkAdrHistory.Builder getUplinkAdrHistoryBuilder(
           int index) {
         return getUplinkAdrHistoryFieldBuilder().getBuilder(index);
       }
       /**
        * <pre>
        * Uplink history for ADR (last 20 uplink transmissions).
+       * This table is reset in case one of parameters has changed:
+       *   * DR
+       *   * TxPower
+       *   * NbTrans
        * </pre>
        *
        * <code>repeated .internal.UplinkAdrHistory uplink_adr_history = 30;</code>
        */
-      public Internal.UplinkAdrHistoryOrBuilder getUplinkAdrHistoryOrBuilder(
+      public UplinkAdrHistoryOrBuilder getUplinkAdrHistoryOrBuilder(
           int index) {
         if (uplinkAdrHistoryBuilder_ == null) {
           return uplinkAdrHistory_.get(index);  } else {
@@ -5006,11 +5314,15 @@ Internal.DeviceSessionChannel defaultValue);
       /**
        * <pre>
        * Uplink history for ADR (last 20 uplink transmissions).
+       * This table is reset in case one of parameters has changed:
+       *   * DR
+       *   * TxPower
+       *   * NbTrans
        * </pre>
        *
        * <code>repeated .internal.UplinkAdrHistory uplink_adr_history = 30;</code>
        */
-      public java.util.List<? extends Internal.UplinkAdrHistoryOrBuilder> 
+      public java.util.List<? extends UplinkAdrHistoryOrBuilder> 
            getUplinkAdrHistoryOrBuilderList() {
         if (uplinkAdrHistoryBuilder_ != null) {
           return uplinkAdrHistoryBuilder_.getMessageOrBuilderList();
@@ -5021,45 +5333,57 @@ Internal.DeviceSessionChannel defaultValue);
       /**
        * <pre>
        * Uplink history for ADR (last 20 uplink transmissions).
+       * This table is reset in case one of parameters has changed:
+       *   * DR
+       *   * TxPower
+       *   * NbTrans
        * </pre>
        *
        * <code>repeated .internal.UplinkAdrHistory uplink_adr_history = 30;</code>
        */
-      public Internal.UplinkAdrHistory.Builder addUplinkAdrHistoryBuilder() {
+      public UplinkAdrHistory.Builder addUplinkAdrHistoryBuilder() {
         return getUplinkAdrHistoryFieldBuilder().addBuilder(
-            Internal.UplinkAdrHistory.getDefaultInstance());
+            UplinkAdrHistory.getDefaultInstance());
       }
       /**
        * <pre>
        * Uplink history for ADR (last 20 uplink transmissions).
+       * This table is reset in case one of parameters has changed:
+       *   * DR
+       *   * TxPower
+       *   * NbTrans
        * </pre>
        *
        * <code>repeated .internal.UplinkAdrHistory uplink_adr_history = 30;</code>
        */
-      public Internal.UplinkAdrHistory.Builder addUplinkAdrHistoryBuilder(
+      public UplinkAdrHistory.Builder addUplinkAdrHistoryBuilder(
           int index) {
         return getUplinkAdrHistoryFieldBuilder().addBuilder(
-            index, Internal.UplinkAdrHistory.getDefaultInstance());
+            index, UplinkAdrHistory.getDefaultInstance());
       }
       /**
        * <pre>
        * Uplink history for ADR (last 20 uplink transmissions).
+       * This table is reset in case one of parameters has changed:
+       *   * DR
+       *   * TxPower
+       *   * NbTrans
        * </pre>
        *
        * <code>repeated .internal.UplinkAdrHistory uplink_adr_history = 30;</code>
        */
-      public java.util.List<Internal.UplinkAdrHistory.Builder> 
+      public java.util.List<UplinkAdrHistory.Builder> 
            getUplinkAdrHistoryBuilderList() {
         return getUplinkAdrHistoryFieldBuilder().getBuilderList();
       }
       private com.google.protobuf.RepeatedFieldBuilderV3<
-          Internal.UplinkAdrHistory, Internal.UplinkAdrHistory.Builder, Internal.UplinkAdrHistoryOrBuilder> 
+          UplinkAdrHistory, UplinkAdrHistory.Builder, UplinkAdrHistoryOrBuilder> 
           getUplinkAdrHistoryFieldBuilder() {
         if (uplinkAdrHistoryBuilder_ == null) {
           uplinkAdrHistoryBuilder_ = new com.google.protobuf.RepeatedFieldBuilderV3<
-              Internal.UplinkAdrHistory, Internal.UplinkAdrHistory.Builder, Internal.UplinkAdrHistoryOrBuilder>(
+              UplinkAdrHistory, UplinkAdrHistory.Builder, UplinkAdrHistoryOrBuilder>(
                   uplinkAdrHistory_,
-                  ((bitField0_ & 0x00000004) != 0),
+                  ((bitField0_ & 0x40000000) != 0),
                   getParentForChildren(),
                   isClean());
           uplinkAdrHistory_ = null;
@@ -5070,7 +5394,7 @@ Internal.DeviceSessionChannel defaultValue);
       private com.google.protobuf.MapField<
           Integer, Integer> macCommandErrorCount_;
       private com.google.protobuf.MapField<Integer, Integer>
-      internalGetMacCommandErrorCount() {
+          internalGetMacCommandErrorCount() {
         if (macCommandErrorCount_ == null) {
           return com.google.protobuf.MapField.emptyMapField(
               MacCommandErrorCountDefaultEntryHolder.defaultEntry);
@@ -5078,8 +5402,7 @@ Internal.DeviceSessionChannel defaultValue);
         return macCommandErrorCount_;
       }
       private com.google.protobuf.MapField<Integer, Integer>
-      internalGetMutableMacCommandErrorCount() {
-        onChanged();;
+          internalGetMutableMacCommandErrorCount() {
         if (macCommandErrorCount_ == null) {
           macCommandErrorCount_ = com.google.protobuf.MapField.newMapField(
               MacCommandErrorCountDefaultEntryHolder.defaultEntry);
@@ -5087,9 +5410,10 @@ Internal.DeviceSessionChannel defaultValue);
         if (!macCommandErrorCount_.isMutable()) {
           macCommandErrorCount_ = macCommandErrorCount_.copy();
         }
+        bitField0_ |= 0x80000000;
+        onChanged();
         return macCommandErrorCount_;
       }
-
       public int getMacCommandErrorCountCount() {
         return internalGetMacCommandErrorCount().getMap().size();
       }
@@ -5100,11 +5424,10 @@ Internal.DeviceSessionChannel defaultValue);
        *
        * <code>map&lt;uint32, uint32&gt; mac_command_error_count = 31;</code>
        */
-
       @Override
       public boolean containsMacCommandErrorCount(
           int key) {
-        
+
         return internalGetMacCommandErrorCount().getMap().containsKey(key);
       }
       /**
@@ -5123,7 +5446,6 @@ Internal.DeviceSessionChannel defaultValue);
        * <code>map&lt;uint32, uint32&gt; mac_command_error_count = 31;</code>
        */
       @Override
-
       public java.util.Map<Integer, Integer> getMacCommandErrorCountMap() {
         return internalGetMacCommandErrorCount().getMap();
       }
@@ -5135,11 +5457,10 @@ Internal.DeviceSessionChannel defaultValue);
        * <code>map&lt;uint32, uint32&gt; mac_command_error_count = 31;</code>
        */
       @Override
-
       public int getMacCommandErrorCountOrDefault(
           int key,
           int defaultValue) {
-        
+
         java.util.Map<Integer, Integer> map =
             internalGetMacCommandErrorCount().getMap();
         return map.containsKey(key) ? map.get(key) : defaultValue;
@@ -5152,10 +5473,9 @@ Internal.DeviceSessionChannel defaultValue);
        * <code>map&lt;uint32, uint32&gt; mac_command_error_count = 31;</code>
        */
       @Override
-
       public int getMacCommandErrorCountOrThrow(
           int key) {
-        
+
         java.util.Map<Integer, Integer> map =
             internalGetMacCommandErrorCount().getMap();
         if (!map.containsKey(key)) {
@@ -5163,8 +5483,8 @@ Internal.DeviceSessionChannel defaultValue);
         }
         return map.get(key);
       }
-
       public Builder clearMacCommandErrorCount() {
+        bitField0_ = (bitField0_ & ~0x80000000);
         internalGetMutableMacCommandErrorCount().getMutableMap()
             .clear();
         return this;
@@ -5176,10 +5496,9 @@ Internal.DeviceSessionChannel defaultValue);
        *
        * <code>map&lt;uint32, uint32&gt; mac_command_error_count = 31;</code>
        */
-
       public Builder removeMacCommandErrorCount(
           int key) {
-        
+
         internalGetMutableMacCommandErrorCount().getMutableMap()
             .remove(key);
         return this;
@@ -5189,7 +5508,8 @@ Internal.DeviceSessionChannel defaultValue);
        */
       @Deprecated
       public java.util.Map<Integer, Integer>
-      getMutableMacCommandErrorCount() {
+          getMutableMacCommandErrorCount() {
+        bitField0_ |= 0x80000000;
         return internalGetMutableMacCommandErrorCount().getMutableMap();
       }
       /**
@@ -5202,10 +5522,11 @@ Internal.DeviceSessionChannel defaultValue);
       public Builder putMacCommandErrorCount(
           int key,
           int value) {
-        
-        
+
+
         internalGetMutableMacCommandErrorCount().getMutableMap()
             .put(key, value);
+        bitField0_ |= 0x80000000;
         return this;
       }
       /**
@@ -5215,11 +5536,11 @@ Internal.DeviceSessionChannel defaultValue);
        *
        * <code>map&lt;uint32, uint32&gt; mac_command_error_count = 31;</code>
        */
-
       public Builder putAllMacCommandErrorCount(
           java.util.Map<Integer, Integer> values) {
         internalGetMutableMacCommandErrorCount().getMutableMap()
             .putAll(values);
+        bitField0_ |= 0x80000000;
         return this;
       }
 
@@ -5235,7 +5556,7 @@ Internal.DeviceSessionChannel defaultValue);
        * @return Whether the lastDeviceStatusRequest field is set.
        */
       public boolean hasLastDeviceStatusRequest() {
-        return lastDeviceStatusRequestBuilder_ != null || lastDeviceStatusRequest_ != null;
+        return ((bitField1_ & 0x00000001) != 0);
       }
       /**
        * <pre>
@@ -5265,11 +5586,11 @@ Internal.DeviceSessionChannel defaultValue);
             throw new NullPointerException();
           }
           lastDeviceStatusRequest_ = value;
-          onChanged();
         } else {
           lastDeviceStatusRequestBuilder_.setMessage(value);
         }
-
+        bitField1_ |= 0x00000001;
+        onChanged();
         return this;
       }
       /**
@@ -5283,11 +5604,11 @@ Internal.DeviceSessionChannel defaultValue);
           com.google.protobuf.Timestamp.Builder builderForValue) {
         if (lastDeviceStatusRequestBuilder_ == null) {
           lastDeviceStatusRequest_ = builderForValue.build();
-          onChanged();
         } else {
           lastDeviceStatusRequestBuilder_.setMessage(builderForValue.build());
         }
-
+        bitField1_ |= 0x00000001;
+        onChanged();
         return this;
       }
       /**
@@ -5299,17 +5620,18 @@ Internal.DeviceSessionChannel defaultValue);
        */
       public Builder mergeLastDeviceStatusRequest(com.google.protobuf.Timestamp value) {
         if (lastDeviceStatusRequestBuilder_ == null) {
-          if (lastDeviceStatusRequest_ != null) {
-            lastDeviceStatusRequest_ =
-              com.google.protobuf.Timestamp.newBuilder(lastDeviceStatusRequest_).mergeFrom(value).buildPartial();
+          if (((bitField1_ & 0x00000001) != 0) &&
+            lastDeviceStatusRequest_ != null &&
+            lastDeviceStatusRequest_ != com.google.protobuf.Timestamp.getDefaultInstance()) {
+            getLastDeviceStatusRequestBuilder().mergeFrom(value);
           } else {
             lastDeviceStatusRequest_ = value;
           }
-          onChanged();
         } else {
           lastDeviceStatusRequestBuilder_.mergeFrom(value);
         }
-
+        bitField1_ |= 0x00000001;
+        onChanged();
         return this;
       }
       /**
@@ -5320,14 +5642,13 @@ Internal.DeviceSessionChannel defaultValue);
        * <code>.google.protobuf.Timestamp last_device_status_request = 32;</code>
        */
       public Builder clearLastDeviceStatusRequest() {
-        if (lastDeviceStatusRequestBuilder_ == null) {
-          lastDeviceStatusRequest_ = null;
-          onChanged();
-        } else {
-          lastDeviceStatusRequest_ = null;
+        bitField1_ = (bitField1_ & ~0x00000001);
+        lastDeviceStatusRequest_ = null;
+        if (lastDeviceStatusRequestBuilder_ != null) {
+          lastDeviceStatusRequestBuilder_.dispose();
           lastDeviceStatusRequestBuilder_ = null;
         }
-
+        onChanged();
         return this;
       }
       /**
@@ -5338,7 +5659,7 @@ Internal.DeviceSessionChannel defaultValue);
        * <code>.google.protobuf.Timestamp last_device_status_request = 32;</code>
        */
       public com.google.protobuf.Timestamp.Builder getLastDeviceStatusRequestBuilder() {
-        
+        bitField1_ |= 0x00000001;
         onChanged();
         return getLastDeviceStatusRequestFieldBuilder().getBuilder();
       }
@@ -5403,8 +5724,9 @@ Internal.DeviceSessionChannel defaultValue);
        * @return This builder for chaining.
        */
       public Builder setRejoinRequestEnabled(boolean value) {
-        
+
         rejoinRequestEnabled_ = value;
+        bitField1_ |= 0x00000002;
         onChanged();
         return this;
       }
@@ -5418,7 +5740,7 @@ Internal.DeviceSessionChannel defaultValue);
        * @return This builder for chaining.
        */
       public Builder clearRejoinRequestEnabled() {
-        
+        bitField1_ = (bitField1_ & ~0x00000002);
         rejoinRequestEnabled_ = false;
         onChanged();
         return this;
@@ -5449,8 +5771,9 @@ Internal.DeviceSessionChannel defaultValue);
        * @return This builder for chaining.
        */
       public Builder setRejoinRequestMaxCountN(int value) {
-        
+
         rejoinRequestMaxCountN_ = value;
+        bitField1_ |= 0x00000004;
         onChanged();
         return this;
       }
@@ -5464,7 +5787,7 @@ Internal.DeviceSessionChannel defaultValue);
        * @return This builder for chaining.
        */
       public Builder clearRejoinRequestMaxCountN() {
-        
+        bitField1_ = (bitField1_ & ~0x00000004);
         rejoinRequestMaxCountN_ = 0;
         onChanged();
         return this;
@@ -5495,8 +5818,9 @@ Internal.DeviceSessionChannel defaultValue);
        * @return This builder for chaining.
        */
       public Builder setRejoinRequestMaxTimeN(int value) {
-        
+
         rejoinRequestMaxTimeN_ = value;
+        bitField1_ |= 0x00000008;
         onChanged();
         return this;
       }
@@ -5510,7 +5834,7 @@ Internal.DeviceSessionChannel defaultValue);
        * @return This builder for chaining.
        */
       public Builder clearRejoinRequestMaxTimeN() {
-        
+        bitField1_ = (bitField1_ & ~0x00000008);
         rejoinRequestMaxTimeN_ = 0;
         onChanged();
         return this;
@@ -5541,8 +5865,9 @@ Internal.DeviceSessionChannel defaultValue);
        * @return This builder for chaining.
        */
       public Builder setRejoinCount0(int value) {
-        
+
         rejoinCount0_ = value;
+        bitField1_ |= 0x00000010;
         onChanged();
         return this;
       }
@@ -5556,7 +5881,7 @@ Internal.DeviceSessionChannel defaultValue);
        * @return This builder for chaining.
        */
       public Builder clearRejoinCount0() {
-        
+        bitField1_ = (bitField1_ & ~0x00000010);
         rejoinCount0_ = 0;
         onChanged();
         return this;
@@ -5585,8 +5910,9 @@ Internal.DeviceSessionChannel defaultValue);
        * @return This builder for chaining.
        */
       public Builder setUplinkDwellTime400Ms(boolean value) {
-        
+
         uplinkDwellTime400Ms_ = value;
+        bitField1_ |= 0x00000020;
         onChanged();
         return this;
       }
@@ -5599,7 +5925,7 @@ Internal.DeviceSessionChannel defaultValue);
        * @return This builder for chaining.
        */
       public Builder clearUplinkDwellTime400Ms() {
-        
+        bitField1_ = (bitField1_ & ~0x00000020);
         uplinkDwellTime400Ms_ = false;
         onChanged();
         return this;
@@ -5628,8 +5954,9 @@ Internal.DeviceSessionChannel defaultValue);
        * @return This builder for chaining.
        */
       public Builder setDownlinkDwellTime400Ms(boolean value) {
-        
+
         downlinkDwellTime400Ms_ = value;
+        bitField1_ |= 0x00000040;
         onChanged();
         return this;
       }
@@ -5642,7 +5969,7 @@ Internal.DeviceSessionChannel defaultValue);
        * @return This builder for chaining.
        */
       public Builder clearDownlinkDwellTime400Ms() {
-        
+        bitField1_ = (bitField1_ & ~0x00000040);
         downlinkDwellTime400Ms_ = false;
         onChanged();
         return this;
@@ -5671,8 +5998,9 @@ Internal.DeviceSessionChannel defaultValue);
        * @return This builder for chaining.
        */
       public Builder setUplinkMaxEirpIndex(int value) {
-        
+
         uplinkMaxEirpIndex_ = value;
+        bitField1_ |= 0x00000080;
         onChanged();
         return this;
       }
@@ -5685,28 +6013,28 @@ Internal.DeviceSessionChannel defaultValue);
        * @return This builder for chaining.
        */
       public Builder clearUplinkMaxEirpIndex() {
-        
+        bitField1_ = (bitField1_ & ~0x00000080);
         uplinkMaxEirpIndex_ = 0;
         onChanged();
         return this;
       }
 
-      private Object regionName_ = "";
+      private Object regionConfigId_ = "";
       /**
        * <pre>
-       * Region name.
+       * Region configuration ID.
        * </pre>
        *
-       * <code>string region_name = 40;</code>
-       * @return The regionName.
+       * <code>string region_config_id = 40;</code>
+       * @return The regionConfigId.
        */
-      public String getRegionName() {
-        Object ref = regionName_;
+      public String getRegionConfigId() {
+        Object ref = regionConfigId_;
         if (!(ref instanceof String)) {
           com.google.protobuf.ByteString bs =
               (com.google.protobuf.ByteString) ref;
           String s = bs.toStringUtf8();
-          regionName_ = s;
+          regionConfigId_ = s;
           return s;
         } else {
           return (String) ref;
@@ -5714,20 +6042,20 @@ Internal.DeviceSessionChannel defaultValue);
       }
       /**
        * <pre>
-       * Region name.
+       * Region configuration ID.
        * </pre>
        *
-       * <code>string region_name = 40;</code>
-       * @return The bytes for regionName.
+       * <code>string region_config_id = 40;</code>
+       * @return The bytes for regionConfigId.
        */
       public com.google.protobuf.ByteString
-          getRegionNameBytes() {
-        Object ref = regionName_;
+          getRegionConfigIdBytes() {
+        Object ref = regionConfigId_;
         if (ref instanceof String) {
           com.google.protobuf.ByteString b = 
               com.google.protobuf.ByteString.copyFromUtf8(
                   (String) ref);
-          regionName_ = b;
+          regionConfigId_ = b;
           return b;
         } else {
           return (com.google.protobuf.ByteString) ref;
@@ -5735,56 +6063,207 @@ Internal.DeviceSessionChannel defaultValue);
       }
       /**
        * <pre>
-       * Region name.
+       * Region configuration ID.
        * </pre>
        *
-       * <code>string region_name = 40;</code>
-       * @param value The regionName to set.
+       * <code>string region_config_id = 40;</code>
+       * @param value The regionConfigId to set.
        * @return This builder for chaining.
        */
-      public Builder setRegionName(
+      public Builder setRegionConfigId(
           String value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  
-        regionName_ = value;
+        if (value == null) { throw new NullPointerException(); }
+        regionConfigId_ = value;
+        bitField1_ |= 0x00000100;
         onChanged();
         return this;
       }
       /**
        * <pre>
-       * Region name.
+       * Region configuration ID.
        * </pre>
        *
-       * <code>string region_name = 40;</code>
+       * <code>string region_config_id = 40;</code>
        * @return This builder for chaining.
        */
-      public Builder clearRegionName() {
-        
-        regionName_ = getDefaultInstance().getRegionName();
+      public Builder clearRegionConfigId() {
+        regionConfigId_ = getDefaultInstance().getRegionConfigId();
+        bitField1_ = (bitField1_ & ~0x00000100);
         onChanged();
         return this;
       }
       /**
        * <pre>
-       * Region name.
+       * Region configuration ID.
        * </pre>
        *
-       * <code>string region_name = 40;</code>
-       * @param value The bytes for regionName to set.
+       * <code>string region_config_id = 40;</code>
+       * @param value The bytes for regionConfigId to set.
        * @return This builder for chaining.
        */
-      public Builder setRegionNameBytes(
+      public Builder setRegionConfigIdBytes(
           com.google.protobuf.ByteString value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  checkByteStringIsUtf8(value);
-        
-        regionName_ = value;
+        if (value == null) { throw new NullPointerException(); }
+        checkByteStringIsUtf8(value);
+        regionConfigId_ = value;
+        bitField1_ |= 0x00000100;
         onChanged();
         return this;
+      }
+
+      private Relay relay_;
+      private com.google.protobuf.SingleFieldBuilderV3<
+          Relay, Relay.Builder, RelayOrBuilder> relayBuilder_;
+      /**
+       * <pre>
+       * Relay state.
+       * </pre>
+       *
+       * <code>.internal.Relay relay = 41;</code>
+       * @return Whether the relay field is set.
+       */
+      public boolean hasRelay() {
+        return ((bitField1_ & 0x00000200) != 0);
+      }
+      /**
+       * <pre>
+       * Relay state.
+       * </pre>
+       *
+       * <code>.internal.Relay relay = 41;</code>
+       * @return The relay.
+       */
+      public Relay getRelay() {
+        if (relayBuilder_ == null) {
+          return relay_ == null ? Relay.getDefaultInstance() : relay_;
+        } else {
+          return relayBuilder_.getMessage();
+        }
+      }
+      /**
+       * <pre>
+       * Relay state.
+       * </pre>
+       *
+       * <code>.internal.Relay relay = 41;</code>
+       */
+      public Builder setRelay(Relay value) {
+        if (relayBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          relay_ = value;
+        } else {
+          relayBuilder_.setMessage(value);
+        }
+        bitField1_ |= 0x00000200;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * Relay state.
+       * </pre>
+       *
+       * <code>.internal.Relay relay = 41;</code>
+       */
+      public Builder setRelay(
+          Relay.Builder builderForValue) {
+        if (relayBuilder_ == null) {
+          relay_ = builderForValue.build();
+        } else {
+          relayBuilder_.setMessage(builderForValue.build());
+        }
+        bitField1_ |= 0x00000200;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * Relay state.
+       * </pre>
+       *
+       * <code>.internal.Relay relay = 41;</code>
+       */
+      public Builder mergeRelay(Relay value) {
+        if (relayBuilder_ == null) {
+          if (((bitField1_ & 0x00000200) != 0) &&
+            relay_ != null &&
+            relay_ != Relay.getDefaultInstance()) {
+            getRelayBuilder().mergeFrom(value);
+          } else {
+            relay_ = value;
+          }
+        } else {
+          relayBuilder_.mergeFrom(value);
+        }
+        bitField1_ |= 0x00000200;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * Relay state.
+       * </pre>
+       *
+       * <code>.internal.Relay relay = 41;</code>
+       */
+      public Builder clearRelay() {
+        bitField1_ = (bitField1_ & ~0x00000200);
+        relay_ = null;
+        if (relayBuilder_ != null) {
+          relayBuilder_.dispose();
+          relayBuilder_ = null;
+        }
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * Relay state.
+       * </pre>
+       *
+       * <code>.internal.Relay relay = 41;</code>
+       */
+      public Relay.Builder getRelayBuilder() {
+        bitField1_ |= 0x00000200;
+        onChanged();
+        return getRelayFieldBuilder().getBuilder();
+      }
+      /**
+       * <pre>
+       * Relay state.
+       * </pre>
+       *
+       * <code>.internal.Relay relay = 41;</code>
+       */
+      public RelayOrBuilder getRelayOrBuilder() {
+        if (relayBuilder_ != null) {
+          return relayBuilder_.getMessageOrBuilder();
+        } else {
+          return relay_ == null ?
+              Relay.getDefaultInstance() : relay_;
+        }
+      }
+      /**
+       * <pre>
+       * Relay state.
+       * </pre>
+       *
+       * <code>.internal.Relay relay = 41;</code>
+       */
+      private com.google.protobuf.SingleFieldBuilderV3<
+          Relay, Relay.Builder, RelayOrBuilder> 
+          getRelayFieldBuilder() {
+        if (relayBuilder_ == null) {
+          relayBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
+              Relay, Relay.Builder, RelayOrBuilder>(
+                  getRelay(),
+                  getParentForChildren(),
+                  isClean());
+          relay_ = null;
+        }
+        return relayBuilder_;
       }
       @Override
       public final Builder setUnknownFields(
@@ -5803,12 +6282,12 @@ Internal.DeviceSessionChannel defaultValue);
     }
 
     // @@protoc_insertion_point(class_scope:internal.DeviceSession)
-    private static final Internal.DeviceSession DEFAULT_INSTANCE;
+    private static final DeviceSession DEFAULT_INSTANCE;
     static {
-      DEFAULT_INSTANCE = new Internal.DeviceSession();
+      DEFAULT_INSTANCE = new DeviceSession();
     }
 
-    public static Internal.DeviceSession getDefaultInstance() {
+    public static DeviceSession getDefaultInstance() {
       return DEFAULT_INSTANCE;
     }
 
@@ -5844,7 +6323,7 @@ Internal.DeviceSessionChannel defaultValue);
     }
 
     @Override
-    public Internal.DeviceSession getDefaultInstanceForType() {
+    public DeviceSession getDefaultInstanceForType() {
       return DEFAULT_INSTANCE;
     }
 
@@ -5926,26 +6405,21 @@ Internal.DeviceSessionChannel defaultValue);
       return new UplinkAdrHistory();
     }
 
-    @Override
-    public final com.google.protobuf.UnknownFieldSet
-    getUnknownFields() {
-      return this.unknownFields;
-    }
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
-      return Internal.internal_static_internal_UplinkAdrHistory_descriptor;
+      return internal_static_internal_UplinkAdrHistory_descriptor;
     }
 
     @Override
     protected FieldAccessorTable
         internalGetFieldAccessorTable() {
-      return Internal.internal_static_internal_UplinkAdrHistory_fieldAccessorTable
+      return internal_static_internal_UplinkAdrHistory_fieldAccessorTable
           .ensureFieldAccessorsInitialized(
-              Internal.UplinkAdrHistory.class, Internal.UplinkAdrHistory.Builder.class);
+              UplinkAdrHistory.class, UplinkAdrHistory.Builder.class);
     }
 
     public static final int F_CNT_FIELD_NUMBER = 1;
-    private int fCnt_;
+    private int fCnt_ = 0;
     /**
      * <pre>
      * Uplink frame-counter.
@@ -5960,7 +6434,7 @@ Internal.DeviceSessionChannel defaultValue);
     }
 
     public static final int MAX_SNR_FIELD_NUMBER = 2;
-    private float maxSnr_;
+    private float maxSnr_ = 0F;
     /**
      * <pre>
      * Max SNR (of deduplicated frames received by one or multiple gateways).
@@ -5975,7 +6449,7 @@ Internal.DeviceSessionChannel defaultValue);
     }
 
     public static final int MAX_RSSI_FIELD_NUMBER = 5;
-    private int maxRssi_;
+    private int maxRssi_ = 0;
     /**
      * <pre>
      * Max RSSI.
@@ -5990,7 +6464,7 @@ Internal.DeviceSessionChannel defaultValue);
     }
 
     public static final int TX_POWER_INDEX_FIELD_NUMBER = 3;
-    private int txPowerIndex_;
+    private int txPowerIndex_ = 0;
     /**
      * <pre>
      * TX Power (as known by the network-server).
@@ -6005,7 +6479,7 @@ Internal.DeviceSessionChannel defaultValue);
     }
 
     public static final int GATEWAY_COUNT_FIELD_NUMBER = 4;
-    private int gatewayCount_;
+    private int gatewayCount_ = 0;
     /**
      * <pre>
      * Number of receiving gateways.
@@ -6087,10 +6561,10 @@ Internal.DeviceSessionChannel defaultValue);
       if (obj == this) {
        return true;
       }
-      if (!(obj instanceof Internal.UplinkAdrHistory)) {
+      if (!(obj instanceof UplinkAdrHistory)) {
         return super.equals(obj);
       }
-      Internal.UplinkAdrHistory other = (Internal.UplinkAdrHistory) obj;
+      UplinkAdrHistory other = (UplinkAdrHistory) obj;
 
       if (getFCnt()
           != other.getFCnt()) return false;
@@ -6130,69 +6604,69 @@ Internal.DeviceSessionChannel defaultValue);
       return hash;
     }
 
-    public static Internal.UplinkAdrHistory parseFrom(
+    public static UplinkAdrHistory parseFrom(
         java.nio.ByteBuffer data)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data);
     }
-    public static Internal.UplinkAdrHistory parseFrom(
+    public static UplinkAdrHistory parseFrom(
         java.nio.ByteBuffer data,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data, extensionRegistry);
     }
-    public static Internal.UplinkAdrHistory parseFrom(
+    public static UplinkAdrHistory parseFrom(
         com.google.protobuf.ByteString data)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data);
     }
-    public static Internal.UplinkAdrHistory parseFrom(
+    public static UplinkAdrHistory parseFrom(
         com.google.protobuf.ByteString data,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data, extensionRegistry);
     }
-    public static Internal.UplinkAdrHistory parseFrom(byte[] data)
+    public static UplinkAdrHistory parseFrom(byte[] data)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data);
     }
-    public static Internal.UplinkAdrHistory parseFrom(
+    public static UplinkAdrHistory parseFrom(
         byte[] data,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data, extensionRegistry);
     }
-    public static Internal.UplinkAdrHistory parseFrom(java.io.InputStream input)
+    public static UplinkAdrHistory parseFrom(java.io.InputStream input)
         throws java.io.IOException {
       return com.google.protobuf.GeneratedMessageV3
           .parseWithIOException(PARSER, input);
     }
-    public static Internal.UplinkAdrHistory parseFrom(
+    public static UplinkAdrHistory parseFrom(
         java.io.InputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
       return com.google.protobuf.GeneratedMessageV3
           .parseWithIOException(PARSER, input, extensionRegistry);
     }
-    public static Internal.UplinkAdrHistory parseDelimitedFrom(java.io.InputStream input)
+    public static UplinkAdrHistory parseDelimitedFrom(java.io.InputStream input)
         throws java.io.IOException {
       return com.google.protobuf.GeneratedMessageV3
           .parseDelimitedWithIOException(PARSER, input);
     }
-    public static Internal.UplinkAdrHistory parseDelimitedFrom(
+    public static UplinkAdrHistory parseDelimitedFrom(
         java.io.InputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
       return com.google.protobuf.GeneratedMessageV3
           .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
     }
-    public static Internal.UplinkAdrHistory parseFrom(
+    public static UplinkAdrHistory parseFrom(
         com.google.protobuf.CodedInputStream input)
         throws java.io.IOException {
       return com.google.protobuf.GeneratedMessageV3
           .parseWithIOException(PARSER, input);
     }
-    public static Internal.UplinkAdrHistory parseFrom(
+    public static UplinkAdrHistory parseFrom(
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
@@ -6205,7 +6679,7 @@ Internal.DeviceSessionChannel defaultValue);
     public static Builder newBuilder() {
       return DEFAULT_INSTANCE.toBuilder();
     }
-    public static Builder newBuilder(Internal.UplinkAdrHistory prototype) {
+    public static Builder newBuilder(UplinkAdrHistory prototype) {
       return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
     }
     @Override
@@ -6226,21 +6700,21 @@ Internal.DeviceSessionChannel defaultValue);
     public static final class Builder extends
         com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
         // @@protoc_insertion_point(builder_implements:internal.UplinkAdrHistory)
-        Internal.UplinkAdrHistoryOrBuilder {
+        UplinkAdrHistoryOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
-        return Internal.internal_static_internal_UplinkAdrHistory_descriptor;
+        return internal_static_internal_UplinkAdrHistory_descriptor;
       }
 
       @Override
       protected FieldAccessorTable
           internalGetFieldAccessorTable() {
-        return Internal.internal_static_internal_UplinkAdrHistory_fieldAccessorTable
+        return internal_static_internal_UplinkAdrHistory_fieldAccessorTable
             .ensureFieldAccessorsInitialized(
-                Internal.UplinkAdrHistory.class, Internal.UplinkAdrHistory.Builder.class);
+                UplinkAdrHistory.class, UplinkAdrHistory.Builder.class);
       }
 
-      // Construct using Internal.UplinkAdrHistory.newBuilder()
+      // Construct using UplinkAdrHistory.newBuilder()
       private Builder() {
 
       }
@@ -6253,33 +6727,29 @@ Internal.DeviceSessionChannel defaultValue);
       @Override
       public Builder clear() {
         super.clear();
+        bitField0_ = 0;
         fCnt_ = 0;
-
         maxSnr_ = 0F;
-
         maxRssi_ = 0;
-
         txPowerIndex_ = 0;
-
         gatewayCount_ = 0;
-
         return this;
       }
 
       @Override
       public com.google.protobuf.Descriptors.Descriptor
           getDescriptorForType() {
-        return Internal.internal_static_internal_UplinkAdrHistory_descriptor;
+        return internal_static_internal_UplinkAdrHistory_descriptor;
       }
 
       @Override
-      public Internal.UplinkAdrHistory getDefaultInstanceForType() {
-        return Internal.UplinkAdrHistory.getDefaultInstance();
+      public UplinkAdrHistory getDefaultInstanceForType() {
+        return UplinkAdrHistory.getDefaultInstance();
       }
 
       @Override
-      public Internal.UplinkAdrHistory build() {
-        Internal.UplinkAdrHistory result = buildPartial();
+      public UplinkAdrHistory build() {
+        UplinkAdrHistory result = buildPartial();
         if (!result.isInitialized()) {
           throw newUninitializedMessageException(result);
         }
@@ -6287,61 +6757,44 @@ Internal.DeviceSessionChannel defaultValue);
       }
 
       @Override
-      public Internal.UplinkAdrHistory buildPartial() {
-        Internal.UplinkAdrHistory result = new Internal.UplinkAdrHistory(this);
-        result.fCnt_ = fCnt_;
-        result.maxSnr_ = maxSnr_;
-        result.maxRssi_ = maxRssi_;
-        result.txPowerIndex_ = txPowerIndex_;
-        result.gatewayCount_ = gatewayCount_;
+      public UplinkAdrHistory buildPartial() {
+        UplinkAdrHistory result = new UplinkAdrHistory(this);
+        if (bitField0_ != 0) { buildPartial0(result); }
         onBuilt();
         return result;
       }
 
-      @Override
-      public Builder clone() {
-        return super.clone();
+      private void buildPartial0(UplinkAdrHistory result) {
+        int from_bitField0_ = bitField0_;
+        if (((from_bitField0_ & 0x00000001) != 0)) {
+          result.fCnt_ = fCnt_;
+        }
+        if (((from_bitField0_ & 0x00000002) != 0)) {
+          result.maxSnr_ = maxSnr_;
+        }
+        if (((from_bitField0_ & 0x00000004) != 0)) {
+          result.maxRssi_ = maxRssi_;
+        }
+        if (((from_bitField0_ & 0x00000008) != 0)) {
+          result.txPowerIndex_ = txPowerIndex_;
+        }
+        if (((from_bitField0_ & 0x00000010) != 0)) {
+          result.gatewayCount_ = gatewayCount_;
+        }
       }
-      @Override
-      public Builder setField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          Object value) {
-        return super.setField(field, value);
-      }
-      @Override
-      public Builder clearField(
-          com.google.protobuf.Descriptors.FieldDescriptor field) {
-        return super.clearField(field);
-      }
-      @Override
-      public Builder clearOneof(
-          com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-        return super.clearOneof(oneof);
-      }
-      @Override
-      public Builder setRepeatedField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          int index, Object value) {
-        return super.setRepeatedField(field, index, value);
-      }
-      @Override
-      public Builder addRepeatedField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          Object value) {
-        return super.addRepeatedField(field, value);
-      }
+
       @Override
       public Builder mergeFrom(com.google.protobuf.Message other) {
-        if (other instanceof Internal.UplinkAdrHistory) {
-          return mergeFrom((Internal.UplinkAdrHistory)other);
+        if (other instanceof UplinkAdrHistory) {
+          return mergeFrom((UplinkAdrHistory)other);
         } else {
           super.mergeFrom(other);
           return this;
         }
       }
 
-      public Builder mergeFrom(Internal.UplinkAdrHistory other) {
-        if (other == Internal.UplinkAdrHistory.getDefaultInstance()) return this;
+      public Builder mergeFrom(UplinkAdrHistory other) {
+        if (other == UplinkAdrHistory.getDefaultInstance()) return this;
         if (other.getFCnt() != 0) {
           setFCnt(other.getFCnt());
         }
@@ -6385,27 +6838,27 @@ Internal.DeviceSessionChannel defaultValue);
                 break;
               case 8: {
                 fCnt_ = input.readUInt32();
-
+                bitField0_ |= 0x00000001;
                 break;
               } // case 8
               case 21: {
                 maxSnr_ = input.readFloat();
-
+                bitField0_ |= 0x00000002;
                 break;
               } // case 21
               case 24: {
                 txPowerIndex_ = input.readUInt32();
-
+                bitField0_ |= 0x00000008;
                 break;
               } // case 24
               case 32: {
                 gatewayCount_ = input.readUInt32();
-
+                bitField0_ |= 0x00000010;
                 break;
               } // case 32
               case 40: {
                 maxRssi_ = input.readInt32();
-
+                bitField0_ |= 0x00000004;
                 break;
               } // case 40
               default: {
@@ -6423,6 +6876,7 @@ Internal.DeviceSessionChannel defaultValue);
         } // finally
         return this;
       }
+      private int bitField0_;
 
       private int fCnt_ ;
       /**
@@ -6447,8 +6901,9 @@ Internal.DeviceSessionChannel defaultValue);
        * @return This builder for chaining.
        */
       public Builder setFCnt(int value) {
-        
+
         fCnt_ = value;
+        bitField0_ |= 0x00000001;
         onChanged();
         return this;
       }
@@ -6461,7 +6916,7 @@ Internal.DeviceSessionChannel defaultValue);
        * @return This builder for chaining.
        */
       public Builder clearFCnt() {
-        
+        bitField0_ = (bitField0_ & ~0x00000001);
         fCnt_ = 0;
         onChanged();
         return this;
@@ -6490,8 +6945,9 @@ Internal.DeviceSessionChannel defaultValue);
        * @return This builder for chaining.
        */
       public Builder setMaxSnr(float value) {
-        
+
         maxSnr_ = value;
+        bitField0_ |= 0x00000002;
         onChanged();
         return this;
       }
@@ -6504,7 +6960,7 @@ Internal.DeviceSessionChannel defaultValue);
        * @return This builder for chaining.
        */
       public Builder clearMaxSnr() {
-        
+        bitField0_ = (bitField0_ & ~0x00000002);
         maxSnr_ = 0F;
         onChanged();
         return this;
@@ -6533,8 +6989,9 @@ Internal.DeviceSessionChannel defaultValue);
        * @return This builder for chaining.
        */
       public Builder setMaxRssi(int value) {
-        
+
         maxRssi_ = value;
+        bitField0_ |= 0x00000004;
         onChanged();
         return this;
       }
@@ -6547,7 +7004,7 @@ Internal.DeviceSessionChannel defaultValue);
        * @return This builder for chaining.
        */
       public Builder clearMaxRssi() {
-        
+        bitField0_ = (bitField0_ & ~0x00000004);
         maxRssi_ = 0;
         onChanged();
         return this;
@@ -6576,8 +7033,9 @@ Internal.DeviceSessionChannel defaultValue);
        * @return This builder for chaining.
        */
       public Builder setTxPowerIndex(int value) {
-        
+
         txPowerIndex_ = value;
+        bitField0_ |= 0x00000008;
         onChanged();
         return this;
       }
@@ -6590,7 +7048,7 @@ Internal.DeviceSessionChannel defaultValue);
        * @return This builder for chaining.
        */
       public Builder clearTxPowerIndex() {
-        
+        bitField0_ = (bitField0_ & ~0x00000008);
         txPowerIndex_ = 0;
         onChanged();
         return this;
@@ -6619,8 +7077,9 @@ Internal.DeviceSessionChannel defaultValue);
        * @return This builder for chaining.
        */
       public Builder setGatewayCount(int value) {
-        
+
         gatewayCount_ = value;
+        bitField0_ |= 0x00000010;
         onChanged();
         return this;
       }
@@ -6633,7 +7092,7 @@ Internal.DeviceSessionChannel defaultValue);
        * @return This builder for chaining.
        */
       public Builder clearGatewayCount() {
-        
+        bitField0_ = (bitField0_ & ~0x00000010);
         gatewayCount_ = 0;
         onChanged();
         return this;
@@ -6655,12 +7114,12 @@ Internal.DeviceSessionChannel defaultValue);
     }
 
     // @@protoc_insertion_point(class_scope:internal.UplinkAdrHistory)
-    private static final Internal.UplinkAdrHistory DEFAULT_INSTANCE;
+    private static final UplinkAdrHistory DEFAULT_INSTANCE;
     static {
-      DEFAULT_INSTANCE = new Internal.UplinkAdrHistory();
+      DEFAULT_INSTANCE = new UplinkAdrHistory();
     }
 
-    public static Internal.UplinkAdrHistory getDefaultInstance() {
+    public static UplinkAdrHistory getDefaultInstance() {
       return DEFAULT_INSTANCE;
     }
 
@@ -6696,7 +7155,5363 @@ Internal.DeviceSessionChannel defaultValue);
     }
 
     @Override
-    public Internal.UplinkAdrHistory getDefaultInstanceForType() {
+    public UplinkAdrHistory getDefaultInstanceForType() {
+      return DEFAULT_INSTANCE;
+    }
+
+  }
+
+  public interface RelayOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:internal.Relay)
+      com.google.protobuf.MessageOrBuilder {
+
+    /**
+     * <pre>
+     * Devices provisioned on the relay.
+     * </pre>
+     *
+     * <code>repeated .internal.RelayDevice devices = 1;</code>
+     */
+    java.util.List<RelayDevice> 
+        getDevicesList();
+    /**
+     * <pre>
+     * Devices provisioned on the relay.
+     * </pre>
+     *
+     * <code>repeated .internal.RelayDevice devices = 1;</code>
+     */
+    RelayDevice getDevices(int index);
+    /**
+     * <pre>
+     * Devices provisioned on the relay.
+     * </pre>
+     *
+     * <code>repeated .internal.RelayDevice devices = 1;</code>
+     */
+    int getDevicesCount();
+    /**
+     * <pre>
+     * Devices provisioned on the relay.
+     * </pre>
+     *
+     * <code>repeated .internal.RelayDevice devices = 1;</code>
+     */
+    java.util.List<? extends RelayDeviceOrBuilder> 
+        getDevicesOrBuilderList();
+    /**
+     * <pre>
+     * Devices provisioned on the relay.
+     * </pre>
+     *
+     * <code>repeated .internal.RelayDevice devices = 1;</code>
+     */
+    RelayDeviceOrBuilder getDevicesOrBuilder(
+        int index);
+
+    /**
+     * <pre>
+     * Filter list.
+     * </pre>
+     *
+     * <code>repeated .internal.RelayFilter filters = 2;</code>
+     */
+    java.util.List<RelayFilter> 
+        getFiltersList();
+    /**
+     * <pre>
+     * Filter list.
+     * </pre>
+     *
+     * <code>repeated .internal.RelayFilter filters = 2;</code>
+     */
+    RelayFilter getFilters(int index);
+    /**
+     * <pre>
+     * Filter list.
+     * </pre>
+     *
+     * <code>repeated .internal.RelayFilter filters = 2;</code>
+     */
+    int getFiltersCount();
+    /**
+     * <pre>
+     * Filter list.
+     * </pre>
+     *
+     * <code>repeated .internal.RelayFilter filters = 2;</code>
+     */
+    java.util.List<? extends RelayFilterOrBuilder> 
+        getFiltersOrBuilderList();
+    /**
+     * <pre>
+     * Filter list.
+     * </pre>
+     *
+     * <code>repeated .internal.RelayFilter filters = 2;</code>
+     */
+    RelayFilterOrBuilder getFiltersOrBuilder(
+        int index);
+
+    /**
+     * <pre>
+     * Relay is enabled.
+     * </pre>
+     *
+     * <code>bool enabled = 3;</code>
+     * @return The enabled.
+     */
+    boolean getEnabled();
+
+    /**
+     * <pre>
+     * CAD periodicity.
+     * </pre>
+     *
+     * <code>uint32 cad_periodicity = 4;</code>
+     * @return The cadPeriodicity.
+     */
+    int getCadPeriodicity();
+
+    /**
+     * <pre>
+     * Default channel index.
+     * </pre>
+     *
+     * <code>uint32 default_channel_index = 5;</code>
+     * @return The defaultChannelIndex.
+     */
+    int getDefaultChannelIndex();
+
+    /**
+     * <pre>
+     * Second channel freq.
+     * </pre>
+     *
+     * <code>uint32 second_channel_freq = 6;</code>
+     * @return The secondChannelFreq.
+     */
+    int getSecondChannelFreq();
+
+    /**
+     * <pre>
+     * Second channel DR.
+     * </pre>
+     *
+     * <code>uint32 second_channel_dr = 7;</code>
+     * @return The secondChannelDr.
+     */
+    int getSecondChannelDr();
+
+    /**
+     * <pre>
+     * Second channel ACK offset.
+     * </pre>
+     *
+     * <code>uint32 second_channel_ack_offset = 8;</code>
+     * @return The secondChannelAckOffset.
+     */
+    int getSecondChannelAckOffset();
+
+    /**
+     * <pre>
+     * End-device activation mode.
+     * </pre>
+     *
+     * <code>uint32 ed_activation_mode = 9;</code>
+     * @return The edActivationMode.
+     */
+    int getEdActivationMode();
+
+    /**
+     * <pre>
+     * End-device smart-enable level.
+     * </pre>
+     *
+     * <code>uint32 ed_smart_enable_level = 10;</code>
+     * @return The edSmartEnableLevel.
+     */
+    int getEdSmartEnableLevel();
+
+    /**
+     * <pre>
+     * End-device back-off.
+     * </pre>
+     *
+     * <code>uint32 ed_back_off = 11;</code>
+     * @return The edBackOff.
+     */
+    int getEdBackOff();
+
+    /**
+     * <pre>
+     * Join-request limit reload rate.
+     * </pre>
+     *
+     * <code>uint32 join_req_limit_reload_rate = 12;</code>
+     * @return The joinReqLimitReloadRate.
+     */
+    int getJoinReqLimitReloadRate();
+
+    /**
+     * <pre>
+     * Notify limit reload rate.
+     * </pre>
+     *
+     * <code>uint32 notify_limit_reload_rate = 13;</code>
+     * @return The notifyLimitReloadRate.
+     */
+    int getNotifyLimitReloadRate();
+
+    /**
+     * <pre>
+     * Global uplink limit reload rate.
+     * </pre>
+     *
+     * <code>uint32 global_uplink_limit_reload_rate = 14;</code>
+     * @return The globalUplinkLimitReloadRate.
+     */
+    int getGlobalUplinkLimitReloadRate();
+
+    /**
+     * <pre>
+     * Overall limit reload rate.
+     * </pre>
+     *
+     * <code>uint32 overall_limit_reload_rate = 15;</code>
+     * @return The overallLimitReloadRate.
+     */
+    int getOverallLimitReloadRate();
+
+    /**
+     * <pre>
+     * Join-request limit bucket size.
+     * </pre>
+     *
+     * <code>uint32 join_req_limit_bucket_size = 16;</code>
+     * @return The joinReqLimitBucketSize.
+     */
+    int getJoinReqLimitBucketSize();
+
+    /**
+     * <pre>
+     * Notify limit bucket size.
+     * </pre>
+     *
+     * <code>uint32 notify_limit_bucket_size = 17;</code>
+     * @return The notifyLimitBucketSize.
+     */
+    int getNotifyLimitBucketSize();
+
+    /**
+     * <pre>
+     * Global uplink limit bucket size.
+     * </pre>
+     *
+     * <code>uint32 global_uplink_limit_bucket_size = 18;</code>
+     * @return The globalUplinkLimitBucketSize.
+     */
+    int getGlobalUplinkLimitBucketSize();
+
+    /**
+     * <pre>
+     * Overall limit bucket size.
+     * </pre>
+     *
+     * <code>uint32 overall_limit_bucket_size = 19;</code>
+     * @return The overallLimitBucketSize.
+     */
+    int getOverallLimitBucketSize();
+
+    /**
+     * <pre>
+     * End-device must communicate through relay only.
+     * This is stored in the device-session as we need to validate on retrieving
+     * the device-session.
+     * </pre>
+     *
+     * <code>bool ed_relay_only = 20;</code>
+     * @return The edRelayOnly.
+     */
+    boolean getEdRelayOnly();
+
+    /**
+     * <pre>
+     * End-device WFCnt.
+     * This holds the last known WFCnt value. ChirpStack will periodically read
+     * this value from the Relay.
+     * </pre>
+     *
+     * <code>uint32 w_f_cnt = 21;</code>
+     * @return The wFCnt.
+     */
+    int getWFCnt();
+  }
+  /**
+   * Protobuf type {@code internal.Relay}
+   */
+  public static final class Relay extends
+      com.google.protobuf.GeneratedMessageV3 implements
+      // @@protoc_insertion_point(message_implements:internal.Relay)
+      RelayOrBuilder {
+  private static final long serialVersionUID = 0L;
+    // Use Relay.newBuilder() to construct.
+    private Relay(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
+      super(builder);
+    }
+    private Relay() {
+      devices_ = java.util.Collections.emptyList();
+      filters_ = java.util.Collections.emptyList();
+    }
+
+    @Override
+    @SuppressWarnings({"unused"})
+    protected Object newInstance(
+        UnusedPrivateParameter unused) {
+      return new Relay();
+    }
+
+    public static final com.google.protobuf.Descriptors.Descriptor
+        getDescriptor() {
+      return internal_static_internal_Relay_descriptor;
+    }
+
+    @Override
+    protected FieldAccessorTable
+        internalGetFieldAccessorTable() {
+      return internal_static_internal_Relay_fieldAccessorTable
+          .ensureFieldAccessorsInitialized(
+              Relay.class, Relay.Builder.class);
+    }
+
+    public static final int DEVICES_FIELD_NUMBER = 1;
+    @SuppressWarnings("serial")
+    private java.util.List<RelayDevice> devices_;
+    /**
+     * <pre>
+     * Devices provisioned on the relay.
+     * </pre>
+     *
+     * <code>repeated .internal.RelayDevice devices = 1;</code>
+     */
+    @Override
+    public java.util.List<RelayDevice> getDevicesList() {
+      return devices_;
+    }
+    /**
+     * <pre>
+     * Devices provisioned on the relay.
+     * </pre>
+     *
+     * <code>repeated .internal.RelayDevice devices = 1;</code>
+     */
+    @Override
+    public java.util.List<? extends RelayDeviceOrBuilder> 
+        getDevicesOrBuilderList() {
+      return devices_;
+    }
+    /**
+     * <pre>
+     * Devices provisioned on the relay.
+     * </pre>
+     *
+     * <code>repeated .internal.RelayDevice devices = 1;</code>
+     */
+    @Override
+    public int getDevicesCount() {
+      return devices_.size();
+    }
+    /**
+     * <pre>
+     * Devices provisioned on the relay.
+     * </pre>
+     *
+     * <code>repeated .internal.RelayDevice devices = 1;</code>
+     */
+    @Override
+    public RelayDevice getDevices(int index) {
+      return devices_.get(index);
+    }
+    /**
+     * <pre>
+     * Devices provisioned on the relay.
+     * </pre>
+     *
+     * <code>repeated .internal.RelayDevice devices = 1;</code>
+     */
+    @Override
+    public RelayDeviceOrBuilder getDevicesOrBuilder(
+        int index) {
+      return devices_.get(index);
+    }
+
+    public static final int FILTERS_FIELD_NUMBER = 2;
+    @SuppressWarnings("serial")
+    private java.util.List<RelayFilter> filters_;
+    /**
+     * <pre>
+     * Filter list.
+     * </pre>
+     *
+     * <code>repeated .internal.RelayFilter filters = 2;</code>
+     */
+    @Override
+    public java.util.List<RelayFilter> getFiltersList() {
+      return filters_;
+    }
+    /**
+     * <pre>
+     * Filter list.
+     * </pre>
+     *
+     * <code>repeated .internal.RelayFilter filters = 2;</code>
+     */
+    @Override
+    public java.util.List<? extends RelayFilterOrBuilder> 
+        getFiltersOrBuilderList() {
+      return filters_;
+    }
+    /**
+     * <pre>
+     * Filter list.
+     * </pre>
+     *
+     * <code>repeated .internal.RelayFilter filters = 2;</code>
+     */
+    @Override
+    public int getFiltersCount() {
+      return filters_.size();
+    }
+    /**
+     * <pre>
+     * Filter list.
+     * </pre>
+     *
+     * <code>repeated .internal.RelayFilter filters = 2;</code>
+     */
+    @Override
+    public RelayFilter getFilters(int index) {
+      return filters_.get(index);
+    }
+    /**
+     * <pre>
+     * Filter list.
+     * </pre>
+     *
+     * <code>repeated .internal.RelayFilter filters = 2;</code>
+     */
+    @Override
+    public RelayFilterOrBuilder getFiltersOrBuilder(
+        int index) {
+      return filters_.get(index);
+    }
+
+    public static final int ENABLED_FIELD_NUMBER = 3;
+    private boolean enabled_ = false;
+    /**
+     * <pre>
+     * Relay is enabled.
+     * </pre>
+     *
+     * <code>bool enabled = 3;</code>
+     * @return The enabled.
+     */
+    @Override
+    public boolean getEnabled() {
+      return enabled_;
+    }
+
+    public static final int CAD_PERIODICITY_FIELD_NUMBER = 4;
+    private int cadPeriodicity_ = 0;
+    /**
+     * <pre>
+     * CAD periodicity.
+     * </pre>
+     *
+     * <code>uint32 cad_periodicity = 4;</code>
+     * @return The cadPeriodicity.
+     */
+    @Override
+    public int getCadPeriodicity() {
+      return cadPeriodicity_;
+    }
+
+    public static final int DEFAULT_CHANNEL_INDEX_FIELD_NUMBER = 5;
+    private int defaultChannelIndex_ = 0;
+    /**
+     * <pre>
+     * Default channel index.
+     * </pre>
+     *
+     * <code>uint32 default_channel_index = 5;</code>
+     * @return The defaultChannelIndex.
+     */
+    @Override
+    public int getDefaultChannelIndex() {
+      return defaultChannelIndex_;
+    }
+
+    public static final int SECOND_CHANNEL_FREQ_FIELD_NUMBER = 6;
+    private int secondChannelFreq_ = 0;
+    /**
+     * <pre>
+     * Second channel freq.
+     * </pre>
+     *
+     * <code>uint32 second_channel_freq = 6;</code>
+     * @return The secondChannelFreq.
+     */
+    @Override
+    public int getSecondChannelFreq() {
+      return secondChannelFreq_;
+    }
+
+    public static final int SECOND_CHANNEL_DR_FIELD_NUMBER = 7;
+    private int secondChannelDr_ = 0;
+    /**
+     * <pre>
+     * Second channel DR.
+     * </pre>
+     *
+     * <code>uint32 second_channel_dr = 7;</code>
+     * @return The secondChannelDr.
+     */
+    @Override
+    public int getSecondChannelDr() {
+      return secondChannelDr_;
+    }
+
+    public static final int SECOND_CHANNEL_ACK_OFFSET_FIELD_NUMBER = 8;
+    private int secondChannelAckOffset_ = 0;
+    /**
+     * <pre>
+     * Second channel ACK offset.
+     * </pre>
+     *
+     * <code>uint32 second_channel_ack_offset = 8;</code>
+     * @return The secondChannelAckOffset.
+     */
+    @Override
+    public int getSecondChannelAckOffset() {
+      return secondChannelAckOffset_;
+    }
+
+    public static final int ED_ACTIVATION_MODE_FIELD_NUMBER = 9;
+    private int edActivationMode_ = 0;
+    /**
+     * <pre>
+     * End-device activation mode.
+     * </pre>
+     *
+     * <code>uint32 ed_activation_mode = 9;</code>
+     * @return The edActivationMode.
+     */
+    @Override
+    public int getEdActivationMode() {
+      return edActivationMode_;
+    }
+
+    public static final int ED_SMART_ENABLE_LEVEL_FIELD_NUMBER = 10;
+    private int edSmartEnableLevel_ = 0;
+    /**
+     * <pre>
+     * End-device smart-enable level.
+     * </pre>
+     *
+     * <code>uint32 ed_smart_enable_level = 10;</code>
+     * @return The edSmartEnableLevel.
+     */
+    @Override
+    public int getEdSmartEnableLevel() {
+      return edSmartEnableLevel_;
+    }
+
+    public static final int ED_BACK_OFF_FIELD_NUMBER = 11;
+    private int edBackOff_ = 0;
+    /**
+     * <pre>
+     * End-device back-off.
+     * </pre>
+     *
+     * <code>uint32 ed_back_off = 11;</code>
+     * @return The edBackOff.
+     */
+    @Override
+    public int getEdBackOff() {
+      return edBackOff_;
+    }
+
+    public static final int JOIN_REQ_LIMIT_RELOAD_RATE_FIELD_NUMBER = 12;
+    private int joinReqLimitReloadRate_ = 0;
+    /**
+     * <pre>
+     * Join-request limit reload rate.
+     * </pre>
+     *
+     * <code>uint32 join_req_limit_reload_rate = 12;</code>
+     * @return The joinReqLimitReloadRate.
+     */
+    @Override
+    public int getJoinReqLimitReloadRate() {
+      return joinReqLimitReloadRate_;
+    }
+
+    public static final int NOTIFY_LIMIT_RELOAD_RATE_FIELD_NUMBER = 13;
+    private int notifyLimitReloadRate_ = 0;
+    /**
+     * <pre>
+     * Notify limit reload rate.
+     * </pre>
+     *
+     * <code>uint32 notify_limit_reload_rate = 13;</code>
+     * @return The notifyLimitReloadRate.
+     */
+    @Override
+    public int getNotifyLimitReloadRate() {
+      return notifyLimitReloadRate_;
+    }
+
+    public static final int GLOBAL_UPLINK_LIMIT_RELOAD_RATE_FIELD_NUMBER = 14;
+    private int globalUplinkLimitReloadRate_ = 0;
+    /**
+     * <pre>
+     * Global uplink limit reload rate.
+     * </pre>
+     *
+     * <code>uint32 global_uplink_limit_reload_rate = 14;</code>
+     * @return The globalUplinkLimitReloadRate.
+     */
+    @Override
+    public int getGlobalUplinkLimitReloadRate() {
+      return globalUplinkLimitReloadRate_;
+    }
+
+    public static final int OVERALL_LIMIT_RELOAD_RATE_FIELD_NUMBER = 15;
+    private int overallLimitReloadRate_ = 0;
+    /**
+     * <pre>
+     * Overall limit reload rate.
+     * </pre>
+     *
+     * <code>uint32 overall_limit_reload_rate = 15;</code>
+     * @return The overallLimitReloadRate.
+     */
+    @Override
+    public int getOverallLimitReloadRate() {
+      return overallLimitReloadRate_;
+    }
+
+    public static final int JOIN_REQ_LIMIT_BUCKET_SIZE_FIELD_NUMBER = 16;
+    private int joinReqLimitBucketSize_ = 0;
+    /**
+     * <pre>
+     * Join-request limit bucket size.
+     * </pre>
+     *
+     * <code>uint32 join_req_limit_bucket_size = 16;</code>
+     * @return The joinReqLimitBucketSize.
+     */
+    @Override
+    public int getJoinReqLimitBucketSize() {
+      return joinReqLimitBucketSize_;
+    }
+
+    public static final int NOTIFY_LIMIT_BUCKET_SIZE_FIELD_NUMBER = 17;
+    private int notifyLimitBucketSize_ = 0;
+    /**
+     * <pre>
+     * Notify limit bucket size.
+     * </pre>
+     *
+     * <code>uint32 notify_limit_bucket_size = 17;</code>
+     * @return The notifyLimitBucketSize.
+     */
+    @Override
+    public int getNotifyLimitBucketSize() {
+      return notifyLimitBucketSize_;
+    }
+
+    public static final int GLOBAL_UPLINK_LIMIT_BUCKET_SIZE_FIELD_NUMBER = 18;
+    private int globalUplinkLimitBucketSize_ = 0;
+    /**
+     * <pre>
+     * Global uplink limit bucket size.
+     * </pre>
+     *
+     * <code>uint32 global_uplink_limit_bucket_size = 18;</code>
+     * @return The globalUplinkLimitBucketSize.
+     */
+    @Override
+    public int getGlobalUplinkLimitBucketSize() {
+      return globalUplinkLimitBucketSize_;
+    }
+
+    public static final int OVERALL_LIMIT_BUCKET_SIZE_FIELD_NUMBER = 19;
+    private int overallLimitBucketSize_ = 0;
+    /**
+     * <pre>
+     * Overall limit bucket size.
+     * </pre>
+     *
+     * <code>uint32 overall_limit_bucket_size = 19;</code>
+     * @return The overallLimitBucketSize.
+     */
+    @Override
+    public int getOverallLimitBucketSize() {
+      return overallLimitBucketSize_;
+    }
+
+    public static final int ED_RELAY_ONLY_FIELD_NUMBER = 20;
+    private boolean edRelayOnly_ = false;
+    /**
+     * <pre>
+     * End-device must communicate through relay only.
+     * This is stored in the device-session as we need to validate on retrieving
+     * the device-session.
+     * </pre>
+     *
+     * <code>bool ed_relay_only = 20;</code>
+     * @return The edRelayOnly.
+     */
+    @Override
+    public boolean getEdRelayOnly() {
+      return edRelayOnly_;
+    }
+
+    public static final int W_F_CNT_FIELD_NUMBER = 21;
+    private int wFCnt_ = 0;
+    /**
+     * <pre>
+     * End-device WFCnt.
+     * This holds the last known WFCnt value. ChirpStack will periodically read
+     * this value from the Relay.
+     * </pre>
+     *
+     * <code>uint32 w_f_cnt = 21;</code>
+     * @return The wFCnt.
+     */
+    @Override
+    public int getWFCnt() {
+      return wFCnt_;
+    }
+
+    private byte memoizedIsInitialized = -1;
+    @Override
+    public final boolean isInitialized() {
+      byte isInitialized = memoizedIsInitialized;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
+
+      memoizedIsInitialized = 1;
+      return true;
+    }
+
+    @Override
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      for (int i = 0; i < devices_.size(); i++) {
+        output.writeMessage(1, devices_.get(i));
+      }
+      for (int i = 0; i < filters_.size(); i++) {
+        output.writeMessage(2, filters_.get(i));
+      }
+      if (enabled_ != false) {
+        output.writeBool(3, enabled_);
+      }
+      if (cadPeriodicity_ != 0) {
+        output.writeUInt32(4, cadPeriodicity_);
+      }
+      if (defaultChannelIndex_ != 0) {
+        output.writeUInt32(5, defaultChannelIndex_);
+      }
+      if (secondChannelFreq_ != 0) {
+        output.writeUInt32(6, secondChannelFreq_);
+      }
+      if (secondChannelDr_ != 0) {
+        output.writeUInt32(7, secondChannelDr_);
+      }
+      if (secondChannelAckOffset_ != 0) {
+        output.writeUInt32(8, secondChannelAckOffset_);
+      }
+      if (edActivationMode_ != 0) {
+        output.writeUInt32(9, edActivationMode_);
+      }
+      if (edSmartEnableLevel_ != 0) {
+        output.writeUInt32(10, edSmartEnableLevel_);
+      }
+      if (edBackOff_ != 0) {
+        output.writeUInt32(11, edBackOff_);
+      }
+      if (joinReqLimitReloadRate_ != 0) {
+        output.writeUInt32(12, joinReqLimitReloadRate_);
+      }
+      if (notifyLimitReloadRate_ != 0) {
+        output.writeUInt32(13, notifyLimitReloadRate_);
+      }
+      if (globalUplinkLimitReloadRate_ != 0) {
+        output.writeUInt32(14, globalUplinkLimitReloadRate_);
+      }
+      if (overallLimitReloadRate_ != 0) {
+        output.writeUInt32(15, overallLimitReloadRate_);
+      }
+      if (joinReqLimitBucketSize_ != 0) {
+        output.writeUInt32(16, joinReqLimitBucketSize_);
+      }
+      if (notifyLimitBucketSize_ != 0) {
+        output.writeUInt32(17, notifyLimitBucketSize_);
+      }
+      if (globalUplinkLimitBucketSize_ != 0) {
+        output.writeUInt32(18, globalUplinkLimitBucketSize_);
+      }
+      if (overallLimitBucketSize_ != 0) {
+        output.writeUInt32(19, overallLimitBucketSize_);
+      }
+      if (edRelayOnly_ != false) {
+        output.writeBool(20, edRelayOnly_);
+      }
+      if (wFCnt_ != 0) {
+        output.writeUInt32(21, wFCnt_);
+      }
+      getUnknownFields().writeTo(output);
+    }
+
+    @Override
+    public int getSerializedSize() {
+      int size = memoizedSize;
+      if (size != -1) return size;
+
+      size = 0;
+      for (int i = 0; i < devices_.size(); i++) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeMessageSize(1, devices_.get(i));
+      }
+      for (int i = 0; i < filters_.size(); i++) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeMessageSize(2, filters_.get(i));
+      }
+      if (enabled_ != false) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBoolSize(3, enabled_);
+      }
+      if (cadPeriodicity_ != 0) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeUInt32Size(4, cadPeriodicity_);
+      }
+      if (defaultChannelIndex_ != 0) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeUInt32Size(5, defaultChannelIndex_);
+      }
+      if (secondChannelFreq_ != 0) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeUInt32Size(6, secondChannelFreq_);
+      }
+      if (secondChannelDr_ != 0) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeUInt32Size(7, secondChannelDr_);
+      }
+      if (secondChannelAckOffset_ != 0) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeUInt32Size(8, secondChannelAckOffset_);
+      }
+      if (edActivationMode_ != 0) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeUInt32Size(9, edActivationMode_);
+      }
+      if (edSmartEnableLevel_ != 0) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeUInt32Size(10, edSmartEnableLevel_);
+      }
+      if (edBackOff_ != 0) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeUInt32Size(11, edBackOff_);
+      }
+      if (joinReqLimitReloadRate_ != 0) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeUInt32Size(12, joinReqLimitReloadRate_);
+      }
+      if (notifyLimitReloadRate_ != 0) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeUInt32Size(13, notifyLimitReloadRate_);
+      }
+      if (globalUplinkLimitReloadRate_ != 0) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeUInt32Size(14, globalUplinkLimitReloadRate_);
+      }
+      if (overallLimitReloadRate_ != 0) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeUInt32Size(15, overallLimitReloadRate_);
+      }
+      if (joinReqLimitBucketSize_ != 0) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeUInt32Size(16, joinReqLimitBucketSize_);
+      }
+      if (notifyLimitBucketSize_ != 0) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeUInt32Size(17, notifyLimitBucketSize_);
+      }
+      if (globalUplinkLimitBucketSize_ != 0) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeUInt32Size(18, globalUplinkLimitBucketSize_);
+      }
+      if (overallLimitBucketSize_ != 0) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeUInt32Size(19, overallLimitBucketSize_);
+      }
+      if (edRelayOnly_ != false) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBoolSize(20, edRelayOnly_);
+      }
+      if (wFCnt_ != 0) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeUInt32Size(21, wFCnt_);
+      }
+      size += getUnknownFields().getSerializedSize();
+      memoizedSize = size;
+      return size;
+    }
+
+    @Override
+    public boolean equals(final Object obj) {
+      if (obj == this) {
+       return true;
+      }
+      if (!(obj instanceof Relay)) {
+        return super.equals(obj);
+      }
+      Relay other = (Relay) obj;
+
+      if (!getDevicesList()
+          .equals(other.getDevicesList())) return false;
+      if (!getFiltersList()
+          .equals(other.getFiltersList())) return false;
+      if (getEnabled()
+          != other.getEnabled()) return false;
+      if (getCadPeriodicity()
+          != other.getCadPeriodicity()) return false;
+      if (getDefaultChannelIndex()
+          != other.getDefaultChannelIndex()) return false;
+      if (getSecondChannelFreq()
+          != other.getSecondChannelFreq()) return false;
+      if (getSecondChannelDr()
+          != other.getSecondChannelDr()) return false;
+      if (getSecondChannelAckOffset()
+          != other.getSecondChannelAckOffset()) return false;
+      if (getEdActivationMode()
+          != other.getEdActivationMode()) return false;
+      if (getEdSmartEnableLevel()
+          != other.getEdSmartEnableLevel()) return false;
+      if (getEdBackOff()
+          != other.getEdBackOff()) return false;
+      if (getJoinReqLimitReloadRate()
+          != other.getJoinReqLimitReloadRate()) return false;
+      if (getNotifyLimitReloadRate()
+          != other.getNotifyLimitReloadRate()) return false;
+      if (getGlobalUplinkLimitReloadRate()
+          != other.getGlobalUplinkLimitReloadRate()) return false;
+      if (getOverallLimitReloadRate()
+          != other.getOverallLimitReloadRate()) return false;
+      if (getJoinReqLimitBucketSize()
+          != other.getJoinReqLimitBucketSize()) return false;
+      if (getNotifyLimitBucketSize()
+          != other.getNotifyLimitBucketSize()) return false;
+      if (getGlobalUplinkLimitBucketSize()
+          != other.getGlobalUplinkLimitBucketSize()) return false;
+      if (getOverallLimitBucketSize()
+          != other.getOverallLimitBucketSize()) return false;
+      if (getEdRelayOnly()
+          != other.getEdRelayOnly()) return false;
+      if (getWFCnt()
+          != other.getWFCnt()) return false;
+      if (!getUnknownFields().equals(other.getUnknownFields())) return false;
+      return true;
+    }
+
+    @Override
+    public int hashCode() {
+      if (memoizedHashCode != 0) {
+        return memoizedHashCode;
+      }
+      int hash = 41;
+      hash = (19 * hash) + getDescriptor().hashCode();
+      if (getDevicesCount() > 0) {
+        hash = (37 * hash) + DEVICES_FIELD_NUMBER;
+        hash = (53 * hash) + getDevicesList().hashCode();
+      }
+      if (getFiltersCount() > 0) {
+        hash = (37 * hash) + FILTERS_FIELD_NUMBER;
+        hash = (53 * hash) + getFiltersList().hashCode();
+      }
+      hash = (37 * hash) + ENABLED_FIELD_NUMBER;
+      hash = (53 * hash) + com.google.protobuf.Internal.hashBoolean(
+          getEnabled());
+      hash = (37 * hash) + CAD_PERIODICITY_FIELD_NUMBER;
+      hash = (53 * hash) + getCadPeriodicity();
+      hash = (37 * hash) + DEFAULT_CHANNEL_INDEX_FIELD_NUMBER;
+      hash = (53 * hash) + getDefaultChannelIndex();
+      hash = (37 * hash) + SECOND_CHANNEL_FREQ_FIELD_NUMBER;
+      hash = (53 * hash) + getSecondChannelFreq();
+      hash = (37 * hash) + SECOND_CHANNEL_DR_FIELD_NUMBER;
+      hash = (53 * hash) + getSecondChannelDr();
+      hash = (37 * hash) + SECOND_CHANNEL_ACK_OFFSET_FIELD_NUMBER;
+      hash = (53 * hash) + getSecondChannelAckOffset();
+      hash = (37 * hash) + ED_ACTIVATION_MODE_FIELD_NUMBER;
+      hash = (53 * hash) + getEdActivationMode();
+      hash = (37 * hash) + ED_SMART_ENABLE_LEVEL_FIELD_NUMBER;
+      hash = (53 * hash) + getEdSmartEnableLevel();
+      hash = (37 * hash) + ED_BACK_OFF_FIELD_NUMBER;
+      hash = (53 * hash) + getEdBackOff();
+      hash = (37 * hash) + JOIN_REQ_LIMIT_RELOAD_RATE_FIELD_NUMBER;
+      hash = (53 * hash) + getJoinReqLimitReloadRate();
+      hash = (37 * hash) + NOTIFY_LIMIT_RELOAD_RATE_FIELD_NUMBER;
+      hash = (53 * hash) + getNotifyLimitReloadRate();
+      hash = (37 * hash) + GLOBAL_UPLINK_LIMIT_RELOAD_RATE_FIELD_NUMBER;
+      hash = (53 * hash) + getGlobalUplinkLimitReloadRate();
+      hash = (37 * hash) + OVERALL_LIMIT_RELOAD_RATE_FIELD_NUMBER;
+      hash = (53 * hash) + getOverallLimitReloadRate();
+      hash = (37 * hash) + JOIN_REQ_LIMIT_BUCKET_SIZE_FIELD_NUMBER;
+      hash = (53 * hash) + getJoinReqLimitBucketSize();
+      hash = (37 * hash) + NOTIFY_LIMIT_BUCKET_SIZE_FIELD_NUMBER;
+      hash = (53 * hash) + getNotifyLimitBucketSize();
+      hash = (37 * hash) + GLOBAL_UPLINK_LIMIT_BUCKET_SIZE_FIELD_NUMBER;
+      hash = (53 * hash) + getGlobalUplinkLimitBucketSize();
+      hash = (37 * hash) + OVERALL_LIMIT_BUCKET_SIZE_FIELD_NUMBER;
+      hash = (53 * hash) + getOverallLimitBucketSize();
+      hash = (37 * hash) + ED_RELAY_ONLY_FIELD_NUMBER;
+      hash = (53 * hash) + com.google.protobuf.Internal.hashBoolean(
+          getEdRelayOnly());
+      hash = (37 * hash) + W_F_CNT_FIELD_NUMBER;
+      hash = (53 * hash) + getWFCnt();
+      hash = (29 * hash) + getUnknownFields().hashCode();
+      memoizedHashCode = hash;
+      return hash;
+    }
+
+    public static Relay parseFrom(
+        java.nio.ByteBuffer data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static Relay parseFrom(
+        java.nio.ByteBuffer data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static Relay parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static Relay parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static Relay parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static Relay parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static Relay parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input);
+    }
+    public static Relay parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input, extensionRegistry);
+    }
+    public static Relay parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseDelimitedWithIOException(PARSER, input);
+    }
+    public static Relay parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
+    }
+    public static Relay parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input);
+    }
+    public static Relay parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input, extensionRegistry);
+    }
+
+    @Override
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder() {
+      return DEFAULT_INSTANCE.toBuilder();
+    }
+    public static Builder newBuilder(Relay prototype) {
+      return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
+    }
+    @Override
+    public Builder toBuilder() {
+      return this == DEFAULT_INSTANCE
+          ? new Builder() : new Builder().mergeFrom(this);
+    }
+
+    @Override
+    protected Builder newBuilderForType(
+        BuilderParent parent) {
+      Builder builder = new Builder(parent);
+      return builder;
+    }
+    /**
+     * Protobuf type {@code internal.Relay}
+     */
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:internal.Relay)
+        RelayOrBuilder {
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return internal_static_internal_Relay_descriptor;
+      }
+
+      @Override
+      protected FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return internal_static_internal_Relay_fieldAccessorTable
+            .ensureFieldAccessorsInitialized(
+                Relay.class, Relay.Builder.class);
+      }
+
+      // Construct using Relay.newBuilder()
+      private Builder() {
+
+      }
+
+      private Builder(
+          BuilderParent parent) {
+        super(parent);
+
+      }
+      @Override
+      public Builder clear() {
+        super.clear();
+        bitField0_ = 0;
+        if (devicesBuilder_ == null) {
+          devices_ = java.util.Collections.emptyList();
+        } else {
+          devices_ = null;
+          devicesBuilder_.clear();
+        }
+        bitField0_ = (bitField0_ & ~0x00000001);
+        if (filtersBuilder_ == null) {
+          filters_ = java.util.Collections.emptyList();
+        } else {
+          filters_ = null;
+          filtersBuilder_.clear();
+        }
+        bitField0_ = (bitField0_ & ~0x00000002);
+        enabled_ = false;
+        cadPeriodicity_ = 0;
+        defaultChannelIndex_ = 0;
+        secondChannelFreq_ = 0;
+        secondChannelDr_ = 0;
+        secondChannelAckOffset_ = 0;
+        edActivationMode_ = 0;
+        edSmartEnableLevel_ = 0;
+        edBackOff_ = 0;
+        joinReqLimitReloadRate_ = 0;
+        notifyLimitReloadRate_ = 0;
+        globalUplinkLimitReloadRate_ = 0;
+        overallLimitReloadRate_ = 0;
+        joinReqLimitBucketSize_ = 0;
+        notifyLimitBucketSize_ = 0;
+        globalUplinkLimitBucketSize_ = 0;
+        overallLimitBucketSize_ = 0;
+        edRelayOnly_ = false;
+        wFCnt_ = 0;
+        return this;
+      }
+
+      @Override
+      public com.google.protobuf.Descriptors.Descriptor
+          getDescriptorForType() {
+        return internal_static_internal_Relay_descriptor;
+      }
+
+      @Override
+      public Relay getDefaultInstanceForType() {
+        return Relay.getDefaultInstance();
+      }
+
+      @Override
+      public Relay build() {
+        Relay result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return result;
+      }
+
+      @Override
+      public Relay buildPartial() {
+        Relay result = new Relay(this);
+        buildPartialRepeatedFields(result);
+        if (bitField0_ != 0) { buildPartial0(result); }
+        onBuilt();
+        return result;
+      }
+
+      private void buildPartialRepeatedFields(Relay result) {
+        if (devicesBuilder_ == null) {
+          if (((bitField0_ & 0x00000001) != 0)) {
+            devices_ = java.util.Collections.unmodifiableList(devices_);
+            bitField0_ = (bitField0_ & ~0x00000001);
+          }
+          result.devices_ = devices_;
+        } else {
+          result.devices_ = devicesBuilder_.build();
+        }
+        if (filtersBuilder_ == null) {
+          if (((bitField0_ & 0x00000002) != 0)) {
+            filters_ = java.util.Collections.unmodifiableList(filters_);
+            bitField0_ = (bitField0_ & ~0x00000002);
+          }
+          result.filters_ = filters_;
+        } else {
+          result.filters_ = filtersBuilder_.build();
+        }
+      }
+
+      private void buildPartial0(Relay result) {
+        int from_bitField0_ = bitField0_;
+        if (((from_bitField0_ & 0x00000004) != 0)) {
+          result.enabled_ = enabled_;
+        }
+        if (((from_bitField0_ & 0x00000008) != 0)) {
+          result.cadPeriodicity_ = cadPeriodicity_;
+        }
+        if (((from_bitField0_ & 0x00000010) != 0)) {
+          result.defaultChannelIndex_ = defaultChannelIndex_;
+        }
+        if (((from_bitField0_ & 0x00000020) != 0)) {
+          result.secondChannelFreq_ = secondChannelFreq_;
+        }
+        if (((from_bitField0_ & 0x00000040) != 0)) {
+          result.secondChannelDr_ = secondChannelDr_;
+        }
+        if (((from_bitField0_ & 0x00000080) != 0)) {
+          result.secondChannelAckOffset_ = secondChannelAckOffset_;
+        }
+        if (((from_bitField0_ & 0x00000100) != 0)) {
+          result.edActivationMode_ = edActivationMode_;
+        }
+        if (((from_bitField0_ & 0x00000200) != 0)) {
+          result.edSmartEnableLevel_ = edSmartEnableLevel_;
+        }
+        if (((from_bitField0_ & 0x00000400) != 0)) {
+          result.edBackOff_ = edBackOff_;
+        }
+        if (((from_bitField0_ & 0x00000800) != 0)) {
+          result.joinReqLimitReloadRate_ = joinReqLimitReloadRate_;
+        }
+        if (((from_bitField0_ & 0x00001000) != 0)) {
+          result.notifyLimitReloadRate_ = notifyLimitReloadRate_;
+        }
+        if (((from_bitField0_ & 0x00002000) != 0)) {
+          result.globalUplinkLimitReloadRate_ = globalUplinkLimitReloadRate_;
+        }
+        if (((from_bitField0_ & 0x00004000) != 0)) {
+          result.overallLimitReloadRate_ = overallLimitReloadRate_;
+        }
+        if (((from_bitField0_ & 0x00008000) != 0)) {
+          result.joinReqLimitBucketSize_ = joinReqLimitBucketSize_;
+        }
+        if (((from_bitField0_ & 0x00010000) != 0)) {
+          result.notifyLimitBucketSize_ = notifyLimitBucketSize_;
+        }
+        if (((from_bitField0_ & 0x00020000) != 0)) {
+          result.globalUplinkLimitBucketSize_ = globalUplinkLimitBucketSize_;
+        }
+        if (((from_bitField0_ & 0x00040000) != 0)) {
+          result.overallLimitBucketSize_ = overallLimitBucketSize_;
+        }
+        if (((from_bitField0_ & 0x00080000) != 0)) {
+          result.edRelayOnly_ = edRelayOnly_;
+        }
+        if (((from_bitField0_ & 0x00100000) != 0)) {
+          result.wFCnt_ = wFCnt_;
+        }
+      }
+
+      @Override
+      public Builder mergeFrom(com.google.protobuf.Message other) {
+        if (other instanceof Relay) {
+          return mergeFrom((Relay)other);
+        } else {
+          super.mergeFrom(other);
+          return this;
+        }
+      }
+
+      public Builder mergeFrom(Relay other) {
+        if (other == Relay.getDefaultInstance()) return this;
+        if (devicesBuilder_ == null) {
+          if (!other.devices_.isEmpty()) {
+            if (devices_.isEmpty()) {
+              devices_ = other.devices_;
+              bitField0_ = (bitField0_ & ~0x00000001);
+            } else {
+              ensureDevicesIsMutable();
+              devices_.addAll(other.devices_);
+            }
+            onChanged();
+          }
+        } else {
+          if (!other.devices_.isEmpty()) {
+            if (devicesBuilder_.isEmpty()) {
+              devicesBuilder_.dispose();
+              devicesBuilder_ = null;
+              devices_ = other.devices_;
+              bitField0_ = (bitField0_ & ~0x00000001);
+              devicesBuilder_ = 
+                com.google.protobuf.GeneratedMessageV3.alwaysUseFieldBuilders ?
+                   getDevicesFieldBuilder() : null;
+            } else {
+              devicesBuilder_.addAllMessages(other.devices_);
+            }
+          }
+        }
+        if (filtersBuilder_ == null) {
+          if (!other.filters_.isEmpty()) {
+            if (filters_.isEmpty()) {
+              filters_ = other.filters_;
+              bitField0_ = (bitField0_ & ~0x00000002);
+            } else {
+              ensureFiltersIsMutable();
+              filters_.addAll(other.filters_);
+            }
+            onChanged();
+          }
+        } else {
+          if (!other.filters_.isEmpty()) {
+            if (filtersBuilder_.isEmpty()) {
+              filtersBuilder_.dispose();
+              filtersBuilder_ = null;
+              filters_ = other.filters_;
+              bitField0_ = (bitField0_ & ~0x00000002);
+              filtersBuilder_ = 
+                com.google.protobuf.GeneratedMessageV3.alwaysUseFieldBuilders ?
+                   getFiltersFieldBuilder() : null;
+            } else {
+              filtersBuilder_.addAllMessages(other.filters_);
+            }
+          }
+        }
+        if (other.getEnabled() != false) {
+          setEnabled(other.getEnabled());
+        }
+        if (other.getCadPeriodicity() != 0) {
+          setCadPeriodicity(other.getCadPeriodicity());
+        }
+        if (other.getDefaultChannelIndex() != 0) {
+          setDefaultChannelIndex(other.getDefaultChannelIndex());
+        }
+        if (other.getSecondChannelFreq() != 0) {
+          setSecondChannelFreq(other.getSecondChannelFreq());
+        }
+        if (other.getSecondChannelDr() != 0) {
+          setSecondChannelDr(other.getSecondChannelDr());
+        }
+        if (other.getSecondChannelAckOffset() != 0) {
+          setSecondChannelAckOffset(other.getSecondChannelAckOffset());
+        }
+        if (other.getEdActivationMode() != 0) {
+          setEdActivationMode(other.getEdActivationMode());
+        }
+        if (other.getEdSmartEnableLevel() != 0) {
+          setEdSmartEnableLevel(other.getEdSmartEnableLevel());
+        }
+        if (other.getEdBackOff() != 0) {
+          setEdBackOff(other.getEdBackOff());
+        }
+        if (other.getJoinReqLimitReloadRate() != 0) {
+          setJoinReqLimitReloadRate(other.getJoinReqLimitReloadRate());
+        }
+        if (other.getNotifyLimitReloadRate() != 0) {
+          setNotifyLimitReloadRate(other.getNotifyLimitReloadRate());
+        }
+        if (other.getGlobalUplinkLimitReloadRate() != 0) {
+          setGlobalUplinkLimitReloadRate(other.getGlobalUplinkLimitReloadRate());
+        }
+        if (other.getOverallLimitReloadRate() != 0) {
+          setOverallLimitReloadRate(other.getOverallLimitReloadRate());
+        }
+        if (other.getJoinReqLimitBucketSize() != 0) {
+          setJoinReqLimitBucketSize(other.getJoinReqLimitBucketSize());
+        }
+        if (other.getNotifyLimitBucketSize() != 0) {
+          setNotifyLimitBucketSize(other.getNotifyLimitBucketSize());
+        }
+        if (other.getGlobalUplinkLimitBucketSize() != 0) {
+          setGlobalUplinkLimitBucketSize(other.getGlobalUplinkLimitBucketSize());
+        }
+        if (other.getOverallLimitBucketSize() != 0) {
+          setOverallLimitBucketSize(other.getOverallLimitBucketSize());
+        }
+        if (other.getEdRelayOnly() != false) {
+          setEdRelayOnly(other.getEdRelayOnly());
+        }
+        if (other.getWFCnt() != 0) {
+          setWFCnt(other.getWFCnt());
+        }
+        this.mergeUnknownFields(other.getUnknownFields());
+        onChanged();
+        return this;
+      }
+
+      @Override
+      public final boolean isInitialized() {
+        return true;
+      }
+
+      @Override
+      public Builder mergeFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        if (extensionRegistry == null) {
+          throw new NullPointerException();
+        }
+        try {
+          boolean done = false;
+          while (!done) {
+            int tag = input.readTag();
+            switch (tag) {
+              case 0:
+                done = true;
+                break;
+              case 10: {
+                RelayDevice m =
+                    input.readMessage(
+                        RelayDevice.parser(),
+                        extensionRegistry);
+                if (devicesBuilder_ == null) {
+                  ensureDevicesIsMutable();
+                  devices_.add(m);
+                } else {
+                  devicesBuilder_.addMessage(m);
+                }
+                break;
+              } // case 10
+              case 18: {
+                RelayFilter m =
+                    input.readMessage(
+                        RelayFilter.parser(),
+                        extensionRegistry);
+                if (filtersBuilder_ == null) {
+                  ensureFiltersIsMutable();
+                  filters_.add(m);
+                } else {
+                  filtersBuilder_.addMessage(m);
+                }
+                break;
+              } // case 18
+              case 24: {
+                enabled_ = input.readBool();
+                bitField0_ |= 0x00000004;
+                break;
+              } // case 24
+              case 32: {
+                cadPeriodicity_ = input.readUInt32();
+                bitField0_ |= 0x00000008;
+                break;
+              } // case 32
+              case 40: {
+                defaultChannelIndex_ = input.readUInt32();
+                bitField0_ |= 0x00000010;
+                break;
+              } // case 40
+              case 48: {
+                secondChannelFreq_ = input.readUInt32();
+                bitField0_ |= 0x00000020;
+                break;
+              } // case 48
+              case 56: {
+                secondChannelDr_ = input.readUInt32();
+                bitField0_ |= 0x00000040;
+                break;
+              } // case 56
+              case 64: {
+                secondChannelAckOffset_ = input.readUInt32();
+                bitField0_ |= 0x00000080;
+                break;
+              } // case 64
+              case 72: {
+                edActivationMode_ = input.readUInt32();
+                bitField0_ |= 0x00000100;
+                break;
+              } // case 72
+              case 80: {
+                edSmartEnableLevel_ = input.readUInt32();
+                bitField0_ |= 0x00000200;
+                break;
+              } // case 80
+              case 88: {
+                edBackOff_ = input.readUInt32();
+                bitField0_ |= 0x00000400;
+                break;
+              } // case 88
+              case 96: {
+                joinReqLimitReloadRate_ = input.readUInt32();
+                bitField0_ |= 0x00000800;
+                break;
+              } // case 96
+              case 104: {
+                notifyLimitReloadRate_ = input.readUInt32();
+                bitField0_ |= 0x00001000;
+                break;
+              } // case 104
+              case 112: {
+                globalUplinkLimitReloadRate_ = input.readUInt32();
+                bitField0_ |= 0x00002000;
+                break;
+              } // case 112
+              case 120: {
+                overallLimitReloadRate_ = input.readUInt32();
+                bitField0_ |= 0x00004000;
+                break;
+              } // case 120
+              case 128: {
+                joinReqLimitBucketSize_ = input.readUInt32();
+                bitField0_ |= 0x00008000;
+                break;
+              } // case 128
+              case 136: {
+                notifyLimitBucketSize_ = input.readUInt32();
+                bitField0_ |= 0x00010000;
+                break;
+              } // case 136
+              case 144: {
+                globalUplinkLimitBucketSize_ = input.readUInt32();
+                bitField0_ |= 0x00020000;
+                break;
+              } // case 144
+              case 152: {
+                overallLimitBucketSize_ = input.readUInt32();
+                bitField0_ |= 0x00040000;
+                break;
+              } // case 152
+              case 160: {
+                edRelayOnly_ = input.readBool();
+                bitField0_ |= 0x00080000;
+                break;
+              } // case 160
+              case 168: {
+                wFCnt_ = input.readUInt32();
+                bitField0_ |= 0x00100000;
+                break;
+              } // case 168
+              default: {
+                if (!super.parseUnknownField(input, extensionRegistry, tag)) {
+                  done = true; // was an endgroup tag
+                }
+                break;
+              } // default:
+            } // switch (tag)
+          } // while (!done)
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          throw e.unwrapIOException();
+        } finally {
+          onChanged();
+        } // finally
+        return this;
+      }
+      private int bitField0_;
+
+      private java.util.List<RelayDevice> devices_ =
+        java.util.Collections.emptyList();
+      private void ensureDevicesIsMutable() {
+        if (!((bitField0_ & 0x00000001) != 0)) {
+          devices_ = new java.util.ArrayList<RelayDevice>(devices_);
+          bitField0_ |= 0x00000001;
+         }
+      }
+
+      private com.google.protobuf.RepeatedFieldBuilderV3<
+          RelayDevice, RelayDevice.Builder, RelayDeviceOrBuilder> devicesBuilder_;
+
+      /**
+       * <pre>
+       * Devices provisioned on the relay.
+       * </pre>
+       *
+       * <code>repeated .internal.RelayDevice devices = 1;</code>
+       */
+      public java.util.List<RelayDevice> getDevicesList() {
+        if (devicesBuilder_ == null) {
+          return java.util.Collections.unmodifiableList(devices_);
+        } else {
+          return devicesBuilder_.getMessageList();
+        }
+      }
+      /**
+       * <pre>
+       * Devices provisioned on the relay.
+       * </pre>
+       *
+       * <code>repeated .internal.RelayDevice devices = 1;</code>
+       */
+      public int getDevicesCount() {
+        if (devicesBuilder_ == null) {
+          return devices_.size();
+        } else {
+          return devicesBuilder_.getCount();
+        }
+      }
+      /**
+       * <pre>
+       * Devices provisioned on the relay.
+       * </pre>
+       *
+       * <code>repeated .internal.RelayDevice devices = 1;</code>
+       */
+      public RelayDevice getDevices(int index) {
+        if (devicesBuilder_ == null) {
+          return devices_.get(index);
+        } else {
+          return devicesBuilder_.getMessage(index);
+        }
+      }
+      /**
+       * <pre>
+       * Devices provisioned on the relay.
+       * </pre>
+       *
+       * <code>repeated .internal.RelayDevice devices = 1;</code>
+       */
+      public Builder setDevices(
+          int index, RelayDevice value) {
+        if (devicesBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          ensureDevicesIsMutable();
+          devices_.set(index, value);
+          onChanged();
+        } else {
+          devicesBuilder_.setMessage(index, value);
+        }
+        return this;
+      }
+      /**
+       * <pre>
+       * Devices provisioned on the relay.
+       * </pre>
+       *
+       * <code>repeated .internal.RelayDevice devices = 1;</code>
+       */
+      public Builder setDevices(
+          int index, RelayDevice.Builder builderForValue) {
+        if (devicesBuilder_ == null) {
+          ensureDevicesIsMutable();
+          devices_.set(index, builderForValue.build());
+          onChanged();
+        } else {
+          devicesBuilder_.setMessage(index, builderForValue.build());
+        }
+        return this;
+      }
+      /**
+       * <pre>
+       * Devices provisioned on the relay.
+       * </pre>
+       *
+       * <code>repeated .internal.RelayDevice devices = 1;</code>
+       */
+      public Builder addDevices(RelayDevice value) {
+        if (devicesBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          ensureDevicesIsMutable();
+          devices_.add(value);
+          onChanged();
+        } else {
+          devicesBuilder_.addMessage(value);
+        }
+        return this;
+      }
+      /**
+       * <pre>
+       * Devices provisioned on the relay.
+       * </pre>
+       *
+       * <code>repeated .internal.RelayDevice devices = 1;</code>
+       */
+      public Builder addDevices(
+          int index, RelayDevice value) {
+        if (devicesBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          ensureDevicesIsMutable();
+          devices_.add(index, value);
+          onChanged();
+        } else {
+          devicesBuilder_.addMessage(index, value);
+        }
+        return this;
+      }
+      /**
+       * <pre>
+       * Devices provisioned on the relay.
+       * </pre>
+       *
+       * <code>repeated .internal.RelayDevice devices = 1;</code>
+       */
+      public Builder addDevices(
+          RelayDevice.Builder builderForValue) {
+        if (devicesBuilder_ == null) {
+          ensureDevicesIsMutable();
+          devices_.add(builderForValue.build());
+          onChanged();
+        } else {
+          devicesBuilder_.addMessage(builderForValue.build());
+        }
+        return this;
+      }
+      /**
+       * <pre>
+       * Devices provisioned on the relay.
+       * </pre>
+       *
+       * <code>repeated .internal.RelayDevice devices = 1;</code>
+       */
+      public Builder addDevices(
+          int index, RelayDevice.Builder builderForValue) {
+        if (devicesBuilder_ == null) {
+          ensureDevicesIsMutable();
+          devices_.add(index, builderForValue.build());
+          onChanged();
+        } else {
+          devicesBuilder_.addMessage(index, builderForValue.build());
+        }
+        return this;
+      }
+      /**
+       * <pre>
+       * Devices provisioned on the relay.
+       * </pre>
+       *
+       * <code>repeated .internal.RelayDevice devices = 1;</code>
+       */
+      public Builder addAllDevices(
+          Iterable<? extends RelayDevice> values) {
+        if (devicesBuilder_ == null) {
+          ensureDevicesIsMutable();
+          com.google.protobuf.AbstractMessageLite.Builder.addAll(
+              values, devices_);
+          onChanged();
+        } else {
+          devicesBuilder_.addAllMessages(values);
+        }
+        return this;
+      }
+      /**
+       * <pre>
+       * Devices provisioned on the relay.
+       * </pre>
+       *
+       * <code>repeated .internal.RelayDevice devices = 1;</code>
+       */
+      public Builder clearDevices() {
+        if (devicesBuilder_ == null) {
+          devices_ = java.util.Collections.emptyList();
+          bitField0_ = (bitField0_ & ~0x00000001);
+          onChanged();
+        } else {
+          devicesBuilder_.clear();
+        }
+        return this;
+      }
+      /**
+       * <pre>
+       * Devices provisioned on the relay.
+       * </pre>
+       *
+       * <code>repeated .internal.RelayDevice devices = 1;</code>
+       */
+      public Builder removeDevices(int index) {
+        if (devicesBuilder_ == null) {
+          ensureDevicesIsMutable();
+          devices_.remove(index);
+          onChanged();
+        } else {
+          devicesBuilder_.remove(index);
+        }
+        return this;
+      }
+      /**
+       * <pre>
+       * Devices provisioned on the relay.
+       * </pre>
+       *
+       * <code>repeated .internal.RelayDevice devices = 1;</code>
+       */
+      public RelayDevice.Builder getDevicesBuilder(
+          int index) {
+        return getDevicesFieldBuilder().getBuilder(index);
+      }
+      /**
+       * <pre>
+       * Devices provisioned on the relay.
+       * </pre>
+       *
+       * <code>repeated .internal.RelayDevice devices = 1;</code>
+       */
+      public RelayDeviceOrBuilder getDevicesOrBuilder(
+          int index) {
+        if (devicesBuilder_ == null) {
+          return devices_.get(index);  } else {
+          return devicesBuilder_.getMessageOrBuilder(index);
+        }
+      }
+      /**
+       * <pre>
+       * Devices provisioned on the relay.
+       * </pre>
+       *
+       * <code>repeated .internal.RelayDevice devices = 1;</code>
+       */
+      public java.util.List<? extends RelayDeviceOrBuilder> 
+           getDevicesOrBuilderList() {
+        if (devicesBuilder_ != null) {
+          return devicesBuilder_.getMessageOrBuilderList();
+        } else {
+          return java.util.Collections.unmodifiableList(devices_);
+        }
+      }
+      /**
+       * <pre>
+       * Devices provisioned on the relay.
+       * </pre>
+       *
+       * <code>repeated .internal.RelayDevice devices = 1;</code>
+       */
+      public RelayDevice.Builder addDevicesBuilder() {
+        return getDevicesFieldBuilder().addBuilder(
+            RelayDevice.getDefaultInstance());
+      }
+      /**
+       * <pre>
+       * Devices provisioned on the relay.
+       * </pre>
+       *
+       * <code>repeated .internal.RelayDevice devices = 1;</code>
+       */
+      public RelayDevice.Builder addDevicesBuilder(
+          int index) {
+        return getDevicesFieldBuilder().addBuilder(
+            index, RelayDevice.getDefaultInstance());
+      }
+      /**
+       * <pre>
+       * Devices provisioned on the relay.
+       * </pre>
+       *
+       * <code>repeated .internal.RelayDevice devices = 1;</code>
+       */
+      public java.util.List<RelayDevice.Builder> 
+           getDevicesBuilderList() {
+        return getDevicesFieldBuilder().getBuilderList();
+      }
+      private com.google.protobuf.RepeatedFieldBuilderV3<
+          RelayDevice, RelayDevice.Builder, RelayDeviceOrBuilder> 
+          getDevicesFieldBuilder() {
+        if (devicesBuilder_ == null) {
+          devicesBuilder_ = new com.google.protobuf.RepeatedFieldBuilderV3<
+              RelayDevice, RelayDevice.Builder, RelayDeviceOrBuilder>(
+                  devices_,
+                  ((bitField0_ & 0x00000001) != 0),
+                  getParentForChildren(),
+                  isClean());
+          devices_ = null;
+        }
+        return devicesBuilder_;
+      }
+
+      private java.util.List<RelayFilter> filters_ =
+        java.util.Collections.emptyList();
+      private void ensureFiltersIsMutable() {
+        if (!((bitField0_ & 0x00000002) != 0)) {
+          filters_ = new java.util.ArrayList<RelayFilter>(filters_);
+          bitField0_ |= 0x00000002;
+         }
+      }
+
+      private com.google.protobuf.RepeatedFieldBuilderV3<
+          RelayFilter, RelayFilter.Builder, RelayFilterOrBuilder> filtersBuilder_;
+
+      /**
+       * <pre>
+       * Filter list.
+       * </pre>
+       *
+       * <code>repeated .internal.RelayFilter filters = 2;</code>
+       */
+      public java.util.List<RelayFilter> getFiltersList() {
+        if (filtersBuilder_ == null) {
+          return java.util.Collections.unmodifiableList(filters_);
+        } else {
+          return filtersBuilder_.getMessageList();
+        }
+      }
+      /**
+       * <pre>
+       * Filter list.
+       * </pre>
+       *
+       * <code>repeated .internal.RelayFilter filters = 2;</code>
+       */
+      public int getFiltersCount() {
+        if (filtersBuilder_ == null) {
+          return filters_.size();
+        } else {
+          return filtersBuilder_.getCount();
+        }
+      }
+      /**
+       * <pre>
+       * Filter list.
+       * </pre>
+       *
+       * <code>repeated .internal.RelayFilter filters = 2;</code>
+       */
+      public RelayFilter getFilters(int index) {
+        if (filtersBuilder_ == null) {
+          return filters_.get(index);
+        } else {
+          return filtersBuilder_.getMessage(index);
+        }
+      }
+      /**
+       * <pre>
+       * Filter list.
+       * </pre>
+       *
+       * <code>repeated .internal.RelayFilter filters = 2;</code>
+       */
+      public Builder setFilters(
+          int index, RelayFilter value) {
+        if (filtersBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          ensureFiltersIsMutable();
+          filters_.set(index, value);
+          onChanged();
+        } else {
+          filtersBuilder_.setMessage(index, value);
+        }
+        return this;
+      }
+      /**
+       * <pre>
+       * Filter list.
+       * </pre>
+       *
+       * <code>repeated .internal.RelayFilter filters = 2;</code>
+       */
+      public Builder setFilters(
+          int index, RelayFilter.Builder builderForValue) {
+        if (filtersBuilder_ == null) {
+          ensureFiltersIsMutable();
+          filters_.set(index, builderForValue.build());
+          onChanged();
+        } else {
+          filtersBuilder_.setMessage(index, builderForValue.build());
+        }
+        return this;
+      }
+      /**
+       * <pre>
+       * Filter list.
+       * </pre>
+       *
+       * <code>repeated .internal.RelayFilter filters = 2;</code>
+       */
+      public Builder addFilters(RelayFilter value) {
+        if (filtersBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          ensureFiltersIsMutable();
+          filters_.add(value);
+          onChanged();
+        } else {
+          filtersBuilder_.addMessage(value);
+        }
+        return this;
+      }
+      /**
+       * <pre>
+       * Filter list.
+       * </pre>
+       *
+       * <code>repeated .internal.RelayFilter filters = 2;</code>
+       */
+      public Builder addFilters(
+          int index, RelayFilter value) {
+        if (filtersBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          ensureFiltersIsMutable();
+          filters_.add(index, value);
+          onChanged();
+        } else {
+          filtersBuilder_.addMessage(index, value);
+        }
+        return this;
+      }
+      /**
+       * <pre>
+       * Filter list.
+       * </pre>
+       *
+       * <code>repeated .internal.RelayFilter filters = 2;</code>
+       */
+      public Builder addFilters(
+          RelayFilter.Builder builderForValue) {
+        if (filtersBuilder_ == null) {
+          ensureFiltersIsMutable();
+          filters_.add(builderForValue.build());
+          onChanged();
+        } else {
+          filtersBuilder_.addMessage(builderForValue.build());
+        }
+        return this;
+      }
+      /**
+       * <pre>
+       * Filter list.
+       * </pre>
+       *
+       * <code>repeated .internal.RelayFilter filters = 2;</code>
+       */
+      public Builder addFilters(
+          int index, RelayFilter.Builder builderForValue) {
+        if (filtersBuilder_ == null) {
+          ensureFiltersIsMutable();
+          filters_.add(index, builderForValue.build());
+          onChanged();
+        } else {
+          filtersBuilder_.addMessage(index, builderForValue.build());
+        }
+        return this;
+      }
+      /**
+       * <pre>
+       * Filter list.
+       * </pre>
+       *
+       * <code>repeated .internal.RelayFilter filters = 2;</code>
+       */
+      public Builder addAllFilters(
+          Iterable<? extends RelayFilter> values) {
+        if (filtersBuilder_ == null) {
+          ensureFiltersIsMutable();
+          com.google.protobuf.AbstractMessageLite.Builder.addAll(
+              values, filters_);
+          onChanged();
+        } else {
+          filtersBuilder_.addAllMessages(values);
+        }
+        return this;
+      }
+      /**
+       * <pre>
+       * Filter list.
+       * </pre>
+       *
+       * <code>repeated .internal.RelayFilter filters = 2;</code>
+       */
+      public Builder clearFilters() {
+        if (filtersBuilder_ == null) {
+          filters_ = java.util.Collections.emptyList();
+          bitField0_ = (bitField0_ & ~0x00000002);
+          onChanged();
+        } else {
+          filtersBuilder_.clear();
+        }
+        return this;
+      }
+      /**
+       * <pre>
+       * Filter list.
+       * </pre>
+       *
+       * <code>repeated .internal.RelayFilter filters = 2;</code>
+       */
+      public Builder removeFilters(int index) {
+        if (filtersBuilder_ == null) {
+          ensureFiltersIsMutable();
+          filters_.remove(index);
+          onChanged();
+        } else {
+          filtersBuilder_.remove(index);
+        }
+        return this;
+      }
+      /**
+       * <pre>
+       * Filter list.
+       * </pre>
+       *
+       * <code>repeated .internal.RelayFilter filters = 2;</code>
+       */
+      public RelayFilter.Builder getFiltersBuilder(
+          int index) {
+        return getFiltersFieldBuilder().getBuilder(index);
+      }
+      /**
+       * <pre>
+       * Filter list.
+       * </pre>
+       *
+       * <code>repeated .internal.RelayFilter filters = 2;</code>
+       */
+      public RelayFilterOrBuilder getFiltersOrBuilder(
+          int index) {
+        if (filtersBuilder_ == null) {
+          return filters_.get(index);  } else {
+          return filtersBuilder_.getMessageOrBuilder(index);
+        }
+      }
+      /**
+       * <pre>
+       * Filter list.
+       * </pre>
+       *
+       * <code>repeated .internal.RelayFilter filters = 2;</code>
+       */
+      public java.util.List<? extends RelayFilterOrBuilder> 
+           getFiltersOrBuilderList() {
+        if (filtersBuilder_ != null) {
+          return filtersBuilder_.getMessageOrBuilderList();
+        } else {
+          return java.util.Collections.unmodifiableList(filters_);
+        }
+      }
+      /**
+       * <pre>
+       * Filter list.
+       * </pre>
+       *
+       * <code>repeated .internal.RelayFilter filters = 2;</code>
+       */
+      public RelayFilter.Builder addFiltersBuilder() {
+        return getFiltersFieldBuilder().addBuilder(
+            RelayFilter.getDefaultInstance());
+      }
+      /**
+       * <pre>
+       * Filter list.
+       * </pre>
+       *
+       * <code>repeated .internal.RelayFilter filters = 2;</code>
+       */
+      public RelayFilter.Builder addFiltersBuilder(
+          int index) {
+        return getFiltersFieldBuilder().addBuilder(
+            index, RelayFilter.getDefaultInstance());
+      }
+      /**
+       * <pre>
+       * Filter list.
+       * </pre>
+       *
+       * <code>repeated .internal.RelayFilter filters = 2;</code>
+       */
+      public java.util.List<RelayFilter.Builder> 
+           getFiltersBuilderList() {
+        return getFiltersFieldBuilder().getBuilderList();
+      }
+      private com.google.protobuf.RepeatedFieldBuilderV3<
+          RelayFilter, RelayFilter.Builder, RelayFilterOrBuilder> 
+          getFiltersFieldBuilder() {
+        if (filtersBuilder_ == null) {
+          filtersBuilder_ = new com.google.protobuf.RepeatedFieldBuilderV3<
+              RelayFilter, RelayFilter.Builder, RelayFilterOrBuilder>(
+                  filters_,
+                  ((bitField0_ & 0x00000002) != 0),
+                  getParentForChildren(),
+                  isClean());
+          filters_ = null;
+        }
+        return filtersBuilder_;
+      }
+
+      private boolean enabled_ ;
+      /**
+       * <pre>
+       * Relay is enabled.
+       * </pre>
+       *
+       * <code>bool enabled = 3;</code>
+       * @return The enabled.
+       */
+      @Override
+      public boolean getEnabled() {
+        return enabled_;
+      }
+      /**
+       * <pre>
+       * Relay is enabled.
+       * </pre>
+       *
+       * <code>bool enabled = 3;</code>
+       * @param value The enabled to set.
+       * @return This builder for chaining.
+       */
+      public Builder setEnabled(boolean value) {
+
+        enabled_ = value;
+        bitField0_ |= 0x00000004;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * Relay is enabled.
+       * </pre>
+       *
+       * <code>bool enabled = 3;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearEnabled() {
+        bitField0_ = (bitField0_ & ~0x00000004);
+        enabled_ = false;
+        onChanged();
+        return this;
+      }
+
+      private int cadPeriodicity_ ;
+      /**
+       * <pre>
+       * CAD periodicity.
+       * </pre>
+       *
+       * <code>uint32 cad_periodicity = 4;</code>
+       * @return The cadPeriodicity.
+       */
+      @Override
+      public int getCadPeriodicity() {
+        return cadPeriodicity_;
+      }
+      /**
+       * <pre>
+       * CAD periodicity.
+       * </pre>
+       *
+       * <code>uint32 cad_periodicity = 4;</code>
+       * @param value The cadPeriodicity to set.
+       * @return This builder for chaining.
+       */
+      public Builder setCadPeriodicity(int value) {
+
+        cadPeriodicity_ = value;
+        bitField0_ |= 0x00000008;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * CAD periodicity.
+       * </pre>
+       *
+       * <code>uint32 cad_periodicity = 4;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearCadPeriodicity() {
+        bitField0_ = (bitField0_ & ~0x00000008);
+        cadPeriodicity_ = 0;
+        onChanged();
+        return this;
+      }
+
+      private int defaultChannelIndex_ ;
+      /**
+       * <pre>
+       * Default channel index.
+       * </pre>
+       *
+       * <code>uint32 default_channel_index = 5;</code>
+       * @return The defaultChannelIndex.
+       */
+      @Override
+      public int getDefaultChannelIndex() {
+        return defaultChannelIndex_;
+      }
+      /**
+       * <pre>
+       * Default channel index.
+       * </pre>
+       *
+       * <code>uint32 default_channel_index = 5;</code>
+       * @param value The defaultChannelIndex to set.
+       * @return This builder for chaining.
+       */
+      public Builder setDefaultChannelIndex(int value) {
+
+        defaultChannelIndex_ = value;
+        bitField0_ |= 0x00000010;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * Default channel index.
+       * </pre>
+       *
+       * <code>uint32 default_channel_index = 5;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearDefaultChannelIndex() {
+        bitField0_ = (bitField0_ & ~0x00000010);
+        defaultChannelIndex_ = 0;
+        onChanged();
+        return this;
+      }
+
+      private int secondChannelFreq_ ;
+      /**
+       * <pre>
+       * Second channel freq.
+       * </pre>
+       *
+       * <code>uint32 second_channel_freq = 6;</code>
+       * @return The secondChannelFreq.
+       */
+      @Override
+      public int getSecondChannelFreq() {
+        return secondChannelFreq_;
+      }
+      /**
+       * <pre>
+       * Second channel freq.
+       * </pre>
+       *
+       * <code>uint32 second_channel_freq = 6;</code>
+       * @param value The secondChannelFreq to set.
+       * @return This builder for chaining.
+       */
+      public Builder setSecondChannelFreq(int value) {
+
+        secondChannelFreq_ = value;
+        bitField0_ |= 0x00000020;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * Second channel freq.
+       * </pre>
+       *
+       * <code>uint32 second_channel_freq = 6;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearSecondChannelFreq() {
+        bitField0_ = (bitField0_ & ~0x00000020);
+        secondChannelFreq_ = 0;
+        onChanged();
+        return this;
+      }
+
+      private int secondChannelDr_ ;
+      /**
+       * <pre>
+       * Second channel DR.
+       * </pre>
+       *
+       * <code>uint32 second_channel_dr = 7;</code>
+       * @return The secondChannelDr.
+       */
+      @Override
+      public int getSecondChannelDr() {
+        return secondChannelDr_;
+      }
+      /**
+       * <pre>
+       * Second channel DR.
+       * </pre>
+       *
+       * <code>uint32 second_channel_dr = 7;</code>
+       * @param value The secondChannelDr to set.
+       * @return This builder for chaining.
+       */
+      public Builder setSecondChannelDr(int value) {
+
+        secondChannelDr_ = value;
+        bitField0_ |= 0x00000040;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * Second channel DR.
+       * </pre>
+       *
+       * <code>uint32 second_channel_dr = 7;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearSecondChannelDr() {
+        bitField0_ = (bitField0_ & ~0x00000040);
+        secondChannelDr_ = 0;
+        onChanged();
+        return this;
+      }
+
+      private int secondChannelAckOffset_ ;
+      /**
+       * <pre>
+       * Second channel ACK offset.
+       * </pre>
+       *
+       * <code>uint32 second_channel_ack_offset = 8;</code>
+       * @return The secondChannelAckOffset.
+       */
+      @Override
+      public int getSecondChannelAckOffset() {
+        return secondChannelAckOffset_;
+      }
+      /**
+       * <pre>
+       * Second channel ACK offset.
+       * </pre>
+       *
+       * <code>uint32 second_channel_ack_offset = 8;</code>
+       * @param value The secondChannelAckOffset to set.
+       * @return This builder for chaining.
+       */
+      public Builder setSecondChannelAckOffset(int value) {
+
+        secondChannelAckOffset_ = value;
+        bitField0_ |= 0x00000080;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * Second channel ACK offset.
+       * </pre>
+       *
+       * <code>uint32 second_channel_ack_offset = 8;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearSecondChannelAckOffset() {
+        bitField0_ = (bitField0_ & ~0x00000080);
+        secondChannelAckOffset_ = 0;
+        onChanged();
+        return this;
+      }
+
+      private int edActivationMode_ ;
+      /**
+       * <pre>
+       * End-device activation mode.
+       * </pre>
+       *
+       * <code>uint32 ed_activation_mode = 9;</code>
+       * @return The edActivationMode.
+       */
+      @Override
+      public int getEdActivationMode() {
+        return edActivationMode_;
+      }
+      /**
+       * <pre>
+       * End-device activation mode.
+       * </pre>
+       *
+       * <code>uint32 ed_activation_mode = 9;</code>
+       * @param value The edActivationMode to set.
+       * @return This builder for chaining.
+       */
+      public Builder setEdActivationMode(int value) {
+
+        edActivationMode_ = value;
+        bitField0_ |= 0x00000100;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * End-device activation mode.
+       * </pre>
+       *
+       * <code>uint32 ed_activation_mode = 9;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearEdActivationMode() {
+        bitField0_ = (bitField0_ & ~0x00000100);
+        edActivationMode_ = 0;
+        onChanged();
+        return this;
+      }
+
+      private int edSmartEnableLevel_ ;
+      /**
+       * <pre>
+       * End-device smart-enable level.
+       * </pre>
+       *
+       * <code>uint32 ed_smart_enable_level = 10;</code>
+       * @return The edSmartEnableLevel.
+       */
+      @Override
+      public int getEdSmartEnableLevel() {
+        return edSmartEnableLevel_;
+      }
+      /**
+       * <pre>
+       * End-device smart-enable level.
+       * </pre>
+       *
+       * <code>uint32 ed_smart_enable_level = 10;</code>
+       * @param value The edSmartEnableLevel to set.
+       * @return This builder for chaining.
+       */
+      public Builder setEdSmartEnableLevel(int value) {
+
+        edSmartEnableLevel_ = value;
+        bitField0_ |= 0x00000200;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * End-device smart-enable level.
+       * </pre>
+       *
+       * <code>uint32 ed_smart_enable_level = 10;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearEdSmartEnableLevel() {
+        bitField0_ = (bitField0_ & ~0x00000200);
+        edSmartEnableLevel_ = 0;
+        onChanged();
+        return this;
+      }
+
+      private int edBackOff_ ;
+      /**
+       * <pre>
+       * End-device back-off.
+       * </pre>
+       *
+       * <code>uint32 ed_back_off = 11;</code>
+       * @return The edBackOff.
+       */
+      @Override
+      public int getEdBackOff() {
+        return edBackOff_;
+      }
+      /**
+       * <pre>
+       * End-device back-off.
+       * </pre>
+       *
+       * <code>uint32 ed_back_off = 11;</code>
+       * @param value The edBackOff to set.
+       * @return This builder for chaining.
+       */
+      public Builder setEdBackOff(int value) {
+
+        edBackOff_ = value;
+        bitField0_ |= 0x00000400;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * End-device back-off.
+       * </pre>
+       *
+       * <code>uint32 ed_back_off = 11;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearEdBackOff() {
+        bitField0_ = (bitField0_ & ~0x00000400);
+        edBackOff_ = 0;
+        onChanged();
+        return this;
+      }
+
+      private int joinReqLimitReloadRate_ ;
+      /**
+       * <pre>
+       * Join-request limit reload rate.
+       * </pre>
+       *
+       * <code>uint32 join_req_limit_reload_rate = 12;</code>
+       * @return The joinReqLimitReloadRate.
+       */
+      @Override
+      public int getJoinReqLimitReloadRate() {
+        return joinReqLimitReloadRate_;
+      }
+      /**
+       * <pre>
+       * Join-request limit reload rate.
+       * </pre>
+       *
+       * <code>uint32 join_req_limit_reload_rate = 12;</code>
+       * @param value The joinReqLimitReloadRate to set.
+       * @return This builder for chaining.
+       */
+      public Builder setJoinReqLimitReloadRate(int value) {
+
+        joinReqLimitReloadRate_ = value;
+        bitField0_ |= 0x00000800;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * Join-request limit reload rate.
+       * </pre>
+       *
+       * <code>uint32 join_req_limit_reload_rate = 12;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearJoinReqLimitReloadRate() {
+        bitField0_ = (bitField0_ & ~0x00000800);
+        joinReqLimitReloadRate_ = 0;
+        onChanged();
+        return this;
+      }
+
+      private int notifyLimitReloadRate_ ;
+      /**
+       * <pre>
+       * Notify limit reload rate.
+       * </pre>
+       *
+       * <code>uint32 notify_limit_reload_rate = 13;</code>
+       * @return The notifyLimitReloadRate.
+       */
+      @Override
+      public int getNotifyLimitReloadRate() {
+        return notifyLimitReloadRate_;
+      }
+      /**
+       * <pre>
+       * Notify limit reload rate.
+       * </pre>
+       *
+       * <code>uint32 notify_limit_reload_rate = 13;</code>
+       * @param value The notifyLimitReloadRate to set.
+       * @return This builder for chaining.
+       */
+      public Builder setNotifyLimitReloadRate(int value) {
+
+        notifyLimitReloadRate_ = value;
+        bitField0_ |= 0x00001000;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * Notify limit reload rate.
+       * </pre>
+       *
+       * <code>uint32 notify_limit_reload_rate = 13;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearNotifyLimitReloadRate() {
+        bitField0_ = (bitField0_ & ~0x00001000);
+        notifyLimitReloadRate_ = 0;
+        onChanged();
+        return this;
+      }
+
+      private int globalUplinkLimitReloadRate_ ;
+      /**
+       * <pre>
+       * Global uplink limit reload rate.
+       * </pre>
+       *
+       * <code>uint32 global_uplink_limit_reload_rate = 14;</code>
+       * @return The globalUplinkLimitReloadRate.
+       */
+      @Override
+      public int getGlobalUplinkLimitReloadRate() {
+        return globalUplinkLimitReloadRate_;
+      }
+      /**
+       * <pre>
+       * Global uplink limit reload rate.
+       * </pre>
+       *
+       * <code>uint32 global_uplink_limit_reload_rate = 14;</code>
+       * @param value The globalUplinkLimitReloadRate to set.
+       * @return This builder for chaining.
+       */
+      public Builder setGlobalUplinkLimitReloadRate(int value) {
+
+        globalUplinkLimitReloadRate_ = value;
+        bitField0_ |= 0x00002000;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * Global uplink limit reload rate.
+       * </pre>
+       *
+       * <code>uint32 global_uplink_limit_reload_rate = 14;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearGlobalUplinkLimitReloadRate() {
+        bitField0_ = (bitField0_ & ~0x00002000);
+        globalUplinkLimitReloadRate_ = 0;
+        onChanged();
+        return this;
+      }
+
+      private int overallLimitReloadRate_ ;
+      /**
+       * <pre>
+       * Overall limit reload rate.
+       * </pre>
+       *
+       * <code>uint32 overall_limit_reload_rate = 15;</code>
+       * @return The overallLimitReloadRate.
+       */
+      @Override
+      public int getOverallLimitReloadRate() {
+        return overallLimitReloadRate_;
+      }
+      /**
+       * <pre>
+       * Overall limit reload rate.
+       * </pre>
+       *
+       * <code>uint32 overall_limit_reload_rate = 15;</code>
+       * @param value The overallLimitReloadRate to set.
+       * @return This builder for chaining.
+       */
+      public Builder setOverallLimitReloadRate(int value) {
+
+        overallLimitReloadRate_ = value;
+        bitField0_ |= 0x00004000;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * Overall limit reload rate.
+       * </pre>
+       *
+       * <code>uint32 overall_limit_reload_rate = 15;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearOverallLimitReloadRate() {
+        bitField0_ = (bitField0_ & ~0x00004000);
+        overallLimitReloadRate_ = 0;
+        onChanged();
+        return this;
+      }
+
+      private int joinReqLimitBucketSize_ ;
+      /**
+       * <pre>
+       * Join-request limit bucket size.
+       * </pre>
+       *
+       * <code>uint32 join_req_limit_bucket_size = 16;</code>
+       * @return The joinReqLimitBucketSize.
+       */
+      @Override
+      public int getJoinReqLimitBucketSize() {
+        return joinReqLimitBucketSize_;
+      }
+      /**
+       * <pre>
+       * Join-request limit bucket size.
+       * </pre>
+       *
+       * <code>uint32 join_req_limit_bucket_size = 16;</code>
+       * @param value The joinReqLimitBucketSize to set.
+       * @return This builder for chaining.
+       */
+      public Builder setJoinReqLimitBucketSize(int value) {
+
+        joinReqLimitBucketSize_ = value;
+        bitField0_ |= 0x00008000;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * Join-request limit bucket size.
+       * </pre>
+       *
+       * <code>uint32 join_req_limit_bucket_size = 16;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearJoinReqLimitBucketSize() {
+        bitField0_ = (bitField0_ & ~0x00008000);
+        joinReqLimitBucketSize_ = 0;
+        onChanged();
+        return this;
+      }
+
+      private int notifyLimitBucketSize_ ;
+      /**
+       * <pre>
+       * Notify limit bucket size.
+       * </pre>
+       *
+       * <code>uint32 notify_limit_bucket_size = 17;</code>
+       * @return The notifyLimitBucketSize.
+       */
+      @Override
+      public int getNotifyLimitBucketSize() {
+        return notifyLimitBucketSize_;
+      }
+      /**
+       * <pre>
+       * Notify limit bucket size.
+       * </pre>
+       *
+       * <code>uint32 notify_limit_bucket_size = 17;</code>
+       * @param value The notifyLimitBucketSize to set.
+       * @return This builder for chaining.
+       */
+      public Builder setNotifyLimitBucketSize(int value) {
+
+        notifyLimitBucketSize_ = value;
+        bitField0_ |= 0x00010000;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * Notify limit bucket size.
+       * </pre>
+       *
+       * <code>uint32 notify_limit_bucket_size = 17;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearNotifyLimitBucketSize() {
+        bitField0_ = (bitField0_ & ~0x00010000);
+        notifyLimitBucketSize_ = 0;
+        onChanged();
+        return this;
+      }
+
+      private int globalUplinkLimitBucketSize_ ;
+      /**
+       * <pre>
+       * Global uplink limit bucket size.
+       * </pre>
+       *
+       * <code>uint32 global_uplink_limit_bucket_size = 18;</code>
+       * @return The globalUplinkLimitBucketSize.
+       */
+      @Override
+      public int getGlobalUplinkLimitBucketSize() {
+        return globalUplinkLimitBucketSize_;
+      }
+      /**
+       * <pre>
+       * Global uplink limit bucket size.
+       * </pre>
+       *
+       * <code>uint32 global_uplink_limit_bucket_size = 18;</code>
+       * @param value The globalUplinkLimitBucketSize to set.
+       * @return This builder for chaining.
+       */
+      public Builder setGlobalUplinkLimitBucketSize(int value) {
+
+        globalUplinkLimitBucketSize_ = value;
+        bitField0_ |= 0x00020000;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * Global uplink limit bucket size.
+       * </pre>
+       *
+       * <code>uint32 global_uplink_limit_bucket_size = 18;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearGlobalUplinkLimitBucketSize() {
+        bitField0_ = (bitField0_ & ~0x00020000);
+        globalUplinkLimitBucketSize_ = 0;
+        onChanged();
+        return this;
+      }
+
+      private int overallLimitBucketSize_ ;
+      /**
+       * <pre>
+       * Overall limit bucket size.
+       * </pre>
+       *
+       * <code>uint32 overall_limit_bucket_size = 19;</code>
+       * @return The overallLimitBucketSize.
+       */
+      @Override
+      public int getOverallLimitBucketSize() {
+        return overallLimitBucketSize_;
+      }
+      /**
+       * <pre>
+       * Overall limit bucket size.
+       * </pre>
+       *
+       * <code>uint32 overall_limit_bucket_size = 19;</code>
+       * @param value The overallLimitBucketSize to set.
+       * @return This builder for chaining.
+       */
+      public Builder setOverallLimitBucketSize(int value) {
+
+        overallLimitBucketSize_ = value;
+        bitField0_ |= 0x00040000;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * Overall limit bucket size.
+       * </pre>
+       *
+       * <code>uint32 overall_limit_bucket_size = 19;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearOverallLimitBucketSize() {
+        bitField0_ = (bitField0_ & ~0x00040000);
+        overallLimitBucketSize_ = 0;
+        onChanged();
+        return this;
+      }
+
+      private boolean edRelayOnly_ ;
+      /**
+       * <pre>
+       * End-device must communicate through relay only.
+       * This is stored in the device-session as we need to validate on retrieving
+       * the device-session.
+       * </pre>
+       *
+       * <code>bool ed_relay_only = 20;</code>
+       * @return The edRelayOnly.
+       */
+      @Override
+      public boolean getEdRelayOnly() {
+        return edRelayOnly_;
+      }
+      /**
+       * <pre>
+       * End-device must communicate through relay only.
+       * This is stored in the device-session as we need to validate on retrieving
+       * the device-session.
+       * </pre>
+       *
+       * <code>bool ed_relay_only = 20;</code>
+       * @param value The edRelayOnly to set.
+       * @return This builder for chaining.
+       */
+      public Builder setEdRelayOnly(boolean value) {
+
+        edRelayOnly_ = value;
+        bitField0_ |= 0x00080000;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * End-device must communicate through relay only.
+       * This is stored in the device-session as we need to validate on retrieving
+       * the device-session.
+       * </pre>
+       *
+       * <code>bool ed_relay_only = 20;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearEdRelayOnly() {
+        bitField0_ = (bitField0_ & ~0x00080000);
+        edRelayOnly_ = false;
+        onChanged();
+        return this;
+      }
+
+      private int wFCnt_ ;
+      /**
+       * <pre>
+       * End-device WFCnt.
+       * This holds the last known WFCnt value. ChirpStack will periodically read
+       * this value from the Relay.
+       * </pre>
+       *
+       * <code>uint32 w_f_cnt = 21;</code>
+       * @return The wFCnt.
+       */
+      @Override
+      public int getWFCnt() {
+        return wFCnt_;
+      }
+      /**
+       * <pre>
+       * End-device WFCnt.
+       * This holds the last known WFCnt value. ChirpStack will periodically read
+       * this value from the Relay.
+       * </pre>
+       *
+       * <code>uint32 w_f_cnt = 21;</code>
+       * @param value The wFCnt to set.
+       * @return This builder for chaining.
+       */
+      public Builder setWFCnt(int value) {
+
+        wFCnt_ = value;
+        bitField0_ |= 0x00100000;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * End-device WFCnt.
+       * This holds the last known WFCnt value. ChirpStack will periodically read
+       * this value from the Relay.
+       * </pre>
+       *
+       * <code>uint32 w_f_cnt = 21;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearWFCnt() {
+        bitField0_ = (bitField0_ & ~0x00100000);
+        wFCnt_ = 0;
+        onChanged();
+        return this;
+      }
+      @Override
+      public final Builder setUnknownFields(
+          final com.google.protobuf.UnknownFieldSet unknownFields) {
+        return super.setUnknownFields(unknownFields);
+      }
+
+      @Override
+      public final Builder mergeUnknownFields(
+          final com.google.protobuf.UnknownFieldSet unknownFields) {
+        return super.mergeUnknownFields(unknownFields);
+      }
+
+
+      // @@protoc_insertion_point(builder_scope:internal.Relay)
+    }
+
+    // @@protoc_insertion_point(class_scope:internal.Relay)
+    private static final Relay DEFAULT_INSTANCE;
+    static {
+      DEFAULT_INSTANCE = new Relay();
+    }
+
+    public static Relay getDefaultInstance() {
+      return DEFAULT_INSTANCE;
+    }
+
+    private static final com.google.protobuf.Parser<Relay>
+        PARSER = new com.google.protobuf.AbstractParser<Relay>() {
+      @Override
+      public Relay parsePartialFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        Builder builder = newBuilder();
+        try {
+          builder.mergeFrom(input, extensionRegistry);
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          throw e.setUnfinishedMessage(builder.buildPartial());
+        } catch (com.google.protobuf.UninitializedMessageException e) {
+          throw e.asInvalidProtocolBufferException().setUnfinishedMessage(builder.buildPartial());
+        } catch (java.io.IOException e) {
+          throw new com.google.protobuf.InvalidProtocolBufferException(e)
+              .setUnfinishedMessage(builder.buildPartial());
+        }
+        return builder.buildPartial();
+      }
+    };
+
+    public static com.google.protobuf.Parser<Relay> parser() {
+      return PARSER;
+    }
+
+    @Override
+    public com.google.protobuf.Parser<Relay> getParserForType() {
+      return PARSER;
+    }
+
+    @Override
+    public Relay getDefaultInstanceForType() {
+      return DEFAULT_INSTANCE;
+    }
+
+  }
+
+  public interface RelayDeviceOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:internal.RelayDevice)
+      com.google.protobuf.MessageOrBuilder {
+
+    /**
+     * <pre>
+     * Index (used for filter and uplink filters).
+     * This must be between 0 - 15.
+     * </pre>
+     *
+     * <code>uint32 index = 1;</code>
+     * @return The index.
+     */
+    int getIndex();
+
+    /**
+     * <pre>
+     * JoinEUI (EUI64).
+     * </pre>
+     *
+     * <code>bytes join_eui = 2;</code>
+     * @return The joinEui.
+     */
+    com.google.protobuf.ByteString getJoinEui();
+
+    /**
+     * <pre>
+     * DevEUI (EUI64).
+     * </pre>
+     *
+     * <code>bytes dev_eui = 3;</code>
+     * @return The devEui.
+     */
+    com.google.protobuf.ByteString getDevEui();
+
+    /**
+     * <pre>
+     * DevAddr.
+     * </pre>
+     *
+     * <code>bytes dev_addr = 4;</code>
+     * @return The devAddr.
+     */
+    com.google.protobuf.ByteString getDevAddr();
+
+    /**
+     * <pre>
+     * RootWorSKey.
+     * </pre>
+     *
+     * <code>bytes root_wor_s_key = 5;</code>
+     * @return The rootWorSKey.
+     */
+    com.google.protobuf.ByteString getRootWorSKey();
+
+    /**
+     * <pre>
+     * Provisioned.
+     * </pre>
+     *
+     * <code>bool provisioned = 6;</code>
+     * @return The provisioned.
+     */
+    boolean getProvisioned();
+
+    /**
+     * <pre>
+     * Uplink limit bucket size.
+     * </pre>
+     *
+     * <code>uint32 uplink_limit_bucket_size = 7;</code>
+     * @return The uplinkLimitBucketSize.
+     */
+    int getUplinkLimitBucketSize();
+
+    /**
+     * <pre>
+     * Uplink limit reload rate.
+     * </pre>
+     *
+     * <code>uint32 uplink_limit_reload_rate = 8;</code>
+     * @return The uplinkLimitReloadRate.
+     */
+    int getUplinkLimitReloadRate();
+
+    /**
+     * <pre>
+     * Timestamp of the last WFCnt request.
+     * Note that ChirpStack periodically requests the WFCnt from the relay.
+     * </pre>
+     *
+     * <code>.google.protobuf.Timestamp w_f_cnt_last_request = 9;</code>
+     * @return Whether the wFCntLastRequest field is set.
+     */
+    boolean hasWFCntLastRequest();
+    /**
+     * <pre>
+     * Timestamp of the last WFCnt request.
+     * Note that ChirpStack periodically requests the WFCnt from the relay.
+     * </pre>
+     *
+     * <code>.google.protobuf.Timestamp w_f_cnt_last_request = 9;</code>
+     * @return The wFCntLastRequest.
+     */
+    com.google.protobuf.Timestamp getWFCntLastRequest();
+    /**
+     * <pre>
+     * Timestamp of the last WFCnt request.
+     * Note that ChirpStack periodically requests the WFCnt from the relay.
+     * </pre>
+     *
+     * <code>.google.protobuf.Timestamp w_f_cnt_last_request = 9;</code>
+     */
+    com.google.protobuf.TimestampOrBuilder getWFCntLastRequestOrBuilder();
+  }
+  /**
+   * Protobuf type {@code internal.RelayDevice}
+   */
+  public static final class RelayDevice extends
+      com.google.protobuf.GeneratedMessageV3 implements
+      // @@protoc_insertion_point(message_implements:internal.RelayDevice)
+      RelayDeviceOrBuilder {
+  private static final long serialVersionUID = 0L;
+    // Use RelayDevice.newBuilder() to construct.
+    private RelayDevice(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
+      super(builder);
+    }
+    private RelayDevice() {
+      joinEui_ = com.google.protobuf.ByteString.EMPTY;
+      devEui_ = com.google.protobuf.ByteString.EMPTY;
+      devAddr_ = com.google.protobuf.ByteString.EMPTY;
+      rootWorSKey_ = com.google.protobuf.ByteString.EMPTY;
+    }
+
+    @Override
+    @SuppressWarnings({"unused"})
+    protected Object newInstance(
+        UnusedPrivateParameter unused) {
+      return new RelayDevice();
+    }
+
+    public static final com.google.protobuf.Descriptors.Descriptor
+        getDescriptor() {
+      return internal_static_internal_RelayDevice_descriptor;
+    }
+
+    @Override
+    protected FieldAccessorTable
+        internalGetFieldAccessorTable() {
+      return internal_static_internal_RelayDevice_fieldAccessorTable
+          .ensureFieldAccessorsInitialized(
+              RelayDevice.class, RelayDevice.Builder.class);
+    }
+
+    public static final int INDEX_FIELD_NUMBER = 1;
+    private int index_ = 0;
+    /**
+     * <pre>
+     * Index (used for filter and uplink filters).
+     * This must be between 0 - 15.
+     * </pre>
+     *
+     * <code>uint32 index = 1;</code>
+     * @return The index.
+     */
+    @Override
+    public int getIndex() {
+      return index_;
+    }
+
+    public static final int JOIN_EUI_FIELD_NUMBER = 2;
+    private com.google.protobuf.ByteString joinEui_ = com.google.protobuf.ByteString.EMPTY;
+    /**
+     * <pre>
+     * JoinEUI (EUI64).
+     * </pre>
+     *
+     * <code>bytes join_eui = 2;</code>
+     * @return The joinEui.
+     */
+    @Override
+    public com.google.protobuf.ByteString getJoinEui() {
+      return joinEui_;
+    }
+
+    public static final int DEV_EUI_FIELD_NUMBER = 3;
+    private com.google.protobuf.ByteString devEui_ = com.google.protobuf.ByteString.EMPTY;
+    /**
+     * <pre>
+     * DevEUI (EUI64).
+     * </pre>
+     *
+     * <code>bytes dev_eui = 3;</code>
+     * @return The devEui.
+     */
+    @Override
+    public com.google.protobuf.ByteString getDevEui() {
+      return devEui_;
+    }
+
+    public static final int DEV_ADDR_FIELD_NUMBER = 4;
+    private com.google.protobuf.ByteString devAddr_ = com.google.protobuf.ByteString.EMPTY;
+    /**
+     * <pre>
+     * DevAddr.
+     * </pre>
+     *
+     * <code>bytes dev_addr = 4;</code>
+     * @return The devAddr.
+     */
+    @Override
+    public com.google.protobuf.ByteString getDevAddr() {
+      return devAddr_;
+    }
+
+    public static final int ROOT_WOR_S_KEY_FIELD_NUMBER = 5;
+    private com.google.protobuf.ByteString rootWorSKey_ = com.google.protobuf.ByteString.EMPTY;
+    /**
+     * <pre>
+     * RootWorSKey.
+     * </pre>
+     *
+     * <code>bytes root_wor_s_key = 5;</code>
+     * @return The rootWorSKey.
+     */
+    @Override
+    public com.google.protobuf.ByteString getRootWorSKey() {
+      return rootWorSKey_;
+    }
+
+    public static final int PROVISIONED_FIELD_NUMBER = 6;
+    private boolean provisioned_ = false;
+    /**
+     * <pre>
+     * Provisioned.
+     * </pre>
+     *
+     * <code>bool provisioned = 6;</code>
+     * @return The provisioned.
+     */
+    @Override
+    public boolean getProvisioned() {
+      return provisioned_;
+    }
+
+    public static final int UPLINK_LIMIT_BUCKET_SIZE_FIELD_NUMBER = 7;
+    private int uplinkLimitBucketSize_ = 0;
+    /**
+     * <pre>
+     * Uplink limit bucket size.
+     * </pre>
+     *
+     * <code>uint32 uplink_limit_bucket_size = 7;</code>
+     * @return The uplinkLimitBucketSize.
+     */
+    @Override
+    public int getUplinkLimitBucketSize() {
+      return uplinkLimitBucketSize_;
+    }
+
+    public static final int UPLINK_LIMIT_RELOAD_RATE_FIELD_NUMBER = 8;
+    private int uplinkLimitReloadRate_ = 0;
+    /**
+     * <pre>
+     * Uplink limit reload rate.
+     * </pre>
+     *
+     * <code>uint32 uplink_limit_reload_rate = 8;</code>
+     * @return The uplinkLimitReloadRate.
+     */
+    @Override
+    public int getUplinkLimitReloadRate() {
+      return uplinkLimitReloadRate_;
+    }
+
+    public static final int W_F_CNT_LAST_REQUEST_FIELD_NUMBER = 9;
+    private com.google.protobuf.Timestamp wFCntLastRequest_;
+    /**
+     * <pre>
+     * Timestamp of the last WFCnt request.
+     * Note that ChirpStack periodically requests the WFCnt from the relay.
+     * </pre>
+     *
+     * <code>.google.protobuf.Timestamp w_f_cnt_last_request = 9;</code>
+     * @return Whether the wFCntLastRequest field is set.
+     */
+    @Override
+    public boolean hasWFCntLastRequest() {
+      return wFCntLastRequest_ != null;
+    }
+    /**
+     * <pre>
+     * Timestamp of the last WFCnt request.
+     * Note that ChirpStack periodically requests the WFCnt from the relay.
+     * </pre>
+     *
+     * <code>.google.protobuf.Timestamp w_f_cnt_last_request = 9;</code>
+     * @return The wFCntLastRequest.
+     */
+    @Override
+    public com.google.protobuf.Timestamp getWFCntLastRequest() {
+      return wFCntLastRequest_ == null ? com.google.protobuf.Timestamp.getDefaultInstance() : wFCntLastRequest_;
+    }
+    /**
+     * <pre>
+     * Timestamp of the last WFCnt request.
+     * Note that ChirpStack periodically requests the WFCnt from the relay.
+     * </pre>
+     *
+     * <code>.google.protobuf.Timestamp w_f_cnt_last_request = 9;</code>
+     */
+    @Override
+    public com.google.protobuf.TimestampOrBuilder getWFCntLastRequestOrBuilder() {
+      return wFCntLastRequest_ == null ? com.google.protobuf.Timestamp.getDefaultInstance() : wFCntLastRequest_;
+    }
+
+    private byte memoizedIsInitialized = -1;
+    @Override
+    public final boolean isInitialized() {
+      byte isInitialized = memoizedIsInitialized;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
+
+      memoizedIsInitialized = 1;
+      return true;
+    }
+
+    @Override
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      if (index_ != 0) {
+        output.writeUInt32(1, index_);
+      }
+      if (!joinEui_.isEmpty()) {
+        output.writeBytes(2, joinEui_);
+      }
+      if (!devEui_.isEmpty()) {
+        output.writeBytes(3, devEui_);
+      }
+      if (!devAddr_.isEmpty()) {
+        output.writeBytes(4, devAddr_);
+      }
+      if (!rootWorSKey_.isEmpty()) {
+        output.writeBytes(5, rootWorSKey_);
+      }
+      if (provisioned_ != false) {
+        output.writeBool(6, provisioned_);
+      }
+      if (uplinkLimitBucketSize_ != 0) {
+        output.writeUInt32(7, uplinkLimitBucketSize_);
+      }
+      if (uplinkLimitReloadRate_ != 0) {
+        output.writeUInt32(8, uplinkLimitReloadRate_);
+      }
+      if (wFCntLastRequest_ != null) {
+        output.writeMessage(9, getWFCntLastRequest());
+      }
+      getUnknownFields().writeTo(output);
+    }
+
+    @Override
+    public int getSerializedSize() {
+      int size = memoizedSize;
+      if (size != -1) return size;
+
+      size = 0;
+      if (index_ != 0) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeUInt32Size(1, index_);
+      }
+      if (!joinEui_.isEmpty()) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBytesSize(2, joinEui_);
+      }
+      if (!devEui_.isEmpty()) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBytesSize(3, devEui_);
+      }
+      if (!devAddr_.isEmpty()) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBytesSize(4, devAddr_);
+      }
+      if (!rootWorSKey_.isEmpty()) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBytesSize(5, rootWorSKey_);
+      }
+      if (provisioned_ != false) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBoolSize(6, provisioned_);
+      }
+      if (uplinkLimitBucketSize_ != 0) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeUInt32Size(7, uplinkLimitBucketSize_);
+      }
+      if (uplinkLimitReloadRate_ != 0) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeUInt32Size(8, uplinkLimitReloadRate_);
+      }
+      if (wFCntLastRequest_ != null) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeMessageSize(9, getWFCntLastRequest());
+      }
+      size += getUnknownFields().getSerializedSize();
+      memoizedSize = size;
+      return size;
+    }
+
+    @Override
+    public boolean equals(final Object obj) {
+      if (obj == this) {
+       return true;
+      }
+      if (!(obj instanceof RelayDevice)) {
+        return super.equals(obj);
+      }
+      RelayDevice other = (RelayDevice) obj;
+
+      if (getIndex()
+          != other.getIndex()) return false;
+      if (!getJoinEui()
+          .equals(other.getJoinEui())) return false;
+      if (!getDevEui()
+          .equals(other.getDevEui())) return false;
+      if (!getDevAddr()
+          .equals(other.getDevAddr())) return false;
+      if (!getRootWorSKey()
+          .equals(other.getRootWorSKey())) return false;
+      if (getProvisioned()
+          != other.getProvisioned()) return false;
+      if (getUplinkLimitBucketSize()
+          != other.getUplinkLimitBucketSize()) return false;
+      if (getUplinkLimitReloadRate()
+          != other.getUplinkLimitReloadRate()) return false;
+      if (hasWFCntLastRequest() != other.hasWFCntLastRequest()) return false;
+      if (hasWFCntLastRequest()) {
+        if (!getWFCntLastRequest()
+            .equals(other.getWFCntLastRequest())) return false;
+      }
+      if (!getUnknownFields().equals(other.getUnknownFields())) return false;
+      return true;
+    }
+
+    @Override
+    public int hashCode() {
+      if (memoizedHashCode != 0) {
+        return memoizedHashCode;
+      }
+      int hash = 41;
+      hash = (19 * hash) + getDescriptor().hashCode();
+      hash = (37 * hash) + INDEX_FIELD_NUMBER;
+      hash = (53 * hash) + getIndex();
+      hash = (37 * hash) + JOIN_EUI_FIELD_NUMBER;
+      hash = (53 * hash) + getJoinEui().hashCode();
+      hash = (37 * hash) + DEV_EUI_FIELD_NUMBER;
+      hash = (53 * hash) + getDevEui().hashCode();
+      hash = (37 * hash) + DEV_ADDR_FIELD_NUMBER;
+      hash = (53 * hash) + getDevAddr().hashCode();
+      hash = (37 * hash) + ROOT_WOR_S_KEY_FIELD_NUMBER;
+      hash = (53 * hash) + getRootWorSKey().hashCode();
+      hash = (37 * hash) + PROVISIONED_FIELD_NUMBER;
+      hash = (53 * hash) + com.google.protobuf.Internal.hashBoolean(
+          getProvisioned());
+      hash = (37 * hash) + UPLINK_LIMIT_BUCKET_SIZE_FIELD_NUMBER;
+      hash = (53 * hash) + getUplinkLimitBucketSize();
+      hash = (37 * hash) + UPLINK_LIMIT_RELOAD_RATE_FIELD_NUMBER;
+      hash = (53 * hash) + getUplinkLimitReloadRate();
+      if (hasWFCntLastRequest()) {
+        hash = (37 * hash) + W_F_CNT_LAST_REQUEST_FIELD_NUMBER;
+        hash = (53 * hash) + getWFCntLastRequest().hashCode();
+      }
+      hash = (29 * hash) + getUnknownFields().hashCode();
+      memoizedHashCode = hash;
+      return hash;
+    }
+
+    public static RelayDevice parseFrom(
+        java.nio.ByteBuffer data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static RelayDevice parseFrom(
+        java.nio.ByteBuffer data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static RelayDevice parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static RelayDevice parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static RelayDevice parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static RelayDevice parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static RelayDevice parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input);
+    }
+    public static RelayDevice parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input, extensionRegistry);
+    }
+    public static RelayDevice parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseDelimitedWithIOException(PARSER, input);
+    }
+    public static RelayDevice parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
+    }
+    public static RelayDevice parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input);
+    }
+    public static RelayDevice parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input, extensionRegistry);
+    }
+
+    @Override
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder() {
+      return DEFAULT_INSTANCE.toBuilder();
+    }
+    public static Builder newBuilder(RelayDevice prototype) {
+      return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
+    }
+    @Override
+    public Builder toBuilder() {
+      return this == DEFAULT_INSTANCE
+          ? new Builder() : new Builder().mergeFrom(this);
+    }
+
+    @Override
+    protected Builder newBuilderForType(
+        BuilderParent parent) {
+      Builder builder = new Builder(parent);
+      return builder;
+    }
+    /**
+     * Protobuf type {@code internal.RelayDevice}
+     */
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:internal.RelayDevice)
+        RelayDeviceOrBuilder {
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return internal_static_internal_RelayDevice_descriptor;
+      }
+
+      @Override
+      protected FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return internal_static_internal_RelayDevice_fieldAccessorTable
+            .ensureFieldAccessorsInitialized(
+                RelayDevice.class, RelayDevice.Builder.class);
+      }
+
+      // Construct using RelayDevice.newBuilder()
+      private Builder() {
+
+      }
+
+      private Builder(
+          BuilderParent parent) {
+        super(parent);
+
+      }
+      @Override
+      public Builder clear() {
+        super.clear();
+        bitField0_ = 0;
+        index_ = 0;
+        joinEui_ = com.google.protobuf.ByteString.EMPTY;
+        devEui_ = com.google.protobuf.ByteString.EMPTY;
+        devAddr_ = com.google.protobuf.ByteString.EMPTY;
+        rootWorSKey_ = com.google.protobuf.ByteString.EMPTY;
+        provisioned_ = false;
+        uplinkLimitBucketSize_ = 0;
+        uplinkLimitReloadRate_ = 0;
+        wFCntLastRequest_ = null;
+        if (wFCntLastRequestBuilder_ != null) {
+          wFCntLastRequestBuilder_.dispose();
+          wFCntLastRequestBuilder_ = null;
+        }
+        return this;
+      }
+
+      @Override
+      public com.google.protobuf.Descriptors.Descriptor
+          getDescriptorForType() {
+        return internal_static_internal_RelayDevice_descriptor;
+      }
+
+      @Override
+      public RelayDevice getDefaultInstanceForType() {
+        return RelayDevice.getDefaultInstance();
+      }
+
+      @Override
+      public RelayDevice build() {
+        RelayDevice result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return result;
+      }
+
+      @Override
+      public RelayDevice buildPartial() {
+        RelayDevice result = new RelayDevice(this);
+        if (bitField0_ != 0) { buildPartial0(result); }
+        onBuilt();
+        return result;
+      }
+
+      private void buildPartial0(RelayDevice result) {
+        int from_bitField0_ = bitField0_;
+        if (((from_bitField0_ & 0x00000001) != 0)) {
+          result.index_ = index_;
+        }
+        if (((from_bitField0_ & 0x00000002) != 0)) {
+          result.joinEui_ = joinEui_;
+        }
+        if (((from_bitField0_ & 0x00000004) != 0)) {
+          result.devEui_ = devEui_;
+        }
+        if (((from_bitField0_ & 0x00000008) != 0)) {
+          result.devAddr_ = devAddr_;
+        }
+        if (((from_bitField0_ & 0x00000010) != 0)) {
+          result.rootWorSKey_ = rootWorSKey_;
+        }
+        if (((from_bitField0_ & 0x00000020) != 0)) {
+          result.provisioned_ = provisioned_;
+        }
+        if (((from_bitField0_ & 0x00000040) != 0)) {
+          result.uplinkLimitBucketSize_ = uplinkLimitBucketSize_;
+        }
+        if (((from_bitField0_ & 0x00000080) != 0)) {
+          result.uplinkLimitReloadRate_ = uplinkLimitReloadRate_;
+        }
+        if (((from_bitField0_ & 0x00000100) != 0)) {
+          result.wFCntLastRequest_ = wFCntLastRequestBuilder_ == null
+              ? wFCntLastRequest_
+              : wFCntLastRequestBuilder_.build();
+        }
+      }
+
+      @Override
+      public Builder mergeFrom(com.google.protobuf.Message other) {
+        if (other instanceof RelayDevice) {
+          return mergeFrom((RelayDevice)other);
+        } else {
+          super.mergeFrom(other);
+          return this;
+        }
+      }
+
+      public Builder mergeFrom(RelayDevice other) {
+        if (other == RelayDevice.getDefaultInstance()) return this;
+        if (other.getIndex() != 0) {
+          setIndex(other.getIndex());
+        }
+        if (other.getJoinEui() != com.google.protobuf.ByteString.EMPTY) {
+          setJoinEui(other.getJoinEui());
+        }
+        if (other.getDevEui() != com.google.protobuf.ByteString.EMPTY) {
+          setDevEui(other.getDevEui());
+        }
+        if (other.getDevAddr() != com.google.protobuf.ByteString.EMPTY) {
+          setDevAddr(other.getDevAddr());
+        }
+        if (other.getRootWorSKey() != com.google.protobuf.ByteString.EMPTY) {
+          setRootWorSKey(other.getRootWorSKey());
+        }
+        if (other.getProvisioned() != false) {
+          setProvisioned(other.getProvisioned());
+        }
+        if (other.getUplinkLimitBucketSize() != 0) {
+          setUplinkLimitBucketSize(other.getUplinkLimitBucketSize());
+        }
+        if (other.getUplinkLimitReloadRate() != 0) {
+          setUplinkLimitReloadRate(other.getUplinkLimitReloadRate());
+        }
+        if (other.hasWFCntLastRequest()) {
+          mergeWFCntLastRequest(other.getWFCntLastRequest());
+        }
+        this.mergeUnknownFields(other.getUnknownFields());
+        onChanged();
+        return this;
+      }
+
+      @Override
+      public final boolean isInitialized() {
+        return true;
+      }
+
+      @Override
+      public Builder mergeFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        if (extensionRegistry == null) {
+          throw new NullPointerException();
+        }
+        try {
+          boolean done = false;
+          while (!done) {
+            int tag = input.readTag();
+            switch (tag) {
+              case 0:
+                done = true;
+                break;
+              case 8: {
+                index_ = input.readUInt32();
+                bitField0_ |= 0x00000001;
+                break;
+              } // case 8
+              case 18: {
+                joinEui_ = input.readBytes();
+                bitField0_ |= 0x00000002;
+                break;
+              } // case 18
+              case 26: {
+                devEui_ = input.readBytes();
+                bitField0_ |= 0x00000004;
+                break;
+              } // case 26
+              case 34: {
+                devAddr_ = input.readBytes();
+                bitField0_ |= 0x00000008;
+                break;
+              } // case 34
+              case 42: {
+                rootWorSKey_ = input.readBytes();
+                bitField0_ |= 0x00000010;
+                break;
+              } // case 42
+              case 48: {
+                provisioned_ = input.readBool();
+                bitField0_ |= 0x00000020;
+                break;
+              } // case 48
+              case 56: {
+                uplinkLimitBucketSize_ = input.readUInt32();
+                bitField0_ |= 0x00000040;
+                break;
+              } // case 56
+              case 64: {
+                uplinkLimitReloadRate_ = input.readUInt32();
+                bitField0_ |= 0x00000080;
+                break;
+              } // case 64
+              case 74: {
+                input.readMessage(
+                    getWFCntLastRequestFieldBuilder().getBuilder(),
+                    extensionRegistry);
+                bitField0_ |= 0x00000100;
+                break;
+              } // case 74
+              default: {
+                if (!super.parseUnknownField(input, extensionRegistry, tag)) {
+                  done = true; // was an endgroup tag
+                }
+                break;
+              } // default:
+            } // switch (tag)
+          } // while (!done)
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          throw e.unwrapIOException();
+        } finally {
+          onChanged();
+        } // finally
+        return this;
+      }
+      private int bitField0_;
+
+      private int index_ ;
+      /**
+       * <pre>
+       * Index (used for filter and uplink filters).
+       * This must be between 0 - 15.
+       * </pre>
+       *
+       * <code>uint32 index = 1;</code>
+       * @return The index.
+       */
+      @Override
+      public int getIndex() {
+        return index_;
+      }
+      /**
+       * <pre>
+       * Index (used for filter and uplink filters).
+       * This must be between 0 - 15.
+       * </pre>
+       *
+       * <code>uint32 index = 1;</code>
+       * @param value The index to set.
+       * @return This builder for chaining.
+       */
+      public Builder setIndex(int value) {
+
+        index_ = value;
+        bitField0_ |= 0x00000001;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * Index (used for filter and uplink filters).
+       * This must be between 0 - 15.
+       * </pre>
+       *
+       * <code>uint32 index = 1;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearIndex() {
+        bitField0_ = (bitField0_ & ~0x00000001);
+        index_ = 0;
+        onChanged();
+        return this;
+      }
+
+      private com.google.protobuf.ByteString joinEui_ = com.google.protobuf.ByteString.EMPTY;
+      /**
+       * <pre>
+       * JoinEUI (EUI64).
+       * </pre>
+       *
+       * <code>bytes join_eui = 2;</code>
+       * @return The joinEui.
+       */
+      @Override
+      public com.google.protobuf.ByteString getJoinEui() {
+        return joinEui_;
+      }
+      /**
+       * <pre>
+       * JoinEUI (EUI64).
+       * </pre>
+       *
+       * <code>bytes join_eui = 2;</code>
+       * @param value The joinEui to set.
+       * @return This builder for chaining.
+       */
+      public Builder setJoinEui(com.google.protobuf.ByteString value) {
+        if (value == null) { throw new NullPointerException(); }
+        joinEui_ = value;
+        bitField0_ |= 0x00000002;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * JoinEUI (EUI64).
+       * </pre>
+       *
+       * <code>bytes join_eui = 2;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearJoinEui() {
+        bitField0_ = (bitField0_ & ~0x00000002);
+        joinEui_ = getDefaultInstance().getJoinEui();
+        onChanged();
+        return this;
+      }
+
+      private com.google.protobuf.ByteString devEui_ = com.google.protobuf.ByteString.EMPTY;
+      /**
+       * <pre>
+       * DevEUI (EUI64).
+       * </pre>
+       *
+       * <code>bytes dev_eui = 3;</code>
+       * @return The devEui.
+       */
+      @Override
+      public com.google.protobuf.ByteString getDevEui() {
+        return devEui_;
+      }
+      /**
+       * <pre>
+       * DevEUI (EUI64).
+       * </pre>
+       *
+       * <code>bytes dev_eui = 3;</code>
+       * @param value The devEui to set.
+       * @return This builder for chaining.
+       */
+      public Builder setDevEui(com.google.protobuf.ByteString value) {
+        if (value == null) { throw new NullPointerException(); }
+        devEui_ = value;
+        bitField0_ |= 0x00000004;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * DevEUI (EUI64).
+       * </pre>
+       *
+       * <code>bytes dev_eui = 3;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearDevEui() {
+        bitField0_ = (bitField0_ & ~0x00000004);
+        devEui_ = getDefaultInstance().getDevEui();
+        onChanged();
+        return this;
+      }
+
+      private com.google.protobuf.ByteString devAddr_ = com.google.protobuf.ByteString.EMPTY;
+      /**
+       * <pre>
+       * DevAddr.
+       * </pre>
+       *
+       * <code>bytes dev_addr = 4;</code>
+       * @return The devAddr.
+       */
+      @Override
+      public com.google.protobuf.ByteString getDevAddr() {
+        return devAddr_;
+      }
+      /**
+       * <pre>
+       * DevAddr.
+       * </pre>
+       *
+       * <code>bytes dev_addr = 4;</code>
+       * @param value The devAddr to set.
+       * @return This builder for chaining.
+       */
+      public Builder setDevAddr(com.google.protobuf.ByteString value) {
+        if (value == null) { throw new NullPointerException(); }
+        devAddr_ = value;
+        bitField0_ |= 0x00000008;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * DevAddr.
+       * </pre>
+       *
+       * <code>bytes dev_addr = 4;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearDevAddr() {
+        bitField0_ = (bitField0_ & ~0x00000008);
+        devAddr_ = getDefaultInstance().getDevAddr();
+        onChanged();
+        return this;
+      }
+
+      private com.google.protobuf.ByteString rootWorSKey_ = com.google.protobuf.ByteString.EMPTY;
+      /**
+       * <pre>
+       * RootWorSKey.
+       * </pre>
+       *
+       * <code>bytes root_wor_s_key = 5;</code>
+       * @return The rootWorSKey.
+       */
+      @Override
+      public com.google.protobuf.ByteString getRootWorSKey() {
+        return rootWorSKey_;
+      }
+      /**
+       * <pre>
+       * RootWorSKey.
+       * </pre>
+       *
+       * <code>bytes root_wor_s_key = 5;</code>
+       * @param value The rootWorSKey to set.
+       * @return This builder for chaining.
+       */
+      public Builder setRootWorSKey(com.google.protobuf.ByteString value) {
+        if (value == null) { throw new NullPointerException(); }
+        rootWorSKey_ = value;
+        bitField0_ |= 0x00000010;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * RootWorSKey.
+       * </pre>
+       *
+       * <code>bytes root_wor_s_key = 5;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearRootWorSKey() {
+        bitField0_ = (bitField0_ & ~0x00000010);
+        rootWorSKey_ = getDefaultInstance().getRootWorSKey();
+        onChanged();
+        return this;
+      }
+
+      private boolean provisioned_ ;
+      /**
+       * <pre>
+       * Provisioned.
+       * </pre>
+       *
+       * <code>bool provisioned = 6;</code>
+       * @return The provisioned.
+       */
+      @Override
+      public boolean getProvisioned() {
+        return provisioned_;
+      }
+      /**
+       * <pre>
+       * Provisioned.
+       * </pre>
+       *
+       * <code>bool provisioned = 6;</code>
+       * @param value The provisioned to set.
+       * @return This builder for chaining.
+       */
+      public Builder setProvisioned(boolean value) {
+
+        provisioned_ = value;
+        bitField0_ |= 0x00000020;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * Provisioned.
+       * </pre>
+       *
+       * <code>bool provisioned = 6;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearProvisioned() {
+        bitField0_ = (bitField0_ & ~0x00000020);
+        provisioned_ = false;
+        onChanged();
+        return this;
+      }
+
+      private int uplinkLimitBucketSize_ ;
+      /**
+       * <pre>
+       * Uplink limit bucket size.
+       * </pre>
+       *
+       * <code>uint32 uplink_limit_bucket_size = 7;</code>
+       * @return The uplinkLimitBucketSize.
+       */
+      @Override
+      public int getUplinkLimitBucketSize() {
+        return uplinkLimitBucketSize_;
+      }
+      /**
+       * <pre>
+       * Uplink limit bucket size.
+       * </pre>
+       *
+       * <code>uint32 uplink_limit_bucket_size = 7;</code>
+       * @param value The uplinkLimitBucketSize to set.
+       * @return This builder for chaining.
+       */
+      public Builder setUplinkLimitBucketSize(int value) {
+
+        uplinkLimitBucketSize_ = value;
+        bitField0_ |= 0x00000040;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * Uplink limit bucket size.
+       * </pre>
+       *
+       * <code>uint32 uplink_limit_bucket_size = 7;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearUplinkLimitBucketSize() {
+        bitField0_ = (bitField0_ & ~0x00000040);
+        uplinkLimitBucketSize_ = 0;
+        onChanged();
+        return this;
+      }
+
+      private int uplinkLimitReloadRate_ ;
+      /**
+       * <pre>
+       * Uplink limit reload rate.
+       * </pre>
+       *
+       * <code>uint32 uplink_limit_reload_rate = 8;</code>
+       * @return The uplinkLimitReloadRate.
+       */
+      @Override
+      public int getUplinkLimitReloadRate() {
+        return uplinkLimitReloadRate_;
+      }
+      /**
+       * <pre>
+       * Uplink limit reload rate.
+       * </pre>
+       *
+       * <code>uint32 uplink_limit_reload_rate = 8;</code>
+       * @param value The uplinkLimitReloadRate to set.
+       * @return This builder for chaining.
+       */
+      public Builder setUplinkLimitReloadRate(int value) {
+
+        uplinkLimitReloadRate_ = value;
+        bitField0_ |= 0x00000080;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * Uplink limit reload rate.
+       * </pre>
+       *
+       * <code>uint32 uplink_limit_reload_rate = 8;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearUplinkLimitReloadRate() {
+        bitField0_ = (bitField0_ & ~0x00000080);
+        uplinkLimitReloadRate_ = 0;
+        onChanged();
+        return this;
+      }
+
+      private com.google.protobuf.Timestamp wFCntLastRequest_;
+      private com.google.protobuf.SingleFieldBuilderV3<
+          com.google.protobuf.Timestamp, com.google.protobuf.Timestamp.Builder, com.google.protobuf.TimestampOrBuilder> wFCntLastRequestBuilder_;
+      /**
+       * <pre>
+       * Timestamp of the last WFCnt request.
+       * Note that ChirpStack periodically requests the WFCnt from the relay.
+       * </pre>
+       *
+       * <code>.google.protobuf.Timestamp w_f_cnt_last_request = 9;</code>
+       * @return Whether the wFCntLastRequest field is set.
+       */
+      public boolean hasWFCntLastRequest() {
+        return ((bitField0_ & 0x00000100) != 0);
+      }
+      /**
+       * <pre>
+       * Timestamp of the last WFCnt request.
+       * Note that ChirpStack periodically requests the WFCnt from the relay.
+       * </pre>
+       *
+       * <code>.google.protobuf.Timestamp w_f_cnt_last_request = 9;</code>
+       * @return The wFCntLastRequest.
+       */
+      public com.google.protobuf.Timestamp getWFCntLastRequest() {
+        if (wFCntLastRequestBuilder_ == null) {
+          return wFCntLastRequest_ == null ? com.google.protobuf.Timestamp.getDefaultInstance() : wFCntLastRequest_;
+        } else {
+          return wFCntLastRequestBuilder_.getMessage();
+        }
+      }
+      /**
+       * <pre>
+       * Timestamp of the last WFCnt request.
+       * Note that ChirpStack periodically requests the WFCnt from the relay.
+       * </pre>
+       *
+       * <code>.google.protobuf.Timestamp w_f_cnt_last_request = 9;</code>
+       */
+      public Builder setWFCntLastRequest(com.google.protobuf.Timestamp value) {
+        if (wFCntLastRequestBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          wFCntLastRequest_ = value;
+        } else {
+          wFCntLastRequestBuilder_.setMessage(value);
+        }
+        bitField0_ |= 0x00000100;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * Timestamp of the last WFCnt request.
+       * Note that ChirpStack periodically requests the WFCnt from the relay.
+       * </pre>
+       *
+       * <code>.google.protobuf.Timestamp w_f_cnt_last_request = 9;</code>
+       */
+      public Builder setWFCntLastRequest(
+          com.google.protobuf.Timestamp.Builder builderForValue) {
+        if (wFCntLastRequestBuilder_ == null) {
+          wFCntLastRequest_ = builderForValue.build();
+        } else {
+          wFCntLastRequestBuilder_.setMessage(builderForValue.build());
+        }
+        bitField0_ |= 0x00000100;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * Timestamp of the last WFCnt request.
+       * Note that ChirpStack periodically requests the WFCnt from the relay.
+       * </pre>
+       *
+       * <code>.google.protobuf.Timestamp w_f_cnt_last_request = 9;</code>
+       */
+      public Builder mergeWFCntLastRequest(com.google.protobuf.Timestamp value) {
+        if (wFCntLastRequestBuilder_ == null) {
+          if (((bitField0_ & 0x00000100) != 0) &&
+            wFCntLastRequest_ != null &&
+            wFCntLastRequest_ != com.google.protobuf.Timestamp.getDefaultInstance()) {
+            getWFCntLastRequestBuilder().mergeFrom(value);
+          } else {
+            wFCntLastRequest_ = value;
+          }
+        } else {
+          wFCntLastRequestBuilder_.mergeFrom(value);
+        }
+        bitField0_ |= 0x00000100;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * Timestamp of the last WFCnt request.
+       * Note that ChirpStack periodically requests the WFCnt from the relay.
+       * </pre>
+       *
+       * <code>.google.protobuf.Timestamp w_f_cnt_last_request = 9;</code>
+       */
+      public Builder clearWFCntLastRequest() {
+        bitField0_ = (bitField0_ & ~0x00000100);
+        wFCntLastRequest_ = null;
+        if (wFCntLastRequestBuilder_ != null) {
+          wFCntLastRequestBuilder_.dispose();
+          wFCntLastRequestBuilder_ = null;
+        }
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * Timestamp of the last WFCnt request.
+       * Note that ChirpStack periodically requests the WFCnt from the relay.
+       * </pre>
+       *
+       * <code>.google.protobuf.Timestamp w_f_cnt_last_request = 9;</code>
+       */
+      public com.google.protobuf.Timestamp.Builder getWFCntLastRequestBuilder() {
+        bitField0_ |= 0x00000100;
+        onChanged();
+        return getWFCntLastRequestFieldBuilder().getBuilder();
+      }
+      /**
+       * <pre>
+       * Timestamp of the last WFCnt request.
+       * Note that ChirpStack periodically requests the WFCnt from the relay.
+       * </pre>
+       *
+       * <code>.google.protobuf.Timestamp w_f_cnt_last_request = 9;</code>
+       */
+      public com.google.protobuf.TimestampOrBuilder getWFCntLastRequestOrBuilder() {
+        if (wFCntLastRequestBuilder_ != null) {
+          return wFCntLastRequestBuilder_.getMessageOrBuilder();
+        } else {
+          return wFCntLastRequest_ == null ?
+              com.google.protobuf.Timestamp.getDefaultInstance() : wFCntLastRequest_;
+        }
+      }
+      /**
+       * <pre>
+       * Timestamp of the last WFCnt request.
+       * Note that ChirpStack periodically requests the WFCnt from the relay.
+       * </pre>
+       *
+       * <code>.google.protobuf.Timestamp w_f_cnt_last_request = 9;</code>
+       */
+      private com.google.protobuf.SingleFieldBuilderV3<
+          com.google.protobuf.Timestamp, com.google.protobuf.Timestamp.Builder, com.google.protobuf.TimestampOrBuilder> 
+          getWFCntLastRequestFieldBuilder() {
+        if (wFCntLastRequestBuilder_ == null) {
+          wFCntLastRequestBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
+              com.google.protobuf.Timestamp, com.google.protobuf.Timestamp.Builder, com.google.protobuf.TimestampOrBuilder>(
+                  getWFCntLastRequest(),
+                  getParentForChildren(),
+                  isClean());
+          wFCntLastRequest_ = null;
+        }
+        return wFCntLastRequestBuilder_;
+      }
+      @Override
+      public final Builder setUnknownFields(
+          final com.google.protobuf.UnknownFieldSet unknownFields) {
+        return super.setUnknownFields(unknownFields);
+      }
+
+      @Override
+      public final Builder mergeUnknownFields(
+          final com.google.protobuf.UnknownFieldSet unknownFields) {
+        return super.mergeUnknownFields(unknownFields);
+      }
+
+
+      // @@protoc_insertion_point(builder_scope:internal.RelayDevice)
+    }
+
+    // @@protoc_insertion_point(class_scope:internal.RelayDevice)
+    private static final RelayDevice DEFAULT_INSTANCE;
+    static {
+      DEFAULT_INSTANCE = new RelayDevice();
+    }
+
+    public static RelayDevice getDefaultInstance() {
+      return DEFAULT_INSTANCE;
+    }
+
+    private static final com.google.protobuf.Parser<RelayDevice>
+        PARSER = new com.google.protobuf.AbstractParser<RelayDevice>() {
+      @Override
+      public RelayDevice parsePartialFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        Builder builder = newBuilder();
+        try {
+          builder.mergeFrom(input, extensionRegistry);
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          throw e.setUnfinishedMessage(builder.buildPartial());
+        } catch (com.google.protobuf.UninitializedMessageException e) {
+          throw e.asInvalidProtocolBufferException().setUnfinishedMessage(builder.buildPartial());
+        } catch (java.io.IOException e) {
+          throw new com.google.protobuf.InvalidProtocolBufferException(e)
+              .setUnfinishedMessage(builder.buildPartial());
+        }
+        return builder.buildPartial();
+      }
+    };
+
+    public static com.google.protobuf.Parser<RelayDevice> parser() {
+      return PARSER;
+    }
+
+    @Override
+    public com.google.protobuf.Parser<RelayDevice> getParserForType() {
+      return PARSER;
+    }
+
+    @Override
+    public RelayDevice getDefaultInstanceForType() {
+      return DEFAULT_INSTANCE;
+    }
+
+  }
+
+  public interface RelayFilterOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:internal.RelayFilter)
+      com.google.protobuf.MessageOrBuilder {
+
+    /**
+     * <pre>
+     * Index.
+     * This must be between 0 - 15.
+     * </pre>
+     *
+     * <code>uint32 index = 1;</code>
+     * @return The index.
+     */
+    int getIndex();
+
+    /**
+     * <pre>
+     * Action.
+     *  * 0: No Rule
+     *  * 1: Forward
+     *  * 2: Filter
+     * </pre>
+     *
+     * <code>uint32 action = 2;</code>
+     * @return The action.
+     */
+    int getAction();
+
+    /**
+     * <pre>
+     * DevEUI (EUI64).
+     * </pre>
+     *
+     * <code>bytes dev_eui = 3;</code>
+     * @return The devEui.
+     */
+    com.google.protobuf.ByteString getDevEui();
+
+    /**
+     * <pre>
+     * JoinEUI (EUI64).
+     * </pre>
+     *
+     * <code>bytes join_eui = 4;</code>
+     * @return The joinEui.
+     */
+    com.google.protobuf.ByteString getJoinEui();
+
+    /**
+     * <pre>
+     * Provisioned.
+     * </pre>
+     *
+     * <code>bool provisioned = 5;</code>
+     * @return The provisioned.
+     */
+    boolean getProvisioned();
+  }
+  /**
+   * Protobuf type {@code internal.RelayFilter}
+   */
+  public static final class RelayFilter extends
+      com.google.protobuf.GeneratedMessageV3 implements
+      // @@protoc_insertion_point(message_implements:internal.RelayFilter)
+      RelayFilterOrBuilder {
+  private static final long serialVersionUID = 0L;
+    // Use RelayFilter.newBuilder() to construct.
+    private RelayFilter(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
+      super(builder);
+    }
+    private RelayFilter() {
+      devEui_ = com.google.protobuf.ByteString.EMPTY;
+      joinEui_ = com.google.protobuf.ByteString.EMPTY;
+    }
+
+    @Override
+    @SuppressWarnings({"unused"})
+    protected Object newInstance(
+        UnusedPrivateParameter unused) {
+      return new RelayFilter();
+    }
+
+    public static final com.google.protobuf.Descriptors.Descriptor
+        getDescriptor() {
+      return internal_static_internal_RelayFilter_descriptor;
+    }
+
+    @Override
+    protected FieldAccessorTable
+        internalGetFieldAccessorTable() {
+      return internal_static_internal_RelayFilter_fieldAccessorTable
+          .ensureFieldAccessorsInitialized(
+              RelayFilter.class, RelayFilter.Builder.class);
+    }
+
+    public static final int INDEX_FIELD_NUMBER = 1;
+    private int index_ = 0;
+    /**
+     * <pre>
+     * Index.
+     * This must be between 0 - 15.
+     * </pre>
+     *
+     * <code>uint32 index = 1;</code>
+     * @return The index.
+     */
+    @Override
+    public int getIndex() {
+      return index_;
+    }
+
+    public static final int ACTION_FIELD_NUMBER = 2;
+    private int action_ = 0;
+    /**
+     * <pre>
+     * Action.
+     *  * 0: No Rule
+     *  * 1: Forward
+     *  * 2: Filter
+     * </pre>
+     *
+     * <code>uint32 action = 2;</code>
+     * @return The action.
+     */
+    @Override
+    public int getAction() {
+      return action_;
+    }
+
+    public static final int DEV_EUI_FIELD_NUMBER = 3;
+    private com.google.protobuf.ByteString devEui_ = com.google.protobuf.ByteString.EMPTY;
+    /**
+     * <pre>
+     * DevEUI (EUI64).
+     * </pre>
+     *
+     * <code>bytes dev_eui = 3;</code>
+     * @return The devEui.
+     */
+    @Override
+    public com.google.protobuf.ByteString getDevEui() {
+      return devEui_;
+    }
+
+    public static final int JOIN_EUI_FIELD_NUMBER = 4;
+    private com.google.protobuf.ByteString joinEui_ = com.google.protobuf.ByteString.EMPTY;
+    /**
+     * <pre>
+     * JoinEUI (EUI64).
+     * </pre>
+     *
+     * <code>bytes join_eui = 4;</code>
+     * @return The joinEui.
+     */
+    @Override
+    public com.google.protobuf.ByteString getJoinEui() {
+      return joinEui_;
+    }
+
+    public static final int PROVISIONED_FIELD_NUMBER = 5;
+    private boolean provisioned_ = false;
+    /**
+     * <pre>
+     * Provisioned.
+     * </pre>
+     *
+     * <code>bool provisioned = 5;</code>
+     * @return The provisioned.
+     */
+    @Override
+    public boolean getProvisioned() {
+      return provisioned_;
+    }
+
+    private byte memoizedIsInitialized = -1;
+    @Override
+    public final boolean isInitialized() {
+      byte isInitialized = memoizedIsInitialized;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
+
+      memoizedIsInitialized = 1;
+      return true;
+    }
+
+    @Override
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      if (index_ != 0) {
+        output.writeUInt32(1, index_);
+      }
+      if (action_ != 0) {
+        output.writeUInt32(2, action_);
+      }
+      if (!devEui_.isEmpty()) {
+        output.writeBytes(3, devEui_);
+      }
+      if (!joinEui_.isEmpty()) {
+        output.writeBytes(4, joinEui_);
+      }
+      if (provisioned_ != false) {
+        output.writeBool(5, provisioned_);
+      }
+      getUnknownFields().writeTo(output);
+    }
+
+    @Override
+    public int getSerializedSize() {
+      int size = memoizedSize;
+      if (size != -1) return size;
+
+      size = 0;
+      if (index_ != 0) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeUInt32Size(1, index_);
+      }
+      if (action_ != 0) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeUInt32Size(2, action_);
+      }
+      if (!devEui_.isEmpty()) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBytesSize(3, devEui_);
+      }
+      if (!joinEui_.isEmpty()) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBytesSize(4, joinEui_);
+      }
+      if (provisioned_ != false) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBoolSize(5, provisioned_);
+      }
+      size += getUnknownFields().getSerializedSize();
+      memoizedSize = size;
+      return size;
+    }
+
+    @Override
+    public boolean equals(final Object obj) {
+      if (obj == this) {
+       return true;
+      }
+      if (!(obj instanceof RelayFilter)) {
+        return super.equals(obj);
+      }
+      RelayFilter other = (RelayFilter) obj;
+
+      if (getIndex()
+          != other.getIndex()) return false;
+      if (getAction()
+          != other.getAction()) return false;
+      if (!getDevEui()
+          .equals(other.getDevEui())) return false;
+      if (!getJoinEui()
+          .equals(other.getJoinEui())) return false;
+      if (getProvisioned()
+          != other.getProvisioned()) return false;
+      if (!getUnknownFields().equals(other.getUnknownFields())) return false;
+      return true;
+    }
+
+    @Override
+    public int hashCode() {
+      if (memoizedHashCode != 0) {
+        return memoizedHashCode;
+      }
+      int hash = 41;
+      hash = (19 * hash) + getDescriptor().hashCode();
+      hash = (37 * hash) + INDEX_FIELD_NUMBER;
+      hash = (53 * hash) + getIndex();
+      hash = (37 * hash) + ACTION_FIELD_NUMBER;
+      hash = (53 * hash) + getAction();
+      hash = (37 * hash) + DEV_EUI_FIELD_NUMBER;
+      hash = (53 * hash) + getDevEui().hashCode();
+      hash = (37 * hash) + JOIN_EUI_FIELD_NUMBER;
+      hash = (53 * hash) + getJoinEui().hashCode();
+      hash = (37 * hash) + PROVISIONED_FIELD_NUMBER;
+      hash = (53 * hash) + com.google.protobuf.Internal.hashBoolean(
+          getProvisioned());
+      hash = (29 * hash) + getUnknownFields().hashCode();
+      memoizedHashCode = hash;
+      return hash;
+    }
+
+    public static RelayFilter parseFrom(
+        java.nio.ByteBuffer data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static RelayFilter parseFrom(
+        java.nio.ByteBuffer data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static RelayFilter parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static RelayFilter parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static RelayFilter parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static RelayFilter parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static RelayFilter parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input);
+    }
+    public static RelayFilter parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input, extensionRegistry);
+    }
+    public static RelayFilter parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseDelimitedWithIOException(PARSER, input);
+    }
+    public static RelayFilter parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
+    }
+    public static RelayFilter parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input);
+    }
+    public static RelayFilter parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input, extensionRegistry);
+    }
+
+    @Override
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder() {
+      return DEFAULT_INSTANCE.toBuilder();
+    }
+    public static Builder newBuilder(RelayFilter prototype) {
+      return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
+    }
+    @Override
+    public Builder toBuilder() {
+      return this == DEFAULT_INSTANCE
+          ? new Builder() : new Builder().mergeFrom(this);
+    }
+
+    @Override
+    protected Builder newBuilderForType(
+        BuilderParent parent) {
+      Builder builder = new Builder(parent);
+      return builder;
+    }
+    /**
+     * Protobuf type {@code internal.RelayFilter}
+     */
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:internal.RelayFilter)
+        RelayFilterOrBuilder {
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return internal_static_internal_RelayFilter_descriptor;
+      }
+
+      @Override
+      protected FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return internal_static_internal_RelayFilter_fieldAccessorTable
+            .ensureFieldAccessorsInitialized(
+                RelayFilter.class, RelayFilter.Builder.class);
+      }
+
+      // Construct using RelayFilter.newBuilder()
+      private Builder() {
+
+      }
+
+      private Builder(
+          BuilderParent parent) {
+        super(parent);
+
+      }
+      @Override
+      public Builder clear() {
+        super.clear();
+        bitField0_ = 0;
+        index_ = 0;
+        action_ = 0;
+        devEui_ = com.google.protobuf.ByteString.EMPTY;
+        joinEui_ = com.google.protobuf.ByteString.EMPTY;
+        provisioned_ = false;
+        return this;
+      }
+
+      @Override
+      public com.google.protobuf.Descriptors.Descriptor
+          getDescriptorForType() {
+        return internal_static_internal_RelayFilter_descriptor;
+      }
+
+      @Override
+      public RelayFilter getDefaultInstanceForType() {
+        return RelayFilter.getDefaultInstance();
+      }
+
+      @Override
+      public RelayFilter build() {
+        RelayFilter result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return result;
+      }
+
+      @Override
+      public RelayFilter buildPartial() {
+        RelayFilter result = new RelayFilter(this);
+        if (bitField0_ != 0) { buildPartial0(result); }
+        onBuilt();
+        return result;
+      }
+
+      private void buildPartial0(RelayFilter result) {
+        int from_bitField0_ = bitField0_;
+        if (((from_bitField0_ & 0x00000001) != 0)) {
+          result.index_ = index_;
+        }
+        if (((from_bitField0_ & 0x00000002) != 0)) {
+          result.action_ = action_;
+        }
+        if (((from_bitField0_ & 0x00000004) != 0)) {
+          result.devEui_ = devEui_;
+        }
+        if (((from_bitField0_ & 0x00000008) != 0)) {
+          result.joinEui_ = joinEui_;
+        }
+        if (((from_bitField0_ & 0x00000010) != 0)) {
+          result.provisioned_ = provisioned_;
+        }
+      }
+
+      @Override
+      public Builder mergeFrom(com.google.protobuf.Message other) {
+        if (other instanceof RelayFilter) {
+          return mergeFrom((RelayFilter)other);
+        } else {
+          super.mergeFrom(other);
+          return this;
+        }
+      }
+
+      public Builder mergeFrom(RelayFilter other) {
+        if (other == RelayFilter.getDefaultInstance()) return this;
+        if (other.getIndex() != 0) {
+          setIndex(other.getIndex());
+        }
+        if (other.getAction() != 0) {
+          setAction(other.getAction());
+        }
+        if (other.getDevEui() != com.google.protobuf.ByteString.EMPTY) {
+          setDevEui(other.getDevEui());
+        }
+        if (other.getJoinEui() != com.google.protobuf.ByteString.EMPTY) {
+          setJoinEui(other.getJoinEui());
+        }
+        if (other.getProvisioned() != false) {
+          setProvisioned(other.getProvisioned());
+        }
+        this.mergeUnknownFields(other.getUnknownFields());
+        onChanged();
+        return this;
+      }
+
+      @Override
+      public final boolean isInitialized() {
+        return true;
+      }
+
+      @Override
+      public Builder mergeFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        if (extensionRegistry == null) {
+          throw new NullPointerException();
+        }
+        try {
+          boolean done = false;
+          while (!done) {
+            int tag = input.readTag();
+            switch (tag) {
+              case 0:
+                done = true;
+                break;
+              case 8: {
+                index_ = input.readUInt32();
+                bitField0_ |= 0x00000001;
+                break;
+              } // case 8
+              case 16: {
+                action_ = input.readUInt32();
+                bitField0_ |= 0x00000002;
+                break;
+              } // case 16
+              case 26: {
+                devEui_ = input.readBytes();
+                bitField0_ |= 0x00000004;
+                break;
+              } // case 26
+              case 34: {
+                joinEui_ = input.readBytes();
+                bitField0_ |= 0x00000008;
+                break;
+              } // case 34
+              case 40: {
+                provisioned_ = input.readBool();
+                bitField0_ |= 0x00000010;
+                break;
+              } // case 40
+              default: {
+                if (!super.parseUnknownField(input, extensionRegistry, tag)) {
+                  done = true; // was an endgroup tag
+                }
+                break;
+              } // default:
+            } // switch (tag)
+          } // while (!done)
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          throw e.unwrapIOException();
+        } finally {
+          onChanged();
+        } // finally
+        return this;
+      }
+      private int bitField0_;
+
+      private int index_ ;
+      /**
+       * <pre>
+       * Index.
+       * This must be between 0 - 15.
+       * </pre>
+       *
+       * <code>uint32 index = 1;</code>
+       * @return The index.
+       */
+      @Override
+      public int getIndex() {
+        return index_;
+      }
+      /**
+       * <pre>
+       * Index.
+       * This must be between 0 - 15.
+       * </pre>
+       *
+       * <code>uint32 index = 1;</code>
+       * @param value The index to set.
+       * @return This builder for chaining.
+       */
+      public Builder setIndex(int value) {
+
+        index_ = value;
+        bitField0_ |= 0x00000001;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * Index.
+       * This must be between 0 - 15.
+       * </pre>
+       *
+       * <code>uint32 index = 1;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearIndex() {
+        bitField0_ = (bitField0_ & ~0x00000001);
+        index_ = 0;
+        onChanged();
+        return this;
+      }
+
+      private int action_ ;
+      /**
+       * <pre>
+       * Action.
+       *  * 0: No Rule
+       *  * 1: Forward
+       *  * 2: Filter
+       * </pre>
+       *
+       * <code>uint32 action = 2;</code>
+       * @return The action.
+       */
+      @Override
+      public int getAction() {
+        return action_;
+      }
+      /**
+       * <pre>
+       * Action.
+       *  * 0: No Rule
+       *  * 1: Forward
+       *  * 2: Filter
+       * </pre>
+       *
+       * <code>uint32 action = 2;</code>
+       * @param value The action to set.
+       * @return This builder for chaining.
+       */
+      public Builder setAction(int value) {
+
+        action_ = value;
+        bitField0_ |= 0x00000002;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * Action.
+       *  * 0: No Rule
+       *  * 1: Forward
+       *  * 2: Filter
+       * </pre>
+       *
+       * <code>uint32 action = 2;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearAction() {
+        bitField0_ = (bitField0_ & ~0x00000002);
+        action_ = 0;
+        onChanged();
+        return this;
+      }
+
+      private com.google.protobuf.ByteString devEui_ = com.google.protobuf.ByteString.EMPTY;
+      /**
+       * <pre>
+       * DevEUI (EUI64).
+       * </pre>
+       *
+       * <code>bytes dev_eui = 3;</code>
+       * @return The devEui.
+       */
+      @Override
+      public com.google.protobuf.ByteString getDevEui() {
+        return devEui_;
+      }
+      /**
+       * <pre>
+       * DevEUI (EUI64).
+       * </pre>
+       *
+       * <code>bytes dev_eui = 3;</code>
+       * @param value The devEui to set.
+       * @return This builder for chaining.
+       */
+      public Builder setDevEui(com.google.protobuf.ByteString value) {
+        if (value == null) { throw new NullPointerException(); }
+        devEui_ = value;
+        bitField0_ |= 0x00000004;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * DevEUI (EUI64).
+       * </pre>
+       *
+       * <code>bytes dev_eui = 3;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearDevEui() {
+        bitField0_ = (bitField0_ & ~0x00000004);
+        devEui_ = getDefaultInstance().getDevEui();
+        onChanged();
+        return this;
+      }
+
+      private com.google.protobuf.ByteString joinEui_ = com.google.protobuf.ByteString.EMPTY;
+      /**
+       * <pre>
+       * JoinEUI (EUI64).
+       * </pre>
+       *
+       * <code>bytes join_eui = 4;</code>
+       * @return The joinEui.
+       */
+      @Override
+      public com.google.protobuf.ByteString getJoinEui() {
+        return joinEui_;
+      }
+      /**
+       * <pre>
+       * JoinEUI (EUI64).
+       * </pre>
+       *
+       * <code>bytes join_eui = 4;</code>
+       * @param value The joinEui to set.
+       * @return This builder for chaining.
+       */
+      public Builder setJoinEui(com.google.protobuf.ByteString value) {
+        if (value == null) { throw new NullPointerException(); }
+        joinEui_ = value;
+        bitField0_ |= 0x00000008;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * JoinEUI (EUI64).
+       * </pre>
+       *
+       * <code>bytes join_eui = 4;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearJoinEui() {
+        bitField0_ = (bitField0_ & ~0x00000008);
+        joinEui_ = getDefaultInstance().getJoinEui();
+        onChanged();
+        return this;
+      }
+
+      private boolean provisioned_ ;
+      /**
+       * <pre>
+       * Provisioned.
+       * </pre>
+       *
+       * <code>bool provisioned = 5;</code>
+       * @return The provisioned.
+       */
+      @Override
+      public boolean getProvisioned() {
+        return provisioned_;
+      }
+      /**
+       * <pre>
+       * Provisioned.
+       * </pre>
+       *
+       * <code>bool provisioned = 5;</code>
+       * @param value The provisioned to set.
+       * @return This builder for chaining.
+       */
+      public Builder setProvisioned(boolean value) {
+
+        provisioned_ = value;
+        bitField0_ |= 0x00000010;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * Provisioned.
+       * </pre>
+       *
+       * <code>bool provisioned = 5;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearProvisioned() {
+        bitField0_ = (bitField0_ & ~0x00000010);
+        provisioned_ = false;
+        onChanged();
+        return this;
+      }
+      @Override
+      public final Builder setUnknownFields(
+          final com.google.protobuf.UnknownFieldSet unknownFields) {
+        return super.setUnknownFields(unknownFields);
+      }
+
+      @Override
+      public final Builder mergeUnknownFields(
+          final com.google.protobuf.UnknownFieldSet unknownFields) {
+        return super.mergeUnknownFields(unknownFields);
+      }
+
+
+      // @@protoc_insertion_point(builder_scope:internal.RelayFilter)
+    }
+
+    // @@protoc_insertion_point(class_scope:internal.RelayFilter)
+    private static final RelayFilter DEFAULT_INSTANCE;
+    static {
+      DEFAULT_INSTANCE = new RelayFilter();
+    }
+
+    public static RelayFilter getDefaultInstance() {
+      return DEFAULT_INSTANCE;
+    }
+
+    private static final com.google.protobuf.Parser<RelayFilter>
+        PARSER = new com.google.protobuf.AbstractParser<RelayFilter>() {
+      @Override
+      public RelayFilter parsePartialFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        Builder builder = newBuilder();
+        try {
+          builder.mergeFrom(input, extensionRegistry);
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          throw e.setUnfinishedMessage(builder.buildPartial());
+        } catch (com.google.protobuf.UninitializedMessageException e) {
+          throw e.asInvalidProtocolBufferException().setUnfinishedMessage(builder.buildPartial());
+        } catch (java.io.IOException e) {
+          throw new com.google.protobuf.InvalidProtocolBufferException(e)
+              .setUnfinishedMessage(builder.buildPartial());
+        }
+        return builder.buildPartial();
+      }
+    };
+
+    public static com.google.protobuf.Parser<RelayFilter> parser() {
+      return PARSER;
+    }
+
+    @Override
+    public com.google.protobuf.Parser<RelayFilter> getParserForType() {
+      return PARSER;
+    }
+
+    @Override
+    public RelayFilter getDefaultInstanceForType() {
       return DEFAULT_INSTANCE;
     }
 
@@ -6758,26 +12573,21 @@ Internal.DeviceSessionChannel defaultValue);
       return new DeviceSessionChannel();
     }
 
-    @Override
-    public final com.google.protobuf.UnknownFieldSet
-    getUnknownFields() {
-      return this.unknownFields;
-    }
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
-      return Internal.internal_static_internal_DeviceSessionChannel_descriptor;
+      return internal_static_internal_DeviceSessionChannel_descriptor;
     }
 
     @Override
     protected FieldAccessorTable
         internalGetFieldAccessorTable() {
-      return Internal.internal_static_internal_DeviceSessionChannel_fieldAccessorTable
+      return internal_static_internal_DeviceSessionChannel_fieldAccessorTable
           .ensureFieldAccessorsInitialized(
-              Internal.DeviceSessionChannel.class, Internal.DeviceSessionChannel.Builder.class);
+              DeviceSessionChannel.class, DeviceSessionChannel.Builder.class);
     }
 
     public static final int FREQUENCY_FIELD_NUMBER = 1;
-    private int frequency_;
+    private int frequency_ = 0;
     /**
      * <pre>
      * Frequency Hz.
@@ -6792,7 +12602,7 @@ Internal.DeviceSessionChannel defaultValue);
     }
 
     public static final int MIN_DR_FIELD_NUMBER = 2;
-    private int minDr_;
+    private int minDr_ = 0;
     /**
      * <pre>
      * Min. data-rate.
@@ -6807,7 +12617,7 @@ Internal.DeviceSessionChannel defaultValue);
     }
 
     public static final int MAX_DR_FIELD_NUMBER = 3;
-    private int maxDr_;
+    private int maxDr_ = 0;
     /**
      * <pre>
      * Max. data-rate.
@@ -6875,10 +12685,10 @@ Internal.DeviceSessionChannel defaultValue);
       if (obj == this) {
        return true;
       }
-      if (!(obj instanceof Internal.DeviceSessionChannel)) {
+      if (!(obj instanceof DeviceSessionChannel)) {
         return super.equals(obj);
       }
-      Internal.DeviceSessionChannel other = (Internal.DeviceSessionChannel) obj;
+      DeviceSessionChannel other = (DeviceSessionChannel) obj;
 
       if (getFrequency()
           != other.getFrequency()) return false;
@@ -6908,69 +12718,69 @@ Internal.DeviceSessionChannel defaultValue);
       return hash;
     }
 
-    public static Internal.DeviceSessionChannel parseFrom(
+    public static DeviceSessionChannel parseFrom(
         java.nio.ByteBuffer data)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data);
     }
-    public static Internal.DeviceSessionChannel parseFrom(
+    public static DeviceSessionChannel parseFrom(
         java.nio.ByteBuffer data,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data, extensionRegistry);
     }
-    public static Internal.DeviceSessionChannel parseFrom(
+    public static DeviceSessionChannel parseFrom(
         com.google.protobuf.ByteString data)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data);
     }
-    public static Internal.DeviceSessionChannel parseFrom(
+    public static DeviceSessionChannel parseFrom(
         com.google.protobuf.ByteString data,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data, extensionRegistry);
     }
-    public static Internal.DeviceSessionChannel parseFrom(byte[] data)
+    public static DeviceSessionChannel parseFrom(byte[] data)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data);
     }
-    public static Internal.DeviceSessionChannel parseFrom(
+    public static DeviceSessionChannel parseFrom(
         byte[] data,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data, extensionRegistry);
     }
-    public static Internal.DeviceSessionChannel parseFrom(java.io.InputStream input)
+    public static DeviceSessionChannel parseFrom(java.io.InputStream input)
         throws java.io.IOException {
       return com.google.protobuf.GeneratedMessageV3
           .parseWithIOException(PARSER, input);
     }
-    public static Internal.DeviceSessionChannel parseFrom(
+    public static DeviceSessionChannel parseFrom(
         java.io.InputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
       return com.google.protobuf.GeneratedMessageV3
           .parseWithIOException(PARSER, input, extensionRegistry);
     }
-    public static Internal.DeviceSessionChannel parseDelimitedFrom(java.io.InputStream input)
+    public static DeviceSessionChannel parseDelimitedFrom(java.io.InputStream input)
         throws java.io.IOException {
       return com.google.protobuf.GeneratedMessageV3
           .parseDelimitedWithIOException(PARSER, input);
     }
-    public static Internal.DeviceSessionChannel parseDelimitedFrom(
+    public static DeviceSessionChannel parseDelimitedFrom(
         java.io.InputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
       return com.google.protobuf.GeneratedMessageV3
           .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
     }
-    public static Internal.DeviceSessionChannel parseFrom(
+    public static DeviceSessionChannel parseFrom(
         com.google.protobuf.CodedInputStream input)
         throws java.io.IOException {
       return com.google.protobuf.GeneratedMessageV3
           .parseWithIOException(PARSER, input);
     }
-    public static Internal.DeviceSessionChannel parseFrom(
+    public static DeviceSessionChannel parseFrom(
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
@@ -6983,7 +12793,7 @@ Internal.DeviceSessionChannel defaultValue);
     public static Builder newBuilder() {
       return DEFAULT_INSTANCE.toBuilder();
     }
-    public static Builder newBuilder(Internal.DeviceSessionChannel prototype) {
+    public static Builder newBuilder(DeviceSessionChannel prototype) {
       return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
     }
     @Override
@@ -7004,21 +12814,21 @@ Internal.DeviceSessionChannel defaultValue);
     public static final class Builder extends
         com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
         // @@protoc_insertion_point(builder_implements:internal.DeviceSessionChannel)
-        Internal.DeviceSessionChannelOrBuilder {
+        DeviceSessionChannelOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
-        return Internal.internal_static_internal_DeviceSessionChannel_descriptor;
+        return internal_static_internal_DeviceSessionChannel_descriptor;
       }
 
       @Override
       protected FieldAccessorTable
           internalGetFieldAccessorTable() {
-        return Internal.internal_static_internal_DeviceSessionChannel_fieldAccessorTable
+        return internal_static_internal_DeviceSessionChannel_fieldAccessorTable
             .ensureFieldAccessorsInitialized(
-                Internal.DeviceSessionChannel.class, Internal.DeviceSessionChannel.Builder.class);
+                DeviceSessionChannel.class, DeviceSessionChannel.Builder.class);
       }
 
-      // Construct using Internal.DeviceSessionChannel.newBuilder()
+      // Construct using DeviceSessionChannel.newBuilder()
       private Builder() {
 
       }
@@ -7031,29 +12841,27 @@ Internal.DeviceSessionChannel defaultValue);
       @Override
       public Builder clear() {
         super.clear();
+        bitField0_ = 0;
         frequency_ = 0;
-
         minDr_ = 0;
-
         maxDr_ = 0;
-
         return this;
       }
 
       @Override
       public com.google.protobuf.Descriptors.Descriptor
           getDescriptorForType() {
-        return Internal.internal_static_internal_DeviceSessionChannel_descriptor;
+        return internal_static_internal_DeviceSessionChannel_descriptor;
       }
 
       @Override
-      public Internal.DeviceSessionChannel getDefaultInstanceForType() {
-        return Internal.DeviceSessionChannel.getDefaultInstance();
+      public DeviceSessionChannel getDefaultInstanceForType() {
+        return DeviceSessionChannel.getDefaultInstance();
       }
 
       @Override
-      public Internal.DeviceSessionChannel build() {
-        Internal.DeviceSessionChannel result = buildPartial();
+      public DeviceSessionChannel build() {
+        DeviceSessionChannel result = buildPartial();
         if (!result.isInitialized()) {
           throw newUninitializedMessageException(result);
         }
@@ -7061,59 +12869,38 @@ Internal.DeviceSessionChannel defaultValue);
       }
 
       @Override
-      public Internal.DeviceSessionChannel buildPartial() {
-        Internal.DeviceSessionChannel result = new Internal.DeviceSessionChannel(this);
-        result.frequency_ = frequency_;
-        result.minDr_ = minDr_;
-        result.maxDr_ = maxDr_;
+      public DeviceSessionChannel buildPartial() {
+        DeviceSessionChannel result = new DeviceSessionChannel(this);
+        if (bitField0_ != 0) { buildPartial0(result); }
         onBuilt();
         return result;
       }
 
-      @Override
-      public Builder clone() {
-        return super.clone();
+      private void buildPartial0(DeviceSessionChannel result) {
+        int from_bitField0_ = bitField0_;
+        if (((from_bitField0_ & 0x00000001) != 0)) {
+          result.frequency_ = frequency_;
+        }
+        if (((from_bitField0_ & 0x00000002) != 0)) {
+          result.minDr_ = minDr_;
+        }
+        if (((from_bitField0_ & 0x00000004) != 0)) {
+          result.maxDr_ = maxDr_;
+        }
       }
-      @Override
-      public Builder setField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          Object value) {
-        return super.setField(field, value);
-      }
-      @Override
-      public Builder clearField(
-          com.google.protobuf.Descriptors.FieldDescriptor field) {
-        return super.clearField(field);
-      }
-      @Override
-      public Builder clearOneof(
-          com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-        return super.clearOneof(oneof);
-      }
-      @Override
-      public Builder setRepeatedField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          int index, Object value) {
-        return super.setRepeatedField(field, index, value);
-      }
-      @Override
-      public Builder addRepeatedField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          Object value) {
-        return super.addRepeatedField(field, value);
-      }
+
       @Override
       public Builder mergeFrom(com.google.protobuf.Message other) {
-        if (other instanceof Internal.DeviceSessionChannel) {
-          return mergeFrom((Internal.DeviceSessionChannel)other);
+        if (other instanceof DeviceSessionChannel) {
+          return mergeFrom((DeviceSessionChannel)other);
         } else {
           super.mergeFrom(other);
           return this;
         }
       }
 
-      public Builder mergeFrom(Internal.DeviceSessionChannel other) {
-        if (other == Internal.DeviceSessionChannel.getDefaultInstance()) return this;
+      public Builder mergeFrom(DeviceSessionChannel other) {
+        if (other == DeviceSessionChannel.getDefaultInstance()) return this;
         if (other.getFrequency() != 0) {
           setFrequency(other.getFrequency());
         }
@@ -7151,17 +12938,17 @@ Internal.DeviceSessionChannel defaultValue);
                 break;
               case 8: {
                 frequency_ = input.readUInt32();
-
+                bitField0_ |= 0x00000001;
                 break;
               } // case 8
               case 16: {
                 minDr_ = input.readUInt32();
-
+                bitField0_ |= 0x00000002;
                 break;
               } // case 16
               case 24: {
                 maxDr_ = input.readUInt32();
-
+                bitField0_ |= 0x00000004;
                 break;
               } // case 24
               default: {
@@ -7179,6 +12966,7 @@ Internal.DeviceSessionChannel defaultValue);
         } // finally
         return this;
       }
+      private int bitField0_;
 
       private int frequency_ ;
       /**
@@ -7203,8 +12991,9 @@ Internal.DeviceSessionChannel defaultValue);
        * @return This builder for chaining.
        */
       public Builder setFrequency(int value) {
-        
+
         frequency_ = value;
+        bitField0_ |= 0x00000001;
         onChanged();
         return this;
       }
@@ -7217,7 +13006,7 @@ Internal.DeviceSessionChannel defaultValue);
        * @return This builder for chaining.
        */
       public Builder clearFrequency() {
-        
+        bitField0_ = (bitField0_ & ~0x00000001);
         frequency_ = 0;
         onChanged();
         return this;
@@ -7246,8 +13035,9 @@ Internal.DeviceSessionChannel defaultValue);
        * @return This builder for chaining.
        */
       public Builder setMinDr(int value) {
-        
+
         minDr_ = value;
+        bitField0_ |= 0x00000002;
         onChanged();
         return this;
       }
@@ -7260,7 +13050,7 @@ Internal.DeviceSessionChannel defaultValue);
        * @return This builder for chaining.
        */
       public Builder clearMinDr() {
-        
+        bitField0_ = (bitField0_ & ~0x00000002);
         minDr_ = 0;
         onChanged();
         return this;
@@ -7289,8 +13079,9 @@ Internal.DeviceSessionChannel defaultValue);
        * @return This builder for chaining.
        */
       public Builder setMaxDr(int value) {
-        
+
         maxDr_ = value;
+        bitField0_ |= 0x00000004;
         onChanged();
         return this;
       }
@@ -7303,7 +13094,7 @@ Internal.DeviceSessionChannel defaultValue);
        * @return This builder for chaining.
        */
       public Builder clearMaxDr() {
-        
+        bitField0_ = (bitField0_ & ~0x00000004);
         maxDr_ = 0;
         onChanged();
         return this;
@@ -7325,12 +13116,12 @@ Internal.DeviceSessionChannel defaultValue);
     }
 
     // @@protoc_insertion_point(class_scope:internal.DeviceSessionChannel)
-    private static final Internal.DeviceSessionChannel DEFAULT_INSTANCE;
+    private static final DeviceSessionChannel DEFAULT_INSTANCE;
     static {
-      DEFAULT_INSTANCE = new Internal.DeviceSessionChannel();
+      DEFAULT_INSTANCE = new DeviceSessionChannel();
     }
 
-    public static Internal.DeviceSessionChannel getDefaultInstance() {
+    public static DeviceSessionChannel getDefaultInstance() {
       return DEFAULT_INSTANCE;
     }
 
@@ -7366,7 +13157,7 @@ Internal.DeviceSessionChannel defaultValue);
     }
 
     @Override
-    public Internal.DeviceSessionChannel getDefaultInstanceForType() {
+    public DeviceSessionChannel getDefaultInstanceForType() {
       return DEFAULT_INSTANCE;
     }
 
@@ -7403,7 +13194,7 @@ Internal.DeviceSessionChannel defaultValue);
      *
      * <code>repeated .internal.DeviceGatewayRxInfoItem items = 3;</code>
      */
-    java.util.List<Internal.DeviceGatewayRxInfoItem> 
+    java.util.List<DeviceGatewayRxInfoItem> 
         getItemsList();
     /**
      * <pre>
@@ -7412,7 +13203,7 @@ Internal.DeviceSessionChannel defaultValue);
      *
      * <code>repeated .internal.DeviceGatewayRxInfoItem items = 3;</code>
      */
-    Internal.DeviceGatewayRxInfoItem getItems(int index);
+    DeviceGatewayRxInfoItem getItems(int index);
     /**
      * <pre>
      * Gateway RxInfo elements.
@@ -7428,7 +13219,7 @@ Internal.DeviceSessionChannel defaultValue);
      *
      * <code>repeated .internal.DeviceGatewayRxInfoItem items = 3;</code>
      */
-    java.util.List<? extends Internal.DeviceGatewayRxInfoItemOrBuilder> 
+    java.util.List<? extends DeviceGatewayRxInfoItemOrBuilder> 
         getItemsOrBuilderList();
     /**
      * <pre>
@@ -7437,7 +13228,7 @@ Internal.DeviceSessionChannel defaultValue);
      *
      * <code>repeated .internal.DeviceGatewayRxInfoItem items = 3;</code>
      */
-    Internal.DeviceGatewayRxInfoItemOrBuilder getItemsOrBuilder(
+    DeviceGatewayRxInfoItemOrBuilder getItemsOrBuilder(
         int index);
   }
   /**
@@ -7464,26 +13255,21 @@ Internal.DeviceSessionChannel defaultValue);
       return new DeviceGatewayRxInfo();
     }
 
-    @Override
-    public final com.google.protobuf.UnknownFieldSet
-    getUnknownFields() {
-      return this.unknownFields;
-    }
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
-      return Internal.internal_static_internal_DeviceGatewayRxInfo_descriptor;
+      return internal_static_internal_DeviceGatewayRxInfo_descriptor;
     }
 
     @Override
     protected FieldAccessorTable
         internalGetFieldAccessorTable() {
-      return Internal.internal_static_internal_DeviceGatewayRxInfo_fieldAccessorTable
+      return internal_static_internal_DeviceGatewayRxInfo_fieldAccessorTable
           .ensureFieldAccessorsInitialized(
-              Internal.DeviceGatewayRxInfo.class, Internal.DeviceGatewayRxInfo.Builder.class);
+              DeviceGatewayRxInfo.class, DeviceGatewayRxInfo.Builder.class);
     }
 
     public static final int DEV_EUI_FIELD_NUMBER = 1;
-    private com.google.protobuf.ByteString devEui_;
+    private com.google.protobuf.ByteString devEui_ = com.google.protobuf.ByteString.EMPTY;
     /**
      * <pre>
      * DevEUI (EUI64).
@@ -7498,7 +13284,7 @@ Internal.DeviceSessionChannel defaultValue);
     }
 
     public static final int DR_FIELD_NUMBER = 2;
-    private int dr_;
+    private int dr_ = 0;
     /**
      * <pre>
      * Data-rate.
@@ -7513,7 +13299,8 @@ Internal.DeviceSessionChannel defaultValue);
     }
 
     public static final int ITEMS_FIELD_NUMBER = 3;
-    private java.util.List<Internal.DeviceGatewayRxInfoItem> items_;
+    @SuppressWarnings("serial")
+    private java.util.List<DeviceGatewayRxInfoItem> items_;
     /**
      * <pre>
      * Gateway RxInfo elements.
@@ -7522,7 +13309,7 @@ Internal.DeviceSessionChannel defaultValue);
      * <code>repeated .internal.DeviceGatewayRxInfoItem items = 3;</code>
      */
     @Override
-    public java.util.List<Internal.DeviceGatewayRxInfoItem> getItemsList() {
+    public java.util.List<DeviceGatewayRxInfoItem> getItemsList() {
       return items_;
     }
     /**
@@ -7533,7 +13320,7 @@ Internal.DeviceSessionChannel defaultValue);
      * <code>repeated .internal.DeviceGatewayRxInfoItem items = 3;</code>
      */
     @Override
-    public java.util.List<? extends Internal.DeviceGatewayRxInfoItemOrBuilder> 
+    public java.util.List<? extends DeviceGatewayRxInfoItemOrBuilder> 
         getItemsOrBuilderList() {
       return items_;
     }
@@ -7556,7 +13343,7 @@ Internal.DeviceSessionChannel defaultValue);
      * <code>repeated .internal.DeviceGatewayRxInfoItem items = 3;</code>
      */
     @Override
-    public Internal.DeviceGatewayRxInfoItem getItems(int index) {
+    public DeviceGatewayRxInfoItem getItems(int index) {
       return items_.get(index);
     }
     /**
@@ -7567,7 +13354,7 @@ Internal.DeviceSessionChannel defaultValue);
      * <code>repeated .internal.DeviceGatewayRxInfoItem items = 3;</code>
      */
     @Override
-    public Internal.DeviceGatewayRxInfoItemOrBuilder getItemsOrBuilder(
+    public DeviceGatewayRxInfoItemOrBuilder getItemsOrBuilder(
         int index) {
       return items_.get(index);
     }
@@ -7626,10 +13413,10 @@ Internal.DeviceSessionChannel defaultValue);
       if (obj == this) {
        return true;
       }
-      if (!(obj instanceof Internal.DeviceGatewayRxInfo)) {
+      if (!(obj instanceof DeviceGatewayRxInfo)) {
         return super.equals(obj);
       }
-      Internal.DeviceGatewayRxInfo other = (Internal.DeviceGatewayRxInfo) obj;
+      DeviceGatewayRxInfo other = (DeviceGatewayRxInfo) obj;
 
       if (!getDevEui()
           .equals(other.getDevEui())) return false;
@@ -7661,69 +13448,69 @@ Internal.DeviceSessionChannel defaultValue);
       return hash;
     }
 
-    public static Internal.DeviceGatewayRxInfo parseFrom(
+    public static DeviceGatewayRxInfo parseFrom(
         java.nio.ByteBuffer data)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data);
     }
-    public static Internal.DeviceGatewayRxInfo parseFrom(
+    public static DeviceGatewayRxInfo parseFrom(
         java.nio.ByteBuffer data,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data, extensionRegistry);
     }
-    public static Internal.DeviceGatewayRxInfo parseFrom(
+    public static DeviceGatewayRxInfo parseFrom(
         com.google.protobuf.ByteString data)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data);
     }
-    public static Internal.DeviceGatewayRxInfo parseFrom(
+    public static DeviceGatewayRxInfo parseFrom(
         com.google.protobuf.ByteString data,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data, extensionRegistry);
     }
-    public static Internal.DeviceGatewayRxInfo parseFrom(byte[] data)
+    public static DeviceGatewayRxInfo parseFrom(byte[] data)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data);
     }
-    public static Internal.DeviceGatewayRxInfo parseFrom(
+    public static DeviceGatewayRxInfo parseFrom(
         byte[] data,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data, extensionRegistry);
     }
-    public static Internal.DeviceGatewayRxInfo parseFrom(java.io.InputStream input)
+    public static DeviceGatewayRxInfo parseFrom(java.io.InputStream input)
         throws java.io.IOException {
       return com.google.protobuf.GeneratedMessageV3
           .parseWithIOException(PARSER, input);
     }
-    public static Internal.DeviceGatewayRxInfo parseFrom(
+    public static DeviceGatewayRxInfo parseFrom(
         java.io.InputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
       return com.google.protobuf.GeneratedMessageV3
           .parseWithIOException(PARSER, input, extensionRegistry);
     }
-    public static Internal.DeviceGatewayRxInfo parseDelimitedFrom(java.io.InputStream input)
+    public static DeviceGatewayRxInfo parseDelimitedFrom(java.io.InputStream input)
         throws java.io.IOException {
       return com.google.protobuf.GeneratedMessageV3
           .parseDelimitedWithIOException(PARSER, input);
     }
-    public static Internal.DeviceGatewayRxInfo parseDelimitedFrom(
+    public static DeviceGatewayRxInfo parseDelimitedFrom(
         java.io.InputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
       return com.google.protobuf.GeneratedMessageV3
           .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
     }
-    public static Internal.DeviceGatewayRxInfo parseFrom(
+    public static DeviceGatewayRxInfo parseFrom(
         com.google.protobuf.CodedInputStream input)
         throws java.io.IOException {
       return com.google.protobuf.GeneratedMessageV3
           .parseWithIOException(PARSER, input);
     }
-    public static Internal.DeviceGatewayRxInfo parseFrom(
+    public static DeviceGatewayRxInfo parseFrom(
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
@@ -7736,7 +13523,7 @@ Internal.DeviceSessionChannel defaultValue);
     public static Builder newBuilder() {
       return DEFAULT_INSTANCE.toBuilder();
     }
-    public static Builder newBuilder(Internal.DeviceGatewayRxInfo prototype) {
+    public static Builder newBuilder(DeviceGatewayRxInfo prototype) {
       return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
     }
     @Override
@@ -7757,21 +13544,21 @@ Internal.DeviceSessionChannel defaultValue);
     public static final class Builder extends
         com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
         // @@protoc_insertion_point(builder_implements:internal.DeviceGatewayRxInfo)
-        Internal.DeviceGatewayRxInfoOrBuilder {
+        DeviceGatewayRxInfoOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
-        return Internal.internal_static_internal_DeviceGatewayRxInfo_descriptor;
+        return internal_static_internal_DeviceGatewayRxInfo_descriptor;
       }
 
       @Override
       protected FieldAccessorTable
           internalGetFieldAccessorTable() {
-        return Internal.internal_static_internal_DeviceGatewayRxInfo_fieldAccessorTable
+        return internal_static_internal_DeviceGatewayRxInfo_fieldAccessorTable
             .ensureFieldAccessorsInitialized(
-                Internal.DeviceGatewayRxInfo.class, Internal.DeviceGatewayRxInfo.Builder.class);
+                DeviceGatewayRxInfo.class, DeviceGatewayRxInfo.Builder.class);
       }
 
-      // Construct using Internal.DeviceGatewayRxInfo.newBuilder()
+      // Construct using DeviceGatewayRxInfo.newBuilder()
       private Builder() {
 
       }
@@ -7784,34 +13571,33 @@ Internal.DeviceSessionChannel defaultValue);
       @Override
       public Builder clear() {
         super.clear();
+        bitField0_ = 0;
         devEui_ = com.google.protobuf.ByteString.EMPTY;
-
         dr_ = 0;
-
         if (itemsBuilder_ == null) {
           items_ = java.util.Collections.emptyList();
         } else {
           items_ = null;
           itemsBuilder_.clear();
         }
-        bitField0_ = (bitField0_ & ~0x00000001);
+        bitField0_ = (bitField0_ & ~0x00000004);
         return this;
       }
 
       @Override
       public com.google.protobuf.Descriptors.Descriptor
           getDescriptorForType() {
-        return Internal.internal_static_internal_DeviceGatewayRxInfo_descriptor;
+        return internal_static_internal_DeviceGatewayRxInfo_descriptor;
       }
 
       @Override
-      public Internal.DeviceGatewayRxInfo getDefaultInstanceForType() {
-        return Internal.DeviceGatewayRxInfo.getDefaultInstance();
+      public DeviceGatewayRxInfo getDefaultInstanceForType() {
+        return DeviceGatewayRxInfo.getDefaultInstance();
       }
 
       @Override
-      public Internal.DeviceGatewayRxInfo build() {
-        Internal.DeviceGatewayRxInfo result = buildPartial();
+      public DeviceGatewayRxInfo build() {
+        DeviceGatewayRxInfo result = buildPartial();
         if (!result.isInitialized()) {
           throw newUninitializedMessageException(result);
         }
@@ -7819,68 +13605,48 @@ Internal.DeviceSessionChannel defaultValue);
       }
 
       @Override
-      public Internal.DeviceGatewayRxInfo buildPartial() {
-        Internal.DeviceGatewayRxInfo result = new Internal.DeviceGatewayRxInfo(this);
-        int from_bitField0_ = bitField0_;
-        result.devEui_ = devEui_;
-        result.dr_ = dr_;
+      public DeviceGatewayRxInfo buildPartial() {
+        DeviceGatewayRxInfo result = new DeviceGatewayRxInfo(this);
+        buildPartialRepeatedFields(result);
+        if (bitField0_ != 0) { buildPartial0(result); }
+        onBuilt();
+        return result;
+      }
+
+      private void buildPartialRepeatedFields(DeviceGatewayRxInfo result) {
         if (itemsBuilder_ == null) {
-          if (((bitField0_ & 0x00000001) != 0)) {
+          if (((bitField0_ & 0x00000004) != 0)) {
             items_ = java.util.Collections.unmodifiableList(items_);
-            bitField0_ = (bitField0_ & ~0x00000001);
+            bitField0_ = (bitField0_ & ~0x00000004);
           }
           result.items_ = items_;
         } else {
           result.items_ = itemsBuilder_.build();
         }
-        onBuilt();
-        return result;
+      }
+
+      private void buildPartial0(DeviceGatewayRxInfo result) {
+        int from_bitField0_ = bitField0_;
+        if (((from_bitField0_ & 0x00000001) != 0)) {
+          result.devEui_ = devEui_;
+        }
+        if (((from_bitField0_ & 0x00000002) != 0)) {
+          result.dr_ = dr_;
+        }
       }
 
       @Override
-      public Builder clone() {
-        return super.clone();
-      }
-      @Override
-      public Builder setField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          Object value) {
-        return super.setField(field, value);
-      }
-      @Override
-      public Builder clearField(
-          com.google.protobuf.Descriptors.FieldDescriptor field) {
-        return super.clearField(field);
-      }
-      @Override
-      public Builder clearOneof(
-          com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-        return super.clearOneof(oneof);
-      }
-      @Override
-      public Builder setRepeatedField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          int index, Object value) {
-        return super.setRepeatedField(field, index, value);
-      }
-      @Override
-      public Builder addRepeatedField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          Object value) {
-        return super.addRepeatedField(field, value);
-      }
-      @Override
       public Builder mergeFrom(com.google.protobuf.Message other) {
-        if (other instanceof Internal.DeviceGatewayRxInfo) {
-          return mergeFrom((Internal.DeviceGatewayRxInfo)other);
+        if (other instanceof DeviceGatewayRxInfo) {
+          return mergeFrom((DeviceGatewayRxInfo)other);
         } else {
           super.mergeFrom(other);
           return this;
         }
       }
 
-      public Builder mergeFrom(Internal.DeviceGatewayRxInfo other) {
-        if (other == Internal.DeviceGatewayRxInfo.getDefaultInstance()) return this;
+      public Builder mergeFrom(DeviceGatewayRxInfo other) {
+        if (other == DeviceGatewayRxInfo.getDefaultInstance()) return this;
         if (other.getDevEui() != com.google.protobuf.ByteString.EMPTY) {
           setDevEui(other.getDevEui());
         }
@@ -7891,7 +13657,7 @@ Internal.DeviceSessionChannel defaultValue);
           if (!other.items_.isEmpty()) {
             if (items_.isEmpty()) {
               items_ = other.items_;
-              bitField0_ = (bitField0_ & ~0x00000001);
+              bitField0_ = (bitField0_ & ~0x00000004);
             } else {
               ensureItemsIsMutable();
               items_.addAll(other.items_);
@@ -7904,7 +13670,7 @@ Internal.DeviceSessionChannel defaultValue);
               itemsBuilder_.dispose();
               itemsBuilder_ = null;
               items_ = other.items_;
-              bitField0_ = (bitField0_ & ~0x00000001);
+              bitField0_ = (bitField0_ & ~0x00000004);
               itemsBuilder_ = 
                 com.google.protobuf.GeneratedMessageV3.alwaysUseFieldBuilders ?
                    getItemsFieldBuilder() : null;
@@ -7941,18 +13707,18 @@ Internal.DeviceSessionChannel defaultValue);
                 break;
               case 10: {
                 devEui_ = input.readBytes();
-
+                bitField0_ |= 0x00000001;
                 break;
               } // case 10
               case 16: {
                 dr_ = input.readUInt32();
-
+                bitField0_ |= 0x00000002;
                 break;
               } // case 16
               case 26: {
-                Internal.DeviceGatewayRxInfoItem m =
+                DeviceGatewayRxInfoItem m =
                     input.readMessage(
-                        Internal.DeviceGatewayRxInfoItem.parser(),
+                        DeviceGatewayRxInfoItem.parser(),
                         extensionRegistry);
                 if (itemsBuilder_ == null) {
                   ensureItemsIsMutable();
@@ -8002,11 +13768,9 @@ Internal.DeviceSessionChannel defaultValue);
        * @return This builder for chaining.
        */
       public Builder setDevEui(com.google.protobuf.ByteString value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  
+        if (value == null) { throw new NullPointerException(); }
         devEui_ = value;
+        bitField0_ |= 0x00000001;
         onChanged();
         return this;
       }
@@ -8019,7 +13783,7 @@ Internal.DeviceSessionChannel defaultValue);
        * @return This builder for chaining.
        */
       public Builder clearDevEui() {
-        
+        bitField0_ = (bitField0_ & ~0x00000001);
         devEui_ = getDefaultInstance().getDevEui();
         onChanged();
         return this;
@@ -8048,8 +13812,9 @@ Internal.DeviceSessionChannel defaultValue);
        * @return This builder for chaining.
        */
       public Builder setDr(int value) {
-        
+
         dr_ = value;
+        bitField0_ |= 0x00000002;
         onChanged();
         return this;
       }
@@ -8062,23 +13827,23 @@ Internal.DeviceSessionChannel defaultValue);
        * @return This builder for chaining.
        */
       public Builder clearDr() {
-        
+        bitField0_ = (bitField0_ & ~0x00000002);
         dr_ = 0;
         onChanged();
         return this;
       }
 
-      private java.util.List<Internal.DeviceGatewayRxInfoItem> items_ =
+      private java.util.List<DeviceGatewayRxInfoItem> items_ =
         java.util.Collections.emptyList();
       private void ensureItemsIsMutable() {
-        if (!((bitField0_ & 0x00000001) != 0)) {
-          items_ = new java.util.ArrayList<Internal.DeviceGatewayRxInfoItem>(items_);
-          bitField0_ |= 0x00000001;
+        if (!((bitField0_ & 0x00000004) != 0)) {
+          items_ = new java.util.ArrayList<DeviceGatewayRxInfoItem>(items_);
+          bitField0_ |= 0x00000004;
          }
       }
 
       private com.google.protobuf.RepeatedFieldBuilderV3<
-          Internal.DeviceGatewayRxInfoItem, Internal.DeviceGatewayRxInfoItem.Builder, Internal.DeviceGatewayRxInfoItemOrBuilder> itemsBuilder_;
+          DeviceGatewayRxInfoItem, DeviceGatewayRxInfoItem.Builder, DeviceGatewayRxInfoItemOrBuilder> itemsBuilder_;
 
       /**
        * <pre>
@@ -8087,7 +13852,7 @@ Internal.DeviceSessionChannel defaultValue);
        *
        * <code>repeated .internal.DeviceGatewayRxInfoItem items = 3;</code>
        */
-      public java.util.List<Internal.DeviceGatewayRxInfoItem> getItemsList() {
+      public java.util.List<DeviceGatewayRxInfoItem> getItemsList() {
         if (itemsBuilder_ == null) {
           return java.util.Collections.unmodifiableList(items_);
         } else {
@@ -8115,7 +13880,7 @@ Internal.DeviceSessionChannel defaultValue);
        *
        * <code>repeated .internal.DeviceGatewayRxInfoItem items = 3;</code>
        */
-      public Internal.DeviceGatewayRxInfoItem getItems(int index) {
+      public DeviceGatewayRxInfoItem getItems(int index) {
         if (itemsBuilder_ == null) {
           return items_.get(index);
         } else {
@@ -8130,7 +13895,7 @@ Internal.DeviceSessionChannel defaultValue);
        * <code>repeated .internal.DeviceGatewayRxInfoItem items = 3;</code>
        */
       public Builder setItems(
-          int index, Internal.DeviceGatewayRxInfoItem value) {
+          int index, DeviceGatewayRxInfoItem value) {
         if (itemsBuilder_ == null) {
           if (value == null) {
             throw new NullPointerException();
@@ -8151,7 +13916,7 @@ Internal.DeviceSessionChannel defaultValue);
        * <code>repeated .internal.DeviceGatewayRxInfoItem items = 3;</code>
        */
       public Builder setItems(
-          int index, Internal.DeviceGatewayRxInfoItem.Builder builderForValue) {
+          int index, DeviceGatewayRxInfoItem.Builder builderForValue) {
         if (itemsBuilder_ == null) {
           ensureItemsIsMutable();
           items_.set(index, builderForValue.build());
@@ -8168,7 +13933,7 @@ Internal.DeviceSessionChannel defaultValue);
        *
        * <code>repeated .internal.DeviceGatewayRxInfoItem items = 3;</code>
        */
-      public Builder addItems(Internal.DeviceGatewayRxInfoItem value) {
+      public Builder addItems(DeviceGatewayRxInfoItem value) {
         if (itemsBuilder_ == null) {
           if (value == null) {
             throw new NullPointerException();
@@ -8189,7 +13954,7 @@ Internal.DeviceSessionChannel defaultValue);
        * <code>repeated .internal.DeviceGatewayRxInfoItem items = 3;</code>
        */
       public Builder addItems(
-          int index, Internal.DeviceGatewayRxInfoItem value) {
+          int index, DeviceGatewayRxInfoItem value) {
         if (itemsBuilder_ == null) {
           if (value == null) {
             throw new NullPointerException();
@@ -8210,7 +13975,7 @@ Internal.DeviceSessionChannel defaultValue);
        * <code>repeated .internal.DeviceGatewayRxInfoItem items = 3;</code>
        */
       public Builder addItems(
-          Internal.DeviceGatewayRxInfoItem.Builder builderForValue) {
+          DeviceGatewayRxInfoItem.Builder builderForValue) {
         if (itemsBuilder_ == null) {
           ensureItemsIsMutable();
           items_.add(builderForValue.build());
@@ -8228,7 +13993,7 @@ Internal.DeviceSessionChannel defaultValue);
        * <code>repeated .internal.DeviceGatewayRxInfoItem items = 3;</code>
        */
       public Builder addItems(
-          int index, Internal.DeviceGatewayRxInfoItem.Builder builderForValue) {
+          int index, DeviceGatewayRxInfoItem.Builder builderForValue) {
         if (itemsBuilder_ == null) {
           ensureItemsIsMutable();
           items_.add(index, builderForValue.build());
@@ -8246,7 +14011,7 @@ Internal.DeviceSessionChannel defaultValue);
        * <code>repeated .internal.DeviceGatewayRxInfoItem items = 3;</code>
        */
       public Builder addAllItems(
-          Iterable<? extends Internal.DeviceGatewayRxInfoItem> values) {
+          Iterable<? extends DeviceGatewayRxInfoItem> values) {
         if (itemsBuilder_ == null) {
           ensureItemsIsMutable();
           com.google.protobuf.AbstractMessageLite.Builder.addAll(
@@ -8267,7 +14032,7 @@ Internal.DeviceSessionChannel defaultValue);
       public Builder clearItems() {
         if (itemsBuilder_ == null) {
           items_ = java.util.Collections.emptyList();
-          bitField0_ = (bitField0_ & ~0x00000001);
+          bitField0_ = (bitField0_ & ~0x00000004);
           onChanged();
         } else {
           itemsBuilder_.clear();
@@ -8298,7 +14063,7 @@ Internal.DeviceSessionChannel defaultValue);
        *
        * <code>repeated .internal.DeviceGatewayRxInfoItem items = 3;</code>
        */
-      public Internal.DeviceGatewayRxInfoItem.Builder getItemsBuilder(
+      public DeviceGatewayRxInfoItem.Builder getItemsBuilder(
           int index) {
         return getItemsFieldBuilder().getBuilder(index);
       }
@@ -8309,7 +14074,7 @@ Internal.DeviceSessionChannel defaultValue);
        *
        * <code>repeated .internal.DeviceGatewayRxInfoItem items = 3;</code>
        */
-      public Internal.DeviceGatewayRxInfoItemOrBuilder getItemsOrBuilder(
+      public DeviceGatewayRxInfoItemOrBuilder getItemsOrBuilder(
           int index) {
         if (itemsBuilder_ == null) {
           return items_.get(index);  } else {
@@ -8323,7 +14088,7 @@ Internal.DeviceSessionChannel defaultValue);
        *
        * <code>repeated .internal.DeviceGatewayRxInfoItem items = 3;</code>
        */
-      public java.util.List<? extends Internal.DeviceGatewayRxInfoItemOrBuilder> 
+      public java.util.List<? extends DeviceGatewayRxInfoItemOrBuilder> 
            getItemsOrBuilderList() {
         if (itemsBuilder_ != null) {
           return itemsBuilder_.getMessageOrBuilderList();
@@ -8338,9 +14103,9 @@ Internal.DeviceSessionChannel defaultValue);
        *
        * <code>repeated .internal.DeviceGatewayRxInfoItem items = 3;</code>
        */
-      public Internal.DeviceGatewayRxInfoItem.Builder addItemsBuilder() {
+      public DeviceGatewayRxInfoItem.Builder addItemsBuilder() {
         return getItemsFieldBuilder().addBuilder(
-            Internal.DeviceGatewayRxInfoItem.getDefaultInstance());
+            DeviceGatewayRxInfoItem.getDefaultInstance());
       }
       /**
        * <pre>
@@ -8349,10 +14114,10 @@ Internal.DeviceSessionChannel defaultValue);
        *
        * <code>repeated .internal.DeviceGatewayRxInfoItem items = 3;</code>
        */
-      public Internal.DeviceGatewayRxInfoItem.Builder addItemsBuilder(
+      public DeviceGatewayRxInfoItem.Builder addItemsBuilder(
           int index) {
         return getItemsFieldBuilder().addBuilder(
-            index, Internal.DeviceGatewayRxInfoItem.getDefaultInstance());
+            index, DeviceGatewayRxInfoItem.getDefaultInstance());
       }
       /**
        * <pre>
@@ -8361,18 +14126,18 @@ Internal.DeviceSessionChannel defaultValue);
        *
        * <code>repeated .internal.DeviceGatewayRxInfoItem items = 3;</code>
        */
-      public java.util.List<Internal.DeviceGatewayRxInfoItem.Builder> 
+      public java.util.List<DeviceGatewayRxInfoItem.Builder> 
            getItemsBuilderList() {
         return getItemsFieldBuilder().getBuilderList();
       }
       private com.google.protobuf.RepeatedFieldBuilderV3<
-          Internal.DeviceGatewayRxInfoItem, Internal.DeviceGatewayRxInfoItem.Builder, Internal.DeviceGatewayRxInfoItemOrBuilder> 
+          DeviceGatewayRxInfoItem, DeviceGatewayRxInfoItem.Builder, DeviceGatewayRxInfoItemOrBuilder> 
           getItemsFieldBuilder() {
         if (itemsBuilder_ == null) {
           itemsBuilder_ = new com.google.protobuf.RepeatedFieldBuilderV3<
-              Internal.DeviceGatewayRxInfoItem, Internal.DeviceGatewayRxInfoItem.Builder, Internal.DeviceGatewayRxInfoItemOrBuilder>(
+              DeviceGatewayRxInfoItem, DeviceGatewayRxInfoItem.Builder, DeviceGatewayRxInfoItemOrBuilder>(
                   items_,
-                  ((bitField0_ & 0x00000001) != 0),
+                  ((bitField0_ & 0x00000004) != 0),
                   getParentForChildren(),
                   isClean());
           items_ = null;
@@ -8396,12 +14161,12 @@ Internal.DeviceSessionChannel defaultValue);
     }
 
     // @@protoc_insertion_point(class_scope:internal.DeviceGatewayRxInfo)
-    private static final Internal.DeviceGatewayRxInfo DEFAULT_INSTANCE;
+    private static final DeviceGatewayRxInfo DEFAULT_INSTANCE;
     static {
-      DEFAULT_INSTANCE = new Internal.DeviceGatewayRxInfo();
+      DEFAULT_INSTANCE = new DeviceGatewayRxInfo();
     }
 
-    public static Internal.DeviceGatewayRxInfo getDefaultInstance() {
+    public static DeviceGatewayRxInfo getDefaultInstance() {
       return DEFAULT_INSTANCE;
     }
 
@@ -8437,7 +14202,7 @@ Internal.DeviceSessionChannel defaultValue);
     }
 
     @Override
-    public Internal.DeviceGatewayRxInfo getDefaultInstanceForType() {
+    public DeviceGatewayRxInfo getDefaultInstanceForType() {
       return DEFAULT_INSTANCE;
     }
 
@@ -8506,6 +14271,36 @@ Internal.DeviceSessionChannel defaultValue);
      * @return The context.
      */
     com.google.protobuf.ByteString getContext();
+
+    /**
+     * <pre>
+     * Gateway is private (uplink).
+     * </pre>
+     *
+     * <code>bool is_private_up = 7;</code>
+     * @return The isPrivateUp.
+     */
+    boolean getIsPrivateUp();
+
+    /**
+     * <pre>
+     * Gateway is private (downlink).
+     * </pre>
+     *
+     * <code>bool is_private_down = 8;</code>
+     * @return The isPrivateDown.
+     */
+    boolean getIsPrivateDown();
+
+    /**
+     * <pre>
+     * Tenant ID (UUID).
+     * </pre>
+     *
+     * <code>bytes tenant_id = 9;</code>
+     * @return The tenantId.
+     */
+    com.google.protobuf.ByteString getTenantId();
   }
   /**
    * Protobuf type {@code internal.DeviceGatewayRxInfoItem}
@@ -8522,6 +14317,7 @@ Internal.DeviceSessionChannel defaultValue);
     private DeviceGatewayRxInfoItem() {
       gatewayId_ = com.google.protobuf.ByteString.EMPTY;
       context_ = com.google.protobuf.ByteString.EMPTY;
+      tenantId_ = com.google.protobuf.ByteString.EMPTY;
     }
 
     @Override
@@ -8531,26 +14327,21 @@ Internal.DeviceSessionChannel defaultValue);
       return new DeviceGatewayRxInfoItem();
     }
 
-    @Override
-    public final com.google.protobuf.UnknownFieldSet
-    getUnknownFields() {
-      return this.unknownFields;
-    }
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
-      return Internal.internal_static_internal_DeviceGatewayRxInfoItem_descriptor;
+      return internal_static_internal_DeviceGatewayRxInfoItem_descriptor;
     }
 
     @Override
     protected FieldAccessorTable
         internalGetFieldAccessorTable() {
-      return Internal.internal_static_internal_DeviceGatewayRxInfoItem_fieldAccessorTable
+      return internal_static_internal_DeviceGatewayRxInfoItem_fieldAccessorTable
           .ensureFieldAccessorsInitialized(
-              Internal.DeviceGatewayRxInfoItem.class, Internal.DeviceGatewayRxInfoItem.Builder.class);
+              DeviceGatewayRxInfoItem.class, DeviceGatewayRxInfoItem.Builder.class);
     }
 
     public static final int GATEWAY_ID_FIELD_NUMBER = 1;
-    private com.google.protobuf.ByteString gatewayId_;
+    private com.google.protobuf.ByteString gatewayId_ = com.google.protobuf.ByteString.EMPTY;
     /**
      * <pre>
      * Gateway ID (EUI64).
@@ -8565,7 +14356,7 @@ Internal.DeviceSessionChannel defaultValue);
     }
 
     public static final int RSSI_FIELD_NUMBER = 2;
-    private int rssi_;
+    private int rssi_ = 0;
     /**
      * <pre>
      * RSSI.
@@ -8580,7 +14371,7 @@ Internal.DeviceSessionChannel defaultValue);
     }
 
     public static final int LORA_SNR_FIELD_NUMBER = 3;
-    private float loraSnr_;
+    private float loraSnr_ = 0F;
     /**
      * <pre>
      * LoRa SNR.
@@ -8595,7 +14386,7 @@ Internal.DeviceSessionChannel defaultValue);
     }
 
     public static final int ANTENNA_FIELD_NUMBER = 4;
-    private int antenna_;
+    private int antenna_ = 0;
     /**
      * <pre>
      * Antenna.
@@ -8610,7 +14401,7 @@ Internal.DeviceSessionChannel defaultValue);
     }
 
     public static final int BOARD_FIELD_NUMBER = 5;
-    private int board_;
+    private int board_ = 0;
     /**
      * <pre>
      * Board.
@@ -8625,7 +14416,7 @@ Internal.DeviceSessionChannel defaultValue);
     }
 
     public static final int CONTEXT_FIELD_NUMBER = 6;
-    private com.google.protobuf.ByteString context_;
+    private com.google.protobuf.ByteString context_ = com.google.protobuf.ByteString.EMPTY;
     /**
      * <pre>
      * Context blob.
@@ -8637,6 +14428,51 @@ Internal.DeviceSessionChannel defaultValue);
     @Override
     public com.google.protobuf.ByteString getContext() {
       return context_;
+    }
+
+    public static final int IS_PRIVATE_UP_FIELD_NUMBER = 7;
+    private boolean isPrivateUp_ = false;
+    /**
+     * <pre>
+     * Gateway is private (uplink).
+     * </pre>
+     *
+     * <code>bool is_private_up = 7;</code>
+     * @return The isPrivateUp.
+     */
+    @Override
+    public boolean getIsPrivateUp() {
+      return isPrivateUp_;
+    }
+
+    public static final int IS_PRIVATE_DOWN_FIELD_NUMBER = 8;
+    private boolean isPrivateDown_ = false;
+    /**
+     * <pre>
+     * Gateway is private (downlink).
+     * </pre>
+     *
+     * <code>bool is_private_down = 8;</code>
+     * @return The isPrivateDown.
+     */
+    @Override
+    public boolean getIsPrivateDown() {
+      return isPrivateDown_;
+    }
+
+    public static final int TENANT_ID_FIELD_NUMBER = 9;
+    private com.google.protobuf.ByteString tenantId_ = com.google.protobuf.ByteString.EMPTY;
+    /**
+     * <pre>
+     * Tenant ID (UUID).
+     * </pre>
+     *
+     * <code>bytes tenant_id = 9;</code>
+     * @return The tenantId.
+     */
+    @Override
+    public com.google.protobuf.ByteString getTenantId() {
+      return tenantId_;
     }
 
     private byte memoizedIsInitialized = -1;
@@ -8671,6 +14507,15 @@ Internal.DeviceSessionChannel defaultValue);
       if (!context_.isEmpty()) {
         output.writeBytes(6, context_);
       }
+      if (isPrivateUp_ != false) {
+        output.writeBool(7, isPrivateUp_);
+      }
+      if (isPrivateDown_ != false) {
+        output.writeBool(8, isPrivateDown_);
+      }
+      if (!tenantId_.isEmpty()) {
+        output.writeBytes(9, tenantId_);
+      }
       getUnknownFields().writeTo(output);
     }
 
@@ -8704,6 +14549,18 @@ Internal.DeviceSessionChannel defaultValue);
         size += com.google.protobuf.CodedOutputStream
           .computeBytesSize(6, context_);
       }
+      if (isPrivateUp_ != false) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBoolSize(7, isPrivateUp_);
+      }
+      if (isPrivateDown_ != false) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBoolSize(8, isPrivateDown_);
+      }
+      if (!tenantId_.isEmpty()) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBytesSize(9, tenantId_);
+      }
       size += getUnknownFields().getSerializedSize();
       memoizedSize = size;
       return size;
@@ -8714,10 +14571,10 @@ Internal.DeviceSessionChannel defaultValue);
       if (obj == this) {
        return true;
       }
-      if (!(obj instanceof Internal.DeviceGatewayRxInfoItem)) {
+      if (!(obj instanceof DeviceGatewayRxInfoItem)) {
         return super.equals(obj);
       }
-      Internal.DeviceGatewayRxInfoItem other = (Internal.DeviceGatewayRxInfoItem) obj;
+      DeviceGatewayRxInfoItem other = (DeviceGatewayRxInfoItem) obj;
 
       if (!getGatewayId()
           .equals(other.getGatewayId())) return false;
@@ -8732,6 +14589,12 @@ Internal.DeviceSessionChannel defaultValue);
           != other.getBoard()) return false;
       if (!getContext()
           .equals(other.getContext())) return false;
+      if (getIsPrivateUp()
+          != other.getIsPrivateUp()) return false;
+      if (getIsPrivateDown()
+          != other.getIsPrivateDown()) return false;
+      if (!getTenantId()
+          .equals(other.getTenantId())) return false;
       if (!getUnknownFields().equals(other.getUnknownFields())) return false;
       return true;
     }
@@ -8756,74 +14619,82 @@ Internal.DeviceSessionChannel defaultValue);
       hash = (53 * hash) + getBoard();
       hash = (37 * hash) + CONTEXT_FIELD_NUMBER;
       hash = (53 * hash) + getContext().hashCode();
+      hash = (37 * hash) + IS_PRIVATE_UP_FIELD_NUMBER;
+      hash = (53 * hash) + com.google.protobuf.Internal.hashBoolean(
+          getIsPrivateUp());
+      hash = (37 * hash) + IS_PRIVATE_DOWN_FIELD_NUMBER;
+      hash = (53 * hash) + com.google.protobuf.Internal.hashBoolean(
+          getIsPrivateDown());
+      hash = (37 * hash) + TENANT_ID_FIELD_NUMBER;
+      hash = (53 * hash) + getTenantId().hashCode();
       hash = (29 * hash) + getUnknownFields().hashCode();
       memoizedHashCode = hash;
       return hash;
     }
 
-    public static Internal.DeviceGatewayRxInfoItem parseFrom(
+    public static DeviceGatewayRxInfoItem parseFrom(
         java.nio.ByteBuffer data)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data);
     }
-    public static Internal.DeviceGatewayRxInfoItem parseFrom(
+    public static DeviceGatewayRxInfoItem parseFrom(
         java.nio.ByteBuffer data,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data, extensionRegistry);
     }
-    public static Internal.DeviceGatewayRxInfoItem parseFrom(
+    public static DeviceGatewayRxInfoItem parseFrom(
         com.google.protobuf.ByteString data)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data);
     }
-    public static Internal.DeviceGatewayRxInfoItem parseFrom(
+    public static DeviceGatewayRxInfoItem parseFrom(
         com.google.protobuf.ByteString data,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data, extensionRegistry);
     }
-    public static Internal.DeviceGatewayRxInfoItem parseFrom(byte[] data)
+    public static DeviceGatewayRxInfoItem parseFrom(byte[] data)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data);
     }
-    public static Internal.DeviceGatewayRxInfoItem parseFrom(
+    public static DeviceGatewayRxInfoItem parseFrom(
         byte[] data,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data, extensionRegistry);
     }
-    public static Internal.DeviceGatewayRxInfoItem parseFrom(java.io.InputStream input)
+    public static DeviceGatewayRxInfoItem parseFrom(java.io.InputStream input)
         throws java.io.IOException {
       return com.google.protobuf.GeneratedMessageV3
           .parseWithIOException(PARSER, input);
     }
-    public static Internal.DeviceGatewayRxInfoItem parseFrom(
+    public static DeviceGatewayRxInfoItem parseFrom(
         java.io.InputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
       return com.google.protobuf.GeneratedMessageV3
           .parseWithIOException(PARSER, input, extensionRegistry);
     }
-    public static Internal.DeviceGatewayRxInfoItem parseDelimitedFrom(java.io.InputStream input)
+    public static DeviceGatewayRxInfoItem parseDelimitedFrom(java.io.InputStream input)
         throws java.io.IOException {
       return com.google.protobuf.GeneratedMessageV3
           .parseDelimitedWithIOException(PARSER, input);
     }
-    public static Internal.DeviceGatewayRxInfoItem parseDelimitedFrom(
+    public static DeviceGatewayRxInfoItem parseDelimitedFrom(
         java.io.InputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
       return com.google.protobuf.GeneratedMessageV3
           .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
     }
-    public static Internal.DeviceGatewayRxInfoItem parseFrom(
+    public static DeviceGatewayRxInfoItem parseFrom(
         com.google.protobuf.CodedInputStream input)
         throws java.io.IOException {
       return com.google.protobuf.GeneratedMessageV3
           .parseWithIOException(PARSER, input);
     }
-    public static Internal.DeviceGatewayRxInfoItem parseFrom(
+    public static DeviceGatewayRxInfoItem parseFrom(
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
@@ -8836,7 +14707,7 @@ Internal.DeviceSessionChannel defaultValue);
     public static Builder newBuilder() {
       return DEFAULT_INSTANCE.toBuilder();
     }
-    public static Builder newBuilder(Internal.DeviceGatewayRxInfoItem prototype) {
+    public static Builder newBuilder(DeviceGatewayRxInfoItem prototype) {
       return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
     }
     @Override
@@ -8857,21 +14728,21 @@ Internal.DeviceSessionChannel defaultValue);
     public static final class Builder extends
         com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
         // @@protoc_insertion_point(builder_implements:internal.DeviceGatewayRxInfoItem)
-        Internal.DeviceGatewayRxInfoItemOrBuilder {
+        DeviceGatewayRxInfoItemOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
-        return Internal.internal_static_internal_DeviceGatewayRxInfoItem_descriptor;
+        return internal_static_internal_DeviceGatewayRxInfoItem_descriptor;
       }
 
       @Override
       protected FieldAccessorTable
           internalGetFieldAccessorTable() {
-        return Internal.internal_static_internal_DeviceGatewayRxInfoItem_fieldAccessorTable
+        return internal_static_internal_DeviceGatewayRxInfoItem_fieldAccessorTable
             .ensureFieldAccessorsInitialized(
-                Internal.DeviceGatewayRxInfoItem.class, Internal.DeviceGatewayRxInfoItem.Builder.class);
+                DeviceGatewayRxInfoItem.class, DeviceGatewayRxInfoItem.Builder.class);
       }
 
-      // Construct using Internal.DeviceGatewayRxInfoItem.newBuilder()
+      // Construct using DeviceGatewayRxInfoItem.newBuilder()
       private Builder() {
 
       }
@@ -8884,35 +14755,33 @@ Internal.DeviceSessionChannel defaultValue);
       @Override
       public Builder clear() {
         super.clear();
+        bitField0_ = 0;
         gatewayId_ = com.google.protobuf.ByteString.EMPTY;
-
         rssi_ = 0;
-
         loraSnr_ = 0F;
-
         antenna_ = 0;
-
         board_ = 0;
-
         context_ = com.google.protobuf.ByteString.EMPTY;
-
+        isPrivateUp_ = false;
+        isPrivateDown_ = false;
+        tenantId_ = com.google.protobuf.ByteString.EMPTY;
         return this;
       }
 
       @Override
       public com.google.protobuf.Descriptors.Descriptor
           getDescriptorForType() {
-        return Internal.internal_static_internal_DeviceGatewayRxInfoItem_descriptor;
+        return internal_static_internal_DeviceGatewayRxInfoItem_descriptor;
       }
 
       @Override
-      public Internal.DeviceGatewayRxInfoItem getDefaultInstanceForType() {
-        return Internal.DeviceGatewayRxInfoItem.getDefaultInstance();
+      public DeviceGatewayRxInfoItem getDefaultInstanceForType() {
+        return DeviceGatewayRxInfoItem.getDefaultInstance();
       }
 
       @Override
-      public Internal.DeviceGatewayRxInfoItem build() {
-        Internal.DeviceGatewayRxInfoItem result = buildPartial();
+      public DeviceGatewayRxInfoItem build() {
+        DeviceGatewayRxInfoItem result = buildPartial();
         if (!result.isInitialized()) {
           throw newUninitializedMessageException(result);
         }
@@ -8920,62 +14789,56 @@ Internal.DeviceSessionChannel defaultValue);
       }
 
       @Override
-      public Internal.DeviceGatewayRxInfoItem buildPartial() {
-        Internal.DeviceGatewayRxInfoItem result = new Internal.DeviceGatewayRxInfoItem(this);
-        result.gatewayId_ = gatewayId_;
-        result.rssi_ = rssi_;
-        result.loraSnr_ = loraSnr_;
-        result.antenna_ = antenna_;
-        result.board_ = board_;
-        result.context_ = context_;
+      public DeviceGatewayRxInfoItem buildPartial() {
+        DeviceGatewayRxInfoItem result = new DeviceGatewayRxInfoItem(this);
+        if (bitField0_ != 0) { buildPartial0(result); }
         onBuilt();
         return result;
       }
 
-      @Override
-      public Builder clone() {
-        return super.clone();
+      private void buildPartial0(DeviceGatewayRxInfoItem result) {
+        int from_bitField0_ = bitField0_;
+        if (((from_bitField0_ & 0x00000001) != 0)) {
+          result.gatewayId_ = gatewayId_;
+        }
+        if (((from_bitField0_ & 0x00000002) != 0)) {
+          result.rssi_ = rssi_;
+        }
+        if (((from_bitField0_ & 0x00000004) != 0)) {
+          result.loraSnr_ = loraSnr_;
+        }
+        if (((from_bitField0_ & 0x00000008) != 0)) {
+          result.antenna_ = antenna_;
+        }
+        if (((from_bitField0_ & 0x00000010) != 0)) {
+          result.board_ = board_;
+        }
+        if (((from_bitField0_ & 0x00000020) != 0)) {
+          result.context_ = context_;
+        }
+        if (((from_bitField0_ & 0x00000040) != 0)) {
+          result.isPrivateUp_ = isPrivateUp_;
+        }
+        if (((from_bitField0_ & 0x00000080) != 0)) {
+          result.isPrivateDown_ = isPrivateDown_;
+        }
+        if (((from_bitField0_ & 0x00000100) != 0)) {
+          result.tenantId_ = tenantId_;
+        }
       }
-      @Override
-      public Builder setField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          Object value) {
-        return super.setField(field, value);
-      }
-      @Override
-      public Builder clearField(
-          com.google.protobuf.Descriptors.FieldDescriptor field) {
-        return super.clearField(field);
-      }
-      @Override
-      public Builder clearOneof(
-          com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-        return super.clearOneof(oneof);
-      }
-      @Override
-      public Builder setRepeatedField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          int index, Object value) {
-        return super.setRepeatedField(field, index, value);
-      }
-      @Override
-      public Builder addRepeatedField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          Object value) {
-        return super.addRepeatedField(field, value);
-      }
+
       @Override
       public Builder mergeFrom(com.google.protobuf.Message other) {
-        if (other instanceof Internal.DeviceGatewayRxInfoItem) {
-          return mergeFrom((Internal.DeviceGatewayRxInfoItem)other);
+        if (other instanceof DeviceGatewayRxInfoItem) {
+          return mergeFrom((DeviceGatewayRxInfoItem)other);
         } else {
           super.mergeFrom(other);
           return this;
         }
       }
 
-      public Builder mergeFrom(Internal.DeviceGatewayRxInfoItem other) {
-        if (other == Internal.DeviceGatewayRxInfoItem.getDefaultInstance()) return this;
+      public Builder mergeFrom(DeviceGatewayRxInfoItem other) {
+        if (other == DeviceGatewayRxInfoItem.getDefaultInstance()) return this;
         if (other.getGatewayId() != com.google.protobuf.ByteString.EMPTY) {
           setGatewayId(other.getGatewayId());
         }
@@ -8993,6 +14856,15 @@ Internal.DeviceSessionChannel defaultValue);
         }
         if (other.getContext() != com.google.protobuf.ByteString.EMPTY) {
           setContext(other.getContext());
+        }
+        if (other.getIsPrivateUp() != false) {
+          setIsPrivateUp(other.getIsPrivateUp());
+        }
+        if (other.getIsPrivateDown() != false) {
+          setIsPrivateDown(other.getIsPrivateDown());
+        }
+        if (other.getTenantId() != com.google.protobuf.ByteString.EMPTY) {
+          setTenantId(other.getTenantId());
         }
         this.mergeUnknownFields(other.getUnknownFields());
         onChanged();
@@ -9022,34 +14894,49 @@ Internal.DeviceSessionChannel defaultValue);
                 break;
               case 10: {
                 gatewayId_ = input.readBytes();
-
+                bitField0_ |= 0x00000001;
                 break;
               } // case 10
               case 16: {
                 rssi_ = input.readInt32();
-
+                bitField0_ |= 0x00000002;
                 break;
               } // case 16
               case 29: {
                 loraSnr_ = input.readFloat();
-
+                bitField0_ |= 0x00000004;
                 break;
               } // case 29
               case 32: {
                 antenna_ = input.readUInt32();
-
+                bitField0_ |= 0x00000008;
                 break;
               } // case 32
               case 40: {
                 board_ = input.readUInt32();
-
+                bitField0_ |= 0x00000010;
                 break;
               } // case 40
               case 50: {
                 context_ = input.readBytes();
-
+                bitField0_ |= 0x00000020;
                 break;
               } // case 50
+              case 56: {
+                isPrivateUp_ = input.readBool();
+                bitField0_ |= 0x00000040;
+                break;
+              } // case 56
+              case 64: {
+                isPrivateDown_ = input.readBool();
+                bitField0_ |= 0x00000080;
+                break;
+              } // case 64
+              case 74: {
+                tenantId_ = input.readBytes();
+                bitField0_ |= 0x00000100;
+                break;
+              } // case 74
               default: {
                 if (!super.parseUnknownField(input, extensionRegistry, tag)) {
                   done = true; // was an endgroup tag
@@ -9065,6 +14952,7 @@ Internal.DeviceSessionChannel defaultValue);
         } // finally
         return this;
       }
+      private int bitField0_;
 
       private com.google.protobuf.ByteString gatewayId_ = com.google.protobuf.ByteString.EMPTY;
       /**
@@ -9089,11 +14977,9 @@ Internal.DeviceSessionChannel defaultValue);
        * @return This builder for chaining.
        */
       public Builder setGatewayId(com.google.protobuf.ByteString value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  
+        if (value == null) { throw new NullPointerException(); }
         gatewayId_ = value;
+        bitField0_ |= 0x00000001;
         onChanged();
         return this;
       }
@@ -9106,7 +14992,7 @@ Internal.DeviceSessionChannel defaultValue);
        * @return This builder for chaining.
        */
       public Builder clearGatewayId() {
-        
+        bitField0_ = (bitField0_ & ~0x00000001);
         gatewayId_ = getDefaultInstance().getGatewayId();
         onChanged();
         return this;
@@ -9135,8 +15021,9 @@ Internal.DeviceSessionChannel defaultValue);
        * @return This builder for chaining.
        */
       public Builder setRssi(int value) {
-        
+
         rssi_ = value;
+        bitField0_ |= 0x00000002;
         onChanged();
         return this;
       }
@@ -9149,7 +15036,7 @@ Internal.DeviceSessionChannel defaultValue);
        * @return This builder for chaining.
        */
       public Builder clearRssi() {
-        
+        bitField0_ = (bitField0_ & ~0x00000002);
         rssi_ = 0;
         onChanged();
         return this;
@@ -9178,8 +15065,9 @@ Internal.DeviceSessionChannel defaultValue);
        * @return This builder for chaining.
        */
       public Builder setLoraSnr(float value) {
-        
+
         loraSnr_ = value;
+        bitField0_ |= 0x00000004;
         onChanged();
         return this;
       }
@@ -9192,7 +15080,7 @@ Internal.DeviceSessionChannel defaultValue);
        * @return This builder for chaining.
        */
       public Builder clearLoraSnr() {
-        
+        bitField0_ = (bitField0_ & ~0x00000004);
         loraSnr_ = 0F;
         onChanged();
         return this;
@@ -9221,8 +15109,9 @@ Internal.DeviceSessionChannel defaultValue);
        * @return This builder for chaining.
        */
       public Builder setAntenna(int value) {
-        
+
         antenna_ = value;
+        bitField0_ |= 0x00000008;
         onChanged();
         return this;
       }
@@ -9235,7 +15124,7 @@ Internal.DeviceSessionChannel defaultValue);
        * @return This builder for chaining.
        */
       public Builder clearAntenna() {
-        
+        bitField0_ = (bitField0_ & ~0x00000008);
         antenna_ = 0;
         onChanged();
         return this;
@@ -9264,8 +15153,9 @@ Internal.DeviceSessionChannel defaultValue);
        * @return This builder for chaining.
        */
       public Builder setBoard(int value) {
-        
+
         board_ = value;
+        bitField0_ |= 0x00000010;
         onChanged();
         return this;
       }
@@ -9278,7 +15168,7 @@ Internal.DeviceSessionChannel defaultValue);
        * @return This builder for chaining.
        */
       public Builder clearBoard() {
-        
+        bitField0_ = (bitField0_ & ~0x00000010);
         board_ = 0;
         onChanged();
         return this;
@@ -9307,11 +15197,9 @@ Internal.DeviceSessionChannel defaultValue);
        * @return This builder for chaining.
        */
       public Builder setContext(com.google.protobuf.ByteString value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  
+        if (value == null) { throw new NullPointerException(); }
         context_ = value;
+        bitField0_ |= 0x00000020;
         onChanged();
         return this;
       }
@@ -9324,8 +15212,140 @@ Internal.DeviceSessionChannel defaultValue);
        * @return This builder for chaining.
        */
       public Builder clearContext() {
-        
+        bitField0_ = (bitField0_ & ~0x00000020);
         context_ = getDefaultInstance().getContext();
+        onChanged();
+        return this;
+      }
+
+      private boolean isPrivateUp_ ;
+      /**
+       * <pre>
+       * Gateway is private (uplink).
+       * </pre>
+       *
+       * <code>bool is_private_up = 7;</code>
+       * @return The isPrivateUp.
+       */
+      @Override
+      public boolean getIsPrivateUp() {
+        return isPrivateUp_;
+      }
+      /**
+       * <pre>
+       * Gateway is private (uplink).
+       * </pre>
+       *
+       * <code>bool is_private_up = 7;</code>
+       * @param value The isPrivateUp to set.
+       * @return This builder for chaining.
+       */
+      public Builder setIsPrivateUp(boolean value) {
+
+        isPrivateUp_ = value;
+        bitField0_ |= 0x00000040;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * Gateway is private (uplink).
+       * </pre>
+       *
+       * <code>bool is_private_up = 7;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearIsPrivateUp() {
+        bitField0_ = (bitField0_ & ~0x00000040);
+        isPrivateUp_ = false;
+        onChanged();
+        return this;
+      }
+
+      private boolean isPrivateDown_ ;
+      /**
+       * <pre>
+       * Gateway is private (downlink).
+       * </pre>
+       *
+       * <code>bool is_private_down = 8;</code>
+       * @return The isPrivateDown.
+       */
+      @Override
+      public boolean getIsPrivateDown() {
+        return isPrivateDown_;
+      }
+      /**
+       * <pre>
+       * Gateway is private (downlink).
+       * </pre>
+       *
+       * <code>bool is_private_down = 8;</code>
+       * @param value The isPrivateDown to set.
+       * @return This builder for chaining.
+       */
+      public Builder setIsPrivateDown(boolean value) {
+
+        isPrivateDown_ = value;
+        bitField0_ |= 0x00000080;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * Gateway is private (downlink).
+       * </pre>
+       *
+       * <code>bool is_private_down = 8;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearIsPrivateDown() {
+        bitField0_ = (bitField0_ & ~0x00000080);
+        isPrivateDown_ = false;
+        onChanged();
+        return this;
+      }
+
+      private com.google.protobuf.ByteString tenantId_ = com.google.protobuf.ByteString.EMPTY;
+      /**
+       * <pre>
+       * Tenant ID (UUID).
+       * </pre>
+       *
+       * <code>bytes tenant_id = 9;</code>
+       * @return The tenantId.
+       */
+      @Override
+      public com.google.protobuf.ByteString getTenantId() {
+        return tenantId_;
+      }
+      /**
+       * <pre>
+       * Tenant ID (UUID).
+       * </pre>
+       *
+       * <code>bytes tenant_id = 9;</code>
+       * @param value The tenantId to set.
+       * @return This builder for chaining.
+       */
+      public Builder setTenantId(com.google.protobuf.ByteString value) {
+        if (value == null) { throw new NullPointerException(); }
+        tenantId_ = value;
+        bitField0_ |= 0x00000100;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * Tenant ID (UUID).
+       * </pre>
+       *
+       * <code>bytes tenant_id = 9;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearTenantId() {
+        bitField0_ = (bitField0_ & ~0x00000100);
+        tenantId_ = getDefaultInstance().getTenantId();
         onChanged();
         return this;
       }
@@ -9346,12 +15366,12 @@ Internal.DeviceSessionChannel defaultValue);
     }
 
     // @@protoc_insertion_point(class_scope:internal.DeviceGatewayRxInfoItem)
-    private static final Internal.DeviceGatewayRxInfoItem DEFAULT_INSTANCE;
+    private static final DeviceGatewayRxInfoItem DEFAULT_INSTANCE;
     static {
-      DEFAULT_INSTANCE = new Internal.DeviceGatewayRxInfoItem();
+      DEFAULT_INSTANCE = new DeviceGatewayRxInfoItem();
     }
 
-    public static Internal.DeviceGatewayRxInfoItem getDefaultInstance() {
+    public static DeviceGatewayRxInfoItem getDefaultInstance() {
       return DEFAULT_INSTANCE;
     }
 
@@ -9387,7 +15407,7 @@ Internal.DeviceSessionChannel defaultValue);
     }
 
     @Override
-    public Internal.DeviceGatewayRxInfoItem getDefaultInstanceForType() {
+    public DeviceGatewayRxInfoItem getDefaultInstanceForType() {
       return DEFAULT_INSTANCE;
     }
 
@@ -9486,13 +15506,43 @@ Internal.DeviceSessionChannel defaultValue);
 
     /**
      * <pre>
-     * Network session encryption key (for FOpts).
+     * Network session encryption key (for FOpts and FRMPayload mac-commands).
      * </pre>
      *
      * <code>bytes nwk_s_enc_key = 9;</code>
      * @return The nwkSEncKey.
      */
     com.google.protobuf.ByteString getNwkSEncKey();
+
+    /**
+     * <pre>
+     * NFCntDown (for decrypting mac-commands).
+     * </pre>
+     *
+     * <code>uint32 n_f_cnt_down = 10;</code>
+     * @return The nFCntDown.
+     */
+    int getNFCntDown();
+
+    /**
+     * <pre>
+     * AFCntDown (for decrypting FRMPayload in case of Relay).
+     * </pre>
+     *
+     * <code>uint32 a_f_cnt_down = 11;</code>
+     * @return The aFCntDown.
+     */
+    int getAFCntDown();
+
+    /**
+     * <pre>
+     * DevEUI of relayed device.
+     * </pre>
+     *
+     * <code>bytes dev_eui_relayed = 12;</code>
+     * @return The devEuiRelayed.
+     */
+    com.google.protobuf.ByteString getDevEuiRelayed();
   }
   /**
    * Protobuf type {@code internal.DownlinkFrame}
@@ -9512,6 +15562,7 @@ Internal.DeviceSessionChannel defaultValue);
       multicastGroupId_ = com.google.protobuf.ByteString.EMPTY;
       multicastGroupQueueItemId_ = com.google.protobuf.ByteString.EMPTY;
       nwkSEncKey_ = com.google.protobuf.ByteString.EMPTY;
+      devEuiRelayed_ = com.google.protobuf.ByteString.EMPTY;
     }
 
     @Override
@@ -9521,26 +15572,21 @@ Internal.DeviceSessionChannel defaultValue);
       return new DownlinkFrame();
     }
 
-    @Override
-    public final com.google.protobuf.UnknownFieldSet
-    getUnknownFields() {
-      return this.unknownFields;
-    }
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
-      return Internal.internal_static_internal_DownlinkFrame_descriptor;
+      return internal_static_internal_DownlinkFrame_descriptor;
     }
 
     @Override
     protected FieldAccessorTable
         internalGetFieldAccessorTable() {
-      return Internal.internal_static_internal_DownlinkFrame_fieldAccessorTable
+      return internal_static_internal_DownlinkFrame_fieldAccessorTable
           .ensureFieldAccessorsInitialized(
-              Internal.DownlinkFrame.class, Internal.DownlinkFrame.Builder.class);
+              DownlinkFrame.class, DownlinkFrame.Builder.class);
     }
 
     public static final int DOWNLINK_ID_FIELD_NUMBER = 1;
-    private int downlinkId_;
+    private int downlinkId_ = 0;
     /**
      * <pre>
      * Downlink ID.
@@ -9555,7 +15601,7 @@ Internal.DeviceSessionChannel defaultValue);
     }
 
     public static final int DEV_EUI_FIELD_NUMBER = 2;
-    private com.google.protobuf.ByteString devEui_;
+    private com.google.protobuf.ByteString devEui_ = com.google.protobuf.ByteString.EMPTY;
     /**
      * <pre>
      * DevEUI.
@@ -9570,7 +15616,7 @@ Internal.DeviceSessionChannel defaultValue);
     }
 
     public static final int DEVICE_QUEUE_ITEM_ID_FIELD_NUMBER = 3;
-    private com.google.protobuf.ByteString deviceQueueItemId_;
+    private com.google.protobuf.ByteString deviceQueueItemId_ = com.google.protobuf.ByteString.EMPTY;
     /**
      * <pre>
      * Device queue item ID.
@@ -9585,7 +15631,7 @@ Internal.DeviceSessionChannel defaultValue);
     }
 
     public static final int MULTICAST_GROUP_ID_FIELD_NUMBER = 4;
-    private com.google.protobuf.ByteString multicastGroupId_;
+    private com.google.protobuf.ByteString multicastGroupId_ = com.google.protobuf.ByteString.EMPTY;
     /**
      * <pre>
      * Multicast Group ID.
@@ -9600,7 +15646,7 @@ Internal.DeviceSessionChannel defaultValue);
     }
 
     public static final int MULTICAST_GROUP_QUEUE_ITEM_ID_FIELD_NUMBER = 5;
-    private com.google.protobuf.ByteString multicastGroupQueueItemId_;
+    private com.google.protobuf.ByteString multicastGroupQueueItemId_ = com.google.protobuf.ByteString.EMPTY;
     /**
      * <pre>
      * Multicast queue item ID.
@@ -9649,11 +15695,11 @@ Internal.DeviceSessionChannel defaultValue);
      */
     @Override
     public io.chirpstack.api.gw.DownlinkFrameOrBuilder getDownlinkFrameOrBuilder() {
-      return getDownlinkFrame();
+      return downlinkFrame_ == null ? io.chirpstack.api.gw.DownlinkFrame.getDefaultInstance() : downlinkFrame_;
     }
 
     public static final int ENCRYPTED_FOPTS_FIELD_NUMBER = 8;
-    private boolean encryptedFopts_;
+    private boolean encryptedFopts_ = false;
     /**
      * <pre>
      * Encrypted FOpts (LoRaWAN 1.1).
@@ -9668,10 +15714,10 @@ Internal.DeviceSessionChannel defaultValue);
     }
 
     public static final int NWK_S_ENC_KEY_FIELD_NUMBER = 9;
-    private com.google.protobuf.ByteString nwkSEncKey_;
+    private com.google.protobuf.ByteString nwkSEncKey_ = com.google.protobuf.ByteString.EMPTY;
     /**
      * <pre>
-     * Network session encryption key (for FOpts).
+     * Network session encryption key (for FOpts and FRMPayload mac-commands).
      * </pre>
      *
      * <code>bytes nwk_s_enc_key = 9;</code>
@@ -9680,6 +15726,51 @@ Internal.DeviceSessionChannel defaultValue);
     @Override
     public com.google.protobuf.ByteString getNwkSEncKey() {
       return nwkSEncKey_;
+    }
+
+    public static final int N_F_CNT_DOWN_FIELD_NUMBER = 10;
+    private int nFCntDown_ = 0;
+    /**
+     * <pre>
+     * NFCntDown (for decrypting mac-commands).
+     * </pre>
+     *
+     * <code>uint32 n_f_cnt_down = 10;</code>
+     * @return The nFCntDown.
+     */
+    @Override
+    public int getNFCntDown() {
+      return nFCntDown_;
+    }
+
+    public static final int A_F_CNT_DOWN_FIELD_NUMBER = 11;
+    private int aFCntDown_ = 0;
+    /**
+     * <pre>
+     * AFCntDown (for decrypting FRMPayload in case of Relay).
+     * </pre>
+     *
+     * <code>uint32 a_f_cnt_down = 11;</code>
+     * @return The aFCntDown.
+     */
+    @Override
+    public int getAFCntDown() {
+      return aFCntDown_;
+    }
+
+    public static final int DEV_EUI_RELAYED_FIELD_NUMBER = 12;
+    private com.google.protobuf.ByteString devEuiRelayed_ = com.google.protobuf.ByteString.EMPTY;
+    /**
+     * <pre>
+     * DevEUI of relayed device.
+     * </pre>
+     *
+     * <code>bytes dev_eui_relayed = 12;</code>
+     * @return The devEuiRelayed.
+     */
+    @Override
+    public com.google.protobuf.ByteString getDevEuiRelayed() {
+      return devEuiRelayed_;
     }
 
     private byte memoizedIsInitialized = -1;
@@ -9719,6 +15810,15 @@ Internal.DeviceSessionChannel defaultValue);
       }
       if (!nwkSEncKey_.isEmpty()) {
         output.writeBytes(9, nwkSEncKey_);
+      }
+      if (nFCntDown_ != 0) {
+        output.writeUInt32(10, nFCntDown_);
+      }
+      if (aFCntDown_ != 0) {
+        output.writeUInt32(11, aFCntDown_);
+      }
+      if (!devEuiRelayed_.isEmpty()) {
+        output.writeBytes(12, devEuiRelayed_);
       }
       getUnknownFields().writeTo(output);
     }
@@ -9761,6 +15861,18 @@ Internal.DeviceSessionChannel defaultValue);
         size += com.google.protobuf.CodedOutputStream
           .computeBytesSize(9, nwkSEncKey_);
       }
+      if (nFCntDown_ != 0) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeUInt32Size(10, nFCntDown_);
+      }
+      if (aFCntDown_ != 0) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeUInt32Size(11, aFCntDown_);
+      }
+      if (!devEuiRelayed_.isEmpty()) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBytesSize(12, devEuiRelayed_);
+      }
       size += getUnknownFields().getSerializedSize();
       memoizedSize = size;
       return size;
@@ -9771,10 +15883,10 @@ Internal.DeviceSessionChannel defaultValue);
       if (obj == this) {
        return true;
       }
-      if (!(obj instanceof Internal.DownlinkFrame)) {
+      if (!(obj instanceof DownlinkFrame)) {
         return super.equals(obj);
       }
-      Internal.DownlinkFrame other = (Internal.DownlinkFrame) obj;
+      DownlinkFrame other = (DownlinkFrame) obj;
 
       if (getDownlinkId()
           != other.getDownlinkId()) return false;
@@ -9795,6 +15907,12 @@ Internal.DeviceSessionChannel defaultValue);
           != other.getEncryptedFopts()) return false;
       if (!getNwkSEncKey()
           .equals(other.getNwkSEncKey())) return false;
+      if (getNFCntDown()
+          != other.getNFCntDown()) return false;
+      if (getAFCntDown()
+          != other.getAFCntDown()) return false;
+      if (!getDevEuiRelayed()
+          .equals(other.getDevEuiRelayed())) return false;
       if (!getUnknownFields().equals(other.getUnknownFields())) return false;
       return true;
     }
@@ -9825,74 +15943,80 @@ Internal.DeviceSessionChannel defaultValue);
           getEncryptedFopts());
       hash = (37 * hash) + NWK_S_ENC_KEY_FIELD_NUMBER;
       hash = (53 * hash) + getNwkSEncKey().hashCode();
+      hash = (37 * hash) + N_F_CNT_DOWN_FIELD_NUMBER;
+      hash = (53 * hash) + getNFCntDown();
+      hash = (37 * hash) + A_F_CNT_DOWN_FIELD_NUMBER;
+      hash = (53 * hash) + getAFCntDown();
+      hash = (37 * hash) + DEV_EUI_RELAYED_FIELD_NUMBER;
+      hash = (53 * hash) + getDevEuiRelayed().hashCode();
       hash = (29 * hash) + getUnknownFields().hashCode();
       memoizedHashCode = hash;
       return hash;
     }
 
-    public static Internal.DownlinkFrame parseFrom(
+    public static DownlinkFrame parseFrom(
         java.nio.ByteBuffer data)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data);
     }
-    public static Internal.DownlinkFrame parseFrom(
+    public static DownlinkFrame parseFrom(
         java.nio.ByteBuffer data,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data, extensionRegistry);
     }
-    public static Internal.DownlinkFrame parseFrom(
+    public static DownlinkFrame parseFrom(
         com.google.protobuf.ByteString data)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data);
     }
-    public static Internal.DownlinkFrame parseFrom(
+    public static DownlinkFrame parseFrom(
         com.google.protobuf.ByteString data,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data, extensionRegistry);
     }
-    public static Internal.DownlinkFrame parseFrom(byte[] data)
+    public static DownlinkFrame parseFrom(byte[] data)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data);
     }
-    public static Internal.DownlinkFrame parseFrom(
+    public static DownlinkFrame parseFrom(
         byte[] data,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data, extensionRegistry);
     }
-    public static Internal.DownlinkFrame parseFrom(java.io.InputStream input)
+    public static DownlinkFrame parseFrom(java.io.InputStream input)
         throws java.io.IOException {
       return com.google.protobuf.GeneratedMessageV3
           .parseWithIOException(PARSER, input);
     }
-    public static Internal.DownlinkFrame parseFrom(
+    public static DownlinkFrame parseFrom(
         java.io.InputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
       return com.google.protobuf.GeneratedMessageV3
           .parseWithIOException(PARSER, input, extensionRegistry);
     }
-    public static Internal.DownlinkFrame parseDelimitedFrom(java.io.InputStream input)
+    public static DownlinkFrame parseDelimitedFrom(java.io.InputStream input)
         throws java.io.IOException {
       return com.google.protobuf.GeneratedMessageV3
           .parseDelimitedWithIOException(PARSER, input);
     }
-    public static Internal.DownlinkFrame parseDelimitedFrom(
+    public static DownlinkFrame parseDelimitedFrom(
         java.io.InputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
       return com.google.protobuf.GeneratedMessageV3
           .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
     }
-    public static Internal.DownlinkFrame parseFrom(
+    public static DownlinkFrame parseFrom(
         com.google.protobuf.CodedInputStream input)
         throws java.io.IOException {
       return com.google.protobuf.GeneratedMessageV3
           .parseWithIOException(PARSER, input);
     }
-    public static Internal.DownlinkFrame parseFrom(
+    public static DownlinkFrame parseFrom(
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
@@ -9905,7 +16029,7 @@ Internal.DeviceSessionChannel defaultValue);
     public static Builder newBuilder() {
       return DEFAULT_INSTANCE.toBuilder();
     }
-    public static Builder newBuilder(Internal.DownlinkFrame prototype) {
+    public static Builder newBuilder(DownlinkFrame prototype) {
       return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
     }
     @Override
@@ -9926,21 +16050,21 @@ Internal.DeviceSessionChannel defaultValue);
     public static final class Builder extends
         com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
         // @@protoc_insertion_point(builder_implements:internal.DownlinkFrame)
-        Internal.DownlinkFrameOrBuilder {
+        DownlinkFrameOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
-        return Internal.internal_static_internal_DownlinkFrame_descriptor;
+        return internal_static_internal_DownlinkFrame_descriptor;
       }
 
       @Override
       protected FieldAccessorTable
           internalGetFieldAccessorTable() {
-        return Internal.internal_static_internal_DownlinkFrame_fieldAccessorTable
+        return internal_static_internal_DownlinkFrame_fieldAccessorTable
             .ensureFieldAccessorsInitialized(
-                Internal.DownlinkFrame.class, Internal.DownlinkFrame.Builder.class);
+                DownlinkFrame.class, DownlinkFrame.Builder.class);
       }
 
-      // Construct using Internal.DownlinkFrame.newBuilder()
+      // Construct using DownlinkFrame.newBuilder()
       private Builder() {
 
       }
@@ -9953,43 +16077,39 @@ Internal.DeviceSessionChannel defaultValue);
       @Override
       public Builder clear() {
         super.clear();
+        bitField0_ = 0;
         downlinkId_ = 0;
-
         devEui_ = com.google.protobuf.ByteString.EMPTY;
-
         deviceQueueItemId_ = com.google.protobuf.ByteString.EMPTY;
-
         multicastGroupId_ = com.google.protobuf.ByteString.EMPTY;
-
         multicastGroupQueueItemId_ = com.google.protobuf.ByteString.EMPTY;
-
-        if (downlinkFrameBuilder_ == null) {
-          downlinkFrame_ = null;
-        } else {
-          downlinkFrame_ = null;
+        downlinkFrame_ = null;
+        if (downlinkFrameBuilder_ != null) {
+          downlinkFrameBuilder_.dispose();
           downlinkFrameBuilder_ = null;
         }
         encryptedFopts_ = false;
-
         nwkSEncKey_ = com.google.protobuf.ByteString.EMPTY;
-
+        nFCntDown_ = 0;
+        aFCntDown_ = 0;
+        devEuiRelayed_ = com.google.protobuf.ByteString.EMPTY;
         return this;
       }
 
       @Override
       public com.google.protobuf.Descriptors.Descriptor
           getDescriptorForType() {
-        return Internal.internal_static_internal_DownlinkFrame_descriptor;
+        return internal_static_internal_DownlinkFrame_descriptor;
       }
 
       @Override
-      public Internal.DownlinkFrame getDefaultInstanceForType() {
-        return Internal.DownlinkFrame.getDefaultInstance();
+      public DownlinkFrame getDefaultInstanceForType() {
+        return DownlinkFrame.getDefaultInstance();
       }
 
       @Override
-      public Internal.DownlinkFrame build() {
-        Internal.DownlinkFrame result = buildPartial();
+      public DownlinkFrame build() {
+        DownlinkFrame result = buildPartial();
         if (!result.isInitialized()) {
           throw newUninitializedMessageException(result);
         }
@@ -9997,68 +16117,64 @@ Internal.DeviceSessionChannel defaultValue);
       }
 
       @Override
-      public Internal.DownlinkFrame buildPartial() {
-        Internal.DownlinkFrame result = new Internal.DownlinkFrame(this);
-        result.downlinkId_ = downlinkId_;
-        result.devEui_ = devEui_;
-        result.deviceQueueItemId_ = deviceQueueItemId_;
-        result.multicastGroupId_ = multicastGroupId_;
-        result.multicastGroupQueueItemId_ = multicastGroupQueueItemId_;
-        if (downlinkFrameBuilder_ == null) {
-          result.downlinkFrame_ = downlinkFrame_;
-        } else {
-          result.downlinkFrame_ = downlinkFrameBuilder_.build();
-        }
-        result.encryptedFopts_ = encryptedFopts_;
-        result.nwkSEncKey_ = nwkSEncKey_;
+      public DownlinkFrame buildPartial() {
+        DownlinkFrame result = new DownlinkFrame(this);
+        if (bitField0_ != 0) { buildPartial0(result); }
         onBuilt();
         return result;
       }
 
-      @Override
-      public Builder clone() {
-        return super.clone();
+      private void buildPartial0(DownlinkFrame result) {
+        int from_bitField0_ = bitField0_;
+        if (((from_bitField0_ & 0x00000001) != 0)) {
+          result.downlinkId_ = downlinkId_;
+        }
+        if (((from_bitField0_ & 0x00000002) != 0)) {
+          result.devEui_ = devEui_;
+        }
+        if (((from_bitField0_ & 0x00000004) != 0)) {
+          result.deviceQueueItemId_ = deviceQueueItemId_;
+        }
+        if (((from_bitField0_ & 0x00000008) != 0)) {
+          result.multicastGroupId_ = multicastGroupId_;
+        }
+        if (((from_bitField0_ & 0x00000010) != 0)) {
+          result.multicastGroupQueueItemId_ = multicastGroupQueueItemId_;
+        }
+        if (((from_bitField0_ & 0x00000020) != 0)) {
+          result.downlinkFrame_ = downlinkFrameBuilder_ == null
+              ? downlinkFrame_
+              : downlinkFrameBuilder_.build();
+        }
+        if (((from_bitField0_ & 0x00000040) != 0)) {
+          result.encryptedFopts_ = encryptedFopts_;
+        }
+        if (((from_bitField0_ & 0x00000080) != 0)) {
+          result.nwkSEncKey_ = nwkSEncKey_;
+        }
+        if (((from_bitField0_ & 0x00000100) != 0)) {
+          result.nFCntDown_ = nFCntDown_;
+        }
+        if (((from_bitField0_ & 0x00000200) != 0)) {
+          result.aFCntDown_ = aFCntDown_;
+        }
+        if (((from_bitField0_ & 0x00000400) != 0)) {
+          result.devEuiRelayed_ = devEuiRelayed_;
+        }
       }
-      @Override
-      public Builder setField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          Object value) {
-        return super.setField(field, value);
-      }
-      @Override
-      public Builder clearField(
-          com.google.protobuf.Descriptors.FieldDescriptor field) {
-        return super.clearField(field);
-      }
-      @Override
-      public Builder clearOneof(
-          com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-        return super.clearOneof(oneof);
-      }
-      @Override
-      public Builder setRepeatedField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          int index, Object value) {
-        return super.setRepeatedField(field, index, value);
-      }
-      @Override
-      public Builder addRepeatedField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          Object value) {
-        return super.addRepeatedField(field, value);
-      }
+
       @Override
       public Builder mergeFrom(com.google.protobuf.Message other) {
-        if (other instanceof Internal.DownlinkFrame) {
-          return mergeFrom((Internal.DownlinkFrame)other);
+        if (other instanceof DownlinkFrame) {
+          return mergeFrom((DownlinkFrame)other);
         } else {
           super.mergeFrom(other);
           return this;
         }
       }
 
-      public Builder mergeFrom(Internal.DownlinkFrame other) {
-        if (other == Internal.DownlinkFrame.getDefaultInstance()) return this;
+      public Builder mergeFrom(DownlinkFrame other) {
+        if (other == DownlinkFrame.getDefaultInstance()) return this;
         if (other.getDownlinkId() != 0) {
           setDownlinkId(other.getDownlinkId());
         }
@@ -10082,6 +16198,15 @@ Internal.DeviceSessionChannel defaultValue);
         }
         if (other.getNwkSEncKey() != com.google.protobuf.ByteString.EMPTY) {
           setNwkSEncKey(other.getNwkSEncKey());
+        }
+        if (other.getNFCntDown() != 0) {
+          setNFCntDown(other.getNFCntDown());
+        }
+        if (other.getAFCntDown() != 0) {
+          setAFCntDown(other.getAFCntDown());
+        }
+        if (other.getDevEuiRelayed() != com.google.protobuf.ByteString.EMPTY) {
+          setDevEuiRelayed(other.getDevEuiRelayed());
         }
         this.mergeUnknownFields(other.getUnknownFields());
         onChanged();
@@ -10111,46 +16236,61 @@ Internal.DeviceSessionChannel defaultValue);
                 break;
               case 8: {
                 downlinkId_ = input.readUInt32();
-
+                bitField0_ |= 0x00000001;
                 break;
               } // case 8
               case 18: {
                 devEui_ = input.readBytes();
-
+                bitField0_ |= 0x00000002;
                 break;
               } // case 18
               case 26: {
                 deviceQueueItemId_ = input.readBytes();
-
+                bitField0_ |= 0x00000004;
                 break;
               } // case 26
               case 34: {
                 multicastGroupId_ = input.readBytes();
-
+                bitField0_ |= 0x00000008;
                 break;
               } // case 34
               case 42: {
                 multicastGroupQueueItemId_ = input.readBytes();
-
+                bitField0_ |= 0x00000010;
                 break;
               } // case 42
               case 50: {
                 input.readMessage(
                     getDownlinkFrameFieldBuilder().getBuilder(),
                     extensionRegistry);
-
+                bitField0_ |= 0x00000020;
                 break;
               } // case 50
               case 64: {
                 encryptedFopts_ = input.readBool();
-
+                bitField0_ |= 0x00000040;
                 break;
               } // case 64
               case 74: {
                 nwkSEncKey_ = input.readBytes();
-
+                bitField0_ |= 0x00000080;
                 break;
               } // case 74
+              case 80: {
+                nFCntDown_ = input.readUInt32();
+                bitField0_ |= 0x00000100;
+                break;
+              } // case 80
+              case 88: {
+                aFCntDown_ = input.readUInt32();
+                bitField0_ |= 0x00000200;
+                break;
+              } // case 88
+              case 98: {
+                devEuiRelayed_ = input.readBytes();
+                bitField0_ |= 0x00000400;
+                break;
+              } // case 98
               default: {
                 if (!super.parseUnknownField(input, extensionRegistry, tag)) {
                   done = true; // was an endgroup tag
@@ -10166,6 +16306,7 @@ Internal.DeviceSessionChannel defaultValue);
         } // finally
         return this;
       }
+      private int bitField0_;
 
       private int downlinkId_ ;
       /**
@@ -10190,8 +16331,9 @@ Internal.DeviceSessionChannel defaultValue);
        * @return This builder for chaining.
        */
       public Builder setDownlinkId(int value) {
-        
+
         downlinkId_ = value;
+        bitField0_ |= 0x00000001;
         onChanged();
         return this;
       }
@@ -10204,7 +16346,7 @@ Internal.DeviceSessionChannel defaultValue);
        * @return This builder for chaining.
        */
       public Builder clearDownlinkId() {
-        
+        bitField0_ = (bitField0_ & ~0x00000001);
         downlinkId_ = 0;
         onChanged();
         return this;
@@ -10233,11 +16375,9 @@ Internal.DeviceSessionChannel defaultValue);
        * @return This builder for chaining.
        */
       public Builder setDevEui(com.google.protobuf.ByteString value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  
+        if (value == null) { throw new NullPointerException(); }
         devEui_ = value;
+        bitField0_ |= 0x00000002;
         onChanged();
         return this;
       }
@@ -10250,7 +16390,7 @@ Internal.DeviceSessionChannel defaultValue);
        * @return This builder for chaining.
        */
       public Builder clearDevEui() {
-        
+        bitField0_ = (bitField0_ & ~0x00000002);
         devEui_ = getDefaultInstance().getDevEui();
         onChanged();
         return this;
@@ -10279,11 +16419,9 @@ Internal.DeviceSessionChannel defaultValue);
        * @return This builder for chaining.
        */
       public Builder setDeviceQueueItemId(com.google.protobuf.ByteString value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  
+        if (value == null) { throw new NullPointerException(); }
         deviceQueueItemId_ = value;
+        bitField0_ |= 0x00000004;
         onChanged();
         return this;
       }
@@ -10296,7 +16434,7 @@ Internal.DeviceSessionChannel defaultValue);
        * @return This builder for chaining.
        */
       public Builder clearDeviceQueueItemId() {
-        
+        bitField0_ = (bitField0_ & ~0x00000004);
         deviceQueueItemId_ = getDefaultInstance().getDeviceQueueItemId();
         onChanged();
         return this;
@@ -10325,11 +16463,9 @@ Internal.DeviceSessionChannel defaultValue);
        * @return This builder for chaining.
        */
       public Builder setMulticastGroupId(com.google.protobuf.ByteString value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  
+        if (value == null) { throw new NullPointerException(); }
         multicastGroupId_ = value;
+        bitField0_ |= 0x00000008;
         onChanged();
         return this;
       }
@@ -10342,7 +16478,7 @@ Internal.DeviceSessionChannel defaultValue);
        * @return This builder for chaining.
        */
       public Builder clearMulticastGroupId() {
-        
+        bitField0_ = (bitField0_ & ~0x00000008);
         multicastGroupId_ = getDefaultInstance().getMulticastGroupId();
         onChanged();
         return this;
@@ -10371,11 +16507,9 @@ Internal.DeviceSessionChannel defaultValue);
        * @return This builder for chaining.
        */
       public Builder setMulticastGroupQueueItemId(com.google.protobuf.ByteString value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  
+        if (value == null) { throw new NullPointerException(); }
         multicastGroupQueueItemId_ = value;
+        bitField0_ |= 0x00000010;
         onChanged();
         return this;
       }
@@ -10388,7 +16522,7 @@ Internal.DeviceSessionChannel defaultValue);
        * @return This builder for chaining.
        */
       public Builder clearMulticastGroupQueueItemId() {
-        
+        bitField0_ = (bitField0_ & ~0x00000010);
         multicastGroupQueueItemId_ = getDefaultInstance().getMulticastGroupQueueItemId();
         onChanged();
         return this;
@@ -10406,7 +16540,7 @@ Internal.DeviceSessionChannel defaultValue);
        * @return Whether the downlinkFrame field is set.
        */
       public boolean hasDownlinkFrame() {
-        return downlinkFrameBuilder_ != null || downlinkFrame_ != null;
+        return ((bitField0_ & 0x00000020) != 0);
       }
       /**
        * <pre>
@@ -10436,11 +16570,11 @@ Internal.DeviceSessionChannel defaultValue);
             throw new NullPointerException();
           }
           downlinkFrame_ = value;
-          onChanged();
         } else {
           downlinkFrameBuilder_.setMessage(value);
         }
-
+        bitField0_ |= 0x00000020;
+        onChanged();
         return this;
       }
       /**
@@ -10454,11 +16588,11 @@ Internal.DeviceSessionChannel defaultValue);
           io.chirpstack.api.gw.DownlinkFrame.Builder builderForValue) {
         if (downlinkFrameBuilder_ == null) {
           downlinkFrame_ = builderForValue.build();
-          onChanged();
         } else {
           downlinkFrameBuilder_.setMessage(builderForValue.build());
         }
-
+        bitField0_ |= 0x00000020;
+        onChanged();
         return this;
       }
       /**
@@ -10470,17 +16604,18 @@ Internal.DeviceSessionChannel defaultValue);
        */
       public Builder mergeDownlinkFrame(io.chirpstack.api.gw.DownlinkFrame value) {
         if (downlinkFrameBuilder_ == null) {
-          if (downlinkFrame_ != null) {
-            downlinkFrame_ =
-              io.chirpstack.api.gw.DownlinkFrame.newBuilder(downlinkFrame_).mergeFrom(value).buildPartial();
+          if (((bitField0_ & 0x00000020) != 0) &&
+            downlinkFrame_ != null &&
+            downlinkFrame_ != io.chirpstack.api.gw.DownlinkFrame.getDefaultInstance()) {
+            getDownlinkFrameBuilder().mergeFrom(value);
           } else {
             downlinkFrame_ = value;
           }
-          onChanged();
         } else {
           downlinkFrameBuilder_.mergeFrom(value);
         }
-
+        bitField0_ |= 0x00000020;
+        onChanged();
         return this;
       }
       /**
@@ -10491,14 +16626,13 @@ Internal.DeviceSessionChannel defaultValue);
        * <code>.gw.DownlinkFrame downlink_frame = 6;</code>
        */
       public Builder clearDownlinkFrame() {
-        if (downlinkFrameBuilder_ == null) {
-          downlinkFrame_ = null;
-          onChanged();
-        } else {
-          downlinkFrame_ = null;
+        bitField0_ = (bitField0_ & ~0x00000020);
+        downlinkFrame_ = null;
+        if (downlinkFrameBuilder_ != null) {
+          downlinkFrameBuilder_.dispose();
           downlinkFrameBuilder_ = null;
         }
-
+        onChanged();
         return this;
       }
       /**
@@ -10509,7 +16643,7 @@ Internal.DeviceSessionChannel defaultValue);
        * <code>.gw.DownlinkFrame downlink_frame = 6;</code>
        */
       public io.chirpstack.api.gw.DownlinkFrame.Builder getDownlinkFrameBuilder() {
-        
+        bitField0_ |= 0x00000020;
         onChanged();
         return getDownlinkFrameFieldBuilder().getBuilder();
       }
@@ -10572,8 +16706,9 @@ Internal.DeviceSessionChannel defaultValue);
        * @return This builder for chaining.
        */
       public Builder setEncryptedFopts(boolean value) {
-        
+
         encryptedFopts_ = value;
+        bitField0_ |= 0x00000040;
         onChanged();
         return this;
       }
@@ -10586,7 +16721,7 @@ Internal.DeviceSessionChannel defaultValue);
        * @return This builder for chaining.
        */
       public Builder clearEncryptedFopts() {
-        
+        bitField0_ = (bitField0_ & ~0x00000040);
         encryptedFopts_ = false;
         onChanged();
         return this;
@@ -10595,7 +16730,7 @@ Internal.DeviceSessionChannel defaultValue);
       private com.google.protobuf.ByteString nwkSEncKey_ = com.google.protobuf.ByteString.EMPTY;
       /**
        * <pre>
-       * Network session encryption key (for FOpts).
+       * Network session encryption key (for FOpts and FRMPayload mac-commands).
        * </pre>
        *
        * <code>bytes nwk_s_enc_key = 9;</code>
@@ -10607,7 +16742,7 @@ Internal.DeviceSessionChannel defaultValue);
       }
       /**
        * <pre>
-       * Network session encryption key (for FOpts).
+       * Network session encryption key (for FOpts and FRMPayload mac-commands).
        * </pre>
        *
        * <code>bytes nwk_s_enc_key = 9;</code>
@@ -10615,25 +16750,155 @@ Internal.DeviceSessionChannel defaultValue);
        * @return This builder for chaining.
        */
       public Builder setNwkSEncKey(com.google.protobuf.ByteString value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  
+        if (value == null) { throw new NullPointerException(); }
         nwkSEncKey_ = value;
+        bitField0_ |= 0x00000080;
         onChanged();
         return this;
       }
       /**
        * <pre>
-       * Network session encryption key (for FOpts).
+       * Network session encryption key (for FOpts and FRMPayload mac-commands).
        * </pre>
        *
        * <code>bytes nwk_s_enc_key = 9;</code>
        * @return This builder for chaining.
        */
       public Builder clearNwkSEncKey() {
-        
+        bitField0_ = (bitField0_ & ~0x00000080);
         nwkSEncKey_ = getDefaultInstance().getNwkSEncKey();
+        onChanged();
+        return this;
+      }
+
+      private int nFCntDown_ ;
+      /**
+       * <pre>
+       * NFCntDown (for decrypting mac-commands).
+       * </pre>
+       *
+       * <code>uint32 n_f_cnt_down = 10;</code>
+       * @return The nFCntDown.
+       */
+      @Override
+      public int getNFCntDown() {
+        return nFCntDown_;
+      }
+      /**
+       * <pre>
+       * NFCntDown (for decrypting mac-commands).
+       * </pre>
+       *
+       * <code>uint32 n_f_cnt_down = 10;</code>
+       * @param value The nFCntDown to set.
+       * @return This builder for chaining.
+       */
+      public Builder setNFCntDown(int value) {
+
+        nFCntDown_ = value;
+        bitField0_ |= 0x00000100;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * NFCntDown (for decrypting mac-commands).
+       * </pre>
+       *
+       * <code>uint32 n_f_cnt_down = 10;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearNFCntDown() {
+        bitField0_ = (bitField0_ & ~0x00000100);
+        nFCntDown_ = 0;
+        onChanged();
+        return this;
+      }
+
+      private int aFCntDown_ ;
+      /**
+       * <pre>
+       * AFCntDown (for decrypting FRMPayload in case of Relay).
+       * </pre>
+       *
+       * <code>uint32 a_f_cnt_down = 11;</code>
+       * @return The aFCntDown.
+       */
+      @Override
+      public int getAFCntDown() {
+        return aFCntDown_;
+      }
+      /**
+       * <pre>
+       * AFCntDown (for decrypting FRMPayload in case of Relay).
+       * </pre>
+       *
+       * <code>uint32 a_f_cnt_down = 11;</code>
+       * @param value The aFCntDown to set.
+       * @return This builder for chaining.
+       */
+      public Builder setAFCntDown(int value) {
+
+        aFCntDown_ = value;
+        bitField0_ |= 0x00000200;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * AFCntDown (for decrypting FRMPayload in case of Relay).
+       * </pre>
+       *
+       * <code>uint32 a_f_cnt_down = 11;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearAFCntDown() {
+        bitField0_ = (bitField0_ & ~0x00000200);
+        aFCntDown_ = 0;
+        onChanged();
+        return this;
+      }
+
+      private com.google.protobuf.ByteString devEuiRelayed_ = com.google.protobuf.ByteString.EMPTY;
+      /**
+       * <pre>
+       * DevEUI of relayed device.
+       * </pre>
+       *
+       * <code>bytes dev_eui_relayed = 12;</code>
+       * @return The devEuiRelayed.
+       */
+      @Override
+      public com.google.protobuf.ByteString getDevEuiRelayed() {
+        return devEuiRelayed_;
+      }
+      /**
+       * <pre>
+       * DevEUI of relayed device.
+       * </pre>
+       *
+       * <code>bytes dev_eui_relayed = 12;</code>
+       * @param value The devEuiRelayed to set.
+       * @return This builder for chaining.
+       */
+      public Builder setDevEuiRelayed(com.google.protobuf.ByteString value) {
+        if (value == null) { throw new NullPointerException(); }
+        devEuiRelayed_ = value;
+        bitField0_ |= 0x00000400;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * DevEUI of relayed device.
+       * </pre>
+       *
+       * <code>bytes dev_eui_relayed = 12;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearDevEuiRelayed() {
+        bitField0_ = (bitField0_ & ~0x00000400);
+        devEuiRelayed_ = getDefaultInstance().getDevEuiRelayed();
         onChanged();
         return this;
       }
@@ -10654,12 +16919,12 @@ Internal.DeviceSessionChannel defaultValue);
     }
 
     // @@protoc_insertion_point(class_scope:internal.DownlinkFrame)
-    private static final Internal.DownlinkFrame DEFAULT_INSTANCE;
+    private static final DownlinkFrame DEFAULT_INSTANCE;
     static {
-      DEFAULT_INSTANCE = new Internal.DownlinkFrame();
+      DEFAULT_INSTANCE = new DownlinkFrame();
     }
 
-    public static Internal.DownlinkFrame getDefaultInstance() {
+    public static DownlinkFrame getDefaultInstance() {
       return DEFAULT_INSTANCE;
     }
 
@@ -10695,7 +16960,7 @@ Internal.DeviceSessionChannel defaultValue);
     }
 
     @Override
-    public Internal.DownlinkFrame getDefaultInstanceForType() {
+    public DownlinkFrame getDefaultInstanceForType() {
       return DEFAULT_INSTANCE;
     }
 
@@ -10712,7 +16977,7 @@ Internal.DeviceSessionChannel defaultValue);
      *
      * <code>repeated .internal.LoraCloudGeolocBufferUplink uplinks = 1;</code>
      */
-    java.util.List<Internal.LoraCloudGeolocBufferUplink> 
+    java.util.List<LoraCloudGeolocBufferUplink> 
         getUplinksList();
     /**
      * <pre>
@@ -10721,7 +16986,7 @@ Internal.DeviceSessionChannel defaultValue);
      *
      * <code>repeated .internal.LoraCloudGeolocBufferUplink uplinks = 1;</code>
      */
-    Internal.LoraCloudGeolocBufferUplink getUplinks(int index);
+    LoraCloudGeolocBufferUplink getUplinks(int index);
     /**
      * <pre>
      * Uplinks in buffer.
@@ -10737,7 +17002,7 @@ Internal.DeviceSessionChannel defaultValue);
      *
      * <code>repeated .internal.LoraCloudGeolocBufferUplink uplinks = 1;</code>
      */
-    java.util.List<? extends Internal.LoraCloudGeolocBufferUplinkOrBuilder> 
+    java.util.List<? extends LoraCloudGeolocBufferUplinkOrBuilder> 
         getUplinksOrBuilderList();
     /**
      * <pre>
@@ -10746,7 +17011,7 @@ Internal.DeviceSessionChannel defaultValue);
      *
      * <code>repeated .internal.LoraCloudGeolocBufferUplink uplinks = 1;</code>
      */
-    Internal.LoraCloudGeolocBufferUplinkOrBuilder getUplinksOrBuilder(
+    LoraCloudGeolocBufferUplinkOrBuilder getUplinksOrBuilder(
         int index);
   }
   /**
@@ -10772,26 +17037,22 @@ Internal.DeviceSessionChannel defaultValue);
       return new LoraCloudGeolocBuffer();
     }
 
-    @Override
-    public final com.google.protobuf.UnknownFieldSet
-    getUnknownFields() {
-      return this.unknownFields;
-    }
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
-      return Internal.internal_static_internal_LoraCloudGeolocBuffer_descriptor;
+      return internal_static_internal_LoraCloudGeolocBuffer_descriptor;
     }
 
     @Override
     protected FieldAccessorTable
         internalGetFieldAccessorTable() {
-      return Internal.internal_static_internal_LoraCloudGeolocBuffer_fieldAccessorTable
+      return internal_static_internal_LoraCloudGeolocBuffer_fieldAccessorTable
           .ensureFieldAccessorsInitialized(
-              Internal.LoraCloudGeolocBuffer.class, Internal.LoraCloudGeolocBuffer.Builder.class);
+              LoraCloudGeolocBuffer.class, LoraCloudGeolocBuffer.Builder.class);
     }
 
     public static final int UPLINKS_FIELD_NUMBER = 1;
-    private java.util.List<Internal.LoraCloudGeolocBufferUplink> uplinks_;
+    @SuppressWarnings("serial")
+    private java.util.List<LoraCloudGeolocBufferUplink> uplinks_;
     /**
      * <pre>
      * Uplinks in buffer.
@@ -10800,7 +17061,7 @@ Internal.DeviceSessionChannel defaultValue);
      * <code>repeated .internal.LoraCloudGeolocBufferUplink uplinks = 1;</code>
      */
     @Override
-    public java.util.List<Internal.LoraCloudGeolocBufferUplink> getUplinksList() {
+    public java.util.List<LoraCloudGeolocBufferUplink> getUplinksList() {
       return uplinks_;
     }
     /**
@@ -10811,7 +17072,7 @@ Internal.DeviceSessionChannel defaultValue);
      * <code>repeated .internal.LoraCloudGeolocBufferUplink uplinks = 1;</code>
      */
     @Override
-    public java.util.List<? extends Internal.LoraCloudGeolocBufferUplinkOrBuilder> 
+    public java.util.List<? extends LoraCloudGeolocBufferUplinkOrBuilder> 
         getUplinksOrBuilderList() {
       return uplinks_;
     }
@@ -10834,7 +17095,7 @@ Internal.DeviceSessionChannel defaultValue);
      * <code>repeated .internal.LoraCloudGeolocBufferUplink uplinks = 1;</code>
      */
     @Override
-    public Internal.LoraCloudGeolocBufferUplink getUplinks(int index) {
+    public LoraCloudGeolocBufferUplink getUplinks(int index) {
       return uplinks_.get(index);
     }
     /**
@@ -10845,7 +17106,7 @@ Internal.DeviceSessionChannel defaultValue);
      * <code>repeated .internal.LoraCloudGeolocBufferUplink uplinks = 1;</code>
      */
     @Override
-    public Internal.LoraCloudGeolocBufferUplinkOrBuilder getUplinksOrBuilder(
+    public LoraCloudGeolocBufferUplinkOrBuilder getUplinksOrBuilder(
         int index) {
       return uplinks_.get(index);
     }
@@ -10890,10 +17151,10 @@ Internal.DeviceSessionChannel defaultValue);
       if (obj == this) {
        return true;
       }
-      if (!(obj instanceof Internal.LoraCloudGeolocBuffer)) {
+      if (!(obj instanceof LoraCloudGeolocBuffer)) {
         return super.equals(obj);
       }
-      Internal.LoraCloudGeolocBuffer other = (Internal.LoraCloudGeolocBuffer) obj;
+      LoraCloudGeolocBuffer other = (LoraCloudGeolocBuffer) obj;
 
       if (!getUplinksList()
           .equals(other.getUplinksList())) return false;
@@ -10917,69 +17178,69 @@ Internal.DeviceSessionChannel defaultValue);
       return hash;
     }
 
-    public static Internal.LoraCloudGeolocBuffer parseFrom(
+    public static LoraCloudGeolocBuffer parseFrom(
         java.nio.ByteBuffer data)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data);
     }
-    public static Internal.LoraCloudGeolocBuffer parseFrom(
+    public static LoraCloudGeolocBuffer parseFrom(
         java.nio.ByteBuffer data,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data, extensionRegistry);
     }
-    public static Internal.LoraCloudGeolocBuffer parseFrom(
+    public static LoraCloudGeolocBuffer parseFrom(
         com.google.protobuf.ByteString data)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data);
     }
-    public static Internal.LoraCloudGeolocBuffer parseFrom(
+    public static LoraCloudGeolocBuffer parseFrom(
         com.google.protobuf.ByteString data,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data, extensionRegistry);
     }
-    public static Internal.LoraCloudGeolocBuffer parseFrom(byte[] data)
+    public static LoraCloudGeolocBuffer parseFrom(byte[] data)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data);
     }
-    public static Internal.LoraCloudGeolocBuffer parseFrom(
+    public static LoraCloudGeolocBuffer parseFrom(
         byte[] data,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data, extensionRegistry);
     }
-    public static Internal.LoraCloudGeolocBuffer parseFrom(java.io.InputStream input)
+    public static LoraCloudGeolocBuffer parseFrom(java.io.InputStream input)
         throws java.io.IOException {
       return com.google.protobuf.GeneratedMessageV3
           .parseWithIOException(PARSER, input);
     }
-    public static Internal.LoraCloudGeolocBuffer parseFrom(
+    public static LoraCloudGeolocBuffer parseFrom(
         java.io.InputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
       return com.google.protobuf.GeneratedMessageV3
           .parseWithIOException(PARSER, input, extensionRegistry);
     }
-    public static Internal.LoraCloudGeolocBuffer parseDelimitedFrom(java.io.InputStream input)
+    public static LoraCloudGeolocBuffer parseDelimitedFrom(java.io.InputStream input)
         throws java.io.IOException {
       return com.google.protobuf.GeneratedMessageV3
           .parseDelimitedWithIOException(PARSER, input);
     }
-    public static Internal.LoraCloudGeolocBuffer parseDelimitedFrom(
+    public static LoraCloudGeolocBuffer parseDelimitedFrom(
         java.io.InputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
       return com.google.protobuf.GeneratedMessageV3
           .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
     }
-    public static Internal.LoraCloudGeolocBuffer parseFrom(
+    public static LoraCloudGeolocBuffer parseFrom(
         com.google.protobuf.CodedInputStream input)
         throws java.io.IOException {
       return com.google.protobuf.GeneratedMessageV3
           .parseWithIOException(PARSER, input);
     }
-    public static Internal.LoraCloudGeolocBuffer parseFrom(
+    public static LoraCloudGeolocBuffer parseFrom(
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
@@ -10992,7 +17253,7 @@ Internal.DeviceSessionChannel defaultValue);
     public static Builder newBuilder() {
       return DEFAULT_INSTANCE.toBuilder();
     }
-    public static Builder newBuilder(Internal.LoraCloudGeolocBuffer prototype) {
+    public static Builder newBuilder(LoraCloudGeolocBuffer prototype) {
       return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
     }
     @Override
@@ -11013,21 +17274,21 @@ Internal.DeviceSessionChannel defaultValue);
     public static final class Builder extends
         com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
         // @@protoc_insertion_point(builder_implements:internal.LoraCloudGeolocBuffer)
-        Internal.LoraCloudGeolocBufferOrBuilder {
+        LoraCloudGeolocBufferOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
-        return Internal.internal_static_internal_LoraCloudGeolocBuffer_descriptor;
+        return internal_static_internal_LoraCloudGeolocBuffer_descriptor;
       }
 
       @Override
       protected FieldAccessorTable
           internalGetFieldAccessorTable() {
-        return Internal.internal_static_internal_LoraCloudGeolocBuffer_fieldAccessorTable
+        return internal_static_internal_LoraCloudGeolocBuffer_fieldAccessorTable
             .ensureFieldAccessorsInitialized(
-                Internal.LoraCloudGeolocBuffer.class, Internal.LoraCloudGeolocBuffer.Builder.class);
+                LoraCloudGeolocBuffer.class, LoraCloudGeolocBuffer.Builder.class);
       }
 
-      // Construct using Internal.LoraCloudGeolocBuffer.newBuilder()
+      // Construct using LoraCloudGeolocBuffer.newBuilder()
       private Builder() {
 
       }
@@ -11040,6 +17301,7 @@ Internal.DeviceSessionChannel defaultValue);
       @Override
       public Builder clear() {
         super.clear();
+        bitField0_ = 0;
         if (uplinksBuilder_ == null) {
           uplinks_ = java.util.Collections.emptyList();
         } else {
@@ -11053,17 +17315,17 @@ Internal.DeviceSessionChannel defaultValue);
       @Override
       public com.google.protobuf.Descriptors.Descriptor
           getDescriptorForType() {
-        return Internal.internal_static_internal_LoraCloudGeolocBuffer_descriptor;
+        return internal_static_internal_LoraCloudGeolocBuffer_descriptor;
       }
 
       @Override
-      public Internal.LoraCloudGeolocBuffer getDefaultInstanceForType() {
-        return Internal.LoraCloudGeolocBuffer.getDefaultInstance();
+      public LoraCloudGeolocBuffer getDefaultInstanceForType() {
+        return LoraCloudGeolocBuffer.getDefaultInstance();
       }
 
       @Override
-      public Internal.LoraCloudGeolocBuffer build() {
-        Internal.LoraCloudGeolocBuffer result = buildPartial();
+      public LoraCloudGeolocBuffer build() {
+        LoraCloudGeolocBuffer result = buildPartial();
         if (!result.isInitialized()) {
           throw newUninitializedMessageException(result);
         }
@@ -11071,9 +17333,15 @@ Internal.DeviceSessionChannel defaultValue);
       }
 
       @Override
-      public Internal.LoraCloudGeolocBuffer buildPartial() {
-        Internal.LoraCloudGeolocBuffer result = new Internal.LoraCloudGeolocBuffer(this);
-        int from_bitField0_ = bitField0_;
+      public LoraCloudGeolocBuffer buildPartial() {
+        LoraCloudGeolocBuffer result = new LoraCloudGeolocBuffer(this);
+        buildPartialRepeatedFields(result);
+        if (bitField0_ != 0) { buildPartial0(result); }
+        onBuilt();
+        return result;
+      }
+
+      private void buildPartialRepeatedFields(LoraCloudGeolocBuffer result) {
         if (uplinksBuilder_ == null) {
           if (((bitField0_ & 0x00000001) != 0)) {
             uplinks_ = java.util.Collections.unmodifiableList(uplinks_);
@@ -11083,54 +17351,24 @@ Internal.DeviceSessionChannel defaultValue);
         } else {
           result.uplinks_ = uplinksBuilder_.build();
         }
-        onBuilt();
-        return result;
+      }
+
+      private void buildPartial0(LoraCloudGeolocBuffer result) {
+        int from_bitField0_ = bitField0_;
       }
 
       @Override
-      public Builder clone() {
-        return super.clone();
-      }
-      @Override
-      public Builder setField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          Object value) {
-        return super.setField(field, value);
-      }
-      @Override
-      public Builder clearField(
-          com.google.protobuf.Descriptors.FieldDescriptor field) {
-        return super.clearField(field);
-      }
-      @Override
-      public Builder clearOneof(
-          com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-        return super.clearOneof(oneof);
-      }
-      @Override
-      public Builder setRepeatedField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          int index, Object value) {
-        return super.setRepeatedField(field, index, value);
-      }
-      @Override
-      public Builder addRepeatedField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          Object value) {
-        return super.addRepeatedField(field, value);
-      }
-      @Override
       public Builder mergeFrom(com.google.protobuf.Message other) {
-        if (other instanceof Internal.LoraCloudGeolocBuffer) {
-          return mergeFrom((Internal.LoraCloudGeolocBuffer)other);
+        if (other instanceof LoraCloudGeolocBuffer) {
+          return mergeFrom((LoraCloudGeolocBuffer)other);
         } else {
           super.mergeFrom(other);
           return this;
         }
       }
 
-      public Builder mergeFrom(Internal.LoraCloudGeolocBuffer other) {
-        if (other == Internal.LoraCloudGeolocBuffer.getDefaultInstance()) return this;
+      public Builder mergeFrom(LoraCloudGeolocBuffer other) {
+        if (other == LoraCloudGeolocBuffer.getDefaultInstance()) return this;
         if (uplinksBuilder_ == null) {
           if (!other.uplinks_.isEmpty()) {
             if (uplinks_.isEmpty()) {
@@ -11184,9 +17422,9 @@ Internal.DeviceSessionChannel defaultValue);
                 done = true;
                 break;
               case 10: {
-                Internal.LoraCloudGeolocBufferUplink m =
+                LoraCloudGeolocBufferUplink m =
                     input.readMessage(
-                        Internal.LoraCloudGeolocBufferUplink.parser(),
+                        LoraCloudGeolocBufferUplink.parser(),
                         extensionRegistry);
                 if (uplinksBuilder_ == null) {
                   ensureUplinksIsMutable();
@@ -11213,17 +17451,17 @@ Internal.DeviceSessionChannel defaultValue);
       }
       private int bitField0_;
 
-      private java.util.List<Internal.LoraCloudGeolocBufferUplink> uplinks_ =
+      private java.util.List<LoraCloudGeolocBufferUplink> uplinks_ =
         java.util.Collections.emptyList();
       private void ensureUplinksIsMutable() {
         if (!((bitField0_ & 0x00000001) != 0)) {
-          uplinks_ = new java.util.ArrayList<Internal.LoraCloudGeolocBufferUplink>(uplinks_);
+          uplinks_ = new java.util.ArrayList<LoraCloudGeolocBufferUplink>(uplinks_);
           bitField0_ |= 0x00000001;
          }
       }
 
       private com.google.protobuf.RepeatedFieldBuilderV3<
-          Internal.LoraCloudGeolocBufferUplink, Internal.LoraCloudGeolocBufferUplink.Builder, Internal.LoraCloudGeolocBufferUplinkOrBuilder> uplinksBuilder_;
+          LoraCloudGeolocBufferUplink, LoraCloudGeolocBufferUplink.Builder, LoraCloudGeolocBufferUplinkOrBuilder> uplinksBuilder_;
 
       /**
        * <pre>
@@ -11232,7 +17470,7 @@ Internal.DeviceSessionChannel defaultValue);
        *
        * <code>repeated .internal.LoraCloudGeolocBufferUplink uplinks = 1;</code>
        */
-      public java.util.List<Internal.LoraCloudGeolocBufferUplink> getUplinksList() {
+      public java.util.List<LoraCloudGeolocBufferUplink> getUplinksList() {
         if (uplinksBuilder_ == null) {
           return java.util.Collections.unmodifiableList(uplinks_);
         } else {
@@ -11260,7 +17498,7 @@ Internal.DeviceSessionChannel defaultValue);
        *
        * <code>repeated .internal.LoraCloudGeolocBufferUplink uplinks = 1;</code>
        */
-      public Internal.LoraCloudGeolocBufferUplink getUplinks(int index) {
+      public LoraCloudGeolocBufferUplink getUplinks(int index) {
         if (uplinksBuilder_ == null) {
           return uplinks_.get(index);
         } else {
@@ -11275,7 +17513,7 @@ Internal.DeviceSessionChannel defaultValue);
        * <code>repeated .internal.LoraCloudGeolocBufferUplink uplinks = 1;</code>
        */
       public Builder setUplinks(
-          int index, Internal.LoraCloudGeolocBufferUplink value) {
+          int index, LoraCloudGeolocBufferUplink value) {
         if (uplinksBuilder_ == null) {
           if (value == null) {
             throw new NullPointerException();
@@ -11296,7 +17534,7 @@ Internal.DeviceSessionChannel defaultValue);
        * <code>repeated .internal.LoraCloudGeolocBufferUplink uplinks = 1;</code>
        */
       public Builder setUplinks(
-          int index, Internal.LoraCloudGeolocBufferUplink.Builder builderForValue) {
+          int index, LoraCloudGeolocBufferUplink.Builder builderForValue) {
         if (uplinksBuilder_ == null) {
           ensureUplinksIsMutable();
           uplinks_.set(index, builderForValue.build());
@@ -11313,7 +17551,7 @@ Internal.DeviceSessionChannel defaultValue);
        *
        * <code>repeated .internal.LoraCloudGeolocBufferUplink uplinks = 1;</code>
        */
-      public Builder addUplinks(Internal.LoraCloudGeolocBufferUplink value) {
+      public Builder addUplinks(LoraCloudGeolocBufferUplink value) {
         if (uplinksBuilder_ == null) {
           if (value == null) {
             throw new NullPointerException();
@@ -11334,7 +17572,7 @@ Internal.DeviceSessionChannel defaultValue);
        * <code>repeated .internal.LoraCloudGeolocBufferUplink uplinks = 1;</code>
        */
       public Builder addUplinks(
-          int index, Internal.LoraCloudGeolocBufferUplink value) {
+          int index, LoraCloudGeolocBufferUplink value) {
         if (uplinksBuilder_ == null) {
           if (value == null) {
             throw new NullPointerException();
@@ -11355,7 +17593,7 @@ Internal.DeviceSessionChannel defaultValue);
        * <code>repeated .internal.LoraCloudGeolocBufferUplink uplinks = 1;</code>
        */
       public Builder addUplinks(
-          Internal.LoraCloudGeolocBufferUplink.Builder builderForValue) {
+          LoraCloudGeolocBufferUplink.Builder builderForValue) {
         if (uplinksBuilder_ == null) {
           ensureUplinksIsMutable();
           uplinks_.add(builderForValue.build());
@@ -11373,7 +17611,7 @@ Internal.DeviceSessionChannel defaultValue);
        * <code>repeated .internal.LoraCloudGeolocBufferUplink uplinks = 1;</code>
        */
       public Builder addUplinks(
-          int index, Internal.LoraCloudGeolocBufferUplink.Builder builderForValue) {
+          int index, LoraCloudGeolocBufferUplink.Builder builderForValue) {
         if (uplinksBuilder_ == null) {
           ensureUplinksIsMutable();
           uplinks_.add(index, builderForValue.build());
@@ -11391,7 +17629,7 @@ Internal.DeviceSessionChannel defaultValue);
        * <code>repeated .internal.LoraCloudGeolocBufferUplink uplinks = 1;</code>
        */
       public Builder addAllUplinks(
-          Iterable<? extends Internal.LoraCloudGeolocBufferUplink> values) {
+          Iterable<? extends LoraCloudGeolocBufferUplink> values) {
         if (uplinksBuilder_ == null) {
           ensureUplinksIsMutable();
           com.google.protobuf.AbstractMessageLite.Builder.addAll(
@@ -11443,7 +17681,7 @@ Internal.DeviceSessionChannel defaultValue);
        *
        * <code>repeated .internal.LoraCloudGeolocBufferUplink uplinks = 1;</code>
        */
-      public Internal.LoraCloudGeolocBufferUplink.Builder getUplinksBuilder(
+      public LoraCloudGeolocBufferUplink.Builder getUplinksBuilder(
           int index) {
         return getUplinksFieldBuilder().getBuilder(index);
       }
@@ -11454,7 +17692,7 @@ Internal.DeviceSessionChannel defaultValue);
        *
        * <code>repeated .internal.LoraCloudGeolocBufferUplink uplinks = 1;</code>
        */
-      public Internal.LoraCloudGeolocBufferUplinkOrBuilder getUplinksOrBuilder(
+      public LoraCloudGeolocBufferUplinkOrBuilder getUplinksOrBuilder(
           int index) {
         if (uplinksBuilder_ == null) {
           return uplinks_.get(index);  } else {
@@ -11468,7 +17706,7 @@ Internal.DeviceSessionChannel defaultValue);
        *
        * <code>repeated .internal.LoraCloudGeolocBufferUplink uplinks = 1;</code>
        */
-      public java.util.List<? extends Internal.LoraCloudGeolocBufferUplinkOrBuilder> 
+      public java.util.List<? extends LoraCloudGeolocBufferUplinkOrBuilder> 
            getUplinksOrBuilderList() {
         if (uplinksBuilder_ != null) {
           return uplinksBuilder_.getMessageOrBuilderList();
@@ -11483,9 +17721,9 @@ Internal.DeviceSessionChannel defaultValue);
        *
        * <code>repeated .internal.LoraCloudGeolocBufferUplink uplinks = 1;</code>
        */
-      public Internal.LoraCloudGeolocBufferUplink.Builder addUplinksBuilder() {
+      public LoraCloudGeolocBufferUplink.Builder addUplinksBuilder() {
         return getUplinksFieldBuilder().addBuilder(
-            Internal.LoraCloudGeolocBufferUplink.getDefaultInstance());
+            LoraCloudGeolocBufferUplink.getDefaultInstance());
       }
       /**
        * <pre>
@@ -11494,10 +17732,10 @@ Internal.DeviceSessionChannel defaultValue);
        *
        * <code>repeated .internal.LoraCloudGeolocBufferUplink uplinks = 1;</code>
        */
-      public Internal.LoraCloudGeolocBufferUplink.Builder addUplinksBuilder(
+      public LoraCloudGeolocBufferUplink.Builder addUplinksBuilder(
           int index) {
         return getUplinksFieldBuilder().addBuilder(
-            index, Internal.LoraCloudGeolocBufferUplink.getDefaultInstance());
+            index, LoraCloudGeolocBufferUplink.getDefaultInstance());
       }
       /**
        * <pre>
@@ -11506,16 +17744,16 @@ Internal.DeviceSessionChannel defaultValue);
        *
        * <code>repeated .internal.LoraCloudGeolocBufferUplink uplinks = 1;</code>
        */
-      public java.util.List<Internal.LoraCloudGeolocBufferUplink.Builder> 
+      public java.util.List<LoraCloudGeolocBufferUplink.Builder> 
            getUplinksBuilderList() {
         return getUplinksFieldBuilder().getBuilderList();
       }
       private com.google.protobuf.RepeatedFieldBuilderV3<
-          Internal.LoraCloudGeolocBufferUplink, Internal.LoraCloudGeolocBufferUplink.Builder, Internal.LoraCloudGeolocBufferUplinkOrBuilder> 
+          LoraCloudGeolocBufferUplink, LoraCloudGeolocBufferUplink.Builder, LoraCloudGeolocBufferUplinkOrBuilder> 
           getUplinksFieldBuilder() {
         if (uplinksBuilder_ == null) {
           uplinksBuilder_ = new com.google.protobuf.RepeatedFieldBuilderV3<
-              Internal.LoraCloudGeolocBufferUplink, Internal.LoraCloudGeolocBufferUplink.Builder, Internal.LoraCloudGeolocBufferUplinkOrBuilder>(
+              LoraCloudGeolocBufferUplink, LoraCloudGeolocBufferUplink.Builder, LoraCloudGeolocBufferUplinkOrBuilder>(
                   uplinks_,
                   ((bitField0_ & 0x00000001) != 0),
                   getParentForChildren(),
@@ -11541,12 +17779,12 @@ Internal.DeviceSessionChannel defaultValue);
     }
 
     // @@protoc_insertion_point(class_scope:internal.LoraCloudGeolocBuffer)
-    private static final Internal.LoraCloudGeolocBuffer DEFAULT_INSTANCE;
+    private static final LoraCloudGeolocBuffer DEFAULT_INSTANCE;
     static {
-      DEFAULT_INSTANCE = new Internal.LoraCloudGeolocBuffer();
+      DEFAULT_INSTANCE = new LoraCloudGeolocBuffer();
     }
 
-    public static Internal.LoraCloudGeolocBuffer getDefaultInstance() {
+    public static LoraCloudGeolocBuffer getDefaultInstance() {
       return DEFAULT_INSTANCE;
     }
 
@@ -11582,7 +17820,7 @@ Internal.DeviceSessionChannel defaultValue);
     }
 
     @Override
-    public Internal.LoraCloudGeolocBuffer getDefaultInstanceForType() {
+    public LoraCloudGeolocBuffer getDefaultInstanceForType() {
       return DEFAULT_INSTANCE;
     }
 
@@ -11659,25 +17897,21 @@ Internal.DeviceSessionChannel defaultValue);
       return new LoraCloudGeolocBufferUplink();
     }
 
-    @Override
-    public final com.google.protobuf.UnknownFieldSet
-    getUnknownFields() {
-      return this.unknownFields;
-    }
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
-      return Internal.internal_static_internal_LoraCloudGeolocBufferUplink_descriptor;
+      return internal_static_internal_LoraCloudGeolocBufferUplink_descriptor;
     }
 
     @Override
     protected FieldAccessorTable
         internalGetFieldAccessorTable() {
-      return Internal.internal_static_internal_LoraCloudGeolocBufferUplink_fieldAccessorTable
+      return internal_static_internal_LoraCloudGeolocBufferUplink_fieldAccessorTable
           .ensureFieldAccessorsInitialized(
-              Internal.LoraCloudGeolocBufferUplink.class, Internal.LoraCloudGeolocBufferUplink.Builder.class);
+              LoraCloudGeolocBufferUplink.class, LoraCloudGeolocBufferUplink.Builder.class);
     }
 
     public static final int RX_INFO_FIELD_NUMBER = 1;
+    @SuppressWarnings("serial")
     private java.util.List<io.chirpstack.api.gw.UplinkRxInfo> rxInfo_;
     /**
      * <pre>
@@ -11777,10 +18011,10 @@ Internal.DeviceSessionChannel defaultValue);
       if (obj == this) {
        return true;
       }
-      if (!(obj instanceof Internal.LoraCloudGeolocBufferUplink)) {
+      if (!(obj instanceof LoraCloudGeolocBufferUplink)) {
         return super.equals(obj);
       }
-      Internal.LoraCloudGeolocBufferUplink other = (Internal.LoraCloudGeolocBufferUplink) obj;
+      LoraCloudGeolocBufferUplink other = (LoraCloudGeolocBufferUplink) obj;
 
       if (!getRxInfoList()
           .equals(other.getRxInfoList())) return false;
@@ -11804,69 +18038,69 @@ Internal.DeviceSessionChannel defaultValue);
       return hash;
     }
 
-    public static Internal.LoraCloudGeolocBufferUplink parseFrom(
+    public static LoraCloudGeolocBufferUplink parseFrom(
         java.nio.ByteBuffer data)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data);
     }
-    public static Internal.LoraCloudGeolocBufferUplink parseFrom(
+    public static LoraCloudGeolocBufferUplink parseFrom(
         java.nio.ByteBuffer data,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data, extensionRegistry);
     }
-    public static Internal.LoraCloudGeolocBufferUplink parseFrom(
+    public static LoraCloudGeolocBufferUplink parseFrom(
         com.google.protobuf.ByteString data)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data);
     }
-    public static Internal.LoraCloudGeolocBufferUplink parseFrom(
+    public static LoraCloudGeolocBufferUplink parseFrom(
         com.google.protobuf.ByteString data,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data, extensionRegistry);
     }
-    public static Internal.LoraCloudGeolocBufferUplink parseFrom(byte[] data)
+    public static LoraCloudGeolocBufferUplink parseFrom(byte[] data)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data);
     }
-    public static Internal.LoraCloudGeolocBufferUplink parseFrom(
+    public static LoraCloudGeolocBufferUplink parseFrom(
         byte[] data,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data, extensionRegistry);
     }
-    public static Internal.LoraCloudGeolocBufferUplink parseFrom(java.io.InputStream input)
+    public static LoraCloudGeolocBufferUplink parseFrom(java.io.InputStream input)
         throws java.io.IOException {
       return com.google.protobuf.GeneratedMessageV3
           .parseWithIOException(PARSER, input);
     }
-    public static Internal.LoraCloudGeolocBufferUplink parseFrom(
+    public static LoraCloudGeolocBufferUplink parseFrom(
         java.io.InputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
       return com.google.protobuf.GeneratedMessageV3
           .parseWithIOException(PARSER, input, extensionRegistry);
     }
-    public static Internal.LoraCloudGeolocBufferUplink parseDelimitedFrom(java.io.InputStream input)
+    public static LoraCloudGeolocBufferUplink parseDelimitedFrom(java.io.InputStream input)
         throws java.io.IOException {
       return com.google.protobuf.GeneratedMessageV3
           .parseDelimitedWithIOException(PARSER, input);
     }
-    public static Internal.LoraCloudGeolocBufferUplink parseDelimitedFrom(
+    public static LoraCloudGeolocBufferUplink parseDelimitedFrom(
         java.io.InputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
       return com.google.protobuf.GeneratedMessageV3
           .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
     }
-    public static Internal.LoraCloudGeolocBufferUplink parseFrom(
+    public static LoraCloudGeolocBufferUplink parseFrom(
         com.google.protobuf.CodedInputStream input)
         throws java.io.IOException {
       return com.google.protobuf.GeneratedMessageV3
           .parseWithIOException(PARSER, input);
     }
-    public static Internal.LoraCloudGeolocBufferUplink parseFrom(
+    public static LoraCloudGeolocBufferUplink parseFrom(
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
@@ -11879,7 +18113,7 @@ Internal.DeviceSessionChannel defaultValue);
     public static Builder newBuilder() {
       return DEFAULT_INSTANCE.toBuilder();
     }
-    public static Builder newBuilder(Internal.LoraCloudGeolocBufferUplink prototype) {
+    public static Builder newBuilder(LoraCloudGeolocBufferUplink prototype) {
       return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
     }
     @Override
@@ -11900,21 +18134,21 @@ Internal.DeviceSessionChannel defaultValue);
     public static final class Builder extends
         com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
         // @@protoc_insertion_point(builder_implements:internal.LoraCloudGeolocBufferUplink)
-        Internal.LoraCloudGeolocBufferUplinkOrBuilder {
+        LoraCloudGeolocBufferUplinkOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
-        return Internal.internal_static_internal_LoraCloudGeolocBufferUplink_descriptor;
+        return internal_static_internal_LoraCloudGeolocBufferUplink_descriptor;
       }
 
       @Override
       protected FieldAccessorTable
           internalGetFieldAccessorTable() {
-        return Internal.internal_static_internal_LoraCloudGeolocBufferUplink_fieldAccessorTable
+        return internal_static_internal_LoraCloudGeolocBufferUplink_fieldAccessorTable
             .ensureFieldAccessorsInitialized(
-                Internal.LoraCloudGeolocBufferUplink.class, Internal.LoraCloudGeolocBufferUplink.Builder.class);
+                LoraCloudGeolocBufferUplink.class, LoraCloudGeolocBufferUplink.Builder.class);
       }
 
-      // Construct using Internal.LoraCloudGeolocBufferUplink.newBuilder()
+      // Construct using LoraCloudGeolocBufferUplink.newBuilder()
       private Builder() {
 
       }
@@ -11927,6 +18161,7 @@ Internal.DeviceSessionChannel defaultValue);
       @Override
       public Builder clear() {
         super.clear();
+        bitField0_ = 0;
         if (rxInfoBuilder_ == null) {
           rxInfo_ = java.util.Collections.emptyList();
         } else {
@@ -11940,17 +18175,17 @@ Internal.DeviceSessionChannel defaultValue);
       @Override
       public com.google.protobuf.Descriptors.Descriptor
           getDescriptorForType() {
-        return Internal.internal_static_internal_LoraCloudGeolocBufferUplink_descriptor;
+        return internal_static_internal_LoraCloudGeolocBufferUplink_descriptor;
       }
 
       @Override
-      public Internal.LoraCloudGeolocBufferUplink getDefaultInstanceForType() {
-        return Internal.LoraCloudGeolocBufferUplink.getDefaultInstance();
+      public LoraCloudGeolocBufferUplink getDefaultInstanceForType() {
+        return LoraCloudGeolocBufferUplink.getDefaultInstance();
       }
 
       @Override
-      public Internal.LoraCloudGeolocBufferUplink build() {
-        Internal.LoraCloudGeolocBufferUplink result = buildPartial();
+      public LoraCloudGeolocBufferUplink build() {
+        LoraCloudGeolocBufferUplink result = buildPartial();
         if (!result.isInitialized()) {
           throw newUninitializedMessageException(result);
         }
@@ -11958,9 +18193,15 @@ Internal.DeviceSessionChannel defaultValue);
       }
 
       @Override
-      public Internal.LoraCloudGeolocBufferUplink buildPartial() {
-        Internal.LoraCloudGeolocBufferUplink result = new Internal.LoraCloudGeolocBufferUplink(this);
-        int from_bitField0_ = bitField0_;
+      public LoraCloudGeolocBufferUplink buildPartial() {
+        LoraCloudGeolocBufferUplink result = new LoraCloudGeolocBufferUplink(this);
+        buildPartialRepeatedFields(result);
+        if (bitField0_ != 0) { buildPartial0(result); }
+        onBuilt();
+        return result;
+      }
+
+      private void buildPartialRepeatedFields(LoraCloudGeolocBufferUplink result) {
         if (rxInfoBuilder_ == null) {
           if (((bitField0_ & 0x00000001) != 0)) {
             rxInfo_ = java.util.Collections.unmodifiableList(rxInfo_);
@@ -11970,54 +18211,24 @@ Internal.DeviceSessionChannel defaultValue);
         } else {
           result.rxInfo_ = rxInfoBuilder_.build();
         }
-        onBuilt();
-        return result;
+      }
+
+      private void buildPartial0(LoraCloudGeolocBufferUplink result) {
+        int from_bitField0_ = bitField0_;
       }
 
       @Override
-      public Builder clone() {
-        return super.clone();
-      }
-      @Override
-      public Builder setField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          Object value) {
-        return super.setField(field, value);
-      }
-      @Override
-      public Builder clearField(
-          com.google.protobuf.Descriptors.FieldDescriptor field) {
-        return super.clearField(field);
-      }
-      @Override
-      public Builder clearOneof(
-          com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-        return super.clearOneof(oneof);
-      }
-      @Override
-      public Builder setRepeatedField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          int index, Object value) {
-        return super.setRepeatedField(field, index, value);
-      }
-      @Override
-      public Builder addRepeatedField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          Object value) {
-        return super.addRepeatedField(field, value);
-      }
-      @Override
       public Builder mergeFrom(com.google.protobuf.Message other) {
-        if (other instanceof Internal.LoraCloudGeolocBufferUplink) {
-          return mergeFrom((Internal.LoraCloudGeolocBufferUplink)other);
+        if (other instanceof LoraCloudGeolocBufferUplink) {
+          return mergeFrom((LoraCloudGeolocBufferUplink)other);
         } else {
           super.mergeFrom(other);
           return this;
         }
       }
 
-      public Builder mergeFrom(Internal.LoraCloudGeolocBufferUplink other) {
-        if (other == Internal.LoraCloudGeolocBufferUplink.getDefaultInstance()) return this;
+      public Builder mergeFrom(LoraCloudGeolocBufferUplink other) {
+        if (other == LoraCloudGeolocBufferUplink.getDefaultInstance()) return this;
         if (rxInfoBuilder_ == null) {
           if (!other.rxInfo_.isEmpty()) {
             if (rxInfo_.isEmpty()) {
@@ -12428,12 +18639,12 @@ Internal.DeviceSessionChannel defaultValue);
     }
 
     // @@protoc_insertion_point(class_scope:internal.LoraCloudGeolocBufferUplink)
-    private static final Internal.LoraCloudGeolocBufferUplink DEFAULT_INSTANCE;
+    private static final LoraCloudGeolocBufferUplink DEFAULT_INSTANCE;
     static {
-      DEFAULT_INSTANCE = new Internal.LoraCloudGeolocBufferUplink();
+      DEFAULT_INSTANCE = new LoraCloudGeolocBufferUplink();
     }
 
-    public static Internal.LoraCloudGeolocBufferUplink getDefaultInstance() {
+    public static LoraCloudGeolocBufferUplink getDefaultInstance() {
       return DEFAULT_INSTANCE;
     }
 
@@ -12469,7 +18680,7 @@ Internal.DeviceSessionChannel defaultValue);
     }
 
     @Override
-    public Internal.LoraCloudGeolocBufferUplink getDefaultInstanceForType() {
+    public LoraCloudGeolocBufferUplink getDefaultInstanceForType() {
       return DEFAULT_INSTANCE;
     }
 
@@ -12615,26 +18826,21 @@ Internal.DeviceSessionChannel defaultValue);
       return new PassiveRoamingDeviceSession();
     }
 
-    @Override
-    public final com.google.protobuf.UnknownFieldSet
-    getUnknownFields() {
-      return this.unknownFields;
-    }
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
-      return Internal.internal_static_internal_PassiveRoamingDeviceSession_descriptor;
+      return internal_static_internal_PassiveRoamingDeviceSession_descriptor;
     }
 
     @Override
     protected FieldAccessorTable
         internalGetFieldAccessorTable() {
-      return Internal.internal_static_internal_PassiveRoamingDeviceSession_fieldAccessorTable
+      return internal_static_internal_PassiveRoamingDeviceSession_fieldAccessorTable
           .ensureFieldAccessorsInitialized(
-              Internal.PassiveRoamingDeviceSession.class, Internal.PassiveRoamingDeviceSession.Builder.class);
+              PassiveRoamingDeviceSession.class, PassiveRoamingDeviceSession.Builder.class);
     }
 
     public static final int SESSION_ID_FIELD_NUMBER = 1;
-    private com.google.protobuf.ByteString sessionId_;
+    private com.google.protobuf.ByteString sessionId_ = com.google.protobuf.ByteString.EMPTY;
     /**
      * <pre>
      * Session ID (UUID).
@@ -12651,7 +18857,7 @@ Internal.DeviceSessionChannel defaultValue);
     }
 
     public static final int NET_ID_FIELD_NUMBER = 2;
-    private com.google.protobuf.ByteString netId_;
+    private com.google.protobuf.ByteString netId_ = com.google.protobuf.ByteString.EMPTY;
     /**
      * <pre>
      * NetID of the hNS.
@@ -12666,7 +18872,7 @@ Internal.DeviceSessionChannel defaultValue);
     }
 
     public static final int DEV_ADDR_FIELD_NUMBER = 3;
-    private com.google.protobuf.ByteString devAddr_;
+    private com.google.protobuf.ByteString devAddr_ = com.google.protobuf.ByteString.EMPTY;
     /**
      * <pre>
      * DevAddr of the device.
@@ -12681,7 +18887,7 @@ Internal.DeviceSessionChannel defaultValue);
     }
 
     public static final int DEV_EUI_FIELD_NUMBER = 4;
-    private com.google.protobuf.ByteString devEui_;
+    private com.google.protobuf.ByteString devEui_ = com.google.protobuf.ByteString.EMPTY;
     /**
      * <pre>
      * DevEUI of the device (optional).
@@ -12696,7 +18902,7 @@ Internal.DeviceSessionChannel defaultValue);
     }
 
     public static final int LORAWAN_1_1_FIELD_NUMBER = 5;
-    private boolean lorawan11_;
+    private boolean lorawan11_ = false;
     /**
      * <pre>
      * LoRaWAN 1.1.
@@ -12711,7 +18917,7 @@ Internal.DeviceSessionChannel defaultValue);
     }
 
     public static final int F_NWK_S_INT_KEY_FIELD_NUMBER = 6;
-    private com.google.protobuf.ByteString fNwkSIntKey_;
+    private com.google.protobuf.ByteString fNwkSIntKey_ = com.google.protobuf.ByteString.EMPTY;
     /**
      * <pre>
      * LoRaWAN 1.0 NwkSKey / LoRaWAN 1.1 FNwkSIntKey.
@@ -12760,11 +18966,11 @@ Internal.DeviceSessionChannel defaultValue);
      */
     @Override
     public com.google.protobuf.TimestampOrBuilder getLifetimeOrBuilder() {
-      return getLifetime();
+      return lifetime_ == null ? com.google.protobuf.Timestamp.getDefaultInstance() : lifetime_;
     }
 
     public static final int F_CNT_UP_FIELD_NUMBER = 8;
-    private int fCntUp_;
+    private int fCntUp_ = 0;
     /**
      * <pre>
      * Uplink frame-counter.
@@ -12779,7 +18985,7 @@ Internal.DeviceSessionChannel defaultValue);
     }
 
     public static final int VALIDATE_MIC_FIELD_NUMBER = 9;
-    private boolean validateMic_;
+    private boolean validateMic_ = false;
     /**
      * <pre>
      * Validate MIC.
@@ -12889,10 +19095,10 @@ Internal.DeviceSessionChannel defaultValue);
       if (obj == this) {
        return true;
       }
-      if (!(obj instanceof Internal.PassiveRoamingDeviceSession)) {
+      if (!(obj instanceof PassiveRoamingDeviceSession)) {
         return super.equals(obj);
       }
-      Internal.PassiveRoamingDeviceSession other = (Internal.PassiveRoamingDeviceSession) obj;
+      PassiveRoamingDeviceSession other = (PassiveRoamingDeviceSession) obj;
 
       if (!getSessionId()
           .equals(other.getSessionId())) return false;
@@ -12953,69 +19159,69 @@ Internal.DeviceSessionChannel defaultValue);
       return hash;
     }
 
-    public static Internal.PassiveRoamingDeviceSession parseFrom(
+    public static PassiveRoamingDeviceSession parseFrom(
         java.nio.ByteBuffer data)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data);
     }
-    public static Internal.PassiveRoamingDeviceSession parseFrom(
+    public static PassiveRoamingDeviceSession parseFrom(
         java.nio.ByteBuffer data,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data, extensionRegistry);
     }
-    public static Internal.PassiveRoamingDeviceSession parseFrom(
+    public static PassiveRoamingDeviceSession parseFrom(
         com.google.protobuf.ByteString data)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data);
     }
-    public static Internal.PassiveRoamingDeviceSession parseFrom(
+    public static PassiveRoamingDeviceSession parseFrom(
         com.google.protobuf.ByteString data,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data, extensionRegistry);
     }
-    public static Internal.PassiveRoamingDeviceSession parseFrom(byte[] data)
+    public static PassiveRoamingDeviceSession parseFrom(byte[] data)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data);
     }
-    public static Internal.PassiveRoamingDeviceSession parseFrom(
+    public static PassiveRoamingDeviceSession parseFrom(
         byte[] data,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data, extensionRegistry);
     }
-    public static Internal.PassiveRoamingDeviceSession parseFrom(java.io.InputStream input)
+    public static PassiveRoamingDeviceSession parseFrom(java.io.InputStream input)
         throws java.io.IOException {
       return com.google.protobuf.GeneratedMessageV3
           .parseWithIOException(PARSER, input);
     }
-    public static Internal.PassiveRoamingDeviceSession parseFrom(
+    public static PassiveRoamingDeviceSession parseFrom(
         java.io.InputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
       return com.google.protobuf.GeneratedMessageV3
           .parseWithIOException(PARSER, input, extensionRegistry);
     }
-    public static Internal.PassiveRoamingDeviceSession parseDelimitedFrom(java.io.InputStream input)
+    public static PassiveRoamingDeviceSession parseDelimitedFrom(java.io.InputStream input)
         throws java.io.IOException {
       return com.google.protobuf.GeneratedMessageV3
           .parseDelimitedWithIOException(PARSER, input);
     }
-    public static Internal.PassiveRoamingDeviceSession parseDelimitedFrom(
+    public static PassiveRoamingDeviceSession parseDelimitedFrom(
         java.io.InputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
       return com.google.protobuf.GeneratedMessageV3
           .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
     }
-    public static Internal.PassiveRoamingDeviceSession parseFrom(
+    public static PassiveRoamingDeviceSession parseFrom(
         com.google.protobuf.CodedInputStream input)
         throws java.io.IOException {
       return com.google.protobuf.GeneratedMessageV3
           .parseWithIOException(PARSER, input);
     }
-    public static Internal.PassiveRoamingDeviceSession parseFrom(
+    public static PassiveRoamingDeviceSession parseFrom(
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
@@ -13028,7 +19234,7 @@ Internal.DeviceSessionChannel defaultValue);
     public static Builder newBuilder() {
       return DEFAULT_INSTANCE.toBuilder();
     }
-    public static Builder newBuilder(Internal.PassiveRoamingDeviceSession prototype) {
+    public static Builder newBuilder(PassiveRoamingDeviceSession prototype) {
       return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
     }
     @Override
@@ -13049,21 +19255,21 @@ Internal.DeviceSessionChannel defaultValue);
     public static final class Builder extends
         com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
         // @@protoc_insertion_point(builder_implements:internal.PassiveRoamingDeviceSession)
-        Internal.PassiveRoamingDeviceSessionOrBuilder {
+        PassiveRoamingDeviceSessionOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
-        return Internal.internal_static_internal_PassiveRoamingDeviceSession_descriptor;
+        return internal_static_internal_PassiveRoamingDeviceSession_descriptor;
       }
 
       @Override
       protected FieldAccessorTable
           internalGetFieldAccessorTable() {
-        return Internal.internal_static_internal_PassiveRoamingDeviceSession_fieldAccessorTable
+        return internal_static_internal_PassiveRoamingDeviceSession_fieldAccessorTable
             .ensureFieldAccessorsInitialized(
-                Internal.PassiveRoamingDeviceSession.class, Internal.PassiveRoamingDeviceSession.Builder.class);
+                PassiveRoamingDeviceSession.class, PassiveRoamingDeviceSession.Builder.class);
       }
 
-      // Construct using Internal.PassiveRoamingDeviceSession.newBuilder()
+      // Construct using PassiveRoamingDeviceSession.newBuilder()
       private Builder() {
 
       }
@@ -13076,45 +19282,37 @@ Internal.DeviceSessionChannel defaultValue);
       @Override
       public Builder clear() {
         super.clear();
+        bitField0_ = 0;
         sessionId_ = com.google.protobuf.ByteString.EMPTY;
-
         netId_ = com.google.protobuf.ByteString.EMPTY;
-
         devAddr_ = com.google.protobuf.ByteString.EMPTY;
-
         devEui_ = com.google.protobuf.ByteString.EMPTY;
-
         lorawan11_ = false;
-
         fNwkSIntKey_ = com.google.protobuf.ByteString.EMPTY;
-
-        if (lifetimeBuilder_ == null) {
-          lifetime_ = null;
-        } else {
-          lifetime_ = null;
+        lifetime_ = null;
+        if (lifetimeBuilder_ != null) {
+          lifetimeBuilder_.dispose();
           lifetimeBuilder_ = null;
         }
         fCntUp_ = 0;
-
         validateMic_ = false;
-
         return this;
       }
 
       @Override
       public com.google.protobuf.Descriptors.Descriptor
           getDescriptorForType() {
-        return Internal.internal_static_internal_PassiveRoamingDeviceSession_descriptor;
+        return internal_static_internal_PassiveRoamingDeviceSession_descriptor;
       }
 
       @Override
-      public Internal.PassiveRoamingDeviceSession getDefaultInstanceForType() {
-        return Internal.PassiveRoamingDeviceSession.getDefaultInstance();
+      public PassiveRoamingDeviceSession getDefaultInstanceForType() {
+        return PassiveRoamingDeviceSession.getDefaultInstance();
       }
 
       @Override
-      public Internal.PassiveRoamingDeviceSession build() {
-        Internal.PassiveRoamingDeviceSession result = buildPartial();
+      public PassiveRoamingDeviceSession build() {
+        PassiveRoamingDeviceSession result = buildPartial();
         if (!result.isInitialized()) {
           throw newUninitializedMessageException(result);
         }
@@ -13122,69 +19320,58 @@ Internal.DeviceSessionChannel defaultValue);
       }
 
       @Override
-      public Internal.PassiveRoamingDeviceSession buildPartial() {
-        Internal.PassiveRoamingDeviceSession result = new Internal.PassiveRoamingDeviceSession(this);
-        result.sessionId_ = sessionId_;
-        result.netId_ = netId_;
-        result.devAddr_ = devAddr_;
-        result.devEui_ = devEui_;
-        result.lorawan11_ = lorawan11_;
-        result.fNwkSIntKey_ = fNwkSIntKey_;
-        if (lifetimeBuilder_ == null) {
-          result.lifetime_ = lifetime_;
-        } else {
-          result.lifetime_ = lifetimeBuilder_.build();
-        }
-        result.fCntUp_ = fCntUp_;
-        result.validateMic_ = validateMic_;
+      public PassiveRoamingDeviceSession buildPartial() {
+        PassiveRoamingDeviceSession result = new PassiveRoamingDeviceSession(this);
+        if (bitField0_ != 0) { buildPartial0(result); }
         onBuilt();
         return result;
       }
 
-      @Override
-      public Builder clone() {
-        return super.clone();
+      private void buildPartial0(PassiveRoamingDeviceSession result) {
+        int from_bitField0_ = bitField0_;
+        if (((from_bitField0_ & 0x00000001) != 0)) {
+          result.sessionId_ = sessionId_;
+        }
+        if (((from_bitField0_ & 0x00000002) != 0)) {
+          result.netId_ = netId_;
+        }
+        if (((from_bitField0_ & 0x00000004) != 0)) {
+          result.devAddr_ = devAddr_;
+        }
+        if (((from_bitField0_ & 0x00000008) != 0)) {
+          result.devEui_ = devEui_;
+        }
+        if (((from_bitField0_ & 0x00000010) != 0)) {
+          result.lorawan11_ = lorawan11_;
+        }
+        if (((from_bitField0_ & 0x00000020) != 0)) {
+          result.fNwkSIntKey_ = fNwkSIntKey_;
+        }
+        if (((from_bitField0_ & 0x00000040) != 0)) {
+          result.lifetime_ = lifetimeBuilder_ == null
+              ? lifetime_
+              : lifetimeBuilder_.build();
+        }
+        if (((from_bitField0_ & 0x00000080) != 0)) {
+          result.fCntUp_ = fCntUp_;
+        }
+        if (((from_bitField0_ & 0x00000100) != 0)) {
+          result.validateMic_ = validateMic_;
+        }
       }
-      @Override
-      public Builder setField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          Object value) {
-        return super.setField(field, value);
-      }
-      @Override
-      public Builder clearField(
-          com.google.protobuf.Descriptors.FieldDescriptor field) {
-        return super.clearField(field);
-      }
-      @Override
-      public Builder clearOneof(
-          com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-        return super.clearOneof(oneof);
-      }
-      @Override
-      public Builder setRepeatedField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          int index, Object value) {
-        return super.setRepeatedField(field, index, value);
-      }
-      @Override
-      public Builder addRepeatedField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          Object value) {
-        return super.addRepeatedField(field, value);
-      }
+
       @Override
       public Builder mergeFrom(com.google.protobuf.Message other) {
-        if (other instanceof Internal.PassiveRoamingDeviceSession) {
-          return mergeFrom((Internal.PassiveRoamingDeviceSession)other);
+        if (other instanceof PassiveRoamingDeviceSession) {
+          return mergeFrom((PassiveRoamingDeviceSession)other);
         } else {
           super.mergeFrom(other);
           return this;
         }
       }
 
-      public Builder mergeFrom(Internal.PassiveRoamingDeviceSession other) {
-        if (other == Internal.PassiveRoamingDeviceSession.getDefaultInstance()) return this;
+      public Builder mergeFrom(PassiveRoamingDeviceSession other) {
+        if (other == PassiveRoamingDeviceSession.getDefaultInstance()) return this;
         if (other.getSessionId() != com.google.protobuf.ByteString.EMPTY) {
           setSessionId(other.getSessionId());
         }
@@ -13240,49 +19427,49 @@ Internal.DeviceSessionChannel defaultValue);
                 break;
               case 10: {
                 sessionId_ = input.readBytes();
-
+                bitField0_ |= 0x00000001;
                 break;
               } // case 10
               case 18: {
                 netId_ = input.readBytes();
-
+                bitField0_ |= 0x00000002;
                 break;
               } // case 18
               case 26: {
                 devAddr_ = input.readBytes();
-
+                bitField0_ |= 0x00000004;
                 break;
               } // case 26
               case 34: {
                 devEui_ = input.readBytes();
-
+                bitField0_ |= 0x00000008;
                 break;
               } // case 34
               case 40: {
                 lorawan11_ = input.readBool();
-
+                bitField0_ |= 0x00000010;
                 break;
               } // case 40
               case 50: {
                 fNwkSIntKey_ = input.readBytes();
-
+                bitField0_ |= 0x00000020;
                 break;
               } // case 50
               case 58: {
                 input.readMessage(
                     getLifetimeFieldBuilder().getBuilder(),
                     extensionRegistry);
-
+                bitField0_ |= 0x00000040;
                 break;
               } // case 58
               case 64: {
                 fCntUp_ = input.readUInt32();
-
+                bitField0_ |= 0x00000080;
                 break;
               } // case 64
               case 72: {
                 validateMic_ = input.readBool();
-
+                bitField0_ |= 0x00000100;
                 break;
               } // case 72
               default: {
@@ -13300,6 +19487,7 @@ Internal.DeviceSessionChannel defaultValue);
         } // finally
         return this;
       }
+      private int bitField0_;
 
       private com.google.protobuf.ByteString sessionId_ = com.google.protobuf.ByteString.EMPTY;
       /**
@@ -13328,11 +19516,9 @@ Internal.DeviceSessionChannel defaultValue);
        * @return This builder for chaining.
        */
       public Builder setSessionId(com.google.protobuf.ByteString value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  
+        if (value == null) { throw new NullPointerException(); }
         sessionId_ = value;
+        bitField0_ |= 0x00000001;
         onChanged();
         return this;
       }
@@ -13347,7 +19533,7 @@ Internal.DeviceSessionChannel defaultValue);
        * @return This builder for chaining.
        */
       public Builder clearSessionId() {
-        
+        bitField0_ = (bitField0_ & ~0x00000001);
         sessionId_ = getDefaultInstance().getSessionId();
         onChanged();
         return this;
@@ -13376,11 +19562,9 @@ Internal.DeviceSessionChannel defaultValue);
        * @return This builder for chaining.
        */
       public Builder setNetId(com.google.protobuf.ByteString value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  
+        if (value == null) { throw new NullPointerException(); }
         netId_ = value;
+        bitField0_ |= 0x00000002;
         onChanged();
         return this;
       }
@@ -13393,7 +19577,7 @@ Internal.DeviceSessionChannel defaultValue);
        * @return This builder for chaining.
        */
       public Builder clearNetId() {
-        
+        bitField0_ = (bitField0_ & ~0x00000002);
         netId_ = getDefaultInstance().getNetId();
         onChanged();
         return this;
@@ -13422,11 +19606,9 @@ Internal.DeviceSessionChannel defaultValue);
        * @return This builder for chaining.
        */
       public Builder setDevAddr(com.google.protobuf.ByteString value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  
+        if (value == null) { throw new NullPointerException(); }
         devAddr_ = value;
+        bitField0_ |= 0x00000004;
         onChanged();
         return this;
       }
@@ -13439,7 +19621,7 @@ Internal.DeviceSessionChannel defaultValue);
        * @return This builder for chaining.
        */
       public Builder clearDevAddr() {
-        
+        bitField0_ = (bitField0_ & ~0x00000004);
         devAddr_ = getDefaultInstance().getDevAddr();
         onChanged();
         return this;
@@ -13468,11 +19650,9 @@ Internal.DeviceSessionChannel defaultValue);
        * @return This builder for chaining.
        */
       public Builder setDevEui(com.google.protobuf.ByteString value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  
+        if (value == null) { throw new NullPointerException(); }
         devEui_ = value;
+        bitField0_ |= 0x00000008;
         onChanged();
         return this;
       }
@@ -13485,7 +19665,7 @@ Internal.DeviceSessionChannel defaultValue);
        * @return This builder for chaining.
        */
       public Builder clearDevEui() {
-        
+        bitField0_ = (bitField0_ & ~0x00000008);
         devEui_ = getDefaultInstance().getDevEui();
         onChanged();
         return this;
@@ -13514,8 +19694,9 @@ Internal.DeviceSessionChannel defaultValue);
        * @return This builder for chaining.
        */
       public Builder setLorawan11(boolean value) {
-        
+
         lorawan11_ = value;
+        bitField0_ |= 0x00000010;
         onChanged();
         return this;
       }
@@ -13528,7 +19709,7 @@ Internal.DeviceSessionChannel defaultValue);
        * @return This builder for chaining.
        */
       public Builder clearLorawan11() {
-        
+        bitField0_ = (bitField0_ & ~0x00000010);
         lorawan11_ = false;
         onChanged();
         return this;
@@ -13557,11 +19738,9 @@ Internal.DeviceSessionChannel defaultValue);
        * @return This builder for chaining.
        */
       public Builder setFNwkSIntKey(com.google.protobuf.ByteString value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  
+        if (value == null) { throw new NullPointerException(); }
         fNwkSIntKey_ = value;
+        bitField0_ |= 0x00000020;
         onChanged();
         return this;
       }
@@ -13574,7 +19753,7 @@ Internal.DeviceSessionChannel defaultValue);
        * @return This builder for chaining.
        */
       public Builder clearFNwkSIntKey() {
-        
+        bitField0_ = (bitField0_ & ~0x00000020);
         fNwkSIntKey_ = getDefaultInstance().getFNwkSIntKey();
         onChanged();
         return this;
@@ -13592,7 +19771,7 @@ Internal.DeviceSessionChannel defaultValue);
        * @return Whether the lifetime field is set.
        */
       public boolean hasLifetime() {
-        return lifetimeBuilder_ != null || lifetime_ != null;
+        return ((bitField0_ & 0x00000040) != 0);
       }
       /**
        * <pre>
@@ -13622,11 +19801,11 @@ Internal.DeviceSessionChannel defaultValue);
             throw new NullPointerException();
           }
           lifetime_ = value;
-          onChanged();
         } else {
           lifetimeBuilder_.setMessage(value);
         }
-
+        bitField0_ |= 0x00000040;
+        onChanged();
         return this;
       }
       /**
@@ -13640,11 +19819,11 @@ Internal.DeviceSessionChannel defaultValue);
           com.google.protobuf.Timestamp.Builder builderForValue) {
         if (lifetimeBuilder_ == null) {
           lifetime_ = builderForValue.build();
-          onChanged();
         } else {
           lifetimeBuilder_.setMessage(builderForValue.build());
         }
-
+        bitField0_ |= 0x00000040;
+        onChanged();
         return this;
       }
       /**
@@ -13656,17 +19835,18 @@ Internal.DeviceSessionChannel defaultValue);
        */
       public Builder mergeLifetime(com.google.protobuf.Timestamp value) {
         if (lifetimeBuilder_ == null) {
-          if (lifetime_ != null) {
-            lifetime_ =
-              com.google.protobuf.Timestamp.newBuilder(lifetime_).mergeFrom(value).buildPartial();
+          if (((bitField0_ & 0x00000040) != 0) &&
+            lifetime_ != null &&
+            lifetime_ != com.google.protobuf.Timestamp.getDefaultInstance()) {
+            getLifetimeBuilder().mergeFrom(value);
           } else {
             lifetime_ = value;
           }
-          onChanged();
         } else {
           lifetimeBuilder_.mergeFrom(value);
         }
-
+        bitField0_ |= 0x00000040;
+        onChanged();
         return this;
       }
       /**
@@ -13677,14 +19857,13 @@ Internal.DeviceSessionChannel defaultValue);
        * <code>.google.protobuf.Timestamp lifetime = 7;</code>
        */
       public Builder clearLifetime() {
-        if (lifetimeBuilder_ == null) {
-          lifetime_ = null;
-          onChanged();
-        } else {
-          lifetime_ = null;
+        bitField0_ = (bitField0_ & ~0x00000040);
+        lifetime_ = null;
+        if (lifetimeBuilder_ != null) {
+          lifetimeBuilder_.dispose();
           lifetimeBuilder_ = null;
         }
-
+        onChanged();
         return this;
       }
       /**
@@ -13695,7 +19874,7 @@ Internal.DeviceSessionChannel defaultValue);
        * <code>.google.protobuf.Timestamp lifetime = 7;</code>
        */
       public com.google.protobuf.Timestamp.Builder getLifetimeBuilder() {
-        
+        bitField0_ |= 0x00000040;
         onChanged();
         return getLifetimeFieldBuilder().getBuilder();
       }
@@ -13758,8 +19937,9 @@ Internal.DeviceSessionChannel defaultValue);
        * @return This builder for chaining.
        */
       public Builder setFCntUp(int value) {
-        
+
         fCntUp_ = value;
+        bitField0_ |= 0x00000080;
         onChanged();
         return this;
       }
@@ -13772,7 +19952,7 @@ Internal.DeviceSessionChannel defaultValue);
        * @return This builder for chaining.
        */
       public Builder clearFCntUp() {
-        
+        bitField0_ = (bitField0_ & ~0x00000080);
         fCntUp_ = 0;
         onChanged();
         return this;
@@ -13801,8 +19981,9 @@ Internal.DeviceSessionChannel defaultValue);
        * @return This builder for chaining.
        */
       public Builder setValidateMic(boolean value) {
-        
+
         validateMic_ = value;
+        bitField0_ |= 0x00000100;
         onChanged();
         return this;
       }
@@ -13815,7 +19996,7 @@ Internal.DeviceSessionChannel defaultValue);
        * @return This builder for chaining.
        */
       public Builder clearValidateMic() {
-        
+        bitField0_ = (bitField0_ & ~0x00000100);
         validateMic_ = false;
         onChanged();
         return this;
@@ -13837,12 +20018,12 @@ Internal.DeviceSessionChannel defaultValue);
     }
 
     // @@protoc_insertion_point(class_scope:internal.PassiveRoamingDeviceSession)
-    private static final Internal.PassiveRoamingDeviceSession DEFAULT_INSTANCE;
+    private static final PassiveRoamingDeviceSession DEFAULT_INSTANCE;
     static {
-      DEFAULT_INSTANCE = new Internal.PassiveRoamingDeviceSession();
+      DEFAULT_INSTANCE = new PassiveRoamingDeviceSession();
     }
 
-    public static Internal.PassiveRoamingDeviceSession getDefaultInstance() {
+    public static PassiveRoamingDeviceSession getDefaultInstance() {
       return DEFAULT_INSTANCE;
     }
 
@@ -13878,7 +20059,7 @@ Internal.DeviceSessionChannel defaultValue);
     }
 
     @Override
-    public Internal.PassiveRoamingDeviceSession getDefaultInstanceForType() {
+    public PassiveRoamingDeviceSession getDefaultInstanceForType() {
       return DEFAULT_INSTANCE;
     }
 
@@ -13904,6 +20085,21 @@ Internal.DeviceSessionChannel defaultValue);
   private static final 
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
       internal_static_internal_UplinkAdrHistory_fieldAccessorTable;
+  private static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_internal_Relay_descriptor;
+  private static final 
+    com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+      internal_static_internal_Relay_fieldAccessorTable;
+  private static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_internal_RelayDevice_descriptor;
+  private static final 
+    com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+      internal_static_internal_RelayDevice_fieldAccessorTable;
+  private static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_internal_RelayFilter_descriptor;
+  private static final 
+    com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+      internal_static_internal_RelayFilter_fieldAccessorTable;
   private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_internal_DeviceSessionChannel_descriptor;
   private static final 
@@ -13950,69 +20146,100 @@ Internal.DeviceSessionChannel defaultValue);
     String[] descriptorData = {
       "\n\027internal/internal.proto\022\010internal\032\023com" +
       "mon/common.proto\032\013gw/gw.proto\032\037google/pr" +
-      "otobuf/timestamp.proto\"\233\013\n\rDeviceSession" +
+      "otobuf/timestamp.proto\"\333\013\n\rDeviceSession" +
       "\022\017\n\007dev_eui\030\001 \001(\014\022\020\n\010dev_addr\030\002 \001(\014\022\020\n\010j" +
       "oin_eui\030\003 \001(\014\022\'\n\013mac_version\030\004 \001(\0162\022.com" +
       "mon.MacVersion\022\027\n\017f_nwk_s_int_key\030\005 \001(\014\022" +
       "\027\n\017s_nwk_s_int_key\030\006 \001(\014\022\025\n\rnwk_s_enc_ke" +
       "y\030\007 \001(\014\022&\n\tapp_s_key\030\010 \001(\0132\023.common.KeyE" +
-      "nvelope\022\020\n\010f_cnt_up\030\t \001(\r\022\024\n\014n_f_cnt_dow" +
-      "n\030\n \001(\r\022\024\n\014a_f_cnt_down\030\013 \001(\r\022\022\n\nconf_f_" +
-      "cnt\030\014 \001(\r\022\030\n\020skip_f_cnt_check\030\r \001(\010\022\021\n\tr" +
-      "x1_delay\030\016 \001(\r\022\025\n\rrx1_dr_offset\030\017 \001(\r\022\016\n" +
-      "\006rx2_dr\030\020 \001(\r\022\025\n\rrx2_frequency\030\021 \001(\r\022&\n\036" +
-      "enabled_uplink_channel_indices\030\022 \003(\r\022O\n\025" +
-      "extra_uplink_channels\030\023 \003(\01320.internal.D" +
-      "eviceSession.ExtraUplinkChannelsEntry\022\034\n" +
-      "\024class_b_ping_slot_dr\030\024 \001(\r\022\036\n\026class_b_p" +
-      "ing_slot_freq\030\025 \001(\r\022\034\n\024class_b_ping_slot" +
-      "_nb\030\026 \001(\r\022\020\n\010nb_trans\030\027 \001(\r\022\026\n\016tx_power_" +
-      "index\030\030 \001(\r\022\n\n\002dr\030\031 \001(\r\022\013\n\003adr\030\032 \001(\010\022$\n\034" +
-      "max_supported_tx_power_index\030\033 \001(\r\022$\n\034mi" +
-      "n_supported_tx_power_index\030\034 \001(\r\022>\n\035pend" +
-      "ing_rejoin_device_session\030\035 \001(\0132\027.intern" +
-      "al.DeviceSession\0226\n\022uplink_adr_history\030\036" +
-      " \003(\0132\032.internal.UplinkAdrHistory\022R\n\027mac_" +
-      "command_error_count\030\037 \003(\01321.internal.Dev" +
-      "iceSession.MacCommandErrorCountEntry\022>\n\032" +
-      "last_device_status_request\030  \001(\0132\032.googl" +
-      "e.protobuf.Timestamp\022\036\n\026rejoin_request_e" +
-      "nabled\030! \001(\010\022\"\n\032rejoin_request_max_count" +
-      "_n\030\" \001(\r\022!\n\031rejoin_request_max_time_n\030# " +
-      "\001(\r\022\026\n\016rejoin_count_0\030$ \001(\r\022\037\n\027uplink_dw" +
-      "ell_time_400ms\030% \001(\010\022!\n\031downlink_dwell_t" +
-      "ime_400ms\030& \001(\010\022\035\n\025uplink_max_eirp_index" +
-      "\030\' \001(\r\022\023\n\013region_name\030( \001(\t\032Z\n\030ExtraUpli" +
-      "nkChannelsEntry\022\013\n\003key\030\001 \001(\r\022-\n\005value\030\002 " +
-      "\001(\0132\036.internal.DeviceSessionChannel:\0028\001\032" +
-      ";\n\031MacCommandErrorCountEntry\022\013\n\003key\030\001 \001(" +
-      "\r\022\r\n\005value\030\002 \001(\r:\0028\001\"s\n\020UplinkAdrHistory" +
-      "\022\r\n\005f_cnt\030\001 \001(\r\022\017\n\007max_snr\030\002 \001(\002\022\020\n\010max_" +
-      "rssi\030\005 \001(\005\022\026\n\016tx_power_index\030\003 \001(\r\022\025\n\rga" +
-      "teway_count\030\004 \001(\r\"I\n\024DeviceSessionChanne" +
-      "l\022\021\n\tfrequency\030\001 \001(\r\022\016\n\006min_dr\030\002 \001(\r\022\016\n\006" +
-      "max_dr\030\003 \001(\r\"d\n\023DeviceGatewayRxInfo\022\017\n\007d" +
-      "ev_eui\030\001 \001(\014\022\n\n\002dr\030\002 \001(\r\0220\n\005items\030\003 \003(\0132" +
-      "!.internal.DeviceGatewayRxInfoItem\"~\n\027De" +
-      "viceGatewayRxInfoItem\022\022\n\ngateway_id\030\001 \001(" +
-      "\014\022\014\n\004rssi\030\002 \001(\005\022\020\n\010lora_snr\030\003 \001(\002\022\017\n\007ant" +
-      "enna\030\004 \001(\r\022\r\n\005board\030\005 \001(\r\022\017\n\007context\030\006 \001" +
-      "(\014\"\361\001\n\rDownlinkFrame\022\023\n\013downlink_id\030\001 \001(" +
-      "\r\022\017\n\007dev_eui\030\002 \001(\014\022\034\n\024device_queue_item_" +
-      "id\030\003 \001(\014\022\032\n\022multicast_group_id\030\004 \001(\014\022%\n\035" +
-      "multicast_group_queue_item_id\030\005 \001(\014\022)\n\016d" +
-      "ownlink_frame\030\006 \001(\0132\021.gw.DownlinkFrame\022\027" +
-      "\n\017encrypted_fopts\030\010 \001(\010\022\025\n\rnwk_s_enc_key" +
-      "\030\t \001(\014\"O\n\025LoraCloudGeolocBuffer\0226\n\007uplin" +
-      "ks\030\001 \003(\0132%.internal.LoraCloudGeolocBuffe" +
-      "rUplink\"@\n\033LoraCloudGeolocBufferUplink\022!" +
-      "\n\007rx_info\030\001 \003(\0132\020.gw.UplinkRxInfo\"\350\001\n\033Pa" +
-      "ssiveRoamingDeviceSession\022\022\n\nsession_id\030" +
-      "\001 \001(\014\022\016\n\006net_id\030\002 \001(\014\022\020\n\010dev_addr\030\003 \001(\014\022" +
-      "\017\n\007dev_eui\030\004 \001(\014\022\023\n\013lorawan_1_1\030\005 \001(\010\022\027\n" +
-      "\017f_nwk_s_int_key\030\006 \001(\014\022,\n\010lifetime\030\007 \001(\013" +
-      "2\032.google.protobuf.Timestamp\022\020\n\010f_cnt_up" +
-      "\030\010 \001(\r\022\024\n\014validate_mic\030\t \001(\010b\006proto3"
+      "nvelope\022\031\n\021js_session_key_id\030* \001(\014\022\020\n\010f_" +
+      "cnt_up\030\t \001(\r\022\024\n\014n_f_cnt_down\030\n \001(\r\022\024\n\014a_" +
+      "f_cnt_down\030\013 \001(\r\022\022\n\nconf_f_cnt\030\014 \001(\r\022\030\n\020" +
+      "skip_f_cnt_check\030\r \001(\010\022\021\n\trx1_delay\030\016 \001(" +
+      "\r\022\025\n\rrx1_dr_offset\030\017 \001(\r\022\016\n\006rx2_dr\030\020 \001(\r" +
+      "\022\025\n\rrx2_frequency\030\021 \001(\r\022&\n\036enabled_uplin" +
+      "k_channel_indices\030\022 \003(\r\022O\n\025extra_uplink_" +
+      "channels\030\023 \003(\01320.internal.DeviceSession." +
+      "ExtraUplinkChannelsEntry\022\034\n\024class_b_ping" +
+      "_slot_dr\030\024 \001(\r\022\036\n\026class_b_ping_slot_freq" +
+      "\030\025 \001(\r\022\034\n\024class_b_ping_slot_nb\030\026 \001(\r\022\020\n\010" +
+      "nb_trans\030\027 \001(\r\022\026\n\016tx_power_index\030\030 \001(\r\022\n" +
+      "\n\002dr\030\031 \001(\r\022\013\n\003adr\030\032 \001(\010\022$\n\034max_supported" +
+      "_tx_power_index\030\033 \001(\r\022$\n\034min_supported_t" +
+      "x_power_index\030\034 \001(\r\022>\n\035pending_rejoin_de" +
+      "vice_session\030\035 \001(\0132\027.internal.DeviceSess" +
+      "ion\0226\n\022uplink_adr_history\030\036 \003(\0132\032.intern" +
+      "al.UplinkAdrHistory\022R\n\027mac_command_error" +
+      "_count\030\037 \003(\01321.internal.DeviceSession.Ma" +
+      "cCommandErrorCountEntry\022>\n\032last_device_s" +
+      "tatus_request\030  \001(\0132\032.google.protobuf.Ti" +
+      "mestamp\022\036\n\026rejoin_request_enabled\030! \001(\010\022" +
+      "\"\n\032rejoin_request_max_count_n\030\" \001(\r\022!\n\031r" +
+      "ejoin_request_max_time_n\030# \001(\r\022\026\n\016rejoin" +
+      "_count_0\030$ \001(\r\022\037\n\027uplink_dwell_time_400m" +
+      "s\030% \001(\010\022!\n\031downlink_dwell_time_400ms\030& \001" +
+      "(\010\022\035\n\025uplink_max_eirp_index\030\' \001(\r\022\030\n\020reg" +
+      "ion_config_id\030( \001(\t\022\036\n\005relay\030) \001(\0132\017.int" +
+      "ernal.Relay\032Z\n\030ExtraUplinkChannelsEntry\022" +
+      "\013\n\003key\030\001 \001(\r\022-\n\005value\030\002 \001(\0132\036.internal.D" +
+      "eviceSessionChannel:\0028\001\032;\n\031MacCommandErr" +
+      "orCountEntry\022\013\n\003key\030\001 \001(\r\022\r\n\005value\030\002 \001(\r" +
+      ":\0028\001\"s\n\020UplinkAdrHistory\022\r\n\005f_cnt\030\001 \001(\r\022" +
+      "\017\n\007max_snr\030\002 \001(\002\022\020\n\010max_rssi\030\005 \001(\005\022\026\n\016tx" +
+      "_power_index\030\003 \001(\r\022\025\n\rgateway_count\030\004 \001(" +
+      "\r\"\227\005\n\005Relay\022&\n\007devices\030\001 \003(\0132\025.internal." +
+      "RelayDevice\022&\n\007filters\030\002 \003(\0132\025.internal." +
+      "RelayFilter\022\017\n\007enabled\030\003 \001(\010\022\027\n\017cad_peri" +
+      "odicity\030\004 \001(\r\022\035\n\025default_channel_index\030\005" +
+      " \001(\r\022\033\n\023second_channel_freq\030\006 \001(\r\022\031\n\021sec" +
+      "ond_channel_dr\030\007 \001(\r\022!\n\031second_channel_a" +
+      "ck_offset\030\010 \001(\r\022\032\n\022ed_activation_mode\030\t " +
+      "\001(\r\022\035\n\025ed_smart_enable_level\030\n \001(\r\022\023\n\013ed" +
+      "_back_off\030\013 \001(\r\022\"\n\032join_req_limit_reload" +
+      "_rate\030\014 \001(\r\022 \n\030notify_limit_reload_rate\030" +
+      "\r \001(\r\022\'\n\037global_uplink_limit_reload_rate" +
+      "\030\016 \001(\r\022!\n\031overall_limit_reload_rate\030\017 \001(" +
+      "\r\022\"\n\032join_req_limit_bucket_size\030\020 \001(\r\022 \n" +
+      "\030notify_limit_bucket_size\030\021 \001(\r\022\'\n\037globa" +
+      "l_uplink_limit_bucket_size\030\022 \001(\r\022!\n\031over" +
+      "all_limit_bucket_size\030\023 \001(\r\022\025\n\red_relay_" +
+      "only\030\024 \001(\010\022\017\n\007w_f_cnt\030\025 \001(\r\"\374\001\n\013RelayDev" +
+      "ice\022\r\n\005index\030\001 \001(\r\022\020\n\010join_eui\030\002 \001(\014\022\017\n\007" +
+      "dev_eui\030\003 \001(\014\022\020\n\010dev_addr\030\004 \001(\014\022\026\n\016root_" +
+      "wor_s_key\030\005 \001(\014\022\023\n\013provisioned\030\006 \001(\010\022 \n\030" +
+      "uplink_limit_bucket_size\030\007 \001(\r\022 \n\030uplink" +
+      "_limit_reload_rate\030\010 \001(\r\0228\n\024w_f_cnt_last" +
+      "_request\030\t \001(\0132\032.google.protobuf.Timesta" +
+      "mp\"d\n\013RelayFilter\022\r\n\005index\030\001 \001(\r\022\016\n\006acti" +
+      "on\030\002 \001(\r\022\017\n\007dev_eui\030\003 \001(\014\022\020\n\010join_eui\030\004 " +
+      "\001(\014\022\023\n\013provisioned\030\005 \001(\010\"I\n\024DeviceSessio" +
+      "nChannel\022\021\n\tfrequency\030\001 \001(\r\022\016\n\006min_dr\030\002 " +
+      "\001(\r\022\016\n\006max_dr\030\003 \001(\r\"d\n\023DeviceGatewayRxIn" +
+      "fo\022\017\n\007dev_eui\030\001 \001(\014\022\n\n\002dr\030\002 \001(\r\0220\n\005items" +
+      "\030\003 \003(\0132!.internal.DeviceGatewayRxInfoIte" +
+      "m\"\301\001\n\027DeviceGatewayRxInfoItem\022\022\n\ngateway" +
+      "_id\030\001 \001(\014\022\014\n\004rssi\030\002 \001(\005\022\020\n\010lora_snr\030\003 \001(" +
+      "\002\022\017\n\007antenna\030\004 \001(\r\022\r\n\005board\030\005 \001(\r\022\017\n\007con" +
+      "text\030\006 \001(\014\022\025\n\ris_private_up\030\007 \001(\010\022\027\n\017is_" +
+      "private_down\030\010 \001(\010\022\021\n\ttenant_id\030\t \001(\014\"\266\002" +
+      "\n\rDownlinkFrame\022\023\n\013downlink_id\030\001 \001(\r\022\017\n\007" +
+      "dev_eui\030\002 \001(\014\022\034\n\024device_queue_item_id\030\003 " +
+      "\001(\014\022\032\n\022multicast_group_id\030\004 \001(\014\022%\n\035multi" +
+      "cast_group_queue_item_id\030\005 \001(\014\022)\n\016downli" +
+      "nk_frame\030\006 \001(\0132\021.gw.DownlinkFrame\022\027\n\017enc" +
+      "rypted_fopts\030\010 \001(\010\022\025\n\rnwk_s_enc_key\030\t \001(" +
+      "\014\022\024\n\014n_f_cnt_down\030\n \001(\r\022\024\n\014a_f_cnt_down\030" +
+      "\013 \001(\r\022\027\n\017dev_eui_relayed\030\014 \001(\014\"O\n\025LoraCl" +
+      "oudGeolocBuffer\0226\n\007uplinks\030\001 \003(\0132%.inter" +
+      "nal.LoraCloudGeolocBufferUplink\"@\n\033LoraC" +
+      "loudGeolocBufferUplink\022!\n\007rx_info\030\001 \003(\0132" +
+      "\020.gw.UplinkRxInfo\"\350\001\n\033PassiveRoamingDevi" +
+      "ceSession\022\022\n\nsession_id\030\001 \001(\014\022\016\n\006net_id\030" +
+      "\002 \001(\014\022\020\n\010dev_addr\030\003 \001(\014\022\017\n\007dev_eui\030\004 \001(\014" +
+      "\022\023\n\013lorawan_1_1\030\005 \001(\010\022\027\n\017f_nwk_s_int_key" +
+      "\030\006 \001(\014\022,\n\010lifetime\030\007 \001(\0132\032.google.protob" +
+      "uf.Timestamp\022\020\n\010f_cnt_up\030\010 \001(\r\022\024\n\014valida" +
+      "te_mic\030\t \001(\010b\006proto3"
     };
     descriptor = com.google.protobuf.Descriptors.FileDescriptor
       .internalBuildGeneratedFileFrom(descriptorData,
@@ -14026,7 +20253,7 @@ Internal.DeviceSessionChannel defaultValue);
     internal_static_internal_DeviceSession_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_internal_DeviceSession_descriptor,
-        new String[] { "DevEui", "DevAddr", "JoinEui", "MacVersion", "FNwkSIntKey", "SNwkSIntKey", "NwkSEncKey", "AppSKey", "FCntUp", "NFCntDown", "AFCntDown", "ConfFCnt", "SkipFCntCheck", "Rx1Delay", "Rx1DrOffset", "Rx2Dr", "Rx2Frequency", "EnabledUplinkChannelIndices", "ExtraUplinkChannels", "ClassBPingSlotDr", "ClassBPingSlotFreq", "ClassBPingSlotNb", "NbTrans", "TxPowerIndex", "Dr", "Adr", "MaxSupportedTxPowerIndex", "MinSupportedTxPowerIndex", "PendingRejoinDeviceSession", "UplinkAdrHistory", "MacCommandErrorCount", "LastDeviceStatusRequest", "RejoinRequestEnabled", "RejoinRequestMaxCountN", "RejoinRequestMaxTimeN", "RejoinCount0", "UplinkDwellTime400Ms", "DownlinkDwellTime400Ms", "UplinkMaxEirpIndex", "RegionName", });
+        new String[] { "DevEui", "DevAddr", "JoinEui", "MacVersion", "FNwkSIntKey", "SNwkSIntKey", "NwkSEncKey", "AppSKey", "JsSessionKeyId", "FCntUp", "NFCntDown", "AFCntDown", "ConfFCnt", "SkipFCntCheck", "Rx1Delay", "Rx1DrOffset", "Rx2Dr", "Rx2Frequency", "EnabledUplinkChannelIndices", "ExtraUplinkChannels", "ClassBPingSlotDr", "ClassBPingSlotFreq", "ClassBPingSlotNb", "NbTrans", "TxPowerIndex", "Dr", "Adr", "MaxSupportedTxPowerIndex", "MinSupportedTxPowerIndex", "PendingRejoinDeviceSession", "UplinkAdrHistory", "MacCommandErrorCount", "LastDeviceStatusRequest", "RejoinRequestEnabled", "RejoinRequestMaxCountN", "RejoinRequestMaxTimeN", "RejoinCount0", "UplinkDwellTime400Ms", "DownlinkDwellTime400Ms", "UplinkMaxEirpIndex", "RegionConfigId", "Relay", });
     internal_static_internal_DeviceSession_ExtraUplinkChannelsEntry_descriptor =
       internal_static_internal_DeviceSession_descriptor.getNestedTypes().get(0);
     internal_static_internal_DeviceSession_ExtraUplinkChannelsEntry_fieldAccessorTable = new
@@ -14045,44 +20272,62 @@ Internal.DeviceSessionChannel defaultValue);
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_internal_UplinkAdrHistory_descriptor,
         new String[] { "FCnt", "MaxSnr", "MaxRssi", "TxPowerIndex", "GatewayCount", });
-    internal_static_internal_DeviceSessionChannel_descriptor =
+    internal_static_internal_Relay_descriptor =
       getDescriptor().getMessageTypes().get(2);
+    internal_static_internal_Relay_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
+        internal_static_internal_Relay_descriptor,
+        new String[] { "Devices", "Filters", "Enabled", "CadPeriodicity", "DefaultChannelIndex", "SecondChannelFreq", "SecondChannelDr", "SecondChannelAckOffset", "EdActivationMode", "EdSmartEnableLevel", "EdBackOff", "JoinReqLimitReloadRate", "NotifyLimitReloadRate", "GlobalUplinkLimitReloadRate", "OverallLimitReloadRate", "JoinReqLimitBucketSize", "NotifyLimitBucketSize", "GlobalUplinkLimitBucketSize", "OverallLimitBucketSize", "EdRelayOnly", "WFCnt", });
+    internal_static_internal_RelayDevice_descriptor =
+      getDescriptor().getMessageTypes().get(3);
+    internal_static_internal_RelayDevice_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
+        internal_static_internal_RelayDevice_descriptor,
+        new String[] { "Index", "JoinEui", "DevEui", "DevAddr", "RootWorSKey", "Provisioned", "UplinkLimitBucketSize", "UplinkLimitReloadRate", "WFCntLastRequest", });
+    internal_static_internal_RelayFilter_descriptor =
+      getDescriptor().getMessageTypes().get(4);
+    internal_static_internal_RelayFilter_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
+        internal_static_internal_RelayFilter_descriptor,
+        new String[] { "Index", "Action", "DevEui", "JoinEui", "Provisioned", });
+    internal_static_internal_DeviceSessionChannel_descriptor =
+      getDescriptor().getMessageTypes().get(5);
     internal_static_internal_DeviceSessionChannel_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_internal_DeviceSessionChannel_descriptor,
         new String[] { "Frequency", "MinDr", "MaxDr", });
     internal_static_internal_DeviceGatewayRxInfo_descriptor =
-      getDescriptor().getMessageTypes().get(3);
+      getDescriptor().getMessageTypes().get(6);
     internal_static_internal_DeviceGatewayRxInfo_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_internal_DeviceGatewayRxInfo_descriptor,
         new String[] { "DevEui", "Dr", "Items", });
     internal_static_internal_DeviceGatewayRxInfoItem_descriptor =
-      getDescriptor().getMessageTypes().get(4);
+      getDescriptor().getMessageTypes().get(7);
     internal_static_internal_DeviceGatewayRxInfoItem_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_internal_DeviceGatewayRxInfoItem_descriptor,
-        new String[] { "GatewayId", "Rssi", "LoraSnr", "Antenna", "Board", "Context", });
+        new String[] { "GatewayId", "Rssi", "LoraSnr", "Antenna", "Board", "Context", "IsPrivateUp", "IsPrivateDown", "TenantId", });
     internal_static_internal_DownlinkFrame_descriptor =
-      getDescriptor().getMessageTypes().get(5);
+      getDescriptor().getMessageTypes().get(8);
     internal_static_internal_DownlinkFrame_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_internal_DownlinkFrame_descriptor,
-        new String[] { "DownlinkId", "DevEui", "DeviceQueueItemId", "MulticastGroupId", "MulticastGroupQueueItemId", "DownlinkFrame", "EncryptedFopts", "NwkSEncKey", });
+        new String[] { "DownlinkId", "DevEui", "DeviceQueueItemId", "MulticastGroupId", "MulticastGroupQueueItemId", "DownlinkFrame", "EncryptedFopts", "NwkSEncKey", "NFCntDown", "AFCntDown", "DevEuiRelayed", });
     internal_static_internal_LoraCloudGeolocBuffer_descriptor =
-      getDescriptor().getMessageTypes().get(6);
+      getDescriptor().getMessageTypes().get(9);
     internal_static_internal_LoraCloudGeolocBuffer_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_internal_LoraCloudGeolocBuffer_descriptor,
         new String[] { "Uplinks", });
     internal_static_internal_LoraCloudGeolocBufferUplink_descriptor =
-      getDescriptor().getMessageTypes().get(7);
+      getDescriptor().getMessageTypes().get(10);
     internal_static_internal_LoraCloudGeolocBufferUplink_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_internal_LoraCloudGeolocBufferUplink_descriptor,
         new String[] { "RxInfo", });
     internal_static_internal_PassiveRoamingDeviceSession_descriptor =
-      getDescriptor().getMessageTypes().get(8);
+      getDescriptor().getMessageTypes().get(11);
     internal_static_internal_PassiveRoamingDeviceSession_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_internal_PassiveRoamingDeviceSession_descriptor,

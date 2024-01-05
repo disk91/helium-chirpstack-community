@@ -130,16 +130,17 @@ Thank you to the following persons contributing to the project:
 - Chirpstack grpc api found on - https://github.com/chirpstack/chirpstack.git
 ```bash
 # for chirpstack grpc api
-~ git checkout v4.3.2
+~ git checkout v4.6.0
 ```
 
 ````
 ./protoc/bin/protoc -I ./chirpstack/api/proto -I ./googleapis/ --java_out ./out ./chirpstack/api/proto/common/common.proto
 ./protoc/bin/protoc -I ./chirpstack/api/proto -I ./googleapis/ --java_out ./out ./chirpstack/api/proto/api/user.proto 
 ./protoc/bin/protoc -I ./chirpstack/api/proto -I ./googleapis/ --java_out ./out ./chirpstack/api/proto/api/device.proto
-./protoc/bin/protoc -I ./chirpstack/api/proto -I ./googleapis/ --java_out ./out ./chirpstack/api/proto/api/request_log.proto
-./protoc/bin/protoc -I ./chirpstack/api/proto --java_out ./out ./chirpstack/api/proto/api/frame_log.proto
 ./protoc/bin/protoc -I ./chirpstack/api/proto -I ./googleapis/ --java_out ./out ./chirpstack/api/proto/api/internal.proto
+./protoc/bin/protoc -I ./chirpstack/api/proto -I ./googleapis/ --java_out ./out ./chirpstack/api/proto/internal/internal.proto
 
-./protoc/bin/protoc -I ./chirpstack-api/protobuf --java_out ./out ./chirpstack-api//protobuf/as/as.proto
+./protoc/bin/protoc -I ./chirpstack/api/proto -I ./googleapis/ --java_out ./out ./chirpstack/api/proto/stream/api_request.proto
+./protoc/bin/protoc -I ./chirpstack/api/proto -I ./googleapis/ --java_out ./out ./chirpstack/api/proto/stream/frame.proto
+./protoc/bin/protoc -I ./chirpstack/api/proto -I ./googleapis/ --java_out ./out ./chirpstack/api/proto/gw/gw.proto
 ````

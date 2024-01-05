@@ -16,6 +16,7 @@ private static final long serialVersionUID = 0L;
     super(builder);
   }
   private GetDeviceResponse() {
+    classEnabled_ = 0;
   }
 
   @Override
@@ -228,6 +229,32 @@ private static final long serialVersionUID = 0L;
     return deviceStatus_ == null ? DeviceStatus.getDefaultInstance() : deviceStatus_;
   }
 
+  public static final int CLASS_ENABLED_FIELD_NUMBER = 6;
+  private int classEnabled_ = 0;
+  /**
+   * <pre>
+   * Enabled device class.
+   * </pre>
+   *
+   * <code>.common.DeviceClass class_enabled = 6;</code>
+   * @return The enum numeric value on the wire for classEnabled.
+   */
+  @Override public int getClassEnabledValue() {
+    return classEnabled_;
+  }
+  /**
+   * <pre>
+   * Enabled device class.
+   * </pre>
+   *
+   * <code>.common.DeviceClass class_enabled = 6;</code>
+   * @return The classEnabled.
+   */
+  @Override public DeviceClass getClassEnabled() {
+    DeviceClass result = DeviceClass.forNumber(classEnabled_);
+    return result == null ? DeviceClass.UNRECOGNIZED : result;
+  }
+
   private byte memoizedIsInitialized = -1;
   @Override
   public final boolean isInitialized() {
@@ -257,6 +284,9 @@ private static final long serialVersionUID = 0L;
     if (deviceStatus_ != null) {
       output.writeMessage(5, getDeviceStatus());
     }
+    if (classEnabled_ != DeviceClass.CLASS_A.getNumber()) {
+      output.writeEnum(6, classEnabled_);
+    }
     getUnknownFields().writeTo(output);
   }
 
@@ -285,6 +315,10 @@ private static final long serialVersionUID = 0L;
     if (deviceStatus_ != null) {
       size += com.google.protobuf.CodedOutputStream
         .computeMessageSize(5, getDeviceStatus());
+    }
+    if (classEnabled_ != DeviceClass.CLASS_A.getNumber()) {
+      size += com.google.protobuf.CodedOutputStream
+        .computeEnumSize(6, classEnabled_);
     }
     size += getUnknownFields().getSerializedSize();
     memoizedSize = size;
@@ -326,6 +360,7 @@ private static final long serialVersionUID = 0L;
       if (!getDeviceStatus()
           .equals(other.getDeviceStatus())) return false;
     }
+    if (classEnabled_ != other.classEnabled_) return false;
     if (!getUnknownFields().equals(other.getUnknownFields())) return false;
     return true;
   }
@@ -357,6 +392,8 @@ private static final long serialVersionUID = 0L;
       hash = (37 * hash) + DEVICE_STATUS_FIELD_NUMBER;
       hash = (53 * hash) + getDeviceStatus().hashCode();
     }
+    hash = (37 * hash) + CLASS_ENABLED_FIELD_NUMBER;
+    hash = (53 * hash) + classEnabled_;
     hash = (29 * hash) + getUnknownFields().hashCode();
     memoizedHashCode = hash;
     return hash;
@@ -511,6 +548,7 @@ private static final long serialVersionUID = 0L;
         deviceStatusBuilder_.dispose();
         deviceStatusBuilder_ = null;
       }
+      classEnabled_ = 0;
       return this;
     }
 
@@ -569,6 +607,9 @@ private static final long serialVersionUID = 0L;
             ? deviceStatus_
             : deviceStatusBuilder_.build();
       }
+      if (((from_bitField0_ & 0x00000020) != 0)) {
+        result.classEnabled_ = classEnabled_;
+      }
     }
 
     @Override
@@ -597,6 +638,9 @@ private static final long serialVersionUID = 0L;
       }
       if (other.hasDeviceStatus()) {
         mergeDeviceStatus(other.getDeviceStatus());
+      }
+      if (other.classEnabled_ != 0) {
+        setClassEnabledValue(other.getClassEnabledValue());
       }
       this.mergeUnknownFields(other.getUnknownFields());
       onChanged();
@@ -659,6 +703,11 @@ private static final long serialVersionUID = 0L;
               bitField0_ |= 0x00000010;
               break;
             } // case 42
+            case 48: {
+              classEnabled_ = input.readEnum();
+              bitField0_ |= 0x00000020;
+              break;
+            } // case 48
             default: {
               if (!super.parseUnknownField(input, extensionRegistry, tag)) {
                 done = true; // was an endgroup tag
@@ -1449,6 +1498,79 @@ private static final long serialVersionUID = 0L;
         deviceStatus_ = null;
       }
       return deviceStatusBuilder_;
+    }
+
+    private int classEnabled_ = 0;
+    /**
+     * <pre>
+     * Enabled device class.
+     * </pre>
+     *
+     * <code>.common.DeviceClass class_enabled = 6;</code>
+     * @return The enum numeric value on the wire for classEnabled.
+     */
+    @Override public int getClassEnabledValue() {
+      return classEnabled_;
+    }
+    /**
+     * <pre>
+     * Enabled device class.
+     * </pre>
+     *
+     * <code>.common.DeviceClass class_enabled = 6;</code>
+     * @param value The enum numeric value on the wire for classEnabled to set.
+     * @return This builder for chaining.
+     */
+    public Builder setClassEnabledValue(int value) {
+      classEnabled_ = value;
+      bitField0_ |= 0x00000020;
+      onChanged();
+      return this;
+    }
+    /**
+     * <pre>
+     * Enabled device class.
+     * </pre>
+     *
+     * <code>.common.DeviceClass class_enabled = 6;</code>
+     * @return The classEnabled.
+     */
+    @Override
+    public DeviceClass getClassEnabled() {
+      DeviceClass result = DeviceClass.forNumber(classEnabled_);
+      return result == null ? DeviceClass.UNRECOGNIZED : result;
+    }
+    /**
+     * <pre>
+     * Enabled device class.
+     * </pre>
+     *
+     * <code>.common.DeviceClass class_enabled = 6;</code>
+     * @param value The classEnabled to set.
+     * @return This builder for chaining.
+     */
+    public Builder setClassEnabled(DeviceClass value) {
+      if (value == null) {
+        throw new NullPointerException();
+      }
+      bitField0_ |= 0x00000020;
+      classEnabled_ = value.getNumber();
+      onChanged();
+      return this;
+    }
+    /**
+     * <pre>
+     * Enabled device class.
+     * </pre>
+     *
+     * <code>.common.DeviceClass class_enabled = 6;</code>
+     * @return This builder for chaining.
+     */
+    public Builder clearClassEnabled() {
+      bitField0_ = (bitField0_ & ~0x00000020);
+      classEnabled_ = 0;
+      onChanged();
+      return this;
     }
     @Override
     public final Builder setUnknownFields(

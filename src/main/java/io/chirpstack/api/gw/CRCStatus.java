@@ -63,7 +63,7 @@ public enum CRCStatus
 
   public final int getNumber() {
     if (this == UNRECOGNIZED) {
-      throw new IllegalArgumentException(
+      throw new java.lang.IllegalArgumentException(
           "Can't get the number of an unknown enum value.");
     }
     return value;
@@ -74,7 +74,7 @@ public enum CRCStatus
    * @return The enum associated with the given numeric wire value.
    * @deprecated Use {@link #forNumber(int)} instead.
    */
-  @Deprecated
+  @java.lang.Deprecated
   public static CRCStatus valueOf(int value) {
     return forNumber(value);
   }
@@ -107,7 +107,7 @@ public enum CRCStatus
   public final com.google.protobuf.Descriptors.EnumValueDescriptor
       getValueDescriptor() {
     if (this == UNRECOGNIZED) {
-      throw new IllegalStateException(
+      throw new java.lang.IllegalStateException(
           "Can't get the descriptor of an unrecognized enum value.");
     }
     return getDescriptor().getValues().get(ordinal());
@@ -118,7 +118,7 @@ public enum CRCStatus
   }
   public static final com.google.protobuf.Descriptors.EnumDescriptor
       getDescriptor() {
-    return GatewayProto.getDescriptor().getEnumTypes().get(3);
+    return io.chirpstack.api.gw.GatewayProto.getDescriptor().getEnumTypes().get(3);
   }
 
   private static final CRCStatus[] VALUES = values();
@@ -126,7 +126,7 @@ public enum CRCStatus
   public static CRCStatus valueOf(
       com.google.protobuf.Descriptors.EnumValueDescriptor desc) {
     if (desc.getType() != getDescriptor()) {
-      throw new IllegalArgumentException(
+      throw new java.lang.IllegalArgumentException(
         "EnumValueDescriptor is not for this type.");
     }
     if (desc.getIndex() == -1) {

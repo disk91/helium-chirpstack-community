@@ -24,7 +24,7 @@ public interface TimingOrBuilder extends
    * <code>.gw.ImmediatelyTimingInfo immediately = 1;</code>
    * @return The immediately.
    */
-  ImmediatelyTimingInfo getImmediately();
+  io.chirpstack.api.gw.ImmediatelyTimingInfo getImmediately();
   /**
    * <pre>
    * Immediately timing information.
@@ -32,7 +32,7 @@ public interface TimingOrBuilder extends
    *
    * <code>.gw.ImmediatelyTimingInfo immediately = 1;</code>
    */
-  ImmediatelyTimingInfoOrBuilder getImmediatelyOrBuilder();
+  io.chirpstack.api.gw.ImmediatelyTimingInfoOrBuilder getImmediatelyOrBuilder();
 
   /**
    * <pre>
@@ -51,7 +51,7 @@ public interface TimingOrBuilder extends
    * <code>.gw.DelayTimingInfo delay = 2;</code>
    * @return The delay.
    */
-  DelayTimingInfo getDelay();
+  io.chirpstack.api.gw.DelayTimingInfo getDelay();
   /**
    * <pre>
    * Context based delay timing information.
@@ -59,7 +59,7 @@ public interface TimingOrBuilder extends
    *
    * <code>.gw.DelayTimingInfo delay = 2;</code>
    */
-  DelayTimingInfoOrBuilder getDelayOrBuilder();
+  io.chirpstack.api.gw.DelayTimingInfoOrBuilder getDelayOrBuilder();
 
   /**
    * <pre>
@@ -78,7 +78,7 @@ public interface TimingOrBuilder extends
    * <code>.gw.GPSEpochTimingInfo gps_epoch = 3;</code>
    * @return The gpsEpoch.
    */
-  GPSEpochTimingInfo getGpsEpoch();
+  io.chirpstack.api.gw.GPSEpochTimingInfo getGpsEpoch();
   /**
    * <pre>
    * GPS Epoch timing information.
@@ -86,7 +86,7 @@ public interface TimingOrBuilder extends
    *
    * <code>.gw.GPSEpochTimingInfo gps_epoch = 3;</code>
    */
-  GPSEpochTimingInfoOrBuilder getGpsEpochOrBuilder();
+  io.chirpstack.api.gw.GPSEpochTimingInfoOrBuilder getGpsEpochOrBuilder();
 
-  public Timing.ParametersCase getParametersCase();
+  io.chirpstack.api.gw.Timing.ParametersCase getParametersCase();
 }

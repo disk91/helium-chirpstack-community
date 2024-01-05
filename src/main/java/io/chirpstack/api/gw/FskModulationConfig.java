@@ -18,33 +18,28 @@ private static final long serialVersionUID = 0L;
   private FskModulationConfig() {
   }
 
-  @Override
+  @java.lang.Override
   @SuppressWarnings({"unused"})
-  protected Object newInstance(
+  protected java.lang.Object newInstance(
       UnusedPrivateParameter unused) {
     return new FskModulationConfig();
   }
 
-  @Override
-  public final com.google.protobuf.UnknownFieldSet
-  getUnknownFields() {
-    return this.unknownFields;
-  }
   public static final com.google.protobuf.Descriptors.Descriptor
       getDescriptor() {
-    return GatewayProto.internal_static_gw_FskModulationConfig_descriptor;
+    return io.chirpstack.api.gw.GatewayProto.internal_static_gw_FskModulationConfig_descriptor;
   }
 
-  @Override
-  protected FieldAccessorTable
+  @java.lang.Override
+  protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
       internalGetFieldAccessorTable() {
-    return GatewayProto.internal_static_gw_FskModulationConfig_fieldAccessorTable
+    return io.chirpstack.api.gw.GatewayProto.internal_static_gw_FskModulationConfig_fieldAccessorTable
         .ensureFieldAccessorsInitialized(
-            FskModulationConfig.class, Builder.class);
+            io.chirpstack.api.gw.FskModulationConfig.class, io.chirpstack.api.gw.FskModulationConfig.Builder.class);
   }
 
   public static final int BANDWIDTH_LEGACY_FIELD_NUMBER = 1;
-  private int bandwidthLegacy_;
+  private int bandwidthLegacy_ = 0;
   /**
    * <pre>
    * Bandwidth (kHz).
@@ -54,13 +49,13 @@ private static final long serialVersionUID = 0L;
    * <code>uint32 bandwidth_legacy = 1;</code>
    * @return The bandwidthLegacy.
    */
-  @Override
+  @java.lang.Override
   public int getBandwidthLegacy() {
     return bandwidthLegacy_;
   }
 
   public static final int BANDWIDTH_FIELD_NUMBER = 3;
-  private int bandwidth_;
+  private int bandwidth_ = 0;
   /**
    * <pre>
    * Bandwidth (Hz).
@@ -69,13 +64,13 @@ private static final long serialVersionUID = 0L;
    * <code>uint32 bandwidth = 3;</code>
    * @return The bandwidth.
    */
-  @Override
+  @java.lang.Override
   public int getBandwidth() {
     return bandwidth_;
   }
 
   public static final int BITRATE_FIELD_NUMBER = 2;
-  private int bitrate_;
+  private int bitrate_ = 0;
   /**
    * <pre>
    * Bitrate.
@@ -84,13 +79,13 @@ private static final long serialVersionUID = 0L;
    * <code>uint32 bitrate = 2;</code>
    * @return The bitrate.
    */
-  @Override
+  @java.lang.Override
   public int getBitrate() {
     return bitrate_;
   }
 
   private byte memoizedIsInitialized = -1;
-  @Override
+  @java.lang.Override
   public final boolean isInitialized() {
     byte isInitialized = memoizedIsInitialized;
     if (isInitialized == 1) return true;
@@ -100,7 +95,7 @@ private static final long serialVersionUID = 0L;
     return true;
   }
 
-  @Override
+  @java.lang.Override
   public void writeTo(com.google.protobuf.CodedOutputStream output)
                       throws java.io.IOException {
     if (bandwidthLegacy_ != 0) {
@@ -115,7 +110,7 @@ private static final long serialVersionUID = 0L;
     getUnknownFields().writeTo(output);
   }
 
-  @Override
+  @java.lang.Override
   public int getSerializedSize() {
     int size = memoizedSize;
     if (size != -1) return size;
@@ -138,15 +133,15 @@ private static final long serialVersionUID = 0L;
     return size;
   }
 
-  @Override
-  public boolean equals(final Object obj) {
+  @java.lang.Override
+  public boolean equals(final java.lang.Object obj) {
     if (obj == this) {
      return true;
     }
-    if (!(obj instanceof FskModulationConfig)) {
+    if (!(obj instanceof io.chirpstack.api.gw.FskModulationConfig)) {
       return super.equals(obj);
     }
-    FskModulationConfig other = (FskModulationConfig) obj;
+    io.chirpstack.api.gw.FskModulationConfig other = (io.chirpstack.api.gw.FskModulationConfig) obj;
 
     if (getBandwidthLegacy()
         != other.getBandwidthLegacy()) return false;
@@ -158,7 +153,7 @@ private static final long serialVersionUID = 0L;
     return true;
   }
 
-  @Override
+  @java.lang.Override
   public int hashCode() {
     if (memoizedHashCode != 0) {
       return memoizedHashCode;
@@ -176,69 +171,69 @@ private static final long serialVersionUID = 0L;
     return hash;
   }
 
-  public static FskModulationConfig parseFrom(
+  public static io.chirpstack.api.gw.FskModulationConfig parseFrom(
       java.nio.ByteBuffer data)
       throws com.google.protobuf.InvalidProtocolBufferException {
     return PARSER.parseFrom(data);
   }
-  public static FskModulationConfig parseFrom(
+  public static io.chirpstack.api.gw.FskModulationConfig parseFrom(
       java.nio.ByteBuffer data,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws com.google.protobuf.InvalidProtocolBufferException {
     return PARSER.parseFrom(data, extensionRegistry);
   }
-  public static FskModulationConfig parseFrom(
+  public static io.chirpstack.api.gw.FskModulationConfig parseFrom(
       com.google.protobuf.ByteString data)
       throws com.google.protobuf.InvalidProtocolBufferException {
     return PARSER.parseFrom(data);
   }
-  public static FskModulationConfig parseFrom(
+  public static io.chirpstack.api.gw.FskModulationConfig parseFrom(
       com.google.protobuf.ByteString data,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws com.google.protobuf.InvalidProtocolBufferException {
     return PARSER.parseFrom(data, extensionRegistry);
   }
-  public static FskModulationConfig parseFrom(byte[] data)
+  public static io.chirpstack.api.gw.FskModulationConfig parseFrom(byte[] data)
       throws com.google.protobuf.InvalidProtocolBufferException {
     return PARSER.parseFrom(data);
   }
-  public static FskModulationConfig parseFrom(
+  public static io.chirpstack.api.gw.FskModulationConfig parseFrom(
       byte[] data,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws com.google.protobuf.InvalidProtocolBufferException {
     return PARSER.parseFrom(data, extensionRegistry);
   }
-  public static FskModulationConfig parseFrom(java.io.InputStream input)
+  public static io.chirpstack.api.gw.FskModulationConfig parseFrom(java.io.InputStream input)
       throws java.io.IOException {
     return com.google.protobuf.GeneratedMessageV3
         .parseWithIOException(PARSER, input);
   }
-  public static FskModulationConfig parseFrom(
+  public static io.chirpstack.api.gw.FskModulationConfig parseFrom(
       java.io.InputStream input,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws java.io.IOException {
     return com.google.protobuf.GeneratedMessageV3
         .parseWithIOException(PARSER, input, extensionRegistry);
   }
-  public static FskModulationConfig parseDelimitedFrom(java.io.InputStream input)
+  public static io.chirpstack.api.gw.FskModulationConfig parseDelimitedFrom(java.io.InputStream input)
       throws java.io.IOException {
     return com.google.protobuf.GeneratedMessageV3
         .parseDelimitedWithIOException(PARSER, input);
   }
-  public static FskModulationConfig parseDelimitedFrom(
+  public static io.chirpstack.api.gw.FskModulationConfig parseDelimitedFrom(
       java.io.InputStream input,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws java.io.IOException {
     return com.google.protobuf.GeneratedMessageV3
         .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
   }
-  public static FskModulationConfig parseFrom(
+  public static io.chirpstack.api.gw.FskModulationConfig parseFrom(
       com.google.protobuf.CodedInputStream input)
       throws java.io.IOException {
     return com.google.protobuf.GeneratedMessageV3
         .parseWithIOException(PARSER, input);
   }
-  public static FskModulationConfig parseFrom(
+  public static io.chirpstack.api.gw.FskModulationConfig parseFrom(
       com.google.protobuf.CodedInputStream input,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws java.io.IOException {
@@ -246,23 +241,23 @@ private static final long serialVersionUID = 0L;
         .parseWithIOException(PARSER, input, extensionRegistry);
   }
 
-  @Override
+  @java.lang.Override
   public Builder newBuilderForType() { return newBuilder(); }
   public static Builder newBuilder() {
     return DEFAULT_INSTANCE.toBuilder();
   }
-  public static Builder newBuilder(FskModulationConfig prototype) {
+  public static Builder newBuilder(io.chirpstack.api.gw.FskModulationConfig prototype) {
     return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
   }
-  @Override
+  @java.lang.Override
   public Builder toBuilder() {
     return this == DEFAULT_INSTANCE
         ? new Builder() : new Builder().mergeFrom(this);
   }
 
-  @Override
+  @java.lang.Override
   protected Builder newBuilderForType(
-      BuilderParent parent) {
+      com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
     Builder builder = new Builder(parent);
     return builder;
   }
@@ -272,18 +267,18 @@ private static final long serialVersionUID = 0L;
   public static final class Builder extends
       com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
       // @@protoc_insertion_point(builder_implements:gw.FskModulationConfig)
-      FskModulationConfigOrBuilder {
+      io.chirpstack.api.gw.FskModulationConfigOrBuilder {
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
-      return GatewayProto.internal_static_gw_FskModulationConfig_descriptor;
+      return io.chirpstack.api.gw.GatewayProto.internal_static_gw_FskModulationConfig_descriptor;
     }
 
-    @Override
-    protected FieldAccessorTable
+    @java.lang.Override
+    protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
         internalGetFieldAccessorTable() {
-      return GatewayProto.internal_static_gw_FskModulationConfig_fieldAccessorTable
+      return io.chirpstack.api.gw.GatewayProto.internal_static_gw_FskModulationConfig_fieldAccessorTable
           .ensureFieldAccessorsInitialized(
-              FskModulationConfig.class, Builder.class);
+              io.chirpstack.api.gw.FskModulationConfig.class, io.chirpstack.api.gw.FskModulationConfig.Builder.class);
     }
 
     // Construct using io.chirpstack.api.gw.FskModulationConfig.newBuilder()
@@ -292,96 +287,73 @@ private static final long serialVersionUID = 0L;
     }
 
     private Builder(
-        BuilderParent parent) {
+        com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
       super(parent);
 
     }
-    @Override
+    @java.lang.Override
     public Builder clear() {
       super.clear();
+      bitField0_ = 0;
       bandwidthLegacy_ = 0;
-
       bandwidth_ = 0;
-
       bitrate_ = 0;
-
       return this;
     }
 
-    @Override
+    @java.lang.Override
     public com.google.protobuf.Descriptors.Descriptor
         getDescriptorForType() {
-      return GatewayProto.internal_static_gw_FskModulationConfig_descriptor;
+      return io.chirpstack.api.gw.GatewayProto.internal_static_gw_FskModulationConfig_descriptor;
     }
 
-    @Override
-    public FskModulationConfig getDefaultInstanceForType() {
-      return FskModulationConfig.getDefaultInstance();
+    @java.lang.Override
+    public io.chirpstack.api.gw.FskModulationConfig getDefaultInstanceForType() {
+      return io.chirpstack.api.gw.FskModulationConfig.getDefaultInstance();
     }
 
-    @Override
-    public FskModulationConfig build() {
-      FskModulationConfig result = buildPartial();
+    @java.lang.Override
+    public io.chirpstack.api.gw.FskModulationConfig build() {
+      io.chirpstack.api.gw.FskModulationConfig result = buildPartial();
       if (!result.isInitialized()) {
         throw newUninitializedMessageException(result);
       }
       return result;
     }
 
-    @Override
-    public FskModulationConfig buildPartial() {
-      FskModulationConfig result = new FskModulationConfig(this);
-      result.bandwidthLegacy_ = bandwidthLegacy_;
-      result.bandwidth_ = bandwidth_;
-      result.bitrate_ = bitrate_;
+    @java.lang.Override
+    public io.chirpstack.api.gw.FskModulationConfig buildPartial() {
+      io.chirpstack.api.gw.FskModulationConfig result = new io.chirpstack.api.gw.FskModulationConfig(this);
+      if (bitField0_ != 0) { buildPartial0(result); }
       onBuilt();
       return result;
     }
 
-    @Override
-    public Builder clone() {
-      return super.clone();
+    private void buildPartial0(io.chirpstack.api.gw.FskModulationConfig result) {
+      int from_bitField0_ = bitField0_;
+      if (((from_bitField0_ & 0x00000001) != 0)) {
+        result.bandwidthLegacy_ = bandwidthLegacy_;
+      }
+      if (((from_bitField0_ & 0x00000002) != 0)) {
+        result.bandwidth_ = bandwidth_;
+      }
+      if (((from_bitField0_ & 0x00000004) != 0)) {
+        result.bitrate_ = bitrate_;
+      }
     }
-    @Override
-    public Builder setField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        Object value) {
-      return super.setField(field, value);
-    }
-    @Override
-    public Builder clearField(
-        com.google.protobuf.Descriptors.FieldDescriptor field) {
-      return super.clearField(field);
-    }
-    @Override
-    public Builder clearOneof(
-        com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-      return super.clearOneof(oneof);
-    }
-    @Override
-    public Builder setRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        int index, Object value) {
-      return super.setRepeatedField(field, index, value);
-    }
-    @Override
-    public Builder addRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        Object value) {
-      return super.addRepeatedField(field, value);
-    }
-    @Override
+
+    @java.lang.Override
     public Builder mergeFrom(com.google.protobuf.Message other) {
-      if (other instanceof FskModulationConfig) {
-        return mergeFrom((FskModulationConfig)other);
+      if (other instanceof io.chirpstack.api.gw.FskModulationConfig) {
+        return mergeFrom((io.chirpstack.api.gw.FskModulationConfig)other);
       } else {
         super.mergeFrom(other);
         return this;
       }
     }
 
-    public Builder mergeFrom(FskModulationConfig other) {
-      if (other == FskModulationConfig.getDefaultInstance()) return this;
+    public Builder mergeFrom(io.chirpstack.api.gw.FskModulationConfig other) {
+      if (other == io.chirpstack.api.gw.FskModulationConfig.getDefaultInstance()) return this;
       if (other.getBandwidthLegacy() != 0) {
         setBandwidthLegacy(other.getBandwidthLegacy());
       }
@@ -396,18 +368,18 @@ private static final long serialVersionUID = 0L;
       return this;
     }
 
-    @Override
+    @java.lang.Override
     public final boolean isInitialized() {
       return true;
     }
 
-    @Override
+    @java.lang.Override
     public Builder mergeFrom(
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
       if (extensionRegistry == null) {
-        throw new NullPointerException();
+        throw new java.lang.NullPointerException();
       }
       try {
         boolean done = false;
@@ -419,17 +391,17 @@ private static final long serialVersionUID = 0L;
               break;
             case 8: {
               bandwidthLegacy_ = input.readUInt32();
-
+              bitField0_ |= 0x00000001;
               break;
             } // case 8
             case 16: {
               bitrate_ = input.readUInt32();
-
+              bitField0_ |= 0x00000004;
               break;
             } // case 16
             case 24: {
               bandwidth_ = input.readUInt32();
-
+              bitField0_ |= 0x00000002;
               break;
             } // case 24
             default: {
@@ -447,6 +419,7 @@ private static final long serialVersionUID = 0L;
       } // finally
       return this;
     }
+    private int bitField0_;
 
     private int bandwidthLegacy_ ;
     /**
@@ -458,7 +431,7 @@ private static final long serialVersionUID = 0L;
      * <code>uint32 bandwidth_legacy = 1;</code>
      * @return The bandwidthLegacy.
      */
-    @Override
+    @java.lang.Override
     public int getBandwidthLegacy() {
       return bandwidthLegacy_;
     }
@@ -473,8 +446,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setBandwidthLegacy(int value) {
-      
+
       bandwidthLegacy_ = value;
+      bitField0_ |= 0x00000001;
       onChanged();
       return this;
     }
@@ -488,7 +462,7 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder clearBandwidthLegacy() {
-      
+      bitField0_ = (bitField0_ & ~0x00000001);
       bandwidthLegacy_ = 0;
       onChanged();
       return this;
@@ -503,7 +477,7 @@ private static final long serialVersionUID = 0L;
      * <code>uint32 bandwidth = 3;</code>
      * @return The bandwidth.
      */
-    @Override
+    @java.lang.Override
     public int getBandwidth() {
       return bandwidth_;
     }
@@ -517,8 +491,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setBandwidth(int value) {
-      
+
       bandwidth_ = value;
+      bitField0_ |= 0x00000002;
       onChanged();
       return this;
     }
@@ -531,7 +506,7 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder clearBandwidth() {
-      
+      bitField0_ = (bitField0_ & ~0x00000002);
       bandwidth_ = 0;
       onChanged();
       return this;
@@ -546,7 +521,7 @@ private static final long serialVersionUID = 0L;
      * <code>uint32 bitrate = 2;</code>
      * @return The bitrate.
      */
-    @Override
+    @java.lang.Override
     public int getBitrate() {
       return bitrate_;
     }
@@ -560,8 +535,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setBitrate(int value) {
-      
+
       bitrate_ = value;
+      bitField0_ |= 0x00000004;
       onChanged();
       return this;
     }
@@ -574,18 +550,18 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder clearBitrate() {
-      
+      bitField0_ = (bitField0_ & ~0x00000004);
       bitrate_ = 0;
       onChanged();
       return this;
     }
-    @Override
+    @java.lang.Override
     public final Builder setUnknownFields(
         final com.google.protobuf.UnknownFieldSet unknownFields) {
       return super.setUnknownFields(unknownFields);
     }
 
-    @Override
+    @java.lang.Override
     public final Builder mergeUnknownFields(
         final com.google.protobuf.UnknownFieldSet unknownFields) {
       return super.mergeUnknownFields(unknownFields);
@@ -596,18 +572,18 @@ private static final long serialVersionUID = 0L;
   }
 
   // @@protoc_insertion_point(class_scope:gw.FskModulationConfig)
-  private static final FskModulationConfig DEFAULT_INSTANCE;
+  private static final io.chirpstack.api.gw.FskModulationConfig DEFAULT_INSTANCE;
   static {
-    DEFAULT_INSTANCE = new FskModulationConfig();
+    DEFAULT_INSTANCE = new io.chirpstack.api.gw.FskModulationConfig();
   }
 
-  public static FskModulationConfig getDefaultInstance() {
+  public static io.chirpstack.api.gw.FskModulationConfig getDefaultInstance() {
     return DEFAULT_INSTANCE;
   }
 
   private static final com.google.protobuf.Parser<FskModulationConfig>
       PARSER = new com.google.protobuf.AbstractParser<FskModulationConfig>() {
-    @Override
+    @java.lang.Override
     public FskModulationConfig parsePartialFrom(
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
@@ -631,13 +607,13 @@ private static final long serialVersionUID = 0L;
     return PARSER;
   }
 
-  @Override
+  @java.lang.Override
   public com.google.protobuf.Parser<FskModulationConfig> getParserForType() {
     return PARSER;
   }
 
-  @Override
-  public FskModulationConfig getDefaultInstanceForType() {
+  @java.lang.Override
+  public io.chirpstack.api.gw.FskModulationConfig getDefaultInstanceForType() {
     return DEFAULT_INSTANCE;
   }
 

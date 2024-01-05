@@ -55,19 +55,19 @@ private static final long serialVersionUID = 0L;
   public static final int METRICS_FIELD_NUMBER = 1;
   private static final class MetricsDefaultEntryHolder {
     static final com.google.protobuf.MapEntry<
-        String, io.chirpstack.api.Metric> defaultEntry =
+        String, Metric> defaultEntry =
             com.google.protobuf.MapEntry
-            .<String, io.chirpstack.api.Metric>newDefaultInstance(
+            .<String, Metric>newDefaultInstance(
                 DeviceProto.internal_static_api_GetDeviceMetricsResponse_MetricsEntry_descriptor,
                 com.google.protobuf.WireFormat.FieldType.STRING,
                 "",
                 com.google.protobuf.WireFormat.FieldType.MESSAGE,
-                io.chirpstack.api.Metric.getDefaultInstance());
+                Metric.getDefaultInstance());
   }
   @SuppressWarnings("serial")
   private com.google.protobuf.MapField<
-      String, io.chirpstack.api.Metric> metrics_;
-  private com.google.protobuf.MapField<String, io.chirpstack.api.Metric>
+      String, Metric> metrics_;
+  private com.google.protobuf.MapField<String, Metric>
   internalGetMetrics() {
     if (metrics_ == null) {
       return com.google.protobuf.MapField.emptyMapField(
@@ -92,14 +92,14 @@ private static final long serialVersionUID = 0L;
    */
   @Override
   @Deprecated
-  public java.util.Map<String, io.chirpstack.api.Metric> getMetrics() {
+  public java.util.Map<String, Metric> getMetrics() {
     return getMetricsMap();
   }
   /**
    * <code>map&lt;string, .common.Metric&gt; metrics = 1;</code>
    */
   @Override
-  public java.util.Map<String, io.chirpstack.api.Metric> getMetricsMap() {
+  public java.util.Map<String, Metric> getMetricsMap() {
     return internalGetMetrics().getMap();
   }
   /**
@@ -107,12 +107,12 @@ private static final long serialVersionUID = 0L;
    */
   @Override
   public /* nullable */
-io.chirpstack.api.Metric getMetricsOrDefault(
+Metric getMetricsOrDefault(
       String key,
       /* nullable */
-io.chirpstack.api.Metric defaultValue) {
+Metric defaultValue) {
     if (key == null) { throw new NullPointerException("map key"); }
-    java.util.Map<String, io.chirpstack.api.Metric> map =
+    java.util.Map<String, Metric> map =
         internalGetMetrics().getMap();
     return map.containsKey(key) ? map.get(key) : defaultValue;
   }
@@ -120,10 +120,10 @@ io.chirpstack.api.Metric defaultValue) {
    * <code>map&lt;string, .common.Metric&gt; metrics = 1;</code>
    */
   @Override
-  public io.chirpstack.api.Metric getMetricsOrThrow(
+  public Metric getMetricsOrThrow(
       String key) {
     if (key == null) { throw new NullPointerException("map key"); }
-    java.util.Map<String, io.chirpstack.api.Metric> map =
+    java.util.Map<String, Metric> map =
         internalGetMetrics().getMap();
     if (!map.containsKey(key)) {
       throw new IllegalArgumentException();
@@ -245,9 +245,9 @@ DeviceState defaultValue) {
     if (size != -1) return size;
 
     size = 0;
-    for (java.util.Map.Entry<String, io.chirpstack.api.Metric> entry
+    for (java.util.Map.Entry<String, Metric> entry
          : internalGetMetrics().getMap().entrySet()) {
-      com.google.protobuf.MapEntry<String, io.chirpstack.api.Metric>
+      com.google.protobuf.MapEntry<String, Metric>
       metrics__ = MetricsDefaultEntryHolder.defaultEntry.newBuilderForType()
           .setKey(entry.getKey())
           .setValue(entry.getValue())
@@ -548,7 +548,7 @@ DeviceState defaultValue) {
               done = true;
               break;
             case 10: {
-              com.google.protobuf.MapEntry<String, io.chirpstack.api.Metric>
+              com.google.protobuf.MapEntry<String, Metric>
               metrics__ = input.readMessage(
                   MetricsDefaultEntryHolder.defaultEntry.getParserForType(), extensionRegistry);
               internalGetMutableMetrics().getMutableMap().put(
@@ -583,8 +583,8 @@ DeviceState defaultValue) {
     private int bitField0_;
 
     private com.google.protobuf.MapField<
-        String, io.chirpstack.api.Metric> metrics_;
-    private com.google.protobuf.MapField<String, io.chirpstack.api.Metric>
+        String, Metric> metrics_;
+    private com.google.protobuf.MapField<String, Metric>
         internalGetMetrics() {
       if (metrics_ == null) {
         return com.google.protobuf.MapField.emptyMapField(
@@ -592,7 +592,7 @@ DeviceState defaultValue) {
       }
       return metrics_;
     }
-    private com.google.protobuf.MapField<String, io.chirpstack.api.Metric>
+    private com.google.protobuf.MapField<String, Metric>
         internalGetMutableMetrics() {
       if (metrics_ == null) {
         metrics_ = com.google.protobuf.MapField.newMapField(
@@ -622,14 +622,14 @@ DeviceState defaultValue) {
      */
     @Override
     @Deprecated
-    public java.util.Map<String, io.chirpstack.api.Metric> getMetrics() {
+    public java.util.Map<String, Metric> getMetrics() {
       return getMetricsMap();
     }
     /**
      * <code>map&lt;string, .common.Metric&gt; metrics = 1;</code>
      */
     @Override
-    public java.util.Map<String, io.chirpstack.api.Metric> getMetricsMap() {
+    public java.util.Map<String, Metric> getMetricsMap() {
       return internalGetMetrics().getMap();
     }
     /**
@@ -637,12 +637,12 @@ DeviceState defaultValue) {
      */
     @Override
     public /* nullable */
-io.chirpstack.api.Metric getMetricsOrDefault(
+Metric getMetricsOrDefault(
         String key,
         /* nullable */
-io.chirpstack.api.Metric defaultValue) {
+Metric defaultValue) {
       if (key == null) { throw new NullPointerException("map key"); }
-      java.util.Map<String, io.chirpstack.api.Metric> map =
+      java.util.Map<String, Metric> map =
           internalGetMetrics().getMap();
       return map.containsKey(key) ? map.get(key) : defaultValue;
     }
@@ -650,10 +650,10 @@ io.chirpstack.api.Metric defaultValue) {
      * <code>map&lt;string, .common.Metric&gt; metrics = 1;</code>
      */
     @Override
-    public io.chirpstack.api.Metric getMetricsOrThrow(
+    public Metric getMetricsOrThrow(
         String key) {
       if (key == null) { throw new NullPointerException("map key"); }
-      java.util.Map<String, io.chirpstack.api.Metric> map =
+      java.util.Map<String, Metric> map =
           internalGetMetrics().getMap();
       if (!map.containsKey(key)) {
         throw new IllegalArgumentException();
@@ -680,7 +680,7 @@ io.chirpstack.api.Metric defaultValue) {
      * Use alternate mutation accessors instead.
      */
     @Deprecated
-    public java.util.Map<String, io.chirpstack.api.Metric>
+    public java.util.Map<String, Metric>
         getMutableMetrics() {
       bitField0_ |= 0x00000001;
       return internalGetMutableMetrics().getMutableMap();
@@ -690,7 +690,7 @@ io.chirpstack.api.Metric defaultValue) {
      */
     public Builder putMetrics(
         String key,
-        io.chirpstack.api.Metric value) {
+        Metric value) {
       if (key == null) { throw new NullPointerException("map key"); }
       if (value == null) { throw new NullPointerException("map value"); }
       internalGetMutableMetrics().getMutableMap()
@@ -702,7 +702,7 @@ io.chirpstack.api.Metric defaultValue) {
      * <code>map&lt;string, .common.Metric&gt; metrics = 1;</code>
      */
     public Builder putAllMetrics(
-        java.util.Map<String, io.chirpstack.api.Metric> values) {
+        java.util.Map<String, Metric> values) {
       internalGetMutableMetrics().getMutableMap()
           .putAll(values);
       bitField0_ |= 0x00000001;

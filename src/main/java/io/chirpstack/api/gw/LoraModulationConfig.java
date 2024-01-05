@@ -19,33 +19,28 @@ private static final long serialVersionUID = 0L;
     spreadingFactors_ = emptyIntList();
   }
 
-  @Override
+  @java.lang.Override
   @SuppressWarnings({"unused"})
-  protected Object newInstance(
+  protected java.lang.Object newInstance(
       UnusedPrivateParameter unused) {
     return new LoraModulationConfig();
   }
 
-  @Override
-  public final com.google.protobuf.UnknownFieldSet
-  getUnknownFields() {
-    return this.unknownFields;
-  }
   public static final com.google.protobuf.Descriptors.Descriptor
       getDescriptor() {
-    return GatewayProto.internal_static_gw_LoraModulationConfig_descriptor;
+    return io.chirpstack.api.gw.GatewayProto.internal_static_gw_LoraModulationConfig_descriptor;
   }
 
-  @Override
-  protected FieldAccessorTable
+  @java.lang.Override
+  protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
       internalGetFieldAccessorTable() {
-    return GatewayProto.internal_static_gw_LoraModulationConfig_fieldAccessorTable
+    return io.chirpstack.api.gw.GatewayProto.internal_static_gw_LoraModulationConfig_fieldAccessorTable
         .ensureFieldAccessorsInitialized(
-            LoraModulationConfig.class, Builder.class);
+            io.chirpstack.api.gw.LoraModulationConfig.class, io.chirpstack.api.gw.LoraModulationConfig.Builder.class);
   }
 
   public static final int BANDWIDTH_LEGACY_FIELD_NUMBER = 1;
-  private int bandwidthLegacy_;
+  private int bandwidthLegacy_ = 0;
   /**
    * <pre>
    * Bandwidth (kHz).
@@ -55,13 +50,13 @@ private static final long serialVersionUID = 0L;
    * <code>uint32 bandwidth_legacy = 1;</code>
    * @return The bandwidthLegacy.
    */
-  @Override
+  @java.lang.Override
   public int getBandwidthLegacy() {
     return bandwidthLegacy_;
   }
 
   public static final int BANDWIDTH_FIELD_NUMBER = 3;
-  private int bandwidth_;
+  private int bandwidth_ = 0;
   /**
    * <pre>
    * Bandwidth (Hz).
@@ -70,12 +65,13 @@ private static final long serialVersionUID = 0L;
    * <code>uint32 bandwidth = 3;</code>
    * @return The bandwidth.
    */
-  @Override
+  @java.lang.Override
   public int getBandwidth() {
     return bandwidth_;
   }
 
   public static final int SPREADING_FACTORS_FIELD_NUMBER = 2;
+  @SuppressWarnings("serial")
   private com.google.protobuf.Internal.IntList spreadingFactors_;
   /**
    * <pre>
@@ -85,8 +81,8 @@ private static final long serialVersionUID = 0L;
    * <code>repeated uint32 spreading_factors = 2;</code>
    * @return A list containing the spreadingFactors.
    */
-  @Override
-  public java.util.List<Integer>
+  @java.lang.Override
+  public java.util.List<java.lang.Integer>
       getSpreadingFactorsList() {
     return spreadingFactors_;
   }
@@ -116,7 +112,7 @@ private static final long serialVersionUID = 0L;
   private int spreadingFactorsMemoizedSerializedSize = -1;
 
   private byte memoizedIsInitialized = -1;
-  @Override
+  @java.lang.Override
   public final boolean isInitialized() {
     byte isInitialized = memoizedIsInitialized;
     if (isInitialized == 1) return true;
@@ -126,7 +122,7 @@ private static final long serialVersionUID = 0L;
     return true;
   }
 
-  @Override
+  @java.lang.Override
   public void writeTo(com.google.protobuf.CodedOutputStream output)
                       throws java.io.IOException {
     getSerializedSize();
@@ -146,7 +142,7 @@ private static final long serialVersionUID = 0L;
     getUnknownFields().writeTo(output);
   }
 
-  @Override
+  @java.lang.Override
   public int getSerializedSize() {
     int size = memoizedSize;
     if (size != -1) return size;
@@ -179,15 +175,15 @@ private static final long serialVersionUID = 0L;
     return size;
   }
 
-  @Override
-  public boolean equals(final Object obj) {
+  @java.lang.Override
+  public boolean equals(final java.lang.Object obj) {
     if (obj == this) {
      return true;
     }
-    if (!(obj instanceof LoraModulationConfig)) {
+    if (!(obj instanceof io.chirpstack.api.gw.LoraModulationConfig)) {
       return super.equals(obj);
     }
-    LoraModulationConfig other = (LoraModulationConfig) obj;
+    io.chirpstack.api.gw.LoraModulationConfig other = (io.chirpstack.api.gw.LoraModulationConfig) obj;
 
     if (getBandwidthLegacy()
         != other.getBandwidthLegacy()) return false;
@@ -199,7 +195,7 @@ private static final long serialVersionUID = 0L;
     return true;
   }
 
-  @Override
+  @java.lang.Override
   public int hashCode() {
     if (memoizedHashCode != 0) {
       return memoizedHashCode;
@@ -219,69 +215,69 @@ private static final long serialVersionUID = 0L;
     return hash;
   }
 
-  public static LoraModulationConfig parseFrom(
+  public static io.chirpstack.api.gw.LoraModulationConfig parseFrom(
       java.nio.ByteBuffer data)
       throws com.google.protobuf.InvalidProtocolBufferException {
     return PARSER.parseFrom(data);
   }
-  public static LoraModulationConfig parseFrom(
+  public static io.chirpstack.api.gw.LoraModulationConfig parseFrom(
       java.nio.ByteBuffer data,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws com.google.protobuf.InvalidProtocolBufferException {
     return PARSER.parseFrom(data, extensionRegistry);
   }
-  public static LoraModulationConfig parseFrom(
+  public static io.chirpstack.api.gw.LoraModulationConfig parseFrom(
       com.google.protobuf.ByteString data)
       throws com.google.protobuf.InvalidProtocolBufferException {
     return PARSER.parseFrom(data);
   }
-  public static LoraModulationConfig parseFrom(
+  public static io.chirpstack.api.gw.LoraModulationConfig parseFrom(
       com.google.protobuf.ByteString data,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws com.google.protobuf.InvalidProtocolBufferException {
     return PARSER.parseFrom(data, extensionRegistry);
   }
-  public static LoraModulationConfig parseFrom(byte[] data)
+  public static io.chirpstack.api.gw.LoraModulationConfig parseFrom(byte[] data)
       throws com.google.protobuf.InvalidProtocolBufferException {
     return PARSER.parseFrom(data);
   }
-  public static LoraModulationConfig parseFrom(
+  public static io.chirpstack.api.gw.LoraModulationConfig parseFrom(
       byte[] data,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws com.google.protobuf.InvalidProtocolBufferException {
     return PARSER.parseFrom(data, extensionRegistry);
   }
-  public static LoraModulationConfig parseFrom(java.io.InputStream input)
+  public static io.chirpstack.api.gw.LoraModulationConfig parseFrom(java.io.InputStream input)
       throws java.io.IOException {
     return com.google.protobuf.GeneratedMessageV3
         .parseWithIOException(PARSER, input);
   }
-  public static LoraModulationConfig parseFrom(
+  public static io.chirpstack.api.gw.LoraModulationConfig parseFrom(
       java.io.InputStream input,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws java.io.IOException {
     return com.google.protobuf.GeneratedMessageV3
         .parseWithIOException(PARSER, input, extensionRegistry);
   }
-  public static LoraModulationConfig parseDelimitedFrom(java.io.InputStream input)
+  public static io.chirpstack.api.gw.LoraModulationConfig parseDelimitedFrom(java.io.InputStream input)
       throws java.io.IOException {
     return com.google.protobuf.GeneratedMessageV3
         .parseDelimitedWithIOException(PARSER, input);
   }
-  public static LoraModulationConfig parseDelimitedFrom(
+  public static io.chirpstack.api.gw.LoraModulationConfig parseDelimitedFrom(
       java.io.InputStream input,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws java.io.IOException {
     return com.google.protobuf.GeneratedMessageV3
         .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
   }
-  public static LoraModulationConfig parseFrom(
+  public static io.chirpstack.api.gw.LoraModulationConfig parseFrom(
       com.google.protobuf.CodedInputStream input)
       throws java.io.IOException {
     return com.google.protobuf.GeneratedMessageV3
         .parseWithIOException(PARSER, input);
   }
-  public static LoraModulationConfig parseFrom(
+  public static io.chirpstack.api.gw.LoraModulationConfig parseFrom(
       com.google.protobuf.CodedInputStream input,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws java.io.IOException {
@@ -289,23 +285,23 @@ private static final long serialVersionUID = 0L;
         .parseWithIOException(PARSER, input, extensionRegistry);
   }
 
-  @Override
+  @java.lang.Override
   public Builder newBuilderForType() { return newBuilder(); }
   public static Builder newBuilder() {
     return DEFAULT_INSTANCE.toBuilder();
   }
-  public static Builder newBuilder(LoraModulationConfig prototype) {
+  public static Builder newBuilder(io.chirpstack.api.gw.LoraModulationConfig prototype) {
     return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
   }
-  @Override
+  @java.lang.Override
   public Builder toBuilder() {
     return this == DEFAULT_INSTANCE
         ? new Builder() : new Builder().mergeFrom(this);
   }
 
-  @Override
+  @java.lang.Override
   protected Builder newBuilderForType(
-      BuilderParent parent) {
+      com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
     Builder builder = new Builder(parent);
     return builder;
   }
@@ -315,18 +311,18 @@ private static final long serialVersionUID = 0L;
   public static final class Builder extends
       com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
       // @@protoc_insertion_point(builder_implements:gw.LoraModulationConfig)
-      LoraModulationConfigOrBuilder {
+      io.chirpstack.api.gw.LoraModulationConfigOrBuilder {
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
-      return GatewayProto.internal_static_gw_LoraModulationConfig_descriptor;
+      return io.chirpstack.api.gw.GatewayProto.internal_static_gw_LoraModulationConfig_descriptor;
     }
 
-    @Override
-    protected FieldAccessorTable
+    @java.lang.Override
+    protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
         internalGetFieldAccessorTable() {
-      return GatewayProto.internal_static_gw_LoraModulationConfig_fieldAccessorTable
+      return io.chirpstack.api.gw.GatewayProto.internal_static_gw_LoraModulationConfig_fieldAccessorTable
           .ensureFieldAccessorsInitialized(
-              LoraModulationConfig.class, Builder.class);
+              io.chirpstack.api.gw.LoraModulationConfig.class, io.chirpstack.api.gw.LoraModulationConfig.Builder.class);
     }
 
     // Construct using io.chirpstack.api.gw.LoraModulationConfig.newBuilder()
@@ -335,101 +331,79 @@ private static final long serialVersionUID = 0L;
     }
 
     private Builder(
-        BuilderParent parent) {
+        com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
       super(parent);
 
     }
-    @Override
+    @java.lang.Override
     public Builder clear() {
       super.clear();
+      bitField0_ = 0;
       bandwidthLegacy_ = 0;
-
       bandwidth_ = 0;
-
       spreadingFactors_ = emptyIntList();
-      bitField0_ = (bitField0_ & ~0x00000001);
       return this;
     }
 
-    @Override
+    @java.lang.Override
     public com.google.protobuf.Descriptors.Descriptor
         getDescriptorForType() {
-      return GatewayProto.internal_static_gw_LoraModulationConfig_descriptor;
+      return io.chirpstack.api.gw.GatewayProto.internal_static_gw_LoraModulationConfig_descriptor;
     }
 
-    @Override
-    public LoraModulationConfig getDefaultInstanceForType() {
-      return LoraModulationConfig.getDefaultInstance();
+    @java.lang.Override
+    public io.chirpstack.api.gw.LoraModulationConfig getDefaultInstanceForType() {
+      return io.chirpstack.api.gw.LoraModulationConfig.getDefaultInstance();
     }
 
-    @Override
-    public LoraModulationConfig build() {
-      LoraModulationConfig result = buildPartial();
+    @java.lang.Override
+    public io.chirpstack.api.gw.LoraModulationConfig build() {
+      io.chirpstack.api.gw.LoraModulationConfig result = buildPartial();
       if (!result.isInitialized()) {
         throw newUninitializedMessageException(result);
       }
       return result;
     }
 
-    @Override
-    public LoraModulationConfig buildPartial() {
-      LoraModulationConfig result = new LoraModulationConfig(this);
-      int from_bitField0_ = bitField0_;
-      result.bandwidthLegacy_ = bandwidthLegacy_;
-      result.bandwidth_ = bandwidth_;
-      if (((bitField0_ & 0x00000001) != 0)) {
-        spreadingFactors_.makeImmutable();
-        bitField0_ = (bitField0_ & ~0x00000001);
-      }
-      result.spreadingFactors_ = spreadingFactors_;
+    @java.lang.Override
+    public io.chirpstack.api.gw.LoraModulationConfig buildPartial() {
+      io.chirpstack.api.gw.LoraModulationConfig result = new io.chirpstack.api.gw.LoraModulationConfig(this);
+      buildPartialRepeatedFields(result);
+      if (bitField0_ != 0) { buildPartial0(result); }
       onBuilt();
       return result;
     }
 
-    @Override
-    public Builder clone() {
-      return super.clone();
+    private void buildPartialRepeatedFields(io.chirpstack.api.gw.LoraModulationConfig result) {
+      if (((bitField0_ & 0x00000004) != 0)) {
+        spreadingFactors_.makeImmutable();
+        bitField0_ = (bitField0_ & ~0x00000004);
+      }
+      result.spreadingFactors_ = spreadingFactors_;
     }
-    @Override
-    public Builder setField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        Object value) {
-      return super.setField(field, value);
+
+    private void buildPartial0(io.chirpstack.api.gw.LoraModulationConfig result) {
+      int from_bitField0_ = bitField0_;
+      if (((from_bitField0_ & 0x00000001) != 0)) {
+        result.bandwidthLegacy_ = bandwidthLegacy_;
+      }
+      if (((from_bitField0_ & 0x00000002) != 0)) {
+        result.bandwidth_ = bandwidth_;
+      }
     }
-    @Override
-    public Builder clearField(
-        com.google.protobuf.Descriptors.FieldDescriptor field) {
-      return super.clearField(field);
-    }
-    @Override
-    public Builder clearOneof(
-        com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-      return super.clearOneof(oneof);
-    }
-    @Override
-    public Builder setRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        int index, Object value) {
-      return super.setRepeatedField(field, index, value);
-    }
-    @Override
-    public Builder addRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        Object value) {
-      return super.addRepeatedField(field, value);
-    }
-    @Override
+
+    @java.lang.Override
     public Builder mergeFrom(com.google.protobuf.Message other) {
-      if (other instanceof LoraModulationConfig) {
-        return mergeFrom((LoraModulationConfig)other);
+      if (other instanceof io.chirpstack.api.gw.LoraModulationConfig) {
+        return mergeFrom((io.chirpstack.api.gw.LoraModulationConfig)other);
       } else {
         super.mergeFrom(other);
         return this;
       }
     }
 
-    public Builder mergeFrom(LoraModulationConfig other) {
-      if (other == LoraModulationConfig.getDefaultInstance()) return this;
+    public Builder mergeFrom(io.chirpstack.api.gw.LoraModulationConfig other) {
+      if (other == io.chirpstack.api.gw.LoraModulationConfig.getDefaultInstance()) return this;
       if (other.getBandwidthLegacy() != 0) {
         setBandwidthLegacy(other.getBandwidthLegacy());
       }
@@ -439,7 +413,7 @@ private static final long serialVersionUID = 0L;
       if (!other.spreadingFactors_.isEmpty()) {
         if (spreadingFactors_.isEmpty()) {
           spreadingFactors_ = other.spreadingFactors_;
-          bitField0_ = (bitField0_ & ~0x00000001);
+          bitField0_ = (bitField0_ & ~0x00000004);
         } else {
           ensureSpreadingFactorsIsMutable();
           spreadingFactors_.addAll(other.spreadingFactors_);
@@ -451,18 +425,18 @@ private static final long serialVersionUID = 0L;
       return this;
     }
 
-    @Override
+    @java.lang.Override
     public final boolean isInitialized() {
       return true;
     }
 
-    @Override
+    @java.lang.Override
     public Builder mergeFrom(
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
       if (extensionRegistry == null) {
-        throw new NullPointerException();
+        throw new java.lang.NullPointerException();
       }
       try {
         boolean done = false;
@@ -474,7 +448,7 @@ private static final long serialVersionUID = 0L;
               break;
             case 8: {
               bandwidthLegacy_ = input.readUInt32();
-
+              bitField0_ |= 0x00000001;
               break;
             } // case 8
             case 16: {
@@ -495,7 +469,7 @@ private static final long serialVersionUID = 0L;
             } // case 18
             case 24: {
               bandwidth_ = input.readUInt32();
-
+              bitField0_ |= 0x00000002;
               break;
             } // case 24
             default: {
@@ -525,7 +499,7 @@ private static final long serialVersionUID = 0L;
      * <code>uint32 bandwidth_legacy = 1;</code>
      * @return The bandwidthLegacy.
      */
-    @Override
+    @java.lang.Override
     public int getBandwidthLegacy() {
       return bandwidthLegacy_;
     }
@@ -540,8 +514,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setBandwidthLegacy(int value) {
-      
+
       bandwidthLegacy_ = value;
+      bitField0_ |= 0x00000001;
       onChanged();
       return this;
     }
@@ -555,7 +530,7 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder clearBandwidthLegacy() {
-      
+      bitField0_ = (bitField0_ & ~0x00000001);
       bandwidthLegacy_ = 0;
       onChanged();
       return this;
@@ -570,7 +545,7 @@ private static final long serialVersionUID = 0L;
      * <code>uint32 bandwidth = 3;</code>
      * @return The bandwidth.
      */
-    @Override
+    @java.lang.Override
     public int getBandwidth() {
       return bandwidth_;
     }
@@ -584,8 +559,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setBandwidth(int value) {
-      
+
       bandwidth_ = value;
+      bitField0_ |= 0x00000002;
       onChanged();
       return this;
     }
@@ -598,7 +574,7 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder clearBandwidth() {
-      
+      bitField0_ = (bitField0_ & ~0x00000002);
       bandwidth_ = 0;
       onChanged();
       return this;
@@ -606,10 +582,10 @@ private static final long serialVersionUID = 0L;
 
     private com.google.protobuf.Internal.IntList spreadingFactors_ = emptyIntList();
     private void ensureSpreadingFactorsIsMutable() {
-      if (!((bitField0_ & 0x00000001) != 0)) {
+      if (!((bitField0_ & 0x00000004) != 0)) {
         spreadingFactors_ = mutableCopy(spreadingFactors_);
-        bitField0_ |= 0x00000001;
-       }
+        bitField0_ |= 0x00000004;
+      }
     }
     /**
      * <pre>
@@ -619,9 +595,9 @@ private static final long serialVersionUID = 0L;
      * <code>repeated uint32 spreading_factors = 2;</code>
      * @return A list containing the spreadingFactors.
      */
-    public java.util.List<Integer>
+    public java.util.List<java.lang.Integer>
         getSpreadingFactorsList() {
-      return ((bitField0_ & 0x00000001) != 0) ?
+      return ((bitField0_ & 0x00000004) != 0) ?
                java.util.Collections.unmodifiableList(spreadingFactors_) : spreadingFactors_;
     }
     /**
@@ -659,6 +635,7 @@ private static final long serialVersionUID = 0L;
      */
     public Builder setSpreadingFactors(
         int index, int value) {
+
       ensureSpreadingFactorsIsMutable();
       spreadingFactors_.setInt(index, value);
       onChanged();
@@ -674,6 +651,7 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder addSpreadingFactors(int value) {
+
       ensureSpreadingFactorsIsMutable();
       spreadingFactors_.addInt(value);
       onChanged();
@@ -689,7 +667,7 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder addAllSpreadingFactors(
-        Iterable<? extends Integer> values) {
+        java.lang.Iterable<? extends java.lang.Integer> values) {
       ensureSpreadingFactorsIsMutable();
       com.google.protobuf.AbstractMessageLite.Builder.addAll(
           values, spreadingFactors_);
@@ -706,17 +684,17 @@ private static final long serialVersionUID = 0L;
      */
     public Builder clearSpreadingFactors() {
       spreadingFactors_ = emptyIntList();
-      bitField0_ = (bitField0_ & ~0x00000001);
+      bitField0_ = (bitField0_ & ~0x00000004);
       onChanged();
       return this;
     }
-    @Override
+    @java.lang.Override
     public final Builder setUnknownFields(
         final com.google.protobuf.UnknownFieldSet unknownFields) {
       return super.setUnknownFields(unknownFields);
     }
 
-    @Override
+    @java.lang.Override
     public final Builder mergeUnknownFields(
         final com.google.protobuf.UnknownFieldSet unknownFields) {
       return super.mergeUnknownFields(unknownFields);
@@ -727,18 +705,18 @@ private static final long serialVersionUID = 0L;
   }
 
   // @@protoc_insertion_point(class_scope:gw.LoraModulationConfig)
-  private static final LoraModulationConfig DEFAULT_INSTANCE;
+  private static final io.chirpstack.api.gw.LoraModulationConfig DEFAULT_INSTANCE;
   static {
-    DEFAULT_INSTANCE = new LoraModulationConfig();
+    DEFAULT_INSTANCE = new io.chirpstack.api.gw.LoraModulationConfig();
   }
 
-  public static LoraModulationConfig getDefaultInstance() {
+  public static io.chirpstack.api.gw.LoraModulationConfig getDefaultInstance() {
     return DEFAULT_INSTANCE;
   }
 
   private static final com.google.protobuf.Parser<LoraModulationConfig>
       PARSER = new com.google.protobuf.AbstractParser<LoraModulationConfig>() {
-    @Override
+    @java.lang.Override
     public LoraModulationConfig parsePartialFrom(
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
@@ -762,13 +740,13 @@ private static final long serialVersionUID = 0L;
     return PARSER;
   }
 
-  @Override
+  @java.lang.Override
   public com.google.protobuf.Parser<LoraModulationConfig> getParserForType() {
     return PARSER;
   }
 
-  @Override
-  public LoraModulationConfig getDefaultInstanceForType() {
+  @java.lang.Override
+  public io.chirpstack.api.gw.LoraModulationConfig getDefaultInstanceForType() {
     return DEFAULT_INSTANCE;
   }
 

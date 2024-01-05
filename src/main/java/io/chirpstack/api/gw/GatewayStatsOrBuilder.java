@@ -26,7 +26,7 @@ public interface GatewayStatsOrBuilder extends
    * <code>string gateway_id = 17;</code>
    * @return The gatewayId.
    */
-  String getGatewayId();
+  java.lang.String getGatewayId();
   /**
    * <pre>
    * Gateway ID.
@@ -101,7 +101,7 @@ public interface GatewayStatsOrBuilder extends
    * <code>string config_version = 4;</code>
    * @return The configVersion.
    */
-  String getConfigVersion();
+  java.lang.String getConfigVersion();
   /**
    * <pre>
    * Gateway configuration version (this maps to the config_version sent
@@ -159,56 +159,54 @@ public interface GatewayStatsOrBuilder extends
    * Additional gateway meta-data.
    * </pre>
    *
-   * <code>map&lt;string, string&gt; meta_data = 10;</code>
+   * <code>map&lt;string, string&gt; metadata = 10;</code>
    */
-  int getMetaDataCount();
+  int getMetadataCount();
   /**
    * <pre>
    * Additional gateway meta-data.
    * </pre>
    *
-   * <code>map&lt;string, string&gt; meta_data = 10;</code>
+   * <code>map&lt;string, string&gt; metadata = 10;</code>
    */
-  boolean containsMetaData(
-      String key);
+  boolean containsMetadata(
+      java.lang.String key);
   /**
-   * Use {@link #getMetaDataMap()} instead.
+   * Use {@link #getMetadataMap()} instead.
    */
-  @Deprecated
-  java.util.Map<String, String>
-  getMetaData();
-  /**
-   * <pre>
-   * Additional gateway meta-data.
-   * </pre>
-   *
-   * <code>map&lt;string, string&gt; meta_data = 10;</code>
-   */
-  java.util.Map<String, String>
-  getMetaDataMap();
+  @java.lang.Deprecated
+  java.util.Map<java.lang.String, java.lang.String>
+  getMetadata();
   /**
    * <pre>
    * Additional gateway meta-data.
    * </pre>
    *
-   * <code>map&lt;string, string&gt; meta_data = 10;</code>
+   * <code>map&lt;string, string&gt; metadata = 10;</code>
    */
-
+  java.util.Map<java.lang.String, java.lang.String>
+  getMetadataMap();
+  /**
+   * <pre>
+   * Additional gateway meta-data.
+   * </pre>
+   *
+   * <code>map&lt;string, string&gt; metadata = 10;</code>
+   */
   /* nullable */
-String getMetaDataOrDefault(
-      String key,
+java.lang.String getMetadataOrDefault(
+      java.lang.String key,
       /* nullable */
-String defaultValue);
+java.lang.String defaultValue);
   /**
    * <pre>
    * Additional gateway meta-data.
    * </pre>
    *
-   * <code>map&lt;string, string&gt; meta_data = 10;</code>
+   * <code>map&lt;string, string&gt; metadata = 10;</code>
    */
-
-  String getMetaDataOrThrow(
-      String key);
+  java.lang.String getMetadataOrThrow(
+      java.lang.String key);
 
   /**
    * <pre>
@@ -230,8 +228,8 @@ String defaultValue);
   /**
    * Use {@link #getTxPacketsPerFrequencyMap()} instead.
    */
-  @Deprecated
-  java.util.Map<Integer, Integer>
+  @java.lang.Deprecated
+  java.util.Map<java.lang.Integer, java.lang.Integer>
   getTxPacketsPerFrequency();
   /**
    * <pre>
@@ -240,7 +238,7 @@ String defaultValue);
    *
    * <code>map&lt;uint32, uint32&gt; tx_packets_per_frequency = 12;</code>
    */
-  java.util.Map<Integer, Integer>
+  java.util.Map<java.lang.Integer, java.lang.Integer>
   getTxPacketsPerFrequencyMap();
   /**
    * <pre>
@@ -249,7 +247,6 @@ String defaultValue);
    *
    * <code>map&lt;uint32, uint32&gt; tx_packets_per_frequency = 12;</code>
    */
-
   int getTxPacketsPerFrequencyOrDefault(
       int key,
       int defaultValue);
@@ -260,7 +257,6 @@ String defaultValue);
    *
    * <code>map&lt;uint32, uint32&gt; tx_packets_per_frequency = 12;</code>
    */
-
   int getTxPacketsPerFrequencyOrThrow(
       int key);
 
@@ -284,8 +280,8 @@ String defaultValue);
   /**
    * Use {@link #getRxPacketsPerFrequencyMap()} instead.
    */
-  @Deprecated
-  java.util.Map<Integer, Integer>
+  @java.lang.Deprecated
+  java.util.Map<java.lang.Integer, java.lang.Integer>
   getRxPacketsPerFrequency();
   /**
    * <pre>
@@ -294,7 +290,7 @@ String defaultValue);
    *
    * <code>map&lt;uint32, uint32&gt; rx_packets_per_frequency = 13;</code>
    */
-  java.util.Map<Integer, Integer>
+  java.util.Map<java.lang.Integer, java.lang.Integer>
   getRxPacketsPerFrequencyMap();
   /**
    * <pre>
@@ -303,7 +299,6 @@ String defaultValue);
    *
    * <code>map&lt;uint32, uint32&gt; rx_packets_per_frequency = 13;</code>
    */
-
   int getRxPacketsPerFrequencyOrDefault(
       int key,
       int defaultValue);
@@ -314,7 +309,6 @@ String defaultValue);
    *
    * <code>map&lt;uint32, uint32&gt; rx_packets_per_frequency = 13;</code>
    */
-
   int getRxPacketsPerFrequencyOrThrow(
       int key);
 
@@ -325,7 +319,7 @@ String defaultValue);
    *
    * <code>repeated .gw.PerModulationCount tx_packets_per_modulation = 14;</code>
    */
-  java.util.List<PerModulationCount>
+  java.util.List<io.chirpstack.api.gw.PerModulationCount> 
       getTxPacketsPerModulationList();
   /**
    * <pre>
@@ -334,7 +328,7 @@ String defaultValue);
    *
    * <code>repeated .gw.PerModulationCount tx_packets_per_modulation = 14;</code>
    */
-  PerModulationCount getTxPacketsPerModulation(int index);
+  io.chirpstack.api.gw.PerModulationCount getTxPacketsPerModulation(int index);
   /**
    * <pre>
    * Tx packets per modulation parameters.
@@ -350,7 +344,7 @@ String defaultValue);
    *
    * <code>repeated .gw.PerModulationCount tx_packets_per_modulation = 14;</code>
    */
-  java.util.List<? extends PerModulationCountOrBuilder>
+  java.util.List<? extends io.chirpstack.api.gw.PerModulationCountOrBuilder> 
       getTxPacketsPerModulationOrBuilderList();
   /**
    * <pre>
@@ -359,7 +353,7 @@ String defaultValue);
    *
    * <code>repeated .gw.PerModulationCount tx_packets_per_modulation = 14;</code>
    */
-  PerModulationCountOrBuilder getTxPacketsPerModulationOrBuilder(
+  io.chirpstack.api.gw.PerModulationCountOrBuilder getTxPacketsPerModulationOrBuilder(
       int index);
 
   /**
@@ -369,7 +363,7 @@ String defaultValue);
    *
    * <code>repeated .gw.PerModulationCount rx_packets_per_modulation = 15;</code>
    */
-  java.util.List<PerModulationCount>
+  java.util.List<io.chirpstack.api.gw.PerModulationCount> 
       getRxPacketsPerModulationList();
   /**
    * <pre>
@@ -378,7 +372,7 @@ String defaultValue);
    *
    * <code>repeated .gw.PerModulationCount rx_packets_per_modulation = 15;</code>
    */
-  PerModulationCount getRxPacketsPerModulation(int index);
+  io.chirpstack.api.gw.PerModulationCount getRxPacketsPerModulation(int index);
   /**
    * <pre>
    * Rx packets per modulation parameters.
@@ -394,7 +388,7 @@ String defaultValue);
    *
    * <code>repeated .gw.PerModulationCount rx_packets_per_modulation = 15;</code>
    */
-  java.util.List<? extends PerModulationCountOrBuilder>
+  java.util.List<? extends io.chirpstack.api.gw.PerModulationCountOrBuilder> 
       getRxPacketsPerModulationOrBuilderList();
   /**
    * <pre>
@@ -403,7 +397,7 @@ String defaultValue);
    *
    * <code>repeated .gw.PerModulationCount rx_packets_per_modulation = 15;</code>
    */
-  PerModulationCountOrBuilder getRxPacketsPerModulationOrBuilder(
+  io.chirpstack.api.gw.PerModulationCountOrBuilder getRxPacketsPerModulationOrBuilder(
       int index);
 
   /**
@@ -422,12 +416,12 @@ String defaultValue);
    * <code>map&lt;string, uint32&gt; tx_packets_per_status = 16;</code>
    */
   boolean containsTxPacketsPerStatus(
-      String key);
+      java.lang.String key);
   /**
    * Use {@link #getTxPacketsPerStatusMap()} instead.
    */
-  @Deprecated
-  java.util.Map<String, Integer>
+  @java.lang.Deprecated
+  java.util.Map<java.lang.String, java.lang.Integer>
   getTxPacketsPerStatus();
   /**
    * <pre>
@@ -436,7 +430,7 @@ String defaultValue);
    *
    * <code>map&lt;string, uint32&gt; tx_packets_per_status = 16;</code>
    */
-  java.util.Map<String, Integer>
+  java.util.Map<java.lang.String, java.lang.Integer>
   getTxPacketsPerStatusMap();
   /**
    * <pre>
@@ -445,9 +439,8 @@ String defaultValue);
    *
    * <code>map&lt;string, uint32&gt; tx_packets_per_status = 16;</code>
    */
-
   int getTxPacketsPerStatusOrDefault(
-      String key,
+      java.lang.String key,
       int defaultValue);
   /**
    * <pre>
@@ -456,7 +449,6 @@ String defaultValue);
    *
    * <code>map&lt;string, uint32&gt; tx_packets_per_status = 16;</code>
    */
-
   int getTxPacketsPerStatusOrThrow(
-      String key);
+      java.lang.String key);
 }

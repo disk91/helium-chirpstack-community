@@ -26,7 +26,7 @@ public interface RawPacketForwarderCommandOrBuilder extends
    * <code>string gateway_id = 4;</code>
    * @return The gatewayId.
    */
-  String getGatewayId();
+  java.lang.String getGatewayId();
   /**
    * <pre>
    * Gateway ID.

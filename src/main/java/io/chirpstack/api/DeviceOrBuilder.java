@@ -109,7 +109,8 @@ public interface DeviceOrBuilder extends
 
   /**
    * <pre>
-   * Skip frame-counter checks (this is insecure, but could be helpful for debugging).
+   * Skip frame-counter checks (this is insecure, but could be helpful for
+   * debugging).
    * </pre>
    *
    * <code>bool skip_fcnt_check = 6;</code>
@@ -199,8 +200,8 @@ String defaultValue);
   /**
    * <pre>
    * Tags (user defined).
-   * These tags are exposed in the event payloads or to integration. Tags are
-   * intended for aggregation and filtering.
+   * These tags can be used to add additional information to the device.
+   * These tags are exposed in all the integration events.
    * </pre>
    *
    * <code>map&lt;string, string&gt; tags = 9;</code>
@@ -209,8 +210,8 @@ String defaultValue);
   /**
    * <pre>
    * Tags (user defined).
-   * These tags are exposed in the event payloads or to integration. Tags are
-   * intended for aggregation and filtering.
+   * These tags can be used to add additional information to the device.
+   * These tags are exposed in all the integration events.
    * </pre>
    *
    * <code>map&lt;string, string&gt; tags = 9;</code>
@@ -226,8 +227,8 @@ String defaultValue);
   /**
    * <pre>
    * Tags (user defined).
-   * These tags are exposed in the event payloads or to integration. Tags are
-   * intended for aggregation and filtering.
+   * These tags can be used to add additional information to the device.
+   * These tags are exposed in all the integration events.
    * </pre>
    *
    * <code>map&lt;string, string&gt; tags = 9;</code>
@@ -237,8 +238,8 @@ String defaultValue);
   /**
    * <pre>
    * Tags (user defined).
-   * These tags are exposed in the event payloads or to integration. Tags are
-   * intended for aggregation and filtering.
+   * These tags can be used to add additional information to the device.
+   * These tags are exposed in all the integration events.
    * </pre>
    *
    * <code>map&lt;string, string&gt; tags = 9;</code>
@@ -251,12 +252,40 @@ String defaultValue);
   /**
    * <pre>
    * Tags (user defined).
-   * These tags are exposed in the event payloads or to integration. Tags are
-   * intended for aggregation and filtering.
+   * These tags can be used to add additional information to the device.
+   * These tags are exposed in all the integration events.
    * </pre>
    *
    * <code>map&lt;string, string&gt; tags = 9;</code>
    */
   String getTagsOrThrow(
       String key);
+
+  /**
+   * <pre>
+   * JoinEUI (optional, EUI64).
+   * This field will be automatically set / updated on OTAA. However, in some
+   * cases it must be pre-configured. For example to allow OTAA using a Relay.
+   * In this case the Relay needs to know the JoinEUI + DevEUI combinations
+   * of the devices for which it needs to forward uplinks.
+   * </pre>
+   *
+   * <code>string join_eui = 10;</code>
+   * @return The joinEui.
+   */
+  String getJoinEui();
+  /**
+   * <pre>
+   * JoinEUI (optional, EUI64).
+   * This field will be automatically set / updated on OTAA. However, in some
+   * cases it must be pre-configured. For example to allow OTAA using a Relay.
+   * In this case the Relay needs to know the JoinEUI + DevEUI combinations
+   * of the devices for which it needs to forward uplinks.
+   * </pre>
+   *
+   * <code>string join_eui = 10;</code>
+   * @return The bytes for joinEui.
+   */
+  com.google.protobuf.ByteString
+      getJoinEuiBytes();
 }

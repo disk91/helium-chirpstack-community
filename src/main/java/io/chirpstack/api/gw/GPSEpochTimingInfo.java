@@ -18,29 +18,24 @@ private static final long serialVersionUID = 0L;
   private GPSEpochTimingInfo() {
   }
 
-  @Override
+  @java.lang.Override
   @SuppressWarnings({"unused"})
-  protected Object newInstance(
+  protected java.lang.Object newInstance(
       UnusedPrivateParameter unused) {
     return new GPSEpochTimingInfo();
   }
 
-  @Override
-  public final com.google.protobuf.UnknownFieldSet
-  getUnknownFields() {
-    return this.unknownFields;
-  }
   public static final com.google.protobuf.Descriptors.Descriptor
       getDescriptor() {
-    return GatewayProto.internal_static_gw_GPSEpochTimingInfo_descriptor;
+    return io.chirpstack.api.gw.GatewayProto.internal_static_gw_GPSEpochTimingInfo_descriptor;
   }
 
-  @Override
-  protected FieldAccessorTable
+  @java.lang.Override
+  protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
       internalGetFieldAccessorTable() {
-    return GatewayProto.internal_static_gw_GPSEpochTimingInfo_fieldAccessorTable
+    return io.chirpstack.api.gw.GatewayProto.internal_static_gw_GPSEpochTimingInfo_fieldAccessorTable
         .ensureFieldAccessorsInitialized(
-            GPSEpochTimingInfo.class, Builder.class);
+            io.chirpstack.api.gw.GPSEpochTimingInfo.class, io.chirpstack.api.gw.GPSEpochTimingInfo.Builder.class);
   }
 
   public static final int TIME_SINCE_GPS_EPOCH_FIELD_NUMBER = 1;
@@ -53,7 +48,7 @@ private static final long serialVersionUID = 0L;
    * <code>.google.protobuf.Duration time_since_gps_epoch = 1;</code>
    * @return Whether the timeSinceGpsEpoch field is set.
    */
-  @Override
+  @java.lang.Override
   public boolean hasTimeSinceGpsEpoch() {
     return timeSinceGpsEpoch_ != null;
   }
@@ -65,7 +60,7 @@ private static final long serialVersionUID = 0L;
    * <code>.google.protobuf.Duration time_since_gps_epoch = 1;</code>
    * @return The timeSinceGpsEpoch.
    */
-  @Override
+  @java.lang.Override
   public com.google.protobuf.Duration getTimeSinceGpsEpoch() {
     return timeSinceGpsEpoch_ == null ? com.google.protobuf.Duration.getDefaultInstance() : timeSinceGpsEpoch_;
   }
@@ -76,13 +71,13 @@ private static final long serialVersionUID = 0L;
    *
    * <code>.google.protobuf.Duration time_since_gps_epoch = 1;</code>
    */
-  @Override
+  @java.lang.Override
   public com.google.protobuf.DurationOrBuilder getTimeSinceGpsEpochOrBuilder() {
-    return getTimeSinceGpsEpoch();
+    return timeSinceGpsEpoch_ == null ? com.google.protobuf.Duration.getDefaultInstance() : timeSinceGpsEpoch_;
   }
 
   private byte memoizedIsInitialized = -1;
-  @Override
+  @java.lang.Override
   public final boolean isInitialized() {
     byte isInitialized = memoizedIsInitialized;
     if (isInitialized == 1) return true;
@@ -92,7 +87,7 @@ private static final long serialVersionUID = 0L;
     return true;
   }
 
-  @Override
+  @java.lang.Override
   public void writeTo(com.google.protobuf.CodedOutputStream output)
                       throws java.io.IOException {
     if (timeSinceGpsEpoch_ != null) {
@@ -101,7 +96,7 @@ private static final long serialVersionUID = 0L;
     getUnknownFields().writeTo(output);
   }
 
-  @Override
+  @java.lang.Override
   public int getSerializedSize() {
     int size = memoizedSize;
     if (size != -1) return size;
@@ -116,15 +111,15 @@ private static final long serialVersionUID = 0L;
     return size;
   }
 
-  @Override
-  public boolean equals(final Object obj) {
+  @java.lang.Override
+  public boolean equals(final java.lang.Object obj) {
     if (obj == this) {
      return true;
     }
-    if (!(obj instanceof GPSEpochTimingInfo)) {
+    if (!(obj instanceof io.chirpstack.api.gw.GPSEpochTimingInfo)) {
       return super.equals(obj);
     }
-    GPSEpochTimingInfo other = (GPSEpochTimingInfo) obj;
+    io.chirpstack.api.gw.GPSEpochTimingInfo other = (io.chirpstack.api.gw.GPSEpochTimingInfo) obj;
 
     if (hasTimeSinceGpsEpoch() != other.hasTimeSinceGpsEpoch()) return false;
     if (hasTimeSinceGpsEpoch()) {
@@ -135,7 +130,7 @@ private static final long serialVersionUID = 0L;
     return true;
   }
 
-  @Override
+  @java.lang.Override
   public int hashCode() {
     if (memoizedHashCode != 0) {
       return memoizedHashCode;
@@ -151,69 +146,69 @@ private static final long serialVersionUID = 0L;
     return hash;
   }
 
-  public static GPSEpochTimingInfo parseFrom(
+  public static io.chirpstack.api.gw.GPSEpochTimingInfo parseFrom(
       java.nio.ByteBuffer data)
       throws com.google.protobuf.InvalidProtocolBufferException {
     return PARSER.parseFrom(data);
   }
-  public static GPSEpochTimingInfo parseFrom(
+  public static io.chirpstack.api.gw.GPSEpochTimingInfo parseFrom(
       java.nio.ByteBuffer data,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws com.google.protobuf.InvalidProtocolBufferException {
     return PARSER.parseFrom(data, extensionRegistry);
   }
-  public static GPSEpochTimingInfo parseFrom(
+  public static io.chirpstack.api.gw.GPSEpochTimingInfo parseFrom(
       com.google.protobuf.ByteString data)
       throws com.google.protobuf.InvalidProtocolBufferException {
     return PARSER.parseFrom(data);
   }
-  public static GPSEpochTimingInfo parseFrom(
+  public static io.chirpstack.api.gw.GPSEpochTimingInfo parseFrom(
       com.google.protobuf.ByteString data,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws com.google.protobuf.InvalidProtocolBufferException {
     return PARSER.parseFrom(data, extensionRegistry);
   }
-  public static GPSEpochTimingInfo parseFrom(byte[] data)
+  public static io.chirpstack.api.gw.GPSEpochTimingInfo parseFrom(byte[] data)
       throws com.google.protobuf.InvalidProtocolBufferException {
     return PARSER.parseFrom(data);
   }
-  public static GPSEpochTimingInfo parseFrom(
+  public static io.chirpstack.api.gw.GPSEpochTimingInfo parseFrom(
       byte[] data,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws com.google.protobuf.InvalidProtocolBufferException {
     return PARSER.parseFrom(data, extensionRegistry);
   }
-  public static GPSEpochTimingInfo parseFrom(java.io.InputStream input)
+  public static io.chirpstack.api.gw.GPSEpochTimingInfo parseFrom(java.io.InputStream input)
       throws java.io.IOException {
     return com.google.protobuf.GeneratedMessageV3
         .parseWithIOException(PARSER, input);
   }
-  public static GPSEpochTimingInfo parseFrom(
+  public static io.chirpstack.api.gw.GPSEpochTimingInfo parseFrom(
       java.io.InputStream input,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws java.io.IOException {
     return com.google.protobuf.GeneratedMessageV3
         .parseWithIOException(PARSER, input, extensionRegistry);
   }
-  public static GPSEpochTimingInfo parseDelimitedFrom(java.io.InputStream input)
+  public static io.chirpstack.api.gw.GPSEpochTimingInfo parseDelimitedFrom(java.io.InputStream input)
       throws java.io.IOException {
     return com.google.protobuf.GeneratedMessageV3
         .parseDelimitedWithIOException(PARSER, input);
   }
-  public static GPSEpochTimingInfo parseDelimitedFrom(
+  public static io.chirpstack.api.gw.GPSEpochTimingInfo parseDelimitedFrom(
       java.io.InputStream input,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws java.io.IOException {
     return com.google.protobuf.GeneratedMessageV3
         .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
   }
-  public static GPSEpochTimingInfo parseFrom(
+  public static io.chirpstack.api.gw.GPSEpochTimingInfo parseFrom(
       com.google.protobuf.CodedInputStream input)
       throws java.io.IOException {
     return com.google.protobuf.GeneratedMessageV3
         .parseWithIOException(PARSER, input);
   }
-  public static GPSEpochTimingInfo parseFrom(
+  public static io.chirpstack.api.gw.GPSEpochTimingInfo parseFrom(
       com.google.protobuf.CodedInputStream input,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws java.io.IOException {
@@ -221,23 +216,23 @@ private static final long serialVersionUID = 0L;
         .parseWithIOException(PARSER, input, extensionRegistry);
   }
 
-  @Override
+  @java.lang.Override
   public Builder newBuilderForType() { return newBuilder(); }
   public static Builder newBuilder() {
     return DEFAULT_INSTANCE.toBuilder();
   }
-  public static Builder newBuilder(GPSEpochTimingInfo prototype) {
+  public static Builder newBuilder(io.chirpstack.api.gw.GPSEpochTimingInfo prototype) {
     return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
   }
-  @Override
+  @java.lang.Override
   public Builder toBuilder() {
     return this == DEFAULT_INSTANCE
         ? new Builder() : new Builder().mergeFrom(this);
   }
 
-  @Override
+  @java.lang.Override
   protected Builder newBuilderForType(
-      BuilderParent parent) {
+      com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
     Builder builder = new Builder(parent);
     return builder;
   }
@@ -247,18 +242,18 @@ private static final long serialVersionUID = 0L;
   public static final class Builder extends
       com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
       // @@protoc_insertion_point(builder_implements:gw.GPSEpochTimingInfo)
-      GPSEpochTimingInfoOrBuilder {
+      io.chirpstack.api.gw.GPSEpochTimingInfoOrBuilder {
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
-      return GatewayProto.internal_static_gw_GPSEpochTimingInfo_descriptor;
+      return io.chirpstack.api.gw.GatewayProto.internal_static_gw_GPSEpochTimingInfo_descriptor;
     }
 
-    @Override
-    protected FieldAccessorTable
+    @java.lang.Override
+    protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
         internalGetFieldAccessorTable() {
-      return GatewayProto.internal_static_gw_GPSEpochTimingInfo_fieldAccessorTable
+      return io.chirpstack.api.gw.GatewayProto.internal_static_gw_GPSEpochTimingInfo_fieldAccessorTable
           .ensureFieldAccessorsInitialized(
-              GPSEpochTimingInfo.class, Builder.class);
+              io.chirpstack.api.gw.GPSEpochTimingInfo.class, io.chirpstack.api.gw.GPSEpochTimingInfo.Builder.class);
     }
 
     // Construct using io.chirpstack.api.gw.GPSEpochTimingInfo.newBuilder()
@@ -267,98 +262,71 @@ private static final long serialVersionUID = 0L;
     }
 
     private Builder(
-        BuilderParent parent) {
+        com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
       super(parent);
 
     }
-    @Override
+    @java.lang.Override
     public Builder clear() {
       super.clear();
-      if (timeSinceGpsEpochBuilder_ == null) {
-        timeSinceGpsEpoch_ = null;
-      } else {
-        timeSinceGpsEpoch_ = null;
+      bitField0_ = 0;
+      timeSinceGpsEpoch_ = null;
+      if (timeSinceGpsEpochBuilder_ != null) {
+        timeSinceGpsEpochBuilder_.dispose();
         timeSinceGpsEpochBuilder_ = null;
       }
       return this;
     }
 
-    @Override
+    @java.lang.Override
     public com.google.protobuf.Descriptors.Descriptor
         getDescriptorForType() {
-      return GatewayProto.internal_static_gw_GPSEpochTimingInfo_descriptor;
+      return io.chirpstack.api.gw.GatewayProto.internal_static_gw_GPSEpochTimingInfo_descriptor;
     }
 
-    @Override
-    public GPSEpochTimingInfo getDefaultInstanceForType() {
-      return GPSEpochTimingInfo.getDefaultInstance();
+    @java.lang.Override
+    public io.chirpstack.api.gw.GPSEpochTimingInfo getDefaultInstanceForType() {
+      return io.chirpstack.api.gw.GPSEpochTimingInfo.getDefaultInstance();
     }
 
-    @Override
-    public GPSEpochTimingInfo build() {
-      GPSEpochTimingInfo result = buildPartial();
+    @java.lang.Override
+    public io.chirpstack.api.gw.GPSEpochTimingInfo build() {
+      io.chirpstack.api.gw.GPSEpochTimingInfo result = buildPartial();
       if (!result.isInitialized()) {
         throw newUninitializedMessageException(result);
       }
       return result;
     }
 
-    @Override
-    public GPSEpochTimingInfo buildPartial() {
-      GPSEpochTimingInfo result = new GPSEpochTimingInfo(this);
-      if (timeSinceGpsEpochBuilder_ == null) {
-        result.timeSinceGpsEpoch_ = timeSinceGpsEpoch_;
-      } else {
-        result.timeSinceGpsEpoch_ = timeSinceGpsEpochBuilder_.build();
-      }
+    @java.lang.Override
+    public io.chirpstack.api.gw.GPSEpochTimingInfo buildPartial() {
+      io.chirpstack.api.gw.GPSEpochTimingInfo result = new io.chirpstack.api.gw.GPSEpochTimingInfo(this);
+      if (bitField0_ != 0) { buildPartial0(result); }
       onBuilt();
       return result;
     }
 
-    @Override
-    public Builder clone() {
-      return super.clone();
+    private void buildPartial0(io.chirpstack.api.gw.GPSEpochTimingInfo result) {
+      int from_bitField0_ = bitField0_;
+      if (((from_bitField0_ & 0x00000001) != 0)) {
+        result.timeSinceGpsEpoch_ = timeSinceGpsEpochBuilder_ == null
+            ? timeSinceGpsEpoch_
+            : timeSinceGpsEpochBuilder_.build();
+      }
     }
-    @Override
-    public Builder setField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        Object value) {
-      return super.setField(field, value);
-    }
-    @Override
-    public Builder clearField(
-        com.google.protobuf.Descriptors.FieldDescriptor field) {
-      return super.clearField(field);
-    }
-    @Override
-    public Builder clearOneof(
-        com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-      return super.clearOneof(oneof);
-    }
-    @Override
-    public Builder setRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        int index, Object value) {
-      return super.setRepeatedField(field, index, value);
-    }
-    @Override
-    public Builder addRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        Object value) {
-      return super.addRepeatedField(field, value);
-    }
-    @Override
+
+    @java.lang.Override
     public Builder mergeFrom(com.google.protobuf.Message other) {
-      if (other instanceof GPSEpochTimingInfo) {
-        return mergeFrom((GPSEpochTimingInfo)other);
+      if (other instanceof io.chirpstack.api.gw.GPSEpochTimingInfo) {
+        return mergeFrom((io.chirpstack.api.gw.GPSEpochTimingInfo)other);
       } else {
         super.mergeFrom(other);
         return this;
       }
     }
 
-    public Builder mergeFrom(GPSEpochTimingInfo other) {
-      if (other == GPSEpochTimingInfo.getDefaultInstance()) return this;
+    public Builder mergeFrom(io.chirpstack.api.gw.GPSEpochTimingInfo other) {
+      if (other == io.chirpstack.api.gw.GPSEpochTimingInfo.getDefaultInstance()) return this;
       if (other.hasTimeSinceGpsEpoch()) {
         mergeTimeSinceGpsEpoch(other.getTimeSinceGpsEpoch());
       }
@@ -367,18 +335,18 @@ private static final long serialVersionUID = 0L;
       return this;
     }
 
-    @Override
+    @java.lang.Override
     public final boolean isInitialized() {
       return true;
     }
 
-    @Override
+    @java.lang.Override
     public Builder mergeFrom(
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
       if (extensionRegistry == null) {
-        throw new NullPointerException();
+        throw new java.lang.NullPointerException();
       }
       try {
         boolean done = false;
@@ -392,7 +360,7 @@ private static final long serialVersionUID = 0L;
               input.readMessage(
                   getTimeSinceGpsEpochFieldBuilder().getBuilder(),
                   extensionRegistry);
-
+              bitField0_ |= 0x00000001;
               break;
             } // case 10
             default: {
@@ -410,6 +378,7 @@ private static final long serialVersionUID = 0L;
       } // finally
       return this;
     }
+    private int bitField0_;
 
     private com.google.protobuf.Duration timeSinceGpsEpoch_;
     private com.google.protobuf.SingleFieldBuilderV3<
@@ -423,7 +392,7 @@ private static final long serialVersionUID = 0L;
      * @return Whether the timeSinceGpsEpoch field is set.
      */
     public boolean hasTimeSinceGpsEpoch() {
-      return timeSinceGpsEpochBuilder_ != null || timeSinceGpsEpoch_ != null;
+      return ((bitField0_ & 0x00000001) != 0);
     }
     /**
      * <pre>
@@ -453,11 +422,11 @@ private static final long serialVersionUID = 0L;
           throw new NullPointerException();
         }
         timeSinceGpsEpoch_ = value;
-        onChanged();
       } else {
         timeSinceGpsEpochBuilder_.setMessage(value);
       }
-
+      bitField0_ |= 0x00000001;
+      onChanged();
       return this;
     }
     /**
@@ -471,11 +440,11 @@ private static final long serialVersionUID = 0L;
         com.google.protobuf.Duration.Builder builderForValue) {
       if (timeSinceGpsEpochBuilder_ == null) {
         timeSinceGpsEpoch_ = builderForValue.build();
-        onChanged();
       } else {
         timeSinceGpsEpochBuilder_.setMessage(builderForValue.build());
       }
-
+      bitField0_ |= 0x00000001;
+      onChanged();
       return this;
     }
     /**
@@ -487,17 +456,18 @@ private static final long serialVersionUID = 0L;
      */
     public Builder mergeTimeSinceGpsEpoch(com.google.protobuf.Duration value) {
       if (timeSinceGpsEpochBuilder_ == null) {
-        if (timeSinceGpsEpoch_ != null) {
-          timeSinceGpsEpoch_ =
-            com.google.protobuf.Duration.newBuilder(timeSinceGpsEpoch_).mergeFrom(value).buildPartial();
+        if (((bitField0_ & 0x00000001) != 0) &&
+          timeSinceGpsEpoch_ != null &&
+          timeSinceGpsEpoch_ != com.google.protobuf.Duration.getDefaultInstance()) {
+          getTimeSinceGpsEpochBuilder().mergeFrom(value);
         } else {
           timeSinceGpsEpoch_ = value;
         }
-        onChanged();
       } else {
         timeSinceGpsEpochBuilder_.mergeFrom(value);
       }
-
+      bitField0_ |= 0x00000001;
+      onChanged();
       return this;
     }
     /**
@@ -508,14 +478,13 @@ private static final long serialVersionUID = 0L;
      * <code>.google.protobuf.Duration time_since_gps_epoch = 1;</code>
      */
     public Builder clearTimeSinceGpsEpoch() {
-      if (timeSinceGpsEpochBuilder_ == null) {
-        timeSinceGpsEpoch_ = null;
-        onChanged();
-      } else {
-        timeSinceGpsEpoch_ = null;
+      bitField0_ = (bitField0_ & ~0x00000001);
+      timeSinceGpsEpoch_ = null;
+      if (timeSinceGpsEpochBuilder_ != null) {
+        timeSinceGpsEpochBuilder_.dispose();
         timeSinceGpsEpochBuilder_ = null;
       }
-
+      onChanged();
       return this;
     }
     /**
@@ -526,7 +495,7 @@ private static final long serialVersionUID = 0L;
      * <code>.google.protobuf.Duration time_since_gps_epoch = 1;</code>
      */
     public com.google.protobuf.Duration.Builder getTimeSinceGpsEpochBuilder() {
-      
+      bitField0_ |= 0x00000001;
       onChanged();
       return getTimeSinceGpsEpochFieldBuilder().getBuilder();
     }
@@ -565,13 +534,13 @@ private static final long serialVersionUID = 0L;
       }
       return timeSinceGpsEpochBuilder_;
     }
-    @Override
+    @java.lang.Override
     public final Builder setUnknownFields(
         final com.google.protobuf.UnknownFieldSet unknownFields) {
       return super.setUnknownFields(unknownFields);
     }
 
-    @Override
+    @java.lang.Override
     public final Builder mergeUnknownFields(
         final com.google.protobuf.UnknownFieldSet unknownFields) {
       return super.mergeUnknownFields(unknownFields);
@@ -582,18 +551,18 @@ private static final long serialVersionUID = 0L;
   }
 
   // @@protoc_insertion_point(class_scope:gw.GPSEpochTimingInfo)
-  private static final GPSEpochTimingInfo DEFAULT_INSTANCE;
+  private static final io.chirpstack.api.gw.GPSEpochTimingInfo DEFAULT_INSTANCE;
   static {
-    DEFAULT_INSTANCE = new GPSEpochTimingInfo();
+    DEFAULT_INSTANCE = new io.chirpstack.api.gw.GPSEpochTimingInfo();
   }
 
-  public static GPSEpochTimingInfo getDefaultInstance() {
+  public static io.chirpstack.api.gw.GPSEpochTimingInfo getDefaultInstance() {
     return DEFAULT_INSTANCE;
   }
 
   private static final com.google.protobuf.Parser<GPSEpochTimingInfo>
       PARSER = new com.google.protobuf.AbstractParser<GPSEpochTimingInfo>() {
-    @Override
+    @java.lang.Override
     public GPSEpochTimingInfo parsePartialFrom(
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
@@ -617,13 +586,13 @@ private static final long serialVersionUID = 0L;
     return PARSER;
   }
 
-  @Override
+  @java.lang.Override
   public com.google.protobuf.Parser<GPSEpochTimingInfo> getParserForType() {
     return PARSER;
   }
 
-  @Override
-  public GPSEpochTimingInfo getDefaultInstanceForType() {
+  @java.lang.Override
+  public io.chirpstack.api.gw.GPSEpochTimingInfo getDefaultInstanceForType() {
     return DEFAULT_INSTANCE;
   }
 

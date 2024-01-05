@@ -184,9 +184,9 @@ private static final long serialVersionUID = 0L;
    * <code>.common.Aggregation aggregation = 4;</code>
    * @return The aggregation.
    */
-  @Override public io.chirpstack.api.Aggregation getAggregation() {
-    io.chirpstack.api.Aggregation result = io.chirpstack.api.Aggregation.forNumber(aggregation_);
-    return result == null ? io.chirpstack.api.Aggregation.UNRECOGNIZED : result;
+  @Override public Aggregation getAggregation() {
+    Aggregation result = Aggregation.forNumber(aggregation_);
+    return result == null ? Aggregation.UNRECOGNIZED : result;
   }
 
   private byte memoizedIsInitialized = -1;
@@ -212,7 +212,7 @@ private static final long serialVersionUID = 0L;
     if (end_ != null) {
       output.writeMessage(3, getEnd());
     }
-    if (aggregation_ != io.chirpstack.api.Aggregation.HOUR.getNumber()) {
+    if (aggregation_ != Aggregation.HOUR.getNumber()) {
       output.writeEnum(4, aggregation_);
     }
     getUnknownFields().writeTo(output);
@@ -235,7 +235,7 @@ private static final long serialVersionUID = 0L;
       size += com.google.protobuf.CodedOutputStream
         .computeMessageSize(3, getEnd());
     }
-    if (aggregation_ != io.chirpstack.api.Aggregation.HOUR.getNumber()) {
+    if (aggregation_ != Aggregation.HOUR.getNumber()) {
       size += com.google.protobuf.CodedOutputStream
         .computeEnumSize(4, aggregation_);
     }
@@ -1013,9 +1013,9 @@ private static final long serialVersionUID = 0L;
      * @return The aggregation.
      */
     @Override
-    public io.chirpstack.api.Aggregation getAggregation() {
-      io.chirpstack.api.Aggregation result = io.chirpstack.api.Aggregation.forNumber(aggregation_);
-      return result == null ? io.chirpstack.api.Aggregation.UNRECOGNIZED : result;
+    public Aggregation getAggregation() {
+      Aggregation result = Aggregation.forNumber(aggregation_);
+      return result == null ? Aggregation.UNRECOGNIZED : result;
     }
     /**
      * <pre>
@@ -1026,7 +1026,7 @@ private static final long serialVersionUID = 0L;
      * @param value The aggregation to set.
      * @return This builder for chaining.
      */
-    public Builder setAggregation(io.chirpstack.api.Aggregation value) {
+    public Builder setAggregation(Aggregation value) {
       if (value == null) {
         throw new NullPointerException();
       }

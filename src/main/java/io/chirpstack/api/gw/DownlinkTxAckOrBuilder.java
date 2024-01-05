@@ -25,7 +25,7 @@ public interface DownlinkTxAckOrBuilder extends
    * <code>string gateway_id = 6;</code>
    * @return The gatewayId.
    */
-  String getGatewayId();
+  java.lang.String getGatewayId();
   /**
    * <pre>
    * Gateway ID.
@@ -67,7 +67,7 @@ public interface DownlinkTxAckOrBuilder extends
    *
    * <code>repeated .gw.DownlinkTxAckItem items = 5;</code>
    */
-  java.util.List<DownlinkTxAckItem>
+  java.util.List<io.chirpstack.api.gw.DownlinkTxAckItem> 
       getItemsList();
   /**
    * <pre>
@@ -79,7 +79,7 @@ public interface DownlinkTxAckOrBuilder extends
    *
    * <code>repeated .gw.DownlinkTxAckItem items = 5;</code>
    */
-  DownlinkTxAckItem getItems(int index);
+  io.chirpstack.api.gw.DownlinkTxAckItem getItems(int index);
   /**
    * <pre>
    * Downlink frame items.
@@ -101,7 +101,7 @@ public interface DownlinkTxAckOrBuilder extends
    *
    * <code>repeated .gw.DownlinkTxAckItem items = 5;</code>
    */
-  java.util.List<? extends DownlinkTxAckItemOrBuilder>
+  java.util.List<? extends io.chirpstack.api.gw.DownlinkTxAckItemOrBuilder> 
       getItemsOrBuilderList();
   /**
    * <pre>
@@ -113,6 +113,6 @@ public interface DownlinkTxAckOrBuilder extends
    *
    * <code>repeated .gw.DownlinkTxAckItem items = 5;</code>
    */
-  DownlinkTxAckItemOrBuilder getItemsOrBuilder(
+  io.chirpstack.api.gw.DownlinkTxAckItemOrBuilder getItemsOrBuilder(
       int index);
 }

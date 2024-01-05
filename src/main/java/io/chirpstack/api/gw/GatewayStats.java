@@ -23,30 +23,25 @@ private static final long serialVersionUID = 0L;
     rxPacketsPerModulation_ = java.util.Collections.emptyList();
   }
 
-  @Override
+  @java.lang.Override
   @SuppressWarnings({"unused"})
-  protected Object newInstance(
+  protected java.lang.Object newInstance(
       UnusedPrivateParameter unused) {
     return new GatewayStats();
   }
 
-  @Override
-  public final com.google.protobuf.UnknownFieldSet
-  getUnknownFields() {
-    return this.unknownFields;
-  }
   public static final com.google.protobuf.Descriptors.Descriptor
       getDescriptor() {
-    return GatewayProto.internal_static_gw_GatewayStats_descriptor;
+    return io.chirpstack.api.gw.GatewayProto.internal_static_gw_GatewayStats_descriptor;
   }
 
   @SuppressWarnings({"rawtypes"})
-  @Override
+  @java.lang.Override
   protected com.google.protobuf.MapField internalGetMapField(
       int number) {
     switch (number) {
       case 10:
-        return internalGetMetaData();
+        return internalGetMetadata();
       case 12:
         return internalGetTxPacketsPerFrequency();
       case 13:
@@ -58,16 +53,16 @@ private static final long serialVersionUID = 0L;
             "Invalid map field number: " + number);
     }
   }
-  @Override
-  protected FieldAccessorTable
+  @java.lang.Override
+  protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
       internalGetFieldAccessorTable() {
-    return GatewayProto.internal_static_gw_GatewayStats_fieldAccessorTable
+    return io.chirpstack.api.gw.GatewayProto.internal_static_gw_GatewayStats_fieldAccessorTable
         .ensureFieldAccessorsInitialized(
-            GatewayStats.class, Builder.class);
+            io.chirpstack.api.gw.GatewayStats.class, io.chirpstack.api.gw.GatewayStats.Builder.class);
   }
 
   public static final int GATEWAY_ID_LEGACY_FIELD_NUMBER = 1;
-  private com.google.protobuf.ByteString gatewayIdLegacy_;
+  private com.google.protobuf.ByteString gatewayIdLegacy_ = com.google.protobuf.ByteString.EMPTY;
   /**
    * <pre>
    * Gateway ID.
@@ -77,13 +72,14 @@ private static final long serialVersionUID = 0L;
    * <code>bytes gateway_id_legacy = 1;</code>
    * @return The gatewayIdLegacy.
    */
-  @Override
+  @java.lang.Override
   public com.google.protobuf.ByteString getGatewayIdLegacy() {
     return gatewayIdLegacy_;
   }
 
   public static final int GATEWAY_ID_FIELD_NUMBER = 17;
-  private volatile Object gatewayId_;
+  @SuppressWarnings("serial")
+  private volatile java.lang.Object gatewayId_ = "";
   /**
    * <pre>
    * Gateway ID.
@@ -92,15 +88,15 @@ private static final long serialVersionUID = 0L;
    * <code>string gateway_id = 17;</code>
    * @return The gatewayId.
    */
-  @Override
-  public String getGatewayId() {
-    Object ref = gatewayId_;
-    if (ref instanceof String) {
-      return (String) ref;
+  @java.lang.Override
+  public java.lang.String getGatewayId() {
+    java.lang.Object ref = gatewayId_;
+    if (ref instanceof java.lang.String) {
+      return (java.lang.String) ref;
     } else {
       com.google.protobuf.ByteString bs = 
           (com.google.protobuf.ByteString) ref;
-      String s = bs.toStringUtf8();
+      java.lang.String s = bs.toStringUtf8();
       gatewayId_ = s;
       return s;
     }
@@ -113,14 +109,14 @@ private static final long serialVersionUID = 0L;
    * <code>string gateway_id = 17;</code>
    * @return The bytes for gatewayId.
    */
-  @Override
+  @java.lang.Override
   public com.google.protobuf.ByteString
       getGatewayIdBytes() {
-    Object ref = gatewayId_;
-    if (ref instanceof String) {
+    java.lang.Object ref = gatewayId_;
+    if (ref instanceof java.lang.String) {
       com.google.protobuf.ByteString b = 
           com.google.protobuf.ByteString.copyFromUtf8(
-              (String) ref);
+              (java.lang.String) ref);
       gatewayId_ = b;
       return b;
     } else {
@@ -138,7 +134,7 @@ private static final long serialVersionUID = 0L;
    * <code>.google.protobuf.Timestamp time = 2;</code>
    * @return Whether the time field is set.
    */
-  @Override
+  @java.lang.Override
   public boolean hasTime() {
     return time_ != null;
   }
@@ -150,7 +146,7 @@ private static final long serialVersionUID = 0L;
    * <code>.google.protobuf.Timestamp time = 2;</code>
    * @return The time.
    */
-  @Override
+  @java.lang.Override
   public com.google.protobuf.Timestamp getTime() {
     return time_ == null ? com.google.protobuf.Timestamp.getDefaultInstance() : time_;
   }
@@ -161,9 +157,9 @@ private static final long serialVersionUID = 0L;
    *
    * <code>.google.protobuf.Timestamp time = 2;</code>
    */
-  @Override
+  @java.lang.Override
   public com.google.protobuf.TimestampOrBuilder getTimeOrBuilder() {
-    return getTime();
+    return time_ == null ? com.google.protobuf.Timestamp.getDefaultInstance() : time_;
   }
 
   public static final int LOCATION_FIELD_NUMBER = 3;
@@ -176,7 +172,7 @@ private static final long serialVersionUID = 0L;
    * <code>.common.Location location = 3;</code>
    * @return Whether the location field is set.
    */
-  @Override
+  @java.lang.Override
   public boolean hasLocation() {
     return location_ != null;
   }
@@ -188,7 +184,7 @@ private static final long serialVersionUID = 0L;
    * <code>.common.Location location = 3;</code>
    * @return The location.
    */
-  @Override
+  @java.lang.Override
   public io.chirpstack.api.Location getLocation() {
     return location_ == null ? io.chirpstack.api.Location.getDefaultInstance() : location_;
   }
@@ -199,13 +195,14 @@ private static final long serialVersionUID = 0L;
    *
    * <code>.common.Location location = 3;</code>
    */
-  @Override
+  @java.lang.Override
   public io.chirpstack.api.LocationOrBuilder getLocationOrBuilder() {
-    return getLocation();
+    return location_ == null ? io.chirpstack.api.Location.getDefaultInstance() : location_;
   }
 
   public static final int CONFIG_VERSION_FIELD_NUMBER = 4;
-  private volatile Object configVersion_;
+  @SuppressWarnings("serial")
+  private volatile java.lang.Object configVersion_ = "";
   /**
    * <pre>
    * Gateway configuration version (this maps to the config_version sent
@@ -215,15 +212,15 @@ private static final long serialVersionUID = 0L;
    * <code>string config_version = 4;</code>
    * @return The configVersion.
    */
-  @Override
-  public String getConfigVersion() {
-    Object ref = configVersion_;
-    if (ref instanceof String) {
-      return (String) ref;
+  @java.lang.Override
+  public java.lang.String getConfigVersion() {
+    java.lang.Object ref = configVersion_;
+    if (ref instanceof java.lang.String) {
+      return (java.lang.String) ref;
     } else {
       com.google.protobuf.ByteString bs = 
           (com.google.protobuf.ByteString) ref;
-      String s = bs.toStringUtf8();
+      java.lang.String s = bs.toStringUtf8();
       configVersion_ = s;
       return s;
     }
@@ -237,14 +234,14 @@ private static final long serialVersionUID = 0L;
    * <code>string config_version = 4;</code>
    * @return The bytes for configVersion.
    */
-  @Override
+  @java.lang.Override
   public com.google.protobuf.ByteString
       getConfigVersionBytes() {
-    Object ref = configVersion_;
-    if (ref instanceof String) {
+    java.lang.Object ref = configVersion_;
+    if (ref instanceof java.lang.String) {
       com.google.protobuf.ByteString b = 
           com.google.protobuf.ByteString.copyFromUtf8(
-              (String) ref);
+              (java.lang.String) ref);
       configVersion_ = b;
       return b;
     } else {
@@ -253,7 +250,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int RX_PACKETS_RECEIVED_FIELD_NUMBER = 5;
-  private int rxPacketsReceived_;
+  private int rxPacketsReceived_ = 0;
   /**
    * <pre>
    * Number of radio packets received.
@@ -262,13 +259,13 @@ private static final long serialVersionUID = 0L;
    * <code>uint32 rx_packets_received = 5;</code>
    * @return The rxPacketsReceived.
    */
-  @Override
+  @java.lang.Override
   public int getRxPacketsReceived() {
     return rxPacketsReceived_;
   }
 
   public static final int RX_PACKETS_RECEIVED_OK_FIELD_NUMBER = 6;
-  private int rxPacketsReceivedOk_;
+  private int rxPacketsReceivedOk_ = 0;
   /**
    * <pre>
    * Number of radio packets received with valid PHY CRC.
@@ -277,13 +274,13 @@ private static final long serialVersionUID = 0L;
    * <code>uint32 rx_packets_received_ok = 6;</code>
    * @return The rxPacketsReceivedOk.
    */
-  @Override
+  @java.lang.Override
   public int getRxPacketsReceivedOk() {
     return rxPacketsReceivedOk_;
   }
 
   public static final int TX_PACKETS_RECEIVED_FIELD_NUMBER = 7;
-  private int txPacketsReceived_;
+  private int txPacketsReceived_ = 0;
   /**
    * <pre>
    * Number of downlink packets received for transmission.
@@ -292,13 +289,13 @@ private static final long serialVersionUID = 0L;
    * <code>uint32 tx_packets_received = 7;</code>
    * @return The txPacketsReceived.
    */
-  @Override
+  @java.lang.Override
   public int getTxPacketsReceived() {
     return txPacketsReceived_;
   }
 
   public static final int TX_PACKETS_EMITTED_FIELD_NUMBER = 8;
-  private int txPacketsEmitted_;
+  private int txPacketsEmitted_ = 0;
   /**
    * <pre>
    * Number of downlink packets emitted.
@@ -307,86 +304,85 @@ private static final long serialVersionUID = 0L;
    * <code>uint32 tx_packets_emitted = 8;</code>
    * @return The txPacketsEmitted.
    */
-  @Override
+  @java.lang.Override
   public int getTxPacketsEmitted() {
     return txPacketsEmitted_;
   }
 
-  public static final int META_DATA_FIELD_NUMBER = 10;
-  private static final class MetaDataDefaultEntryHolder {
+  public static final int METADATA_FIELD_NUMBER = 10;
+  private static final class MetadataDefaultEntryHolder {
     static final com.google.protobuf.MapEntry<
-        String, String> defaultEntry =
+        java.lang.String, java.lang.String> defaultEntry =
             com.google.protobuf.MapEntry
-            .<String, String>newDefaultInstance(
-                GatewayProto.internal_static_gw_GatewayStats_MetaDataEntry_descriptor,
+            .<java.lang.String, java.lang.String>newDefaultInstance(
+                io.chirpstack.api.gw.GatewayProto.internal_static_gw_GatewayStats_MetadataEntry_descriptor, 
                 com.google.protobuf.WireFormat.FieldType.STRING,
                 "",
                 com.google.protobuf.WireFormat.FieldType.STRING,
                 "");
   }
+  @SuppressWarnings("serial")
   private com.google.protobuf.MapField<
-      String, String> metaData_;
-  private com.google.protobuf.MapField<String, String>
-  internalGetMetaData() {
-    if (metaData_ == null) {
+      java.lang.String, java.lang.String> metadata_;
+  private com.google.protobuf.MapField<java.lang.String, java.lang.String>
+  internalGetMetadata() {
+    if (metadata_ == null) {
       return com.google.protobuf.MapField.emptyMapField(
-          MetaDataDefaultEntryHolder.defaultEntry);
+          MetadataDefaultEntryHolder.defaultEntry);
     }
-    return metaData_;
+    return metadata_;
   }
-
-  public int getMetaDataCount() {
-    return internalGetMetaData().getMap().size();
+  public int getMetadataCount() {
+    return internalGetMetadata().getMap().size();
   }
   /**
    * <pre>
    * Additional gateway meta-data.
    * </pre>
    *
-   * <code>map&lt;string, string&gt; meta_data = 10;</code>
+   * <code>map&lt;string, string&gt; metadata = 10;</code>
    */
-
-  @Override
-  public boolean containsMetaData(
-      String key) {
+  @java.lang.Override
+  public boolean containsMetadata(
+      java.lang.String key) {
     if (key == null) { throw new NullPointerException("map key"); }
-    return internalGetMetaData().getMap().containsKey(key);
+    return internalGetMetadata().getMap().containsKey(key);
   }
   /**
-   * Use {@link #getMetaDataMap()} instead.
+   * Use {@link #getMetadataMap()} instead.
    */
-  @Override
-  @Deprecated
-  public java.util.Map<String, String> getMetaData() {
-    return getMetaDataMap();
-  }
-  /**
-   * <pre>
-   * Additional gateway meta-data.
-   * </pre>
-   *
-   * <code>map&lt;string, string&gt; meta_data = 10;</code>
-   */
-  @Override
-
-  public java.util.Map<String, String> getMetaDataMap() {
-    return internalGetMetaData().getMap();
+  @java.lang.Override
+  @java.lang.Deprecated
+  public java.util.Map<java.lang.String, java.lang.String> getMetadata() {
+    return getMetadataMap();
   }
   /**
    * <pre>
    * Additional gateway meta-data.
    * </pre>
    *
-   * <code>map&lt;string, string&gt; meta_data = 10;</code>
+   * <code>map&lt;string, string&gt; metadata = 10;</code>
    */
-  @Override
-
-  public String getMetaDataOrDefault(
-      String key,
-      String defaultValue) {
+  @java.lang.Override
+  public java.util.Map<java.lang.String, java.lang.String> getMetadataMap() {
+    return internalGetMetadata().getMap();
+  }
+  /**
+   * <pre>
+   * Additional gateway meta-data.
+   * </pre>
+   *
+   * <code>map&lt;string, string&gt; metadata = 10;</code>
+   */
+  @java.lang.Override
+  public /* nullable */
+java.lang.String getMetadataOrDefault(
+      java.lang.String key,
+      /* nullable */
+java.lang.String defaultValue) {
     if (key == null) { throw new NullPointerException("map key"); }
-    java.util.Map<String, String> map =
-        internalGetMetaData().getMap();
+    java.util.Map<java.lang.String, java.lang.String> map =
+        internalGetMetadata().getMap();
     return map.containsKey(key) ? map.get(key) : defaultValue;
   }
   /**
@@ -394,17 +390,16 @@ private static final long serialVersionUID = 0L;
    * Additional gateway meta-data.
    * </pre>
    *
-   * <code>map&lt;string, string&gt; meta_data = 10;</code>
+   * <code>map&lt;string, string&gt; metadata = 10;</code>
    */
-  @Override
-
-  public String getMetaDataOrThrow(
-      String key) {
+  @java.lang.Override
+  public java.lang.String getMetadataOrThrow(
+      java.lang.String key) {
     if (key == null) { throw new NullPointerException("map key"); }
-    java.util.Map<String, String> map =
-        internalGetMetaData().getMap();
+    java.util.Map<java.lang.String, java.lang.String> map =
+        internalGetMetadata().getMap();
     if (!map.containsKey(key)) {
-      throw new IllegalArgumentException();
+      throw new java.lang.IllegalArgumentException();
     }
     return map.get(key);
   }
@@ -412,18 +407,19 @@ private static final long serialVersionUID = 0L;
   public static final int TX_PACKETS_PER_FREQUENCY_FIELD_NUMBER = 12;
   private static final class TxPacketsPerFrequencyDefaultEntryHolder {
     static final com.google.protobuf.MapEntry<
-        Integer, Integer> defaultEntry =
+        java.lang.Integer, java.lang.Integer> defaultEntry =
             com.google.protobuf.MapEntry
-            .<Integer, Integer>newDefaultInstance(
-                GatewayProto.internal_static_gw_GatewayStats_TxPacketsPerFrequencyEntry_descriptor,
+            .<java.lang.Integer, java.lang.Integer>newDefaultInstance(
+                io.chirpstack.api.gw.GatewayProto.internal_static_gw_GatewayStats_TxPacketsPerFrequencyEntry_descriptor, 
                 com.google.protobuf.WireFormat.FieldType.UINT32,
                 0,
                 com.google.protobuf.WireFormat.FieldType.UINT32,
                 0);
   }
+  @SuppressWarnings("serial")
   private com.google.protobuf.MapField<
-      Integer, Integer> txPacketsPerFrequency_;
-  private com.google.protobuf.MapField<Integer, Integer>
+      java.lang.Integer, java.lang.Integer> txPacketsPerFrequency_;
+  private com.google.protobuf.MapField<java.lang.Integer, java.lang.Integer>
   internalGetTxPacketsPerFrequency() {
     if (txPacketsPerFrequency_ == null) {
       return com.google.protobuf.MapField.emptyMapField(
@@ -431,7 +427,6 @@ private static final long serialVersionUID = 0L;
     }
     return txPacketsPerFrequency_;
   }
-
   public int getTxPacketsPerFrequencyCount() {
     return internalGetTxPacketsPerFrequency().getMap().size();
   }
@@ -442,19 +437,18 @@ private static final long serialVersionUID = 0L;
    *
    * <code>map&lt;uint32, uint32&gt; tx_packets_per_frequency = 12;</code>
    */
-
-  @Override
+  @java.lang.Override
   public boolean containsTxPacketsPerFrequency(
       int key) {
-    
+
     return internalGetTxPacketsPerFrequency().getMap().containsKey(key);
   }
   /**
    * Use {@link #getTxPacketsPerFrequencyMap()} instead.
    */
-  @Override
-  @Deprecated
-  public java.util.Map<Integer, Integer> getTxPacketsPerFrequency() {
+  @java.lang.Override
+  @java.lang.Deprecated
+  public java.util.Map<java.lang.Integer, java.lang.Integer> getTxPacketsPerFrequency() {
     return getTxPacketsPerFrequencyMap();
   }
   /**
@@ -464,9 +458,8 @@ private static final long serialVersionUID = 0L;
    *
    * <code>map&lt;uint32, uint32&gt; tx_packets_per_frequency = 12;</code>
    */
-  @Override
-
-  public java.util.Map<Integer, Integer> getTxPacketsPerFrequencyMap() {
+  @java.lang.Override
+  public java.util.Map<java.lang.Integer, java.lang.Integer> getTxPacketsPerFrequencyMap() {
     return internalGetTxPacketsPerFrequency().getMap();
   }
   /**
@@ -476,13 +469,12 @@ private static final long serialVersionUID = 0L;
    *
    * <code>map&lt;uint32, uint32&gt; tx_packets_per_frequency = 12;</code>
    */
-  @Override
-
+  @java.lang.Override
   public int getTxPacketsPerFrequencyOrDefault(
       int key,
       int defaultValue) {
-    
-    java.util.Map<Integer, Integer> map =
+
+    java.util.Map<java.lang.Integer, java.lang.Integer> map =
         internalGetTxPacketsPerFrequency().getMap();
     return map.containsKey(key) ? map.get(key) : defaultValue;
   }
@@ -493,15 +485,14 @@ private static final long serialVersionUID = 0L;
    *
    * <code>map&lt;uint32, uint32&gt; tx_packets_per_frequency = 12;</code>
    */
-  @Override
-
+  @java.lang.Override
   public int getTxPacketsPerFrequencyOrThrow(
       int key) {
-    
-    java.util.Map<Integer, Integer> map =
+
+    java.util.Map<java.lang.Integer, java.lang.Integer> map =
         internalGetTxPacketsPerFrequency().getMap();
     if (!map.containsKey(key)) {
-      throw new IllegalArgumentException();
+      throw new java.lang.IllegalArgumentException();
     }
     return map.get(key);
   }
@@ -509,18 +500,19 @@ private static final long serialVersionUID = 0L;
   public static final int RX_PACKETS_PER_FREQUENCY_FIELD_NUMBER = 13;
   private static final class RxPacketsPerFrequencyDefaultEntryHolder {
     static final com.google.protobuf.MapEntry<
-        Integer, Integer> defaultEntry =
+        java.lang.Integer, java.lang.Integer> defaultEntry =
             com.google.protobuf.MapEntry
-            .<Integer, Integer>newDefaultInstance(
-                GatewayProto.internal_static_gw_GatewayStats_RxPacketsPerFrequencyEntry_descriptor,
+            .<java.lang.Integer, java.lang.Integer>newDefaultInstance(
+                io.chirpstack.api.gw.GatewayProto.internal_static_gw_GatewayStats_RxPacketsPerFrequencyEntry_descriptor, 
                 com.google.protobuf.WireFormat.FieldType.UINT32,
                 0,
                 com.google.protobuf.WireFormat.FieldType.UINT32,
                 0);
   }
+  @SuppressWarnings("serial")
   private com.google.protobuf.MapField<
-      Integer, Integer> rxPacketsPerFrequency_;
-  private com.google.protobuf.MapField<Integer, Integer>
+      java.lang.Integer, java.lang.Integer> rxPacketsPerFrequency_;
+  private com.google.protobuf.MapField<java.lang.Integer, java.lang.Integer>
   internalGetRxPacketsPerFrequency() {
     if (rxPacketsPerFrequency_ == null) {
       return com.google.protobuf.MapField.emptyMapField(
@@ -528,7 +520,6 @@ private static final long serialVersionUID = 0L;
     }
     return rxPacketsPerFrequency_;
   }
-
   public int getRxPacketsPerFrequencyCount() {
     return internalGetRxPacketsPerFrequency().getMap().size();
   }
@@ -539,19 +530,18 @@ private static final long serialVersionUID = 0L;
    *
    * <code>map&lt;uint32, uint32&gt; rx_packets_per_frequency = 13;</code>
    */
-
-  @Override
+  @java.lang.Override
   public boolean containsRxPacketsPerFrequency(
       int key) {
-    
+
     return internalGetRxPacketsPerFrequency().getMap().containsKey(key);
   }
   /**
    * Use {@link #getRxPacketsPerFrequencyMap()} instead.
    */
-  @Override
-  @Deprecated
-  public java.util.Map<Integer, Integer> getRxPacketsPerFrequency() {
+  @java.lang.Override
+  @java.lang.Deprecated
+  public java.util.Map<java.lang.Integer, java.lang.Integer> getRxPacketsPerFrequency() {
     return getRxPacketsPerFrequencyMap();
   }
   /**
@@ -561,9 +551,8 @@ private static final long serialVersionUID = 0L;
    *
    * <code>map&lt;uint32, uint32&gt; rx_packets_per_frequency = 13;</code>
    */
-  @Override
-
-  public java.util.Map<Integer, Integer> getRxPacketsPerFrequencyMap() {
+  @java.lang.Override
+  public java.util.Map<java.lang.Integer, java.lang.Integer> getRxPacketsPerFrequencyMap() {
     return internalGetRxPacketsPerFrequency().getMap();
   }
   /**
@@ -573,13 +562,12 @@ private static final long serialVersionUID = 0L;
    *
    * <code>map&lt;uint32, uint32&gt; rx_packets_per_frequency = 13;</code>
    */
-  @Override
-
+  @java.lang.Override
   public int getRxPacketsPerFrequencyOrDefault(
       int key,
       int defaultValue) {
-    
-    java.util.Map<Integer, Integer> map =
+
+    java.util.Map<java.lang.Integer, java.lang.Integer> map =
         internalGetRxPacketsPerFrequency().getMap();
     return map.containsKey(key) ? map.get(key) : defaultValue;
   }
@@ -590,21 +578,21 @@ private static final long serialVersionUID = 0L;
    *
    * <code>map&lt;uint32, uint32&gt; rx_packets_per_frequency = 13;</code>
    */
-  @Override
-
+  @java.lang.Override
   public int getRxPacketsPerFrequencyOrThrow(
       int key) {
-    
-    java.util.Map<Integer, Integer> map =
+
+    java.util.Map<java.lang.Integer, java.lang.Integer> map =
         internalGetRxPacketsPerFrequency().getMap();
     if (!map.containsKey(key)) {
-      throw new IllegalArgumentException();
+      throw new java.lang.IllegalArgumentException();
     }
     return map.get(key);
   }
 
   public static final int TX_PACKETS_PER_MODULATION_FIELD_NUMBER = 14;
-  private java.util.List<PerModulationCount> txPacketsPerModulation_;
+  @SuppressWarnings("serial")
+  private java.util.List<io.chirpstack.api.gw.PerModulationCount> txPacketsPerModulation_;
   /**
    * <pre>
    * Tx packets per modulation parameters.
@@ -612,8 +600,8 @@ private static final long serialVersionUID = 0L;
    *
    * <code>repeated .gw.PerModulationCount tx_packets_per_modulation = 14;</code>
    */
-  @Override
-  public java.util.List<PerModulationCount> getTxPacketsPerModulationList() {
+  @java.lang.Override
+  public java.util.List<io.chirpstack.api.gw.PerModulationCount> getTxPacketsPerModulationList() {
     return txPacketsPerModulation_;
   }
   /**
@@ -623,8 +611,8 @@ private static final long serialVersionUID = 0L;
    *
    * <code>repeated .gw.PerModulationCount tx_packets_per_modulation = 14;</code>
    */
-  @Override
-  public java.util.List<? extends PerModulationCountOrBuilder>
+  @java.lang.Override
+  public java.util.List<? extends io.chirpstack.api.gw.PerModulationCountOrBuilder> 
       getTxPacketsPerModulationOrBuilderList() {
     return txPacketsPerModulation_;
   }
@@ -635,7 +623,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>repeated .gw.PerModulationCount tx_packets_per_modulation = 14;</code>
    */
-  @Override
+  @java.lang.Override
   public int getTxPacketsPerModulationCount() {
     return txPacketsPerModulation_.size();
   }
@@ -646,8 +634,8 @@ private static final long serialVersionUID = 0L;
    *
    * <code>repeated .gw.PerModulationCount tx_packets_per_modulation = 14;</code>
    */
-  @Override
-  public PerModulationCount getTxPacketsPerModulation(int index) {
+  @java.lang.Override
+  public io.chirpstack.api.gw.PerModulationCount getTxPacketsPerModulation(int index) {
     return txPacketsPerModulation_.get(index);
   }
   /**
@@ -657,14 +645,15 @@ private static final long serialVersionUID = 0L;
    *
    * <code>repeated .gw.PerModulationCount tx_packets_per_modulation = 14;</code>
    */
-  @Override
-  public PerModulationCountOrBuilder getTxPacketsPerModulationOrBuilder(
+  @java.lang.Override
+  public io.chirpstack.api.gw.PerModulationCountOrBuilder getTxPacketsPerModulationOrBuilder(
       int index) {
     return txPacketsPerModulation_.get(index);
   }
 
   public static final int RX_PACKETS_PER_MODULATION_FIELD_NUMBER = 15;
-  private java.util.List<PerModulationCount> rxPacketsPerModulation_;
+  @SuppressWarnings("serial")
+  private java.util.List<io.chirpstack.api.gw.PerModulationCount> rxPacketsPerModulation_;
   /**
    * <pre>
    * Rx packets per modulation parameters.
@@ -672,8 +661,8 @@ private static final long serialVersionUID = 0L;
    *
    * <code>repeated .gw.PerModulationCount rx_packets_per_modulation = 15;</code>
    */
-  @Override
-  public java.util.List<PerModulationCount> getRxPacketsPerModulationList() {
+  @java.lang.Override
+  public java.util.List<io.chirpstack.api.gw.PerModulationCount> getRxPacketsPerModulationList() {
     return rxPacketsPerModulation_;
   }
   /**
@@ -683,8 +672,8 @@ private static final long serialVersionUID = 0L;
    *
    * <code>repeated .gw.PerModulationCount rx_packets_per_modulation = 15;</code>
    */
-  @Override
-  public java.util.List<? extends PerModulationCountOrBuilder>
+  @java.lang.Override
+  public java.util.List<? extends io.chirpstack.api.gw.PerModulationCountOrBuilder> 
       getRxPacketsPerModulationOrBuilderList() {
     return rxPacketsPerModulation_;
   }
@@ -695,7 +684,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>repeated .gw.PerModulationCount rx_packets_per_modulation = 15;</code>
    */
-  @Override
+  @java.lang.Override
   public int getRxPacketsPerModulationCount() {
     return rxPacketsPerModulation_.size();
   }
@@ -706,8 +695,8 @@ private static final long serialVersionUID = 0L;
    *
    * <code>repeated .gw.PerModulationCount rx_packets_per_modulation = 15;</code>
    */
-  @Override
-  public PerModulationCount getRxPacketsPerModulation(int index) {
+  @java.lang.Override
+  public io.chirpstack.api.gw.PerModulationCount getRxPacketsPerModulation(int index) {
     return rxPacketsPerModulation_.get(index);
   }
   /**
@@ -717,8 +706,8 @@ private static final long serialVersionUID = 0L;
    *
    * <code>repeated .gw.PerModulationCount rx_packets_per_modulation = 15;</code>
    */
-  @Override
-  public PerModulationCountOrBuilder getRxPacketsPerModulationOrBuilder(
+  @java.lang.Override
+  public io.chirpstack.api.gw.PerModulationCountOrBuilder getRxPacketsPerModulationOrBuilder(
       int index) {
     return rxPacketsPerModulation_.get(index);
   }
@@ -726,18 +715,19 @@ private static final long serialVersionUID = 0L;
   public static final int TX_PACKETS_PER_STATUS_FIELD_NUMBER = 16;
   private static final class TxPacketsPerStatusDefaultEntryHolder {
     static final com.google.protobuf.MapEntry<
-        String, Integer> defaultEntry =
+        java.lang.String, java.lang.Integer> defaultEntry =
             com.google.protobuf.MapEntry
-            .<String, Integer>newDefaultInstance(
-                GatewayProto.internal_static_gw_GatewayStats_TxPacketsPerStatusEntry_descriptor,
+            .<java.lang.String, java.lang.Integer>newDefaultInstance(
+                io.chirpstack.api.gw.GatewayProto.internal_static_gw_GatewayStats_TxPacketsPerStatusEntry_descriptor, 
                 com.google.protobuf.WireFormat.FieldType.STRING,
                 "",
                 com.google.protobuf.WireFormat.FieldType.UINT32,
                 0);
   }
+  @SuppressWarnings("serial")
   private com.google.protobuf.MapField<
-      String, Integer> txPacketsPerStatus_;
-  private com.google.protobuf.MapField<String, Integer>
+      java.lang.String, java.lang.Integer> txPacketsPerStatus_;
+  private com.google.protobuf.MapField<java.lang.String, java.lang.Integer>
   internalGetTxPacketsPerStatus() {
     if (txPacketsPerStatus_ == null) {
       return com.google.protobuf.MapField.emptyMapField(
@@ -745,7 +735,6 @@ private static final long serialVersionUID = 0L;
     }
     return txPacketsPerStatus_;
   }
-
   public int getTxPacketsPerStatusCount() {
     return internalGetTxPacketsPerStatus().getMap().size();
   }
@@ -756,19 +745,18 @@ private static final long serialVersionUID = 0L;
    *
    * <code>map&lt;string, uint32&gt; tx_packets_per_status = 16;</code>
    */
-
-  @Override
+  @java.lang.Override
   public boolean containsTxPacketsPerStatus(
-      String key) {
+      java.lang.String key) {
     if (key == null) { throw new NullPointerException("map key"); }
     return internalGetTxPacketsPerStatus().getMap().containsKey(key);
   }
   /**
    * Use {@link #getTxPacketsPerStatusMap()} instead.
    */
-  @Override
-  @Deprecated
-  public java.util.Map<String, Integer> getTxPacketsPerStatus() {
+  @java.lang.Override
+  @java.lang.Deprecated
+  public java.util.Map<java.lang.String, java.lang.Integer> getTxPacketsPerStatus() {
     return getTxPacketsPerStatusMap();
   }
   /**
@@ -778,9 +766,8 @@ private static final long serialVersionUID = 0L;
    *
    * <code>map&lt;string, uint32&gt; tx_packets_per_status = 16;</code>
    */
-  @Override
-
-  public java.util.Map<String, Integer> getTxPacketsPerStatusMap() {
+  @java.lang.Override
+  public java.util.Map<java.lang.String, java.lang.Integer> getTxPacketsPerStatusMap() {
     return internalGetTxPacketsPerStatus().getMap();
   }
   /**
@@ -790,13 +777,12 @@ private static final long serialVersionUID = 0L;
    *
    * <code>map&lt;string, uint32&gt; tx_packets_per_status = 16;</code>
    */
-  @Override
-
+  @java.lang.Override
   public int getTxPacketsPerStatusOrDefault(
-      String key,
+      java.lang.String key,
       int defaultValue) {
     if (key == null) { throw new NullPointerException("map key"); }
-    java.util.Map<String, Integer> map =
+    java.util.Map<java.lang.String, java.lang.Integer> map =
         internalGetTxPacketsPerStatus().getMap();
     return map.containsKey(key) ? map.get(key) : defaultValue;
   }
@@ -807,21 +793,20 @@ private static final long serialVersionUID = 0L;
    *
    * <code>map&lt;string, uint32&gt; tx_packets_per_status = 16;</code>
    */
-  @Override
-
+  @java.lang.Override
   public int getTxPacketsPerStatusOrThrow(
-      String key) {
+      java.lang.String key) {
     if (key == null) { throw new NullPointerException("map key"); }
-    java.util.Map<String, Integer> map =
+    java.util.Map<java.lang.String, java.lang.Integer> map =
         internalGetTxPacketsPerStatus().getMap();
     if (!map.containsKey(key)) {
-      throw new IllegalArgumentException();
+      throw new java.lang.IllegalArgumentException();
     }
     return map.get(key);
   }
 
   private byte memoizedIsInitialized = -1;
-  @Override
+  @java.lang.Override
   public final boolean isInitialized() {
     byte isInitialized = memoizedIsInitialized;
     if (isInitialized == 1) return true;
@@ -831,7 +816,7 @@ private static final long serialVersionUID = 0L;
     return true;
   }
 
-  @Override
+  @java.lang.Override
   public void writeTo(com.google.protobuf.CodedOutputStream output)
                       throws java.io.IOException {
     if (!gatewayIdLegacy_.isEmpty()) {
@@ -861,8 +846,8 @@ private static final long serialVersionUID = 0L;
     com.google.protobuf.GeneratedMessageV3
       .serializeStringMapTo(
         output,
-        internalGetMetaData(),
-        MetaDataDefaultEntryHolder.defaultEntry,
+        internalGetMetadata(),
+        MetadataDefaultEntryHolder.defaultEntry,
         10);
     com.google.protobuf.GeneratedMessageV3
       .serializeIntegerMapTo(
@@ -894,7 +879,7 @@ private static final long serialVersionUID = 0L;
     getUnknownFields().writeTo(output);
   }
 
-  @Override
+  @java.lang.Override
   public int getSerializedSize() {
     int size = memoizedSize;
     if (size != -1) return size;
@@ -931,19 +916,19 @@ private static final long serialVersionUID = 0L;
       size += com.google.protobuf.CodedOutputStream
         .computeUInt32Size(8, txPacketsEmitted_);
     }
-    for (java.util.Map.Entry<String, String> entry
-         : internalGetMetaData().getMap().entrySet()) {
-      com.google.protobuf.MapEntry<String, String>
-      metaData__ = MetaDataDefaultEntryHolder.defaultEntry.newBuilderForType()
+    for (java.util.Map.Entry<java.lang.String, java.lang.String> entry
+         : internalGetMetadata().getMap().entrySet()) {
+      com.google.protobuf.MapEntry<java.lang.String, java.lang.String>
+      metadata__ = MetadataDefaultEntryHolder.defaultEntry.newBuilderForType()
           .setKey(entry.getKey())
           .setValue(entry.getValue())
           .build();
       size += com.google.protobuf.CodedOutputStream
-          .computeMessageSize(10, metaData__);
+          .computeMessageSize(10, metadata__);
     }
-    for (java.util.Map.Entry<Integer, Integer> entry
+    for (java.util.Map.Entry<java.lang.Integer, java.lang.Integer> entry
          : internalGetTxPacketsPerFrequency().getMap().entrySet()) {
-      com.google.protobuf.MapEntry<Integer, Integer>
+      com.google.protobuf.MapEntry<java.lang.Integer, java.lang.Integer>
       txPacketsPerFrequency__ = TxPacketsPerFrequencyDefaultEntryHolder.defaultEntry.newBuilderForType()
           .setKey(entry.getKey())
           .setValue(entry.getValue())
@@ -951,9 +936,9 @@ private static final long serialVersionUID = 0L;
       size += com.google.protobuf.CodedOutputStream
           .computeMessageSize(12, txPacketsPerFrequency__);
     }
-    for (java.util.Map.Entry<Integer, Integer> entry
+    for (java.util.Map.Entry<java.lang.Integer, java.lang.Integer> entry
          : internalGetRxPacketsPerFrequency().getMap().entrySet()) {
-      com.google.protobuf.MapEntry<Integer, Integer>
+      com.google.protobuf.MapEntry<java.lang.Integer, java.lang.Integer>
       rxPacketsPerFrequency__ = RxPacketsPerFrequencyDefaultEntryHolder.defaultEntry.newBuilderForType()
           .setKey(entry.getKey())
           .setValue(entry.getValue())
@@ -969,9 +954,9 @@ private static final long serialVersionUID = 0L;
       size += com.google.protobuf.CodedOutputStream
         .computeMessageSize(15, rxPacketsPerModulation_.get(i));
     }
-    for (java.util.Map.Entry<String, Integer> entry
+    for (java.util.Map.Entry<java.lang.String, java.lang.Integer> entry
          : internalGetTxPacketsPerStatus().getMap().entrySet()) {
-      com.google.protobuf.MapEntry<String, Integer>
+      com.google.protobuf.MapEntry<java.lang.String, java.lang.Integer>
       txPacketsPerStatus__ = TxPacketsPerStatusDefaultEntryHolder.defaultEntry.newBuilderForType()
           .setKey(entry.getKey())
           .setValue(entry.getValue())
@@ -987,15 +972,15 @@ private static final long serialVersionUID = 0L;
     return size;
   }
 
-  @Override
-  public boolean equals(final Object obj) {
+  @java.lang.Override
+  public boolean equals(final java.lang.Object obj) {
     if (obj == this) {
      return true;
     }
-    if (!(obj instanceof GatewayStats)) {
+    if (!(obj instanceof io.chirpstack.api.gw.GatewayStats)) {
       return super.equals(obj);
     }
-    GatewayStats other = (GatewayStats) obj;
+    io.chirpstack.api.gw.GatewayStats other = (io.chirpstack.api.gw.GatewayStats) obj;
 
     if (!getGatewayIdLegacy()
         .equals(other.getGatewayIdLegacy())) return false;
@@ -1021,8 +1006,8 @@ private static final long serialVersionUID = 0L;
         != other.getTxPacketsReceived()) return false;
     if (getTxPacketsEmitted()
         != other.getTxPacketsEmitted()) return false;
-    if (!internalGetMetaData().equals(
-        other.internalGetMetaData())) return false;
+    if (!internalGetMetadata().equals(
+        other.internalGetMetadata())) return false;
     if (!internalGetTxPacketsPerFrequency().equals(
         other.internalGetTxPacketsPerFrequency())) return false;
     if (!internalGetRxPacketsPerFrequency().equals(
@@ -1037,7 +1022,7 @@ private static final long serialVersionUID = 0L;
     return true;
   }
 
-  @Override
+  @java.lang.Override
   public int hashCode() {
     if (memoizedHashCode != 0) {
       return memoizedHashCode;
@@ -1066,9 +1051,9 @@ private static final long serialVersionUID = 0L;
     hash = (53 * hash) + getTxPacketsReceived();
     hash = (37 * hash) + TX_PACKETS_EMITTED_FIELD_NUMBER;
     hash = (53 * hash) + getTxPacketsEmitted();
-    if (!internalGetMetaData().getMap().isEmpty()) {
-      hash = (37 * hash) + META_DATA_FIELD_NUMBER;
-      hash = (53 * hash) + internalGetMetaData().hashCode();
+    if (!internalGetMetadata().getMap().isEmpty()) {
+      hash = (37 * hash) + METADATA_FIELD_NUMBER;
+      hash = (53 * hash) + internalGetMetadata().hashCode();
     }
     if (!internalGetTxPacketsPerFrequency().getMap().isEmpty()) {
       hash = (37 * hash) + TX_PACKETS_PER_FREQUENCY_FIELD_NUMBER;
@@ -1095,69 +1080,69 @@ private static final long serialVersionUID = 0L;
     return hash;
   }
 
-  public static GatewayStats parseFrom(
+  public static io.chirpstack.api.gw.GatewayStats parseFrom(
       java.nio.ByteBuffer data)
       throws com.google.protobuf.InvalidProtocolBufferException {
     return PARSER.parseFrom(data);
   }
-  public static GatewayStats parseFrom(
+  public static io.chirpstack.api.gw.GatewayStats parseFrom(
       java.nio.ByteBuffer data,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws com.google.protobuf.InvalidProtocolBufferException {
     return PARSER.parseFrom(data, extensionRegistry);
   }
-  public static GatewayStats parseFrom(
+  public static io.chirpstack.api.gw.GatewayStats parseFrom(
       com.google.protobuf.ByteString data)
       throws com.google.protobuf.InvalidProtocolBufferException {
     return PARSER.parseFrom(data);
   }
-  public static GatewayStats parseFrom(
+  public static io.chirpstack.api.gw.GatewayStats parseFrom(
       com.google.protobuf.ByteString data,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws com.google.protobuf.InvalidProtocolBufferException {
     return PARSER.parseFrom(data, extensionRegistry);
   }
-  public static GatewayStats parseFrom(byte[] data)
+  public static io.chirpstack.api.gw.GatewayStats parseFrom(byte[] data)
       throws com.google.protobuf.InvalidProtocolBufferException {
     return PARSER.parseFrom(data);
   }
-  public static GatewayStats parseFrom(
+  public static io.chirpstack.api.gw.GatewayStats parseFrom(
       byte[] data,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws com.google.protobuf.InvalidProtocolBufferException {
     return PARSER.parseFrom(data, extensionRegistry);
   }
-  public static GatewayStats parseFrom(java.io.InputStream input)
+  public static io.chirpstack.api.gw.GatewayStats parseFrom(java.io.InputStream input)
       throws java.io.IOException {
     return com.google.protobuf.GeneratedMessageV3
         .parseWithIOException(PARSER, input);
   }
-  public static GatewayStats parseFrom(
+  public static io.chirpstack.api.gw.GatewayStats parseFrom(
       java.io.InputStream input,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws java.io.IOException {
     return com.google.protobuf.GeneratedMessageV3
         .parseWithIOException(PARSER, input, extensionRegistry);
   }
-  public static GatewayStats parseDelimitedFrom(java.io.InputStream input)
+  public static io.chirpstack.api.gw.GatewayStats parseDelimitedFrom(java.io.InputStream input)
       throws java.io.IOException {
     return com.google.protobuf.GeneratedMessageV3
         .parseDelimitedWithIOException(PARSER, input);
   }
-  public static GatewayStats parseDelimitedFrom(
+  public static io.chirpstack.api.gw.GatewayStats parseDelimitedFrom(
       java.io.InputStream input,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws java.io.IOException {
     return com.google.protobuf.GeneratedMessageV3
         .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
   }
-  public static GatewayStats parseFrom(
+  public static io.chirpstack.api.gw.GatewayStats parseFrom(
       com.google.protobuf.CodedInputStream input)
       throws java.io.IOException {
     return com.google.protobuf.GeneratedMessageV3
         .parseWithIOException(PARSER, input);
   }
-  public static GatewayStats parseFrom(
+  public static io.chirpstack.api.gw.GatewayStats parseFrom(
       com.google.protobuf.CodedInputStream input,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws java.io.IOException {
@@ -1165,23 +1150,23 @@ private static final long serialVersionUID = 0L;
         .parseWithIOException(PARSER, input, extensionRegistry);
   }
 
-  @Override
+  @java.lang.Override
   public Builder newBuilderForType() { return newBuilder(); }
   public static Builder newBuilder() {
     return DEFAULT_INSTANCE.toBuilder();
   }
-  public static Builder newBuilder(GatewayStats prototype) {
+  public static Builder newBuilder(io.chirpstack.api.gw.GatewayStats prototype) {
     return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
   }
-  @Override
+  @java.lang.Override
   public Builder toBuilder() {
     return this == DEFAULT_INSTANCE
         ? new Builder() : new Builder().mergeFrom(this);
   }
 
-  @Override
+  @java.lang.Override
   protected Builder newBuilderForType(
-      BuilderParent parent) {
+      com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
     Builder builder = new Builder(parent);
     return builder;
   }
@@ -1191,10 +1176,10 @@ private static final long serialVersionUID = 0L;
   public static final class Builder extends
       com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
       // @@protoc_insertion_point(builder_implements:gw.GatewayStats)
-      GatewayStatsOrBuilder {
+      io.chirpstack.api.gw.GatewayStatsOrBuilder {
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
-      return GatewayProto.internal_static_gw_GatewayStats_descriptor;
+      return io.chirpstack.api.gw.GatewayProto.internal_static_gw_GatewayStats_descriptor;
     }
 
     @SuppressWarnings({"rawtypes"})
@@ -1202,7 +1187,7 @@ private static final long serialVersionUID = 0L;
         int number) {
       switch (number) {
         case 10:
-          return internalGetMetaData();
+          return internalGetMetadata();
         case 12:
           return internalGetTxPacketsPerFrequency();
         case 13:
@@ -1219,7 +1204,7 @@ private static final long serialVersionUID = 0L;
         int number) {
       switch (number) {
         case 10:
-          return internalGetMutableMetaData();
+          return internalGetMutableMetadata();
         case 12:
           return internalGetMutableTxPacketsPerFrequency();
         case 13:
@@ -1231,12 +1216,12 @@ private static final long serialVersionUID = 0L;
               "Invalid map field number: " + number);
       }
     }
-    @Override
-    protected FieldAccessorTable
+    @java.lang.Override
+    protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
         internalGetFieldAccessorTable() {
-      return GatewayProto.internal_static_gw_GatewayStats_fieldAccessorTable
+      return io.chirpstack.api.gw.GatewayProto.internal_static_gw_GatewayStats_fieldAccessorTable
           .ensureFieldAccessorsInitialized(
-              GatewayStats.class, Builder.class);
+              io.chirpstack.api.gw.GatewayStats.class, io.chirpstack.api.gw.GatewayStats.Builder.class);
     }
 
     // Construct using io.chirpstack.api.gw.GatewayStats.newBuilder()
@@ -1245,40 +1230,32 @@ private static final long serialVersionUID = 0L;
     }
 
     private Builder(
-        BuilderParent parent) {
+        com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
       super(parent);
 
     }
-    @Override
+    @java.lang.Override
     public Builder clear() {
       super.clear();
+      bitField0_ = 0;
       gatewayIdLegacy_ = com.google.protobuf.ByteString.EMPTY;
-
       gatewayId_ = "";
-
-      if (timeBuilder_ == null) {
-        time_ = null;
-      } else {
-        time_ = null;
+      time_ = null;
+      if (timeBuilder_ != null) {
+        timeBuilder_.dispose();
         timeBuilder_ = null;
       }
-      if (locationBuilder_ == null) {
-        location_ = null;
-      } else {
-        location_ = null;
+      location_ = null;
+      if (locationBuilder_ != null) {
+        locationBuilder_.dispose();
         locationBuilder_ = null;
       }
       configVersion_ = "";
-
       rxPacketsReceived_ = 0;
-
       rxPacketsReceivedOk_ = 0;
-
       txPacketsReceived_ = 0;
-
       txPacketsEmitted_ = 0;
-
-      internalGetMutableMetaData().clear();
+      internalGetMutableMetadata().clear();
       internalGetMutableTxPacketsPerFrequency().clear();
       internalGetMutableRxPacketsPerFrequency().clear();
       if (txPacketsPerModulationBuilder_ == null) {
@@ -1287,138 +1264,137 @@ private static final long serialVersionUID = 0L;
         txPacketsPerModulation_ = null;
         txPacketsPerModulationBuilder_.clear();
       }
-      bitField0_ = (bitField0_ & ~0x00000008);
+      bitField0_ = (bitField0_ & ~0x00001000);
       if (rxPacketsPerModulationBuilder_ == null) {
         rxPacketsPerModulation_ = java.util.Collections.emptyList();
       } else {
         rxPacketsPerModulation_ = null;
         rxPacketsPerModulationBuilder_.clear();
       }
-      bitField0_ = (bitField0_ & ~0x00000010);
+      bitField0_ = (bitField0_ & ~0x00002000);
       internalGetMutableTxPacketsPerStatus().clear();
       return this;
     }
 
-    @Override
+    @java.lang.Override
     public com.google.protobuf.Descriptors.Descriptor
         getDescriptorForType() {
-      return GatewayProto.internal_static_gw_GatewayStats_descriptor;
+      return io.chirpstack.api.gw.GatewayProto.internal_static_gw_GatewayStats_descriptor;
     }
 
-    @Override
-    public GatewayStats getDefaultInstanceForType() {
-      return GatewayStats.getDefaultInstance();
+    @java.lang.Override
+    public io.chirpstack.api.gw.GatewayStats getDefaultInstanceForType() {
+      return io.chirpstack.api.gw.GatewayStats.getDefaultInstance();
     }
 
-    @Override
-    public GatewayStats build() {
-      GatewayStats result = buildPartial();
+    @java.lang.Override
+    public io.chirpstack.api.gw.GatewayStats build() {
+      io.chirpstack.api.gw.GatewayStats result = buildPartial();
       if (!result.isInitialized()) {
         throw newUninitializedMessageException(result);
       }
       return result;
     }
 
-    @Override
-    public GatewayStats buildPartial() {
-      GatewayStats result = new GatewayStats(this);
-      int from_bitField0_ = bitField0_;
-      result.gatewayIdLegacy_ = gatewayIdLegacy_;
-      result.gatewayId_ = gatewayId_;
-      if (timeBuilder_ == null) {
-        result.time_ = time_;
-      } else {
-        result.time_ = timeBuilder_.build();
-      }
-      if (locationBuilder_ == null) {
-        result.location_ = location_;
-      } else {
-        result.location_ = locationBuilder_.build();
-      }
-      result.configVersion_ = configVersion_;
-      result.rxPacketsReceived_ = rxPacketsReceived_;
-      result.rxPacketsReceivedOk_ = rxPacketsReceivedOk_;
-      result.txPacketsReceived_ = txPacketsReceived_;
-      result.txPacketsEmitted_ = txPacketsEmitted_;
-      result.metaData_ = internalGetMetaData();
-      result.metaData_.makeImmutable();
-      result.txPacketsPerFrequency_ = internalGetTxPacketsPerFrequency();
-      result.txPacketsPerFrequency_.makeImmutable();
-      result.rxPacketsPerFrequency_ = internalGetRxPacketsPerFrequency();
-      result.rxPacketsPerFrequency_.makeImmutable();
+    @java.lang.Override
+    public io.chirpstack.api.gw.GatewayStats buildPartial() {
+      io.chirpstack.api.gw.GatewayStats result = new io.chirpstack.api.gw.GatewayStats(this);
+      buildPartialRepeatedFields(result);
+      if (bitField0_ != 0) { buildPartial0(result); }
+      onBuilt();
+      return result;
+    }
+
+    private void buildPartialRepeatedFields(io.chirpstack.api.gw.GatewayStats result) {
       if (txPacketsPerModulationBuilder_ == null) {
-        if (((bitField0_ & 0x00000008) != 0)) {
+        if (((bitField0_ & 0x00001000) != 0)) {
           txPacketsPerModulation_ = java.util.Collections.unmodifiableList(txPacketsPerModulation_);
-          bitField0_ = (bitField0_ & ~0x00000008);
+          bitField0_ = (bitField0_ & ~0x00001000);
         }
         result.txPacketsPerModulation_ = txPacketsPerModulation_;
       } else {
         result.txPacketsPerModulation_ = txPacketsPerModulationBuilder_.build();
       }
       if (rxPacketsPerModulationBuilder_ == null) {
-        if (((bitField0_ & 0x00000010) != 0)) {
+        if (((bitField0_ & 0x00002000) != 0)) {
           rxPacketsPerModulation_ = java.util.Collections.unmodifiableList(rxPacketsPerModulation_);
-          bitField0_ = (bitField0_ & ~0x00000010);
+          bitField0_ = (bitField0_ & ~0x00002000);
         }
         result.rxPacketsPerModulation_ = rxPacketsPerModulation_;
       } else {
         result.rxPacketsPerModulation_ = rxPacketsPerModulationBuilder_.build();
       }
-      result.txPacketsPerStatus_ = internalGetTxPacketsPerStatus();
-      result.txPacketsPerStatus_.makeImmutable();
-      onBuilt();
-      return result;
     }
 
-    @Override
-    public Builder clone() {
-      return super.clone();
+    private void buildPartial0(io.chirpstack.api.gw.GatewayStats result) {
+      int from_bitField0_ = bitField0_;
+      if (((from_bitField0_ & 0x00000001) != 0)) {
+        result.gatewayIdLegacy_ = gatewayIdLegacy_;
+      }
+      if (((from_bitField0_ & 0x00000002) != 0)) {
+        result.gatewayId_ = gatewayId_;
+      }
+      if (((from_bitField0_ & 0x00000004) != 0)) {
+        result.time_ = timeBuilder_ == null
+            ? time_
+            : timeBuilder_.build();
+      }
+      if (((from_bitField0_ & 0x00000008) != 0)) {
+        result.location_ = locationBuilder_ == null
+            ? location_
+            : locationBuilder_.build();
+      }
+      if (((from_bitField0_ & 0x00000010) != 0)) {
+        result.configVersion_ = configVersion_;
+      }
+      if (((from_bitField0_ & 0x00000020) != 0)) {
+        result.rxPacketsReceived_ = rxPacketsReceived_;
+      }
+      if (((from_bitField0_ & 0x00000040) != 0)) {
+        result.rxPacketsReceivedOk_ = rxPacketsReceivedOk_;
+      }
+      if (((from_bitField0_ & 0x00000080) != 0)) {
+        result.txPacketsReceived_ = txPacketsReceived_;
+      }
+      if (((from_bitField0_ & 0x00000100) != 0)) {
+        result.txPacketsEmitted_ = txPacketsEmitted_;
+      }
+      if (((from_bitField0_ & 0x00000200) != 0)) {
+        result.metadata_ = internalGetMetadata();
+        result.metadata_.makeImmutable();
+      }
+      if (((from_bitField0_ & 0x00000400) != 0)) {
+        result.txPacketsPerFrequency_ = internalGetTxPacketsPerFrequency();
+        result.txPacketsPerFrequency_.makeImmutable();
+      }
+      if (((from_bitField0_ & 0x00000800) != 0)) {
+        result.rxPacketsPerFrequency_ = internalGetRxPacketsPerFrequency();
+        result.rxPacketsPerFrequency_.makeImmutable();
+      }
+      if (((from_bitField0_ & 0x00004000) != 0)) {
+        result.txPacketsPerStatus_ = internalGetTxPacketsPerStatus();
+        result.txPacketsPerStatus_.makeImmutable();
+      }
     }
-    @Override
-    public Builder setField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        Object value) {
-      return super.setField(field, value);
-    }
-    @Override
-    public Builder clearField(
-        com.google.protobuf.Descriptors.FieldDescriptor field) {
-      return super.clearField(field);
-    }
-    @Override
-    public Builder clearOneof(
-        com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-      return super.clearOneof(oneof);
-    }
-    @Override
-    public Builder setRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        int index, Object value) {
-      return super.setRepeatedField(field, index, value);
-    }
-    @Override
-    public Builder addRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        Object value) {
-      return super.addRepeatedField(field, value);
-    }
-    @Override
+
+    @java.lang.Override
     public Builder mergeFrom(com.google.protobuf.Message other) {
-      if (other instanceof GatewayStats) {
-        return mergeFrom((GatewayStats)other);
+      if (other instanceof io.chirpstack.api.gw.GatewayStats) {
+        return mergeFrom((io.chirpstack.api.gw.GatewayStats)other);
       } else {
         super.mergeFrom(other);
         return this;
       }
     }
 
-    public Builder mergeFrom(GatewayStats other) {
-      if (other == GatewayStats.getDefaultInstance()) return this;
+    public Builder mergeFrom(io.chirpstack.api.gw.GatewayStats other) {
+      if (other == io.chirpstack.api.gw.GatewayStats.getDefaultInstance()) return this;
       if (other.getGatewayIdLegacy() != com.google.protobuf.ByteString.EMPTY) {
         setGatewayIdLegacy(other.getGatewayIdLegacy());
       }
       if (!other.getGatewayId().isEmpty()) {
         gatewayId_ = other.gatewayId_;
+        bitField0_ |= 0x00000002;
         onChanged();
       }
       if (other.hasTime()) {
@@ -1429,6 +1405,7 @@ private static final long serialVersionUID = 0L;
       }
       if (!other.getConfigVersion().isEmpty()) {
         configVersion_ = other.configVersion_;
+        bitField0_ |= 0x00000010;
         onChanged();
       }
       if (other.getRxPacketsReceived() != 0) {
@@ -1443,17 +1420,20 @@ private static final long serialVersionUID = 0L;
       if (other.getTxPacketsEmitted() != 0) {
         setTxPacketsEmitted(other.getTxPacketsEmitted());
       }
-      internalGetMutableMetaData().mergeFrom(
-          other.internalGetMetaData());
+      internalGetMutableMetadata().mergeFrom(
+          other.internalGetMetadata());
+      bitField0_ |= 0x00000200;
       internalGetMutableTxPacketsPerFrequency().mergeFrom(
           other.internalGetTxPacketsPerFrequency());
+      bitField0_ |= 0x00000400;
       internalGetMutableRxPacketsPerFrequency().mergeFrom(
           other.internalGetRxPacketsPerFrequency());
+      bitField0_ |= 0x00000800;
       if (txPacketsPerModulationBuilder_ == null) {
         if (!other.txPacketsPerModulation_.isEmpty()) {
           if (txPacketsPerModulation_.isEmpty()) {
             txPacketsPerModulation_ = other.txPacketsPerModulation_;
-            bitField0_ = (bitField0_ & ~0x00000008);
+            bitField0_ = (bitField0_ & ~0x00001000);
           } else {
             ensureTxPacketsPerModulationIsMutable();
             txPacketsPerModulation_.addAll(other.txPacketsPerModulation_);
@@ -1466,7 +1446,7 @@ private static final long serialVersionUID = 0L;
             txPacketsPerModulationBuilder_.dispose();
             txPacketsPerModulationBuilder_ = null;
             txPacketsPerModulation_ = other.txPacketsPerModulation_;
-            bitField0_ = (bitField0_ & ~0x00000008);
+            bitField0_ = (bitField0_ & ~0x00001000);
             txPacketsPerModulationBuilder_ = 
               com.google.protobuf.GeneratedMessageV3.alwaysUseFieldBuilders ?
                  getTxPacketsPerModulationFieldBuilder() : null;
@@ -1479,7 +1459,7 @@ private static final long serialVersionUID = 0L;
         if (!other.rxPacketsPerModulation_.isEmpty()) {
           if (rxPacketsPerModulation_.isEmpty()) {
             rxPacketsPerModulation_ = other.rxPacketsPerModulation_;
-            bitField0_ = (bitField0_ & ~0x00000010);
+            bitField0_ = (bitField0_ & ~0x00002000);
           } else {
             ensureRxPacketsPerModulationIsMutable();
             rxPacketsPerModulation_.addAll(other.rxPacketsPerModulation_);
@@ -1492,7 +1472,7 @@ private static final long serialVersionUID = 0L;
             rxPacketsPerModulationBuilder_.dispose();
             rxPacketsPerModulationBuilder_ = null;
             rxPacketsPerModulation_ = other.rxPacketsPerModulation_;
-            bitField0_ = (bitField0_ & ~0x00000010);
+            bitField0_ = (bitField0_ & ~0x00002000);
             rxPacketsPerModulationBuilder_ = 
               com.google.protobuf.GeneratedMessageV3.alwaysUseFieldBuilders ?
                  getRxPacketsPerModulationFieldBuilder() : null;
@@ -1503,23 +1483,24 @@ private static final long serialVersionUID = 0L;
       }
       internalGetMutableTxPacketsPerStatus().mergeFrom(
           other.internalGetTxPacketsPerStatus());
+      bitField0_ |= 0x00004000;
       this.mergeUnknownFields(other.getUnknownFields());
       onChanged();
       return this;
     }
 
-    @Override
+    @java.lang.Override
     public final boolean isInitialized() {
       return true;
     }
 
-    @Override
+    @java.lang.Override
     public Builder mergeFrom(
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
       if (extensionRegistry == null) {
-        throw new NullPointerException();
+        throw new java.lang.NullPointerException();
       }
       try {
         boolean done = false;
@@ -1531,76 +1512,79 @@ private static final long serialVersionUID = 0L;
               break;
             case 10: {
               gatewayIdLegacy_ = input.readBytes();
-
+              bitField0_ |= 0x00000001;
               break;
             } // case 10
             case 18: {
               input.readMessage(
                   getTimeFieldBuilder().getBuilder(),
                   extensionRegistry);
-
+              bitField0_ |= 0x00000004;
               break;
             } // case 18
             case 26: {
               input.readMessage(
                   getLocationFieldBuilder().getBuilder(),
                   extensionRegistry);
-
+              bitField0_ |= 0x00000008;
               break;
             } // case 26
             case 34: {
               configVersion_ = input.readStringRequireUtf8();
-
+              bitField0_ |= 0x00000010;
               break;
             } // case 34
             case 40: {
               rxPacketsReceived_ = input.readUInt32();
-
+              bitField0_ |= 0x00000020;
               break;
             } // case 40
             case 48: {
               rxPacketsReceivedOk_ = input.readUInt32();
-
+              bitField0_ |= 0x00000040;
               break;
             } // case 48
             case 56: {
               txPacketsReceived_ = input.readUInt32();
-
+              bitField0_ |= 0x00000080;
               break;
             } // case 56
             case 64: {
               txPacketsEmitted_ = input.readUInt32();
-
+              bitField0_ |= 0x00000100;
               break;
             } // case 64
             case 82: {
-              com.google.protobuf.MapEntry<String, String>
-              metaData__ = input.readMessage(
-                  MetaDataDefaultEntryHolder.defaultEntry.getParserForType(), extensionRegistry);
-              internalGetMutableMetaData().getMutableMap().put(
-                  metaData__.getKey(), metaData__.getValue());
+              com.google.protobuf.MapEntry<java.lang.String, java.lang.String>
+              metadata__ = input.readMessage(
+                  MetadataDefaultEntryHolder.defaultEntry.getParserForType(), extensionRegistry);
+              internalGetMutableMetadata().getMutableMap().put(
+                  metadata__.getKey(), metadata__.getValue());
+              bitField0_ |= 0x00000200;
               break;
             } // case 82
             case 98: {
-              com.google.protobuf.MapEntry<Integer, Integer>
+              com.google.protobuf.MapEntry<java.lang.Integer, java.lang.Integer>
               txPacketsPerFrequency__ = input.readMessage(
                   TxPacketsPerFrequencyDefaultEntryHolder.defaultEntry.getParserForType(), extensionRegistry);
               internalGetMutableTxPacketsPerFrequency().getMutableMap().put(
                   txPacketsPerFrequency__.getKey(), txPacketsPerFrequency__.getValue());
+              bitField0_ |= 0x00000400;
               break;
             } // case 98
             case 106: {
-              com.google.protobuf.MapEntry<Integer, Integer>
+              com.google.protobuf.MapEntry<java.lang.Integer, java.lang.Integer>
               rxPacketsPerFrequency__ = input.readMessage(
                   RxPacketsPerFrequencyDefaultEntryHolder.defaultEntry.getParserForType(), extensionRegistry);
               internalGetMutableRxPacketsPerFrequency().getMutableMap().put(
                   rxPacketsPerFrequency__.getKey(), rxPacketsPerFrequency__.getValue());
+              bitField0_ |= 0x00000800;
               break;
             } // case 106
             case 114: {
-              PerModulationCount m =
+              io.chirpstack.api.gw.PerModulationCount m =
                   input.readMessage(
-                      PerModulationCount.parser(),
+                      io.chirpstack.api.gw.PerModulationCount.parser(),
                       extensionRegistry);
               if (txPacketsPerModulationBuilder_ == null) {
                 ensureTxPacketsPerModulationIsMutable();
@@ -1611,9 +1595,9 @@ private static final long serialVersionUID = 0L;
               break;
             } // case 114
             case 122: {
-              PerModulationCount m =
+              io.chirpstack.api.gw.PerModulationCount m =
                   input.readMessage(
-                      PerModulationCount.parser(),
+                      io.chirpstack.api.gw.PerModulationCount.parser(),
                       extensionRegistry);
               if (rxPacketsPerModulationBuilder_ == null) {
                 ensureRxPacketsPerModulationIsMutable();
@@ -1624,16 +1608,17 @@ private static final long serialVersionUID = 0L;
               break;
             } // case 122
             case 130: {
-              com.google.protobuf.MapEntry<String, Integer>
+              com.google.protobuf.MapEntry<java.lang.String, java.lang.Integer>
               txPacketsPerStatus__ = input.readMessage(
                   TxPacketsPerStatusDefaultEntryHolder.defaultEntry.getParserForType(), extensionRegistry);
               internalGetMutableTxPacketsPerStatus().getMutableMap().put(
                   txPacketsPerStatus__.getKey(), txPacketsPerStatus__.getValue());
+              bitField0_ |= 0x00004000;
               break;
             } // case 130
             case 138: {
               gatewayId_ = input.readStringRequireUtf8();
-
+              bitField0_ |= 0x00000002;
               break;
             } // case 138
             default: {
@@ -1663,7 +1648,7 @@ private static final long serialVersionUID = 0L;
      * <code>bytes gateway_id_legacy = 1;</code>
      * @return The gatewayIdLegacy.
      */
-    @Override
+    @java.lang.Override
     public com.google.protobuf.ByteString getGatewayIdLegacy() {
       return gatewayIdLegacy_;
     }
@@ -1678,11 +1663,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setGatewayIdLegacy(com.google.protobuf.ByteString value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  
+      if (value == null) { throw new NullPointerException(); }
       gatewayIdLegacy_ = value;
+      bitField0_ |= 0x00000001;
       onChanged();
       return this;
     }
@@ -1696,13 +1679,13 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder clearGatewayIdLegacy() {
-      
+      bitField0_ = (bitField0_ & ~0x00000001);
       gatewayIdLegacy_ = getDefaultInstance().getGatewayIdLegacy();
       onChanged();
       return this;
     }
 
-    private Object gatewayId_ = "";
+    private java.lang.Object gatewayId_ = "";
     /**
      * <pre>
      * Gateway ID.
@@ -1711,16 +1694,16 @@ private static final long serialVersionUID = 0L;
      * <code>string gateway_id = 17;</code>
      * @return The gatewayId.
      */
-    public String getGatewayId() {
-      Object ref = gatewayId_;
-      if (!(ref instanceof String)) {
+    public java.lang.String getGatewayId() {
+      java.lang.Object ref = gatewayId_;
+      if (!(ref instanceof java.lang.String)) {
         com.google.protobuf.ByteString bs =
             (com.google.protobuf.ByteString) ref;
-        String s = bs.toStringUtf8();
+        java.lang.String s = bs.toStringUtf8();
         gatewayId_ = s;
         return s;
       } else {
-        return (String) ref;
+        return (java.lang.String) ref;
       }
     }
     /**
@@ -1733,11 +1716,11 @@ private static final long serialVersionUID = 0L;
      */
     public com.google.protobuf.ByteString
         getGatewayIdBytes() {
-      Object ref = gatewayId_;
+      java.lang.Object ref = gatewayId_;
       if (ref instanceof String) {
         com.google.protobuf.ByteString b = 
             com.google.protobuf.ByteString.copyFromUtf8(
-                (String) ref);
+                (java.lang.String) ref);
         gatewayId_ = b;
         return b;
       } else {
@@ -1754,12 +1737,10 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setGatewayId(
-        String value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  
+        java.lang.String value) {
+      if (value == null) { throw new NullPointerException(); }
       gatewayId_ = value;
+      bitField0_ |= 0x00000002;
       onChanged();
       return this;
     }
@@ -1772,8 +1753,8 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder clearGatewayId() {
-      
       gatewayId_ = getDefaultInstance().getGatewayId();
+      bitField0_ = (bitField0_ & ~0x00000002);
       onChanged();
       return this;
     }
@@ -1788,12 +1769,10 @@ private static final long serialVersionUID = 0L;
      */
     public Builder setGatewayIdBytes(
         com.google.protobuf.ByteString value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  checkByteStringIsUtf8(value);
-      
+      if (value == null) { throw new NullPointerException(); }
+      checkByteStringIsUtf8(value);
       gatewayId_ = value;
+      bitField0_ |= 0x00000002;
       onChanged();
       return this;
     }
@@ -1810,7 +1789,7 @@ private static final long serialVersionUID = 0L;
      * @return Whether the time field is set.
      */
     public boolean hasTime() {
-      return timeBuilder_ != null || time_ != null;
+      return ((bitField0_ & 0x00000004) != 0);
     }
     /**
      * <pre>
@@ -1840,11 +1819,11 @@ private static final long serialVersionUID = 0L;
           throw new NullPointerException();
         }
         time_ = value;
-        onChanged();
       } else {
         timeBuilder_.setMessage(value);
       }
-
+      bitField0_ |= 0x00000004;
+      onChanged();
       return this;
     }
     /**
@@ -1858,11 +1837,11 @@ private static final long serialVersionUID = 0L;
         com.google.protobuf.Timestamp.Builder builderForValue) {
       if (timeBuilder_ == null) {
         time_ = builderForValue.build();
-        onChanged();
       } else {
         timeBuilder_.setMessage(builderForValue.build());
       }
-
+      bitField0_ |= 0x00000004;
+      onChanged();
       return this;
     }
     /**
@@ -1874,17 +1853,18 @@ private static final long serialVersionUID = 0L;
      */
     public Builder mergeTime(com.google.protobuf.Timestamp value) {
       if (timeBuilder_ == null) {
-        if (time_ != null) {
-          time_ =
-            com.google.protobuf.Timestamp.newBuilder(time_).mergeFrom(value).buildPartial();
+        if (((bitField0_ & 0x00000004) != 0) &&
+          time_ != null &&
+          time_ != com.google.protobuf.Timestamp.getDefaultInstance()) {
+          getTimeBuilder().mergeFrom(value);
         } else {
           time_ = value;
         }
-        onChanged();
       } else {
         timeBuilder_.mergeFrom(value);
       }
-
+      bitField0_ |= 0x00000004;
+      onChanged();
       return this;
     }
     /**
@@ -1895,14 +1875,13 @@ private static final long serialVersionUID = 0L;
      * <code>.google.protobuf.Timestamp time = 2;</code>
      */
     public Builder clearTime() {
-      if (timeBuilder_ == null) {
-        time_ = null;
-        onChanged();
-      } else {
-        time_ = null;
+      bitField0_ = (bitField0_ & ~0x00000004);
+      time_ = null;
+      if (timeBuilder_ != null) {
+        timeBuilder_.dispose();
         timeBuilder_ = null;
       }
-
+      onChanged();
       return this;
     }
     /**
@@ -1913,7 +1892,7 @@ private static final long serialVersionUID = 0L;
      * <code>.google.protobuf.Timestamp time = 2;</code>
      */
     public com.google.protobuf.Timestamp.Builder getTimeBuilder() {
-      
+      bitField0_ |= 0x00000004;
       onChanged();
       return getTimeFieldBuilder().getBuilder();
     }
@@ -1965,7 +1944,7 @@ private static final long serialVersionUID = 0L;
      * @return Whether the location field is set.
      */
     public boolean hasLocation() {
-      return locationBuilder_ != null || location_ != null;
+      return ((bitField0_ & 0x00000008) != 0);
     }
     /**
      * <pre>
@@ -1995,11 +1974,11 @@ private static final long serialVersionUID = 0L;
           throw new NullPointerException();
         }
         location_ = value;
-        onChanged();
       } else {
         locationBuilder_.setMessage(value);
       }
-
+      bitField0_ |= 0x00000008;
+      onChanged();
       return this;
     }
     /**
@@ -2013,11 +1992,11 @@ private static final long serialVersionUID = 0L;
         io.chirpstack.api.Location.Builder builderForValue) {
       if (locationBuilder_ == null) {
         location_ = builderForValue.build();
-        onChanged();
       } else {
         locationBuilder_.setMessage(builderForValue.build());
       }
-
+      bitField0_ |= 0x00000008;
+      onChanged();
       return this;
     }
     /**
@@ -2029,17 +2008,18 @@ private static final long serialVersionUID = 0L;
      */
     public Builder mergeLocation(io.chirpstack.api.Location value) {
       if (locationBuilder_ == null) {
-        if (location_ != null) {
-          location_ =
-            io.chirpstack.api.Location.newBuilder(location_).mergeFrom(value).buildPartial();
+        if (((bitField0_ & 0x00000008) != 0) &&
+          location_ != null &&
+          location_ != io.chirpstack.api.Location.getDefaultInstance()) {
+          getLocationBuilder().mergeFrom(value);
         } else {
           location_ = value;
         }
-        onChanged();
       } else {
         locationBuilder_.mergeFrom(value);
       }
-
+      bitField0_ |= 0x00000008;
+      onChanged();
       return this;
     }
     /**
@@ -2050,14 +2030,13 @@ private static final long serialVersionUID = 0L;
      * <code>.common.Location location = 3;</code>
      */
     public Builder clearLocation() {
-      if (locationBuilder_ == null) {
-        location_ = null;
-        onChanged();
-      } else {
-        location_ = null;
+      bitField0_ = (bitField0_ & ~0x00000008);
+      location_ = null;
+      if (locationBuilder_ != null) {
+        locationBuilder_.dispose();
         locationBuilder_ = null;
       }
-
+      onChanged();
       return this;
     }
     /**
@@ -2068,7 +2047,7 @@ private static final long serialVersionUID = 0L;
      * <code>.common.Location location = 3;</code>
      */
     public io.chirpstack.api.Location.Builder getLocationBuilder() {
-      
+      bitField0_ |= 0x00000008;
       onChanged();
       return getLocationFieldBuilder().getBuilder();
     }
@@ -2108,7 +2087,7 @@ private static final long serialVersionUID = 0L;
       return locationBuilder_;
     }
 
-    private Object configVersion_ = "";
+    private java.lang.Object configVersion_ = "";
     /**
      * <pre>
      * Gateway configuration version (this maps to the config_version sent
@@ -2118,16 +2097,16 @@ private static final long serialVersionUID = 0L;
      * <code>string config_version = 4;</code>
      * @return The configVersion.
      */
-    public String getConfigVersion() {
-      Object ref = configVersion_;
-      if (!(ref instanceof String)) {
+    public java.lang.String getConfigVersion() {
+      java.lang.Object ref = configVersion_;
+      if (!(ref instanceof java.lang.String)) {
         com.google.protobuf.ByteString bs =
             (com.google.protobuf.ByteString) ref;
-        String s = bs.toStringUtf8();
+        java.lang.String s = bs.toStringUtf8();
         configVersion_ = s;
         return s;
       } else {
-        return (String) ref;
+        return (java.lang.String) ref;
       }
     }
     /**
@@ -2141,11 +2120,11 @@ private static final long serialVersionUID = 0L;
      */
     public com.google.protobuf.ByteString
         getConfigVersionBytes() {
-      Object ref = configVersion_;
+      java.lang.Object ref = configVersion_;
       if (ref instanceof String) {
         com.google.protobuf.ByteString b = 
             com.google.protobuf.ByteString.copyFromUtf8(
-                (String) ref);
+                (java.lang.String) ref);
         configVersion_ = b;
         return b;
       } else {
@@ -2163,12 +2142,10 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setConfigVersion(
-        String value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  
+        java.lang.String value) {
+      if (value == null) { throw new NullPointerException(); }
       configVersion_ = value;
+      bitField0_ |= 0x00000010;
       onChanged();
       return this;
     }
@@ -2182,8 +2159,8 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder clearConfigVersion() {
-      
       configVersion_ = getDefaultInstance().getConfigVersion();
+      bitField0_ = (bitField0_ & ~0x00000010);
       onChanged();
       return this;
     }
@@ -2199,12 +2176,10 @@ private static final long serialVersionUID = 0L;
      */
     public Builder setConfigVersionBytes(
         com.google.protobuf.ByteString value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  checkByteStringIsUtf8(value);
-      
+      if (value == null) { throw new NullPointerException(); }
+      checkByteStringIsUtf8(value);
       configVersion_ = value;
+      bitField0_ |= 0x00000010;
       onChanged();
       return this;
     }
@@ -2218,7 +2193,7 @@ private static final long serialVersionUID = 0L;
      * <code>uint32 rx_packets_received = 5;</code>
      * @return The rxPacketsReceived.
      */
-    @Override
+    @java.lang.Override
     public int getRxPacketsReceived() {
       return rxPacketsReceived_;
     }
@@ -2232,8 +2207,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setRxPacketsReceived(int value) {
-      
+
       rxPacketsReceived_ = value;
+      bitField0_ |= 0x00000020;
       onChanged();
       return this;
     }
@@ -2246,7 +2222,7 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder clearRxPacketsReceived() {
-      
+      bitField0_ = (bitField0_ & ~0x00000020);
       rxPacketsReceived_ = 0;
       onChanged();
       return this;
@@ -2261,7 +2237,7 @@ private static final long serialVersionUID = 0L;
      * <code>uint32 rx_packets_received_ok = 6;</code>
      * @return The rxPacketsReceivedOk.
      */
-    @Override
+    @java.lang.Override
     public int getRxPacketsReceivedOk() {
       return rxPacketsReceivedOk_;
     }
@@ -2275,8 +2251,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setRxPacketsReceivedOk(int value) {
-      
+
       rxPacketsReceivedOk_ = value;
+      bitField0_ |= 0x00000040;
       onChanged();
       return this;
     }
@@ -2289,7 +2266,7 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder clearRxPacketsReceivedOk() {
-      
+      bitField0_ = (bitField0_ & ~0x00000040);
       rxPacketsReceivedOk_ = 0;
       onChanged();
       return this;
@@ -2304,7 +2281,7 @@ private static final long serialVersionUID = 0L;
      * <code>uint32 tx_packets_received = 7;</code>
      * @return The txPacketsReceived.
      */
-    @Override
+    @java.lang.Override
     public int getTxPacketsReceived() {
       return txPacketsReceived_;
     }
@@ -2318,8 +2295,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setTxPacketsReceived(int value) {
-      
+
       txPacketsReceived_ = value;
+      bitField0_ |= 0x00000080;
       onChanged();
       return this;
     }
@@ -2332,7 +2310,7 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder clearTxPacketsReceived() {
-      
+      bitField0_ = (bitField0_ & ~0x00000080);
       txPacketsReceived_ = 0;
       onChanged();
       return this;
@@ -2347,7 +2325,7 @@ private static final long serialVersionUID = 0L;
      * <code>uint32 tx_packets_emitted = 8;</code>
      * @return The txPacketsEmitted.
      */
-    @Override
+    @java.lang.Override
     public int getTxPacketsEmitted() {
       return txPacketsEmitted_;
     }
@@ -2361,8 +2339,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setTxPacketsEmitted(int value) {
-      
+
       txPacketsEmitted_ = value;
+      bitField0_ |= 0x00000100;
       onChanged();
       return this;
     }
@@ -2375,87 +2354,86 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder clearTxPacketsEmitted() {
-      
+      bitField0_ = (bitField0_ & ~0x00000100);
       txPacketsEmitted_ = 0;
       onChanged();
       return this;
     }
 
     private com.google.protobuf.MapField<
-        String, String> metaData_;
-    private com.google.protobuf.MapField<String, String>
-    internalGetMetaData() {
-      if (metaData_ == null) {
+        java.lang.String, java.lang.String> metadata_;
+    private com.google.protobuf.MapField<java.lang.String, java.lang.String>
+        internalGetMetadata() {
+      if (metadata_ == null) {
         return com.google.protobuf.MapField.emptyMapField(
-            MetaDataDefaultEntryHolder.defaultEntry);
+            MetadataDefaultEntryHolder.defaultEntry);
       }
-      return metaData_;
+      return metadata_;
     }
-    private com.google.protobuf.MapField<String, String>
-    internalGetMutableMetaData() {
-      onChanged();;
-      if (metaData_ == null) {
-        metaData_ = com.google.protobuf.MapField.newMapField(
-            MetaDataDefaultEntryHolder.defaultEntry);
+    private com.google.protobuf.MapField<java.lang.String, java.lang.String>
+        internalGetMutableMetadata() {
+      if (metadata_ == null) {
+        metadata_ = com.google.protobuf.MapField.newMapField(
+            MetadataDefaultEntryHolder.defaultEntry);
       }
-      if (!metaData_.isMutable()) {
-        metaData_ = metaData_.copy();
+      if (!metadata_.isMutable()) {
+        metadata_ = metadata_.copy();
       }
-      return metaData_;
+      bitField0_ |= 0x00000200;
+      onChanged();
+      return metadata_;
     }
-
-    public int getMetaDataCount() {
-      return internalGetMetaData().getMap().size();
+    public int getMetadataCount() {
+      return internalGetMetadata().getMap().size();
     }
     /**
      * <pre>
      * Additional gateway meta-data.
      * </pre>
      *
-     * <code>map&lt;string, string&gt; meta_data = 10;</code>
+     * <code>map&lt;string, string&gt; metadata = 10;</code>
      */
-
-    @Override
-    public boolean containsMetaData(
-        String key) {
+    @java.lang.Override
+    public boolean containsMetadata(
+        java.lang.String key) {
       if (key == null) { throw new NullPointerException("map key"); }
-      return internalGetMetaData().getMap().containsKey(key);
+      return internalGetMetadata().getMap().containsKey(key);
     }
     /**
-     * Use {@link #getMetaDataMap()} instead.
+     * Use {@link #getMetadataMap()} instead.
      */
-    @Override
-    @Deprecated
-    public java.util.Map<String, String> getMetaData() {
-      return getMetaDataMap();
-    }
-    /**
-     * <pre>
-     * Additional gateway meta-data.
-     * </pre>
-     *
-     * <code>map&lt;string, string&gt; meta_data = 10;</code>
-     */
-    @Override
-
-    public java.util.Map<String, String> getMetaDataMap() {
-      return internalGetMetaData().getMap();
+    @java.lang.Override
+    @java.lang.Deprecated
+    public java.util.Map<java.lang.String, java.lang.String> getMetadata() {
+      return getMetadataMap();
     }
     /**
      * <pre>
      * Additional gateway meta-data.
      * </pre>
      *
-     * <code>map&lt;string, string&gt; meta_data = 10;</code>
+     * <code>map&lt;string, string&gt; metadata = 10;</code>
      */
-    @Override
-
-    public String getMetaDataOrDefault(
-        String key,
-        String defaultValue) {
+    @java.lang.Override
+    public java.util.Map<java.lang.String, java.lang.String> getMetadataMap() {
+      return internalGetMetadata().getMap();
+    }
+    /**
+     * <pre>
+     * Additional gateway meta-data.
+     * </pre>
+     *
+     * <code>map&lt;string, string&gt; metadata = 10;</code>
+     */
+    @java.lang.Override
+    public /* nullable */
+java.lang.String getMetadataOrDefault(
+        java.lang.String key,
+        /* nullable */
+java.lang.String defaultValue) {
       if (key == null) { throw new NullPointerException("map key"); }
-      java.util.Map<String, String> map =
-          internalGetMetaData().getMap();
+      java.util.Map<java.lang.String, java.lang.String> map =
+          internalGetMetadata().getMap();
       return map.containsKey(key) ? map.get(key) : defaultValue;
     }
     /**
@@ -2463,23 +2441,22 @@ private static final long serialVersionUID = 0L;
      * Additional gateway meta-data.
      * </pre>
      *
-     * <code>map&lt;string, string&gt; meta_data = 10;</code>
+     * <code>map&lt;string, string&gt; metadata = 10;</code>
      */
-    @Override
-
-    public String getMetaDataOrThrow(
-        String key) {
+    @java.lang.Override
+    public java.lang.String getMetadataOrThrow(
+        java.lang.String key) {
       if (key == null) { throw new NullPointerException("map key"); }
-      java.util.Map<String, String> map =
-          internalGetMetaData().getMap();
+      java.util.Map<java.lang.String, java.lang.String> map =
+          internalGetMetadata().getMap();
       if (!map.containsKey(key)) {
-        throw new IllegalArgumentException();
+        throw new java.lang.IllegalArgumentException();
       }
       return map.get(key);
     }
-
-    public Builder clearMetaData() {
-      internalGetMutableMetaData().getMutableMap()
+    public Builder clearMetadata() {
+      bitField0_ = (bitField0_ & ~0x00000200);
+      internalGetMutableMetadata().getMutableMap()
           .clear();
       return this;
     }
@@ -2488,41 +2465,39 @@ private static final long serialVersionUID = 0L;
      * Additional gateway meta-data.
      * </pre>
      *
-     * <code>map&lt;string, string&gt; meta_data = 10;</code>
+     * <code>map&lt;string, string&gt; metadata = 10;</code>
      */
-
-    public Builder removeMetaData(
-        String key) {
+    public Builder removeMetadata(
+        java.lang.String key) {
       if (key == null) { throw new NullPointerException("map key"); }
-      internalGetMutableMetaData().getMutableMap()
+      internalGetMutableMetadata().getMutableMap()
           .remove(key);
       return this;
     }
     /**
      * Use alternate mutation accessors instead.
      */
-    @Deprecated
-    public java.util.Map<String, String>
-    getMutableMetaData() {
-      return internalGetMutableMetaData().getMutableMap();
+    @java.lang.Deprecated
+    public java.util.Map<java.lang.String, java.lang.String>
+        getMutableMetadata() {
+      bitField0_ |= 0x00000200;
+      return internalGetMutableMetadata().getMutableMap();
     }
     /**
      * <pre>
      * Additional gateway meta-data.
      * </pre>
      *
-     * <code>map&lt;string, string&gt; meta_data = 10;</code>
+     * <code>map&lt;string, string&gt; metadata = 10;</code>
      */
-    public Builder putMetaData(
-        String key,
-        String value) {
+    public Builder putMetadata(
+        java.lang.String key,
+        java.lang.String value) {
       if (key == null) { throw new NullPointerException("map key"); }
-      if (value == null) {
-  throw new NullPointerException("map value");
-}
-
-      internalGetMutableMetaData().getMutableMap()
+      if (value == null) { throw new NullPointerException("map value"); }
+      internalGetMutableMetadata().getMutableMap()
           .put(key, value);
+      bitField0_ |= 0x00000200;
       return this;
     }
     /**
@@ -2530,29 +2505,28 @@ private static final long serialVersionUID = 0L;
      * Additional gateway meta-data.
      * </pre>
      *
-     * <code>map&lt;string, string&gt; meta_data = 10;</code>
+     * <code>map&lt;string, string&gt; metadata = 10;</code>
      */
-
-    public Builder putAllMetaData(
-        java.util.Map<String, String> values) {
-      internalGetMutableMetaData().getMutableMap()
+    public Builder putAllMetadata(
+        java.util.Map<java.lang.String, java.lang.String> values) {
+      internalGetMutableMetadata().getMutableMap()
           .putAll(values);
+      bitField0_ |= 0x00000200;
       return this;
     }
 
     private com.google.protobuf.MapField<
-        Integer, Integer> txPacketsPerFrequency_;
-    private com.google.protobuf.MapField<Integer, Integer>
-    internalGetTxPacketsPerFrequency() {
+        java.lang.Integer, java.lang.Integer> txPacketsPerFrequency_;
+    private com.google.protobuf.MapField<java.lang.Integer, java.lang.Integer>
+        internalGetTxPacketsPerFrequency() {
       if (txPacketsPerFrequency_ == null) {
         return com.google.protobuf.MapField.emptyMapField(
             TxPacketsPerFrequencyDefaultEntryHolder.defaultEntry);
       }
       return txPacketsPerFrequency_;
     }
-    private com.google.protobuf.MapField<Integer, Integer>
-    internalGetMutableTxPacketsPerFrequency() {
-      onChanged();;
+    private com.google.protobuf.MapField<java.lang.Integer, java.lang.Integer>
+        internalGetMutableTxPacketsPerFrequency() {
       if (txPacketsPerFrequency_ == null) {
         txPacketsPerFrequency_ = com.google.protobuf.MapField.newMapField(
             TxPacketsPerFrequencyDefaultEntryHolder.defaultEntry);
@@ -2560,9 +2534,10 @@ private static final long serialVersionUID = 0L;
       if (!txPacketsPerFrequency_.isMutable()) {
         txPacketsPerFrequency_ = txPacketsPerFrequency_.copy();
       }
+      bitField0_ |= 0x00000400;
+      onChanged();
       return txPacketsPerFrequency_;
     }
-
     public int getTxPacketsPerFrequencyCount() {
       return internalGetTxPacketsPerFrequency().getMap().size();
     }
@@ -2573,19 +2548,18 @@ private static final long serialVersionUID = 0L;
      *
      * <code>map&lt;uint32, uint32&gt; tx_packets_per_frequency = 12;</code>
      */
-
-    @Override
+    @java.lang.Override
     public boolean containsTxPacketsPerFrequency(
         int key) {
-      
+
       return internalGetTxPacketsPerFrequency().getMap().containsKey(key);
     }
     /**
      * Use {@link #getTxPacketsPerFrequencyMap()} instead.
      */
-    @Override
-    @Deprecated
-    public java.util.Map<Integer, Integer> getTxPacketsPerFrequency() {
+    @java.lang.Override
+    @java.lang.Deprecated
+    public java.util.Map<java.lang.Integer, java.lang.Integer> getTxPacketsPerFrequency() {
       return getTxPacketsPerFrequencyMap();
     }
     /**
@@ -2595,9 +2569,8 @@ private static final long serialVersionUID = 0L;
      *
      * <code>map&lt;uint32, uint32&gt; tx_packets_per_frequency = 12;</code>
      */
-    @Override
-
-    public java.util.Map<Integer, Integer> getTxPacketsPerFrequencyMap() {
+    @java.lang.Override
+    public java.util.Map<java.lang.Integer, java.lang.Integer> getTxPacketsPerFrequencyMap() {
       return internalGetTxPacketsPerFrequency().getMap();
     }
     /**
@@ -2607,13 +2580,12 @@ private static final long serialVersionUID = 0L;
      *
      * <code>map&lt;uint32, uint32&gt; tx_packets_per_frequency = 12;</code>
      */
-    @Override
-
+    @java.lang.Override
     public int getTxPacketsPerFrequencyOrDefault(
         int key,
         int defaultValue) {
-      
-      java.util.Map<Integer, Integer> map =
+
+      java.util.Map<java.lang.Integer, java.lang.Integer> map =
           internalGetTxPacketsPerFrequency().getMap();
       return map.containsKey(key) ? map.get(key) : defaultValue;
     }
@@ -2624,20 +2596,19 @@ private static final long serialVersionUID = 0L;
      *
      * <code>map&lt;uint32, uint32&gt; tx_packets_per_frequency = 12;</code>
      */
-    @Override
-
+    @java.lang.Override
     public int getTxPacketsPerFrequencyOrThrow(
         int key) {
-      
-      java.util.Map<Integer, Integer> map =
+
+      java.util.Map<java.lang.Integer, java.lang.Integer> map =
           internalGetTxPacketsPerFrequency().getMap();
       if (!map.containsKey(key)) {
-        throw new IllegalArgumentException();
+        throw new java.lang.IllegalArgumentException();
       }
       return map.get(key);
     }
-
     public Builder clearTxPacketsPerFrequency() {
+      bitField0_ = (bitField0_ & ~0x00000400);
       internalGetMutableTxPacketsPerFrequency().getMutableMap()
           .clear();
       return this;
@@ -2649,10 +2620,9 @@ private static final long serialVersionUID = 0L;
      *
      * <code>map&lt;uint32, uint32&gt; tx_packets_per_frequency = 12;</code>
      */
-
     public Builder removeTxPacketsPerFrequency(
         int key) {
-      
+
       internalGetMutableTxPacketsPerFrequency().getMutableMap()
           .remove(key);
       return this;
@@ -2660,9 +2630,10 @@ private static final long serialVersionUID = 0L;
     /**
      * Use alternate mutation accessors instead.
      */
-    @Deprecated
-    public java.util.Map<Integer, Integer>
-    getMutableTxPacketsPerFrequency() {
+    @java.lang.Deprecated
+    public java.util.Map<java.lang.Integer, java.lang.Integer>
+        getMutableTxPacketsPerFrequency() {
+      bitField0_ |= 0x00000400;
       return internalGetMutableTxPacketsPerFrequency().getMutableMap();
     }
     /**
@@ -2675,10 +2646,11 @@ private static final long serialVersionUID = 0L;
     public Builder putTxPacketsPerFrequency(
         int key,
         int value) {
-      
-      
+
+
       internalGetMutableTxPacketsPerFrequency().getMutableMap()
           .put(key, value);
+      bitField0_ |= 0x00000400;
       return this;
     }
     /**
@@ -2688,27 +2660,26 @@ private static final long serialVersionUID = 0L;
      *
      * <code>map&lt;uint32, uint32&gt; tx_packets_per_frequency = 12;</code>
      */
-
     public Builder putAllTxPacketsPerFrequency(
-        java.util.Map<Integer, Integer> values) {
+        java.util.Map<java.lang.Integer, java.lang.Integer> values) {
       internalGetMutableTxPacketsPerFrequency().getMutableMap()
           .putAll(values);
+      bitField0_ |= 0x00000400;
       return this;
     }
 
     private com.google.protobuf.MapField<
-        Integer, Integer> rxPacketsPerFrequency_;
-    private com.google.protobuf.MapField<Integer, Integer>
-    internalGetRxPacketsPerFrequency() {
+        java.lang.Integer, java.lang.Integer> rxPacketsPerFrequency_;
+    private com.google.protobuf.MapField<java.lang.Integer, java.lang.Integer>
+        internalGetRxPacketsPerFrequency() {
       if (rxPacketsPerFrequency_ == null) {
         return com.google.protobuf.MapField.emptyMapField(
             RxPacketsPerFrequencyDefaultEntryHolder.defaultEntry);
       }
       return rxPacketsPerFrequency_;
     }
-    private com.google.protobuf.MapField<Integer, Integer>
-    internalGetMutableRxPacketsPerFrequency() {
-      onChanged();;
+    private com.google.protobuf.MapField<java.lang.Integer, java.lang.Integer>
+        internalGetMutableRxPacketsPerFrequency() {
       if (rxPacketsPerFrequency_ == null) {
         rxPacketsPerFrequency_ = com.google.protobuf.MapField.newMapField(
             RxPacketsPerFrequencyDefaultEntryHolder.defaultEntry);
@@ -2716,9 +2687,10 @@ private static final long serialVersionUID = 0L;
       if (!rxPacketsPerFrequency_.isMutable()) {
         rxPacketsPerFrequency_ = rxPacketsPerFrequency_.copy();
       }
+      bitField0_ |= 0x00000800;
+      onChanged();
       return rxPacketsPerFrequency_;
     }
-
     public int getRxPacketsPerFrequencyCount() {
       return internalGetRxPacketsPerFrequency().getMap().size();
     }
@@ -2729,19 +2701,18 @@ private static final long serialVersionUID = 0L;
      *
      * <code>map&lt;uint32, uint32&gt; rx_packets_per_frequency = 13;</code>
      */
-
-    @Override
+    @java.lang.Override
     public boolean containsRxPacketsPerFrequency(
         int key) {
-      
+
       return internalGetRxPacketsPerFrequency().getMap().containsKey(key);
     }
     /**
      * Use {@link #getRxPacketsPerFrequencyMap()} instead.
      */
-    @Override
-    @Deprecated
-    public java.util.Map<Integer, Integer> getRxPacketsPerFrequency() {
+    @java.lang.Override
+    @java.lang.Deprecated
+    public java.util.Map<java.lang.Integer, java.lang.Integer> getRxPacketsPerFrequency() {
       return getRxPacketsPerFrequencyMap();
     }
     /**
@@ -2751,9 +2722,8 @@ private static final long serialVersionUID = 0L;
      *
      * <code>map&lt;uint32, uint32&gt; rx_packets_per_frequency = 13;</code>
      */
-    @Override
-
-    public java.util.Map<Integer, Integer> getRxPacketsPerFrequencyMap() {
+    @java.lang.Override
+    public java.util.Map<java.lang.Integer, java.lang.Integer> getRxPacketsPerFrequencyMap() {
       return internalGetRxPacketsPerFrequency().getMap();
     }
     /**
@@ -2763,13 +2733,12 @@ private static final long serialVersionUID = 0L;
      *
      * <code>map&lt;uint32, uint32&gt; rx_packets_per_frequency = 13;</code>
      */
-    @Override
-
+    @java.lang.Override
     public int getRxPacketsPerFrequencyOrDefault(
         int key,
         int defaultValue) {
-      
-      java.util.Map<Integer, Integer> map =
+
+      java.util.Map<java.lang.Integer, java.lang.Integer> map =
           internalGetRxPacketsPerFrequency().getMap();
       return map.containsKey(key) ? map.get(key) : defaultValue;
     }
@@ -2780,20 +2749,19 @@ private static final long serialVersionUID = 0L;
      *
      * <code>map&lt;uint32, uint32&gt; rx_packets_per_frequency = 13;</code>
      */
-    @Override
-
+    @java.lang.Override
     public int getRxPacketsPerFrequencyOrThrow(
         int key) {
-      
-      java.util.Map<Integer, Integer> map =
+
+      java.util.Map<java.lang.Integer, java.lang.Integer> map =
           internalGetRxPacketsPerFrequency().getMap();
       if (!map.containsKey(key)) {
-        throw new IllegalArgumentException();
+        throw new java.lang.IllegalArgumentException();
       }
       return map.get(key);
     }
-
     public Builder clearRxPacketsPerFrequency() {
+      bitField0_ = (bitField0_ & ~0x00000800);
       internalGetMutableRxPacketsPerFrequency().getMutableMap()
           .clear();
       return this;
@@ -2805,10 +2773,9 @@ private static final long serialVersionUID = 0L;
      *
      * <code>map&lt;uint32, uint32&gt; rx_packets_per_frequency = 13;</code>
      */
-
     public Builder removeRxPacketsPerFrequency(
         int key) {
-      
+
       internalGetMutableRxPacketsPerFrequency().getMutableMap()
           .remove(key);
       return this;
@@ -2816,9 +2783,10 @@ private static final long serialVersionUID = 0L;
     /**
      * Use alternate mutation accessors instead.
      */
-    @Deprecated
-    public java.util.Map<Integer, Integer>
-    getMutableRxPacketsPerFrequency() {
+    @java.lang.Deprecated
+    public java.util.Map<java.lang.Integer, java.lang.Integer>
+        getMutableRxPacketsPerFrequency() {
+      bitField0_ |= 0x00000800;
       return internalGetMutableRxPacketsPerFrequency().getMutableMap();
     }
     /**
@@ -2831,10 +2799,11 @@ private static final long serialVersionUID = 0L;
     public Builder putRxPacketsPerFrequency(
         int key,
         int value) {
-      
-      
+
+
       internalGetMutableRxPacketsPerFrequency().getMutableMap()
           .put(key, value);
+      bitField0_ |= 0x00000800;
       return this;
     }
     /**
@@ -2844,25 +2813,25 @@ private static final long serialVersionUID = 0L;
      *
      * <code>map&lt;uint32, uint32&gt; rx_packets_per_frequency = 13;</code>
      */
-
     public Builder putAllRxPacketsPerFrequency(
-        java.util.Map<Integer, Integer> values) {
+        java.util.Map<java.lang.Integer, java.lang.Integer> values) {
       internalGetMutableRxPacketsPerFrequency().getMutableMap()
           .putAll(values);
+      bitField0_ |= 0x00000800;
       return this;
     }
 
-    private java.util.List<PerModulationCount> txPacketsPerModulation_ =
+    private java.util.List<io.chirpstack.api.gw.PerModulationCount> txPacketsPerModulation_ =
       java.util.Collections.emptyList();
     private void ensureTxPacketsPerModulationIsMutable() {
-      if (!((bitField0_ & 0x00000008) != 0)) {
-        txPacketsPerModulation_ = new java.util.ArrayList<PerModulationCount>(txPacketsPerModulation_);
-        bitField0_ |= 0x00000008;
+      if (!((bitField0_ & 0x00001000) != 0)) {
+        txPacketsPerModulation_ = new java.util.ArrayList<io.chirpstack.api.gw.PerModulationCount>(txPacketsPerModulation_);
+        bitField0_ |= 0x00001000;
        }
     }
 
     private com.google.protobuf.RepeatedFieldBuilderV3<
-        PerModulationCount, PerModulationCount.Builder, PerModulationCountOrBuilder> txPacketsPerModulationBuilder_;
+        io.chirpstack.api.gw.PerModulationCount, io.chirpstack.api.gw.PerModulationCount.Builder, io.chirpstack.api.gw.PerModulationCountOrBuilder> txPacketsPerModulationBuilder_;
 
     /**
      * <pre>
@@ -2871,7 +2840,7 @@ private static final long serialVersionUID = 0L;
      *
      * <code>repeated .gw.PerModulationCount tx_packets_per_modulation = 14;</code>
      */
-    public java.util.List<PerModulationCount> getTxPacketsPerModulationList() {
+    public java.util.List<io.chirpstack.api.gw.PerModulationCount> getTxPacketsPerModulationList() {
       if (txPacketsPerModulationBuilder_ == null) {
         return java.util.Collections.unmodifiableList(txPacketsPerModulation_);
       } else {
@@ -2899,7 +2868,7 @@ private static final long serialVersionUID = 0L;
      *
      * <code>repeated .gw.PerModulationCount tx_packets_per_modulation = 14;</code>
      */
-    public PerModulationCount getTxPacketsPerModulation(int index) {
+    public io.chirpstack.api.gw.PerModulationCount getTxPacketsPerModulation(int index) {
       if (txPacketsPerModulationBuilder_ == null) {
         return txPacketsPerModulation_.get(index);
       } else {
@@ -2914,7 +2883,7 @@ private static final long serialVersionUID = 0L;
      * <code>repeated .gw.PerModulationCount tx_packets_per_modulation = 14;</code>
      */
     public Builder setTxPacketsPerModulation(
-        int index, PerModulationCount value) {
+        int index, io.chirpstack.api.gw.PerModulationCount value) {
       if (txPacketsPerModulationBuilder_ == null) {
         if (value == null) {
           throw new NullPointerException();
@@ -2935,7 +2904,7 @@ private static final long serialVersionUID = 0L;
      * <code>repeated .gw.PerModulationCount tx_packets_per_modulation = 14;</code>
      */
     public Builder setTxPacketsPerModulation(
-        int index, PerModulationCount.Builder builderForValue) {
+        int index, io.chirpstack.api.gw.PerModulationCount.Builder builderForValue) {
       if (txPacketsPerModulationBuilder_ == null) {
         ensureTxPacketsPerModulationIsMutable();
         txPacketsPerModulation_.set(index, builderForValue.build());
@@ -2952,7 +2921,7 @@ private static final long serialVersionUID = 0L;
      *
      * <code>repeated .gw.PerModulationCount tx_packets_per_modulation = 14;</code>
      */
-    public Builder addTxPacketsPerModulation(PerModulationCount value) {
+    public Builder addTxPacketsPerModulation(io.chirpstack.api.gw.PerModulationCount value) {
       if (txPacketsPerModulationBuilder_ == null) {
         if (value == null) {
           throw new NullPointerException();
@@ -2973,7 +2942,7 @@ private static final long serialVersionUID = 0L;
      * <code>repeated .gw.PerModulationCount tx_packets_per_modulation = 14;</code>
      */
     public Builder addTxPacketsPerModulation(
-        int index, PerModulationCount value) {
+        int index, io.chirpstack.api.gw.PerModulationCount value) {
       if (txPacketsPerModulationBuilder_ == null) {
         if (value == null) {
           throw new NullPointerException();
@@ -2994,7 +2963,7 @@ private static final long serialVersionUID = 0L;
      * <code>repeated .gw.PerModulationCount tx_packets_per_modulation = 14;</code>
      */
     public Builder addTxPacketsPerModulation(
-        PerModulationCount.Builder builderForValue) {
+        io.chirpstack.api.gw.PerModulationCount.Builder builderForValue) {
       if (txPacketsPerModulationBuilder_ == null) {
         ensureTxPacketsPerModulationIsMutable();
         txPacketsPerModulation_.add(builderForValue.build());
@@ -3012,7 +2981,7 @@ private static final long serialVersionUID = 0L;
      * <code>repeated .gw.PerModulationCount tx_packets_per_modulation = 14;</code>
      */
     public Builder addTxPacketsPerModulation(
-        int index, PerModulationCount.Builder builderForValue) {
+        int index, io.chirpstack.api.gw.PerModulationCount.Builder builderForValue) {
       if (txPacketsPerModulationBuilder_ == null) {
         ensureTxPacketsPerModulationIsMutable();
         txPacketsPerModulation_.add(index, builderForValue.build());
@@ -3030,7 +2999,7 @@ private static final long serialVersionUID = 0L;
      * <code>repeated .gw.PerModulationCount tx_packets_per_modulation = 14;</code>
      */
     public Builder addAllTxPacketsPerModulation(
-        Iterable<? extends PerModulationCount> values) {
+        java.lang.Iterable<? extends io.chirpstack.api.gw.PerModulationCount> values) {
       if (txPacketsPerModulationBuilder_ == null) {
         ensureTxPacketsPerModulationIsMutable();
         com.google.protobuf.AbstractMessageLite.Builder.addAll(
@@ -3051,7 +3020,7 @@ private static final long serialVersionUID = 0L;
     public Builder clearTxPacketsPerModulation() {
       if (txPacketsPerModulationBuilder_ == null) {
         txPacketsPerModulation_ = java.util.Collections.emptyList();
-        bitField0_ = (bitField0_ & ~0x00000008);
+        bitField0_ = (bitField0_ & ~0x00001000);
         onChanged();
       } else {
         txPacketsPerModulationBuilder_.clear();
@@ -3082,7 +3051,7 @@ private static final long serialVersionUID = 0L;
      *
      * <code>repeated .gw.PerModulationCount tx_packets_per_modulation = 14;</code>
      */
-    public PerModulationCount.Builder getTxPacketsPerModulationBuilder(
+    public io.chirpstack.api.gw.PerModulationCount.Builder getTxPacketsPerModulationBuilder(
         int index) {
       return getTxPacketsPerModulationFieldBuilder().getBuilder(index);
     }
@@ -3093,7 +3062,7 @@ private static final long serialVersionUID = 0L;
      *
      * <code>repeated .gw.PerModulationCount tx_packets_per_modulation = 14;</code>
      */
-    public PerModulationCountOrBuilder getTxPacketsPerModulationOrBuilder(
+    public io.chirpstack.api.gw.PerModulationCountOrBuilder getTxPacketsPerModulationOrBuilder(
         int index) {
       if (txPacketsPerModulationBuilder_ == null) {
         return txPacketsPerModulation_.get(index);  } else {
@@ -3107,7 +3076,7 @@ private static final long serialVersionUID = 0L;
      *
      * <code>repeated .gw.PerModulationCount tx_packets_per_modulation = 14;</code>
      */
-    public java.util.List<? extends PerModulationCountOrBuilder>
+    public java.util.List<? extends io.chirpstack.api.gw.PerModulationCountOrBuilder> 
          getTxPacketsPerModulationOrBuilderList() {
       if (txPacketsPerModulationBuilder_ != null) {
         return txPacketsPerModulationBuilder_.getMessageOrBuilderList();
@@ -3122,9 +3091,9 @@ private static final long serialVersionUID = 0L;
      *
      * <code>repeated .gw.PerModulationCount tx_packets_per_modulation = 14;</code>
      */
-    public PerModulationCount.Builder addTxPacketsPerModulationBuilder() {
+    public io.chirpstack.api.gw.PerModulationCount.Builder addTxPacketsPerModulationBuilder() {
       return getTxPacketsPerModulationFieldBuilder().addBuilder(
-          PerModulationCount.getDefaultInstance());
+          io.chirpstack.api.gw.PerModulationCount.getDefaultInstance());
     }
     /**
      * <pre>
@@ -3133,10 +3102,10 @@ private static final long serialVersionUID = 0L;
      *
      * <code>repeated .gw.PerModulationCount tx_packets_per_modulation = 14;</code>
      */
-    public PerModulationCount.Builder addTxPacketsPerModulationBuilder(
+    public io.chirpstack.api.gw.PerModulationCount.Builder addTxPacketsPerModulationBuilder(
         int index) {
       return getTxPacketsPerModulationFieldBuilder().addBuilder(
-          index, PerModulationCount.getDefaultInstance());
+          index, io.chirpstack.api.gw.PerModulationCount.getDefaultInstance());
     }
     /**
      * <pre>
@@ -3145,18 +3114,18 @@ private static final long serialVersionUID = 0L;
      *
      * <code>repeated .gw.PerModulationCount tx_packets_per_modulation = 14;</code>
      */
-    public java.util.List<PerModulationCount.Builder>
+    public java.util.List<io.chirpstack.api.gw.PerModulationCount.Builder> 
          getTxPacketsPerModulationBuilderList() {
       return getTxPacketsPerModulationFieldBuilder().getBuilderList();
     }
     private com.google.protobuf.RepeatedFieldBuilderV3<
-        PerModulationCount, PerModulationCount.Builder, PerModulationCountOrBuilder>
+        io.chirpstack.api.gw.PerModulationCount, io.chirpstack.api.gw.PerModulationCount.Builder, io.chirpstack.api.gw.PerModulationCountOrBuilder> 
         getTxPacketsPerModulationFieldBuilder() {
       if (txPacketsPerModulationBuilder_ == null) {
         txPacketsPerModulationBuilder_ = new com.google.protobuf.RepeatedFieldBuilderV3<
-            PerModulationCount, PerModulationCount.Builder, PerModulationCountOrBuilder>(
+            io.chirpstack.api.gw.PerModulationCount, io.chirpstack.api.gw.PerModulationCount.Builder, io.chirpstack.api.gw.PerModulationCountOrBuilder>(
                 txPacketsPerModulation_,
-                ((bitField0_ & 0x00000008) != 0),
+                ((bitField0_ & 0x00001000) != 0),
                 getParentForChildren(),
                 isClean());
         txPacketsPerModulation_ = null;
@@ -3164,17 +3133,17 @@ private static final long serialVersionUID = 0L;
       return txPacketsPerModulationBuilder_;
     }
 
-    private java.util.List<PerModulationCount> rxPacketsPerModulation_ =
+    private java.util.List<io.chirpstack.api.gw.PerModulationCount> rxPacketsPerModulation_ =
       java.util.Collections.emptyList();
     private void ensureRxPacketsPerModulationIsMutable() {
-      if (!((bitField0_ & 0x00000010) != 0)) {
-        rxPacketsPerModulation_ = new java.util.ArrayList<PerModulationCount>(rxPacketsPerModulation_);
-        bitField0_ |= 0x00000010;
+      if (!((bitField0_ & 0x00002000) != 0)) {
+        rxPacketsPerModulation_ = new java.util.ArrayList<io.chirpstack.api.gw.PerModulationCount>(rxPacketsPerModulation_);
+        bitField0_ |= 0x00002000;
        }
     }
 
     private com.google.protobuf.RepeatedFieldBuilderV3<
-        PerModulationCount, PerModulationCount.Builder, PerModulationCountOrBuilder> rxPacketsPerModulationBuilder_;
+        io.chirpstack.api.gw.PerModulationCount, io.chirpstack.api.gw.PerModulationCount.Builder, io.chirpstack.api.gw.PerModulationCountOrBuilder> rxPacketsPerModulationBuilder_;
 
     /**
      * <pre>
@@ -3183,7 +3152,7 @@ private static final long serialVersionUID = 0L;
      *
      * <code>repeated .gw.PerModulationCount rx_packets_per_modulation = 15;</code>
      */
-    public java.util.List<PerModulationCount> getRxPacketsPerModulationList() {
+    public java.util.List<io.chirpstack.api.gw.PerModulationCount> getRxPacketsPerModulationList() {
       if (rxPacketsPerModulationBuilder_ == null) {
         return java.util.Collections.unmodifiableList(rxPacketsPerModulation_);
       } else {
@@ -3211,7 +3180,7 @@ private static final long serialVersionUID = 0L;
      *
      * <code>repeated .gw.PerModulationCount rx_packets_per_modulation = 15;</code>
      */
-    public PerModulationCount getRxPacketsPerModulation(int index) {
+    public io.chirpstack.api.gw.PerModulationCount getRxPacketsPerModulation(int index) {
       if (rxPacketsPerModulationBuilder_ == null) {
         return rxPacketsPerModulation_.get(index);
       } else {
@@ -3226,7 +3195,7 @@ private static final long serialVersionUID = 0L;
      * <code>repeated .gw.PerModulationCount rx_packets_per_modulation = 15;</code>
      */
     public Builder setRxPacketsPerModulation(
-        int index, PerModulationCount value) {
+        int index, io.chirpstack.api.gw.PerModulationCount value) {
       if (rxPacketsPerModulationBuilder_ == null) {
         if (value == null) {
           throw new NullPointerException();
@@ -3247,7 +3216,7 @@ private static final long serialVersionUID = 0L;
      * <code>repeated .gw.PerModulationCount rx_packets_per_modulation = 15;</code>
      */
     public Builder setRxPacketsPerModulation(
-        int index, PerModulationCount.Builder builderForValue) {
+        int index, io.chirpstack.api.gw.PerModulationCount.Builder builderForValue) {
       if (rxPacketsPerModulationBuilder_ == null) {
         ensureRxPacketsPerModulationIsMutable();
         rxPacketsPerModulation_.set(index, builderForValue.build());
@@ -3264,7 +3233,7 @@ private static final long serialVersionUID = 0L;
      *
      * <code>repeated .gw.PerModulationCount rx_packets_per_modulation = 15;</code>
      */
-    public Builder addRxPacketsPerModulation(PerModulationCount value) {
+    public Builder addRxPacketsPerModulation(io.chirpstack.api.gw.PerModulationCount value) {
       if (rxPacketsPerModulationBuilder_ == null) {
         if (value == null) {
           throw new NullPointerException();
@@ -3285,7 +3254,7 @@ private static final long serialVersionUID = 0L;
      * <code>repeated .gw.PerModulationCount rx_packets_per_modulation = 15;</code>
      */
     public Builder addRxPacketsPerModulation(
-        int index, PerModulationCount value) {
+        int index, io.chirpstack.api.gw.PerModulationCount value) {
       if (rxPacketsPerModulationBuilder_ == null) {
         if (value == null) {
           throw new NullPointerException();
@@ -3306,7 +3275,7 @@ private static final long serialVersionUID = 0L;
      * <code>repeated .gw.PerModulationCount rx_packets_per_modulation = 15;</code>
      */
     public Builder addRxPacketsPerModulation(
-        PerModulationCount.Builder builderForValue) {
+        io.chirpstack.api.gw.PerModulationCount.Builder builderForValue) {
       if (rxPacketsPerModulationBuilder_ == null) {
         ensureRxPacketsPerModulationIsMutable();
         rxPacketsPerModulation_.add(builderForValue.build());
@@ -3324,7 +3293,7 @@ private static final long serialVersionUID = 0L;
      * <code>repeated .gw.PerModulationCount rx_packets_per_modulation = 15;</code>
      */
     public Builder addRxPacketsPerModulation(
-        int index, PerModulationCount.Builder builderForValue) {
+        int index, io.chirpstack.api.gw.PerModulationCount.Builder builderForValue) {
       if (rxPacketsPerModulationBuilder_ == null) {
         ensureRxPacketsPerModulationIsMutable();
         rxPacketsPerModulation_.add(index, builderForValue.build());
@@ -3342,7 +3311,7 @@ private static final long serialVersionUID = 0L;
      * <code>repeated .gw.PerModulationCount rx_packets_per_modulation = 15;</code>
      */
     public Builder addAllRxPacketsPerModulation(
-        Iterable<? extends PerModulationCount> values) {
+        java.lang.Iterable<? extends io.chirpstack.api.gw.PerModulationCount> values) {
       if (rxPacketsPerModulationBuilder_ == null) {
         ensureRxPacketsPerModulationIsMutable();
         com.google.protobuf.AbstractMessageLite.Builder.addAll(
@@ -3363,7 +3332,7 @@ private static final long serialVersionUID = 0L;
     public Builder clearRxPacketsPerModulation() {
       if (rxPacketsPerModulationBuilder_ == null) {
         rxPacketsPerModulation_ = java.util.Collections.emptyList();
-        bitField0_ = (bitField0_ & ~0x00000010);
+        bitField0_ = (bitField0_ & ~0x00002000);
         onChanged();
       } else {
         rxPacketsPerModulationBuilder_.clear();
@@ -3394,7 +3363,7 @@ private static final long serialVersionUID = 0L;
      *
      * <code>repeated .gw.PerModulationCount rx_packets_per_modulation = 15;</code>
      */
-    public PerModulationCount.Builder getRxPacketsPerModulationBuilder(
+    public io.chirpstack.api.gw.PerModulationCount.Builder getRxPacketsPerModulationBuilder(
         int index) {
       return getRxPacketsPerModulationFieldBuilder().getBuilder(index);
     }
@@ -3405,7 +3374,7 @@ private static final long serialVersionUID = 0L;
      *
      * <code>repeated .gw.PerModulationCount rx_packets_per_modulation = 15;</code>
      */
-    public PerModulationCountOrBuilder getRxPacketsPerModulationOrBuilder(
+    public io.chirpstack.api.gw.PerModulationCountOrBuilder getRxPacketsPerModulationOrBuilder(
         int index) {
       if (rxPacketsPerModulationBuilder_ == null) {
         return rxPacketsPerModulation_.get(index);  } else {
@@ -3419,7 +3388,7 @@ private static final long serialVersionUID = 0L;
      *
      * <code>repeated .gw.PerModulationCount rx_packets_per_modulation = 15;</code>
      */
-    public java.util.List<? extends PerModulationCountOrBuilder>
+    public java.util.List<? extends io.chirpstack.api.gw.PerModulationCountOrBuilder> 
          getRxPacketsPerModulationOrBuilderList() {
       if (rxPacketsPerModulationBuilder_ != null) {
         return rxPacketsPerModulationBuilder_.getMessageOrBuilderList();
@@ -3434,9 +3403,9 @@ private static final long serialVersionUID = 0L;
      *
      * <code>repeated .gw.PerModulationCount rx_packets_per_modulation = 15;</code>
      */
-    public PerModulationCount.Builder addRxPacketsPerModulationBuilder() {
+    public io.chirpstack.api.gw.PerModulationCount.Builder addRxPacketsPerModulationBuilder() {
       return getRxPacketsPerModulationFieldBuilder().addBuilder(
-          PerModulationCount.getDefaultInstance());
+          io.chirpstack.api.gw.PerModulationCount.getDefaultInstance());
     }
     /**
      * <pre>
@@ -3445,10 +3414,10 @@ private static final long serialVersionUID = 0L;
      *
      * <code>repeated .gw.PerModulationCount rx_packets_per_modulation = 15;</code>
      */
-    public PerModulationCount.Builder addRxPacketsPerModulationBuilder(
+    public io.chirpstack.api.gw.PerModulationCount.Builder addRxPacketsPerModulationBuilder(
         int index) {
       return getRxPacketsPerModulationFieldBuilder().addBuilder(
-          index, PerModulationCount.getDefaultInstance());
+          index, io.chirpstack.api.gw.PerModulationCount.getDefaultInstance());
     }
     /**
      * <pre>
@@ -3457,18 +3426,18 @@ private static final long serialVersionUID = 0L;
      *
      * <code>repeated .gw.PerModulationCount rx_packets_per_modulation = 15;</code>
      */
-    public java.util.List<PerModulationCount.Builder>
+    public java.util.List<io.chirpstack.api.gw.PerModulationCount.Builder> 
          getRxPacketsPerModulationBuilderList() {
       return getRxPacketsPerModulationFieldBuilder().getBuilderList();
     }
     private com.google.protobuf.RepeatedFieldBuilderV3<
-        PerModulationCount, PerModulationCount.Builder, PerModulationCountOrBuilder>
+        io.chirpstack.api.gw.PerModulationCount, io.chirpstack.api.gw.PerModulationCount.Builder, io.chirpstack.api.gw.PerModulationCountOrBuilder> 
         getRxPacketsPerModulationFieldBuilder() {
       if (rxPacketsPerModulationBuilder_ == null) {
         rxPacketsPerModulationBuilder_ = new com.google.protobuf.RepeatedFieldBuilderV3<
-            PerModulationCount, PerModulationCount.Builder, PerModulationCountOrBuilder>(
+            io.chirpstack.api.gw.PerModulationCount, io.chirpstack.api.gw.PerModulationCount.Builder, io.chirpstack.api.gw.PerModulationCountOrBuilder>(
                 rxPacketsPerModulation_,
-                ((bitField0_ & 0x00000010) != 0),
+                ((bitField0_ & 0x00002000) != 0),
                 getParentForChildren(),
                 isClean());
         rxPacketsPerModulation_ = null;
@@ -3477,18 +3446,17 @@ private static final long serialVersionUID = 0L;
     }
 
     private com.google.protobuf.MapField<
-        String, Integer> txPacketsPerStatus_;
-    private com.google.protobuf.MapField<String, Integer>
-    internalGetTxPacketsPerStatus() {
+        java.lang.String, java.lang.Integer> txPacketsPerStatus_;
+    private com.google.protobuf.MapField<java.lang.String, java.lang.Integer>
+        internalGetTxPacketsPerStatus() {
       if (txPacketsPerStatus_ == null) {
         return com.google.protobuf.MapField.emptyMapField(
             TxPacketsPerStatusDefaultEntryHolder.defaultEntry);
       }
       return txPacketsPerStatus_;
     }
-    private com.google.protobuf.MapField<String, Integer>
-    internalGetMutableTxPacketsPerStatus() {
-      onChanged();;
+    private com.google.protobuf.MapField<java.lang.String, java.lang.Integer>
+        internalGetMutableTxPacketsPerStatus() {
       if (txPacketsPerStatus_ == null) {
         txPacketsPerStatus_ = com.google.protobuf.MapField.newMapField(
             TxPacketsPerStatusDefaultEntryHolder.defaultEntry);
@@ -3496,9 +3464,10 @@ private static final long serialVersionUID = 0L;
       if (!txPacketsPerStatus_.isMutable()) {
         txPacketsPerStatus_ = txPacketsPerStatus_.copy();
       }
+      bitField0_ |= 0x00004000;
+      onChanged();
       return txPacketsPerStatus_;
     }
-
     public int getTxPacketsPerStatusCount() {
       return internalGetTxPacketsPerStatus().getMap().size();
     }
@@ -3509,19 +3478,18 @@ private static final long serialVersionUID = 0L;
      *
      * <code>map&lt;string, uint32&gt; tx_packets_per_status = 16;</code>
      */
-
-    @Override
+    @java.lang.Override
     public boolean containsTxPacketsPerStatus(
-        String key) {
+        java.lang.String key) {
       if (key == null) { throw new NullPointerException("map key"); }
       return internalGetTxPacketsPerStatus().getMap().containsKey(key);
     }
     /**
      * Use {@link #getTxPacketsPerStatusMap()} instead.
      */
-    @Override
-    @Deprecated
-    public java.util.Map<String, Integer> getTxPacketsPerStatus() {
+    @java.lang.Override
+    @java.lang.Deprecated
+    public java.util.Map<java.lang.String, java.lang.Integer> getTxPacketsPerStatus() {
       return getTxPacketsPerStatusMap();
     }
     /**
@@ -3531,9 +3499,8 @@ private static final long serialVersionUID = 0L;
      *
      * <code>map&lt;string, uint32&gt; tx_packets_per_status = 16;</code>
      */
-    @Override
-
-    public java.util.Map<String, Integer> getTxPacketsPerStatusMap() {
+    @java.lang.Override
+    public java.util.Map<java.lang.String, java.lang.Integer> getTxPacketsPerStatusMap() {
       return internalGetTxPacketsPerStatus().getMap();
     }
     /**
@@ -3543,13 +3510,12 @@ private static final long serialVersionUID = 0L;
      *
      * <code>map&lt;string, uint32&gt; tx_packets_per_status = 16;</code>
      */
-    @Override
-
+    @java.lang.Override
     public int getTxPacketsPerStatusOrDefault(
-        String key,
+        java.lang.String key,
         int defaultValue) {
       if (key == null) { throw new NullPointerException("map key"); }
-      java.util.Map<String, Integer> map =
+      java.util.Map<java.lang.String, java.lang.Integer> map =
           internalGetTxPacketsPerStatus().getMap();
       return map.containsKey(key) ? map.get(key) : defaultValue;
     }
@@ -3560,20 +3526,19 @@ private static final long serialVersionUID = 0L;
      *
      * <code>map&lt;string, uint32&gt; tx_packets_per_status = 16;</code>
      */
-    @Override
-
+    @java.lang.Override
     public int getTxPacketsPerStatusOrThrow(
-        String key) {
+        java.lang.String key) {
       if (key == null) { throw new NullPointerException("map key"); }
-      java.util.Map<String, Integer> map =
+      java.util.Map<java.lang.String, java.lang.Integer> map =
           internalGetTxPacketsPerStatus().getMap();
       if (!map.containsKey(key)) {
-        throw new IllegalArgumentException();
+        throw new java.lang.IllegalArgumentException();
       }
       return map.get(key);
     }
-
     public Builder clearTxPacketsPerStatus() {
+      bitField0_ = (bitField0_ & ~0x00004000);
       internalGetMutableTxPacketsPerStatus().getMutableMap()
           .clear();
       return this;
@@ -3585,9 +3550,8 @@ private static final long serialVersionUID = 0L;
      *
      * <code>map&lt;string, uint32&gt; tx_packets_per_status = 16;</code>
      */
-
     public Builder removeTxPacketsPerStatus(
-        String key) {
+        java.lang.String key) {
       if (key == null) { throw new NullPointerException("map key"); }
       internalGetMutableTxPacketsPerStatus().getMutableMap()
           .remove(key);
@@ -3596,9 +3560,10 @@ private static final long serialVersionUID = 0L;
     /**
      * Use alternate mutation accessors instead.
      */
-    @Deprecated
-    public java.util.Map<String, Integer>
-    getMutableTxPacketsPerStatus() {
+    @java.lang.Deprecated
+    public java.util.Map<java.lang.String, java.lang.Integer>
+        getMutableTxPacketsPerStatus() {
+      bitField0_ |= 0x00004000;
       return internalGetMutableTxPacketsPerStatus().getMutableMap();
     }
     /**
@@ -3609,12 +3574,13 @@ private static final long serialVersionUID = 0L;
      * <code>map&lt;string, uint32&gt; tx_packets_per_status = 16;</code>
      */
     public Builder putTxPacketsPerStatus(
-        String key,
+        java.lang.String key,
         int value) {
       if (key == null) { throw new NullPointerException("map key"); }
-      
+
       internalGetMutableTxPacketsPerStatus().getMutableMap()
           .put(key, value);
+      bitField0_ |= 0x00004000;
       return this;
     }
     /**
@@ -3624,20 +3590,20 @@ private static final long serialVersionUID = 0L;
      *
      * <code>map&lt;string, uint32&gt; tx_packets_per_status = 16;</code>
      */
-
     public Builder putAllTxPacketsPerStatus(
-        java.util.Map<String, Integer> values) {
+        java.util.Map<java.lang.String, java.lang.Integer> values) {
       internalGetMutableTxPacketsPerStatus().getMutableMap()
           .putAll(values);
+      bitField0_ |= 0x00004000;
       return this;
     }
-    @Override
+    @java.lang.Override
     public final Builder setUnknownFields(
         final com.google.protobuf.UnknownFieldSet unknownFields) {
       return super.setUnknownFields(unknownFields);
     }
 
-    @Override
+    @java.lang.Override
     public final Builder mergeUnknownFields(
         final com.google.protobuf.UnknownFieldSet unknownFields) {
       return super.mergeUnknownFields(unknownFields);
@@ -3648,18 +3614,18 @@ private static final long serialVersionUID = 0L;
   }
 
   // @@protoc_insertion_point(class_scope:gw.GatewayStats)
-  private static final GatewayStats DEFAULT_INSTANCE;
+  private static final io.chirpstack.api.gw.GatewayStats DEFAULT_INSTANCE;
   static {
-    DEFAULT_INSTANCE = new GatewayStats();
+    DEFAULT_INSTANCE = new io.chirpstack.api.gw.GatewayStats();
   }
 
-  public static GatewayStats getDefaultInstance() {
+  public static io.chirpstack.api.gw.GatewayStats getDefaultInstance() {
     return DEFAULT_INSTANCE;
   }
 
   private static final com.google.protobuf.Parser<GatewayStats>
       PARSER = new com.google.protobuf.AbstractParser<GatewayStats>() {
-    @Override
+    @java.lang.Override
     public GatewayStats parsePartialFrom(
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
@@ -3683,13 +3649,13 @@ private static final long serialVersionUID = 0L;
     return PARSER;
   }
 
-  @Override
+  @java.lang.Override
   public com.google.protobuf.Parser<GatewayStats> getParserForType() {
     return PARSER;
   }
 
-  @Override
-  public GatewayStats getDefaultInstanceForType() {
+  @java.lang.Override
+  public io.chirpstack.api.gw.GatewayStats getDefaultInstanceForType() {
     return DEFAULT_INSTANCE;
   }
 

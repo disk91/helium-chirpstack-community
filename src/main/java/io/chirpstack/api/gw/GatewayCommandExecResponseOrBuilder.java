@@ -26,7 +26,7 @@ public interface GatewayCommandExecResponseOrBuilder extends
    * <code>string gateway_id = 6;</code>
    * @return The gatewayId.
    */
-  String getGatewayId();
+  java.lang.String getGatewayId();
   /**
    * <pre>
    * Gateway ID.
@@ -76,7 +76,7 @@ public interface GatewayCommandExecResponseOrBuilder extends
    * <code>string error = 5;</code>
    * @return The error.
    */
-  String getError();
+  java.lang.String getError();
   /**
    * <pre>
    * Error message.

@@ -10,7 +10,8 @@ public enum MetricKind
     implements com.google.protobuf.ProtocolMessageEnum {
   /**
    * <pre>
-   * Incrementing counters that never decrease (these are not reset on each reading).
+   * Incrementing counters that never decrease (these are not reset on each
+   * reading).
    * </pre>
    *
    * <code>COUNTER = 0;</code>
@@ -37,7 +38,8 @@ public enum MetricKind
 
   /**
    * <pre>
-   * Incrementing counters that never decrease (these are not reset on each reading).
+   * Incrementing counters that never decrease (these are not reset on each
+   * reading).
    * </pre>
    *
    * <code>COUNTER = 0;</code>

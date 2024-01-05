@@ -39,7 +39,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int RX_PACKETS_FIELD_NUMBER = 1;
-  private io.chirpstack.api.Metric rxPackets_;
+  private Metric rxPackets_;
   /**
    * <pre>
    * Packets received from the device.
@@ -61,8 +61,8 @@ private static final long serialVersionUID = 0L;
    * @return The rxPackets.
    */
   @Override
-  public io.chirpstack.api.Metric getRxPackets() {
-    return rxPackets_ == null ? io.chirpstack.api.Metric.getDefaultInstance() : rxPackets_;
+  public Metric getRxPackets() {
+    return rxPackets_ == null ? Metric.getDefaultInstance() : rxPackets_;
   }
   /**
    * <pre>
@@ -72,12 +72,12 @@ private static final long serialVersionUID = 0L;
    * <code>.common.Metric rx_packets = 1;</code>
    */
   @Override
-  public io.chirpstack.api.MetricOrBuilder getRxPacketsOrBuilder() {
-    return rxPackets_ == null ? io.chirpstack.api.Metric.getDefaultInstance() : rxPackets_;
+  public MetricOrBuilder getRxPacketsOrBuilder() {
+    return rxPackets_ == null ? Metric.getDefaultInstance() : rxPackets_;
   }
 
   public static final int GW_RSSI_FIELD_NUMBER = 2;
-  private io.chirpstack.api.Metric gwRssi_;
+  private Metric gwRssi_;
   /**
    * <pre>
    * RSSI (as reported by the gateway(s)).
@@ -99,8 +99,8 @@ private static final long serialVersionUID = 0L;
    * @return The gwRssi.
    */
   @Override
-  public io.chirpstack.api.Metric getGwRssi() {
-    return gwRssi_ == null ? io.chirpstack.api.Metric.getDefaultInstance() : gwRssi_;
+  public Metric getGwRssi() {
+    return gwRssi_ == null ? Metric.getDefaultInstance() : gwRssi_;
   }
   /**
    * <pre>
@@ -110,12 +110,12 @@ private static final long serialVersionUID = 0L;
    * <code>.common.Metric gw_rssi = 2;</code>
    */
   @Override
-  public io.chirpstack.api.MetricOrBuilder getGwRssiOrBuilder() {
-    return gwRssi_ == null ? io.chirpstack.api.Metric.getDefaultInstance() : gwRssi_;
+  public MetricOrBuilder getGwRssiOrBuilder() {
+    return gwRssi_ == null ? Metric.getDefaultInstance() : gwRssi_;
   }
 
   public static final int GW_SNR_FIELD_NUMBER = 3;
-  private io.chirpstack.api.Metric gwSnr_;
+  private Metric gwSnr_;
   /**
    * <pre>
    * SNR (as reported by the gateway(s)).
@@ -137,8 +137,8 @@ private static final long serialVersionUID = 0L;
    * @return The gwSnr.
    */
   @Override
-  public io.chirpstack.api.Metric getGwSnr() {
-    return gwSnr_ == null ? io.chirpstack.api.Metric.getDefaultInstance() : gwSnr_;
+  public Metric getGwSnr() {
+    return gwSnr_ == null ? Metric.getDefaultInstance() : gwSnr_;
   }
   /**
    * <pre>
@@ -148,12 +148,12 @@ private static final long serialVersionUID = 0L;
    * <code>.common.Metric gw_snr = 3;</code>
    */
   @Override
-  public io.chirpstack.api.MetricOrBuilder getGwSnrOrBuilder() {
-    return gwSnr_ == null ? io.chirpstack.api.Metric.getDefaultInstance() : gwSnr_;
+  public MetricOrBuilder getGwSnrOrBuilder() {
+    return gwSnr_ == null ? Metric.getDefaultInstance() : gwSnr_;
   }
 
   public static final int RX_PACKETS_PER_FREQ_FIELD_NUMBER = 4;
-  private io.chirpstack.api.Metric rxPacketsPerFreq_;
+  private Metric rxPacketsPerFreq_;
   /**
    * <pre>
    * Packets received by frequency.
@@ -175,8 +175,8 @@ private static final long serialVersionUID = 0L;
    * @return The rxPacketsPerFreq.
    */
   @Override
-  public io.chirpstack.api.Metric getRxPacketsPerFreq() {
-    return rxPacketsPerFreq_ == null ? io.chirpstack.api.Metric.getDefaultInstance() : rxPacketsPerFreq_;
+  public Metric getRxPacketsPerFreq() {
+    return rxPacketsPerFreq_ == null ? Metric.getDefaultInstance() : rxPacketsPerFreq_;
   }
   /**
    * <pre>
@@ -186,12 +186,12 @@ private static final long serialVersionUID = 0L;
    * <code>.common.Metric rx_packets_per_freq = 4;</code>
    */
   @Override
-  public io.chirpstack.api.MetricOrBuilder getRxPacketsPerFreqOrBuilder() {
-    return rxPacketsPerFreq_ == null ? io.chirpstack.api.Metric.getDefaultInstance() : rxPacketsPerFreq_;
+  public MetricOrBuilder getRxPacketsPerFreqOrBuilder() {
+    return rxPacketsPerFreq_ == null ? Metric.getDefaultInstance() : rxPacketsPerFreq_;
   }
 
   public static final int RX_PACKETS_PER_DR_FIELD_NUMBER = 5;
-  private io.chirpstack.api.Metric rxPacketsPerDr_;
+  private Metric rxPacketsPerDr_;
   /**
    * <pre>
    * Packets received by DR.
@@ -213,8 +213,8 @@ private static final long serialVersionUID = 0L;
    * @return The rxPacketsPerDr.
    */
   @Override
-  public io.chirpstack.api.Metric getRxPacketsPerDr() {
-    return rxPacketsPerDr_ == null ? io.chirpstack.api.Metric.getDefaultInstance() : rxPacketsPerDr_;
+  public Metric getRxPacketsPerDr() {
+    return rxPacketsPerDr_ == null ? Metric.getDefaultInstance() : rxPacketsPerDr_;
   }
   /**
    * <pre>
@@ -224,12 +224,12 @@ private static final long serialVersionUID = 0L;
    * <code>.common.Metric rx_packets_per_dr = 5;</code>
    */
   @Override
-  public io.chirpstack.api.MetricOrBuilder getRxPacketsPerDrOrBuilder() {
-    return rxPacketsPerDr_ == null ? io.chirpstack.api.Metric.getDefaultInstance() : rxPacketsPerDr_;
+  public MetricOrBuilder getRxPacketsPerDrOrBuilder() {
+    return rxPacketsPerDr_ == null ? Metric.getDefaultInstance() : rxPacketsPerDr_;
   }
 
   public static final int ERRORS_FIELD_NUMBER = 6;
-  private io.chirpstack.api.Metric errors_;
+  private Metric errors_;
   /**
    * <pre>
    * Errors.
@@ -251,8 +251,8 @@ private static final long serialVersionUID = 0L;
    * @return The errors.
    */
   @Override
-  public io.chirpstack.api.Metric getErrors() {
-    return errors_ == null ? io.chirpstack.api.Metric.getDefaultInstance() : errors_;
+  public Metric getErrors() {
+    return errors_ == null ? Metric.getDefaultInstance() : errors_;
   }
   /**
    * <pre>
@@ -262,8 +262,8 @@ private static final long serialVersionUID = 0L;
    * <code>.common.Metric errors = 6;</code>
    */
   @Override
-  public io.chirpstack.api.MetricOrBuilder getErrorsOrBuilder() {
-    return errors_ == null ? io.chirpstack.api.Metric.getDefaultInstance() : errors_;
+  public MetricOrBuilder getErrorsOrBuilder() {
+    return errors_ == null ? Metric.getDefaultInstance() : errors_;
   }
 
   private byte memoizedIsInitialized = -1;
@@ -750,9 +750,9 @@ private static final long serialVersionUID = 0L;
     }
     private int bitField0_;
 
-    private io.chirpstack.api.Metric rxPackets_;
+    private Metric rxPackets_;
     private com.google.protobuf.SingleFieldBuilderV3<
-        io.chirpstack.api.Metric, io.chirpstack.api.Metric.Builder, io.chirpstack.api.MetricOrBuilder> rxPacketsBuilder_;
+        Metric, Metric.Builder, MetricOrBuilder> rxPacketsBuilder_;
     /**
      * <pre>
      * Packets received from the device.
@@ -772,9 +772,9 @@ private static final long serialVersionUID = 0L;
      * <code>.common.Metric rx_packets = 1;</code>
      * @return The rxPackets.
      */
-    public io.chirpstack.api.Metric getRxPackets() {
+    public Metric getRxPackets() {
       if (rxPacketsBuilder_ == null) {
-        return rxPackets_ == null ? io.chirpstack.api.Metric.getDefaultInstance() : rxPackets_;
+        return rxPackets_ == null ? Metric.getDefaultInstance() : rxPackets_;
       } else {
         return rxPacketsBuilder_.getMessage();
       }
@@ -786,7 +786,7 @@ private static final long serialVersionUID = 0L;
      *
      * <code>.common.Metric rx_packets = 1;</code>
      */
-    public Builder setRxPackets(io.chirpstack.api.Metric value) {
+    public Builder setRxPackets(Metric value) {
       if (rxPacketsBuilder_ == null) {
         if (value == null) {
           throw new NullPointerException();
@@ -807,7 +807,7 @@ private static final long serialVersionUID = 0L;
      * <code>.common.Metric rx_packets = 1;</code>
      */
     public Builder setRxPackets(
-        io.chirpstack.api.Metric.Builder builderForValue) {
+        Metric.Builder builderForValue) {
       if (rxPacketsBuilder_ == null) {
         rxPackets_ = builderForValue.build();
       } else {
@@ -824,11 +824,11 @@ private static final long serialVersionUID = 0L;
      *
      * <code>.common.Metric rx_packets = 1;</code>
      */
-    public Builder mergeRxPackets(io.chirpstack.api.Metric value) {
+    public Builder mergeRxPackets(Metric value) {
       if (rxPacketsBuilder_ == null) {
         if (((bitField0_ & 0x00000001) != 0) &&
           rxPackets_ != null &&
-          rxPackets_ != io.chirpstack.api.Metric.getDefaultInstance()) {
+          rxPackets_ != Metric.getDefaultInstance()) {
           getRxPacketsBuilder().mergeFrom(value);
         } else {
           rxPackets_ = value;
@@ -864,7 +864,7 @@ private static final long serialVersionUID = 0L;
      *
      * <code>.common.Metric rx_packets = 1;</code>
      */
-    public io.chirpstack.api.Metric.Builder getRxPacketsBuilder() {
+    public Metric.Builder getRxPacketsBuilder() {
       bitField0_ |= 0x00000001;
       onChanged();
       return getRxPacketsFieldBuilder().getBuilder();
@@ -876,12 +876,12 @@ private static final long serialVersionUID = 0L;
      *
      * <code>.common.Metric rx_packets = 1;</code>
      */
-    public io.chirpstack.api.MetricOrBuilder getRxPacketsOrBuilder() {
+    public MetricOrBuilder getRxPacketsOrBuilder() {
       if (rxPacketsBuilder_ != null) {
         return rxPacketsBuilder_.getMessageOrBuilder();
       } else {
         return rxPackets_ == null ?
-            io.chirpstack.api.Metric.getDefaultInstance() : rxPackets_;
+            Metric.getDefaultInstance() : rxPackets_;
       }
     }
     /**
@@ -892,11 +892,11 @@ private static final long serialVersionUID = 0L;
      * <code>.common.Metric rx_packets = 1;</code>
      */
     private com.google.protobuf.SingleFieldBuilderV3<
-        io.chirpstack.api.Metric, io.chirpstack.api.Metric.Builder, io.chirpstack.api.MetricOrBuilder> 
+        Metric, Metric.Builder, MetricOrBuilder>
         getRxPacketsFieldBuilder() {
       if (rxPacketsBuilder_ == null) {
         rxPacketsBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
-            io.chirpstack.api.Metric, io.chirpstack.api.Metric.Builder, io.chirpstack.api.MetricOrBuilder>(
+            Metric, Metric.Builder, MetricOrBuilder>(
                 getRxPackets(),
                 getParentForChildren(),
                 isClean());
@@ -905,9 +905,9 @@ private static final long serialVersionUID = 0L;
       return rxPacketsBuilder_;
     }
 
-    private io.chirpstack.api.Metric gwRssi_;
+    private Metric gwRssi_;
     private com.google.protobuf.SingleFieldBuilderV3<
-        io.chirpstack.api.Metric, io.chirpstack.api.Metric.Builder, io.chirpstack.api.MetricOrBuilder> gwRssiBuilder_;
+        Metric, Metric.Builder, MetricOrBuilder> gwRssiBuilder_;
     /**
      * <pre>
      * RSSI (as reported by the gateway(s)).
@@ -927,9 +927,9 @@ private static final long serialVersionUID = 0L;
      * <code>.common.Metric gw_rssi = 2;</code>
      * @return The gwRssi.
      */
-    public io.chirpstack.api.Metric getGwRssi() {
+    public Metric getGwRssi() {
       if (gwRssiBuilder_ == null) {
-        return gwRssi_ == null ? io.chirpstack.api.Metric.getDefaultInstance() : gwRssi_;
+        return gwRssi_ == null ? Metric.getDefaultInstance() : gwRssi_;
       } else {
         return gwRssiBuilder_.getMessage();
       }
@@ -941,7 +941,7 @@ private static final long serialVersionUID = 0L;
      *
      * <code>.common.Metric gw_rssi = 2;</code>
      */
-    public Builder setGwRssi(io.chirpstack.api.Metric value) {
+    public Builder setGwRssi(Metric value) {
       if (gwRssiBuilder_ == null) {
         if (value == null) {
           throw new NullPointerException();
@@ -962,7 +962,7 @@ private static final long serialVersionUID = 0L;
      * <code>.common.Metric gw_rssi = 2;</code>
      */
     public Builder setGwRssi(
-        io.chirpstack.api.Metric.Builder builderForValue) {
+        Metric.Builder builderForValue) {
       if (gwRssiBuilder_ == null) {
         gwRssi_ = builderForValue.build();
       } else {
@@ -979,11 +979,11 @@ private static final long serialVersionUID = 0L;
      *
      * <code>.common.Metric gw_rssi = 2;</code>
      */
-    public Builder mergeGwRssi(io.chirpstack.api.Metric value) {
+    public Builder mergeGwRssi(Metric value) {
       if (gwRssiBuilder_ == null) {
         if (((bitField0_ & 0x00000002) != 0) &&
           gwRssi_ != null &&
-          gwRssi_ != io.chirpstack.api.Metric.getDefaultInstance()) {
+          gwRssi_ != Metric.getDefaultInstance()) {
           getGwRssiBuilder().mergeFrom(value);
         } else {
           gwRssi_ = value;
@@ -1019,7 +1019,7 @@ private static final long serialVersionUID = 0L;
      *
      * <code>.common.Metric gw_rssi = 2;</code>
      */
-    public io.chirpstack.api.Metric.Builder getGwRssiBuilder() {
+    public Metric.Builder getGwRssiBuilder() {
       bitField0_ |= 0x00000002;
       onChanged();
       return getGwRssiFieldBuilder().getBuilder();
@@ -1031,12 +1031,12 @@ private static final long serialVersionUID = 0L;
      *
      * <code>.common.Metric gw_rssi = 2;</code>
      */
-    public io.chirpstack.api.MetricOrBuilder getGwRssiOrBuilder() {
+    public MetricOrBuilder getGwRssiOrBuilder() {
       if (gwRssiBuilder_ != null) {
         return gwRssiBuilder_.getMessageOrBuilder();
       } else {
         return gwRssi_ == null ?
-            io.chirpstack.api.Metric.getDefaultInstance() : gwRssi_;
+            Metric.getDefaultInstance() : gwRssi_;
       }
     }
     /**
@@ -1047,11 +1047,11 @@ private static final long serialVersionUID = 0L;
      * <code>.common.Metric gw_rssi = 2;</code>
      */
     private com.google.protobuf.SingleFieldBuilderV3<
-        io.chirpstack.api.Metric, io.chirpstack.api.Metric.Builder, io.chirpstack.api.MetricOrBuilder> 
+        Metric, Metric.Builder, MetricOrBuilder>
         getGwRssiFieldBuilder() {
       if (gwRssiBuilder_ == null) {
         gwRssiBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
-            io.chirpstack.api.Metric, io.chirpstack.api.Metric.Builder, io.chirpstack.api.MetricOrBuilder>(
+            Metric, Metric.Builder, MetricOrBuilder>(
                 getGwRssi(),
                 getParentForChildren(),
                 isClean());
@@ -1060,9 +1060,9 @@ private static final long serialVersionUID = 0L;
       return gwRssiBuilder_;
     }
 
-    private io.chirpstack.api.Metric gwSnr_;
+    private Metric gwSnr_;
     private com.google.protobuf.SingleFieldBuilderV3<
-        io.chirpstack.api.Metric, io.chirpstack.api.Metric.Builder, io.chirpstack.api.MetricOrBuilder> gwSnrBuilder_;
+        Metric, Metric.Builder, MetricOrBuilder> gwSnrBuilder_;
     /**
      * <pre>
      * SNR (as reported by the gateway(s)).
@@ -1082,9 +1082,9 @@ private static final long serialVersionUID = 0L;
      * <code>.common.Metric gw_snr = 3;</code>
      * @return The gwSnr.
      */
-    public io.chirpstack.api.Metric getGwSnr() {
+    public Metric getGwSnr() {
       if (gwSnrBuilder_ == null) {
-        return gwSnr_ == null ? io.chirpstack.api.Metric.getDefaultInstance() : gwSnr_;
+        return gwSnr_ == null ? Metric.getDefaultInstance() : gwSnr_;
       } else {
         return gwSnrBuilder_.getMessage();
       }
@@ -1096,7 +1096,7 @@ private static final long serialVersionUID = 0L;
      *
      * <code>.common.Metric gw_snr = 3;</code>
      */
-    public Builder setGwSnr(io.chirpstack.api.Metric value) {
+    public Builder setGwSnr(Metric value) {
       if (gwSnrBuilder_ == null) {
         if (value == null) {
           throw new NullPointerException();
@@ -1117,7 +1117,7 @@ private static final long serialVersionUID = 0L;
      * <code>.common.Metric gw_snr = 3;</code>
      */
     public Builder setGwSnr(
-        io.chirpstack.api.Metric.Builder builderForValue) {
+        Metric.Builder builderForValue) {
       if (gwSnrBuilder_ == null) {
         gwSnr_ = builderForValue.build();
       } else {
@@ -1134,11 +1134,11 @@ private static final long serialVersionUID = 0L;
      *
      * <code>.common.Metric gw_snr = 3;</code>
      */
-    public Builder mergeGwSnr(io.chirpstack.api.Metric value) {
+    public Builder mergeGwSnr(Metric value) {
       if (gwSnrBuilder_ == null) {
         if (((bitField0_ & 0x00000004) != 0) &&
           gwSnr_ != null &&
-          gwSnr_ != io.chirpstack.api.Metric.getDefaultInstance()) {
+          gwSnr_ != Metric.getDefaultInstance()) {
           getGwSnrBuilder().mergeFrom(value);
         } else {
           gwSnr_ = value;
@@ -1174,7 +1174,7 @@ private static final long serialVersionUID = 0L;
      *
      * <code>.common.Metric gw_snr = 3;</code>
      */
-    public io.chirpstack.api.Metric.Builder getGwSnrBuilder() {
+    public Metric.Builder getGwSnrBuilder() {
       bitField0_ |= 0x00000004;
       onChanged();
       return getGwSnrFieldBuilder().getBuilder();
@@ -1186,12 +1186,12 @@ private static final long serialVersionUID = 0L;
      *
      * <code>.common.Metric gw_snr = 3;</code>
      */
-    public io.chirpstack.api.MetricOrBuilder getGwSnrOrBuilder() {
+    public MetricOrBuilder getGwSnrOrBuilder() {
       if (gwSnrBuilder_ != null) {
         return gwSnrBuilder_.getMessageOrBuilder();
       } else {
         return gwSnr_ == null ?
-            io.chirpstack.api.Metric.getDefaultInstance() : gwSnr_;
+            Metric.getDefaultInstance() : gwSnr_;
       }
     }
     /**
@@ -1202,11 +1202,11 @@ private static final long serialVersionUID = 0L;
      * <code>.common.Metric gw_snr = 3;</code>
      */
     private com.google.protobuf.SingleFieldBuilderV3<
-        io.chirpstack.api.Metric, io.chirpstack.api.Metric.Builder, io.chirpstack.api.MetricOrBuilder> 
+        Metric, Metric.Builder, MetricOrBuilder>
         getGwSnrFieldBuilder() {
       if (gwSnrBuilder_ == null) {
         gwSnrBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
-            io.chirpstack.api.Metric, io.chirpstack.api.Metric.Builder, io.chirpstack.api.MetricOrBuilder>(
+            Metric, Metric.Builder, MetricOrBuilder>(
                 getGwSnr(),
                 getParentForChildren(),
                 isClean());
@@ -1215,9 +1215,9 @@ private static final long serialVersionUID = 0L;
       return gwSnrBuilder_;
     }
 
-    private io.chirpstack.api.Metric rxPacketsPerFreq_;
+    private Metric rxPacketsPerFreq_;
     private com.google.protobuf.SingleFieldBuilderV3<
-        io.chirpstack.api.Metric, io.chirpstack.api.Metric.Builder, io.chirpstack.api.MetricOrBuilder> rxPacketsPerFreqBuilder_;
+        Metric, Metric.Builder, MetricOrBuilder> rxPacketsPerFreqBuilder_;
     /**
      * <pre>
      * Packets received by frequency.
@@ -1237,9 +1237,9 @@ private static final long serialVersionUID = 0L;
      * <code>.common.Metric rx_packets_per_freq = 4;</code>
      * @return The rxPacketsPerFreq.
      */
-    public io.chirpstack.api.Metric getRxPacketsPerFreq() {
+    public Metric getRxPacketsPerFreq() {
       if (rxPacketsPerFreqBuilder_ == null) {
-        return rxPacketsPerFreq_ == null ? io.chirpstack.api.Metric.getDefaultInstance() : rxPacketsPerFreq_;
+        return rxPacketsPerFreq_ == null ? Metric.getDefaultInstance() : rxPacketsPerFreq_;
       } else {
         return rxPacketsPerFreqBuilder_.getMessage();
       }
@@ -1251,7 +1251,7 @@ private static final long serialVersionUID = 0L;
      *
      * <code>.common.Metric rx_packets_per_freq = 4;</code>
      */
-    public Builder setRxPacketsPerFreq(io.chirpstack.api.Metric value) {
+    public Builder setRxPacketsPerFreq(Metric value) {
       if (rxPacketsPerFreqBuilder_ == null) {
         if (value == null) {
           throw new NullPointerException();
@@ -1272,7 +1272,7 @@ private static final long serialVersionUID = 0L;
      * <code>.common.Metric rx_packets_per_freq = 4;</code>
      */
     public Builder setRxPacketsPerFreq(
-        io.chirpstack.api.Metric.Builder builderForValue) {
+        Metric.Builder builderForValue) {
       if (rxPacketsPerFreqBuilder_ == null) {
         rxPacketsPerFreq_ = builderForValue.build();
       } else {
@@ -1289,11 +1289,11 @@ private static final long serialVersionUID = 0L;
      *
      * <code>.common.Metric rx_packets_per_freq = 4;</code>
      */
-    public Builder mergeRxPacketsPerFreq(io.chirpstack.api.Metric value) {
+    public Builder mergeRxPacketsPerFreq(Metric value) {
       if (rxPacketsPerFreqBuilder_ == null) {
         if (((bitField0_ & 0x00000008) != 0) &&
           rxPacketsPerFreq_ != null &&
-          rxPacketsPerFreq_ != io.chirpstack.api.Metric.getDefaultInstance()) {
+          rxPacketsPerFreq_ != Metric.getDefaultInstance()) {
           getRxPacketsPerFreqBuilder().mergeFrom(value);
         } else {
           rxPacketsPerFreq_ = value;
@@ -1329,7 +1329,7 @@ private static final long serialVersionUID = 0L;
      *
      * <code>.common.Metric rx_packets_per_freq = 4;</code>
      */
-    public io.chirpstack.api.Metric.Builder getRxPacketsPerFreqBuilder() {
+    public Metric.Builder getRxPacketsPerFreqBuilder() {
       bitField0_ |= 0x00000008;
       onChanged();
       return getRxPacketsPerFreqFieldBuilder().getBuilder();
@@ -1341,12 +1341,12 @@ private static final long serialVersionUID = 0L;
      *
      * <code>.common.Metric rx_packets_per_freq = 4;</code>
      */
-    public io.chirpstack.api.MetricOrBuilder getRxPacketsPerFreqOrBuilder() {
+    public MetricOrBuilder getRxPacketsPerFreqOrBuilder() {
       if (rxPacketsPerFreqBuilder_ != null) {
         return rxPacketsPerFreqBuilder_.getMessageOrBuilder();
       } else {
         return rxPacketsPerFreq_ == null ?
-            io.chirpstack.api.Metric.getDefaultInstance() : rxPacketsPerFreq_;
+            Metric.getDefaultInstance() : rxPacketsPerFreq_;
       }
     }
     /**
@@ -1357,11 +1357,11 @@ private static final long serialVersionUID = 0L;
      * <code>.common.Metric rx_packets_per_freq = 4;</code>
      */
     private com.google.protobuf.SingleFieldBuilderV3<
-        io.chirpstack.api.Metric, io.chirpstack.api.Metric.Builder, io.chirpstack.api.MetricOrBuilder> 
+        Metric, Metric.Builder, MetricOrBuilder>
         getRxPacketsPerFreqFieldBuilder() {
       if (rxPacketsPerFreqBuilder_ == null) {
         rxPacketsPerFreqBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
-            io.chirpstack.api.Metric, io.chirpstack.api.Metric.Builder, io.chirpstack.api.MetricOrBuilder>(
+            Metric, Metric.Builder, MetricOrBuilder>(
                 getRxPacketsPerFreq(),
                 getParentForChildren(),
                 isClean());
@@ -1370,9 +1370,9 @@ private static final long serialVersionUID = 0L;
       return rxPacketsPerFreqBuilder_;
     }
 
-    private io.chirpstack.api.Metric rxPacketsPerDr_;
+    private Metric rxPacketsPerDr_;
     private com.google.protobuf.SingleFieldBuilderV3<
-        io.chirpstack.api.Metric, io.chirpstack.api.Metric.Builder, io.chirpstack.api.MetricOrBuilder> rxPacketsPerDrBuilder_;
+        Metric, Metric.Builder, MetricOrBuilder> rxPacketsPerDrBuilder_;
     /**
      * <pre>
      * Packets received by DR.
@@ -1392,9 +1392,9 @@ private static final long serialVersionUID = 0L;
      * <code>.common.Metric rx_packets_per_dr = 5;</code>
      * @return The rxPacketsPerDr.
      */
-    public io.chirpstack.api.Metric getRxPacketsPerDr() {
+    public Metric getRxPacketsPerDr() {
       if (rxPacketsPerDrBuilder_ == null) {
-        return rxPacketsPerDr_ == null ? io.chirpstack.api.Metric.getDefaultInstance() : rxPacketsPerDr_;
+        return rxPacketsPerDr_ == null ? Metric.getDefaultInstance() : rxPacketsPerDr_;
       } else {
         return rxPacketsPerDrBuilder_.getMessage();
       }
@@ -1406,7 +1406,7 @@ private static final long serialVersionUID = 0L;
      *
      * <code>.common.Metric rx_packets_per_dr = 5;</code>
      */
-    public Builder setRxPacketsPerDr(io.chirpstack.api.Metric value) {
+    public Builder setRxPacketsPerDr(Metric value) {
       if (rxPacketsPerDrBuilder_ == null) {
         if (value == null) {
           throw new NullPointerException();
@@ -1427,7 +1427,7 @@ private static final long serialVersionUID = 0L;
      * <code>.common.Metric rx_packets_per_dr = 5;</code>
      */
     public Builder setRxPacketsPerDr(
-        io.chirpstack.api.Metric.Builder builderForValue) {
+        Metric.Builder builderForValue) {
       if (rxPacketsPerDrBuilder_ == null) {
         rxPacketsPerDr_ = builderForValue.build();
       } else {
@@ -1444,11 +1444,11 @@ private static final long serialVersionUID = 0L;
      *
      * <code>.common.Metric rx_packets_per_dr = 5;</code>
      */
-    public Builder mergeRxPacketsPerDr(io.chirpstack.api.Metric value) {
+    public Builder mergeRxPacketsPerDr(Metric value) {
       if (rxPacketsPerDrBuilder_ == null) {
         if (((bitField0_ & 0x00000010) != 0) &&
           rxPacketsPerDr_ != null &&
-          rxPacketsPerDr_ != io.chirpstack.api.Metric.getDefaultInstance()) {
+          rxPacketsPerDr_ != Metric.getDefaultInstance()) {
           getRxPacketsPerDrBuilder().mergeFrom(value);
         } else {
           rxPacketsPerDr_ = value;
@@ -1484,7 +1484,7 @@ private static final long serialVersionUID = 0L;
      *
      * <code>.common.Metric rx_packets_per_dr = 5;</code>
      */
-    public io.chirpstack.api.Metric.Builder getRxPacketsPerDrBuilder() {
+    public Metric.Builder getRxPacketsPerDrBuilder() {
       bitField0_ |= 0x00000010;
       onChanged();
       return getRxPacketsPerDrFieldBuilder().getBuilder();
@@ -1496,12 +1496,12 @@ private static final long serialVersionUID = 0L;
      *
      * <code>.common.Metric rx_packets_per_dr = 5;</code>
      */
-    public io.chirpstack.api.MetricOrBuilder getRxPacketsPerDrOrBuilder() {
+    public MetricOrBuilder getRxPacketsPerDrOrBuilder() {
       if (rxPacketsPerDrBuilder_ != null) {
         return rxPacketsPerDrBuilder_.getMessageOrBuilder();
       } else {
         return rxPacketsPerDr_ == null ?
-            io.chirpstack.api.Metric.getDefaultInstance() : rxPacketsPerDr_;
+            Metric.getDefaultInstance() : rxPacketsPerDr_;
       }
     }
     /**
@@ -1512,11 +1512,11 @@ private static final long serialVersionUID = 0L;
      * <code>.common.Metric rx_packets_per_dr = 5;</code>
      */
     private com.google.protobuf.SingleFieldBuilderV3<
-        io.chirpstack.api.Metric, io.chirpstack.api.Metric.Builder, io.chirpstack.api.MetricOrBuilder> 
+        Metric, Metric.Builder, MetricOrBuilder>
         getRxPacketsPerDrFieldBuilder() {
       if (rxPacketsPerDrBuilder_ == null) {
         rxPacketsPerDrBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
-            io.chirpstack.api.Metric, io.chirpstack.api.Metric.Builder, io.chirpstack.api.MetricOrBuilder>(
+            Metric, Metric.Builder, MetricOrBuilder>(
                 getRxPacketsPerDr(),
                 getParentForChildren(),
                 isClean());
@@ -1525,9 +1525,9 @@ private static final long serialVersionUID = 0L;
       return rxPacketsPerDrBuilder_;
     }
 
-    private io.chirpstack.api.Metric errors_;
+    private Metric errors_;
     private com.google.protobuf.SingleFieldBuilderV3<
-        io.chirpstack.api.Metric, io.chirpstack.api.Metric.Builder, io.chirpstack.api.MetricOrBuilder> errorsBuilder_;
+        Metric, Metric.Builder, MetricOrBuilder> errorsBuilder_;
     /**
      * <pre>
      * Errors.
@@ -1547,9 +1547,9 @@ private static final long serialVersionUID = 0L;
      * <code>.common.Metric errors = 6;</code>
      * @return The errors.
      */
-    public io.chirpstack.api.Metric getErrors() {
+    public Metric getErrors() {
       if (errorsBuilder_ == null) {
-        return errors_ == null ? io.chirpstack.api.Metric.getDefaultInstance() : errors_;
+        return errors_ == null ? Metric.getDefaultInstance() : errors_;
       } else {
         return errorsBuilder_.getMessage();
       }
@@ -1561,7 +1561,7 @@ private static final long serialVersionUID = 0L;
      *
      * <code>.common.Metric errors = 6;</code>
      */
-    public Builder setErrors(io.chirpstack.api.Metric value) {
+    public Builder setErrors(Metric value) {
       if (errorsBuilder_ == null) {
         if (value == null) {
           throw new NullPointerException();
@@ -1582,7 +1582,7 @@ private static final long serialVersionUID = 0L;
      * <code>.common.Metric errors = 6;</code>
      */
     public Builder setErrors(
-        io.chirpstack.api.Metric.Builder builderForValue) {
+        Metric.Builder builderForValue) {
       if (errorsBuilder_ == null) {
         errors_ = builderForValue.build();
       } else {
@@ -1599,11 +1599,11 @@ private static final long serialVersionUID = 0L;
      *
      * <code>.common.Metric errors = 6;</code>
      */
-    public Builder mergeErrors(io.chirpstack.api.Metric value) {
+    public Builder mergeErrors(Metric value) {
       if (errorsBuilder_ == null) {
         if (((bitField0_ & 0x00000020) != 0) &&
           errors_ != null &&
-          errors_ != io.chirpstack.api.Metric.getDefaultInstance()) {
+          errors_ != Metric.getDefaultInstance()) {
           getErrorsBuilder().mergeFrom(value);
         } else {
           errors_ = value;
@@ -1639,7 +1639,7 @@ private static final long serialVersionUID = 0L;
      *
      * <code>.common.Metric errors = 6;</code>
      */
-    public io.chirpstack.api.Metric.Builder getErrorsBuilder() {
+    public Metric.Builder getErrorsBuilder() {
       bitField0_ |= 0x00000020;
       onChanged();
       return getErrorsFieldBuilder().getBuilder();
@@ -1651,12 +1651,12 @@ private static final long serialVersionUID = 0L;
      *
      * <code>.common.Metric errors = 6;</code>
      */
-    public io.chirpstack.api.MetricOrBuilder getErrorsOrBuilder() {
+    public MetricOrBuilder getErrorsOrBuilder() {
       if (errorsBuilder_ != null) {
         return errorsBuilder_.getMessageOrBuilder();
       } else {
         return errors_ == null ?
-            io.chirpstack.api.Metric.getDefaultInstance() : errors_;
+            Metric.getDefaultInstance() : errors_;
       }
     }
     /**
@@ -1667,11 +1667,11 @@ private static final long serialVersionUID = 0L;
      * <code>.common.Metric errors = 6;</code>
      */
     private com.google.protobuf.SingleFieldBuilderV3<
-        io.chirpstack.api.Metric, io.chirpstack.api.Metric.Builder, io.chirpstack.api.MetricOrBuilder> 
+        Metric, Metric.Builder, MetricOrBuilder>
         getErrorsFieldBuilder() {
       if (errorsBuilder_ == null) {
         errorsBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
-            io.chirpstack.api.Metric, io.chirpstack.api.Metric.Builder, io.chirpstack.api.MetricOrBuilder>(
+            Metric, Metric.Builder, MetricOrBuilder>(
                 getErrors(),
                 getParentForChildren(),
                 isClean());

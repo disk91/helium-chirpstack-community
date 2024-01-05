@@ -34,7 +34,7 @@ public interface DownlinkFrameItemOrBuilder extends
    * <code>.gw.DownlinkTxInfoLegacy tx_info_legacy = 2;</code>
    * @return The txInfoLegacy.
    */
-  DownlinkTxInfoLegacy getTxInfoLegacy();
+  io.chirpstack.api.gw.DownlinkTxInfoLegacy getTxInfoLegacy();
   /**
    * <pre>
    * TX meta-data (deprecated).
@@ -42,7 +42,7 @@ public interface DownlinkFrameItemOrBuilder extends
    *
    * <code>.gw.DownlinkTxInfoLegacy tx_info_legacy = 2;</code>
    */
-  DownlinkTxInfoLegacyOrBuilder getTxInfoLegacyOrBuilder();
+  io.chirpstack.api.gw.DownlinkTxInfoLegacyOrBuilder getTxInfoLegacyOrBuilder();
 
   /**
    * <pre>
@@ -61,7 +61,7 @@ public interface DownlinkFrameItemOrBuilder extends
    * <code>.gw.DownlinkTxInfo tx_info = 3;</code>
    * @return The txInfo.
    */
-  DownlinkTxInfo getTxInfo();
+  io.chirpstack.api.gw.DownlinkTxInfo getTxInfo();
   /**
    * <pre>
    * Tx meta-data.
@@ -69,5 +69,5 @@ public interface DownlinkFrameItemOrBuilder extends
    *
    * <code>.gw.DownlinkTxInfo tx_info = 3;</code>
    */
-  DownlinkTxInfoOrBuilder getTxInfoOrBuilder();
+  io.chirpstack.api.gw.DownlinkTxInfoOrBuilder getTxInfoOrBuilder();
 }

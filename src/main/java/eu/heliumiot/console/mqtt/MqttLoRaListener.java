@@ -409,7 +409,7 @@ public class MqttLoRaListener implements MqttCallback {
             //       app eui (rev)   dev eui (rev)  nonce  MIC  CRC
 
             byte[] payload = uf.getPhyPayload().toByteArray();
-            long rx = (uf.getRxInfo().getTime().getSeconds() * 1000) + (uf.getRxInfo().getTime().getNanos() / 1_000_000);
+            long rx = (uf.getRxInfo().getGwTime().getSeconds() * 1000) + (uf.getRxInfo().getGwTime().getNanos() / 1_000_000);
             boolean isJoin = (payload[0] == 0 && payload.length == 23);
 
             String spayload = HexaConverters.byteToHexString(payload);
@@ -505,7 +505,7 @@ public class MqttLoRaListener implements MqttCallback {
 
                 // Measure uplink confirmed processing time
                 // Based on GW time, so it's an approximation
-                if ((payload[0] & 0xC0) == 0x80 && uf.getRxInfo().getTime().getSeconds() > 0) {
+                if ((payload[0] & 0xC0) == 0x80 && uf.getRxInfo().getGwTime().getSeconds() > 0) {
                     // header for confirmed frame - compute elapse time in ms
                     prometeusService.addLoRaUplinkConf(
                         e.arrivalTime - rx

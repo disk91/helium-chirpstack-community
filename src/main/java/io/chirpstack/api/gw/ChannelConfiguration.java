@@ -19,36 +19,32 @@ private static final long serialVersionUID = 0L;
     modulationLegacy_ = 0;
   }
 
-  @Override
+  @java.lang.Override
   @SuppressWarnings({"unused"})
-  protected Object newInstance(
+  protected java.lang.Object newInstance(
       UnusedPrivateParameter unused) {
     return new ChannelConfiguration();
   }
 
-  @Override
-  public final com.google.protobuf.UnknownFieldSet
-  getUnknownFields() {
-    return this.unknownFields;
-  }
   public static final com.google.protobuf.Descriptors.Descriptor
       getDescriptor() {
-    return GatewayProto.internal_static_gw_ChannelConfiguration_descriptor;
+    return io.chirpstack.api.gw.GatewayProto.internal_static_gw_ChannelConfiguration_descriptor;
   }
 
-  @Override
-  protected FieldAccessorTable
+  @java.lang.Override
+  protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
       internalGetFieldAccessorTable() {
-    return GatewayProto.internal_static_gw_ChannelConfiguration_fieldAccessorTable
+    return io.chirpstack.api.gw.GatewayProto.internal_static_gw_ChannelConfiguration_fieldAccessorTable
         .ensureFieldAccessorsInitialized(
-            ChannelConfiguration.class, Builder.class);
+            io.chirpstack.api.gw.ChannelConfiguration.class, io.chirpstack.api.gw.ChannelConfiguration.Builder.class);
   }
 
   private int modulationConfigCase_ = 0;
-  private Object modulationConfig_;
+  @SuppressWarnings("serial")
+  private java.lang.Object modulationConfig_;
   public enum ModulationConfigCase
       implements com.google.protobuf.Internal.EnumLite,
-          InternalOneOfEnum {
+          com.google.protobuf.AbstractMessage.InternalOneOfEnum {
     LORA_MODULATION_CONFIG(3),
     FSK_MODULATION_CONFIG(4),
     MODULATIONCONFIG_NOT_SET(0);
@@ -61,7 +57,7 @@ private static final long serialVersionUID = 0L;
      * @return The enum associated with the given number.
      * @deprecated Use {@link #forNumber(int)} instead.
      */
-    @Deprecated
+    @java.lang.Deprecated
     public static ModulationConfigCase valueOf(int value) {
       return forNumber(value);
     }
@@ -86,7 +82,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int FREQUENCY_FIELD_NUMBER = 1;
-  private int frequency_;
+  private int frequency_ = 0;
   /**
    * <pre>
    * Frequency (Hz).
@@ -95,13 +91,13 @@ private static final long serialVersionUID = 0L;
    * <code>uint32 frequency = 1;</code>
    * @return The frequency.
    */
-  @Override
+  @java.lang.Override
   public int getFrequency() {
     return frequency_;
   }
 
   public static final int MODULATION_LEGACY_FIELD_NUMBER = 2;
-  private int modulationLegacy_;
+  private int modulationLegacy_ = 0;
   /**
    * <pre>
    * Modulation (deprecated).
@@ -110,7 +106,7 @@ private static final long serialVersionUID = 0L;
    * <code>.common.Modulation modulation_legacy = 2;</code>
    * @return The enum numeric value on the wire for modulationLegacy.
    */
-  @Override public int getModulationLegacyValue() {
+  @java.lang.Override public int getModulationLegacyValue() {
     return modulationLegacy_;
   }
   /**
@@ -121,9 +117,8 @@ private static final long serialVersionUID = 0L;
    * <code>.common.Modulation modulation_legacy = 2;</code>
    * @return The modulationLegacy.
    */
-  @Override public io.chirpstack.api.Modulation getModulationLegacy() {
-    @SuppressWarnings("deprecation")
-    io.chirpstack.api.Modulation result = io.chirpstack.api.Modulation.valueOf(modulationLegacy_);
+  @java.lang.Override public io.chirpstack.api.Modulation getModulationLegacy() {
+    io.chirpstack.api.Modulation result = io.chirpstack.api.Modulation.forNumber(modulationLegacy_);
     return result == null ? io.chirpstack.api.Modulation.UNRECOGNIZED : result;
   }
 
@@ -136,7 +131,7 @@ private static final long serialVersionUID = 0L;
    * <code>.gw.LoraModulationConfig lora_modulation_config = 3;</code>
    * @return Whether the loraModulationConfig field is set.
    */
-  @Override
+  @java.lang.Override
   public boolean hasLoraModulationConfig() {
     return modulationConfigCase_ == 3;
   }
@@ -148,12 +143,12 @@ private static final long serialVersionUID = 0L;
    * <code>.gw.LoraModulationConfig lora_modulation_config = 3;</code>
    * @return The loraModulationConfig.
    */
-  @Override
-  public LoraModulationConfig getLoraModulationConfig() {
+  @java.lang.Override
+  public io.chirpstack.api.gw.LoraModulationConfig getLoraModulationConfig() {
     if (modulationConfigCase_ == 3) {
-       return (LoraModulationConfig) modulationConfig_;
+       return (io.chirpstack.api.gw.LoraModulationConfig) modulationConfig_;
     }
-    return LoraModulationConfig.getDefaultInstance();
+    return io.chirpstack.api.gw.LoraModulationConfig.getDefaultInstance();
   }
   /**
    * <pre>
@@ -162,12 +157,12 @@ private static final long serialVersionUID = 0L;
    *
    * <code>.gw.LoraModulationConfig lora_modulation_config = 3;</code>
    */
-  @Override
-  public LoraModulationConfigOrBuilder getLoraModulationConfigOrBuilder() {
+  @java.lang.Override
+  public io.chirpstack.api.gw.LoraModulationConfigOrBuilder getLoraModulationConfigOrBuilder() {
     if (modulationConfigCase_ == 3) {
-       return (LoraModulationConfig) modulationConfig_;
+       return (io.chirpstack.api.gw.LoraModulationConfig) modulationConfig_;
     }
-    return LoraModulationConfig.getDefaultInstance();
+    return io.chirpstack.api.gw.LoraModulationConfig.getDefaultInstance();
   }
 
   public static final int FSK_MODULATION_CONFIG_FIELD_NUMBER = 4;
@@ -179,7 +174,7 @@ private static final long serialVersionUID = 0L;
    * <code>.gw.FskModulationConfig fsk_modulation_config = 4;</code>
    * @return Whether the fskModulationConfig field is set.
    */
-  @Override
+  @java.lang.Override
   public boolean hasFskModulationConfig() {
     return modulationConfigCase_ == 4;
   }
@@ -191,12 +186,12 @@ private static final long serialVersionUID = 0L;
    * <code>.gw.FskModulationConfig fsk_modulation_config = 4;</code>
    * @return The fskModulationConfig.
    */
-  @Override
-  public FskModulationConfig getFskModulationConfig() {
+  @java.lang.Override
+  public io.chirpstack.api.gw.FskModulationConfig getFskModulationConfig() {
     if (modulationConfigCase_ == 4) {
-       return (FskModulationConfig) modulationConfig_;
+       return (io.chirpstack.api.gw.FskModulationConfig) modulationConfig_;
     }
-    return FskModulationConfig.getDefaultInstance();
+    return io.chirpstack.api.gw.FskModulationConfig.getDefaultInstance();
   }
   /**
    * <pre>
@@ -205,16 +200,16 @@ private static final long serialVersionUID = 0L;
    *
    * <code>.gw.FskModulationConfig fsk_modulation_config = 4;</code>
    */
-  @Override
-  public FskModulationConfigOrBuilder getFskModulationConfigOrBuilder() {
+  @java.lang.Override
+  public io.chirpstack.api.gw.FskModulationConfigOrBuilder getFskModulationConfigOrBuilder() {
     if (modulationConfigCase_ == 4) {
-       return (FskModulationConfig) modulationConfig_;
+       return (io.chirpstack.api.gw.FskModulationConfig) modulationConfig_;
     }
-    return FskModulationConfig.getDefaultInstance();
+    return io.chirpstack.api.gw.FskModulationConfig.getDefaultInstance();
   }
 
   public static final int BOARD_FIELD_NUMBER = 5;
-  private int board_;
+  private int board_ = 0;
   /**
    * <pre>
    * Board index.
@@ -223,13 +218,13 @@ private static final long serialVersionUID = 0L;
    * <code>uint32 board = 5;</code>
    * @return The board.
    */
-  @Override
+  @java.lang.Override
   public int getBoard() {
     return board_;
   }
 
   public static final int DEMODULATOR_FIELD_NUMBER = 6;
-  private int demodulator_;
+  private int demodulator_ = 0;
   /**
    * <pre>
    * Demodulator index (of the given board).
@@ -238,13 +233,13 @@ private static final long serialVersionUID = 0L;
    * <code>uint32 demodulator = 6;</code>
    * @return The demodulator.
    */
-  @Override
+  @java.lang.Override
   public int getDemodulator() {
     return demodulator_;
   }
 
   private byte memoizedIsInitialized = -1;
-  @Override
+  @java.lang.Override
   public final boolean isInitialized() {
     byte isInitialized = memoizedIsInitialized;
     if (isInitialized == 1) return true;
@@ -254,7 +249,7 @@ private static final long serialVersionUID = 0L;
     return true;
   }
 
-  @Override
+  @java.lang.Override
   public void writeTo(com.google.protobuf.CodedOutputStream output)
                       throws java.io.IOException {
     if (frequency_ != 0) {
@@ -264,10 +259,10 @@ private static final long serialVersionUID = 0L;
       output.writeEnum(2, modulationLegacy_);
     }
     if (modulationConfigCase_ == 3) {
-      output.writeMessage(3, (LoraModulationConfig) modulationConfig_);
+      output.writeMessage(3, (io.chirpstack.api.gw.LoraModulationConfig) modulationConfig_);
     }
     if (modulationConfigCase_ == 4) {
-      output.writeMessage(4, (FskModulationConfig) modulationConfig_);
+      output.writeMessage(4, (io.chirpstack.api.gw.FskModulationConfig) modulationConfig_);
     }
     if (board_ != 0) {
       output.writeUInt32(5, board_);
@@ -278,7 +273,7 @@ private static final long serialVersionUID = 0L;
     getUnknownFields().writeTo(output);
   }
 
-  @Override
+  @java.lang.Override
   public int getSerializedSize() {
     int size = memoizedSize;
     if (size != -1) return size;
@@ -294,11 +289,11 @@ private static final long serialVersionUID = 0L;
     }
     if (modulationConfigCase_ == 3) {
       size += com.google.protobuf.CodedOutputStream
-        .computeMessageSize(3, (LoraModulationConfig) modulationConfig_);
+        .computeMessageSize(3, (io.chirpstack.api.gw.LoraModulationConfig) modulationConfig_);
     }
     if (modulationConfigCase_ == 4) {
       size += com.google.protobuf.CodedOutputStream
-        .computeMessageSize(4, (FskModulationConfig) modulationConfig_);
+        .computeMessageSize(4, (io.chirpstack.api.gw.FskModulationConfig) modulationConfig_);
     }
     if (board_ != 0) {
       size += com.google.protobuf.CodedOutputStream
@@ -313,15 +308,15 @@ private static final long serialVersionUID = 0L;
     return size;
   }
 
-  @Override
-  public boolean equals(final Object obj) {
+  @java.lang.Override
+  public boolean equals(final java.lang.Object obj) {
     if (obj == this) {
      return true;
     }
-    if (!(obj instanceof ChannelConfiguration)) {
+    if (!(obj instanceof io.chirpstack.api.gw.ChannelConfiguration)) {
       return super.equals(obj);
     }
-    ChannelConfiguration other = (ChannelConfiguration) obj;
+    io.chirpstack.api.gw.ChannelConfiguration other = (io.chirpstack.api.gw.ChannelConfiguration) obj;
 
     if (getFrequency()
         != other.getFrequency()) return false;
@@ -347,7 +342,7 @@ private static final long serialVersionUID = 0L;
     return true;
   }
 
-  @Override
+  @java.lang.Override
   public int hashCode() {
     if (memoizedHashCode != 0) {
       return memoizedHashCode;
@@ -379,69 +374,69 @@ private static final long serialVersionUID = 0L;
     return hash;
   }
 
-  public static ChannelConfiguration parseFrom(
+  public static io.chirpstack.api.gw.ChannelConfiguration parseFrom(
       java.nio.ByteBuffer data)
       throws com.google.protobuf.InvalidProtocolBufferException {
     return PARSER.parseFrom(data);
   }
-  public static ChannelConfiguration parseFrom(
+  public static io.chirpstack.api.gw.ChannelConfiguration parseFrom(
       java.nio.ByteBuffer data,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws com.google.protobuf.InvalidProtocolBufferException {
     return PARSER.parseFrom(data, extensionRegistry);
   }
-  public static ChannelConfiguration parseFrom(
+  public static io.chirpstack.api.gw.ChannelConfiguration parseFrom(
       com.google.protobuf.ByteString data)
       throws com.google.protobuf.InvalidProtocolBufferException {
     return PARSER.parseFrom(data);
   }
-  public static ChannelConfiguration parseFrom(
+  public static io.chirpstack.api.gw.ChannelConfiguration parseFrom(
       com.google.protobuf.ByteString data,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws com.google.protobuf.InvalidProtocolBufferException {
     return PARSER.parseFrom(data, extensionRegistry);
   }
-  public static ChannelConfiguration parseFrom(byte[] data)
+  public static io.chirpstack.api.gw.ChannelConfiguration parseFrom(byte[] data)
       throws com.google.protobuf.InvalidProtocolBufferException {
     return PARSER.parseFrom(data);
   }
-  public static ChannelConfiguration parseFrom(
+  public static io.chirpstack.api.gw.ChannelConfiguration parseFrom(
       byte[] data,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws com.google.protobuf.InvalidProtocolBufferException {
     return PARSER.parseFrom(data, extensionRegistry);
   }
-  public static ChannelConfiguration parseFrom(java.io.InputStream input)
+  public static io.chirpstack.api.gw.ChannelConfiguration parseFrom(java.io.InputStream input)
       throws java.io.IOException {
     return com.google.protobuf.GeneratedMessageV3
         .parseWithIOException(PARSER, input);
   }
-  public static ChannelConfiguration parseFrom(
+  public static io.chirpstack.api.gw.ChannelConfiguration parseFrom(
       java.io.InputStream input,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws java.io.IOException {
     return com.google.protobuf.GeneratedMessageV3
         .parseWithIOException(PARSER, input, extensionRegistry);
   }
-  public static ChannelConfiguration parseDelimitedFrom(java.io.InputStream input)
+  public static io.chirpstack.api.gw.ChannelConfiguration parseDelimitedFrom(java.io.InputStream input)
       throws java.io.IOException {
     return com.google.protobuf.GeneratedMessageV3
         .parseDelimitedWithIOException(PARSER, input);
   }
-  public static ChannelConfiguration parseDelimitedFrom(
+  public static io.chirpstack.api.gw.ChannelConfiguration parseDelimitedFrom(
       java.io.InputStream input,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws java.io.IOException {
     return com.google.protobuf.GeneratedMessageV3
         .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
   }
-  public static ChannelConfiguration parseFrom(
+  public static io.chirpstack.api.gw.ChannelConfiguration parseFrom(
       com.google.protobuf.CodedInputStream input)
       throws java.io.IOException {
     return com.google.protobuf.GeneratedMessageV3
         .parseWithIOException(PARSER, input);
   }
-  public static ChannelConfiguration parseFrom(
+  public static io.chirpstack.api.gw.ChannelConfiguration parseFrom(
       com.google.protobuf.CodedInputStream input,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws java.io.IOException {
@@ -449,23 +444,23 @@ private static final long serialVersionUID = 0L;
         .parseWithIOException(PARSER, input, extensionRegistry);
   }
 
-  @Override
+  @java.lang.Override
   public Builder newBuilderForType() { return newBuilder(); }
   public static Builder newBuilder() {
     return DEFAULT_INSTANCE.toBuilder();
   }
-  public static Builder newBuilder(ChannelConfiguration prototype) {
+  public static Builder newBuilder(io.chirpstack.api.gw.ChannelConfiguration prototype) {
     return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
   }
-  @Override
+  @java.lang.Override
   public Builder toBuilder() {
     return this == DEFAULT_INSTANCE
         ? new Builder() : new Builder().mergeFrom(this);
   }
 
-  @Override
+  @java.lang.Override
   protected Builder newBuilderForType(
-      BuilderParent parent) {
+      com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
     Builder builder = new Builder(parent);
     return builder;
   }
@@ -475,18 +470,18 @@ private static final long serialVersionUID = 0L;
   public static final class Builder extends
       com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
       // @@protoc_insertion_point(builder_implements:gw.ChannelConfiguration)
-      ChannelConfigurationOrBuilder {
+      io.chirpstack.api.gw.ChannelConfigurationOrBuilder {
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
-      return GatewayProto.internal_static_gw_ChannelConfiguration_descriptor;
+      return io.chirpstack.api.gw.GatewayProto.internal_static_gw_ChannelConfiguration_descriptor;
     }
 
-    @Override
-    protected FieldAccessorTable
+    @java.lang.Override
+    protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
         internalGetFieldAccessorTable() {
-      return GatewayProto.internal_static_gw_ChannelConfiguration_fieldAccessorTable
+      return io.chirpstack.api.gw.GatewayProto.internal_static_gw_ChannelConfiguration_fieldAccessorTable
           .ensureFieldAccessorsInitialized(
-              ChannelConfiguration.class, Builder.class);
+              io.chirpstack.api.gw.ChannelConfiguration.class, io.chirpstack.api.gw.ChannelConfiguration.Builder.class);
     }
 
     // Construct using io.chirpstack.api.gw.ChannelConfiguration.newBuilder()
@@ -495,17 +490,16 @@ private static final long serialVersionUID = 0L;
     }
 
     private Builder(
-        BuilderParent parent) {
+        com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
       super(parent);
 
     }
-    @Override
+    @java.lang.Override
     public Builder clear() {
       super.clear();
+      bitField0_ = 0;
       frequency_ = 0;
-
       modulationLegacy_ = 0;
-
       if (loraModulationConfigBuilder_ != null) {
         loraModulationConfigBuilder_.clear();
       }
@@ -513,104 +507,82 @@ private static final long serialVersionUID = 0L;
         fskModulationConfigBuilder_.clear();
       }
       board_ = 0;
-
       demodulator_ = 0;
-
       modulationConfigCase_ = 0;
       modulationConfig_ = null;
       return this;
     }
 
-    @Override
+    @java.lang.Override
     public com.google.protobuf.Descriptors.Descriptor
         getDescriptorForType() {
-      return GatewayProto.internal_static_gw_ChannelConfiguration_descriptor;
+      return io.chirpstack.api.gw.GatewayProto.internal_static_gw_ChannelConfiguration_descriptor;
     }
 
-    @Override
-    public ChannelConfiguration getDefaultInstanceForType() {
-      return ChannelConfiguration.getDefaultInstance();
+    @java.lang.Override
+    public io.chirpstack.api.gw.ChannelConfiguration getDefaultInstanceForType() {
+      return io.chirpstack.api.gw.ChannelConfiguration.getDefaultInstance();
     }
 
-    @Override
-    public ChannelConfiguration build() {
-      ChannelConfiguration result = buildPartial();
+    @java.lang.Override
+    public io.chirpstack.api.gw.ChannelConfiguration build() {
+      io.chirpstack.api.gw.ChannelConfiguration result = buildPartial();
       if (!result.isInitialized()) {
         throw newUninitializedMessageException(result);
       }
       return result;
     }
 
-    @Override
-    public ChannelConfiguration buildPartial() {
-      ChannelConfiguration result = new ChannelConfiguration(this);
-      result.frequency_ = frequency_;
-      result.modulationLegacy_ = modulationLegacy_;
-      if (modulationConfigCase_ == 3) {
-        if (loraModulationConfigBuilder_ == null) {
-          result.modulationConfig_ = modulationConfig_;
-        } else {
-          result.modulationConfig_ = loraModulationConfigBuilder_.build();
-        }
-      }
-      if (modulationConfigCase_ == 4) {
-        if (fskModulationConfigBuilder_ == null) {
-          result.modulationConfig_ = modulationConfig_;
-        } else {
-          result.modulationConfig_ = fskModulationConfigBuilder_.build();
-        }
-      }
-      result.board_ = board_;
-      result.demodulator_ = demodulator_;
-      result.modulationConfigCase_ = modulationConfigCase_;
+    @java.lang.Override
+    public io.chirpstack.api.gw.ChannelConfiguration buildPartial() {
+      io.chirpstack.api.gw.ChannelConfiguration result = new io.chirpstack.api.gw.ChannelConfiguration(this);
+      if (bitField0_ != 0) { buildPartial0(result); }
+      buildPartialOneofs(result);
       onBuilt();
       return result;
     }
 
-    @Override
-    public Builder clone() {
-      return super.clone();
+    private void buildPartial0(io.chirpstack.api.gw.ChannelConfiguration result) {
+      int from_bitField0_ = bitField0_;
+      if (((from_bitField0_ & 0x00000001) != 0)) {
+        result.frequency_ = frequency_;
+      }
+      if (((from_bitField0_ & 0x00000002) != 0)) {
+        result.modulationLegacy_ = modulationLegacy_;
+      }
+      if (((from_bitField0_ & 0x00000010) != 0)) {
+        result.board_ = board_;
+      }
+      if (((from_bitField0_ & 0x00000020) != 0)) {
+        result.demodulator_ = demodulator_;
+      }
     }
-    @Override
-    public Builder setField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        Object value) {
-      return super.setField(field, value);
+
+    private void buildPartialOneofs(io.chirpstack.api.gw.ChannelConfiguration result) {
+      result.modulationConfigCase_ = modulationConfigCase_;
+      result.modulationConfig_ = this.modulationConfig_;
+      if (modulationConfigCase_ == 3 &&
+          loraModulationConfigBuilder_ != null) {
+        result.modulationConfig_ = loraModulationConfigBuilder_.build();
+      }
+      if (modulationConfigCase_ == 4 &&
+          fskModulationConfigBuilder_ != null) {
+        result.modulationConfig_ = fskModulationConfigBuilder_.build();
+      }
     }
-    @Override
-    public Builder clearField(
-        com.google.protobuf.Descriptors.FieldDescriptor field) {
-      return super.clearField(field);
-    }
-    @Override
-    public Builder clearOneof(
-        com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-      return super.clearOneof(oneof);
-    }
-    @Override
-    public Builder setRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        int index, Object value) {
-      return super.setRepeatedField(field, index, value);
-    }
-    @Override
-    public Builder addRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        Object value) {
-      return super.addRepeatedField(field, value);
-    }
-    @Override
+
+    @java.lang.Override
     public Builder mergeFrom(com.google.protobuf.Message other) {
-      if (other instanceof ChannelConfiguration) {
-        return mergeFrom((ChannelConfiguration)other);
+      if (other instanceof io.chirpstack.api.gw.ChannelConfiguration) {
+        return mergeFrom((io.chirpstack.api.gw.ChannelConfiguration)other);
       } else {
         super.mergeFrom(other);
         return this;
       }
     }
 
-    public Builder mergeFrom(ChannelConfiguration other) {
-      if (other == ChannelConfiguration.getDefaultInstance()) return this;
+    public Builder mergeFrom(io.chirpstack.api.gw.ChannelConfiguration other) {
+      if (other == io.chirpstack.api.gw.ChannelConfiguration.getDefaultInstance()) return this;
       if (other.getFrequency() != 0) {
         setFrequency(other.getFrequency());
       }
@@ -641,18 +613,18 @@ private static final long serialVersionUID = 0L;
       return this;
     }
 
-    @Override
+    @java.lang.Override
     public final boolean isInitialized() {
       return true;
     }
 
-    @Override
+    @java.lang.Override
     public Builder mergeFrom(
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
       if (extensionRegistry == null) {
-        throw new NullPointerException();
+        throw new java.lang.NullPointerException();
       }
       try {
         boolean done = false;
@@ -664,12 +636,12 @@ private static final long serialVersionUID = 0L;
               break;
             case 8: {
               frequency_ = input.readUInt32();
-
+              bitField0_ |= 0x00000001;
               break;
             } // case 8
             case 16: {
               modulationLegacy_ = input.readEnum();
-
+              bitField0_ |= 0x00000002;
               break;
             } // case 16
             case 26: {
@@ -688,12 +660,12 @@ private static final long serialVersionUID = 0L;
             } // case 34
             case 40: {
               board_ = input.readUInt32();
-
+              bitField0_ |= 0x00000010;
               break;
             } // case 40
             case 48: {
               demodulator_ = input.readUInt32();
-
+              bitField0_ |= 0x00000020;
               break;
             } // case 48
             default: {
@@ -712,7 +684,7 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     private int modulationConfigCase_ = 0;
-    private Object modulationConfig_;
+    private java.lang.Object modulationConfig_;
     public ModulationConfigCase
         getModulationConfigCase() {
       return ModulationConfigCase.forNumber(
@@ -726,6 +698,7 @@ private static final long serialVersionUID = 0L;
       return this;
     }
 
+    private int bitField0_;
 
     private int frequency_ ;
     /**
@@ -736,7 +709,7 @@ private static final long serialVersionUID = 0L;
      * <code>uint32 frequency = 1;</code>
      * @return The frequency.
      */
-    @Override
+    @java.lang.Override
     public int getFrequency() {
       return frequency_;
     }
@@ -750,8 +723,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setFrequency(int value) {
-      
+
       frequency_ = value;
+      bitField0_ |= 0x00000001;
       onChanged();
       return this;
     }
@@ -764,7 +738,7 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder clearFrequency() {
-      
+      bitField0_ = (bitField0_ & ~0x00000001);
       frequency_ = 0;
       onChanged();
       return this;
@@ -779,7 +753,7 @@ private static final long serialVersionUID = 0L;
      * <code>.common.Modulation modulation_legacy = 2;</code>
      * @return The enum numeric value on the wire for modulationLegacy.
      */
-    @Override public int getModulationLegacyValue() {
+    @java.lang.Override public int getModulationLegacyValue() {
       return modulationLegacy_;
     }
     /**
@@ -792,8 +766,8 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setModulationLegacyValue(int value) {
-      
       modulationLegacy_ = value;
+      bitField0_ |= 0x00000002;
       onChanged();
       return this;
     }
@@ -805,10 +779,9 @@ private static final long serialVersionUID = 0L;
      * <code>.common.Modulation modulation_legacy = 2;</code>
      * @return The modulationLegacy.
      */
-    @Override
+    @java.lang.Override
     public io.chirpstack.api.Modulation getModulationLegacy() {
-      @SuppressWarnings("deprecation")
-      io.chirpstack.api.Modulation result = io.chirpstack.api.Modulation.valueOf(modulationLegacy_);
+      io.chirpstack.api.Modulation result = io.chirpstack.api.Modulation.forNumber(modulationLegacy_);
       return result == null ? io.chirpstack.api.Modulation.UNRECOGNIZED : result;
     }
     /**
@@ -824,7 +797,7 @@ private static final long serialVersionUID = 0L;
       if (value == null) {
         throw new NullPointerException();
       }
-      
+      bitField0_ |= 0x00000002;
       modulationLegacy_ = value.getNumber();
       onChanged();
       return this;
@@ -838,14 +811,14 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder clearModulationLegacy() {
-      
+      bitField0_ = (bitField0_ & ~0x00000002);
       modulationLegacy_ = 0;
       onChanged();
       return this;
     }
 
     private com.google.protobuf.SingleFieldBuilderV3<
-        LoraModulationConfig, LoraModulationConfig.Builder, LoraModulationConfigOrBuilder> loraModulationConfigBuilder_;
+        io.chirpstack.api.gw.LoraModulationConfig, io.chirpstack.api.gw.LoraModulationConfig.Builder, io.chirpstack.api.gw.LoraModulationConfigOrBuilder> loraModulationConfigBuilder_;
     /**
      * <pre>
      * LoRa modulation config.
@@ -854,7 +827,7 @@ private static final long serialVersionUID = 0L;
      * <code>.gw.LoraModulationConfig lora_modulation_config = 3;</code>
      * @return Whether the loraModulationConfig field is set.
      */
-    @Override
+    @java.lang.Override
     public boolean hasLoraModulationConfig() {
       return modulationConfigCase_ == 3;
     }
@@ -866,18 +839,18 @@ private static final long serialVersionUID = 0L;
      * <code>.gw.LoraModulationConfig lora_modulation_config = 3;</code>
      * @return The loraModulationConfig.
      */
-    @Override
-    public LoraModulationConfig getLoraModulationConfig() {
+    @java.lang.Override
+    public io.chirpstack.api.gw.LoraModulationConfig getLoraModulationConfig() {
       if (loraModulationConfigBuilder_ == null) {
         if (modulationConfigCase_ == 3) {
-          return (LoraModulationConfig) modulationConfig_;
+          return (io.chirpstack.api.gw.LoraModulationConfig) modulationConfig_;
         }
-        return LoraModulationConfig.getDefaultInstance();
+        return io.chirpstack.api.gw.LoraModulationConfig.getDefaultInstance();
       } else {
         if (modulationConfigCase_ == 3) {
           return loraModulationConfigBuilder_.getMessage();
         }
-        return LoraModulationConfig.getDefaultInstance();
+        return io.chirpstack.api.gw.LoraModulationConfig.getDefaultInstance();
       }
     }
     /**
@@ -887,7 +860,7 @@ private static final long serialVersionUID = 0L;
      *
      * <code>.gw.LoraModulationConfig lora_modulation_config = 3;</code>
      */
-    public Builder setLoraModulationConfig(LoraModulationConfig value) {
+    public Builder setLoraModulationConfig(io.chirpstack.api.gw.LoraModulationConfig value) {
       if (loraModulationConfigBuilder_ == null) {
         if (value == null) {
           throw new NullPointerException();
@@ -908,7 +881,7 @@ private static final long serialVersionUID = 0L;
      * <code>.gw.LoraModulationConfig lora_modulation_config = 3;</code>
      */
     public Builder setLoraModulationConfig(
-        LoraModulationConfig.Builder builderForValue) {
+        io.chirpstack.api.gw.LoraModulationConfig.Builder builderForValue) {
       if (loraModulationConfigBuilder_ == null) {
         modulationConfig_ = builderForValue.build();
         onChanged();
@@ -925,11 +898,11 @@ private static final long serialVersionUID = 0L;
      *
      * <code>.gw.LoraModulationConfig lora_modulation_config = 3;</code>
      */
-    public Builder mergeLoraModulationConfig(LoraModulationConfig value) {
+    public Builder mergeLoraModulationConfig(io.chirpstack.api.gw.LoraModulationConfig value) {
       if (loraModulationConfigBuilder_ == null) {
         if (modulationConfigCase_ == 3 &&
-            modulationConfig_ != LoraModulationConfig.getDefaultInstance()) {
-          modulationConfig_ = LoraModulationConfig.newBuilder((LoraModulationConfig) modulationConfig_)
+            modulationConfig_ != io.chirpstack.api.gw.LoraModulationConfig.getDefaultInstance()) {
+          modulationConfig_ = io.chirpstack.api.gw.LoraModulationConfig.newBuilder((io.chirpstack.api.gw.LoraModulationConfig) modulationConfig_)
               .mergeFrom(value).buildPartial();
         } else {
           modulationConfig_ = value;
@@ -975,7 +948,7 @@ private static final long serialVersionUID = 0L;
      *
      * <code>.gw.LoraModulationConfig lora_modulation_config = 3;</code>
      */
-    public LoraModulationConfig.Builder getLoraModulationConfigBuilder() {
+    public io.chirpstack.api.gw.LoraModulationConfig.Builder getLoraModulationConfigBuilder() {
       return getLoraModulationConfigFieldBuilder().getBuilder();
     }
     /**
@@ -985,15 +958,15 @@ private static final long serialVersionUID = 0L;
      *
      * <code>.gw.LoraModulationConfig lora_modulation_config = 3;</code>
      */
-    @Override
-    public LoraModulationConfigOrBuilder getLoraModulationConfigOrBuilder() {
+    @java.lang.Override
+    public io.chirpstack.api.gw.LoraModulationConfigOrBuilder getLoraModulationConfigOrBuilder() {
       if ((modulationConfigCase_ == 3) && (loraModulationConfigBuilder_ != null)) {
         return loraModulationConfigBuilder_.getMessageOrBuilder();
       } else {
         if (modulationConfigCase_ == 3) {
-          return (LoraModulationConfig) modulationConfig_;
+          return (io.chirpstack.api.gw.LoraModulationConfig) modulationConfig_;
         }
-        return LoraModulationConfig.getDefaultInstance();
+        return io.chirpstack.api.gw.LoraModulationConfig.getDefaultInstance();
       }
     }
     /**
@@ -1004,26 +977,26 @@ private static final long serialVersionUID = 0L;
      * <code>.gw.LoraModulationConfig lora_modulation_config = 3;</code>
      */
     private com.google.protobuf.SingleFieldBuilderV3<
-        LoraModulationConfig, LoraModulationConfig.Builder, LoraModulationConfigOrBuilder>
+        io.chirpstack.api.gw.LoraModulationConfig, io.chirpstack.api.gw.LoraModulationConfig.Builder, io.chirpstack.api.gw.LoraModulationConfigOrBuilder> 
         getLoraModulationConfigFieldBuilder() {
       if (loraModulationConfigBuilder_ == null) {
         if (!(modulationConfigCase_ == 3)) {
-          modulationConfig_ = LoraModulationConfig.getDefaultInstance();
+          modulationConfig_ = io.chirpstack.api.gw.LoraModulationConfig.getDefaultInstance();
         }
         loraModulationConfigBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
-            LoraModulationConfig, LoraModulationConfig.Builder, LoraModulationConfigOrBuilder>(
-                (LoraModulationConfig) modulationConfig_,
+            io.chirpstack.api.gw.LoraModulationConfig, io.chirpstack.api.gw.LoraModulationConfig.Builder, io.chirpstack.api.gw.LoraModulationConfigOrBuilder>(
+                (io.chirpstack.api.gw.LoraModulationConfig) modulationConfig_,
                 getParentForChildren(),
                 isClean());
         modulationConfig_ = null;
       }
       modulationConfigCase_ = 3;
-      onChanged();;
+      onChanged();
       return loraModulationConfigBuilder_;
     }
 
     private com.google.protobuf.SingleFieldBuilderV3<
-        FskModulationConfig, FskModulationConfig.Builder, FskModulationConfigOrBuilder> fskModulationConfigBuilder_;
+        io.chirpstack.api.gw.FskModulationConfig, io.chirpstack.api.gw.FskModulationConfig.Builder, io.chirpstack.api.gw.FskModulationConfigOrBuilder> fskModulationConfigBuilder_;
     /**
      * <pre>
      * FSK modulation config.
@@ -1032,7 +1005,7 @@ private static final long serialVersionUID = 0L;
      * <code>.gw.FskModulationConfig fsk_modulation_config = 4;</code>
      * @return Whether the fskModulationConfig field is set.
      */
-    @Override
+    @java.lang.Override
     public boolean hasFskModulationConfig() {
       return modulationConfigCase_ == 4;
     }
@@ -1044,18 +1017,18 @@ private static final long serialVersionUID = 0L;
      * <code>.gw.FskModulationConfig fsk_modulation_config = 4;</code>
      * @return The fskModulationConfig.
      */
-    @Override
-    public FskModulationConfig getFskModulationConfig() {
+    @java.lang.Override
+    public io.chirpstack.api.gw.FskModulationConfig getFskModulationConfig() {
       if (fskModulationConfigBuilder_ == null) {
         if (modulationConfigCase_ == 4) {
-          return (FskModulationConfig) modulationConfig_;
+          return (io.chirpstack.api.gw.FskModulationConfig) modulationConfig_;
         }
-        return FskModulationConfig.getDefaultInstance();
+        return io.chirpstack.api.gw.FskModulationConfig.getDefaultInstance();
       } else {
         if (modulationConfigCase_ == 4) {
           return fskModulationConfigBuilder_.getMessage();
         }
-        return FskModulationConfig.getDefaultInstance();
+        return io.chirpstack.api.gw.FskModulationConfig.getDefaultInstance();
       }
     }
     /**
@@ -1065,7 +1038,7 @@ private static final long serialVersionUID = 0L;
      *
      * <code>.gw.FskModulationConfig fsk_modulation_config = 4;</code>
      */
-    public Builder setFskModulationConfig(FskModulationConfig value) {
+    public Builder setFskModulationConfig(io.chirpstack.api.gw.FskModulationConfig value) {
       if (fskModulationConfigBuilder_ == null) {
         if (value == null) {
           throw new NullPointerException();
@@ -1086,7 +1059,7 @@ private static final long serialVersionUID = 0L;
      * <code>.gw.FskModulationConfig fsk_modulation_config = 4;</code>
      */
     public Builder setFskModulationConfig(
-        FskModulationConfig.Builder builderForValue) {
+        io.chirpstack.api.gw.FskModulationConfig.Builder builderForValue) {
       if (fskModulationConfigBuilder_ == null) {
         modulationConfig_ = builderForValue.build();
         onChanged();
@@ -1103,11 +1076,11 @@ private static final long serialVersionUID = 0L;
      *
      * <code>.gw.FskModulationConfig fsk_modulation_config = 4;</code>
      */
-    public Builder mergeFskModulationConfig(FskModulationConfig value) {
+    public Builder mergeFskModulationConfig(io.chirpstack.api.gw.FskModulationConfig value) {
       if (fskModulationConfigBuilder_ == null) {
         if (modulationConfigCase_ == 4 &&
-            modulationConfig_ != FskModulationConfig.getDefaultInstance()) {
-          modulationConfig_ = FskModulationConfig.newBuilder((FskModulationConfig) modulationConfig_)
+            modulationConfig_ != io.chirpstack.api.gw.FskModulationConfig.getDefaultInstance()) {
+          modulationConfig_ = io.chirpstack.api.gw.FskModulationConfig.newBuilder((io.chirpstack.api.gw.FskModulationConfig) modulationConfig_)
               .mergeFrom(value).buildPartial();
         } else {
           modulationConfig_ = value;
@@ -1153,7 +1126,7 @@ private static final long serialVersionUID = 0L;
      *
      * <code>.gw.FskModulationConfig fsk_modulation_config = 4;</code>
      */
-    public FskModulationConfig.Builder getFskModulationConfigBuilder() {
+    public io.chirpstack.api.gw.FskModulationConfig.Builder getFskModulationConfigBuilder() {
       return getFskModulationConfigFieldBuilder().getBuilder();
     }
     /**
@@ -1163,15 +1136,15 @@ private static final long serialVersionUID = 0L;
      *
      * <code>.gw.FskModulationConfig fsk_modulation_config = 4;</code>
      */
-    @Override
-    public FskModulationConfigOrBuilder getFskModulationConfigOrBuilder() {
+    @java.lang.Override
+    public io.chirpstack.api.gw.FskModulationConfigOrBuilder getFskModulationConfigOrBuilder() {
       if ((modulationConfigCase_ == 4) && (fskModulationConfigBuilder_ != null)) {
         return fskModulationConfigBuilder_.getMessageOrBuilder();
       } else {
         if (modulationConfigCase_ == 4) {
-          return (FskModulationConfig) modulationConfig_;
+          return (io.chirpstack.api.gw.FskModulationConfig) modulationConfig_;
         }
-        return FskModulationConfig.getDefaultInstance();
+        return io.chirpstack.api.gw.FskModulationConfig.getDefaultInstance();
       }
     }
     /**
@@ -1182,21 +1155,21 @@ private static final long serialVersionUID = 0L;
      * <code>.gw.FskModulationConfig fsk_modulation_config = 4;</code>
      */
     private com.google.protobuf.SingleFieldBuilderV3<
-        FskModulationConfig, FskModulationConfig.Builder, FskModulationConfigOrBuilder>
+        io.chirpstack.api.gw.FskModulationConfig, io.chirpstack.api.gw.FskModulationConfig.Builder, io.chirpstack.api.gw.FskModulationConfigOrBuilder> 
         getFskModulationConfigFieldBuilder() {
       if (fskModulationConfigBuilder_ == null) {
         if (!(modulationConfigCase_ == 4)) {
-          modulationConfig_ = FskModulationConfig.getDefaultInstance();
+          modulationConfig_ = io.chirpstack.api.gw.FskModulationConfig.getDefaultInstance();
         }
         fskModulationConfigBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
-            FskModulationConfig, FskModulationConfig.Builder, FskModulationConfigOrBuilder>(
-                (FskModulationConfig) modulationConfig_,
+            io.chirpstack.api.gw.FskModulationConfig, io.chirpstack.api.gw.FskModulationConfig.Builder, io.chirpstack.api.gw.FskModulationConfigOrBuilder>(
+                (io.chirpstack.api.gw.FskModulationConfig) modulationConfig_,
                 getParentForChildren(),
                 isClean());
         modulationConfig_ = null;
       }
       modulationConfigCase_ = 4;
-      onChanged();;
+      onChanged();
       return fskModulationConfigBuilder_;
     }
 
@@ -1209,7 +1182,7 @@ private static final long serialVersionUID = 0L;
      * <code>uint32 board = 5;</code>
      * @return The board.
      */
-    @Override
+    @java.lang.Override
     public int getBoard() {
       return board_;
     }
@@ -1223,8 +1196,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setBoard(int value) {
-      
+
       board_ = value;
+      bitField0_ |= 0x00000010;
       onChanged();
       return this;
     }
@@ -1237,7 +1211,7 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder clearBoard() {
-      
+      bitField0_ = (bitField0_ & ~0x00000010);
       board_ = 0;
       onChanged();
       return this;
@@ -1252,7 +1226,7 @@ private static final long serialVersionUID = 0L;
      * <code>uint32 demodulator = 6;</code>
      * @return The demodulator.
      */
-    @Override
+    @java.lang.Override
     public int getDemodulator() {
       return demodulator_;
     }
@@ -1266,8 +1240,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setDemodulator(int value) {
-      
+
       demodulator_ = value;
+      bitField0_ |= 0x00000020;
       onChanged();
       return this;
     }
@@ -1280,18 +1255,18 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder clearDemodulator() {
-      
+      bitField0_ = (bitField0_ & ~0x00000020);
       demodulator_ = 0;
       onChanged();
       return this;
     }
-    @Override
+    @java.lang.Override
     public final Builder setUnknownFields(
         final com.google.protobuf.UnknownFieldSet unknownFields) {
       return super.setUnknownFields(unknownFields);
     }
 
-    @Override
+    @java.lang.Override
     public final Builder mergeUnknownFields(
         final com.google.protobuf.UnknownFieldSet unknownFields) {
       return super.mergeUnknownFields(unknownFields);
@@ -1302,18 +1277,18 @@ private static final long serialVersionUID = 0L;
   }
 
   // @@protoc_insertion_point(class_scope:gw.ChannelConfiguration)
-  private static final ChannelConfiguration DEFAULT_INSTANCE;
+  private static final io.chirpstack.api.gw.ChannelConfiguration DEFAULT_INSTANCE;
   static {
-    DEFAULT_INSTANCE = new ChannelConfiguration();
+    DEFAULT_INSTANCE = new io.chirpstack.api.gw.ChannelConfiguration();
   }
 
-  public static ChannelConfiguration getDefaultInstance() {
+  public static io.chirpstack.api.gw.ChannelConfiguration getDefaultInstance() {
     return DEFAULT_INSTANCE;
   }
 
   private static final com.google.protobuf.Parser<ChannelConfiguration>
       PARSER = new com.google.protobuf.AbstractParser<ChannelConfiguration>() {
-    @Override
+    @java.lang.Override
     public ChannelConfiguration parsePartialFrom(
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
@@ -1337,13 +1312,13 @@ private static final long serialVersionUID = 0L;
     return PARSER;
   }
 
-  @Override
+  @java.lang.Override
   public com.google.protobuf.Parser<ChannelConfiguration> getParserForType() {
     return PARSER;
   }
 
-  @Override
-  public ChannelConfiguration getDefaultInstanceForType() {
+  @java.lang.Override
+  public io.chirpstack.api.gw.ChannelConfiguration getDefaultInstanceForType() {
     return DEFAULT_INSTANCE;
   }
 

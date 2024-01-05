@@ -2,12 +2,10 @@ package eu.heliumiot.console.redis;
 
 import com.google.protobuf.InvalidProtocolBufferException;
 import eu.heliumiot.console.service.HeliumDeviceService;
-import eu.heliumiot.console.service.HeliumTenantService;
 import eu.heliumiot.console.service.PrometeusService;
 import fr.ingeniousthings.tools.HexaConverters;
 import fr.ingeniousthings.tools.Now;
-import io.chirpstack.api.DownlinkFrameLog;
-import io.chirpstack.api.RequestLog;
+import io.chirpstack.api.stream.ApiRequestLog;
 import io.lettuce.core.*;
 import io.lettuce.core.api.StatefulRedisConnection;
 import io.lettuce.core.api.sync.RedisCommands;
@@ -136,7 +134,7 @@ public class RedisDeviceEventStreamListener {
                             if (k.compareToIgnoreCase("request") == 0) {
                                 byte[] byteData = message.getBody().get(k);
                                 try {
-                                    RequestLog req = RequestLog.parseFrom(byteData);
+                                    ApiRequestLog req = ApiRequestLog.parseFrom(byteData);
                                     if (req != null) {
                                         if (  req.getMethod().compareToIgnoreCase("activate") == 0 ) {
                                             if ( req.getService().compareToIgnoreCase("api.DeviceService") == 0 && req.getMetadataCount() == 1 ) {

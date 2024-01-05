@@ -18,35 +18,44 @@ private static final long serialVersionUID = 0L;
   private UplinkRxInfo() {
     gatewayId_ = "";
     context_ = com.google.protobuf.ByteString.EMPTY;
+    crcStatus_ = 0;
   }
 
-  @Override
+  @java.lang.Override
   @SuppressWarnings({"unused"})
-  protected Object newInstance(
+  protected java.lang.Object newInstance(
       UnusedPrivateParameter unused) {
     return new UplinkRxInfo();
   }
 
-  @Override
-  public final com.google.protobuf.UnknownFieldSet
-  getUnknownFields() {
-    return this.unknownFields;
-  }
   public static final com.google.protobuf.Descriptors.Descriptor
       getDescriptor() {
-    return GatewayProto.internal_static_gw_UplinkRxInfo_descriptor;
+    return io.chirpstack.api.gw.GatewayProto.internal_static_gw_UplinkRxInfo_descriptor;
   }
 
-  @Override
-  protected FieldAccessorTable
+  @SuppressWarnings({"rawtypes"})
+  @java.lang.Override
+  protected com.google.protobuf.MapField internalGetMapField(
+      int number) {
+    switch (number) {
+      case 15:
+        return internalGetMetadata();
+      default:
+        throw new RuntimeException(
+            "Invalid map field number: " + number);
+    }
+  }
+  @java.lang.Override
+  protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
       internalGetFieldAccessorTable() {
-    return GatewayProto.internal_static_gw_UplinkRxInfo_fieldAccessorTable
+    return io.chirpstack.api.gw.GatewayProto.internal_static_gw_UplinkRxInfo_fieldAccessorTable
         .ensureFieldAccessorsInitialized(
-            UplinkRxInfo.class, Builder.class);
+            io.chirpstack.api.gw.UplinkRxInfo.class, io.chirpstack.api.gw.UplinkRxInfo.Builder.class);
   }
 
   public static final int GATEWAY_ID_FIELD_NUMBER = 1;
-  private volatile Object gatewayId_;
+  @SuppressWarnings("serial")
+  private volatile java.lang.Object gatewayId_ = "";
   /**
    * <pre>
    * Gateway ID.
@@ -55,15 +64,15 @@ private static final long serialVersionUID = 0L;
    * <code>string gateway_id = 1;</code>
    * @return The gatewayId.
    */
-  @Override
-  public String getGatewayId() {
-    Object ref = gatewayId_;
-    if (ref instanceof String) {
-      return (String) ref;
+  @java.lang.Override
+  public java.lang.String getGatewayId() {
+    java.lang.Object ref = gatewayId_;
+    if (ref instanceof java.lang.String) {
+      return (java.lang.String) ref;
     } else {
       com.google.protobuf.ByteString bs = 
           (com.google.protobuf.ByteString) ref;
-      String s = bs.toStringUtf8();
+      java.lang.String s = bs.toStringUtf8();
       gatewayId_ = s;
       return s;
     }
@@ -76,14 +85,14 @@ private static final long serialVersionUID = 0L;
    * <code>string gateway_id = 1;</code>
    * @return The bytes for gatewayId.
    */
-  @Override
+  @java.lang.Override
   public com.google.protobuf.ByteString
       getGatewayIdBytes() {
-    Object ref = gatewayId_;
-    if (ref instanceof String) {
+    java.lang.Object ref = gatewayId_;
+    if (ref instanceof java.lang.String) {
       com.google.protobuf.ByteString b = 
           com.google.protobuf.ByteString.copyFromUtf8(
-              (String) ref);
+              (java.lang.String) ref);
       gatewayId_ = b;
       return b;
     } else {
@@ -92,7 +101,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int UPLINK_ID_FIELD_NUMBER = 2;
-  private int uplinkId_;
+  private int uplinkId_ = 0;
   /**
    * <pre>
    * Uplink ID.
@@ -101,85 +110,123 @@ private static final long serialVersionUID = 0L;
    * <code>uint32 uplink_id = 2;</code>
    * @return The uplinkId.
    */
-  @Override
+  @java.lang.Override
   public int getUplinkId() {
     return uplinkId_;
   }
 
-  public static final int TIME_FIELD_NUMBER = 3;
-  private com.google.protobuf.Timestamp time_;
+  public static final int GW_TIME_FIELD_NUMBER = 3;
+  private com.google.protobuf.Timestamp gwTime_;
   /**
    * <pre>
-   * RX time (only set when the gateway has a GPS module).
+   * Gateway RX time (set if the gateway has a GNSS module).
    * </pre>
    *
-   * <code>.google.protobuf.Timestamp time = 3;</code>
-   * @return Whether the time field is set.
+   * <code>.google.protobuf.Timestamp gw_time = 3;</code>
+   * @return Whether the gwTime field is set.
    */
-  @Override
-  public boolean hasTime() {
-    return time_ != null;
+  @java.lang.Override
+  public boolean hasGwTime() {
+    return gwTime_ != null;
   }
   /**
    * <pre>
-   * RX time (only set when the gateway has a GPS module).
+   * Gateway RX time (set if the gateway has a GNSS module).
    * </pre>
    *
-   * <code>.google.protobuf.Timestamp time = 3;</code>
-   * @return The time.
+   * <code>.google.protobuf.Timestamp gw_time = 3;</code>
+   * @return The gwTime.
    */
-  @Override
-  public com.google.protobuf.Timestamp getTime() {
-    return time_ == null ? com.google.protobuf.Timestamp.getDefaultInstance() : time_;
+  @java.lang.Override
+  public com.google.protobuf.Timestamp getGwTime() {
+    return gwTime_ == null ? com.google.protobuf.Timestamp.getDefaultInstance() : gwTime_;
   }
   /**
    * <pre>
-   * RX time (only set when the gateway has a GPS module).
+   * Gateway RX time (set if the gateway has a GNSS module).
    * </pre>
    *
-   * <code>.google.protobuf.Timestamp time = 3;</code>
+   * <code>.google.protobuf.Timestamp gw_time = 3;</code>
    */
-  @Override
-  public com.google.protobuf.TimestampOrBuilder getTimeOrBuilder() {
-    return getTime();
+  @java.lang.Override
+  public com.google.protobuf.TimestampOrBuilder getGwTimeOrBuilder() {
+    return gwTime_ == null ? com.google.protobuf.Timestamp.getDefaultInstance() : gwTime_;
+  }
+
+  public static final int NS_TIME_FIELD_NUMBER = 17;
+  private com.google.protobuf.Timestamp nsTime_;
+  /**
+   * <pre>
+   * Network Server RX time (set by the NS on receiving the uplink).
+   * </pre>
+   *
+   * <code>.google.protobuf.Timestamp ns_time = 17;</code>
+   * @return Whether the nsTime field is set.
+   */
+  @java.lang.Override
+  public boolean hasNsTime() {
+    return nsTime_ != null;
+  }
+  /**
+   * <pre>
+   * Network Server RX time (set by the NS on receiving the uplink).
+   * </pre>
+   *
+   * <code>.google.protobuf.Timestamp ns_time = 17;</code>
+   * @return The nsTime.
+   */
+  @java.lang.Override
+  public com.google.protobuf.Timestamp getNsTime() {
+    return nsTime_ == null ? com.google.protobuf.Timestamp.getDefaultInstance() : nsTime_;
+  }
+  /**
+   * <pre>
+   * Network Server RX time (set by the NS on receiving the uplink).
+   * </pre>
+   *
+   * <code>.google.protobuf.Timestamp ns_time = 17;</code>
+   */
+  @java.lang.Override
+  public com.google.protobuf.TimestampOrBuilder getNsTimeOrBuilder() {
+    return nsTime_ == null ? com.google.protobuf.Timestamp.getDefaultInstance() : nsTime_;
   }
 
   public static final int TIME_SINCE_GPS_EPOCH_FIELD_NUMBER = 4;
   private com.google.protobuf.Duration timeSinceGpsEpoch_;
   /**
    * <pre>
-   * RX time since GPS epoch (only set when the gateway has a GPS module).
+   * RX time as time since GPS epoch (set if the gateway has a GNSS module).
    * </pre>
    *
    * <code>.google.protobuf.Duration time_since_gps_epoch = 4;</code>
    * @return Whether the timeSinceGpsEpoch field is set.
    */
-  @Override
+  @java.lang.Override
   public boolean hasTimeSinceGpsEpoch() {
     return timeSinceGpsEpoch_ != null;
   }
   /**
    * <pre>
-   * RX time since GPS epoch (only set when the gateway has a GPS module).
+   * RX time as time since GPS epoch (set if the gateway has a GNSS module).
    * </pre>
    *
    * <code>.google.protobuf.Duration time_since_gps_epoch = 4;</code>
    * @return The timeSinceGpsEpoch.
    */
-  @Override
+  @java.lang.Override
   public com.google.protobuf.Duration getTimeSinceGpsEpoch() {
     return timeSinceGpsEpoch_ == null ? com.google.protobuf.Duration.getDefaultInstance() : timeSinceGpsEpoch_;
   }
   /**
    * <pre>
-   * RX time since GPS epoch (only set when the gateway has a GPS module).
+   * RX time as time since GPS epoch (set if the gateway has a GNSS module).
    * </pre>
    *
    * <code>.google.protobuf.Duration time_since_gps_epoch = 4;</code>
    */
-  @Override
+  @java.lang.Override
   public com.google.protobuf.DurationOrBuilder getTimeSinceGpsEpochOrBuilder() {
-    return getTimeSinceGpsEpoch();
+    return timeSinceGpsEpoch_ == null ? com.google.protobuf.Duration.getDefaultInstance() : timeSinceGpsEpoch_;
   }
 
   public static final int FINE_TIME_SINCE_GPS_EPOCH_FIELD_NUMBER = 5;
@@ -193,7 +240,7 @@ private static final long serialVersionUID = 0L;
    * <code>.google.protobuf.Duration fine_time_since_gps_epoch = 5;</code>
    * @return Whether the fineTimeSinceGpsEpoch field is set.
    */
-  @Override
+  @java.lang.Override
   public boolean hasFineTimeSinceGpsEpoch() {
     return fineTimeSinceGpsEpoch_ != null;
   }
@@ -206,7 +253,7 @@ private static final long serialVersionUID = 0L;
    * <code>.google.protobuf.Duration fine_time_since_gps_epoch = 5;</code>
    * @return The fineTimeSinceGpsEpoch.
    */
-  @Override
+  @java.lang.Override
   public com.google.protobuf.Duration getFineTimeSinceGpsEpoch() {
     return fineTimeSinceGpsEpoch_ == null ? com.google.protobuf.Duration.getDefaultInstance() : fineTimeSinceGpsEpoch_;
   }
@@ -218,13 +265,13 @@ private static final long serialVersionUID = 0L;
    *
    * <code>.google.protobuf.Duration fine_time_since_gps_epoch = 5;</code>
    */
-  @Override
+  @java.lang.Override
   public com.google.protobuf.DurationOrBuilder getFineTimeSinceGpsEpochOrBuilder() {
-    return getFineTimeSinceGpsEpoch();
+    return fineTimeSinceGpsEpoch_ == null ? com.google.protobuf.Duration.getDefaultInstance() : fineTimeSinceGpsEpoch_;
   }
 
   public static final int RSSI_FIELD_NUMBER = 6;
-  private int rssi_;
+  private int rssi_ = 0;
   /**
    * <pre>
    * RSSI.
@@ -233,13 +280,13 @@ private static final long serialVersionUID = 0L;
    * <code>int32 rssi = 6;</code>
    * @return The rssi.
    */
-  @Override
+  @java.lang.Override
   public int getRssi() {
     return rssi_;
   }
 
   public static final int SNR_FIELD_NUMBER = 7;
-  private float snr_;
+  private float snr_ = 0F;
   /**
    * <pre>
    * SNR.
@@ -249,13 +296,13 @@ private static final long serialVersionUID = 0L;
    * <code>float snr = 7;</code>
    * @return The snr.
    */
-  @Override
+  @java.lang.Override
   public float getSnr() {
     return snr_;
   }
 
   public static final int CHANNEL_FIELD_NUMBER = 8;
-  private int channel_;
+  private int channel_ = 0;
   /**
    * <pre>
    * Channel.
@@ -264,13 +311,13 @@ private static final long serialVersionUID = 0L;
    * <code>uint32 channel = 8;</code>
    * @return The channel.
    */
-  @Override
+  @java.lang.Override
   public int getChannel() {
     return channel_;
   }
 
   public static final int RF_CHAIN_FIELD_NUMBER = 9;
-  private int rfChain_;
+  private int rfChain_ = 0;
   /**
    * <pre>
    * RF chain.
@@ -279,13 +326,13 @@ private static final long serialVersionUID = 0L;
    * <code>uint32 rf_chain = 9;</code>
    * @return The rfChain.
    */
-  @Override
+  @java.lang.Override
   public int getRfChain() {
     return rfChain_;
   }
 
   public static final int BOARD_FIELD_NUMBER = 10;
-  private int board_;
+  private int board_ = 0;
   /**
    * <pre>
    * Board.
@@ -294,13 +341,13 @@ private static final long serialVersionUID = 0L;
    * <code>uint32 board = 10;</code>
    * @return The board.
    */
-  @Override
+  @java.lang.Override
   public int getBoard() {
     return board_;
   }
 
   public static final int ANTENNA_FIELD_NUMBER = 11;
-  private int antenna_;
+  private int antenna_ = 0;
   /**
    * <pre>
    * Antenna.
@@ -309,7 +356,7 @@ private static final long serialVersionUID = 0L;
    * <code>uint32 antenna = 11;</code>
    * @return The antenna.
    */
-  @Override
+  @java.lang.Override
   public int getAntenna() {
     return antenna_;
   }
@@ -324,7 +371,7 @@ private static final long serialVersionUID = 0L;
    * <code>.common.Location location = 12;</code>
    * @return Whether the location field is set.
    */
-  @Override
+  @java.lang.Override
   public boolean hasLocation() {
     return location_ != null;
   }
@@ -336,7 +383,7 @@ private static final long serialVersionUID = 0L;
    * <code>.common.Location location = 12;</code>
    * @return The location.
    */
-  @Override
+  @java.lang.Override
   public io.chirpstack.api.Location getLocation() {
     return location_ == null ? io.chirpstack.api.Location.getDefaultInstance() : location_;
   }
@@ -347,13 +394,13 @@ private static final long serialVersionUID = 0L;
    *
    * <code>.common.Location location = 12;</code>
    */
-  @Override
+  @java.lang.Override
   public io.chirpstack.api.LocationOrBuilder getLocationOrBuilder() {
-    return getLocation();
+    return location_ == null ? io.chirpstack.api.Location.getDefaultInstance() : location_;
   }
 
   public static final int CONTEXT_FIELD_NUMBER = 13;
-  private com.google.protobuf.ByteString context_;
+  private com.google.protobuf.ByteString context_ = com.google.protobuf.ByteString.EMPTY;
   /**
    * <pre>
    * Gateway specific context.
@@ -363,51 +410,134 @@ private static final long serialVersionUID = 0L;
    * <code>bytes context = 13;</code>
    * @return The context.
    */
-  @Override
+  @java.lang.Override
   public com.google.protobuf.ByteString getContext() {
     return context_;
   }
 
-  public static final int METADATA_FIELD_NUMBER = 14;
-  private com.google.protobuf.Struct metadata_;
-  /**
-   * <pre>
-   * Properties.
-   * </pre>
-   *
-   * <code>.google.protobuf.Struct metadata = 14;</code>
-   * @return Whether the metadata field is set.
-   */
-  @Override
-  public boolean hasMetadata() {
-    return metadata_ != null;
+  public static final int METADATA_FIELD_NUMBER = 15;
+  private static final class MetadataDefaultEntryHolder {
+    static final com.google.protobuf.MapEntry<
+        java.lang.String, java.lang.String> defaultEntry =
+            com.google.protobuf.MapEntry
+            .<java.lang.String, java.lang.String>newDefaultInstance(
+                io.chirpstack.api.gw.GatewayProto.internal_static_gw_UplinkRxInfo_MetadataEntry_descriptor, 
+                com.google.protobuf.WireFormat.FieldType.STRING,
+                "",
+                com.google.protobuf.WireFormat.FieldType.STRING,
+                "");
+  }
+  @SuppressWarnings("serial")
+  private com.google.protobuf.MapField<
+      java.lang.String, java.lang.String> metadata_;
+  private com.google.protobuf.MapField<java.lang.String, java.lang.String>
+  internalGetMetadata() {
+    if (metadata_ == null) {
+      return com.google.protobuf.MapField.emptyMapField(
+          MetadataDefaultEntryHolder.defaultEntry);
+    }
+    return metadata_;
+  }
+  public int getMetadataCount() {
+    return internalGetMetadata().getMap().size();
   }
   /**
    * <pre>
-   * Properties.
+   * Additional gateway meta-data.
    * </pre>
    *
-   * <code>.google.protobuf.Struct metadata = 14;</code>
-   * @return The metadata.
+   * <code>map&lt;string, string&gt; metadata = 15;</code>
    */
-  @Override
-  public com.google.protobuf.Struct getMetadata() {
-    return metadata_ == null ? com.google.protobuf.Struct.getDefaultInstance() : metadata_;
+  @java.lang.Override
+  public boolean containsMetadata(
+      java.lang.String key) {
+    if (key == null) { throw new NullPointerException("map key"); }
+    return internalGetMetadata().getMap().containsKey(key);
+  }
+  /**
+   * Use {@link #getMetadataMap()} instead.
+   */
+  @java.lang.Override
+  @java.lang.Deprecated
+  public java.util.Map<java.lang.String, java.lang.String> getMetadata() {
+    return getMetadataMap();
   }
   /**
    * <pre>
-   * Properties.
+   * Additional gateway meta-data.
    * </pre>
    *
-   * <code>.google.protobuf.Struct metadata = 14;</code>
+   * <code>map&lt;string, string&gt; metadata = 15;</code>
    */
-  @Override
-  public com.google.protobuf.StructOrBuilder getMetadataOrBuilder() {
-    return getMetadata();
+  @java.lang.Override
+  public java.util.Map<java.lang.String, java.lang.String> getMetadataMap() {
+    return internalGetMetadata().getMap();
+  }
+  /**
+   * <pre>
+   * Additional gateway meta-data.
+   * </pre>
+   *
+   * <code>map&lt;string, string&gt; metadata = 15;</code>
+   */
+  @java.lang.Override
+  public /* nullable */
+java.lang.String getMetadataOrDefault(
+      java.lang.String key,
+      /* nullable */
+java.lang.String defaultValue) {
+    if (key == null) { throw new NullPointerException("map key"); }
+    java.util.Map<java.lang.String, java.lang.String> map =
+        internalGetMetadata().getMap();
+    return map.containsKey(key) ? map.get(key) : defaultValue;
+  }
+  /**
+   * <pre>
+   * Additional gateway meta-data.
+   * </pre>
+   *
+   * <code>map&lt;string, string&gt; metadata = 15;</code>
+   */
+  @java.lang.Override
+  public java.lang.String getMetadataOrThrow(
+      java.lang.String key) {
+    if (key == null) { throw new NullPointerException("map key"); }
+    java.util.Map<java.lang.String, java.lang.String> map =
+        internalGetMetadata().getMap();
+    if (!map.containsKey(key)) {
+      throw new java.lang.IllegalArgumentException();
+    }
+    return map.get(key);
+  }
+
+  public static final int CRC_STATUS_FIELD_NUMBER = 16;
+  private int crcStatus_ = 0;
+  /**
+   * <pre>
+   * CRC status.
+   * </pre>
+   *
+   * <code>.gw.CRCStatus crc_status = 16;</code>
+   * @return The enum numeric value on the wire for crcStatus.
+   */
+  @java.lang.Override public int getCrcStatusValue() {
+    return crcStatus_;
+  }
+  /**
+   * <pre>
+   * CRC status.
+   * </pre>
+   *
+   * <code>.gw.CRCStatus crc_status = 16;</code>
+   * @return The crcStatus.
+   */
+  @java.lang.Override public io.chirpstack.api.gw.CRCStatus getCrcStatus() {
+    io.chirpstack.api.gw.CRCStatus result = io.chirpstack.api.gw.CRCStatus.forNumber(crcStatus_);
+    return result == null ? io.chirpstack.api.gw.CRCStatus.UNRECOGNIZED : result;
   }
 
   private byte memoizedIsInitialized = -1;
-  @Override
+  @java.lang.Override
   public final boolean isInitialized() {
     byte isInitialized = memoizedIsInitialized;
     if (isInitialized == 1) return true;
@@ -417,7 +547,7 @@ private static final long serialVersionUID = 0L;
     return true;
   }
 
-  @Override
+  @java.lang.Override
   public void writeTo(com.google.protobuf.CodedOutputStream output)
                       throws java.io.IOException {
     if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(gatewayId_)) {
@@ -426,8 +556,8 @@ private static final long serialVersionUID = 0L;
     if (uplinkId_ != 0) {
       output.writeUInt32(2, uplinkId_);
     }
-    if (time_ != null) {
-      output.writeMessage(3, getTime());
+    if (gwTime_ != null) {
+      output.writeMessage(3, getGwTime());
     }
     if (timeSinceGpsEpoch_ != null) {
       output.writeMessage(4, getTimeSinceGpsEpoch());
@@ -438,7 +568,7 @@ private static final long serialVersionUID = 0L;
     if (rssi_ != 0) {
       output.writeInt32(6, rssi_);
     }
-    if (Float.floatToRawIntBits(snr_) != 0) {
+    if (java.lang.Float.floatToRawIntBits(snr_) != 0) {
       output.writeFloat(7, snr_);
     }
     if (channel_ != 0) {
@@ -459,13 +589,22 @@ private static final long serialVersionUID = 0L;
     if (!context_.isEmpty()) {
       output.writeBytes(13, context_);
     }
-    if (metadata_ != null) {
-      output.writeMessage(14, getMetadata());
+    com.google.protobuf.GeneratedMessageV3
+      .serializeStringMapTo(
+        output,
+        internalGetMetadata(),
+        MetadataDefaultEntryHolder.defaultEntry,
+        15);
+    if (crcStatus_ != io.chirpstack.api.gw.CRCStatus.NO_CRC.getNumber()) {
+      output.writeEnum(16, crcStatus_);
+    }
+    if (nsTime_ != null) {
+      output.writeMessage(17, getNsTime());
     }
     getUnknownFields().writeTo(output);
   }
 
-  @Override
+  @java.lang.Override
   public int getSerializedSize() {
     int size = memoizedSize;
     if (size != -1) return size;
@@ -478,9 +617,9 @@ private static final long serialVersionUID = 0L;
       size += com.google.protobuf.CodedOutputStream
         .computeUInt32Size(2, uplinkId_);
     }
-    if (time_ != null) {
+    if (gwTime_ != null) {
       size += com.google.protobuf.CodedOutputStream
-        .computeMessageSize(3, getTime());
+        .computeMessageSize(3, getGwTime());
     }
     if (timeSinceGpsEpoch_ != null) {
       size += com.google.protobuf.CodedOutputStream
@@ -494,7 +633,7 @@ private static final long serialVersionUID = 0L;
       size += com.google.protobuf.CodedOutputStream
         .computeInt32Size(6, rssi_);
     }
-    if (Float.floatToRawIntBits(snr_) != 0) {
+    if (java.lang.Float.floatToRawIntBits(snr_) != 0) {
       size += com.google.protobuf.CodedOutputStream
         .computeFloatSize(7, snr_);
     }
@@ -522,33 +661,52 @@ private static final long serialVersionUID = 0L;
       size += com.google.protobuf.CodedOutputStream
         .computeBytesSize(13, context_);
     }
-    if (metadata_ != null) {
+    for (java.util.Map.Entry<java.lang.String, java.lang.String> entry
+         : internalGetMetadata().getMap().entrySet()) {
+      com.google.protobuf.MapEntry<java.lang.String, java.lang.String>
+      metadata__ = MetadataDefaultEntryHolder.defaultEntry.newBuilderForType()
+          .setKey(entry.getKey())
+          .setValue(entry.getValue())
+          .build();
       size += com.google.protobuf.CodedOutputStream
-        .computeMessageSize(14, getMetadata());
+          .computeMessageSize(15, metadata__);
+    }
+    if (crcStatus_ != io.chirpstack.api.gw.CRCStatus.NO_CRC.getNumber()) {
+      size += com.google.protobuf.CodedOutputStream
+        .computeEnumSize(16, crcStatus_);
+    }
+    if (nsTime_ != null) {
+      size += com.google.protobuf.CodedOutputStream
+        .computeMessageSize(17, getNsTime());
     }
     size += getUnknownFields().getSerializedSize();
     memoizedSize = size;
     return size;
   }
 
-  @Override
-  public boolean equals(final Object obj) {
+  @java.lang.Override
+  public boolean equals(final java.lang.Object obj) {
     if (obj == this) {
      return true;
     }
-    if (!(obj instanceof UplinkRxInfo)) {
+    if (!(obj instanceof io.chirpstack.api.gw.UplinkRxInfo)) {
       return super.equals(obj);
     }
-    UplinkRxInfo other = (UplinkRxInfo) obj;
+    io.chirpstack.api.gw.UplinkRxInfo other = (io.chirpstack.api.gw.UplinkRxInfo) obj;
 
     if (!getGatewayId()
         .equals(other.getGatewayId())) return false;
     if (getUplinkId()
         != other.getUplinkId()) return false;
-    if (hasTime() != other.hasTime()) return false;
-    if (hasTime()) {
-      if (!getTime()
-          .equals(other.getTime())) return false;
+    if (hasGwTime() != other.hasGwTime()) return false;
+    if (hasGwTime()) {
+      if (!getGwTime()
+          .equals(other.getGwTime())) return false;
+    }
+    if (hasNsTime() != other.hasNsTime()) return false;
+    if (hasNsTime()) {
+      if (!getNsTime()
+          .equals(other.getNsTime())) return false;
     }
     if (hasTimeSinceGpsEpoch() != other.hasTimeSinceGpsEpoch()) return false;
     if (hasTimeSinceGpsEpoch()) {
@@ -562,8 +720,8 @@ private static final long serialVersionUID = 0L;
     }
     if (getRssi()
         != other.getRssi()) return false;
-    if (Float.floatToIntBits(getSnr())
-        != Float.floatToIntBits(
+    if (java.lang.Float.floatToIntBits(getSnr())
+        != java.lang.Float.floatToIntBits(
             other.getSnr())) return false;
     if (getChannel()
         != other.getChannel()) return false;
@@ -580,16 +738,14 @@ private static final long serialVersionUID = 0L;
     }
     if (!getContext()
         .equals(other.getContext())) return false;
-    if (hasMetadata() != other.hasMetadata()) return false;
-    if (hasMetadata()) {
-      if (!getMetadata()
-          .equals(other.getMetadata())) return false;
-    }
+    if (!internalGetMetadata().equals(
+        other.internalGetMetadata())) return false;
+    if (crcStatus_ != other.crcStatus_) return false;
     if (!getUnknownFields().equals(other.getUnknownFields())) return false;
     return true;
   }
 
-  @Override
+  @java.lang.Override
   public int hashCode() {
     if (memoizedHashCode != 0) {
       return memoizedHashCode;
@@ -600,9 +756,13 @@ private static final long serialVersionUID = 0L;
     hash = (53 * hash) + getGatewayId().hashCode();
     hash = (37 * hash) + UPLINK_ID_FIELD_NUMBER;
     hash = (53 * hash) + getUplinkId();
-    if (hasTime()) {
-      hash = (37 * hash) + TIME_FIELD_NUMBER;
-      hash = (53 * hash) + getTime().hashCode();
+    if (hasGwTime()) {
+      hash = (37 * hash) + GW_TIME_FIELD_NUMBER;
+      hash = (53 * hash) + getGwTime().hashCode();
+    }
+    if (hasNsTime()) {
+      hash = (37 * hash) + NS_TIME_FIELD_NUMBER;
+      hash = (53 * hash) + getNsTime().hashCode();
     }
     if (hasTimeSinceGpsEpoch()) {
       hash = (37 * hash) + TIME_SINCE_GPS_EPOCH_FIELD_NUMBER;
@@ -615,7 +775,7 @@ private static final long serialVersionUID = 0L;
     hash = (37 * hash) + RSSI_FIELD_NUMBER;
     hash = (53 * hash) + getRssi();
     hash = (37 * hash) + SNR_FIELD_NUMBER;
-    hash = (53 * hash) + Float.floatToIntBits(
+    hash = (53 * hash) + java.lang.Float.floatToIntBits(
         getSnr());
     hash = (37 * hash) + CHANNEL_FIELD_NUMBER;
     hash = (53 * hash) + getChannel();
@@ -631,78 +791,80 @@ private static final long serialVersionUID = 0L;
     }
     hash = (37 * hash) + CONTEXT_FIELD_NUMBER;
     hash = (53 * hash) + getContext().hashCode();
-    if (hasMetadata()) {
+    if (!internalGetMetadata().getMap().isEmpty()) {
       hash = (37 * hash) + METADATA_FIELD_NUMBER;
-      hash = (53 * hash) + getMetadata().hashCode();
+      hash = (53 * hash) + internalGetMetadata().hashCode();
     }
+    hash = (37 * hash) + CRC_STATUS_FIELD_NUMBER;
+    hash = (53 * hash) + crcStatus_;
     hash = (29 * hash) + getUnknownFields().hashCode();
     memoizedHashCode = hash;
     return hash;
   }
 
-  public static UplinkRxInfo parseFrom(
+  public static io.chirpstack.api.gw.UplinkRxInfo parseFrom(
       java.nio.ByteBuffer data)
       throws com.google.protobuf.InvalidProtocolBufferException {
     return PARSER.parseFrom(data);
   }
-  public static UplinkRxInfo parseFrom(
+  public static io.chirpstack.api.gw.UplinkRxInfo parseFrom(
       java.nio.ByteBuffer data,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws com.google.protobuf.InvalidProtocolBufferException {
     return PARSER.parseFrom(data, extensionRegistry);
   }
-  public static UplinkRxInfo parseFrom(
+  public static io.chirpstack.api.gw.UplinkRxInfo parseFrom(
       com.google.protobuf.ByteString data)
       throws com.google.protobuf.InvalidProtocolBufferException {
     return PARSER.parseFrom(data);
   }
-  public static UplinkRxInfo parseFrom(
+  public static io.chirpstack.api.gw.UplinkRxInfo parseFrom(
       com.google.protobuf.ByteString data,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws com.google.protobuf.InvalidProtocolBufferException {
     return PARSER.parseFrom(data, extensionRegistry);
   }
-  public static UplinkRxInfo parseFrom(byte[] data)
+  public static io.chirpstack.api.gw.UplinkRxInfo parseFrom(byte[] data)
       throws com.google.protobuf.InvalidProtocolBufferException {
     return PARSER.parseFrom(data);
   }
-  public static UplinkRxInfo parseFrom(
+  public static io.chirpstack.api.gw.UplinkRxInfo parseFrom(
       byte[] data,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws com.google.protobuf.InvalidProtocolBufferException {
     return PARSER.parseFrom(data, extensionRegistry);
   }
-  public static UplinkRxInfo parseFrom(java.io.InputStream input)
+  public static io.chirpstack.api.gw.UplinkRxInfo parseFrom(java.io.InputStream input)
       throws java.io.IOException {
     return com.google.protobuf.GeneratedMessageV3
         .parseWithIOException(PARSER, input);
   }
-  public static UplinkRxInfo parseFrom(
+  public static io.chirpstack.api.gw.UplinkRxInfo parseFrom(
       java.io.InputStream input,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws java.io.IOException {
     return com.google.protobuf.GeneratedMessageV3
         .parseWithIOException(PARSER, input, extensionRegistry);
   }
-  public static UplinkRxInfo parseDelimitedFrom(java.io.InputStream input)
+  public static io.chirpstack.api.gw.UplinkRxInfo parseDelimitedFrom(java.io.InputStream input)
       throws java.io.IOException {
     return com.google.protobuf.GeneratedMessageV3
         .parseDelimitedWithIOException(PARSER, input);
   }
-  public static UplinkRxInfo parseDelimitedFrom(
+  public static io.chirpstack.api.gw.UplinkRxInfo parseDelimitedFrom(
       java.io.InputStream input,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws java.io.IOException {
     return com.google.protobuf.GeneratedMessageV3
         .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
   }
-  public static UplinkRxInfo parseFrom(
+  public static io.chirpstack.api.gw.UplinkRxInfo parseFrom(
       com.google.protobuf.CodedInputStream input)
       throws java.io.IOException {
     return com.google.protobuf.GeneratedMessageV3
         .parseWithIOException(PARSER, input);
   }
-  public static UplinkRxInfo parseFrom(
+  public static io.chirpstack.api.gw.UplinkRxInfo parseFrom(
       com.google.protobuf.CodedInputStream input,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws java.io.IOException {
@@ -710,23 +872,23 @@ private static final long serialVersionUID = 0L;
         .parseWithIOException(PARSER, input, extensionRegistry);
   }
 
-  @Override
+  @java.lang.Override
   public Builder newBuilderForType() { return newBuilder(); }
   public static Builder newBuilder() {
     return DEFAULT_INSTANCE.toBuilder();
   }
-  public static Builder newBuilder(UplinkRxInfo prototype) {
+  public static Builder newBuilder(io.chirpstack.api.gw.UplinkRxInfo prototype) {
     return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
   }
-  @Override
+  @java.lang.Override
   public Builder toBuilder() {
     return this == DEFAULT_INSTANCE
         ? new Builder() : new Builder().mergeFrom(this);
   }
 
-  @Override
+  @java.lang.Override
   protected Builder newBuilderForType(
-      BuilderParent parent) {
+      com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
     Builder builder = new Builder(parent);
     return builder;
   }
@@ -736,18 +898,40 @@ private static final long serialVersionUID = 0L;
   public static final class Builder extends
       com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
       // @@protoc_insertion_point(builder_implements:gw.UplinkRxInfo)
-      UplinkRxInfoOrBuilder {
+      io.chirpstack.api.gw.UplinkRxInfoOrBuilder {
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
-      return GatewayProto.internal_static_gw_UplinkRxInfo_descriptor;
+      return io.chirpstack.api.gw.GatewayProto.internal_static_gw_UplinkRxInfo_descriptor;
     }
 
-    @Override
-    protected FieldAccessorTable
+    @SuppressWarnings({"rawtypes"})
+    protected com.google.protobuf.MapField internalGetMapField(
+        int number) {
+      switch (number) {
+        case 15:
+          return internalGetMetadata();
+        default:
+          throw new RuntimeException(
+              "Invalid map field number: " + number);
+      }
+    }
+    @SuppressWarnings({"rawtypes"})
+    protected com.google.protobuf.MapField internalGetMutableMapField(
+        int number) {
+      switch (number) {
+        case 15:
+          return internalGetMutableMetadata();
+        default:
+          throw new RuntimeException(
+              "Invalid map field number: " + number);
+      }
+    }
+    @java.lang.Override
+    protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
         internalGetFieldAccessorTable() {
-      return GatewayProto.internal_static_gw_UplinkRxInfo_fieldAccessorTable
+      return io.chirpstack.api.gw.GatewayProto.internal_static_gw_UplinkRxInfo_fieldAccessorTable
           .ensureFieldAccessorsInitialized(
-              UplinkRxInfo.class, Builder.class);
+              io.chirpstack.api.gw.UplinkRxInfo.class, io.chirpstack.api.gw.UplinkRxInfo.Builder.class);
     }
 
     // Construct using io.chirpstack.api.gw.UplinkRxInfo.newBuilder()
@@ -756,178 +940,169 @@ private static final long serialVersionUID = 0L;
     }
 
     private Builder(
-        BuilderParent parent) {
+        com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
       super(parent);
 
     }
-    @Override
+    @java.lang.Override
     public Builder clear() {
       super.clear();
+      bitField0_ = 0;
       gatewayId_ = "";
-
       uplinkId_ = 0;
-
-      if (timeBuilder_ == null) {
-        time_ = null;
-      } else {
-        time_ = null;
-        timeBuilder_ = null;
+      gwTime_ = null;
+      if (gwTimeBuilder_ != null) {
+        gwTimeBuilder_.dispose();
+        gwTimeBuilder_ = null;
       }
-      if (timeSinceGpsEpochBuilder_ == null) {
-        timeSinceGpsEpoch_ = null;
-      } else {
-        timeSinceGpsEpoch_ = null;
+      nsTime_ = null;
+      if (nsTimeBuilder_ != null) {
+        nsTimeBuilder_.dispose();
+        nsTimeBuilder_ = null;
+      }
+      timeSinceGpsEpoch_ = null;
+      if (timeSinceGpsEpochBuilder_ != null) {
+        timeSinceGpsEpochBuilder_.dispose();
         timeSinceGpsEpochBuilder_ = null;
       }
-      if (fineTimeSinceGpsEpochBuilder_ == null) {
-        fineTimeSinceGpsEpoch_ = null;
-      } else {
-        fineTimeSinceGpsEpoch_ = null;
+      fineTimeSinceGpsEpoch_ = null;
+      if (fineTimeSinceGpsEpochBuilder_ != null) {
+        fineTimeSinceGpsEpochBuilder_.dispose();
         fineTimeSinceGpsEpochBuilder_ = null;
       }
       rssi_ = 0;
-
       snr_ = 0F;
-
       channel_ = 0;
-
       rfChain_ = 0;
-
       board_ = 0;
-
       antenna_ = 0;
-
-      if (locationBuilder_ == null) {
-        location_ = null;
-      } else {
-        location_ = null;
+      location_ = null;
+      if (locationBuilder_ != null) {
+        locationBuilder_.dispose();
         locationBuilder_ = null;
       }
       context_ = com.google.protobuf.ByteString.EMPTY;
-
-      if (metadataBuilder_ == null) {
-        metadata_ = null;
-      } else {
-        metadata_ = null;
-        metadataBuilder_ = null;
-      }
+      internalGetMutableMetadata().clear();
+      crcStatus_ = 0;
       return this;
     }
 
-    @Override
+    @java.lang.Override
     public com.google.protobuf.Descriptors.Descriptor
         getDescriptorForType() {
-      return GatewayProto.internal_static_gw_UplinkRxInfo_descriptor;
+      return io.chirpstack.api.gw.GatewayProto.internal_static_gw_UplinkRxInfo_descriptor;
     }
 
-    @Override
-    public UplinkRxInfo getDefaultInstanceForType() {
-      return UplinkRxInfo.getDefaultInstance();
+    @java.lang.Override
+    public io.chirpstack.api.gw.UplinkRxInfo getDefaultInstanceForType() {
+      return io.chirpstack.api.gw.UplinkRxInfo.getDefaultInstance();
     }
 
-    @Override
-    public UplinkRxInfo build() {
-      UplinkRxInfo result = buildPartial();
+    @java.lang.Override
+    public io.chirpstack.api.gw.UplinkRxInfo build() {
+      io.chirpstack.api.gw.UplinkRxInfo result = buildPartial();
       if (!result.isInitialized()) {
         throw newUninitializedMessageException(result);
       }
       return result;
     }
 
-    @Override
-    public UplinkRxInfo buildPartial() {
-      UplinkRxInfo result = new UplinkRxInfo(this);
-      result.gatewayId_ = gatewayId_;
-      result.uplinkId_ = uplinkId_;
-      if (timeBuilder_ == null) {
-        result.time_ = time_;
-      } else {
-        result.time_ = timeBuilder_.build();
-      }
-      if (timeSinceGpsEpochBuilder_ == null) {
-        result.timeSinceGpsEpoch_ = timeSinceGpsEpoch_;
-      } else {
-        result.timeSinceGpsEpoch_ = timeSinceGpsEpochBuilder_.build();
-      }
-      if (fineTimeSinceGpsEpochBuilder_ == null) {
-        result.fineTimeSinceGpsEpoch_ = fineTimeSinceGpsEpoch_;
-      } else {
-        result.fineTimeSinceGpsEpoch_ = fineTimeSinceGpsEpochBuilder_.build();
-      }
-      result.rssi_ = rssi_;
-      result.snr_ = snr_;
-      result.channel_ = channel_;
-      result.rfChain_ = rfChain_;
-      result.board_ = board_;
-      result.antenna_ = antenna_;
-      if (locationBuilder_ == null) {
-        result.location_ = location_;
-      } else {
-        result.location_ = locationBuilder_.build();
-      }
-      result.context_ = context_;
-      if (metadataBuilder_ == null) {
-        result.metadata_ = metadata_;
-      } else {
-        result.metadata_ = metadataBuilder_.build();
-      }
+    @java.lang.Override
+    public io.chirpstack.api.gw.UplinkRxInfo buildPartial() {
+      io.chirpstack.api.gw.UplinkRxInfo result = new io.chirpstack.api.gw.UplinkRxInfo(this);
+      if (bitField0_ != 0) { buildPartial0(result); }
       onBuilt();
       return result;
     }
 
-    @Override
-    public Builder clone() {
-      return super.clone();
+    private void buildPartial0(io.chirpstack.api.gw.UplinkRxInfo result) {
+      int from_bitField0_ = bitField0_;
+      if (((from_bitField0_ & 0x00000001) != 0)) {
+        result.gatewayId_ = gatewayId_;
+      }
+      if (((from_bitField0_ & 0x00000002) != 0)) {
+        result.uplinkId_ = uplinkId_;
+      }
+      if (((from_bitField0_ & 0x00000004) != 0)) {
+        result.gwTime_ = gwTimeBuilder_ == null
+            ? gwTime_
+            : gwTimeBuilder_.build();
+      }
+      if (((from_bitField0_ & 0x00000008) != 0)) {
+        result.nsTime_ = nsTimeBuilder_ == null
+            ? nsTime_
+            : nsTimeBuilder_.build();
+      }
+      if (((from_bitField0_ & 0x00000010) != 0)) {
+        result.timeSinceGpsEpoch_ = timeSinceGpsEpochBuilder_ == null
+            ? timeSinceGpsEpoch_
+            : timeSinceGpsEpochBuilder_.build();
+      }
+      if (((from_bitField0_ & 0x00000020) != 0)) {
+        result.fineTimeSinceGpsEpoch_ = fineTimeSinceGpsEpochBuilder_ == null
+            ? fineTimeSinceGpsEpoch_
+            : fineTimeSinceGpsEpochBuilder_.build();
+      }
+      if (((from_bitField0_ & 0x00000040) != 0)) {
+        result.rssi_ = rssi_;
+      }
+      if (((from_bitField0_ & 0x00000080) != 0)) {
+        result.snr_ = snr_;
+      }
+      if (((from_bitField0_ & 0x00000100) != 0)) {
+        result.channel_ = channel_;
+      }
+      if (((from_bitField0_ & 0x00000200) != 0)) {
+        result.rfChain_ = rfChain_;
+      }
+      if (((from_bitField0_ & 0x00000400) != 0)) {
+        result.board_ = board_;
+      }
+      if (((from_bitField0_ & 0x00000800) != 0)) {
+        result.antenna_ = antenna_;
+      }
+      if (((from_bitField0_ & 0x00001000) != 0)) {
+        result.location_ = locationBuilder_ == null
+            ? location_
+            : locationBuilder_.build();
+      }
+      if (((from_bitField0_ & 0x00002000) != 0)) {
+        result.context_ = context_;
+      }
+      if (((from_bitField0_ & 0x00004000) != 0)) {
+        result.metadata_ = internalGetMetadata();
+        result.metadata_.makeImmutable();
+      }
+      if (((from_bitField0_ & 0x00008000) != 0)) {
+        result.crcStatus_ = crcStatus_;
+      }
     }
-    @Override
-    public Builder setField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        Object value) {
-      return super.setField(field, value);
-    }
-    @Override
-    public Builder clearField(
-        com.google.protobuf.Descriptors.FieldDescriptor field) {
-      return super.clearField(field);
-    }
-    @Override
-    public Builder clearOneof(
-        com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-      return super.clearOneof(oneof);
-    }
-    @Override
-    public Builder setRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        int index, Object value) {
-      return super.setRepeatedField(field, index, value);
-    }
-    @Override
-    public Builder addRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        Object value) {
-      return super.addRepeatedField(field, value);
-    }
-    @Override
+
+    @java.lang.Override
     public Builder mergeFrom(com.google.protobuf.Message other) {
-      if (other instanceof UplinkRxInfo) {
-        return mergeFrom((UplinkRxInfo)other);
+      if (other instanceof io.chirpstack.api.gw.UplinkRxInfo) {
+        return mergeFrom((io.chirpstack.api.gw.UplinkRxInfo)other);
       } else {
         super.mergeFrom(other);
         return this;
       }
     }
 
-    public Builder mergeFrom(UplinkRxInfo other) {
-      if (other == UplinkRxInfo.getDefaultInstance()) return this;
+    public Builder mergeFrom(io.chirpstack.api.gw.UplinkRxInfo other) {
+      if (other == io.chirpstack.api.gw.UplinkRxInfo.getDefaultInstance()) return this;
       if (!other.getGatewayId().isEmpty()) {
         gatewayId_ = other.gatewayId_;
+        bitField0_ |= 0x00000001;
         onChanged();
       }
       if (other.getUplinkId() != 0) {
         setUplinkId(other.getUplinkId());
       }
-      if (other.hasTime()) {
-        mergeTime(other.getTime());
+      if (other.hasGwTime()) {
+        mergeGwTime(other.getGwTime());
+      }
+      if (other.hasNsTime()) {
+        mergeNsTime(other.getNsTime());
       }
       if (other.hasTimeSinceGpsEpoch()) {
         mergeTimeSinceGpsEpoch(other.getTimeSinceGpsEpoch());
@@ -959,26 +1134,29 @@ private static final long serialVersionUID = 0L;
       if (other.getContext() != com.google.protobuf.ByteString.EMPTY) {
         setContext(other.getContext());
       }
-      if (other.hasMetadata()) {
-        mergeMetadata(other.getMetadata());
+      internalGetMutableMetadata().mergeFrom(
+          other.internalGetMetadata());
+      bitField0_ |= 0x00004000;
+      if (other.crcStatus_ != 0) {
+        setCrcStatusValue(other.getCrcStatusValue());
       }
       this.mergeUnknownFields(other.getUnknownFields());
       onChanged();
       return this;
     }
 
-    @Override
+    @java.lang.Override
     public final boolean isInitialized() {
       return true;
     }
 
-    @Override
+    @java.lang.Override
     public Builder mergeFrom(
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
       if (extensionRegistry == null) {
-        throw new NullPointerException();
+        throw new java.lang.NullPointerException();
       }
       try {
         boolean done = false;
@@ -990,84 +1168,98 @@ private static final long serialVersionUID = 0L;
               break;
             case 10: {
               gatewayId_ = input.readStringRequireUtf8();
-
+              bitField0_ |= 0x00000001;
               break;
             } // case 10
             case 16: {
               uplinkId_ = input.readUInt32();
-
+              bitField0_ |= 0x00000002;
               break;
             } // case 16
             case 26: {
               input.readMessage(
-                  getTimeFieldBuilder().getBuilder(),
+                  getGwTimeFieldBuilder().getBuilder(),
                   extensionRegistry);
-
+              bitField0_ |= 0x00000004;
               break;
             } // case 26
             case 34: {
               input.readMessage(
                   getTimeSinceGpsEpochFieldBuilder().getBuilder(),
                   extensionRegistry);
-
+              bitField0_ |= 0x00000010;
               break;
             } // case 34
             case 42: {
               input.readMessage(
                   getFineTimeSinceGpsEpochFieldBuilder().getBuilder(),
                   extensionRegistry);
-
+              bitField0_ |= 0x00000020;
               break;
             } // case 42
             case 48: {
               rssi_ = input.readInt32();
-
+              bitField0_ |= 0x00000040;
               break;
             } // case 48
             case 61: {
               snr_ = input.readFloat();
-
+              bitField0_ |= 0x00000080;
               break;
             } // case 61
             case 64: {
               channel_ = input.readUInt32();
-
+              bitField0_ |= 0x00000100;
               break;
             } // case 64
             case 72: {
               rfChain_ = input.readUInt32();
-
+              bitField0_ |= 0x00000200;
               break;
             } // case 72
             case 80: {
               board_ = input.readUInt32();
-
+              bitField0_ |= 0x00000400;
               break;
             } // case 80
             case 88: {
               antenna_ = input.readUInt32();
-
+              bitField0_ |= 0x00000800;
               break;
             } // case 88
             case 98: {
               input.readMessage(
                   getLocationFieldBuilder().getBuilder(),
                   extensionRegistry);
-
+              bitField0_ |= 0x00001000;
               break;
             } // case 98
             case 106: {
               context_ = input.readBytes();
-
+              bitField0_ |= 0x00002000;
               break;
             } // case 106
-            case 114: {
-              input.readMessage(
-                  getMetadataFieldBuilder().getBuilder(),
-                  extensionRegistry);
-
+            case 122: {
+              com.google.protobuf.MapEntry<java.lang.String, java.lang.String>
+              metadata__ = input.readMessage(
+                  MetadataDefaultEntryHolder.defaultEntry.getParserForType(), extensionRegistry);
+              internalGetMutableMetadata().getMutableMap().put(
+                  metadata__.getKey(), metadata__.getValue());
+              bitField0_ |= 0x00004000;
               break;
-            } // case 114
+            } // case 122
+            case 128: {
+              crcStatus_ = input.readEnum();
+              bitField0_ |= 0x00008000;
+              break;
+            } // case 128
+            case 138: {
+              input.readMessage(
+                  getNsTimeFieldBuilder().getBuilder(),
+                  extensionRegistry);
+              bitField0_ |= 0x00000008;
+              break;
+            } // case 138
             default: {
               if (!super.parseUnknownField(input, extensionRegistry, tag)) {
                 done = true; // was an endgroup tag
@@ -1083,8 +1275,9 @@ private static final long serialVersionUID = 0L;
       } // finally
       return this;
     }
+    private int bitField0_;
 
-    private Object gatewayId_ = "";
+    private java.lang.Object gatewayId_ = "";
     /**
      * <pre>
      * Gateway ID.
@@ -1093,16 +1286,16 @@ private static final long serialVersionUID = 0L;
      * <code>string gateway_id = 1;</code>
      * @return The gatewayId.
      */
-    public String getGatewayId() {
-      Object ref = gatewayId_;
-      if (!(ref instanceof String)) {
+    public java.lang.String getGatewayId() {
+      java.lang.Object ref = gatewayId_;
+      if (!(ref instanceof java.lang.String)) {
         com.google.protobuf.ByteString bs =
             (com.google.protobuf.ByteString) ref;
-        String s = bs.toStringUtf8();
+        java.lang.String s = bs.toStringUtf8();
         gatewayId_ = s;
         return s;
       } else {
-        return (String) ref;
+        return (java.lang.String) ref;
       }
     }
     /**
@@ -1115,11 +1308,11 @@ private static final long serialVersionUID = 0L;
      */
     public com.google.protobuf.ByteString
         getGatewayIdBytes() {
-      Object ref = gatewayId_;
+      java.lang.Object ref = gatewayId_;
       if (ref instanceof String) {
         com.google.protobuf.ByteString b = 
             com.google.protobuf.ByteString.copyFromUtf8(
-                (String) ref);
+                (java.lang.String) ref);
         gatewayId_ = b;
         return b;
       } else {
@@ -1136,12 +1329,10 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setGatewayId(
-        String value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  
+        java.lang.String value) {
+      if (value == null) { throw new NullPointerException(); }
       gatewayId_ = value;
+      bitField0_ |= 0x00000001;
       onChanged();
       return this;
     }
@@ -1154,8 +1345,8 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder clearGatewayId() {
-      
       gatewayId_ = getDefaultInstance().getGatewayId();
+      bitField0_ = (bitField0_ & ~0x00000001);
       onChanged();
       return this;
     }
@@ -1170,12 +1361,10 @@ private static final long serialVersionUID = 0L;
      */
     public Builder setGatewayIdBytes(
         com.google.protobuf.ByteString value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  checkByteStringIsUtf8(value);
-      
+      if (value == null) { throw new NullPointerException(); }
+      checkByteStringIsUtf8(value);
       gatewayId_ = value;
+      bitField0_ |= 0x00000001;
       onChanged();
       return this;
     }
@@ -1189,7 +1378,7 @@ private static final long serialVersionUID = 0L;
      * <code>uint32 uplink_id = 2;</code>
      * @return The uplinkId.
      */
-    @Override
+    @java.lang.Override
     public int getUplinkId() {
       return uplinkId_;
     }
@@ -1203,8 +1392,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setUplinkId(int value) {
-      
+
       uplinkId_ = value;
+      bitField0_ |= 0x00000002;
       onChanged();
       return this;
     }
@@ -1217,165 +1407,320 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder clearUplinkId() {
-      
+      bitField0_ = (bitField0_ & ~0x00000002);
       uplinkId_ = 0;
       onChanged();
       return this;
     }
 
-    private com.google.protobuf.Timestamp time_;
+    private com.google.protobuf.Timestamp gwTime_;
     private com.google.protobuf.SingleFieldBuilderV3<
-        com.google.protobuf.Timestamp, com.google.protobuf.Timestamp.Builder, com.google.protobuf.TimestampOrBuilder> timeBuilder_;
+        com.google.protobuf.Timestamp, com.google.protobuf.Timestamp.Builder, com.google.protobuf.TimestampOrBuilder> gwTimeBuilder_;
     /**
      * <pre>
-     * RX time (only set when the gateway has a GPS module).
+     * Gateway RX time (set if the gateway has a GNSS module).
      * </pre>
      *
-     * <code>.google.protobuf.Timestamp time = 3;</code>
-     * @return Whether the time field is set.
+     * <code>.google.protobuf.Timestamp gw_time = 3;</code>
+     * @return Whether the gwTime field is set.
      */
-    public boolean hasTime() {
-      return timeBuilder_ != null || time_ != null;
+    public boolean hasGwTime() {
+      return ((bitField0_ & 0x00000004) != 0);
     }
     /**
      * <pre>
-     * RX time (only set when the gateway has a GPS module).
+     * Gateway RX time (set if the gateway has a GNSS module).
      * </pre>
      *
-     * <code>.google.protobuf.Timestamp time = 3;</code>
-     * @return The time.
+     * <code>.google.protobuf.Timestamp gw_time = 3;</code>
+     * @return The gwTime.
      */
-    public com.google.protobuf.Timestamp getTime() {
-      if (timeBuilder_ == null) {
-        return time_ == null ? com.google.protobuf.Timestamp.getDefaultInstance() : time_;
+    public com.google.protobuf.Timestamp getGwTime() {
+      if (gwTimeBuilder_ == null) {
+        return gwTime_ == null ? com.google.protobuf.Timestamp.getDefaultInstance() : gwTime_;
       } else {
-        return timeBuilder_.getMessage();
+        return gwTimeBuilder_.getMessage();
       }
     }
     /**
      * <pre>
-     * RX time (only set when the gateway has a GPS module).
+     * Gateway RX time (set if the gateway has a GNSS module).
      * </pre>
      *
-     * <code>.google.protobuf.Timestamp time = 3;</code>
+     * <code>.google.protobuf.Timestamp gw_time = 3;</code>
      */
-    public Builder setTime(com.google.protobuf.Timestamp value) {
-      if (timeBuilder_ == null) {
+    public Builder setGwTime(com.google.protobuf.Timestamp value) {
+      if (gwTimeBuilder_ == null) {
         if (value == null) {
           throw new NullPointerException();
         }
-        time_ = value;
-        onChanged();
+        gwTime_ = value;
       } else {
-        timeBuilder_.setMessage(value);
+        gwTimeBuilder_.setMessage(value);
       }
-
-      return this;
-    }
-    /**
-     * <pre>
-     * RX time (only set when the gateway has a GPS module).
-     * </pre>
-     *
-     * <code>.google.protobuf.Timestamp time = 3;</code>
-     */
-    public Builder setTime(
-        com.google.protobuf.Timestamp.Builder builderForValue) {
-      if (timeBuilder_ == null) {
-        time_ = builderForValue.build();
-        onChanged();
-      } else {
-        timeBuilder_.setMessage(builderForValue.build());
-      }
-
-      return this;
-    }
-    /**
-     * <pre>
-     * RX time (only set when the gateway has a GPS module).
-     * </pre>
-     *
-     * <code>.google.protobuf.Timestamp time = 3;</code>
-     */
-    public Builder mergeTime(com.google.protobuf.Timestamp value) {
-      if (timeBuilder_ == null) {
-        if (time_ != null) {
-          time_ =
-            com.google.protobuf.Timestamp.newBuilder(time_).mergeFrom(value).buildPartial();
-        } else {
-          time_ = value;
-        }
-        onChanged();
-      } else {
-        timeBuilder_.mergeFrom(value);
-      }
-
-      return this;
-    }
-    /**
-     * <pre>
-     * RX time (only set when the gateway has a GPS module).
-     * </pre>
-     *
-     * <code>.google.protobuf.Timestamp time = 3;</code>
-     */
-    public Builder clearTime() {
-      if (timeBuilder_ == null) {
-        time_ = null;
-        onChanged();
-      } else {
-        time_ = null;
-        timeBuilder_ = null;
-      }
-
-      return this;
-    }
-    /**
-     * <pre>
-     * RX time (only set when the gateway has a GPS module).
-     * </pre>
-     *
-     * <code>.google.protobuf.Timestamp time = 3;</code>
-     */
-    public com.google.protobuf.Timestamp.Builder getTimeBuilder() {
-      
+      bitField0_ |= 0x00000004;
       onChanged();
-      return getTimeFieldBuilder().getBuilder();
+      return this;
     }
     /**
      * <pre>
-     * RX time (only set when the gateway has a GPS module).
+     * Gateway RX time (set if the gateway has a GNSS module).
      * </pre>
      *
-     * <code>.google.protobuf.Timestamp time = 3;</code>
+     * <code>.google.protobuf.Timestamp gw_time = 3;</code>
      */
-    public com.google.protobuf.TimestampOrBuilder getTimeOrBuilder() {
-      if (timeBuilder_ != null) {
-        return timeBuilder_.getMessageOrBuilder();
+    public Builder setGwTime(
+        com.google.protobuf.Timestamp.Builder builderForValue) {
+      if (gwTimeBuilder_ == null) {
+        gwTime_ = builderForValue.build();
       } else {
-        return time_ == null ?
-            com.google.protobuf.Timestamp.getDefaultInstance() : time_;
+        gwTimeBuilder_.setMessage(builderForValue.build());
+      }
+      bitField0_ |= 0x00000004;
+      onChanged();
+      return this;
+    }
+    /**
+     * <pre>
+     * Gateway RX time (set if the gateway has a GNSS module).
+     * </pre>
+     *
+     * <code>.google.protobuf.Timestamp gw_time = 3;</code>
+     */
+    public Builder mergeGwTime(com.google.protobuf.Timestamp value) {
+      if (gwTimeBuilder_ == null) {
+        if (((bitField0_ & 0x00000004) != 0) &&
+          gwTime_ != null &&
+          gwTime_ != com.google.protobuf.Timestamp.getDefaultInstance()) {
+          getGwTimeBuilder().mergeFrom(value);
+        } else {
+          gwTime_ = value;
+        }
+      } else {
+        gwTimeBuilder_.mergeFrom(value);
+      }
+      bitField0_ |= 0x00000004;
+      onChanged();
+      return this;
+    }
+    /**
+     * <pre>
+     * Gateway RX time (set if the gateway has a GNSS module).
+     * </pre>
+     *
+     * <code>.google.protobuf.Timestamp gw_time = 3;</code>
+     */
+    public Builder clearGwTime() {
+      bitField0_ = (bitField0_ & ~0x00000004);
+      gwTime_ = null;
+      if (gwTimeBuilder_ != null) {
+        gwTimeBuilder_.dispose();
+        gwTimeBuilder_ = null;
+      }
+      onChanged();
+      return this;
+    }
+    /**
+     * <pre>
+     * Gateway RX time (set if the gateway has a GNSS module).
+     * </pre>
+     *
+     * <code>.google.protobuf.Timestamp gw_time = 3;</code>
+     */
+    public com.google.protobuf.Timestamp.Builder getGwTimeBuilder() {
+      bitField0_ |= 0x00000004;
+      onChanged();
+      return getGwTimeFieldBuilder().getBuilder();
+    }
+    /**
+     * <pre>
+     * Gateway RX time (set if the gateway has a GNSS module).
+     * </pre>
+     *
+     * <code>.google.protobuf.Timestamp gw_time = 3;</code>
+     */
+    public com.google.protobuf.TimestampOrBuilder getGwTimeOrBuilder() {
+      if (gwTimeBuilder_ != null) {
+        return gwTimeBuilder_.getMessageOrBuilder();
+      } else {
+        return gwTime_ == null ?
+            com.google.protobuf.Timestamp.getDefaultInstance() : gwTime_;
       }
     }
     /**
      * <pre>
-     * RX time (only set when the gateway has a GPS module).
+     * Gateway RX time (set if the gateway has a GNSS module).
      * </pre>
      *
-     * <code>.google.protobuf.Timestamp time = 3;</code>
+     * <code>.google.protobuf.Timestamp gw_time = 3;</code>
      */
     private com.google.protobuf.SingleFieldBuilderV3<
         com.google.protobuf.Timestamp, com.google.protobuf.Timestamp.Builder, com.google.protobuf.TimestampOrBuilder> 
-        getTimeFieldBuilder() {
-      if (timeBuilder_ == null) {
-        timeBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
+        getGwTimeFieldBuilder() {
+      if (gwTimeBuilder_ == null) {
+        gwTimeBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
             com.google.protobuf.Timestamp, com.google.protobuf.Timestamp.Builder, com.google.protobuf.TimestampOrBuilder>(
-                getTime(),
+                getGwTime(),
                 getParentForChildren(),
                 isClean());
-        time_ = null;
+        gwTime_ = null;
       }
-      return timeBuilder_;
+      return gwTimeBuilder_;
+    }
+
+    private com.google.protobuf.Timestamp nsTime_;
+    private com.google.protobuf.SingleFieldBuilderV3<
+        com.google.protobuf.Timestamp, com.google.protobuf.Timestamp.Builder, com.google.protobuf.TimestampOrBuilder> nsTimeBuilder_;
+    /**
+     * <pre>
+     * Network Server RX time (set by the NS on receiving the uplink).
+     * </pre>
+     *
+     * <code>.google.protobuf.Timestamp ns_time = 17;</code>
+     * @return Whether the nsTime field is set.
+     */
+    public boolean hasNsTime() {
+      return ((bitField0_ & 0x00000008) != 0);
+    }
+    /**
+     * <pre>
+     * Network Server RX time (set by the NS on receiving the uplink).
+     * </pre>
+     *
+     * <code>.google.protobuf.Timestamp ns_time = 17;</code>
+     * @return The nsTime.
+     */
+    public com.google.protobuf.Timestamp getNsTime() {
+      if (nsTimeBuilder_ == null) {
+        return nsTime_ == null ? com.google.protobuf.Timestamp.getDefaultInstance() : nsTime_;
+      } else {
+        return nsTimeBuilder_.getMessage();
+      }
+    }
+    /**
+     * <pre>
+     * Network Server RX time (set by the NS on receiving the uplink).
+     * </pre>
+     *
+     * <code>.google.protobuf.Timestamp ns_time = 17;</code>
+     */
+    public Builder setNsTime(com.google.protobuf.Timestamp value) {
+      if (nsTimeBuilder_ == null) {
+        if (value == null) {
+          throw new NullPointerException();
+        }
+        nsTime_ = value;
+      } else {
+        nsTimeBuilder_.setMessage(value);
+      }
+      bitField0_ |= 0x00000008;
+      onChanged();
+      return this;
+    }
+    /**
+     * <pre>
+     * Network Server RX time (set by the NS on receiving the uplink).
+     * </pre>
+     *
+     * <code>.google.protobuf.Timestamp ns_time = 17;</code>
+     */
+    public Builder setNsTime(
+        com.google.protobuf.Timestamp.Builder builderForValue) {
+      if (nsTimeBuilder_ == null) {
+        nsTime_ = builderForValue.build();
+      } else {
+        nsTimeBuilder_.setMessage(builderForValue.build());
+      }
+      bitField0_ |= 0x00000008;
+      onChanged();
+      return this;
+    }
+    /**
+     * <pre>
+     * Network Server RX time (set by the NS on receiving the uplink).
+     * </pre>
+     *
+     * <code>.google.protobuf.Timestamp ns_time = 17;</code>
+     */
+    public Builder mergeNsTime(com.google.protobuf.Timestamp value) {
+      if (nsTimeBuilder_ == null) {
+        if (((bitField0_ & 0x00000008) != 0) &&
+          nsTime_ != null &&
+          nsTime_ != com.google.protobuf.Timestamp.getDefaultInstance()) {
+          getNsTimeBuilder().mergeFrom(value);
+        } else {
+          nsTime_ = value;
+        }
+      } else {
+        nsTimeBuilder_.mergeFrom(value);
+      }
+      bitField0_ |= 0x00000008;
+      onChanged();
+      return this;
+    }
+    /**
+     * <pre>
+     * Network Server RX time (set by the NS on receiving the uplink).
+     * </pre>
+     *
+     * <code>.google.protobuf.Timestamp ns_time = 17;</code>
+     */
+    public Builder clearNsTime() {
+      bitField0_ = (bitField0_ & ~0x00000008);
+      nsTime_ = null;
+      if (nsTimeBuilder_ != null) {
+        nsTimeBuilder_.dispose();
+        nsTimeBuilder_ = null;
+      }
+      onChanged();
+      return this;
+    }
+    /**
+     * <pre>
+     * Network Server RX time (set by the NS on receiving the uplink).
+     * </pre>
+     *
+     * <code>.google.protobuf.Timestamp ns_time = 17;</code>
+     */
+    public com.google.protobuf.Timestamp.Builder getNsTimeBuilder() {
+      bitField0_ |= 0x00000008;
+      onChanged();
+      return getNsTimeFieldBuilder().getBuilder();
+    }
+    /**
+     * <pre>
+     * Network Server RX time (set by the NS on receiving the uplink).
+     * </pre>
+     *
+     * <code>.google.protobuf.Timestamp ns_time = 17;</code>
+     */
+    public com.google.protobuf.TimestampOrBuilder getNsTimeOrBuilder() {
+      if (nsTimeBuilder_ != null) {
+        return nsTimeBuilder_.getMessageOrBuilder();
+      } else {
+        return nsTime_ == null ?
+            com.google.protobuf.Timestamp.getDefaultInstance() : nsTime_;
+      }
+    }
+    /**
+     * <pre>
+     * Network Server RX time (set by the NS on receiving the uplink).
+     * </pre>
+     *
+     * <code>.google.protobuf.Timestamp ns_time = 17;</code>
+     */
+    private com.google.protobuf.SingleFieldBuilderV3<
+        com.google.protobuf.Timestamp, com.google.protobuf.Timestamp.Builder, com.google.protobuf.TimestampOrBuilder> 
+        getNsTimeFieldBuilder() {
+      if (nsTimeBuilder_ == null) {
+        nsTimeBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
+            com.google.protobuf.Timestamp, com.google.protobuf.Timestamp.Builder, com.google.protobuf.TimestampOrBuilder>(
+                getNsTime(),
+                getParentForChildren(),
+                isClean());
+        nsTime_ = null;
+      }
+      return nsTimeBuilder_;
     }
 
     private com.google.protobuf.Duration timeSinceGpsEpoch_;
@@ -1383,18 +1728,18 @@ private static final long serialVersionUID = 0L;
         com.google.protobuf.Duration, com.google.protobuf.Duration.Builder, com.google.protobuf.DurationOrBuilder> timeSinceGpsEpochBuilder_;
     /**
      * <pre>
-     * RX time since GPS epoch (only set when the gateway has a GPS module).
+     * RX time as time since GPS epoch (set if the gateway has a GNSS module).
      * </pre>
      *
      * <code>.google.protobuf.Duration time_since_gps_epoch = 4;</code>
      * @return Whether the timeSinceGpsEpoch field is set.
      */
     public boolean hasTimeSinceGpsEpoch() {
-      return timeSinceGpsEpochBuilder_ != null || timeSinceGpsEpoch_ != null;
+      return ((bitField0_ & 0x00000010) != 0);
     }
     /**
      * <pre>
-     * RX time since GPS epoch (only set when the gateway has a GPS module).
+     * RX time as time since GPS epoch (set if the gateway has a GNSS module).
      * </pre>
      *
      * <code>.google.protobuf.Duration time_since_gps_epoch = 4;</code>
@@ -1409,7 +1754,7 @@ private static final long serialVersionUID = 0L;
     }
     /**
      * <pre>
-     * RX time since GPS epoch (only set when the gateway has a GPS module).
+     * RX time as time since GPS epoch (set if the gateway has a GNSS module).
      * </pre>
      *
      * <code>.google.protobuf.Duration time_since_gps_epoch = 4;</code>
@@ -1420,16 +1765,16 @@ private static final long serialVersionUID = 0L;
           throw new NullPointerException();
         }
         timeSinceGpsEpoch_ = value;
-        onChanged();
       } else {
         timeSinceGpsEpochBuilder_.setMessage(value);
       }
-
+      bitField0_ |= 0x00000010;
+      onChanged();
       return this;
     }
     /**
      * <pre>
-     * RX time since GPS epoch (only set when the gateway has a GPS module).
+     * RX time as time since GPS epoch (set if the gateway has a GNSS module).
      * </pre>
      *
      * <code>.google.protobuf.Duration time_since_gps_epoch = 4;</code>
@@ -1438,68 +1783,68 @@ private static final long serialVersionUID = 0L;
         com.google.protobuf.Duration.Builder builderForValue) {
       if (timeSinceGpsEpochBuilder_ == null) {
         timeSinceGpsEpoch_ = builderForValue.build();
-        onChanged();
       } else {
         timeSinceGpsEpochBuilder_.setMessage(builderForValue.build());
       }
-
+      bitField0_ |= 0x00000010;
+      onChanged();
       return this;
     }
     /**
      * <pre>
-     * RX time since GPS epoch (only set when the gateway has a GPS module).
+     * RX time as time since GPS epoch (set if the gateway has a GNSS module).
      * </pre>
      *
      * <code>.google.protobuf.Duration time_since_gps_epoch = 4;</code>
      */
     public Builder mergeTimeSinceGpsEpoch(com.google.protobuf.Duration value) {
       if (timeSinceGpsEpochBuilder_ == null) {
-        if (timeSinceGpsEpoch_ != null) {
-          timeSinceGpsEpoch_ =
-            com.google.protobuf.Duration.newBuilder(timeSinceGpsEpoch_).mergeFrom(value).buildPartial();
+        if (((bitField0_ & 0x00000010) != 0) &&
+          timeSinceGpsEpoch_ != null &&
+          timeSinceGpsEpoch_ != com.google.protobuf.Duration.getDefaultInstance()) {
+          getTimeSinceGpsEpochBuilder().mergeFrom(value);
         } else {
           timeSinceGpsEpoch_ = value;
         }
-        onChanged();
       } else {
         timeSinceGpsEpochBuilder_.mergeFrom(value);
       }
-
+      bitField0_ |= 0x00000010;
+      onChanged();
       return this;
     }
     /**
      * <pre>
-     * RX time since GPS epoch (only set when the gateway has a GPS module).
+     * RX time as time since GPS epoch (set if the gateway has a GNSS module).
      * </pre>
      *
      * <code>.google.protobuf.Duration time_since_gps_epoch = 4;</code>
      */
     public Builder clearTimeSinceGpsEpoch() {
-      if (timeSinceGpsEpochBuilder_ == null) {
-        timeSinceGpsEpoch_ = null;
-        onChanged();
-      } else {
-        timeSinceGpsEpoch_ = null;
+      bitField0_ = (bitField0_ & ~0x00000010);
+      timeSinceGpsEpoch_ = null;
+      if (timeSinceGpsEpochBuilder_ != null) {
+        timeSinceGpsEpochBuilder_.dispose();
         timeSinceGpsEpochBuilder_ = null;
       }
-
+      onChanged();
       return this;
     }
     /**
      * <pre>
-     * RX time since GPS epoch (only set when the gateway has a GPS module).
+     * RX time as time since GPS epoch (set if the gateway has a GNSS module).
      * </pre>
      *
      * <code>.google.protobuf.Duration time_since_gps_epoch = 4;</code>
      */
     public com.google.protobuf.Duration.Builder getTimeSinceGpsEpochBuilder() {
-      
+      bitField0_ |= 0x00000010;
       onChanged();
       return getTimeSinceGpsEpochFieldBuilder().getBuilder();
     }
     /**
      * <pre>
-     * RX time since GPS epoch (only set when the gateway has a GPS module).
+     * RX time as time since GPS epoch (set if the gateway has a GNSS module).
      * </pre>
      *
      * <code>.google.protobuf.Duration time_since_gps_epoch = 4;</code>
@@ -1514,7 +1859,7 @@ private static final long serialVersionUID = 0L;
     }
     /**
      * <pre>
-     * RX time since GPS epoch (only set when the gateway has a GPS module).
+     * RX time as time since GPS epoch (set if the gateway has a GNSS module).
      * </pre>
      *
      * <code>.google.protobuf.Duration time_since_gps_epoch = 4;</code>
@@ -1546,7 +1891,7 @@ private static final long serialVersionUID = 0L;
      * @return Whether the fineTimeSinceGpsEpoch field is set.
      */
     public boolean hasFineTimeSinceGpsEpoch() {
-      return fineTimeSinceGpsEpochBuilder_ != null || fineTimeSinceGpsEpoch_ != null;
+      return ((bitField0_ & 0x00000020) != 0);
     }
     /**
      * <pre>
@@ -1578,11 +1923,11 @@ private static final long serialVersionUID = 0L;
           throw new NullPointerException();
         }
         fineTimeSinceGpsEpoch_ = value;
-        onChanged();
       } else {
         fineTimeSinceGpsEpochBuilder_.setMessage(value);
       }
-
+      bitField0_ |= 0x00000020;
+      onChanged();
       return this;
     }
     /**
@@ -1597,11 +1942,11 @@ private static final long serialVersionUID = 0L;
         com.google.protobuf.Duration.Builder builderForValue) {
       if (fineTimeSinceGpsEpochBuilder_ == null) {
         fineTimeSinceGpsEpoch_ = builderForValue.build();
-        onChanged();
       } else {
         fineTimeSinceGpsEpochBuilder_.setMessage(builderForValue.build());
       }
-
+      bitField0_ |= 0x00000020;
+      onChanged();
       return this;
     }
     /**
@@ -1614,17 +1959,18 @@ private static final long serialVersionUID = 0L;
      */
     public Builder mergeFineTimeSinceGpsEpoch(com.google.protobuf.Duration value) {
       if (fineTimeSinceGpsEpochBuilder_ == null) {
-        if (fineTimeSinceGpsEpoch_ != null) {
-          fineTimeSinceGpsEpoch_ =
-            com.google.protobuf.Duration.newBuilder(fineTimeSinceGpsEpoch_).mergeFrom(value).buildPartial();
+        if (((bitField0_ & 0x00000020) != 0) &&
+          fineTimeSinceGpsEpoch_ != null &&
+          fineTimeSinceGpsEpoch_ != com.google.protobuf.Duration.getDefaultInstance()) {
+          getFineTimeSinceGpsEpochBuilder().mergeFrom(value);
         } else {
           fineTimeSinceGpsEpoch_ = value;
         }
-        onChanged();
       } else {
         fineTimeSinceGpsEpochBuilder_.mergeFrom(value);
       }
-
+      bitField0_ |= 0x00000020;
+      onChanged();
       return this;
     }
     /**
@@ -1636,14 +1982,13 @@ private static final long serialVersionUID = 0L;
      * <code>.google.protobuf.Duration fine_time_since_gps_epoch = 5;</code>
      */
     public Builder clearFineTimeSinceGpsEpoch() {
-      if (fineTimeSinceGpsEpochBuilder_ == null) {
-        fineTimeSinceGpsEpoch_ = null;
-        onChanged();
-      } else {
-        fineTimeSinceGpsEpoch_ = null;
+      bitField0_ = (bitField0_ & ~0x00000020);
+      fineTimeSinceGpsEpoch_ = null;
+      if (fineTimeSinceGpsEpochBuilder_ != null) {
+        fineTimeSinceGpsEpochBuilder_.dispose();
         fineTimeSinceGpsEpochBuilder_ = null;
       }
-
+      onChanged();
       return this;
     }
     /**
@@ -1655,7 +2000,7 @@ private static final long serialVersionUID = 0L;
      * <code>.google.protobuf.Duration fine_time_since_gps_epoch = 5;</code>
      */
     public com.google.protobuf.Duration.Builder getFineTimeSinceGpsEpochBuilder() {
-      
+      bitField0_ |= 0x00000020;
       onChanged();
       return getFineTimeSinceGpsEpochFieldBuilder().getBuilder();
     }
@@ -1706,7 +2051,7 @@ private static final long serialVersionUID = 0L;
      * <code>int32 rssi = 6;</code>
      * @return The rssi.
      */
-    @Override
+    @java.lang.Override
     public int getRssi() {
       return rssi_;
     }
@@ -1720,8 +2065,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setRssi(int value) {
-      
+
       rssi_ = value;
+      bitField0_ |= 0x00000040;
       onChanged();
       return this;
     }
@@ -1734,7 +2080,7 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder clearRssi() {
-      
+      bitField0_ = (bitField0_ & ~0x00000040);
       rssi_ = 0;
       onChanged();
       return this;
@@ -1750,7 +2096,7 @@ private static final long serialVersionUID = 0L;
      * <code>float snr = 7;</code>
      * @return The snr.
      */
-    @Override
+    @java.lang.Override
     public float getSnr() {
       return snr_;
     }
@@ -1765,8 +2111,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setSnr(float value) {
-      
+
       snr_ = value;
+      bitField0_ |= 0x00000080;
       onChanged();
       return this;
     }
@@ -1780,7 +2127,7 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder clearSnr() {
-      
+      bitField0_ = (bitField0_ & ~0x00000080);
       snr_ = 0F;
       onChanged();
       return this;
@@ -1795,7 +2142,7 @@ private static final long serialVersionUID = 0L;
      * <code>uint32 channel = 8;</code>
      * @return The channel.
      */
-    @Override
+    @java.lang.Override
     public int getChannel() {
       return channel_;
     }
@@ -1809,8 +2156,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setChannel(int value) {
-      
+
       channel_ = value;
+      bitField0_ |= 0x00000100;
       onChanged();
       return this;
     }
@@ -1823,7 +2171,7 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder clearChannel() {
-      
+      bitField0_ = (bitField0_ & ~0x00000100);
       channel_ = 0;
       onChanged();
       return this;
@@ -1838,7 +2186,7 @@ private static final long serialVersionUID = 0L;
      * <code>uint32 rf_chain = 9;</code>
      * @return The rfChain.
      */
-    @Override
+    @java.lang.Override
     public int getRfChain() {
       return rfChain_;
     }
@@ -1852,8 +2200,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setRfChain(int value) {
-      
+
       rfChain_ = value;
+      bitField0_ |= 0x00000200;
       onChanged();
       return this;
     }
@@ -1866,7 +2215,7 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder clearRfChain() {
-      
+      bitField0_ = (bitField0_ & ~0x00000200);
       rfChain_ = 0;
       onChanged();
       return this;
@@ -1881,7 +2230,7 @@ private static final long serialVersionUID = 0L;
      * <code>uint32 board = 10;</code>
      * @return The board.
      */
-    @Override
+    @java.lang.Override
     public int getBoard() {
       return board_;
     }
@@ -1895,8 +2244,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setBoard(int value) {
-      
+
       board_ = value;
+      bitField0_ |= 0x00000400;
       onChanged();
       return this;
     }
@@ -1909,7 +2259,7 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder clearBoard() {
-      
+      bitField0_ = (bitField0_ & ~0x00000400);
       board_ = 0;
       onChanged();
       return this;
@@ -1924,7 +2274,7 @@ private static final long serialVersionUID = 0L;
      * <code>uint32 antenna = 11;</code>
      * @return The antenna.
      */
-    @Override
+    @java.lang.Override
     public int getAntenna() {
       return antenna_;
     }
@@ -1938,8 +2288,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setAntenna(int value) {
-      
+
       antenna_ = value;
+      bitField0_ |= 0x00000800;
       onChanged();
       return this;
     }
@@ -1952,7 +2303,7 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder clearAntenna() {
-      
+      bitField0_ = (bitField0_ & ~0x00000800);
       antenna_ = 0;
       onChanged();
       return this;
@@ -1970,7 +2321,7 @@ private static final long serialVersionUID = 0L;
      * @return Whether the location field is set.
      */
     public boolean hasLocation() {
-      return locationBuilder_ != null || location_ != null;
+      return ((bitField0_ & 0x00001000) != 0);
     }
     /**
      * <pre>
@@ -2000,11 +2351,11 @@ private static final long serialVersionUID = 0L;
           throw new NullPointerException();
         }
         location_ = value;
-        onChanged();
       } else {
         locationBuilder_.setMessage(value);
       }
-
+      bitField0_ |= 0x00001000;
+      onChanged();
       return this;
     }
     /**
@@ -2018,11 +2369,11 @@ private static final long serialVersionUID = 0L;
         io.chirpstack.api.Location.Builder builderForValue) {
       if (locationBuilder_ == null) {
         location_ = builderForValue.build();
-        onChanged();
       } else {
         locationBuilder_.setMessage(builderForValue.build());
       }
-
+      bitField0_ |= 0x00001000;
+      onChanged();
       return this;
     }
     /**
@@ -2034,17 +2385,18 @@ private static final long serialVersionUID = 0L;
      */
     public Builder mergeLocation(io.chirpstack.api.Location value) {
       if (locationBuilder_ == null) {
-        if (location_ != null) {
-          location_ =
-            io.chirpstack.api.Location.newBuilder(location_).mergeFrom(value).buildPartial();
+        if (((bitField0_ & 0x00001000) != 0) &&
+          location_ != null &&
+          location_ != io.chirpstack.api.Location.getDefaultInstance()) {
+          getLocationBuilder().mergeFrom(value);
         } else {
           location_ = value;
         }
-        onChanged();
       } else {
         locationBuilder_.mergeFrom(value);
       }
-
+      bitField0_ |= 0x00001000;
+      onChanged();
       return this;
     }
     /**
@@ -2055,14 +2407,13 @@ private static final long serialVersionUID = 0L;
      * <code>.common.Location location = 12;</code>
      */
     public Builder clearLocation() {
-      if (locationBuilder_ == null) {
-        location_ = null;
-        onChanged();
-      } else {
-        location_ = null;
+      bitField0_ = (bitField0_ & ~0x00001000);
+      location_ = null;
+      if (locationBuilder_ != null) {
+        locationBuilder_.dispose();
         locationBuilder_ = null;
       }
-
+      onChanged();
       return this;
     }
     /**
@@ -2073,7 +2424,7 @@ private static final long serialVersionUID = 0L;
      * <code>.common.Location location = 12;</code>
      */
     public io.chirpstack.api.Location.Builder getLocationBuilder() {
-      
+      bitField0_ |= 0x00001000;
       onChanged();
       return getLocationFieldBuilder().getBuilder();
     }
@@ -2123,7 +2474,7 @@ private static final long serialVersionUID = 0L;
      * <code>bytes context = 13;</code>
      * @return The context.
      */
-    @Override
+    @java.lang.Override
     public com.google.protobuf.ByteString getContext() {
       return context_;
     }
@@ -2138,11 +2489,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setContext(com.google.protobuf.ByteString value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  
+      if (value == null) { throw new NullPointerException(); }
       context_ = value;
+      bitField0_ |= 0x00002000;
       onChanged();
       return this;
     }
@@ -2156,173 +2505,246 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder clearContext() {
-      
+      bitField0_ = (bitField0_ & ~0x00002000);
       context_ = getDefaultInstance().getContext();
       onChanged();
       return this;
     }
 
-    private com.google.protobuf.Struct metadata_;
-    private com.google.protobuf.SingleFieldBuilderV3<
-        com.google.protobuf.Struct, com.google.protobuf.Struct.Builder, com.google.protobuf.StructOrBuilder> metadataBuilder_;
-    /**
-     * <pre>
-     * Properties.
-     * </pre>
-     *
-     * <code>.google.protobuf.Struct metadata = 14;</code>
-     * @return Whether the metadata field is set.
-     */
-    public boolean hasMetadata() {
-      return metadataBuilder_ != null || metadata_ != null;
-    }
-    /**
-     * <pre>
-     * Properties.
-     * </pre>
-     *
-     * <code>.google.protobuf.Struct metadata = 14;</code>
-     * @return The metadata.
-     */
-    public com.google.protobuf.Struct getMetadata() {
-      if (metadataBuilder_ == null) {
-        return metadata_ == null ? com.google.protobuf.Struct.getDefaultInstance() : metadata_;
-      } else {
-        return metadataBuilder_.getMessage();
+    private com.google.protobuf.MapField<
+        java.lang.String, java.lang.String> metadata_;
+    private com.google.protobuf.MapField<java.lang.String, java.lang.String>
+        internalGetMetadata() {
+      if (metadata_ == null) {
+        return com.google.protobuf.MapField.emptyMapField(
+            MetadataDefaultEntryHolder.defaultEntry);
       }
+      return metadata_;
     }
-    /**
-     * <pre>
-     * Properties.
-     * </pre>
-     *
-     * <code>.google.protobuf.Struct metadata = 14;</code>
-     */
-    public Builder setMetadata(com.google.protobuf.Struct value) {
-      if (metadataBuilder_ == null) {
-        if (value == null) {
-          throw new NullPointerException();
-        }
-        metadata_ = value;
-        onChanged();
-      } else {
-        metadataBuilder_.setMessage(value);
+    private com.google.protobuf.MapField<java.lang.String, java.lang.String>
+        internalGetMutableMetadata() {
+      if (metadata_ == null) {
+        metadata_ = com.google.protobuf.MapField.newMapField(
+            MetadataDefaultEntryHolder.defaultEntry);
       }
-
-      return this;
-    }
-    /**
-     * <pre>
-     * Properties.
-     * </pre>
-     *
-     * <code>.google.protobuf.Struct metadata = 14;</code>
-     */
-    public Builder setMetadata(
-        com.google.protobuf.Struct.Builder builderForValue) {
-      if (metadataBuilder_ == null) {
-        metadata_ = builderForValue.build();
-        onChanged();
-      } else {
-        metadataBuilder_.setMessage(builderForValue.build());
+      if (!metadata_.isMutable()) {
+        metadata_ = metadata_.copy();
       }
-
-      return this;
-    }
-    /**
-     * <pre>
-     * Properties.
-     * </pre>
-     *
-     * <code>.google.protobuf.Struct metadata = 14;</code>
-     */
-    public Builder mergeMetadata(com.google.protobuf.Struct value) {
-      if (metadataBuilder_ == null) {
-        if (metadata_ != null) {
-          metadata_ =
-            com.google.protobuf.Struct.newBuilder(metadata_).mergeFrom(value).buildPartial();
-        } else {
-          metadata_ = value;
-        }
-        onChanged();
-      } else {
-        metadataBuilder_.mergeFrom(value);
-      }
-
-      return this;
-    }
-    /**
-     * <pre>
-     * Properties.
-     * </pre>
-     *
-     * <code>.google.protobuf.Struct metadata = 14;</code>
-     */
-    public Builder clearMetadata() {
-      if (metadataBuilder_ == null) {
-        metadata_ = null;
-        onChanged();
-      } else {
-        metadata_ = null;
-        metadataBuilder_ = null;
-      }
-
-      return this;
-    }
-    /**
-     * <pre>
-     * Properties.
-     * </pre>
-     *
-     * <code>.google.protobuf.Struct metadata = 14;</code>
-     */
-    public com.google.protobuf.Struct.Builder getMetadataBuilder() {
-      
+      bitField0_ |= 0x00004000;
       onChanged();
-      return getMetadataFieldBuilder().getBuilder();
+      return metadata_;
+    }
+    public int getMetadataCount() {
+      return internalGetMetadata().getMap().size();
     }
     /**
      * <pre>
-     * Properties.
+     * Additional gateway meta-data.
      * </pre>
      *
-     * <code>.google.protobuf.Struct metadata = 14;</code>
+     * <code>map&lt;string, string&gt; metadata = 15;</code>
      */
-    public com.google.protobuf.StructOrBuilder getMetadataOrBuilder() {
-      if (metadataBuilder_ != null) {
-        return metadataBuilder_.getMessageOrBuilder();
-      } else {
-        return metadata_ == null ?
-            com.google.protobuf.Struct.getDefaultInstance() : metadata_;
-      }
+    @java.lang.Override
+    public boolean containsMetadata(
+        java.lang.String key) {
+      if (key == null) { throw new NullPointerException("map key"); }
+      return internalGetMetadata().getMap().containsKey(key);
+    }
+    /**
+     * Use {@link #getMetadataMap()} instead.
+     */
+    @java.lang.Override
+    @java.lang.Deprecated
+    public java.util.Map<java.lang.String, java.lang.String> getMetadata() {
+      return getMetadataMap();
     }
     /**
      * <pre>
-     * Properties.
+     * Additional gateway meta-data.
      * </pre>
      *
-     * <code>.google.protobuf.Struct metadata = 14;</code>
+     * <code>map&lt;string, string&gt; metadata = 15;</code>
      */
-    private com.google.protobuf.SingleFieldBuilderV3<
-        com.google.protobuf.Struct, com.google.protobuf.Struct.Builder, com.google.protobuf.StructOrBuilder> 
-        getMetadataFieldBuilder() {
-      if (metadataBuilder_ == null) {
-        metadataBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
-            com.google.protobuf.Struct, com.google.protobuf.Struct.Builder, com.google.protobuf.StructOrBuilder>(
-                getMetadata(),
-                getParentForChildren(),
-                isClean());
-        metadata_ = null;
-      }
-      return metadataBuilder_;
+    @java.lang.Override
+    public java.util.Map<java.lang.String, java.lang.String> getMetadataMap() {
+      return internalGetMetadata().getMap();
     }
-    @Override
+    /**
+     * <pre>
+     * Additional gateway meta-data.
+     * </pre>
+     *
+     * <code>map&lt;string, string&gt; metadata = 15;</code>
+     */
+    @java.lang.Override
+    public /* nullable */
+java.lang.String getMetadataOrDefault(
+        java.lang.String key,
+        /* nullable */
+java.lang.String defaultValue) {
+      if (key == null) { throw new NullPointerException("map key"); }
+      java.util.Map<java.lang.String, java.lang.String> map =
+          internalGetMetadata().getMap();
+      return map.containsKey(key) ? map.get(key) : defaultValue;
+    }
+    /**
+     * <pre>
+     * Additional gateway meta-data.
+     * </pre>
+     *
+     * <code>map&lt;string, string&gt; metadata = 15;</code>
+     */
+    @java.lang.Override
+    public java.lang.String getMetadataOrThrow(
+        java.lang.String key) {
+      if (key == null) { throw new NullPointerException("map key"); }
+      java.util.Map<java.lang.String, java.lang.String> map =
+          internalGetMetadata().getMap();
+      if (!map.containsKey(key)) {
+        throw new java.lang.IllegalArgumentException();
+      }
+      return map.get(key);
+    }
+    public Builder clearMetadata() {
+      bitField0_ = (bitField0_ & ~0x00004000);
+      internalGetMutableMetadata().getMutableMap()
+          .clear();
+      return this;
+    }
+    /**
+     * <pre>
+     * Additional gateway meta-data.
+     * </pre>
+     *
+     * <code>map&lt;string, string&gt; metadata = 15;</code>
+     */
+    public Builder removeMetadata(
+        java.lang.String key) {
+      if (key == null) { throw new NullPointerException("map key"); }
+      internalGetMutableMetadata().getMutableMap()
+          .remove(key);
+      return this;
+    }
+    /**
+     * Use alternate mutation accessors instead.
+     */
+    @java.lang.Deprecated
+    public java.util.Map<java.lang.String, java.lang.String>
+        getMutableMetadata() {
+      bitField0_ |= 0x00004000;
+      return internalGetMutableMetadata().getMutableMap();
+    }
+    /**
+     * <pre>
+     * Additional gateway meta-data.
+     * </pre>
+     *
+     * <code>map&lt;string, string&gt; metadata = 15;</code>
+     */
+    public Builder putMetadata(
+        java.lang.String key,
+        java.lang.String value) {
+      if (key == null) { throw new NullPointerException("map key"); }
+      if (value == null) { throw new NullPointerException("map value"); }
+      internalGetMutableMetadata().getMutableMap()
+          .put(key, value);
+      bitField0_ |= 0x00004000;
+      return this;
+    }
+    /**
+     * <pre>
+     * Additional gateway meta-data.
+     * </pre>
+     *
+     * <code>map&lt;string, string&gt; metadata = 15;</code>
+     */
+    public Builder putAllMetadata(
+        java.util.Map<java.lang.String, java.lang.String> values) {
+      internalGetMutableMetadata().getMutableMap()
+          .putAll(values);
+      bitField0_ |= 0x00004000;
+      return this;
+    }
+
+    private int crcStatus_ = 0;
+    /**
+     * <pre>
+     * CRC status.
+     * </pre>
+     *
+     * <code>.gw.CRCStatus crc_status = 16;</code>
+     * @return The enum numeric value on the wire for crcStatus.
+     */
+    @java.lang.Override public int getCrcStatusValue() {
+      return crcStatus_;
+    }
+    /**
+     * <pre>
+     * CRC status.
+     * </pre>
+     *
+     * <code>.gw.CRCStatus crc_status = 16;</code>
+     * @param value The enum numeric value on the wire for crcStatus to set.
+     * @return This builder for chaining.
+     */
+    public Builder setCrcStatusValue(int value) {
+      crcStatus_ = value;
+      bitField0_ |= 0x00008000;
+      onChanged();
+      return this;
+    }
+    /**
+     * <pre>
+     * CRC status.
+     * </pre>
+     *
+     * <code>.gw.CRCStatus crc_status = 16;</code>
+     * @return The crcStatus.
+     */
+    @java.lang.Override
+    public io.chirpstack.api.gw.CRCStatus getCrcStatus() {
+      io.chirpstack.api.gw.CRCStatus result = io.chirpstack.api.gw.CRCStatus.forNumber(crcStatus_);
+      return result == null ? io.chirpstack.api.gw.CRCStatus.UNRECOGNIZED : result;
+    }
+    /**
+     * <pre>
+     * CRC status.
+     * </pre>
+     *
+     * <code>.gw.CRCStatus crc_status = 16;</code>
+     * @param value The crcStatus to set.
+     * @return This builder for chaining.
+     */
+    public Builder setCrcStatus(io.chirpstack.api.gw.CRCStatus value) {
+      if (value == null) {
+        throw new NullPointerException();
+      }
+      bitField0_ |= 0x00008000;
+      crcStatus_ = value.getNumber();
+      onChanged();
+      return this;
+    }
+    /**
+     * <pre>
+     * CRC status.
+     * </pre>
+     *
+     * <code>.gw.CRCStatus crc_status = 16;</code>
+     * @return This builder for chaining.
+     */
+    public Builder clearCrcStatus() {
+      bitField0_ = (bitField0_ & ~0x00008000);
+      crcStatus_ = 0;
+      onChanged();
+      return this;
+    }
+    @java.lang.Override
     public final Builder setUnknownFields(
         final com.google.protobuf.UnknownFieldSet unknownFields) {
       return super.setUnknownFields(unknownFields);
     }
 
-    @Override
+    @java.lang.Override
     public final Builder mergeUnknownFields(
         final com.google.protobuf.UnknownFieldSet unknownFields) {
       return super.mergeUnknownFields(unknownFields);
@@ -2333,18 +2755,18 @@ private static final long serialVersionUID = 0L;
   }
 
   // @@protoc_insertion_point(class_scope:gw.UplinkRxInfo)
-  private static final UplinkRxInfo DEFAULT_INSTANCE;
+  private static final io.chirpstack.api.gw.UplinkRxInfo DEFAULT_INSTANCE;
   static {
-    DEFAULT_INSTANCE = new UplinkRxInfo();
+    DEFAULT_INSTANCE = new io.chirpstack.api.gw.UplinkRxInfo();
   }
 
-  public static UplinkRxInfo getDefaultInstance() {
+  public static io.chirpstack.api.gw.UplinkRxInfo getDefaultInstance() {
     return DEFAULT_INSTANCE;
   }
 
   private static final com.google.protobuf.Parser<UplinkRxInfo>
       PARSER = new com.google.protobuf.AbstractParser<UplinkRxInfo>() {
-    @Override
+    @java.lang.Override
     public UplinkRxInfo parsePartialFrom(
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
@@ -2368,13 +2790,13 @@ private static final long serialVersionUID = 0L;
     return PARSER;
   }
 
-  @Override
+  @java.lang.Override
   public com.google.protobuf.Parser<UplinkRxInfo> getParserForType() {
     return PARSER;
   }
 
-  @Override
-  public UplinkRxInfo getDefaultInstanceForType() {
+  @java.lang.Override
+  public io.chirpstack.api.gw.UplinkRxInfo getDefaultInstanceForType() {
     return DEFAULT_INSTANCE;
   }
 

@@ -141,4 +141,23 @@ public interface GetDeviceResponseOrBuilder extends
    * <code>.api.DeviceStatus device_status = 5;</code>
    */
   DeviceStatusOrBuilder getDeviceStatusOrBuilder();
+
+  /**
+   * <pre>
+   * Enabled device class.
+   * </pre>
+   *
+   * <code>.common.DeviceClass class_enabled = 6;</code>
+   * @return The enum numeric value on the wire for classEnabled.
+   */
+  int getClassEnabledValue();
+  /**
+   * <pre>
+   * Enabled device class.
+   * </pre>
+   *
+   * <code>.common.DeviceClass class_enabled = 6;</code>
+   * @return The classEnabled.
+   */
+  DeviceClass getClassEnabled();
 }

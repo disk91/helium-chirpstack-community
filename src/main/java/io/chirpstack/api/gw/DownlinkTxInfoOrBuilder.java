@@ -19,7 +19,7 @@ public interface DownlinkTxInfoOrBuilder extends
 
   /**
    * <pre>
-   * TX power (in dBm).
+   * TX power (in dBm EIRP).
    * </pre>
    *
    * <code>int32 power = 2;</code>
@@ -44,7 +44,7 @@ public interface DownlinkTxInfoOrBuilder extends
    * <code>.gw.Modulation modulation = 3;</code>
    * @return The modulation.
    */
-  Modulation getModulation();
+  io.chirpstack.api.gw.Modulation getModulation();
   /**
    * <pre>
    * Modulation.
@@ -52,7 +52,7 @@ public interface DownlinkTxInfoOrBuilder extends
    *
    * <code>.gw.Modulation modulation = 3;</code>
    */
-  ModulationOrBuilder getModulationOrBuilder();
+  io.chirpstack.api.gw.ModulationOrBuilder getModulationOrBuilder();
 
   /**
    * <pre>
@@ -91,7 +91,7 @@ public interface DownlinkTxInfoOrBuilder extends
    * <code>.gw.Timing timing = 6;</code>
    * @return The timing.
    */
-  Timing getTiming();
+  io.chirpstack.api.gw.Timing getTiming();
   /**
    * <pre>
    * Timing.
@@ -99,7 +99,7 @@ public interface DownlinkTxInfoOrBuilder extends
    *
    * <code>.gw.Timing timing = 6;</code>
    */
-  TimingOrBuilder getTimingOrBuilder();
+  io.chirpstack.api.gw.TimingOrBuilder getTimingOrBuilder();
 
   /**
    * <pre>
