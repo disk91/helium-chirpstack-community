@@ -482,8 +482,8 @@ public class MqttLoRaListener implements MqttCallback {
                 // update the late stats
                 if ((e.arrivalTime - dedup.firstArrivalTime) > mqttConfig.getChirpstackDedupDelayMs()) {
                     if ( !isJoin) {
-                        prometeusService.addLoRaLateUplink(now - dedup.firstArrivalTime);
-                        log.debug("Late uplink arriving for devaddr " + dedup.devAddr + " with fCnt " + dedup.fCnt + " after " + (now - dedup.firstArrivalTime) + "ms from " + uf.getRxInfo().getGatewayId());
+                        prometeusService.addLoRaLateUplink(e.arrivalTime - dedup.firstArrivalTime);
+                        log.debug("Late uplink arriving for devaddr " + dedup.devAddr + " with fCnt " + dedup.fCnt + " after " + (e.arrivalTime - dedup.firstArrivalTime) + "ms from " + uf.getRxInfo().getGatewayId());
                     } else {
                         // join
                         log.debug("Late join arriving for devEui " + dedup.deviceEui + " after " + (now - dedup.firstArrivalTime) + "ms from " + uf.getRxInfo().getGatewayId());
