@@ -19,6 +19,7 @@ import javax.annotation.PostConstruct;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 @Service
 public class HeliumEduService {
@@ -72,13 +73,15 @@ public class HeliumEduService {
         try {
 
             // Get devices
-            List<Device> devices = deviceRepository.findDeviceByCreatedAtBetweenOrderByCreatedAtAsc(
+            List<Device> devices = deviceRepository.findDeviceByNApplicationIdAndCreatedAtBetweenOrderByCreatedAtAsc(
+                UUID.fromString(consolePrivateConfig.getHeliumEduDeviceGarbageApplicationID()),
                 new Timestamp(consolePrivateConfig.getHeliumEduDeviceExludeBefore()),
                 new Timestamp(Now.NowUtcMs() - consolePrivateConfig.getHeliumEduDeviceMaxlifeMs())
             );
 
             for ( Device device : devices ) {
                 String devEui = HexaConverters.byteToHexString(device.getDevEui());
+                log.debug("deviceGarbageCollector - Removing device "+devEui);
 
                 // get the Helium Device and mark it deleted
                 HeliumDevice hdev = heliumDeviceCacheService.getHeliumDevice(devEui);
@@ -97,11 +100,11 @@ public class HeliumEduService {
                         nd.routeId = hts.getRouteId();
                         toDeactivate.add(nd);
                     } else {
-                        log.error("Helium device without a valid Tenant Setup");
+                        log.error("deviceGarbageCollector - Helium device without a valid Tenant Setup");
                     }
                     // delete the device
                     if (!chirpstackApiAccess.deleteOneDevice(devEui) ) {
-                        log.error("Chirpstack device "+devEui+" deletion failed");
+                        log.error("deviceGarbageCollector - Chirpstack device "+devEui+" deletion failed");
                     } else {
                         // create a new device in garbage
                         if (consolePrivateConfig.getHeliumEduDeviceGarbageTenantID() != null && consolePrivateConfig.getHeliumEduDeviceGarbageTenantID().length() > 0) {
@@ -117,13 +120,13 @@ public class HeliumEduService {
                                 true,
                                 true
                             )) {
-                                log.error("Chripstack device "+devEui+" recreation impossible");
+                                log.error("deviceGarbageCollector - Chripstack device "+devEui+" recreation impossible");
                             }
                         }
                     }
 
                 } else {
-                    log.error("Can remove device "+devEui+" not found in HeliumDevices");
+                    log.error("deviceGarbageCollector - Can remove device "+devEui+" not found in HeliumDevices");
                 }
             }
         } catch (Exception x) {
@@ -147,7 +150,33 @@ public class HeliumEduService {
         cleanGarbageRunning = true;
         try {
 
+            // Get devices
+            List<Device> devices = deviceRepository.findDeviceByApplicationIdAndCreatedAtBetweenOrderByCreatedAtAsc(
+                UUID.fromString(consolePrivateConfig.getHeliumEduDeviceGarbageApplicationID()),
+                new Timestamp(consolePrivateConfig.getHeliumEduDeviceExludeBefore()),
+                new Timestamp(Now.NowUtcMs() - consolePrivateConfig.getHeliumEduDeviceGarbagelifeMs())
+            );
 
+            for ( Device device : devices ) {
+                String devEui = HexaConverters.byteToHexString(device.getDevEui());
+                log.debug("deviceCleanGarbageCollector - Deleting garbaged device "+devEui);
+
+                // get the Helium Device and mark it deleted
+                HeliumDevice hdev = heliumDeviceCacheService.getHeliumDevice(devEui);
+                if ( hdev != null ) {
+                    // make as deleted so a new one can be created later
+                    hdev.setState(HeliumDevice.DeviceState.DELETED);
+                    hdev.setToUpdate(false);
+                    hdev.setDeletedAt(Now.NowUtcMs());
+                    heliumDeviceCacheService.flushHeliumDevice(hdev);
+                    // delete the device
+                    if (!chirpstackApiAccess.deleteOneDevice(devEui) ) {
+                        log.error("deviceCleanGarbageCollector - Chirpstack device "+devEui+" deletion failed");
+                    }
+                } else {
+                    log.error("deviceCleanGarbageCollector - Can remove device "+devEui+" not found in HeliumDevices");
+                }
+            }
 
         } catch (Exception x) {
             log.error("deviceCleanGarbageCollector Exception "+x.getMessage());
@@ -156,5 +185,5 @@ public class HeliumEduService {
             cleanGarbageRunning = false;
         }
     }
-    
+
 }
