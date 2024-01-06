@@ -1,10 +1,12 @@
 package eu.heliumiot.console.chirpstack;
 
 
+import com.google.protobuf.InvalidProtocolBufferException;
 import eu.heliumiot.console.ConsoleConfig;
 import fr.ingeniousthings.tools.ITNotFoundException;
 import fr.ingeniousthings.tools.ITParseException;
 import fr.ingeniousthings.tools.ITRightException;
+import io.chirpstack.api.*;
 import org.bouncycastle.util.encoders.Base64;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,11 +24,150 @@ import java.util.Arrays;
 @Service
 public class ChirpstackApiAccess {
 
+    // Api endpoints
+    protected static final String API_DEVICE_DELETE = "/api.DeviceService/Delete";
+    protected static final String API_DEVICE_GET = "/api.DeviceService/Get";
+    protected static final String API_DEVICE_CREATE = "/api.DeviceService/Create";
+    protected static final String API_DEVICE_CREATEKEY = "/api.DeviceService/CreateKeys";
+
+
     private final Logger log = LoggerFactory.getLogger(this.getClass());
 
     @Autowired
     protected ConsoleConfig consoleConfig;
 
+    // ==================================================================
+    //  Wrap useful actions
+
+    public boolean deleteOneDevice(String deviceEui) {
+        HttpHeaders heads = new HttpHeaders();
+        heads.add("authorization", "Bearer "+consoleConfig.getChirpstackApiAdminKey());
+        DeleteDeviceRequest dr = DeleteDeviceRequest.newBuilder()
+            .setDevEui(deviceEui)
+            .build();
+        try {
+            byte [] resp = this.execute(
+                HttpMethod.POST,
+                API_DEVICE_DELETE,
+                null,
+                heads,
+                dr.toByteArray()
+            );
+            return true;
+        } catch ( ITParseException x ) {
+            log.error("Impossible to delete chirpstack device - parse");
+        } catch ( ITRightException x ) {
+            log.error("Impossible to delete chirpstack device - rights");
+        } catch ( ITNotFoundException x ) {
+            log.error("Impossible to delete chirpstack device - not found");
+        }
+        return false;
+    }
+
+    public Device getOneDevice( String devEui ) {
+        HttpHeaders heads = new HttpHeaders();
+        heads.add("authorization", "Bearer "+consoleConfig.getChirpstackApiAdminKey());
+
+        GetDeviceRequest gdr = GetDeviceRequest.newBuilder()
+            .setDevEui(devEui)
+            .build();
+
+        try {
+            byte[] resp = this.execute(
+                HttpMethod.POST,
+                API_DEVICE_GET,
+                null,
+                heads,
+                gdr.toByteArray()
+            );
+            GetDeviceResponse dev = GetDeviceResponse.parseFrom(resp);
+            log.debug("Found device "+dev.getDevice().getDevEui());
+            return dev.getDevice();
+        } catch ( InvalidProtocolBufferException x ) {
+            log.error("Impossible to get chirpstack device config - protobuf");
+        } catch ( ITParseException x ) {
+            log.error("Impossible to get chirpstack device - parse");
+        } catch ( ITRightException x ) {
+            log.error("Impossible to get chirpstack device - rights");
+        } catch ( ITNotFoundException x ) {
+            log.error("Impossible to get chirpstack device - not found");
+        }
+        return null;
+    }
+
+
+    public boolean createOneOTAADevice(
+        String devEui,
+        String joinEui,
+        String appKey,
+        String tenantID,
+        String applicationID,
+        String devprofileID,
+        String description,
+        String name,
+        boolean isDisabled,
+        boolean isSkipFcntCheck
+    ) {
+        HttpHeaders heads = new HttpHeaders();
+        heads.add("authorization", "Bearer "+consoleConfig.getChirpstackApiAdminKey());
+
+        Device d = Device.newBuilder()
+            .setDevEui(devEui)
+            .setJoinEui(joinEui)
+            .setApplicationId(applicationID)
+            .setDeviceProfileId(devprofileID)
+            .setDescription(description)
+            .setName(name)
+            .setIsDisabled(isDisabled)
+            .setSkipFcntCheck(isSkipFcntCheck)
+            .putTags("app_eui",joinEui)
+            .build();
+
+        CreateDeviceRequest cdr = CreateDeviceRequest.newBuilder()
+            .setDevice(d)
+            .build();
+
+        try {
+            this.execute(
+                HttpMethod.POST,
+                API_DEVICE_CREATE,
+                null,
+                heads,
+                cdr.toByteArray()
+            );
+            log.debug("Creation device "+devEui+" ok");
+
+            if ( appKey != null ) {
+                DeviceKeys dk = DeviceKeys.newBuilder()
+                    .setDevEui(devEui)
+                    .setAppKey(appKey)
+                    .build();
+                CreateDeviceKeysRequest cdkr = CreateDeviceKeysRequest.newBuilder()
+                    .setDeviceKeys(dk)
+                    .build();
+                this.execute(
+                    HttpMethod.POST,
+                    API_DEVICE_CREATEKEY,
+                    null,
+                    heads,
+                    cdkr.toByteArray()
+                );
+                log.debug("Assigned key to device "+devEui+" ok");
+            }
+            return true;
+        } catch ( ITParseException x ) {
+            log.error("Impossible to get chirpstack device - parse");
+        } catch ( ITRightException x ) {
+            log.error("Impossible to get chirpstack device - rights");
+        } catch ( ITNotFoundException x ) {
+            log.error("Impossible to get chirpstack device - not found");
+        }
+        return false;
+    }
+
+
+    // ==================================================================
+    // Execute request
 
     public byte[] execute(
             HttpMethod httpMethod,
