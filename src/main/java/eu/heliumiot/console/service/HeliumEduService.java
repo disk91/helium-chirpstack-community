@@ -65,7 +65,7 @@ public class HeliumEduService {
     protected HeliumTenantSetupService heliumTenantSetupService;
 
     private boolean garbageRunning = false;
-    @Scheduled(fixedDelay = 300_000, initialDelay = 60_000) // default : 5 minutes
+    @Scheduled(fixedDelay = 300_000, initialDelay = 120_000) // default : 5 minutes
     private void deviceGarbageCollector() {
         if ( !this.enableEdu ) return;
         garbageRunning = true;
@@ -134,7 +134,12 @@ public class HeliumEduService {
             x.printStackTrace();
         } finally {
             // clear the Nova routes
-            novaService.deactivateDevices(toDeactivate);
+            try {
+                novaService.deactivateDevices(toDeactivate);
+            } catch (Exception e) {
+                log.error("deviceGarbageCollector Exception "+e.getMessage());
+                e.printStackTrace();
+            }
             garbageRunning = false;
         }
     }
@@ -144,7 +149,7 @@ public class HeliumEduService {
     // max duration
 
     private boolean cleanGarbageRunning = false;
-    @Scheduled(fixedDelay = 600_000, initialDelay = 60_000) // default : 10 minutes
+    @Scheduled(fixedDelay = 600_000, initialDelay = 150_000) // default : 10 minutes
     private void deviceCleanGarbageCollector() {
         if ( !this.enableEdu ) return;
         cleanGarbageRunning = true;
