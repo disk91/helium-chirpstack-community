@@ -613,7 +613,7 @@ public class HeliumDeviceService {
     private HeliumTenantSetupRepository heliumTenantSetupRepository;
 
     // resync the devices in the route
-    @Scheduled(fixedRate = 3600_000, initialDelay = 45_000)
+    @Scheduled(fixedRate = 3600_000, initialDelay = 55_000)
     private void resyncOnce() {
         if (resynced) return;
         long start = Now.NowUtcMs();
