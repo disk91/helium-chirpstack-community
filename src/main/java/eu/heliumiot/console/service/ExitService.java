@@ -27,6 +27,7 @@ import eu.heliumiot.console.mqtt.MqttSender;
 import eu.heliumiot.console.redis.RedisDeviceEventStreamListener;
 import eu.heliumiot.console.redis.RedisDeviceFrameStreamListener;
 import fr.ingeniousthings.tools.Now;
+import fr.ingeniousthings.tools.Tools;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -82,6 +83,9 @@ public class ExitService {
     @Autowired
     private NovaService novaService;
 
+    @Autowired
+    private HeliumEduService heliumEduService;
+
     @PreDestroy
     public void onCallExit() {
 
@@ -119,6 +123,11 @@ public class ExitService {
                 log.error("Redis event listener not stopping, force stop");
                 break;
             }
+        }
+
+        s = Now.NowUtcMs();
+        while ( !heliumEduService.stopService() && (Now.NowUtcMs() - s) < 30_000 ) {
+            Tools.sleep(100);
         }
 
         // ------------------------------------------------
