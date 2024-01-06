@@ -28,6 +28,7 @@ import org.springframework.stereotype.Repository;
 
 import java.sql.Timestamp;
 import java.util.List;
+import java.util.UUID;
 
 @Repository
 public interface DeviceRepository extends CrudRepository<Device, byte[]> {
@@ -36,7 +37,10 @@ public interface DeviceRepository extends CrudRepository<Device, byte[]> {
 
     public List<Device> findDeviceByCreatedAtGreaterThanOrderByCreatedAtAsc(Timestamp from);
 
-    public List<Device> findDeviceByCreatedAtBetweenOrderByCreatedAtAsc(Timestamp from, Timestamp to);
+    @Query(value = "SELECT * FROM device WHERE application_id <> ?1 AND created_at BETWEEN ?2 AND ?3 ORDER BY created_at ASC", nativeQuery = true)
+    public List<Device> findDeviceByNApplicationIdAndCreatedAtBetweenOrderByCreatedAtAsc(UUID appId, Timestamp from, Timestamp to);
+
+    public List<Device> findDeviceByApplicationIdAndCreatedAtBetweenOrderByCreatedAtAsc(UUID appId, Timestamp from, Timestamp to);
 
     public List<Device> findDeviceByUpdatedAtGreaterThanOrderByUpdatedAtAsc(Timestamp from);
 
