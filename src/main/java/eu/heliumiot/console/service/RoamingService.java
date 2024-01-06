@@ -106,42 +106,34 @@ public class RoamingService {
                     .setDevEui(devEui)
                     .build();
             try {
-                byte[] resp = chirpstackApiAccess.execute(
-                        HttpMethod.POST,
-                        "/api.DeviceService/Get",
-                        null,
-                        heads,
-                        gdr.toByteArray()
-                );
-                GetDeviceResponse dev = GetDeviceResponse.parseFrom(resp);
-                log.debug("Found device "+dev.getDevice().getDevEui());
 
-                io.chirpstack.api.Device ndev = dev.getDevice();
-                ndev = ndev.toBuilder()
+                io.chirpstack.api.Device ndev = chirpstackApiAccess.getOneDevice(devEui);
+                if ( ndev != null ) {
+                    ndev = ndev.toBuilder()
                         .setDeviceProfileId(target.getId().toString())
                         .build();
 
-                UpdateDeviceRequest udr = UpdateDeviceRequest.newBuilder()
+                    UpdateDeviceRequest udr = UpdateDeviceRequest.newBuilder()
                         .setDevice(ndev)
                         .build();
 
-                chirpstackApiAccess.execute(
+                    chirpstackApiAccess.execute(
                         HttpMethod.POST,
                         "/api.DeviceService/Update",
                         null,
                         heads,
                         udr.toByteArray()
-                );
-                log.debug("Updated device "+ndev.getDevEui());
+                    );
+                    log.debug("Updated device " + ndev.getDevEui());
+                } else {
+                    log.error("Failed to change device config, device get error");
+                }
 
             } catch ( ITRightException x ) {
                 log.error("Impossible to get device config - rights");
             } catch ( ITNotFoundException x ) {
                 log.error("Impossible to get device config - not found");
-            } catch ( InvalidProtocolBufferException x ) {
-                log.error("Impossible to get device config - protobuf");
             }
-
             // then
             prometeusService.roamingAddOne();
 

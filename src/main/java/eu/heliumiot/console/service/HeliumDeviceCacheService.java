@@ -128,6 +128,11 @@ public class HeliumDeviceCacheService {
         heliumDeviceCache.remove(deviceEui,false);
     }
 
+    public void flushHeliumDevice(HeliumDevice hdev) {
+        heliumDeviceRepository.save(hdev);
+        heliumDeviceCache.remove(hdev.getDeviceEui().toUpperCase(),false);
+    }
+
     /**
      * Get the tenant ID with a device EUI
      * @param deviceEui
