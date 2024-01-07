@@ -397,16 +397,14 @@ public class MqttLoRaListener implements MqttCallback {
 
     public void processBridgeMessage(long now, MqttEvent e) {
         try {
-            log.info(HexaConverters.byteToHexString(e.message.getPayload()));
             UplinkFrame uf = UplinkFrame.parseFrom(e.message.getPayload());
             // 00 9A2E3DD7EFF98160 9861BFC396F98160 75AB   D683 EED2
             //       app eui (rev)   dev eui (rev)  nonce  MIC  CRC
 
             byte[] payload = uf.getPhyPayload().toByteArray();
-            long rx = (uf.getRxInfo().getNsTime().getSeconds() * 1000) + (uf.getRxInfo().getNsTime().getNanos() / 1_000_000);
-            log.info("rxns "+rx+" "+uf.getRxInfo().getNsTime().toString());
-            rx = (uf.getRxInfo().getGwTime().getSeconds() * 1000) + (uf.getRxInfo().getGwTime().getNanos() / 1_000_000);
-            log.info("rx "+rx);
+
+            // Here we have a problem: the timestamp is a second and not ms, so we have an average offset of 500ms whatever
+            long rx = (uf.getRxInfo().getGwTime().getSeconds() * 1000) + (uf.getRxInfo().getGwTime().getNanos() / 1_000_000);
 
             boolean isJoin = (payload[0] == 0 && payload.length == 23);
             if ( !isJoin ) {
