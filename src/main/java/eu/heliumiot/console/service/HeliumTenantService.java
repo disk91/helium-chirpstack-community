@@ -27,7 +27,6 @@ import eu.heliumiot.console.ConsoleConfig;
 import eu.heliumiot.console.api.interfaces.*;
 import eu.heliumiot.console.chirpstack.ChirpstackApiAccess;
 import eu.heliumiot.console.jpa.db.*;
-import eu.heliumiot.console.jpa.db.Tenant;
 import eu.heliumiot.console.jpa.db.UserTenant;
 import eu.heliumiot.console.jpa.repository.*;
 import eu.heliumiot.console.mqtt.MqttSender;
@@ -377,6 +376,10 @@ public class HeliumTenantService {
                 // check deactivation
                 if ( !processBalance(ts,t) ) {
                     this.flushHeliumTenant(t);
+                } else {
+                    int p = (ts.getDcPer24BMessage() > 0 )?1:0;
+                    p += (ts.getDcPer24BDuplicate() > 0)?duplicates:0;
+                    prometeusService.addLoRaInvoicableUplink(p);
                 }
             }
         }
@@ -421,6 +424,8 @@ public class HeliumTenantService {
                 // check deactivation
                 if ( !processBalance(ts,t) ) {
                     this.flushHeliumTenant(t);
+                } else if (ts.getDcPer24BDownlink() > 0){
+                    prometeusService.addLoRaInvoicableDownlink(1);
                 }
             }
         }
@@ -461,7 +466,7 @@ public class HeliumTenantService {
      * @param deviceUUID
      * @param devAddr
      */
-    public void processJoin(String tenantUUID, String deviceUUID, String devAddr ) {
+    public void processJoinAccept(String tenantUUID, String deviceUUID, String devAddr ) {
         long start = Now.NowUtcMs();
         HeliumDeviceStatItf i = new HeliumDeviceStatItf();
         i.setDeviceId(deviceUUID);
@@ -494,6 +499,8 @@ public class HeliumTenantService {
                 // check deactivation
                 if ( !processBalance(ts,t) ) {
                     this.flushHeliumTenant(t);
+                } else if (ts.getDcPerJoinAccept() > 0) {
+                    prometeusService.addLoRaInvoicableDownlink(1);
                 }
             }
         }
@@ -509,7 +516,7 @@ public class HeliumTenantService {
      * @param deviceEui
      * @param packets
      */
-    public void invoiceJoin(String deviceEui, int packets ) {
+    public void processJoinRequest(String deviceEui, int packets ) {
         long start = Now.NowUtcMs();
         String tenantUUID = heliumDeviceCacheService.getTenantId(deviceEui);
         if ( tenantUUID == null ) {
@@ -558,8 +565,9 @@ public class HeliumTenantService {
                 // check deactivation
                 if ( !processBalance(ts,t) ) {
                     this.flushHeliumTenant(t);
+                } else  if ( ts.getDcPerJoinRequest() > 0 ){
+                    prometeusService.addLoRaInvoicableUplink(packets);
                 }
-                prometeusService.addLoRaInvoicableUplink(packets);
             }
         }
         log.debug("Process JOIN invoicing in "+(Now.NowUtcMs()-start)+"ms");
