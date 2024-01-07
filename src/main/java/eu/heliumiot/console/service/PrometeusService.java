@@ -63,13 +63,14 @@ public class PrometeusService {
     private long loRaJoinTravelTime = 0;        // sum of travel time for Join Requests
     private long loRaJoinByteCounts = 0;        // sum of byte related to Join Request
 
-
     private long loRaFirstUplinkTravelTime = 0; // the travel time for the first of the replicates only
     private long loRaFirstUplinkCount = 0;      // the number of different packet (only the first)
     private long loRaLateUplinkTravelTime = 0;  // the travel time for the late packets (over 2s)
     private long loRaLateUplinkCount = 0;       // the number of late packets received
-    private long loRaGatewayUplink = 0;         // the number of uplink (including join) seen at gateway level ( invoiced by hpr )
-    private long loRaInvoicableUplink = 0;      // the number of uplink (including join) proceed by invoice mechanism
+    private long loRaGatewayUplink = 0;         // the number of uplink (including join) seen at gateway level ( invoiced by hpr ) but when timing are incorrect this counter may wrong for invoicing
+    private long loRaInvoicableUplink = 0;      // the number of uplink packets (including join) proceed by invoice mechanism
+    private long loRaInvoicableDownlink = 0;    // the number of downlink packets (including join) proceed by invoice mechanism
+    private long heliumInvoicedPackets = 0;     // the packet invoiced by the HPR
 
     private long loRaMessageProcessingTime = 0; // The time spend for processing lora message on MQTT to see variations
     private long loRaMessageProcessed = 0;      // The number of LoRa / MQTT messages processed
@@ -177,9 +178,18 @@ public class PrometeusService {
         this.loRaMessageProcessed ++;
     }
 
+    public void addHeliumInvoicedPacket() {
+        this.heliumInvoicedPackets++;
+    }
+
     synchronized public void addLoRaInvoicableUplink(int packets) {
         this.loRaInvoicableUplink += packets;
     }
+
+    synchronized public void addLoRaInvoicableDownlink(int packets) {
+        this.loRaInvoicableDownlink += packets;
+    }
+
 
     synchronized public void addRedisStreamError() { this.redisStreamReadError++; }
 
@@ -384,8 +394,12 @@ public class PrometeusService {
         return ()->loRaGatewayUplink;
     }
 
-    protected Supplier<Number> getLoRaInvoicablePacket() {
+    protected Supplier<Number> getLoRaInvoicableUpPacket() {
         return ()->loRaInvoicableUplink;
+    }
+
+    protected Supplier<Number> getLoRaInvoicableDwnPacket() {
+        return ()->loRaInvoicableDownlink;
     }
 
     protected Supplier<Number> getLoRaTotalBytesDownlink() {
@@ -442,6 +456,8 @@ public class PrometeusService {
 
     protected Supplier<Number> getLoRaMessageProcessed() { return ()->loRaMessageProcessed; }
     protected Supplier<Number> getLoRaMessageProcessingTime() { return ()->loRaMessageProcessingTime; }
+
+    protected Supplier<Number> getHeliumInvoicedPackets() { return ()->heliumInvoicedPackets; }
 
     public PrometeusService(MeterRegistry registry) {
 
@@ -587,8 +603,14 @@ public class PrometeusService {
         Gauge.builder("cons.lora.gateway.traveltime", getLoRagatewayTravelTime())
             .description("Travel time for packet received at gateway bridge level, not lns accepted")
             .register(registry);
-        Gauge.builder("cons.lora.invoicable.uplink", getLoRaInvoicablePacket())
-            .description("Number of packets received processed by the invoicing mechanism")
+        Gauge.builder("cons.lora.invoicable.uplink", getLoRaInvoicableUpPacket())
+            .description("Number of uplink packets received processed by the invoicing mechanism")
+            .register(registry);
+        Gauge.builder("cons.lora.invoicable.downlink", getLoRaInvoicableDwnPacket())
+            .description("Number of downlink packets received processed by the invoicing mechanism")
+            .register(registry);
+        Gauge.builder("cons.lora.hpr.invoiced.uplink", getHeliumInvoicedPackets())
+            .description("Number of packets invoiced by helium hpr")
             .register(registry);
         Gauge.builder("cons.lora.process.duration", getLoRaMessageProcessingTime())
             .description("Duration of the LoRa Frame processing in Mqtt listener")

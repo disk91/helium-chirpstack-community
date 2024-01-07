@@ -81,7 +81,7 @@ public class MqttLoRaListener implements MqttCallback {
         }
         // Clear the pending Join
         for (DeviceDedup _d : dedupHashMap.values()) {
-            heliumTenantService.invoiceJoin(_d.devEui, _d.count);
+            heliumTenantService.processJoinRequest(_d.devEui, _d.count);
         }
         this.stopped = true;
     }
@@ -370,6 +370,7 @@ public class MqttLoRaListener implements MqttCallback {
 
     protected static class ToDedup {
         public long firstArrivalTime;       // server time for first of the packets
+        public long firstRxTime;            // hotspot time, this to eventually clean the data
         public boolean isJoin;              // true when a join packet
         public String key;                  // entry key
         public String firstGatewayId;       // for identification
@@ -410,7 +411,15 @@ public class MqttLoRaListener implements MqttCallback {
 
             byte[] payload = uf.getPhyPayload().toByteArray();
             long rx = (uf.getRxInfo().getGwTime().getSeconds() * 1000) + (uf.getRxInfo().getGwTime().getNanos() / 1_000_000);
+            log.info("rx "+rx);
+            rx = (uf.getRxInfo().getNsTime().getSeconds() * 1000) + (uf.getRxInfo().getNsTime().getNanos() / 1_000_000);
+            log.info("rxns "+rx);
+
             boolean isJoin = (payload[0] == 0 && payload.length == 23);
+            if ( !isJoin ) {
+                // join packets are free, other invoiced
+                prometeusService.addHeliumInvoicedPacket();
+            }
 
             String spayload = HexaConverters.byteToHexString(payload);
             // Manage arrival time for the first frame
@@ -424,6 +433,7 @@ public class MqttLoRaListener implements MqttCallback {
                 dedup = new ToDedup();
                 dedup.firstGatewayId = uf.getRxInfo().getGatewayId();
                 dedup.firstArrivalTime = e.arrivalTime;
+                dedup.firstRxTime = rx;
                 dedup.key = spayload;
                 dedup.duplicates = 1;
                 dedup.duplicatesInvoiced = 0;
@@ -473,7 +483,10 @@ public class MqttLoRaListener implements MqttCallback {
                 if ((e.arrivalTime - rx) < 1_000) {
                     // consider it as a gateway time error more than the reality of the travel time.
                     // we could also measure the mqtt latency to correct the internal process duration
-                    prometeusService.addLoRaFirstUplink(now - rx);
+                    if ( (e.arrivalTime - rx ) > 0 ) {
+                        // gateway time looks acceptable
+                        prometeusService.addLoRaFirstUplink(e.arrivalTime - rx);
+                    }
                 }
             } else {
                 // *** COPY
@@ -501,15 +514,19 @@ public class MqttLoRaListener implements MqttCallback {
             if (isJoin) {
                 prometeusService.addLoRaJoinRequest(e.arrivalTime - rx);
             } else {
-                prometeusService.addLoRaGatewayUplink(e.arrivalTime - rx);
+                if ( rx >= (dedup.firstRxTime-100) ) {
+                    // if a frame arrives after the first one but in the past with more than
+                    // 100 ms, we can consider the clock as invalid, first clock or next clocks
+                    prometeusService.addLoRaGatewayUplink(e.arrivalTime - rx);
 
-                // Measure uplink confirmed processing time
-                // Based on GW time, so it's an approximation
-                if ((payload[0] & 0xC0) == 0x80 && uf.getRxInfo().getGwTime().getSeconds() > 0) {
-                    // header for confirmed frame - compute elapse time in ms
-                    prometeusService.addLoRaUplinkConf(
-                        e.arrivalTime - rx
-                    );
+                    // Measure uplink confirmed processing time
+                    // Based on GW time, so it's an approximation
+                    if ((payload[0] & 0xC0) == 0x80 && uf.getRxInfo().getGwTime().getSeconds() > 0) {
+                        // header for confirmed frame - compute elapse time in ms
+                        prometeusService.addLoRaUplinkConf(
+                            e.arrivalTime - rx
+                        );
+                    }
                 }
             }
 
@@ -673,7 +690,7 @@ public class MqttLoRaListener implements MqttCallback {
                 try {
                     JoinEvent je = mapper.readValue(e.message.toString(), JoinEvent.class);
                     log.debug("JOIN - Dev: " + je.getDeviceInfo().getDeviceName() + " Adr:" + je.getDevAddr() + " timestamp :" + DateConverters.StringDateToMs(je.getTime()));
-                    heliumTenantService.processJoin(
+                    heliumTenantService.processJoinAccept(
                         je.getDeviceInfo().getTenantId(),
                         je.getDeviceInfo().getDevEui(),
                         je.getDevAddr()
@@ -742,7 +759,7 @@ public class MqttLoRaListener implements MqttCallback {
                     }
                 }
                 for (ToInvoice t : toInvoice) {
-                    heliumTenantService.invoiceJoin(t.devEui, t.dcs);
+                    heliumTenantService.processJoinRequest(t.devEui, t.dcs);
                 }
                 this.lastCleanJoinDedup = now;
             }
