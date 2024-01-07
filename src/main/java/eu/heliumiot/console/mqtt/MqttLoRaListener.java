@@ -402,10 +402,10 @@ public class MqttLoRaListener implements MqttCallback {
             //       app eui (rev)   dev eui (rev)  nonce  MIC  CRC
 
             byte[] payload = uf.getPhyPayload().toByteArray();
-            long rx = (uf.getRxInfo().getGwTime().getSeconds() * 1000) + (uf.getRxInfo().getGwTime().getNanos() / 1_000_000);
+            long rx = (uf.getRxInfo().getNsTime().getSeconds() * 1000) + (uf.getRxInfo().getNsTime().getNanos() / 1_000_000);
+            log.info("rxns "+rx+" "+uf.getRxInfo().getNsTime().toString());
+            rx = (uf.getRxInfo().getGwTime().getSeconds() * 1000) + (uf.getRxInfo().getGwTime().getNanos() / 1_000_000);
             log.info("rx "+rx);
-            rx = (uf.getRxInfo().getNsTime().getSeconds() * 1000) + (uf.getRxInfo().getNsTime().getNanos() / 1_000_000);
-            log.info("rxns "+rx);
 
             boolean isJoin = (payload[0] == 0 && payload.length == 23);
             if ( !isJoin ) {
