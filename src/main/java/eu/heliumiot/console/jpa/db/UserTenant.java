@@ -32,12 +32,12 @@ import java.util.UUID;
 @Table(name = "tenant_user", schema = "public")
 public class UserTenant {
     @Id
-    @GenericGenerator(name = "UUIDGenerator", type = org.hibernate.id.uuid.UuidGenerator.class)
+    @GeneratedValue(strategy = GenerationType.UUID)
     @Column(name = "user_id", updatable = false, nullable = false)
     private UUID userId;
 
     @Id
-    @GenericGenerator(name = "UUIDGenerator", type = org.hibernate.id.uuid.UuidGenerator.class)
+    @GeneratedValue(strategy = GenerationType.UUID)
     @Column(name = "tenant_id", updatable = false, nullable = false)
     private UUID tenantId;
 

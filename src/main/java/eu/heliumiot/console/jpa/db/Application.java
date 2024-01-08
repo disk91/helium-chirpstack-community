@@ -31,14 +31,13 @@ import java.util.UUID;
 @Table(name = "application")
 public class Application {
     @Id
-    @GenericGenerator(name = "UUIDGenerator", type = org.hibernate.id.uuid.UuidGenerator.class)
+    @GeneratedValue(strategy = GenerationType.UUID)
     @Column(name = "id", updatable = false, nullable = false)
     private UUID id;
 
     private String name;
 
     @Column(name = "tenant_id")
-    @GenericGenerator(name = "UUIDGenerator", type = org.hibernate.id.uuid.UuidGenerator.class)
     private UUID tenantId;
 
     // ---

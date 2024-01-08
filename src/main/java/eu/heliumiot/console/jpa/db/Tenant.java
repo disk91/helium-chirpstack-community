@@ -31,8 +31,7 @@ import java.util.UUID;
 @Table(name = "tenant")
 public class Tenant {
     @Id
-    @GenericGenerator(name = "UUIDGenerator", type = org.hibernate.id.uuid.UuidGenerator.class)
-    @GeneratedValue(generator = "UUIDGenerator")
+    @GeneratedValue(strategy = GenerationType.UUID)
     @Column(name = "id", updatable = false, nullable = false)
     private UUID id;
     private boolean can_have_gateways;

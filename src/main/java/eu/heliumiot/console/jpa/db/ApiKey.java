@@ -19,13 +19,10 @@
  */
 package eu.heliumiot.console.jpa.db;
 
+import jakarta.persistence.*;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Immutable;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
 import java.sql.Timestamp;
 import java.util.UUID;
 
@@ -34,14 +31,13 @@ import java.util.UUID;
 @Table(name = "api_key")
 public class ApiKey {
     @Id
-    @GenericGenerator(name = "UUIDGenerator", type = org.hibernate.id.uuid.UuidGenerator.class)
+    @GeneratedValue(strategy = GenerationType.UUID)
     @Column(name = "id", updatable = false, nullable = false)
     private UUID id;
 
     private String name;
 
     @Column(name = "tenant_id")
-    @GenericGenerator(name = "UUIDGenerator", type = org.hibernate.id.uuid.UuidGenerator.class)
     private UUID tenantId;
 
     @Column(name = "is_admin")

@@ -45,11 +45,10 @@ public class Device {
     private String name;
     @Column(name = "dev_addr")
     private byte[] devAddr;
-    @GenericGenerator(name = "UUIDGenerator", type = org.hibernate.id.uuid.UuidGenerator.class)
+
     @Column(name = "application_id")
     private UUID applicationId;
 
-    @GenericGenerator(name = "UUIDGenerator", type = org.hibernate.id.uuid.UuidGenerator.class)
     @Column(name = "device_profile_id")
     private UUID deviceProfileId;
 
