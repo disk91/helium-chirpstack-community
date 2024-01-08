@@ -88,7 +88,7 @@ public class RedisDeviceFrameStreamListener {
     @Autowired
     protected PrometeusService prometeusService;
 
-    @Scheduled(fixedRateString = "${spring.redis.metaRefreshRate}", initialDelay = 2_000)
+    @Scheduled(fixedRateString = "${spring.data.redis.metaRefreshRate}", initialDelay = 2_000)
     void ListenOnRedisStreamMeta() {
 
         if ( ! this.serviceEnable ) return;
