@@ -37,10 +37,13 @@ import org.springframework.web.client.HttpServerErrorException;
 import org.springframework.web.client.RestTemplate;
 
 import javax.servlet.http.HttpServletRequest;
+import java.io.IOError;
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.nio.file.InvalidPathException;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -145,8 +148,7 @@ public class ProxyApi {
         ActionResult r = ActionResult.MALFORMED();
         try {
             // check the requested url pattern
-            URL u = new URL(reqItf.getEndpoint());
-            URI uri = u.toURI();
+            URI uri = Paths.get(reqItf.getEndpoint()).toUri();
             log.debug(uri.getHost()); // force to use uri.
 
             if ( reqItf.getKey() != null && reqItf.getKey().length() > 0 ) {
@@ -188,9 +190,7 @@ public class ProxyApi {
             } else {
                 r.setMessage("invalid_key");
             }
-        } catch ( MalformedURLException x ) {
-            r.setMessage("malformed_endpoint");
-        } catch ( URISyntaxException x ) {
+        } catch (InvalidPathException | IOError | SecurityException x ) {
             r.setMessage("malformed_endpoint");
         } catch ( HttpClientErrorException x ) {
             r.setMessage("client_error");
@@ -220,8 +220,7 @@ public class ProxyApi {
         // check the requested url pattern
         ActionResult r = ActionResult.MALFORMED();
         try {
-            URL u = new URL(reqItf.getEndpoint());
-            URI uri = u.toURI();
+            URI uri = Paths.get(reqItf.getEndpoint()).toUri();
             log.debug(uri.getHost()); // force to use uri.
 
             if ( reqItf.getKey() != null && reqItf.getKey().length() > 0 ) {
@@ -260,9 +259,7 @@ public class ProxyApi {
             } else {
                 r.setMessage("invalid_key");
             }
-        } catch ( MalformedURLException x ) {
-            r.setMessage("malformed_endpoint");
-        } catch ( URISyntaxException x ) {
+        } catch (InvalidPathException | IOError | SecurityException x ) {
             r.setMessage("malformed_endpoint");
         } catch ( HttpClientErrorException x ) {
             r.setMessage("client_error");

@@ -2,7 +2,7 @@ package eu.heliumiot.console.redis;
 
 import com.google.protobuf.InvalidProtocolBufferException;
 import fr.ingeniousthings.tools.HexaConverters;
-import io.chirpstack.api.internal.Internal;
+import io.chirpstack.internal.DeviceSession;
 import io.lettuce.core.*;
 import io.lettuce.core.api.StatefulRedisConnection;
 import io.lettuce.core.api.sync.RedisCommands;
@@ -71,13 +71,13 @@ public class RedisDeviceRepository {
         return devEuis;
     }
 
-    public Internal.DeviceSession getDeviceDetails(String devEUI) {
+    public DeviceSession getDeviceDetails(String devEUI) {
         devEUI = devEUI.toLowerCase();
         byte[] deviceInfo = syncCommands.get("device:{"+devEUI+"}:ds");
         if ( deviceInfo == null ) return null;
 
         try {
-            Internal.DeviceSession devSession = Internal.DeviceSession.parseFrom(deviceInfo);
+            DeviceSession devSession = DeviceSession.parseFrom(deviceInfo);
             log.debug("devEUI :"+HexaConverters.byteToHexString(devSession.getDevEui().toByteArray()));
             log.debug("devADDR :"+HexaConverters.byteToHexString(devSession.getDevAddr().toByteArray()));
             log.debug("NtwkSkey : "+HexaConverters.byteToHexString(devSession.getNwkSEncKey().toByteArray()));

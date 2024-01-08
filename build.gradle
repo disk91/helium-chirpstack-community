@@ -1,7 +1,7 @@
 plugins {
 	id 'java'
-	id 'org.springframework.boot' version '2.7.14'
-	id 'io.spring.dependency-management' version '1.0.15.RELEASE'
+	id 'org.springframework.boot' version '2.7.18'
+	id 'io.spring.dependency-management' version '1.1.4'
 }
 
 compileJava {
@@ -10,7 +10,7 @@ compileJava {
 
 group = 'eu.helium-iot'
 version = '0.0.1-SNAPSHOT'
-sourceCompatibility = '11'
+sourceCompatibility = '21'
 
 repositories {
 	mavenCentral()
@@ -32,27 +32,27 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-validation'
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 	implementation 'org.springframework.boot:spring-boot-starter-data-redis'
-	implementation 'org.springframework.boot:spring-boot-starter-actuator'
+    implementation 'org.springframework.boot:spring-boot-starter-actuator'
 	implementation group: 'org.eclipse.paho', name:'org.eclipse.paho.client.mqttv3', version: '1.2.5'
-	implementation group: 'io.micrometer', name: 'micrometer-registry-prometheus', version: '1.11.2'
-	implementation group: 'org.postgresql', name: 'postgresql', version: '42.6.0'
-	implementation group: 'redis.clients', name: 'jedis', version: '4.4.3'
-	implementation group: 'com.google.protobuf', name: 'protobuf-java-util', version: '3.24.0'
+	implementation group: 'io.micrometer', name: 'micrometer-registry-prometheus', version: '1.12.1'
+	implementation group: 'org.postgresql', name: 'postgresql', version: '42.7.1'
+	implementation group: 'redis.clients', name: 'jedis', version: '5.1.0'
+	implementation group: 'com.google.protobuf', name: 'protobuf-java-util', version: '3.25.1'
 	implementation group: 'org.springdoc', name: 'springdoc-openapi-ui', version: '1.6.15'
-	implementation group: 'javax.xml.bind', name: 'jaxb-api', version: '2.3.1'
-	implementation group: 'io.grpc', name: 'grpc-okhttp', version: '1.57.1'
-	implementation group: 'io.grpc', name: 'grpc-netty', version:'1.57.1'
-	implementation group: 'io.grpc', name: 'grpc-protobuf', version:'1.57.1'
-	implementation group: 'io.grpc', name: 'grpc-stub', version:'1.57.1'
-	implementation group: 'org.bouncycastle', name: 'bcprov-jdk15on', version: '1.70'
-	implementation group: 'io.jsonwebtoken', name: 'jjwt-api', version: '0.11.5'
-	implementation group: 'org.flywaydb', name: 'flyway-core', version: '9.21.1'
-	implementation group: 'com.stripe', name:'stripe-java', version:'22.31.0'
-	implementation group: 'org.apache.pdfbox', name:'pdfbox', version:'2.0.29'
+	implementation group: 'jakarta.xml.bind', name: 'jakarta.xml.bind-api', version: '4.0.1'
+	implementation group: 'io.grpc', name: 'grpc-okhttp', version: '1.60.1'
+	implementation group: 'io.grpc', name: 'grpc-netty', version:'1.60.1'
+	implementation group: 'io.grpc', name: 'grpc-protobuf', version:'1.60.1'
+	implementation group: 'io.grpc', name: 'grpc-stub', version:'1.60.1'
+	implementation group: 'org.bouncycastle', name: 'bcprov-jdk18on', version: '1.77'
+	implementation group: 'io.jsonwebtoken', name: 'jjwt-api', version: '0.12.3'
+	implementation group: 'org.flywaydb', name: 'flyway-core', version: '10.4.1'
+	implementation group: 'com.stripe', name:'stripe-java', version:'24.10.0'
+	implementation group: 'org.apache.pdfbox', name:'pdfbox', version:'3.0.1'
 
-	runtimeOnly group: 'org.postgresql', name: 'postgresql', version: '42.6.0'
-	runtimeOnly group: 'io.jsonwebtoken', name: 'jjwt-impl', version: '0.11.5'
-	runtimeOnly group: 'io.jsonwebtoken', name: 'jjwt-jackson', version: '0.11.5'
+	runtimeOnly group: 'org.postgresql', name: 'postgresql', version: '42.7.1'
+	runtimeOnly group: 'io.jsonwebtoken', name: 'jjwt-impl', version: '0.12.3'
+	runtimeOnly group: 'io.jsonwebtoken', name: 'jjwt-jackson', version: '0.12.3'
 	//testImplementation 'org.springframework.boot:spring-boot-starter-test'
 }
 

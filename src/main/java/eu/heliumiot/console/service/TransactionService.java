@@ -20,7 +20,9 @@ import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDPage;
 import org.apache.pdfbox.pdmodel.PDPageContentStream;
 import org.apache.pdfbox.pdmodel.common.PDRectangle;
+import org.apache.pdfbox.pdmodel.font.PDFont;
 import org.apache.pdfbox.pdmodel.font.PDType1Font;
+import org.apache.pdfbox.pdmodel.font.Standard14Fonts;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -512,10 +514,12 @@ public class TransactionService {
             PDPage page = new PDPage();
             document.addPage(page);
             PDPageContentStream contentStream = new PDPageContentStream(document, page);
+            PDFont bold = new PDType1Font(Standard14Fonts.FontName.TIMES_BOLD);
+            PDFont normal = new PDType1Font(Standard14Fonts.FontName.TIMES_ROMAN);
 
             // company name
             contentStream.beginText();
-            contentStream.setFont(PDType1Font.TIMES_BOLD, 14);
+            contentStream.setFont(bold, 14);
             contentStream.newLineAtOffset(10, 750);
             p = heliumParameterService.getParameter(HeliumParameterService.PARAM_COMPANY_NAME);
             contentStream.showText(p.getStrValue());
@@ -524,7 +528,7 @@ public class TransactionService {
             // invoice Id
             contentStream.moveTo(0,0);
             contentStream.beginText();
-            contentStream.setFont(PDType1Font.TIMES_BOLD, 12);
+            contentStream.setFont(bold, 12);
             contentStream.newLineAtOffset(300, 750);
             contentStream.showText("Invoice ID: "+t.getId().toString());
             contentStream.endText();
@@ -532,7 +536,7 @@ public class TransactionService {
             // customer Id
             contentStream.moveTo(0,0);
             contentStream.beginText();
-            contentStream.setFont(PDType1Font.TIMES_BOLD, 12);
+            contentStream.setFont(bold, 12);
             contentStream.newLineAtOffset(300, 734);
             contentStream.showText("Customer ID: "+t.getUserUUID());
             contentStream.endText();
@@ -543,7 +547,7 @@ public class TransactionService {
                 if (tenant != null) {
                     contentStream.moveTo(0, 0);
                     contentStream.beginText();
-                    contentStream.setFont(PDType1Font.TIMES_BOLD, 12);
+                    contentStream.setFont(bold, 12);
                     contentStream.newLineAtOffset(300, 718);
                     contentStream.showText("Tenant NAME: " + tenant.getName());
                     contentStream.endText();
@@ -553,10 +557,10 @@ public class TransactionService {
             // date
             contentStream.moveTo(0,0);
             contentStream.beginText();
-            contentStream.setFont(PDType1Font.TIMES_ROMAN, 12);
+            contentStream.setFont(bold, 12);
             contentStream.newLineAtOffset(300, 702);
             Date d = new Date(t.getIntentTime());
-            Locale locale = new Locale("en", "US");
+            Locale locale = Locale.of("en", "US");
             SimpleDateFormat sdf =  new SimpleDateFormat("yyyy-MMMM-dd",locale);
             contentStream.showText("Date: "+sdf.format(d));
             contentStream.endText();
@@ -565,7 +569,7 @@ public class TransactionService {
             contentStream.moveTo(0,0);
             contentStream.beginText();
             contentStream.newLineAtOffset(10, 734);
-            contentStream.setFont(PDType1Font.TIMES_ROMAN, 12);
+            contentStream.setFont(bold, 12);
             p = heliumParameterService.getParameter(HeliumParameterService.PARAM_COMPANY_ADDRESS);
             String [] ss = p.getStrValue().split("\n");
             for ( String s : ss ) {
@@ -584,7 +588,7 @@ public class TransactionService {
                     contentStream.moveTo(0, 0);
                     contentStream.beginText();
                     contentStream.newLineAtOffset(300, offset);
-                    contentStream.setFont(PDType1Font.TIMES_ROMAN, 12);
+                    contentStream.setFont(normal, 12);
                     try {
                         contentStream.showText(s);
                     } catch ( java.lang.IllegalArgumentException x ) {
@@ -604,7 +608,7 @@ public class TransactionService {
                 contentStream.moveTo(0, 0);
                 contentStream.beginText();
                 contentStream.newLineAtOffset(300, offset);
-                contentStream.setFont(PDType1Font.TIMES_ROMAN, 12);
+                contentStream.setFont(normal, 12);
                 try {
                     contentStream.showText(first+' '+last);
                 } catch ( java.lang.IllegalArgumentException x ) {
@@ -642,7 +646,7 @@ public class TransactionService {
                 contentStream.moveTo(0, 0);
                 contentStream.beginText();
                 contentStream.newLineAtOffset(300, offset);
-                contentStream.setFont(PDType1Font.TIMES_ROMAN, 12);
+                contentStream.setFont(normal, 12);
                 try {
                     contentStream.showText(cn+", "+ci);
                 } catch ( java.lang.IllegalArgumentException x ) {
@@ -667,7 +671,7 @@ public class TransactionService {
 
             contentStream.moveTo(0,0);
             contentStream.beginText();
-            contentStream.setFont(PDType1Font.TIMES_BOLD, 10);
+            contentStream.setFont(bold, 10);
             contentStream.newLineAtOffset(qtyPos, tableStart);
             contentStream.showText("Quantity");
             contentStream.newLineAtOffset(descPos-qtyPos, 0);
@@ -692,7 +696,7 @@ public class TransactionService {
             // DCs line
             contentStream.moveTo(0,0);
             contentStream.beginText();
-            contentStream.setFont(PDType1Font.TIMES_ROMAN, 10);
+            contentStream.setFont(normal, 10);
             contentStream.newLineAtOffset(qtyPos, tableStart-20);
             contentStream.showText(""+String.format("%,d",t.getDcs()));
             contentStream.newLineAtOffset(descPos-qtyPos, 0);
@@ -723,11 +727,11 @@ public class TransactionService {
 
             contentStream.moveTo(0,0);
             contentStream.beginText();
-            contentStream.setFont(PDType1Font.TIMES_ROMAN, 9);
+            contentStream.setFont(normal, 9);
             contentStream.newLineAtOffset(pricePos, tableStart-tableHeight);
             contentStream.showText("Total w/o taxes");
             contentStream.newLineAtOffset(totalPos-pricePos, 0);
-            contentStream.setFont(PDType1Font.TIMES_BOLD, 9);
+            contentStream.setFont(bold, 9);
             switch (cur) {
                 case 1: // euro
                     contentStream.showText(""+String.format("%,.2f",ht)+"€");
@@ -744,11 +748,11 @@ public class TransactionService {
             // taxes
             contentStream.moveTo(0,0);
             contentStream.beginText();
-            contentStream.setFont(PDType1Font.TIMES_ROMAN, 9);
+            contentStream.setFont(normal, 9);
             contentStream.newLineAtOffset(pricePos, tableStart-tableHeight-12);
             contentStream.showText("Taxes ("+String.format("%,.2f",t.getApplicableVAT()*100)+"%)");
             contentStream.newLineAtOffset(totalPos-pricePos, 0);
-            contentStream.setFont(PDType1Font.TIMES_BOLD, 9);
+            contentStream.setFont(bold, 9);
             switch (cur) {
                 case 1: // euro
                     contentStream.showText(""+String.format("%,.2f",vat)+"€");
@@ -765,11 +769,11 @@ public class TransactionService {
             // total with tax
             contentStream.moveTo(0,0);
             contentStream.beginText();
-            contentStream.setFont(PDType1Font.TIMES_ROMAN, 9);
+            contentStream.setFont(normal, 9);
             contentStream.newLineAtOffset(pricePos, tableStart-tableHeight-24);
             contentStream.showText("Total with taxes");
             contentStream.newLineAtOffset(totalPos-pricePos, 0);
-            contentStream.setFont(PDType1Font.TIMES_BOLD, 9);
+            contentStream.setFont(bold, 9);
             switch (cur) {
                 case 1: // euro
                     contentStream.showText(""+String.format("%,.2f",(t.getStripeAmount()/100.0))+"€");
@@ -786,7 +790,7 @@ public class TransactionService {
             // Other information
             contentStream.moveTo(0,0);
             contentStream.beginText();
-            contentStream.setFont(PDType1Font.TIMES_ROMAN, 9);
+            contentStream.setFont(normal, 9);
             contentStream.newLineAtOffset(descPos, tableStart-tableHeight);
             switch (cur) {
                 case 1: // euro
@@ -803,14 +807,14 @@ public class TransactionService {
 
             contentStream.moveTo(0,0);
             contentStream.beginText();
-            contentStream.setFont(PDType1Font.TIMES_ROMAN, 9);
+            contentStream.setFont(normal, 9);
             contentStream.newLineAtOffset(descPos, tableStart-tableHeight-12);
             contentStream.showText("Currency conversion rate applied by stripe: "+String.format("%,.4f",(t.getStripeCRate())));
             contentStream.endText();
 
             contentStream.moveTo(0,0);
             contentStream.beginText();
-            contentStream.setFont(PDType1Font.TIMES_BOLD, 9);
+            contentStream.setFont(bold, 9);
             contentStream.newLineAtOffset(descPos, tableStart-tableHeight-24);
             contentStream.showText("Invoice paid online");
             contentStream.endText();
@@ -821,7 +825,7 @@ public class TransactionService {
                 if ( memo.length() > 0 ) {
                     contentStream.moveTo(0,0);
                     contentStream.beginText();
-                    contentStream.setFont(PDType1Font.TIMES_BOLD, 9);
+                    contentStream.setFont(bold, 9);
                     contentStream.newLineAtOffset(qtyPos, tableStart-tableHeight-64);
                     try {
                         contentStream.showText("Customer additional information : "+memo);
@@ -839,7 +843,7 @@ public class TransactionService {
             contentStream.addRect(10,30,580,1);
             contentStream.fill();
             contentStream.beginText();
-            contentStream.setFont(PDType1Font.TIMES_ROMAN, 10);
+            contentStream.setFont(normal, 10);
             contentStream.newLineAtOffset(10, 10);
             p = heliumParameterService.getParameter(HeliumParameterService.PARAM_COMPANY_VAT);
             contentStream.showText("VAT # "+p.getStrValue());

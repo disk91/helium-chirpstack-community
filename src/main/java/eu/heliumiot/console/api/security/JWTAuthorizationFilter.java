@@ -48,7 +48,8 @@ public class JWTAuthorizationFilter extends GenericFilterBean {
 
     private final Logger log = LoggerFactory.getLogger(this.getClass());
 
-    protected class MyGrantedAuthority implements GrantedAuthority {
+    protected static class MyGrantedAuthority implements GrantedAuthority {
+
         private static final long serialVersionUID = 0L;
         protected String authority;
 
@@ -86,33 +87,36 @@ public class JWTAuthorizationFilter extends GenericFilterBean {
 
         // Verify Bearer and return user or error
         try {
+            String token = authHeader.replace("Bearer ","");
+            Claims claims = Jwts.parser()
+                .keyLocator(new Locator<Key>() {
+                    @Override
+                    public Key locate(Header header) {
+                        if (header instanceof JwsHeader) {
+                            JwsHeader jwsh = (JwsHeader)header;
+                            String user = (String)jwsh.get("sub");
+                            log.error("find sub: "+user);
+                            String algo = jwsh.getAlgorithm();
+                            log.error("find alg: "+algo);
+                            UserCacheService.UserCacheElement u = userCacheService.getUserById(user);
+                            if ( u == null ) return null;
+                            return userService.generateKeyForUser(u.heliumUser);
+                        }
+                        log.error("Invalid type of headers");
+                        return null;
+                    }})
+                .build()
+                .parseSignedClaims(token).getPayload();
 
-            SigningKeyResolver signingKeyResolver = new SigningKeyResolverAdapter() {
-
-                @Override
-                @SuppressWarnings("rawtypes")
-                public Key resolveSigningKey(JwsHeader header, Claims _claims) {
-                    // Examine header and claims
-                    String user = _claims.getSubject();
-                    UserCacheService.UserCacheElement u = userCacheService.getUserById(user);
-                    if ( u == null ) return null;
-                    return userService.generateKeyForUser(u.heliumUser);
-                }
-
-            };
-
-            Jws<Claims> jws = Jwts.parserBuilder()
-                    .setSigningKeyResolver(signingKeyResolver)
-                    .build()
-                    .parseClaimsJws(authHeader.replace("Bearer ",""));
-
+/*
             if ( jws.getHeader().getAlgorithm().compareToIgnoreCase("HS512") != 0 ) {
                 log.error("### Bearer is signed with invalid algo !!! ");
                 chain.doFilter(request, response);
                 return;
             }
+*/
 
-            Claims claims = jws.getBody();
+          //  Claims claims = jws.getBody();
             ArrayList<String> roles = (ArrayList<String>) claims.get("roles");
             ArrayList<MyGrantedAuthority> list = new ArrayList<>();
             if (roles != null) {

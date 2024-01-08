@@ -34,7 +34,7 @@ import eu.heliumiot.console.mqtt.api.HeliumDeviceStatItf;
 import eu.heliumiot.console.redis.RedisDeviceRepository;
 import fr.ingeniousthings.tools.HexaConverters;
 import fr.ingeniousthings.tools.Now;
-import io.chirpstack.api.internal.Internal;
+import io.chirpstack.internal.DeviceSession;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -265,7 +265,7 @@ public class HeliumDeviceService {
                 // configuration, it's better to not process a device too fast
                 // when it comes from migration process, lets make it for all now
                 if ( dev.getVariables().contains("migrated\": \"true") ) {
-                    Internal.DeviceSession s = redisDeviceRepository.getDeviceDetails(devEui);
+                    DeviceSession s = redisDeviceRepository.getDeviceDetails(devEui);
                     if ( s == null ) {
                         log.debug("scanNewDevicesJob - Session for "+devEui+ " not ready");
                         // wait a minute
