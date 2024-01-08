@@ -151,3 +151,9 @@ SUCH HOLDER OR OTHER PARTY HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES.
 ./protoc/bin/protoc -I ./chirpstack/api/proto -I ./googleapis/ --java_out ./out ./chirpstack/api/proto/stream/frame.proto
 ./protoc/bin/protoc -I ./chirpstack/api/proto -I ./googleapis/ --java_out ./out ./chirpstack/api/proto/gw/gw.proto
 ````
+
+Install OpenJDK21
+```
+apt-get install openjdk-21-jdk
+update-java-alternatives --set /usr/lib/jvm/java-1.21.0-openjdk-amd64
+```
