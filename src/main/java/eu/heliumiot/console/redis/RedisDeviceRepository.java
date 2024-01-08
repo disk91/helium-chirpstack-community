@@ -34,25 +34,30 @@ public class RedisDeviceRepository {
 
     @PostConstruct
     public void setupRedisDeviceRepository() {
-        log.info("Init setupRedisDeviceRepository");
-        String connectionString = redisConfiguration.isRedisSsl() ? "rediss://" : "redis://";
-        if (redisConfiguration.getRedisUsername().length() > 0) {
-            connectionString += redisConfiguration.getRedisUsername() + ":" + redisConfiguration.getRedisPassword() + "@";
+        try {
+            log.info("Init setupRedisDeviceRepository");
+            String connectionString = redisConfiguration.isRedisSsl() ? "rediss://" : "redis://";
+            if (redisConfiguration.getRedisUsername().length() > 0) {
+                connectionString += redisConfiguration.getRedisUsername() + ":" + redisConfiguration.getRedisPassword() + "@";
+            }
+            connectionString += redisConfiguration.getRedisHost() + ":" + redisConfiguration.getRedisPort();
+            redisClient = RedisClient.create(connectionString);
+
+            redisClient.setOptions(ClientOptions.builder()
+                .pingBeforeActivateConnection(true)
+                .socketOptions(SocketOptions.builder()
+                    .keepAlive(true)
+                    .build())
+                .protocolVersion(ProtocolVersion.RESP3)
+                .build());
+
+            RedisCodec<String, byte[]> codec = RedisCodec.of(new StringCodec(), new ByteArrayCodec());
+            redisConnection = redisClient.connect(codec);
+            syncCommands = redisConnection.sync();
+        } catch (Exception e) {
+            log.error("Failed to connect to Rredis "+e.getMessage());
+            throw e;
         }
-        connectionString += redisConfiguration.getRedisHost() + ":" + redisConfiguration.getRedisPort();
-        redisClient = RedisClient.create(connectionString);
-
-        redisClient.setOptions(ClientOptions.builder()
-            .pingBeforeActivateConnection(true)
-            .socketOptions(SocketOptions.builder()
-                .keepAlive(true)
-                .build())
-            .protocolVersion(ProtocolVersion.RESP3)
-            .build());
-
-        RedisCodec<String, byte[]> codec = RedisCodec.of(new StringCodec(), new ByteArrayCodec());
-        redisConnection = redisClient.connect(codec);
-        syncCommands = redisConnection.sync();
     }
 
     // ================================================

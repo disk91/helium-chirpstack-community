@@ -5,31 +5,31 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class RedisConfiguration {
 
-    @Value("${spring.redis.metakey}")
+    @Value("${spring.data.redis.metakey}")
     private String streamMetaKey;
 
-    @Value("${spring.redis.eventkey:}")
+    @Value("${spring.data.redis.eventkey:}")
     private String streamEventKey;
 
-    @Value("${spring.redis.host}")
+    @Value("${spring.data.redis.host}")
     private String redisHost;
 
-    @Value("${spring.redis.port}")
+    @Value("${spring.data.redis.port}")
     private int redisPort;
 
-    @Value("${spring.redis.username}")
+    @Value("${spring.data.redis.username}")
     private String redisUsername;
 
-    @Value("${spring.redis.password}")
+    @Value("${spring.data.redis.password}")
     private String redisPassword;
 
-    @Value("${spring.redis.ssl:false}")
+    @Value("${spring.data.redis.ssl:false}")
     private boolean redisSsl;
 
-    @Value("${spring.redis.consumerGroup}")
+    @Value("${spring.data.redis.consumerGroup}")
     private String redisCGroup;
 
-    @Value("${spring.redis.consumer}")
+    @Value("${spring.data.redis.consumer}")
     private String redisConsumer;
 
 
