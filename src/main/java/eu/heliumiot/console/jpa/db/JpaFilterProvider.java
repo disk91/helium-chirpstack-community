@@ -16,6 +16,11 @@ public class JpaFilterProvider implements SchemaFilterProvider {
     }
 
     @Override
+    public SchemaFilter getTruncatorFilter() {
+        return JpaFilter.INSTANCE;
+    }
+
+    @Override
     public SchemaFilter getMigrateFilter() {
         return JpaFilter.INSTANCE;
     }
@@ -24,4 +29,5 @@ public class JpaFilterProvider implements SchemaFilterProvider {
     public SchemaFilter getValidateFilter() {
         return JpaFilter.INSTANCE;
     }
+
 }

@@ -4,7 +4,7 @@ import static io.grpc.MethodDescriptor.generateFullMethodName;
 
 /**
  */
-@javax.annotation.Generated(
+@jakarta.annotation.Generated(
     value = "by gRPC proto compiler (version 1.53.0)",
     comments = "Source: service/iot_config.proto")
 @io.grpc.stub.annotations.GrpcGenerated

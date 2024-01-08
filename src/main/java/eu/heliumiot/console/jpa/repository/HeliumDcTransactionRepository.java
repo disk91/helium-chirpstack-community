@@ -20,14 +20,14 @@
 package eu.heliumiot.console.jpa.repository;
 
 import eu.heliumiot.console.jpa.db.HeliumDcTransaction;
-import org.springframework.data.repository.PagingAndSortingRepository;
+import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.UUID;
 
 @Repository
-public interface HeliumDcTransactionRepository extends PagingAndSortingRepository<HeliumDcTransaction, UUID> {
+public interface HeliumDcTransactionRepository extends CrudRepository<HeliumDcTransaction, UUID> {
 
     public HeliumDcTransaction findOneHeliumDcTransactionById(UUID transactionId);
 

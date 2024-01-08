@@ -3,7 +3,7 @@ package eu.heliumiot.console.api.interfaces;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.tags.Tag;
 
-import javax.persistence.Column;
+import jakarta.persistence.Column;
 
 @Tag(name = "Tenant balance Interface", description = "tenant balance interface")
 public class MessagePendingRespItf {

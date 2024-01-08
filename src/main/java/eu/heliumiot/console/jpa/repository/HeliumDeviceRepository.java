@@ -23,6 +23,7 @@ import eu.heliumiot.console.jpa.db.HeliumDevice;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.stereotype.Repository;
 
@@ -30,7 +31,7 @@ import java.util.List;
 import java.util.UUID;
 
 @Repository
-public interface HeliumDeviceRepository extends PagingAndSortingRepository<HeliumDevice, UUID> {
+public interface HeliumDeviceRepository extends CrudRepository<HeliumDevice, UUID> {
 
     public HeliumDevice findOneHeliumDeviceByDeviceEui(String deviceId);
 

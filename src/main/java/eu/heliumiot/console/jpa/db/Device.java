@@ -23,7 +23,7 @@ import fr.ingeniousthings.tools.HexaConverters;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Immutable;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
 import java.sql.Timestamp;
 import java.util.UUID;
 
@@ -45,11 +45,11 @@ public class Device {
     private String name;
     @Column(name = "dev_addr")
     private byte[] devAddr;
-    @GenericGenerator(name = "UUIDGenerator", strategy = "uuid2")
+    @GenericGenerator(name = "UUIDGenerator", type = org.hibernate.id.uuid.UuidGenerator.class)
     @Column(name = "application_id")
     private UUID applicationId;
 
-    @GenericGenerator(name = "UUIDGenerator", strategy = "uuid2")
+    @GenericGenerator(name = "UUIDGenerator", type = org.hibernate.id.uuid.UuidGenerator.class)
     @Column(name = "device_profile_id")
     private UUID deviceProfileId;
 

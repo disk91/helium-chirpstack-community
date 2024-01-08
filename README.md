@@ -145,3 +145,9 @@ Thank you to the following persons contributing to the project:
 ./protoc/bin/protoc -I ./chirpstack/api/proto -I ./googleapis/ --java_out ./out ./chirpstack/api/proto/stream/frame.proto
 ./protoc/bin/protoc -I ./chirpstack/api/proto -I ./googleapis/ --java_out ./out ./chirpstack/api/proto/gw/gw.proto
 ````
+
+Install OpenJDK21
+```
+apt-get install openjdk-21-jdk
+update-java-alternatives --set /usr/lib/jvm/java-1.21.0-openjdk-amd64
+```

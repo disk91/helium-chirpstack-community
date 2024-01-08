@@ -1,6 +1,6 @@
 package eu.heliumiot.console.jpa.db;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
 import java.util.UUID;
 
 @Entity

@@ -21,7 +21,7 @@ package eu.heliumiot.console.jpa.db;
 
 import org.hibernate.annotations.GenericGenerator;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
 import java.util.UUID;
 
 @Entity
@@ -33,7 +33,7 @@ import java.util.UUID;
 public class HeliumMessages {
 
     @Id
-    @GenericGenerator(name = "UUIDGenerator", strategy = "uuid2")
+    @GenericGenerator(name = "UUIDGenerator", type = org.hibernate.id.uuid.UuidGenerator.class)
     @GeneratedValue(generator = "UUIDGenerator")
     @Column(name = "id", updatable = false, nullable = false)
     private UUID id;
