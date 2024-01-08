@@ -1,0 +1,329 @@
+version: "3"
+name: helium
+services:
+
+  nginx:
+    image: nginx:latest
+    ports:
+      - 80:80
+      - 443:443
+    restart: unless-stopped
+    volumes:
+      - /helium/configuration/nginx/:/etc/nginx/conf.d/:ro
+      - /helium/configuration/certbot/:/var/www/certbot/:ro
+      - /helium/configuration/ssl/:/etc/nginx/ssl/:ro
+      - /helium/front:/var/www/front/:ro
+    depends_on:
+      - helium
+      - chirpstack
+      - chirpstack-rest-api
+      - fwdlb
+      - fwnode1
+      - fwnode2
+    logging: &logs
+      driver: "json-file"
+      options:
+        max-size: "100m"
+
+  certbot:
+    image: certbot/certbot:latest
+    volumes:
+      - /helium/configuration/certbot/:/var/www/certbot/:rw
+      - /helium/configuration/ssl/:/etc/letsencrypt/:rw
+    logging: *logs
+
+  fwdlb:
+    image: disk91/forwarder:1.0.0
+    restart: unless-stopped
+    volumes:
+      - /helium/configuration/forwarder/loadbalancer.properties:/configuration.properties
+    ports:
+      - 127.0.0.1:8100:8082
+    logging: *logs
+
+  fwnode1:
+    image: disk91/forwarder:2.0.0
+    restart: unless-stopped
+    volumes:
+      - /helium/cli/keypair.bin:/etc/helium/pkey.bin
+      - /helium/configuration/forwarder/node1.properties:/configuration.properties
+    ports:
+      - 127.0.0.1:8101:8082
+    logging: *logs
+
+  fwnode2:
+    image: disk91/forwarder:2.0.0
+    restart: unless-stopped
+    ports:
+      - 127.0.0.1:8102:8082
+    volumes:
+      - /helium/cli/keypair.bin:/etc/helium/pkey.bin
+      - /helium/configuration/forwarder/node2.properties:/configuration.properties
+    logging: *logs
+
+  helium:
+    image: disk91/console
+    restart: unless-stopped
+    volumes:
+      - /helium/cli/keypair.bin:/etc/helium/pkey.bin
+      - /helium/configuration/helium/configuration.properties:/configuration.properties
+    depends_on:
+      - postgres
+      - mosquitto
+      - redis
+      - mongo
+    ports:
+      - 127.0.0.1:8081:8081
+    logging: *logs
+
+  chirpstack:
+    image: chirpstack/chirpstack:4.6.0
+    command: -c /etc/chirpstack
+    restart: unless-stopped
+    volumes:
+      - /helium/configuration/chirpstack:/etc/chirpstack
+      - /helium/lorawan-devices:/opt/lorawan-devices
+    depends_on:
+      - postgres
+      - mosquitto
+      - redis
+    environment:
+      - MQTT_BROKER_HOST=mosquitto
+      - REDIS_HOST=redis
+      - POSTGRESQL_HOST=helium-postgres-1
+    ports:
+      - 127.0.0.1:8080:8080
+      - 127.0.0.1:8070:8070
+    logging: *logs
+
+  chirpstack-gateway-bridge-eu868:
+    image: chirpstack/chirpstack-gateway-bridge:4.0.10
+    restart: unless-stopped
+    ports:
+      - 1700:1700/udp
+    volumes:
+      - /helium/configuration/chirpstack-gateway-bridge-eu868:/etc/chirpstack-gateway-bridge
+    depends_on:
+      - mosquitto
+    logging: *logs
+
+  chirpstack-gateway-bridge-us915:
+    image: chirpstack/chirpstack-gateway-bridge:4.0.10
+    restart: unless-stopped
+    ports:
+      - 1701:1700/udp
+    volumes:
+      - /helium/configuration/chirpstack-gateway-bridge-us915:/etc/chirpstack-gateway-bridge
+    depends_on:
+      - mosquitto
+    logging: *logs
+
+  chirpstack-gateway-bridge-au915-1:
+    image: chirpstack/chirpstack-gateway-bridge:4.0.10
+    restart: unless-stopped
+    ports:
+      - 1702:1700/udp
+    volumes:
+      - /helium/configuration/chirpstack-gateway-bridge-au915-1:/etc/chirpstack-gateway-bridge
+    depends_on:
+      - mosquitto
+    logging: *logs
+
+  chirpstack-gateway-bridge-as923:
+    image: chirpstack/chirpstack-gateway-bridge:4.0.10
+    restart: unless-stopped
+    ports:
+      - 1703:1700/udp
+    volumes:
+      - /helium/configuration/chirpstack-gateway-bridge-as923:/etc/chirpstack-gateway-bridge
+    depends_on:
+      - mosquitto
+    logging: *logs
+
+  chirpstack-gateway-bridge-as923-2:
+    image: chirpstack/chirpstack-gateway-bridge:4.0.10
+    restart: unless-stopped
+    ports:
+      - 1704:1700/udp
+    volumes:
+      - /helium/configuration/chirpstack-gateway-bridge-as923-2:/etc/chirpstack-gateway-bridge
+    depends_on:
+      - mosquitto
+    logging: *logs
+
+  chirpstack-gateway-bridge-as923-3:
+    image: chirpstack/chirpstack-gateway-bridge:4.0.10
+    restart: unless-stopped
+    ports:
+      - 1705:1700/udp
+    volumes:
+      - /helium/configuration/chirpstack-gateway-bridge-as923-3:/etc/chirpstack-gateway-bridge
+    depends_on:
+      - mosquitto
+    logging: *logs
+
+  chirpstack-gateway-bridge-as923-4:
+    image: chirpstack/chirpstack-gateway-bridge:4.0.10
+    restart: unless-stopped
+    ports:
+      - 1706:1700/udp
+    volumes:
+      - /helium/configuration/chirpstack-gateway-bridge-as923-4:/etc/chirpstack-gateway-bridge
+    depends_on:
+      - mosquitto
+    logging: *logs
+
+  chirpstack-gateway-bridge-in865:
+    image: chirpstack/chirpstack-gateway-bridge:4.0.10
+    restart: unless-stopped
+    ports:
+      - 1707:1700/udp
+    volumes:
+      - /helium/configuration/chirpstack-gateway-bridge-in865:/etc/chirpstack-gateway-bridge
+    depends_on:
+      - mosquitto
+    logging: *logs
+
+  chirpstack-gateway-bridge-kr920:
+    image: chirpstack/chirpstack-gateway-bridge:4.0.10
+    restart: unless-stopped
+    ports:
+      - 1708:1700/udp
+    volumes:
+      - /helium/configuration/chirpstack-gateway-bridge-kr920:/etc/chirpstack-gateway-bridge
+    depends_on:
+      - mosquitto
+    logging: *logs
+
+  chirpstack-rest-api:
+    image: chirpstack/chirpstack-rest-api:4.6.0
+    restart: unless-stopped
+    command: --server chirpstack:8080 --bind 0.0.0.0:8090 --insecure
+    ports:
+      - 127.0.0.1:8090:8090
+    depends_on:
+      - chirpstack
+    logging: *logs
+
+  postgres:
+    image: postgres:14-alpine
+    restart: unless-stopped
+    command: postgres -c 'max_connections=250'
+    volumes:
+      - /helium/configuration/postgresql/initdb:/docker-entrypoint-initdb.d
+      - /helium/postgresql:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_PASSWORD=root
+    logging: *logs
+
+  redis:
+    image: redis:7-alpine
+    restart: unless-stopped
+    volumes:
+      - /helium/redis:/data
+    logging: *logs
+
+  mosquitto:
+    image: eclipse-mosquitto:2
+    restart: unless-stopped
+    ports:
+      - 127.0.0.1:1883:1883
+    volumes:
+      - /helium/configuration/mosquitto/mosquitto.conf:/mosquitto/config/mosquitto.conf
+      - /helium/mosquitto:/mosquitto/data
+    logging: *logs
+
+  mongo:
+    image: mongo:latest
+    restart: unless-stopped
+    volumes:
+      - /helium/mongodb:/data/db
+    logging: *logs
+
+  prometheus:
+    image: prom/prometheus
+    network_mode: host
+    restart: unless-stopped
+    volumes:
+      - /helium/configuration/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
+      - /helium/prometheus:/prometheus
+  node_exporter:
+    image: prom/node-exporter:latest
+    command:
+      - '--path.rootfs=/host'
+      - "--collector.filesystem"
+      - "--collector.filesystem.mount-points-exclude=^/(sys|proc|dev|host|etc)($$|/)"
+      - "--collector.netstat"
+      - "--collector.meminfo"
+      - "--collector.cpu"
+      - "--collector.loadavg"
+      - "--collector.systemd"
+      - "--collector.processes"
+      - "--collector.ethtool"
+      - "--collector.interrupts"
+      - "--collector.tcpstat"
+    network_mode: host
+    pid: host
+    restart: unless-stopped
+    volumes:
+      - '/:/host:ro,rslave'
+    logging: *logs
+
+  mosquitto_exporter:
+    image: sapcc/mosquitto-exporter:latest
+    restart: unless-stopped
+    command: --endpoint tcp://mosquitto:1883
+    ports:
+      - 127.0.0.1:9101:9234
+    depends_on:
+      - mosquitto
+    logging: *logs
+
+  postgres_exporter:
+    image: quay.io/prometheuscommunity/postgres-exporter
+    restart: unless-stopped
+    environment:
+      - DATA_SOURCE_NAME=postgresql://postgres:root@postgres:5432/?sslmode=disable
+    ports:
+      - 127.0.0.1:9102:9187
+    depends_on:
+      - postgres
+    logging: *logs
+
+  cadvisor:
+    image: gcr.io/cadvisor/cadvisor:latest
+    privileged: true
+    devices:
+      - /dev/kmsg:/dev/kmsg
+    volumes:
+      - /:/rootfs:ro
+      - /var/run:/var/run:ro
+      - /sys:/sys:ro
+      - /var/lib/docker/:/var/lib/docker:ro
+      - /cgroup:/cgroup:ro
+    command:
+      - '-port=8060'
+    restart: unless-stopped
+    network_mode: host
+    logging: *logs
+
+  grafana:
+    image: grafana/grafana-oss
+    network_mode: host
+    restart: unless-stopped
+    volumes:
+      - /helium/grafana:/var/lib/grafana
+      - /helium/configuration/grafana:/etc/grafana/provisioning
+    environment:
+      - GF_SECURITY_ADMIN_USER=admin
+      - GF_SECURITY_ADMIN_PASSWORD=admin
+      - GF_USERS_ALLOW_SIGN_UP=false
+      - GF_SERVER_HTTP_PORT=8050
+      - GF_SMTP_ENABLED=false
+      - GF_SMTP_HOST=smtp.sendgrid.net:25
+      - GF_SMTP_USER=apikey
+      - GF_SMTP_PASSWORD=SG....
+      - GF_SMTP_FROM_ADDRESS=alert@foo.bar
+    depends_on:
+      - prometheus
+    logging: *logs
