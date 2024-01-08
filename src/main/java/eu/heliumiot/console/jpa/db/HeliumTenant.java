@@ -35,8 +35,7 @@ public class HeliumTenant {
     public enum TenantState { NORMAL, REQUESTDEACTIVATION, DEACTIVATED, DELETED, REQUESTREACTIVATION }
     //                           0        1                    2           3             4
     @Id
-    @GenericGenerator(name = "UUIDGenerator", type = org.hibernate.id.uuid.UuidGenerator.class)
-    @GeneratedValue(generator = "UUIDGenerator")
+    @GeneratedValue(strategy = GenerationType.UUID)
     @Column(name = "id", updatable = false, nullable = false)
     private UUID id;
 

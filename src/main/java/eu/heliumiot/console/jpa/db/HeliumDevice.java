@@ -39,8 +39,7 @@ public class HeliumDevice implements ClonnableObject<HeliumDevice> {
                             // 0        1       2           3           4        5          6
 
     @Id
-    @GenericGenerator(name = "UUIDGenerator", type = org.hibernate.id.uuid.UuidGenerator.class)
-    @GeneratedValue(generator = "UUIDGenerator")
+    @GeneratedValue(strategy = GenerationType.UUID)
     @Column(name = "id", updatable = false, nullable = false)
     private UUID id;
 
