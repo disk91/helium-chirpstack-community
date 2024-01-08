@@ -9,7 +9,7 @@ import eu.heliumiot.console.jpa.repository.HeliumTenantSetupRepository;
 import eu.heliumiot.console.jpa.repository.TenantRepository;
 import eu.heliumiot.console.redis.RedisDeviceRepository;
 import fr.ingeniousthings.tools.*;
-import io.chirpstack.api.internal.Internal;
+import io.chirpstack.internal.DeviceSession;
 import io.grpc.ManagedChannel;
 import io.grpc.ManagedChannelBuilder;
 import io.grpc.StatusRuntimeException;
@@ -294,7 +294,7 @@ public class NovaService {
         if ( r != null && (Now.NowUtcMs() - r.refreshTime) < 2*Now.ONE_HOUR ) {
             // get new information about this EUI
             log.debug("refreshOneEuiSkf - use cache for "+eui);
-            Internal.DeviceSession s = redisDeviceRepository.getDeviceDetails(eui);
+            DeviceSession s = redisDeviceRepository.getDeviceDetails(eui);
             String ntwSEncKey = HexaConverters.byteToHexString(s.getNwkSEncKey().toByteArray());
             String devaddr = HexaConverters.byteToHexString(s.getDevAddr().toByteArray());
             int iDevAddr = Stuff.hexStrToInt(devaddr);
@@ -373,7 +373,7 @@ public class NovaService {
                     case INSERTED:
                     case ACTIVE:
                     case INACTIVE:
-                        Internal.DeviceSession s = redisDeviceRepository.getDeviceDetails(hd.getDeviceEui());
+                        DeviceSession s = redisDeviceRepository.getDeviceDetails(hd.getDeviceEui());
                         if ( s == null ) {
                             // no session yet for that device (just inserted)
                             log.debug("refreshOneRouteSkf - session not ready for "+hd.getDeviceEui());

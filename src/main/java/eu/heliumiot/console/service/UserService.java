@@ -577,16 +577,21 @@ public class UserService {
             if ( u.user.isAdmin() ) roles.add(ROLE_ADMIN);
 
             // generate the console jwt
-            io.jsonwebtoken.Claims claims = Jwts.claims().setSubject(u.heliumUser.getUserid());
-            claims.put("roles", roles);
-            claims.setExpiration(new Date(cExpiration));
+            io.jsonwebtoken.Claims claims = Jwts.claims()
+                .subject(u.heliumUser.getUserid())
+                .expiration(new Date(cExpiration))
+                .add("roles", roles)
+                .build();
 
             String token = Jwts.builder()
-                    .setHeaderParam("typ","JWT")
-                    .setClaims(claims)
-                    .setExpiration(new Date(cExpiration))
-                    .signWith(this.generateKeyForUser(u.heliumUser), SignatureAlgorithm.HS512)
-                    .compact();
+                .header().add("typ","JWT")
+                .add("sub",u.heliumUser.getUserid())
+                .and()
+                .claims().empty().add(claims)
+                .and()
+                .expiration(new Date(cExpiration))
+                .signWith(this.generateKeyForUser(u.heliumUser))
+                .compact();
 
             r.setConsoleBearer(token);
 
