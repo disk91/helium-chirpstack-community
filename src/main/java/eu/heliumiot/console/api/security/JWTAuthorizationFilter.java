@@ -92,12 +92,13 @@ public class JWTAuthorizationFilter extends GenericFilterBean {
                 .keyLocator(new Locator<Key>() {
                     @Override
                     public Key locate(Header header) {
-                        if (header instanceof JwsHeader) {
-                            JwsHeader jwsh = (JwsHeader)header;
+                        if (header instanceof JwsHeader jwsh) {
                             String user = (String)jwsh.get("sub");
-                            log.error("find sub: "+user);
                             String algo = jwsh.getAlgorithm();
-                            log.error("find alg: "+algo);
+                            if ( algo == null || algo.compareToIgnoreCase("HS512") != 0 ) {
+                                log.error("### Bearer is signed with invalid algo !!! ");
+                                return null;
+                            }
                             UserCacheService.UserCacheElement u = userCacheService.getUserById(user);
                             if ( u == null ) return null;
                             return userService.generateKeyForUser(u.heliumUser);
@@ -108,13 +109,6 @@ public class JWTAuthorizationFilter extends GenericFilterBean {
                 .build()
                 .parseSignedClaims(token).getPayload();
 
-/*
-            if ( jws.getHeader().getAlgorithm().compareToIgnoreCase("HS512") != 0 ) {
-                log.error("### Bearer is signed with invalid algo !!! ");
-                chain.doFilter(request, response);
-                return;
-            }
-*/
 
           //  Claims claims = jws.getBody();
             ArrayList<String> roles = (ArrayList<String>) claims.get("roles");

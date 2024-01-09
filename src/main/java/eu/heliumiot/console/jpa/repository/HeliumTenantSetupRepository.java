@@ -49,7 +49,7 @@ public interface HeliumTenantSetupRepository extends CrudRepository<HeliumTenant
     );
 
     // Search tenant_setup (and route) not associated to tenant
-    @Query(value = "SELECT * FROM helium_tenant_setup LEFT JOIN tenant on UUID(helium_tenant_setup.tenantuuid) = tenant.id WHERE tenant.id IS NULL AND helium_tenant_setup.template IS FALSE", nativeQuery = true)
+    @Query(value = "SELECT helium_tenant_setup.* FROM helium_tenant_setup LEFT JOIN tenant ON (UUID(helium_tenant_setup.tenantuuid) = tenant.id) WHERE tenant.id IS NULL AND helium_tenant_setup.template IS FALSE", nativeQuery = true)
     public List<HeliumTenantSetup> findMissingTenantSetup();
 
 }

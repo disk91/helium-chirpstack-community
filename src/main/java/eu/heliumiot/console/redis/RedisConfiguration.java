@@ -23,7 +23,7 @@ public class RedisConfiguration {
     @Value("${spring.data.redis.password}")
     private String redisPassword;
 
-    @Value("${spring.data.redis.ssl:false}")
+    @Value("${spring.data.redis.ssl.enabled:false}")
     private boolean redisSsl;
 
     @Value("${spring.data.redis.consumerGroup}")

@@ -34,11 +34,11 @@ import org.springframework.security.web.authentication.www.BasicAuthenticationFi
 // ref : https://auth0.com/blog/implementing-jwt-authentication-on-spring-boot/
 // voir pour cross-origin...
 
+
 @EnableWebSecurity
 @EnableMethodSecurity(prePostEnabled=true)
 @Configuration
 public class WebSecurityProfile {
-
 
     @Autowired
     private JWTAuthenticationProvider jwtAuthenticationProvider;

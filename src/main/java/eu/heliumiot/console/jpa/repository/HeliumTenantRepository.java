@@ -39,7 +39,7 @@ public interface HeliumTenantRepository extends CrudRepository<HeliumTenant, UUI
     @Query(value = "SELECT SUM(dc_balance) FROM helium_tenant",nativeQuery = true)
     public Long selectSumOfDcs();
 
-    @Query(value = "SELECT * FROM helium_tenant LEFT JOIN tenant ON tenant.id = uuid(helium_tenant.tenantuuid) WHERE tenant.id is null AND helium_tenant.state <> 3", nativeQuery = true)
+    @Query(value = "SELECT helium_tenant.* FROM helium_tenant LEFT JOIN tenant ON (tenant.id = uuid(helium_tenant.tenantuuid)) WHERE tenant.id is null AND helium_tenant.state <> 3", nativeQuery = true)
     public List<HeliumTenant> findDeletedTenant();
 
 

@@ -35,13 +35,13 @@ public interface HeliumDeviceRepository extends CrudRepository<HeliumDevice, UUI
 
     public HeliumDevice findOneHeliumDeviceByDeviceEui(String deviceId);
 
-    @Query(value = "SELECT * FROM helium_devices LEFT JOIN device on device.dev_eui = helium_devices.deviceuuid WHERE device.dev_eui is null AND helium_devices.state <> 5", nativeQuery = true)
+    @Query(value = "SELECT helium_devices.* FROM helium_devices LEFT JOIN device ON (device.dev_eui = helium_devices.deviceuuid) WHERE device.dev_eui is null AND helium_devices.state <> 5", nativeQuery = true)
     public List<HeliumDevice> findDeletedDevices();
 
-    @Query(value = "SELECT * FROM helium_devices LEFT JOIN device on device.dev_eui = helium_devices.deviceuuid WHERE device.is_disabled = true AND helium_devices.state <> 5 AND helium_devices.state <> 6", nativeQuery = true)
+    @Query(value = "SELECT helium_devices.* FROM helium_devices LEFT JOIN device ON (device.dev_eui = helium_devices.deviceuuid) WHERE device.is_disabled = true AND helium_devices.state <> 5 AND helium_devices.state <> 6", nativeQuery = true)
     public List<HeliumDevice> findDeactivatedDevices();
 
-    @Query(value = "SELECT * FROM helium_devices LEFT JOIN device on device.dev_eui = helium_devices.deviceuuid WHERE device.is_disabled = false AND helium_devices.state = 6", nativeQuery = true)
+    @Query(value = "SELECT helium_devices.* FROM helium_devices LEFT JOIN device ON (device.dev_eui = helium_devices.deviceuuid) WHERE device.is_disabled = false AND helium_devices.state = 6", nativeQuery = true)
     public List<HeliumDevice> findReactivatedDevices();
 
 
