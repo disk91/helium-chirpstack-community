@@ -130,8 +130,10 @@ public class SafetyService {
     }
 
     protected boolean isBanedIp(String ip) {
-        for ( String _ip : torIps) {
-            if ( ip.compareTo(_ip) == 0 ) return true;
+        if ( ip != null ) {
+            for (String _ip : torIps) {
+                if (ip.compareTo(_ip) == 0) return true;
+            }
         }
         return false;
     }
