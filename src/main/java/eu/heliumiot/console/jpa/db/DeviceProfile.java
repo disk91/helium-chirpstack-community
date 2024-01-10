@@ -19,9 +19,7 @@
  */
 package eu.heliumiot.console.jpa.db;
 
-import fr.ingeniousthings.tools.HexaConverters;
 import jakarta.persistence.*;
-import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Immutable;
 
 import java.sql.Timestamp;
@@ -50,6 +48,8 @@ public class DeviceProfile {
     @Column(name = "name")
     private String name;
 
+    @Column(name = "allow_roaming")
+    private boolean allowRoaming;
 
     // ---
 
@@ -100,5 +100,13 @@ public class DeviceProfile {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public boolean isAllowRoaming() {
+        return allowRoaming;
+    }
+
+    public void setAllowRoaming(boolean allowRoaming) {
+        this.allowRoaming = allowRoaming;
     }
 }
