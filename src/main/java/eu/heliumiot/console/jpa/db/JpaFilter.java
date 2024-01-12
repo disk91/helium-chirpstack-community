@@ -10,6 +10,10 @@ import org.slf4j.LoggerFactory;
 
 public class JpaFilter implements SchemaFilter {
 
+    // @TODO - There is a bug in springboot 3.2 and Hibernate
+    //          https://github.com/spring-projects/spring-boot/issues/33832
+    //          the auto update ddl has been removed to avoid problems
+
     private final Logger log = LoggerFactory.getLogger(this.getClass());
 
     public static final JpaFilter INSTANCE = new JpaFilter();
