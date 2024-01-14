@@ -14,6 +14,24 @@ public class ConsolePrivateConfig {
     private final Logger log = LoggerFactory.getLogger(this.getClass());
 
     // =====================================
+    // Console Dev features
+    // =====================================
+
+    @Value("${helium.dev.max.frame.hist:200}")
+    private int heliumDevMaxFrameHist;
+
+    @Value("${helium.dev.max.hotspot.hist:200}")
+    private int heliumDevMaxHotspotHist;
+
+    public int getHeliumDevMaxFrameHist() {
+        return heliumDevMaxFrameHist;
+    }
+
+    public int getHeliumDevMaxHotspotHist() {
+        return heliumDevMaxHotspotHist;
+    }
+
+    // =====================================
     // Console for EDU environment
     // =====================================
 
