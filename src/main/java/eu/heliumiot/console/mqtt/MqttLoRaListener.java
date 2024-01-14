@@ -397,7 +397,7 @@ public class MqttLoRaListener implements MqttCallback {
 
     public void processBridgeMessage(long now, MqttEvent e) {
         try {
-            log.info(HexaConverters.byteToHexString(e.message.getPayload()));
+            //log.info(HexaConverters.byteToHexString(e.message.getPayload()));
 
             UplinkFrame uf = UplinkFrame.parseFrom(e.message.getPayload());
             // 00 9A2E3DD7EFF98160 9861BFC396F98160 75AB   D683 EED2
