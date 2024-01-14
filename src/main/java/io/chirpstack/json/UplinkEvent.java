@@ -52,7 +52,11 @@ public class UplinkEvent {
                 {
                     "gatewayId":"3c408850a5b4f27c",
                     "uplinkId":29174,
-                    "time":"2022-11-14T11:37:56+00:00",
+                    // prior to 4.6
+                    "time":"2023-05-29T19:50:10+00:00",
+                    // from 4.6
+                    "gwTime":"2024-01-07T11:05:31+00:00",
+                    "nsTime":"2024-01-07T11:05:31.577525935+00:00
                     "rssi":-46,
                     "snr":15.2,
                     "context":"O7eu8g==",

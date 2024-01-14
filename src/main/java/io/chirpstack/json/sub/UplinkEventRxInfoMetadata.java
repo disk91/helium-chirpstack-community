@@ -25,27 +25,43 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 public class UplinkEventRxInfoMetadata {
 
     /*
-                    "metadata":{
-                        "region_name":"eu868",
-                        "region_common_name":"EU868"
-                    }
+                "metadata":{
+                    gateway_id:"11o8R9inbpcanSdVpdQxx5G2DGtVs9UqaxxNSYMeqLG6LYf13XA"
+                    gateway_name:"mythical-misty-finch"
+                    "region_common_name":"EU868",
+                    "region_config_id":"eu868",
+                    "gateway_h3index" : "61105...",
+                    "gateway_lat" : "45.80...",
+                    "gateway_long" : "3.09...",
+                }
+            }
      */
 
-    // @ApiModelProperty(notes = "name of the LoRaWan region", required = false)
-    protected String region_name;
-
-    // @ApiModelProperty(notes = "same one ", required = false)
-    protected String region_common_name;
+    private String gateway_id;
+    private String gateway_name;
+    private String region_common_name;
+    private String region_config_id;
+    private String gateway_lat;
+    private String gateway_long;
+    private String gateway_h3index;
 
     // ---
 
 
-    public String getRegion_name() {
-        return region_name;
+    public String getGateway_id() {
+        return gateway_id;
     }
 
-    public void setRegion_name(String region_name) {
-        this.region_name = region_name;
+    public void setGateway_id(String gateway_id) {
+        this.gateway_id = gateway_id;
+    }
+
+    public String getGateway_name() {
+        return gateway_name;
+    }
+
+    public void setGateway_name(String gateway_name) {
+        this.gateway_name = gateway_name;
     }
 
     public String getRegion_common_name() {
@@ -54,5 +70,37 @@ public class UplinkEventRxInfoMetadata {
 
     public void setRegion_common_name(String region_common_name) {
         this.region_common_name = region_common_name;
+    }
+
+    public String getRegion_config_id() {
+        return region_config_id;
+    }
+
+    public void setRegion_config_id(String region_config_id) {
+        this.region_config_id = region_config_id;
+    }
+
+    public String getGateway_lat() {
+        return gateway_lat;
+    }
+
+    public void setGateway_lat(String gateway_lat) {
+        this.gateway_lat = gateway_lat;
+    }
+
+    public String getGateway_long() {
+        return gateway_long;
+    }
+
+    public void setGateway_long(String gateway_long) {
+        this.gateway_long = gateway_long;
+    }
+
+    public String getGateway_h3index() {
+        return gateway_h3index;
+    }
+
+    public void setGateway_h3index(String gateway_h3index) {
+        this.gateway_h3index = gateway_h3index;
     }
 }
