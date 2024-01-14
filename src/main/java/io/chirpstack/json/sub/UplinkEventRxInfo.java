@@ -28,34 +28,35 @@ public class UplinkEventRxInfo {
                 {
                     "gatewayId":"3c408850a5b4f27c",
                     "uplinkId":29174,
-                    "time":"2022-11-14T11:37:56+00:00",
+                    // prior to 4.6
+                    "time":"2023-05-29T19:50:10+00:00",
+                    // from 4.6
+                    "gwTime":"2024-01-07T11:05:31+00:00",
+                    "nsTime":"2024-01-07T11:05:31.577525935+00:00
                     "rssi":-46,
                     "snr":15.2,
                     "context":"O7eu8g==",
                     "metadata":{
-                        "region_name":"eu868",
-                        "region_common_name":"EU868"
+                        "region_common_name":"EU868",
+                        "region_config_id":"eu868",
+                        "gateway_h3index" : "61105...",
+                        "gateway_lat" : "45.80...",
+                        "gateway_long" : "3.09...",
+                        "gateway_name" : "mythical-xxx..."
                     }
                 }
      */
 
-    // @ApiModelProperty(notes = "Id of the gateway", required = false)
     protected String gatewayId;
-
-    // @ApiModelProperty(notes = "uplinkId ", required = false)
     protected long uplinkId;
-
-    // @ApiModelProperty(notes = "time of the reception", required = false)
-    protected String time;
-
-    // @ApiModelProperty(notes = "Rssi", required = false)
+    private String gwTime;
+    private String nsTime;
+    private String time;    // retro compat
     protected int rssi;
-
-    // @ApiModelProperty(notes = "Snr", required = false)
     protected double snr;
-
-    //@ApiModelProperty(notes = "Associated metadat", required = false)
+    private String context;
     protected UplinkEventRxInfoMetadata metadata;
+    private String crcStatus;
 
     // ---
 
@@ -105,5 +106,37 @@ public class UplinkEventRxInfo {
 
     public void setMetadata(UplinkEventRxInfoMetadata metadata) {
         this.metadata = metadata;
+    }
+
+    public String getGwTime() {
+        return gwTime;
+    }
+
+    public void setGwTime(String gwTime) {
+        this.gwTime = gwTime;
+    }
+
+    public String getNsTime() {
+        return nsTime;
+    }
+
+    public void setNsTime(String nsTime) {
+        this.nsTime = nsTime;
+    }
+
+    public String getContext() {
+        return context;
+    }
+
+    public void setContext(String context) {
+        this.context = context;
+    }
+
+    public String getCrcStatus() {
+        return crcStatus;
+    }
+
+    public void setCrcStatus(String crcStatus) {
+        this.crcStatus = crcStatus;
     }
 }
