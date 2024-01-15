@@ -24,6 +24,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import eu.heliumiot.console.ConsoleConfig;
+import eu.heliumiot.console.ConsolePrivateConfig;
 import eu.heliumiot.console.jpa.db.HeliumParameter;
 import eu.heliumiot.console.jpa.db.HeliumTenant;
 import eu.heliumiot.console.jpa.mongodb.DeviceFrames;
@@ -60,6 +61,9 @@ public class MqttStatListener implements MqttCallback {
 
     @Autowired
     protected HeliumParameterService heliumParameterService;
+
+    @Autowired
+    protected ConsolePrivateConfig consolePrivateConfig;
 
     private MqttConnectOptions connectionOptions;
     private MemoryPersistence persistence;
@@ -197,7 +201,7 @@ public class MqttStatListener implements MqttCallback {
                     if ( d == null ) {
                         d = new DeviceFrames();
                     }
-                    d.initFromUplinkEvent(up);
+                    d.initFromUplinkEvent(up,consolePrivateConfig);
                     privDeviceFramesService.updateDevice(d);
                 } catch (JsonProcessingException x) {
                     log.error("MQTT DS - Failed to transform Chiprstack payload "+x.getMessage());

@@ -33,10 +33,6 @@ import java.util.List;
 public class DeviceFrames implements ClonnableObject<DeviceFrames>{
 
     @Transient
-    @Autowired
-    private ConsolePrivateConfig consolePrivateConfig;
-
-    @Transient
     private final Logger log = LoggerFactory.getLogger(this.getClass());
 
     @Id
@@ -72,7 +68,7 @@ public class DeviceFrames implements ClonnableObject<DeviceFrames>{
     // Constructors
     // ======================================================================
 
-    public void initFromUplinkEvent(UplinkEvent e) {
+    public void initFromUplinkEvent(UplinkEvent e, ConsolePrivateConfig consolePrivateConfig) {
         if ( this.devEui == null ) {
             // new entry
             this.devEui = e.getDeviceInfo().getDevEui();
