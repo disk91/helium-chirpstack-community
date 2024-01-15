@@ -1,10 +1,12 @@
 package eu.heliumiot.console.jpa.mongodb.sub;
 
+import fr.ingeniousthings.tools.ClonnableObject;
 import org.springframework.data.annotation.Transient;
 
+import java.util.ArrayList;
 import java.util.List;
 
-public class FrameEntry {
+public class FrameEntry implements ClonnableObject<FrameEntry> {
 
     @Transient
     public final static int FRAME_TYPE_UPLINK = 0;
@@ -23,6 +25,23 @@ public class FrameEntry {
 
     // Hotspot Related
     protected List<FrameHotspot> hotspots;
+
+    // ---
+
+    public FrameEntry clone() {
+        FrameEntry f = new FrameEntry();
+        f.setRxTimeMs(this.rxTimeMs);
+        f.setfCnt(this.fCnt);
+        f.setDr(this.dr);
+        f.setDataSize(this.dataSize);
+        f.setFrameType(this.frameType);
+        f.setHotspots(new ArrayList<>());
+        for ( FrameHotspot h : this.hotspots ) {
+            f.getHotspots().add(h.clone());
+        }
+        return f;
+    }
+
 
     // ---
 

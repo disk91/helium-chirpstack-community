@@ -30,7 +30,7 @@ import java.util.List;
 @CompoundIndexes({
     @CompoundIndex(name = "devEui", def = "{'devEui' : 'text' }"),
 })
-public class DeviceFrames {
+public class DeviceFrames implements ClonnableObject<DeviceFrames>{
 
     @Transient
     @Autowired
@@ -40,7 +40,7 @@ public class DeviceFrames {
     private final Logger log = LoggerFactory.getLogger(this.getClass());
 
     @Id
-    private String id;
+    private String id = null;
 
     // Key entry
     protected String devEui = null;
@@ -155,6 +155,27 @@ public class DeviceFrames {
 
     }
 
+    public DeviceFrames clone() {
+        DeviceFrames d = new DeviceFrames();
+        d.setDevEui(this.devEui);
+        d.setLastSeen(this.lastSeen);
+        d.setLastSaved(this.lastSaved);
+        d.setFrameSeen(this.frameSeen);
+        d.setEstimatedLat(this.estimatedLat);
+        d.setEstimatedLon(this.estimatedLon);
+        d.setMongoPosition(this.mongoPosition);
+        d.setMobile(this.mobile);
+        d.setRecentFrames(new ArrayList<>());
+        for (FrameEntry f : this.recentFrames) {
+            d.getRecentFrames().add(f.clone());
+        }
+        d.setHotspotAround(new ArrayList<>());
+        for (HotspotEntry h : this.hotspotAround) {
+            d.getHotspotAround().add(h.clone());
+        }
+        return d;
+    }
+
 
     // ======================================================================
     // Getter & Setters
@@ -230,5 +251,21 @@ public class DeviceFrames {
 
     public void setHotspotAround(List<HotspotEntry> hotspotAround) {
         this.hotspotAround = hotspotAround;
+    }
+
+    public GeoJsonPoint getMongoPosition() {
+        return mongoPosition;
+    }
+
+    public void setMongoPosition(GeoJsonPoint mongoPosition) {
+        this.mongoPosition = mongoPosition;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 }

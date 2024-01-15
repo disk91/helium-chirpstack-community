@@ -1,6 +1,8 @@
 package eu.heliumiot.console.jpa.mongodb.sub;
 
-public class HotspotEntry {
+import fr.ingeniousthings.tools.ClonnableObject;
+
+public class HotspotEntry  implements ClonnableObject<HotspotEntry> {
 
     // Last time this hotspot has been seen
     protected long lastSeen;
@@ -20,6 +22,20 @@ public class HotspotEntry {
 
     // ---
 
+    public HotspotEntry clone() {
+        HotspotEntry h = new HotspotEntry();
+        h.setLastSeen(this.lastSeen);
+        h.setCount(this.count);
+        h.setGatewayId(this.gatewayId);
+        h.setLat(this.lat);
+        h.setLng(this.lng);
+        h.setSumOfRssi(this.sumOfRssi);
+        h.setSumOfSnr(this.sumOfSnr);
+        h.setRegion(this.region);
+        return h;
+    }
+
+    // ---
 
     public long getLastSeen() {
         return lastSeen;

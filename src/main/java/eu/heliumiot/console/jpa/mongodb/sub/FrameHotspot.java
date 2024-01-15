@@ -1,6 +1,8 @@
 package eu.heliumiot.console.jpa.mongodb.sub;
 
-public class FrameHotspot {
+import fr.ingeniousthings.tools.ClonnableObject;
+
+public class FrameHotspot implements ClonnableObject<FrameHotspot> {
 
     protected String hotspotId;
     protected int rssi;
@@ -8,6 +10,15 @@ public class FrameHotspot {
 
     // ---
 
+    public FrameHotspot clone() {
+        FrameHotspot f =  new FrameHotspot();
+        f.setHotspotId(this.hotspotId);
+        f.setRssi(this.rssi);
+        f.setSnr(this.snr);
+        return f;
+    }
+
+    // ---
 
     public String getHotspotId() {
         return hotspotId;
