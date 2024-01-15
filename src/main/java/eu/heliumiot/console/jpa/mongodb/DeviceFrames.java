@@ -26,9 +26,9 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import java.util.ArrayList;
 import java.util.List;
 
-@Document(collection = "etl_hotspots")
+@Document(collection = "helium_frames")
 @CompoundIndexes({
-    @CompoundIndex(name = "devEui", def = "{'devEui' : 'text' }"),
+    @CompoundIndex(name = "devEui_Idx", def = "{'devEui' : 'hashed' }")
 })
 public class DeviceFrames implements ClonnableObject<DeviceFrames>{
 
