@@ -1,4 +1,4 @@
-package eu.heliumiot.console.jpa.repository;
+package eu.heliumiot.console.jpa.mongoRep;
 
 import eu.heliumiot.console.jpa.mongodb.DeviceFrames;
 import org.springframework.data.mongodb.repository.MongoRepository;

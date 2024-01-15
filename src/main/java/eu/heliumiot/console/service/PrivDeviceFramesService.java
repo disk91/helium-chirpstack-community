@@ -2,9 +2,8 @@ package eu.heliumiot.console.service;
 
 
 import eu.heliumiot.console.jpa.mongodb.DeviceFrames;
-import eu.heliumiot.console.jpa.repository.DeviceFramesMongoRepository;
+import eu.heliumiot.console.jpa.mongoRep.DeviceFramesMongoRepository;
 import fr.ingeniousthings.tools.ObjectCache;
-import io.chirpstack.json.UplinkEvent;
 import jakarta.annotation.PostConstruct;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

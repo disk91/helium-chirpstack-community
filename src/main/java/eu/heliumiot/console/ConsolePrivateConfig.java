@@ -5,8 +5,10 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
+import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
 
 @Configuration
+@EnableMongoRepositories(basePackages = "eu.heliumiot.console.jpa.mongoRep")
 @PropertySource("application.properties")
 @PropertySource(value = {"file:${config.file}"}, ignoreResourceNotFound = true)
 public class ConsolePrivateConfig {

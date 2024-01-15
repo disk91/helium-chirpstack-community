@@ -87,10 +87,10 @@ public class MqttStatListener implements MqttCallback {
         this.persistence = new MemoryPersistence();
         this.connectionOptions = new MqttConnectOptions();
         try {
-            log.info("MQTT S Url :"+mqttConfig.getMqttServer());
-            log.info("MQTT S User :"+mqttConfig.getMqttLogin());
+            log.info("MQTT DS Url :"+mqttConfig.getMqttServer());
+            log.info("MQTT DS User :"+mqttConfig.getMqttLogin());
             //log.info("Password :"+mqttConfig.getPassword());
-            log.info("MQTT S Id : "+clientId);
+            log.info("MQTT DS Id : "+clientId);
             this.mqttClient = new MqttClient(mqttConfig.getMqttServer(), clientId, persistence);
             this.connectionOptions.setCleanSession(false);          // restart by processing pending events
             this.connectionOptions.setAutomaticReconnect(false);    // reconnect managed manually
@@ -104,15 +104,15 @@ public class MqttStatListener implements MqttCallback {
             this.mapper.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
             this.mapper.configure(SerializationFeature.FAIL_ON_SELF_REFERENCES, false);
 
-            log.info("MQTT S Starting Mqtt listener");
+            log.info("MQTT DS Starting Mqtt listener");
         } catch (MqttException me) {
-            log.error("MQTT S Init ERROR : "+me.getMessage());
+            log.error("MQTT DS Init ERROR : "+me.getMessage());
         }
         return this.mqttClient;
     }
 
     public void connect() throws MqttException {
-        log.debug("MQTT S - Connect");
+        log.debug("MQTT DS - Connect");
         this.mqttClient.connect(this.connectionOptions);
         this.mqttClient.setCallback(this);
         this.mqttClient.subscribe(_topics,_qos);
@@ -125,7 +125,7 @@ public class MqttStatListener implements MqttCallback {
             this.mqttClient.disconnect();
             this.mqttClient.close();
         } catch (MqttException me) {
-            log.error("MQTT S ERROR :"+me.getMessage());
+            log.error("MQTT DS ERROR :"+me.getMessage());
         }
     }
 
@@ -137,14 +137,14 @@ public class MqttStatListener implements MqttCallback {
      */
     @Override
     public void connectionLost(Throwable arg0) {
-        log.error("MQTT S - Connection Lost");
+        log.error("MQTT DS - Connection Lost");
         try {
             // immediate retry, then will be async
-            log.error("MQTT S - Direct reconnecting");
+            log.error("MQTT DS - Direct reconnecting");
             this.connect();
-            log.error("MQTT S - Direct reconnected");
+            log.error("MQTT DS - Direct reconnected");
         } catch (MqttException me) {
-            log.warn("MQTT S - direct reconnection failed - "+me.getMessage());
+            log.warn("MQTT DS - direct reconnection failed - "+me.getMessage());
             pendingReconnection = true;
         }
         prometeusService.addMqttConnectionLoss();
@@ -155,15 +155,15 @@ public class MqttStatListener implements MqttCallback {
         if ( ! pendingReconnection ) return;
         try {
             if ( mqttClient.isConnected() ) {
-                log.info("MQTT S - reconnected");
+                log.info("MQTT DS - reconnected");
             } else {
-                log.info("MQTT S - reconnecting");
+                log.info("MQTT DS - reconnecting");
                 this.connect();
-                log.info("MQTT S - reconnected");
+                log.info("MQTT DS - reconnected");
             }
             pendingReconnection = false;
         } catch (MqttException me) {
-            log.warn("MQTT S - reconnection failed - "+me.getMessage());
+            log.warn("MQTT DS - reconnection failed - "+me.getMessage());
         }
     }
 
@@ -200,18 +200,18 @@ public class MqttStatListener implements MqttCallback {
                     d.initFromUplinkEvent(up);
                     privDeviceFramesService.updateDevice(d);
                 } catch (JsonProcessingException x) {
-                    log.error("MQTT S - Failed to transform Chiprstack payload "+x.getMessage());
+                    log.error("MQTT DS - Failed to transform Chiprstack payload "+x.getMessage());
                 } catch (Exception x) {
-                    log.error("MQTT S - Exception in processing chirpstack message "+x.getMessage());
+                    log.error("MQTT DS - Exception in processing chirpstack message "+x.getMessage());
                     x.printStackTrace();
                 }
             } else if ( topicName.matches("application/.*/event/join$") ) {
                 try {
                     JoinEvent je = mapper.readValue(message.toString(), JoinEvent.class);
                 } catch (JsonProcessingException x) {
-                    log.error("MQTT S - Failed to transform Chiprstack payload "+x.getMessage());
+                    log.error("MQTT DS - Failed to transform Chiprstack payload "+x.getMessage());
                 } catch (Exception x) {
-                    log.error("MQTT S - Exception in processing chirpstack message "+x.getMessage());
+                    log.error("MQTT DS - Exception in processing chirpstack message "+x.getMessage());
                     x.printStackTrace();
                 }
             } else {
@@ -219,13 +219,13 @@ public class MqttStatListener implements MqttCallback {
 // OTHERS
 // =================================================
                 // standard json messages
-                log.debug("MQTT S - MessageArrived on " + topicName);
+                log.debug("MQTT DS - MessageArrived on " + topicName);
                 //log.info("MQTT - message "+message);
             }
-            log.debug("MQTT S processing time " + (Now.NowUtcMs() - start) + "ms for " + topicName);
+            log.debug("MQTT DS processing time " + (Now.NowUtcMs() - start) + "ms for " + topicName);
         } catch (Exception e) {
             // cath Exception to not kill the MQTT process
-            log.error("MQTT S - Exception "+e.getMessage());
+            log.error("MQTT DS - Exception "+e.getMessage());
             e.printStackTrace();
         }
     }
