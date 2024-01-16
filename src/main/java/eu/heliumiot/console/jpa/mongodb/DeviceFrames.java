@@ -153,6 +153,7 @@ public class DeviceFrames implements ClonnableObject<DeviceFrames>{
 
     public DeviceFrames clone() {
         DeviceFrames d = new DeviceFrames();
+        d.setId(this.id);
         d.setDevEui(this.devEui);
         d.setLastSeen(this.lastSeen);
         d.setLastSaved(this.lastSaved);
