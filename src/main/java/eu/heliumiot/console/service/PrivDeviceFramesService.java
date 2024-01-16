@@ -3,11 +3,15 @@ package eu.heliumiot.console.service;
 
 import eu.heliumiot.console.jpa.mongodb.DeviceFrames;
 import eu.heliumiot.console.jpa.mongoRep.DeviceFramesMongoRepository;
+import fr.ingeniousthings.tools.Now;
 import fr.ingeniousthings.tools.ObjectCache;
+import io.micrometer.core.instrument.Gauge;
+import io.micrometer.core.instrument.MeterRegistry;
 import jakarta.annotation.PostConstruct;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -21,6 +25,16 @@ public class PrivDeviceFramesService {
 
     @Autowired
     protected DeviceFramesMongoRepository deviceFramesMongoRepository;
+
+    // =============================================================
+    // Cache Management
+    // =============================================================
+
+    private final MeterRegistry registry;
+    public PrivDeviceFramesService(MeterRegistry registry) {
+        this.registry = registry;
+    }
+
 
     @PostConstruct
     private void initDeviceFrameService() {
@@ -47,8 +61,69 @@ public class PrivDeviceFramesService {
             public void bulkCacheUpdate(List<DeviceFrames> objects) {
                 deviceFramesMongoRepository.saveAll(objects);
             }
+
         };
+        Gauge.builder("cons.device.frame.cache_total_time", this.frameCache.getTotalCacheTime())
+            .description("total time device frame cache execution")
+            .register(registry);
+        Gauge.builder("cons.device.frame.cache_total", this.frameCache.getTotalCacheTry())
+            .description("total device frame cache try")
+            .register(registry);
+        Gauge.builder("cons.device.frame.cache_miss", this.frameCache.getCacheMissStat())
+            .description("total device frame cache miss")
+            .register(registry);
     }
+
+    protected boolean serviceEnable = true;
+    protected int runningJobs = 0;
+
+    @Scheduled(fixedRate = 900_000, initialDelay = 900_000)
+    protected void cacheFlush() {
+        if ( ! this.serviceEnable ) return;
+        this.runningJobs++;
+        long start = Now.NowUtcMs();
+        try {
+            // sync the cache with DB
+            long updated;
+            do {
+                updated = this.frameCache.commit(true,250);
+            } while ( updated == 250 );
+            this.frameCache.flush();
+        } finally {
+            this.runningJobs--;
+        }
+        log.debug("Device Frame cache commit in "+(Now.NowUtcMs()-start)+"ms");
+    }
+
+    @Scheduled(fixedRateString = "${logging.cache.fixedrate}", initialDelay = 62_300)
+    protected void cacheStatus() {
+        if ( ! this.serviceEnable ) return;
+        this.runningJobs++;
+        try {
+            this.frameCache.log();
+        } finally {
+            this.runningJobs--;
+        }
+    }
+
+    public void stopService() {
+        this.serviceEnable = false;
+    }
+
+    // return true when the service has stopped all the running jobs
+    public boolean hasStopped() {
+        return (!this.serviceEnable && this.runningJobs == 0);
+    }
+
+    public void stopPrivDeviceFrameServiceCache() {
+        log.info("Stopping PrivDeviceFramesService");
+        this.frameCache.flush();
+    }
+
+
+    // =============================================================
+    // Cache IN & OUT
+    // =============================================================
 
     // Returns the device entry or null if does not exists
     public DeviceFrames getDevice(String devEui) {

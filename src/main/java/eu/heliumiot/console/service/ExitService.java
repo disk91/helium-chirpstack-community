@@ -86,6 +86,9 @@ public class ExitService {
     @Autowired
     private HeliumEduService heliumEduService;
 
+    @Autowired
+    private PrivDeviceFramesService privDeviceFramesService;
+
     @PreDestroy
     public void onCallExit() {
 
@@ -137,6 +140,7 @@ public class ExitService {
         heliumTenantService.stopService();
         heliumTenantSetupService.stopService();
         heliumDeviceCacheService.stopService();
+        privDeviceFramesService.stopService();
         novaService.stopService();
 
 
@@ -151,6 +155,7 @@ public class ExitService {
             if ( ! heliumTenantSetupService.hasStopped() ) services++;
             if ( ! heliumDeviceCacheService.hasStopped() ) services++;
             if ( ! novaService.hasStopped() ) services++;
+            if ( ! privDeviceFramesService.hasStopped() ) services++;
 
             if ( (Now.NowUtcMs() - d) > 1000 ) {
                 log.error("Waiting for "+services+" services to stop");
