@@ -1,6 +1,7 @@
 package eu.heliumiot.console.service;
 
 
+import eu.heliumiot.console.ConsolePrivateConfig;
 import eu.heliumiot.console.jpa.mongodb.DeviceFrames;
 import eu.heliumiot.console.jpa.mongoRep.DeviceFramesMongoRepository;
 import fr.ingeniousthings.tools.Now;
@@ -24,6 +25,9 @@ public class PrivDeviceFramesService {
     private ObjectCache<String, DeviceFrames> frameCache;
 
     @Autowired
+    protected ConsolePrivateConfig consolePrivateConfig;
+
+    @Autowired
     protected DeviceFramesMongoRepository deviceFramesMongoRepository;
 
     // =============================================================
@@ -40,8 +44,8 @@ public class PrivDeviceFramesService {
     private void initDeviceFrameService() {
         this.frameCache = new ObjectCache<String, DeviceFrames>(
             "DeviceFrameCache",
-            1000,               // @todo param
-            3600_000                    // @todo param
+            consolePrivateConfig.getHeliumDevFrameCacheSize(),
+            consolePrivateConfig.getHeliumDevFrameCacheExpiration()
         ) {
             private ArrayList<DeviceFrames> _toSave = new ArrayList<>();
             @Override
