@@ -410,7 +410,7 @@ public abstract class ObjectCache<K, T extends ClonnableObject<T>> {
 
     // returns %age of cache usage
     public int cacheUsage() {
-        return (int)Math.floor(((100*this.cacheSize) / this.maxCacheSize));
+        return (int)Math.floor(((double) (100 * this.cacheSize) / this.maxCacheSize));
     }
 
     // Before clearing the cache, we want to sync the modifications
