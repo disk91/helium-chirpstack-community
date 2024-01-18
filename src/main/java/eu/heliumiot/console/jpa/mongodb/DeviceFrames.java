@@ -24,6 +24,7 @@ import org.springframework.data.mongodb.core.index.GeoSpatialIndexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 @Document(collection = "helium_frames")
@@ -82,7 +83,12 @@ public class DeviceFrames implements ClonnableObject<DeviceFrames>{
             // check entryFrame size
             if ( this.recentFrames.size() > consolePrivateConfig.getHeliumDevMaxFrameHist() ) {
                 // keep the last N-5 entries
-                this.recentFrames = this.recentFrames.subList(this.recentFrames.size() - (consolePrivateConfig.getHeliumDevMaxFrameHist()-5), this.recentFrames.size());
+                this.recentFrames = this.recentFrames.subList(
+                    this.recentFrames.size()
+                        - consolePrivateConfig.getHeliumDevMaxFrameHist()
+                        + ( consolePrivateConfig.getHeliumDevMaxFrameHist() * 10 ) / 100,
+                    this.recentFrames.size()
+                );
             }
 
         }
@@ -146,8 +152,27 @@ public class DeviceFrames implements ClonnableObject<DeviceFrames>{
         this.recentFrames.add(fe);
 
         // evaluate position / is the device moving ?
+        // @todo let see that later
 
         // clean the hotspot list
+        // keep the last Max.Hotspot hotspots seen
+        if ( this.hotspotAround.size() > consolePrivateConfig.getHeliumDevMaxHotspotHist() ) {
+            this.hotspotAround.sort(new Comparator<HotspotEntry>() {
+                @Override
+                public int compare(HotspotEntry p1, HotspotEntry p2) {
+                    return (int) (p1.getLastSeen() - p2.getLastSeen());
+                }
+            });
+
+            // remove some of the hotspot to get less than the maximum
+            this.hotspotAround = this.hotspotAround.subList(
+                (this.hotspotAround.size()
+                    -consolePrivateConfig.getHeliumDevMaxHotspotHist()
+                    +(consolePrivateConfig.getHeliumDevMaxHotspotHist()*10)/100
+                ),
+                this.hotspotAround.size()
+            );
+        }
 
     }
 
