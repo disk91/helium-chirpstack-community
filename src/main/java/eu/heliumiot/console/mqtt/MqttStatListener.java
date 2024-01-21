@@ -28,6 +28,7 @@ import eu.heliumiot.console.ConsolePrivateConfig;
 import eu.heliumiot.console.jpa.db.HeliumParameter;
 import eu.heliumiot.console.jpa.db.HeliumTenant;
 import eu.heliumiot.console.jpa.mongodb.DeviceFrames;
+import eu.heliumiot.console.jpa.mongodb.Hotspots;
 import eu.heliumiot.console.mqtt.api.HeliumDeviceActDeactItf;
 import eu.heliumiot.console.mqtt.api.HeliumDeviceStatItf;
 import eu.heliumiot.console.mqtt.api.HeliumTenantActDeactItf;
@@ -184,6 +185,8 @@ public class MqttStatListener implements MqttCallback {
     @Autowired
     protected PrivDeviceFramesService privDeviceFramesService;
 
+    @Autowired
+    protected PrivHotspotService privHotspotService;
 
     @Override
     public void messageArrived(String topicName, MqttMessage message) throws Exception {
@@ -203,6 +206,14 @@ public class MqttStatListener implements MqttCallback {
                     }
                     d.initFromUplinkEvent(up,consolePrivateConfig);
                     privDeviceFramesService.updateDevice(d);
+                    up.getRxInfo().parallelStream().forEach(rx -> {
+                        Hotspots h =  privHotspotService.getHotspot(rx.getMetadata().getGateway_id());
+                        if ( h == null ) {
+                            h = new Hotspots();
+                        }
+                        h.initFromRxInfo(rx, consolePrivateConfig);
+                        privHotspotService.updateHotspot(h);
+                    });
                 } catch (JsonProcessingException x) {
                     log.error("MQTT DS - Failed to transform Chiprstack payload "+x.getMessage());
                 } catch (Exception x) {
