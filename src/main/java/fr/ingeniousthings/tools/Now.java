@@ -93,6 +93,16 @@ public class Now {
         return todayMidnight.toEpochSecond(ZoneOffset.UTC)*1000;
     }
 
+    public static long ThisHourUtc(long timeMs) {
+        Date initial = new Date(timeMs);
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(initial);
+        calendar.set(Calendar.MINUTE,0);
+        calendar.set(Calendar.SECOND,0);
+        calendar.set(Calendar.MILLISECOND,0);
+        return calendar.getTimeInMillis();
+    }
+
     /**
      * 20 year in the future
      * @return
