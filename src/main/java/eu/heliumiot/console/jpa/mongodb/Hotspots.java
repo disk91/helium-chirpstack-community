@@ -181,11 +181,11 @@ public class Hotspots implements ClonnableObject<Hotspots> {
         this.seen = seen;
     }
 
-    public ArrayList<HotspotHourlyUsage> getTrafficHistory() {
+    public List<HotspotHourlyUsage> getTrafficHistory() {
         return trafficHistory;
     }
 
-    public void setTrafficHistory(ArrayList<HotspotHourlyUsage> trafficHistory) {
+    public void setTrafficHistory(List<HotspotHourlyUsage> trafficHistory) {
         this.trafficHistory = trafficHistory;
     }
 }
