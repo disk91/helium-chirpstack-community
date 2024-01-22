@@ -954,7 +954,7 @@ public class HeliumDeviceService {
             r.lastRequest = start;
             r.retries++;
             if ( r.retries > 10 ) {
-                log.error("More than 10 trial to deactivate a tenant is not normal for "+tenantID);
+                log.error("More than 10 trials to deactivate a tenant is not normal for "+tenantID);
             }
         } else {
             r = new DeactivationRequest();
