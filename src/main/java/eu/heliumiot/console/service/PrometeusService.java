@@ -257,8 +257,8 @@ public class PrometeusService {
         this.roamingCount++;
     }
 
-    protected Supplier<Number> getRoamingTotalDuration() { return ()->roamingTotalDurationMs; }
-    protected Supplier<Number> getRoamingCount() { return ()->roamingCount; }
+    private Supplier<Number> getRoamingTotalDuration() { return ()->roamingTotalDurationMs; }
+    private Supplier<Number> getRoamingCount() { return ()->roamingCount; }
 
     // ============================================================
     // Listener queue state
@@ -268,7 +268,7 @@ public class PrometeusService {
     public void bridgeQueueSet(int size) { if (size > this.bridgeQueueSize) this.bridgeQueueSize = size; }
     public void chirpstackQueueSet(int size) { if ( size > this.chirpstackQueueSize) this.chirpstackQueueSize = size; }
 
-    protected Supplier<Number> getBridgeQueueSize() {
+    private Supplier<Number> getBridgeQueueSize() {
         return () -> {
             Number t = this.bridgeQueueSize;
             this.bridgeQueueSize = 0;
@@ -276,7 +276,7 @@ public class PrometeusService {
         };
     }
     
-    protected Supplier<Number> getChirpstackQueueSize() {
+    private Supplier<Number> getChirpstackQueueSize() {
         return () -> {
             Number t = this.chirpstackQueueSize;
             this.chirpstackQueueSize = 0;
@@ -289,175 +289,175 @@ public class PrometeusService {
     // Prometheus interface
 
 
-    protected Supplier<Number> getApiTotalTimeMs() {
+    private Supplier<Number> getApiTotalTimeMs() {
         return ()->apiTotalTimeMs;
     }
 
-    protected Supplier<Number> getApiTotalCount() {
+    private Supplier<Number> getApiTotalCount() {
         return ()->apiTotalCount;
     }
 
-    protected Supplier<Number> getApiTotalError() {
+    private Supplier<Number> getApiTotalError() {
         return ()->apiTotalError;
     }
 
-    protected Supplier<Number> getUserTotalLoginCount() {
+    private Supplier<Number> getUserTotalLoginCount() {
         return ()->userTotalLoginCount;
     }
 
-    protected Supplier<Number> getApiDcBalanceTimeMs() {
+    private Supplier<Number> getApiDcBalanceTimeMs() {
         return ()->apiDcBalanceTimeMs;
     }
 
-    protected Supplier<Number> getApiDcBalanceTotal() {
+    private Supplier<Number> getApiDcBalanceTotal() {
         return ()->apiDcBalanceTotal;
     }
-    protected Supplier<Number> getHeliumApiTotalTimeMs() {
+    private Supplier<Number> getHeliumApiTotalTimeMs() {
         return ()->apiHeliumTimeMs;
     }
 
-    protected Supplier<Number> getHeliumApiTotal() {
+    private Supplier<Number> getHeliumApiTotal() {
         return ()->apiHeliumTotal;
     }
 
-    protected Supplier<Number> getHeliumApiTotalError() {
+    private Supplier<Number> getHeliumApiTotalError() {
         return ()->apiHeliumErrors;
     }
 
-    protected Supplier<Number> getMqttConnectionLoss() {
+    private Supplier<Number> getMqttConnectionLoss() {
         return ()->mqttConnectionLoss;
     }
 
-    protected Supplier<Number> getRedisStreamError() {
+    private Supplier<Number> getRedisStreamError() {
         return ()->redisStreamReadError;
     }
 
-    protected Supplier<Number> getLoRagatewayTravelTime() {
+    private Supplier<Number> getLoRagatewayTravelTime() {
         return ()->loRaGatewayTravelTimeMs;
     }
 
-    protected Supplier<Number> getLoRaUplinkToProcessTime() {
+    private Supplier<Number> getLoRaUplinkToProcessTime() {
         return ()->loRaTotalToProcessTimeMs;
     }
 
 
-    protected Supplier<Number> getLoRaTotalUplink() {
+    private Supplier<Number> getLoRaTotalUplink() {
         return ()->loRaUplinkCount;
     }
 
-    protected Supplier<Number> getLoRaTotalDuplicates() {
+    private Supplier<Number> getLoRaTotalDuplicates() {
         return ()->loRaDuplicatesCount;
     }
 
-    protected Supplier<Number> getLoRaConfirmedUplinkCount() {
+    private Supplier<Number> getLoRaConfirmedUplinkCount() {
         return ()->loRaConfirmedCount;
     }
-    protected Supplier<Number> getLoRaConfirmedTravelTimeMs() { return ()->loRaTotalConfirmedTravelTimeMs; }
+    private Supplier<Number> getLoRaConfirmedTravelTimeMs() { return ()->loRaTotalConfirmedTravelTimeMs; }
 
-    protected Supplier<Number> getLoRaTotalBytesUplink() {
+    private Supplier<Number> getLoRaTotalBytesUplink() {
         return ()->loRaTotalUplinkBytes;
     }
 
-    protected Supplier<Number> getLoRaTotalJoin() {
+    private Supplier<Number> getLoRaTotalJoin() {
         return ()->loRaJoinCount;
     }
 
-    protected Supplier<Number> getLoRaTotalJoinRequest() {
+    private Supplier<Number> getLoRaTotalJoinRequest() {
         return ()->loRaJoinRequest;
     }
 
-    protected Supplier<Number> getLoRaTotalJoinTravelTime() {
+    private Supplier<Number> getLoRaTotalJoinTravelTime() {
         return ()->loRaJoinTravelTime;
     }
 
-    protected Supplier<Number> getLoRaTotalJoinByteCount() {
+    private Supplier<Number> getLoRaTotalJoinByteCount() {
         return ()->loRaJoinByteCounts;
     }
 
-    protected Supplier<Number> getLoRaTotalDownlink() {
+    private Supplier<Number> getLoRaTotalDownlink() {
         return ()->loRaDownlinkCount;
     }
 
-    protected Supplier<Number> getLoRaFirstUplinkCount() {
+    private Supplier<Number> getLoRaFirstUplinkCount() {
         return ()->loRaFirstUplinkCount;
     }
-    protected Supplier<Number> getLoRaFirstUplinkTravel() {
+    private Supplier<Number> getLoRaFirstUplinkTravel() {
         return ()->loRaFirstUplinkTravelTime;
     }
-    protected Supplier<Number> getLoRaLateUplinkCount() {
+    private Supplier<Number> getLoRaLateUplinkCount() {
         return ()->loRaLateUplinkCount;
     }
-    protected Supplier<Number> getLoRaLateUplinkTravel() {
+    private Supplier<Number> getLoRaLateUplinkTravel() {
         return ()->loRaLateUplinkTravelTime;
     }
-    protected Supplier<Number> getLoRaGatewayUplinkCount() {
+    private Supplier<Number> getLoRaGatewayUplinkCount() {
         return ()->loRaGatewayUplink;
     }
 
-    protected Supplier<Number> getLoRaInvoicableUpPacket() {
+    private Supplier<Number> getLoRaInvoicableUpPacket() {
         return ()->loRaInvoicableUplink;
     }
 
-    protected Supplier<Number> getLoRaInvoicableDwnPacket() {
+    private Supplier<Number> getLoRaInvoicableDwnPacket() {
         return ()->loRaInvoicableDownlink;
     }
 
-    protected Supplier<Number> getLoRaTotalBytesDownlink() {
+    private Supplier<Number> getLoRaTotalBytesDownlink() {
         return ()->loRaTotalDownlinkBytes;
     }
 
-    protected Supplier<Number> getDelayedStatUpdate() {
+    private Supplier<Number> getDelayedStatUpdate() {
         return ()->internalDelayedUsageStats;
     }
 
-    protected Supplier<Number> getRouteUpdateTotalMs() {
+    private Supplier<Number> getRouteUpdateTotalMs() {
         return ()->routeUpdateTotalTimeMs;
     }
-    protected Supplier<Number> getRouteUpdateTotal() {
+    private Supplier<Number> getRouteUpdateTotal() {
         return ()->routeUpdateTotal;
     }
-    protected Supplier<Number> getDevAddrUpdateTotalMs() {
+    private Supplier<Number> getDevAddrUpdateTotalMs() {
         return ()->devadrUpdateTotalTimeMs;
     }
-    protected Supplier<Number> getDevAddrUpdateTotal() {
+    private Supplier<Number> getDevAddrUpdateTotal() {
         return ()->devadrUpdateTotal;
     }
-    protected Supplier<Number> getDeviceCreation() {
+    private Supplier<Number> getDeviceCreation() {
         return ()->deviceCreationTotal;
     }
-    protected Supplier<Number> getDeviceDeletion() {
+    private Supplier<Number> getDeviceDeletion() {
         return ()->deviceDeletionTotal;
     }
-    protected Supplier<Number> getDcTotal() {
+    private Supplier<Number> getDcTotal() {
         return ()->dcTotal;
     }
-    protected Supplier<Number> getDeviceTotal() {
+    private Supplier<Number> getDeviceTotal() {
         return ()->deviceTotal;
     }
-    protected Supplier<Number> getTenantTotal() {
+    private Supplier<Number> getTenantTotal() {
         return ()->tenantTotal;
     }
-    protected Supplier<Number> getUserTotal() {
+    private Supplier<Number> getUserTotal() {
         return ()->userTotal;
     }
-    protected Supplier<Number> getLastSeenTestDev() {
+    private Supplier<Number> getLastSeenTestDev() {
         return ()->((lastSeenTestDevice >0)?(Now.NowUtcMs() - lastSeenTestDevice):0);
     }
-    protected Supplier<Number> getDbQueryTotalMs() {
+    private Supplier<Number> getDbQueryTotalMs() {
         return ()->queryTotalMs;
     }
-    protected Supplier<Number> getDbQueryTotal() {
+    private Supplier<Number> getDbQueryTotal() {
         return ()->queryTotal;
     }
 
-    protected Supplier<Number> getDcAmount() {
+    private Supplier<Number> getDcAmount() {
         return ()->dcAmount;
     }
 
-    protected Supplier<Number> getLoRaMessageProcessed() { return ()->loRaMessageProcessed; }
-    protected Supplier<Number> getLoRaMessageProcessingTime() { return ()->loRaMessageProcessingTime; }
+    private Supplier<Number> getLoRaMessageProcessed() { return ()->loRaMessageProcessed; }
+    private Supplier<Number> getLoRaMessageProcessingTime() { return ()->loRaMessageProcessingTime; }
 
-    protected Supplier<Number> getHeliumInvoicedPackets() { return ()->heliumInvoicedPackets; }
+    private Supplier<Number> getHeliumInvoicedPackets() { return ()->heliumInvoicedPackets; }
 
     public PrometeusService(MeterRegistry registry) {
 
