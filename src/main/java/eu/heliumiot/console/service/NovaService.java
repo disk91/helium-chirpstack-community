@@ -463,7 +463,7 @@ public class NovaService {
                 su.session = s.getSessionKey();
                 skfToAdd.add(su);
             } else {
-                log.warn("The route "+routeId+" contains redundant add skf for devAddr "+s.getDevaddr()+ " key "+s.getSessionKey());
+                log.warn("The route "+routeId+" contains redundant add skf for devAddr "+Integer.toHexString(s.getDevaddr())+ " key "+s.getSessionKey());
             }
         }
         LinkedList<SkfUpdate> skfToRem = new LinkedList<>();
@@ -474,7 +474,7 @@ public class NovaService {
                 su.session = s.getSessionKey();
                 skfToRem.add(su);
             } else {
-                log.warn("The route "+routeId+" contains redundant del skf for devAddr "+s.getDevaddr()+ " key "+s.getSessionKey());
+                log.warn("The route "+routeId+" contains redundant del skf for devAddr "+Integer.toHexString(s.getDevaddr())+ " key "+s.getSessionKey());
             }
         }
         grpcUpdateSessions(skfToAdd,skfToRem,routeId);
