@@ -72,6 +72,31 @@ public class ConsolePrivateConfig {
     }
 
     // =====================================
+    // ETL integration
+    // =====================================
+
+    @Value("${helium.etl.url:}")
+    private String heliumEtlUrl;
+
+    @Value("${helium.etl.user:}")
+    private String heliumEtlUser;
+
+    @Value("${helium.etl.password:}")
+    private String heliumEtlPassword;
+
+    public String getHeliumEtlUrl() {
+        return heliumEtlUrl;
+    }
+
+    public String getHeliumEtlUser() {
+        return heliumEtlUser;
+    }
+
+    public String getHeliumEtlPassword() {
+        return heliumEtlPassword;
+    }
+
+    // =====================================
     // Console for EDU environment
     // =====================================
 

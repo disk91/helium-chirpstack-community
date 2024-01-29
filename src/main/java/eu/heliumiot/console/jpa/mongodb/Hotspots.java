@@ -54,6 +54,8 @@ public class Hotspots implements ClonnableObject<Hotspots> {
 
     // history from etl
 
+    protected long lastEtlUpdate;  // last time this entry has been updated from etl
+
 
     // ======================================================================
     // Constructors
@@ -70,11 +72,13 @@ public class Hotspots implements ClonnableObject<Hotspots> {
         ArrayList<HotspotHourlyUsage> hhu = new ArrayList<>();
         this.trafficHistory.forEach( hu -> hhu.add(hu.clone()) );
         h.setTrafficHistory(hhu);
+        h.setLastEtlUpdate(lastEtlUpdate);
         return h;
     }
 
     public void initFromRxInfo(UplinkEventRxInfo rx, ConsolePrivateConfig config) {
         if ( id == null ) {
+            this.lastEtlUpdate = 0;
             this.hotspotId = rx.getMetadata().getGateway_id().toLowerCase();
             this.name = rx.getMetadata().getGateway_name().toLowerCase();
             this.hotspotPosition = new GeoJsonPoint(0,0);
@@ -187,5 +191,13 @@ public class Hotspots implements ClonnableObject<Hotspots> {
 
     public void setTrafficHistory(List<HotspotHourlyUsage> trafficHistory) {
         this.trafficHistory = trafficHistory;
+    }
+
+    public long getLastEtlUpdate() {
+        return lastEtlUpdate;
+    }
+
+    public void setLastEtlUpdate(long lastEtlUpdate) {
+        this.lastEtlUpdate = lastEtlUpdate;
     }
 }

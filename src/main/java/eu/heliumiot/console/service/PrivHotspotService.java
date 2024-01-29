@@ -1,11 +1,12 @@
 package eu.heliumiot.console.service;
 
 
+import eu.heliumiot.console.ConsoleConfig;
 import eu.heliumiot.console.ConsolePrivateConfig;
-import eu.heliumiot.console.jpa.mongoRep.DeviceFramesMongoRepository;
+import eu.heliumiot.console.etl.api.HotspotData;
 import eu.heliumiot.console.jpa.mongoRep.HotspotsMongoRepository;
-import eu.heliumiot.console.jpa.mongodb.DeviceFrames;
 import eu.heliumiot.console.jpa.mongodb.Hotspots;
+import fr.ingeniousthings.tools.ITNotFoundException;
 import fr.ingeniousthings.tools.Now;
 import fr.ingeniousthings.tools.ObjectCache;
 import io.micrometer.core.instrument.Gauge;
@@ -14,11 +15,18 @@ import jakarta.annotation.PostConstruct;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.*;
+import org.springframework.http.client.SimpleClientHttpRequestFactory;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
 
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.List;
+import java.util.concurrent.ConcurrentLinkedQueue;
+import java.util.function.Supplier;
 
 @Service
 public class PrivHotspotService {
@@ -41,6 +49,7 @@ public class PrivHotspotService {
         this.registry = registry;
     }
 
+    private SimpleClientHttpRequestFactory factory;
 
     @PostConstruct
     private void initHostpotService() {
@@ -69,6 +78,11 @@ public class PrivHotspotService {
             }
 
         };
+
+        factory = new SimpleClientHttpRequestFactory();
+        factory.setConnectTimeout(800);
+        factory.setReadTimeout(1500);
+
         Gauge.builder("cons.hotspot.cache_total_time", this.hotspotCache.getTotalCacheTime())
             .description("total time hotspot cache execution")
             .register(registry);
@@ -77,6 +91,19 @@ public class PrivHotspotService {
             .register(registry);
         Gauge.builder("cons.hotspot.cache_miss", this.hotspotCache.getCacheMissStat())
             .description("total hotspot cache miss")
+            .register(registry);
+
+        Gauge.builder("cons.etl.queue.full", this.getMetricsQueueFull())
+            .description("missed hotspot sync due to queue full")
+            .register(registry);
+        Gauge.builder("cons.etl.call.total", this.getMetricsCallTotal())
+            .description("number of ETL call")
+            .register(registry);
+        Gauge.builder("cons.etl.response.time", this.getMetricsResptmTotal())
+            .description("sum of time pass to call ETL")
+            .register(registry);
+        Gauge.builder("cons.etl.call.failed", this.getMetricsCallFailed())
+            .description("total etl call failed")
             .register(registry);
     }
 
@@ -153,6 +180,120 @@ public class PrivHotspotService {
         this.hotspotCache.put(d,d.getHotspotId().toLowerCase(),true);
         return d;
     }
+
+
+    // =============================================================
+    // Refresh ETL stats
+    // =============================================================
+
+    // stats / metrics
+    protected long metrics_queue_full = 0;
+    public Supplier<Number> getMetricsQueueFull() { return ()->this.metrics_queue_full; };
+    protected long metrics_resptm_total = 0;
+    public Supplier<Number> getMetricsResptmTotal() { return ()->this.metrics_resptm_total; };
+    protected long metrics_call_total = 0;
+    public Supplier<Number> getMetricsCallTotal() { return ()->this.metrics_call_total; };
+    protected long metrics_call_failed = 0;
+    public Supplier<Number> getMetricsCallFailed() { return ()->this.metrics_call_failed; };
+
+    // queue
+    protected ConcurrentLinkedQueue<Hotspots> syncPending = new ConcurrentLinkedQueue<>();
+    protected long _queueSize = 0;
+    protected final Object _queueSizeLock = new Object();
+
+    public void addRefreshHostpotData(Hotspots h) {
+        long now = Now.NowUtcMs();
+        if( (now - h.getLastEtlUpdate()) > Now.ONE_HOUR && _queueSize < 100 ) {
+            syncPending.add(h);
+            synchronized (_queueSizeLock ) {_queueSize++;}
+        } else {
+            this.metrics_queue_full++;
+        }
+    }
+
+    @Scheduled(fixedRate = 200, initialDelay = 20_000)
+    protected void refreshHotspotData() {
+        // take a single pending request to not overload the backend etl
+        if ( _queueSize > 0 ) {
+            synchronized (_queueSizeLock ) {_queueSize--;}
+            Hotspots h = syncPending.poll();
+            if ( h == null ) return;
+            try {
+                long now = Now.NowUtcMs();
+                HotspotData hd = getHostpotData(h.getHotspotId());
+
+                
+
+                this.metrics_call_total++;
+                this.metrics_resptm_total += (Now.NowUtcMs()-now);
+            } catch (ITNotFoundException x) {
+                this.metrics_call_failed++;
+            }
+
+        }
+    }
+
+
+    // ==============================================================
+    // ETL Api
+    // ==============================================================
+
+    @Autowired
+    protected ConsoleConfig consoleConfig;
+
+    protected HttpEntity<String> createHeaders(){
+        HttpHeaders headers = new HttpHeaders();
+        ArrayList<MediaType> accept = new ArrayList<>();
+        accept.add(MediaType.APPLICATION_JSON);
+        headers.setAccept(accept);
+        headers.add(HttpHeaders.USER_AGENT,"console/"+consoleConfig.getHeliumRouteOui());
+        if ( consolePrivateConfig.getHeliumEtlUser() != null && consolePrivateConfig.getHeliumEtlUser().length() > 0 ) {
+            String auth = consolePrivateConfig.getHeliumEtlUser() + ":" + consolePrivateConfig.getHeliumEtlPassword();
+            byte[] encodedAuth = Base64.getEncoder().encode(
+                auth.getBytes(StandardCharsets.US_ASCII));
+            String authHeader = "Basic " + new String(encodedAuth);
+            headers.add(HttpHeaders.AUTHORIZATION, authHeader);
+        }
+        HttpEntity<String> he = new HttpEntity<String>(headers);
+        return he;
+    }
+
+
+    public HotspotData getHostpotData(String hotspotId) throws ITNotFoundException {
+        // get from ETL
+        RestTemplate restTemplate = new RestTemplate(this.factory);
+        String url = "";
+        try {
+            HttpEntity<String> he = createHeaders();
+            url = consolePrivateConfig.getHeliumEtlUrl() + "/hotspot/3.0/" + hotspotId + "/";
+            ResponseEntity<HotspotData> responseEntity =
+                restTemplate.exchange(
+                    url,
+                    HttpMethod.GET,
+                    he,
+                    HotspotData.class
+                );
+            if (responseEntity.getStatusCode() == HttpStatus.OK) {
+                if (responseEntity.getBody() != null) {
+                    return responseEntity.getBody();
+                } else {
+                    log.warn("Response from ETL with empty body for hotspot "+hotspotId);
+                    throw new ITNotFoundException();
+                }
+            } else {
+                log.debug("ELT Hotspot "+hotspotId+" not found "+responseEntity.getStatusCode());
+                // if (responseEntity.getBody() != null) log.info(""+responseEntity.getBody());
+                throw new ITNotFoundException();
+            }
+        } catch ( ITNotFoundException x ) {
+            throw new ITNotFoundException();
+        } catch (Exception e) {
+            //e.printStackTrace();
+            log.warn("Exception "+e.getMessage());
+            throw new ITNotFoundException();
+        }
+    }
+
 
 
 }
