@@ -4,6 +4,7 @@ package eu.heliumiot.console.service;
 import eu.heliumiot.console.ConsoleConfig;
 import eu.heliumiot.console.ConsolePrivateConfig;
 import eu.heliumiot.console.etl.api.HotspotData;
+import eu.heliumiot.console.etl.api.HotspotState;
 import eu.heliumiot.console.jpa.mongoRep.HotspotsMongoRepository;
 import eu.heliumiot.console.jpa.mongodb.Hotspots;
 import fr.ingeniousthings.tools.ITNotFoundException;
@@ -169,6 +170,7 @@ public class PrivHotspotService {
                 this.hotspotCache.put(d,d.getHotspotId().toLowerCase());
             }
         }
+        if ( d != null ) addRefreshHostpotData(d);
         return d;
     }
 
@@ -220,10 +222,20 @@ public class PrivHotspotService {
             if ( h == null ) return;
             try {
                 long now = Now.NowUtcMs();
-                HotspotData hd = getHostpotData(h.getHotspotId());
-
-                
-
+                HotspotState hd = getHostpotState(h.getHotspotId());
+                h.setBrand(hd.getBrand());
+                h.setLastWitnessMs(hd.getLastWitness());
+                h.setLastBeaconMs(hd.getLastBeacon());
+                h.setLastRewardMs(hd.getLastReward());
+                h.setSumOfIoTRewards((hd.getSumRewardBeacon()+hd.getSumRewardWitness()+hd.getSumRewardDc()) / 1_000_000);
+                h.setBeaconned(hd.getBeaconned());
+                h.setWitnessed(hd.getWitnessed());
+                h.setMaxTxDistance(hd.getMaxTxDistance());
+                h.setMaxRxDistance(hd.getMaxRxDistance());
+                h.setMaxRxBudgetLinkDB(hd.getMaxRxBudgetLinkDB());
+                h.setRewardHistories(hd.getRewardHistories());
+                h.setWitnessesHistory(hd.getWitnessesHistory());
+                h.setLastEtlUpdate(Now.NowUtcMs());
                 this.metrics_call_total++;
                 this.metrics_resptm_total += (Now.NowUtcMs()-now);
             } catch (ITNotFoundException x) {
@@ -247,31 +259,30 @@ public class PrivHotspotService {
         accept.add(MediaType.APPLICATION_JSON);
         headers.setAccept(accept);
         headers.add(HttpHeaders.USER_AGENT,"console/"+consoleConfig.getHeliumRouteOui());
-        if ( consolePrivateConfig.getHeliumEtlUser() != null && consolePrivateConfig.getHeliumEtlUser().length() > 0 ) {
+        if ( consolePrivateConfig.getHeliumEtlUser() != null && !consolePrivateConfig.getHeliumEtlUser().isEmpty()) {
             String auth = consolePrivateConfig.getHeliumEtlUser() + ":" + consolePrivateConfig.getHeliumEtlPassword();
             byte[] encodedAuth = Base64.getEncoder().encode(
                 auth.getBytes(StandardCharsets.US_ASCII));
             String authHeader = "Basic " + new String(encodedAuth);
             headers.add(HttpHeaders.AUTHORIZATION, authHeader);
         }
-        HttpEntity<String> he = new HttpEntity<String>(headers);
-        return he;
+        return new HttpEntity<String>(headers);
     }
 
 
-    public HotspotData getHostpotData(String hotspotId) throws ITNotFoundException {
+    public HotspotState getHostpotState(String hotspotId) throws ITNotFoundException {
         // get from ETL
         RestTemplate restTemplate = new RestTemplate(this.factory);
         String url = "";
         try {
             HttpEntity<String> he = createHeaders();
-            url = consolePrivateConfig.getHeliumEtlUrl() + "/hotspot/3.0/" + hotspotId + "/";
-            ResponseEntity<HotspotData> responseEntity =
+            url = consolePrivateConfig.getHeliumEtlUrl() + "/hotspot/3.0/" + hotspotId + "/state";
+            ResponseEntity<HotspotState> responseEntity =
                 restTemplate.exchange(
                     url,
                     HttpMethod.GET,
                     he,
-                    HotspotData.class
+                    HotspotState.class
                 );
             if (responseEntity.getStatusCode() == HttpStatus.OK) {
                 if (responseEntity.getBody() != null) {
