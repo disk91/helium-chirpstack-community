@@ -261,6 +261,7 @@ public class PrivHotspotService {
         headers.add(HttpHeaders.USER_AGENT,"console/"+consoleConfig.getHeliumRouteOui());
         if ( consolePrivateConfig.getHeliumEtlUser() != null && !consolePrivateConfig.getHeliumEtlUser().isEmpty()) {
             String auth = consolePrivateConfig.getHeliumEtlUser() + ":" + consolePrivateConfig.getHeliumEtlPassword();
+            log.info(">> "+auth);
             byte[] encodedAuth = Base64.getEncoder().encode(
                 auth.getBytes(StandardCharsets.US_ASCII));
             String authHeader = "Basic " + new String(encodedAuth);
@@ -277,6 +278,7 @@ public class PrivHotspotService {
         try {
             HttpEntity<String> he = createHeaders();
             url = consolePrivateConfig.getHeliumEtlUrl() + "/hotspot/3.0/" + hotspotId + "/state";
+            log.info(">>> "+url);
             ResponseEntity<HotspotState> responseEntity =
                 restTemplate.exchange(
                     url,
