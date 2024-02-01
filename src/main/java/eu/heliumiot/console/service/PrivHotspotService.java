@@ -161,13 +161,13 @@ public class PrivHotspotService {
 
     // Returns the hotspot entry or null if does not exists
     public Hotspots getHotspot(String hotspotId) {
-        hotspotId = hotspotId.toLowerCase();
+        hotspotId = hotspotId;
         Hotspots d = this.hotspotCache.get(hotspotId);
         if ( d == null ) {
             // search in db
             d = hotpotMongoRepository.findOneHotspotByHotspotId(hotspotId);
             if ( d != null ) {
-                this.hotspotCache.put(d,d.getHotspotId().toLowerCase());
+                this.hotspotCache.put(d,d.getHotspotId());
             }
         }
         if ( d != null ) addRefreshHostpotData(d);
@@ -179,7 +179,7 @@ public class PrivHotspotService {
             // new entry
             d = hotpotMongoRepository.save(d);
         }
-        this.hotspotCache.put(d,d.getHotspotId().toLowerCase(),true);
+        this.hotspotCache.put(d,d.getHotspotId(),true);
         return d;
     }
 
@@ -205,7 +205,7 @@ public class PrivHotspotService {
 
     public void addRefreshHostpotData(Hotspots h) {
         long now = Now.NowUtcMs();
-        if( (now - h.getLastEtlUpdate()) > Now.ONE_HOUR && _queueSize < 100 ) {
+        if( (now - h.getLastEtlUpdate()) > Now.ONE_HOUR && _queueSize < 100 && h.getId() != null) {
             syncPending.add(h);
             synchronized (_queueSizeLock ) {_queueSize++;}
         } else {
@@ -217,9 +217,22 @@ public class PrivHotspotService {
     protected void refreshHotspotData() {
         // take a single pending request to not overload the backend etl
         if ( _queueSize > 0 ) {
-            synchronized (_queueSizeLock ) {_queueSize--;}
-            Hotspots h = syncPending.poll();
-            if ( h == null ) return;
+            boolean oneGet = false;
+            Hotspots h = null;
+            while ( !oneGet ) {
+                // we can have multiple time the same hotspot in queue, do not
+                // refresh it, sound faster here than rechecking the whole queue
+                // every time.
+                if ( _queueSize > 0 ) {
+                    synchronized (_queueSizeLock) {
+                        _queueSize--;
+                    }
+                    h = syncPending.poll();
+                    if ( h!=null && (Now.NowUtcMs() - h.getLastEtlUpdate()) > Now.ONE_HOUR ) {
+                        oneGet = true;
+                    }
+                } else return;
+            }
             try {
                 long now = Now.NowUtcMs();
                 HotspotState hd = getHostpotState(h.getHotspotId());
@@ -236,12 +249,18 @@ public class PrivHotspotService {
                 h.setRewardHistories(hd.getRewardHistories());
                 h.setWitnessesHistory(hd.getWitnessesHistory());
                 h.setLastEtlUpdate(Now.NowUtcMs());
+                h.setFailure(0);
                 this.metrics_call_total++;
                 this.metrics_resptm_total += (Now.NowUtcMs()-now);
             } catch (ITNotFoundException x) {
                 this.metrics_call_failed++;
+                int failure = h.getFailure();
+                h.setFailure(failure+1);
+                // does not retry too fast
+                if ( failure >= 2 ) h.setLastEtlUpdate(Now.NowUtcMs()-Now.ONE_HOUR);
+                else addRefreshHostpotData(h);
             }
-
+            hotpotMongoRepository.save(h);
         }
     }
 
@@ -261,7 +280,6 @@ public class PrivHotspotService {
         headers.add(HttpHeaders.USER_AGENT,"console/"+consoleConfig.getHeliumRouteOui());
         if ( consolePrivateConfig.getHeliumEtlUser() != null && !consolePrivateConfig.getHeliumEtlUser().isEmpty()) {
             String auth = consolePrivateConfig.getHeliumEtlUser() + ":" + consolePrivateConfig.getHeliumEtlPassword();
-            log.info(">> "+auth);
             byte[] encodedAuth = Base64.getEncoder().encode(
                 auth.getBytes(StandardCharsets.US_ASCII));
             String authHeader = "Basic " + new String(encodedAuth);
@@ -278,7 +296,6 @@ public class PrivHotspotService {
         try {
             HttpEntity<String> he = createHeaders();
             url = consolePrivateConfig.getHeliumEtlUrl() + "/hotspot/3.0/" + hotspotId + "/state";
-            log.info(">>> "+url);
             ResponseEntity<HotspotState> responseEntity =
                 restTemplate.exchange(
                     url,

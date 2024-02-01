@@ -58,6 +58,7 @@ public class Hotspots implements ClonnableObject<Hotspots> {
     // history from etl
 
     protected long lastEtlUpdate;  // last time this entry has been updated from etl
+    protected int failure;          // number of failure since last update in success
     protected long lastBeaconMs;    // last Beacon timestamp
     protected long lastWitnessMs;   // last Witness timestamp
     protected long lastRewardMs;    // last Reward timestamp
@@ -98,6 +99,7 @@ public class Hotspots implements ClonnableObject<Hotspots> {
         h.setMaxTxDistance(maxTxDistance);
         h.setMaxRxBudgetLinkDB(maxRxBudgetLinkDB);
         h.setBrand(brand);
+        h.setFailure(failure);
         List<RewardHistory> rhs = new ArrayList<>();
         if ( h.getRewardHistories() != null ) {
             for (RewardHistory bh : h.getRewardHistories()) {
@@ -118,7 +120,8 @@ public class Hotspots implements ClonnableObject<Hotspots> {
     public void initFromRxInfo(UplinkEventRxInfo rx, ConsolePrivateConfig config) {
         if ( id == null ) {
             this.lastEtlUpdate = 0;
-            this.hotspotId = rx.getMetadata().getGateway_id().toLowerCase();
+            this.failure = 0;
+            this.hotspotId = rx.getMetadata().getGateway_id();
             this.name = rx.getMetadata().getGateway_name().toLowerCase();
             this.hotspotPosition = new GeoJsonPoint(0,0);
             if (   rx.getMetadata().getGateway_lat() != null && rx.getMetadata().getGateway_lat().length() > 1
@@ -346,5 +349,13 @@ public class Hotspots implements ClonnableObject<Hotspots> {
 
     public void setRewardHistories(List<RewardHistory> rewardHistories) {
         this.rewardHistories = rewardHistories;
+    }
+
+    public int getFailure() {
+        return failure;
+    }
+
+    public void setFailure(int failure) {
+        this.failure = failure;
     }
 }
