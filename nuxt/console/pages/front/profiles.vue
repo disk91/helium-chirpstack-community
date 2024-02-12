@@ -8,6 +8,7 @@
         </b-col>
         <b-col cols="6">
          <TenantTopActive/>
+         <CheckSkfs v-if="!$config.community"/>
          <InvoiceSetup/>
         </b-col>
       </b-row>
@@ -19,6 +20,7 @@
   import Navbar from '~/components/Navbar.vue';
   import ManageTenantTemplate from '~/components/ManageTenantTemplate.vue'; 
   import ManageTenant from '~/components/ManageTenant.vue';
+  import CheckSkfs from '~/components/CheckSkfs.vue';
   import InvoiceSetup from '~/components/InvoiceSetup.vue';
   import TenantTopActive from '~/components/TenantTopActive.vue';
 
@@ -30,6 +32,7 @@
         'ManageTenant' : ManageTenant,
         'InvoiceSetup' : InvoiceSetup,
         'TenantTopActive' : TenantTopActive,
+        'CheckSkfs.vue' : CheckSkfs,
       },
     })
 </script>
