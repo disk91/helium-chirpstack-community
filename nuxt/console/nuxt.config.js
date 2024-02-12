@@ -65,6 +65,7 @@ export default {
     userConditionPut:(process.env.API_HOST || '')+'/console/1.0/user/condition',
     couponPost:(process.env.API_HOST || '')+'/console/1.0/tenant/coupon',
     couponGet:(process.env.API_HOST || '')+'/console/1.0/tenant/coupon',
+    skfsCheckGet:(process.env.API_HOST || '')+'/console/1.0/adv/checkaddr',
     termAndUse:process.env.CONSOLE_TERMS || '/',
     maxDevices:process.env.MAX_DEVICES || 500,
     disablePurchase:process.env.DIS_DC_PURCHASE || 'false',
