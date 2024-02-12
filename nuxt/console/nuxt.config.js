@@ -70,6 +70,8 @@ export default {
     disablePurchase:process.env.DIS_DC_PURCHASE || 'false',
     disableNewTenant:process.env.DIS_NEW_TENANT || 'false',
     disableStatTenant:process.env.DIS_STAT_TENANT || 'false',
+    community:process.env.DIS_FULL || 'true',
+    mapApiKey:process.env.MAP_KEY || '',
     frontVersion:'1.8.0'
   },
 
