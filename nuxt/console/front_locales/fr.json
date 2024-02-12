@@ -478,6 +478,14 @@
     "ccf_maxuse" : "Activables",
     "ccf_stopdate" : "Fin",
     "ccf_couponFor" : "Propriétaire",
-  
+
+    "menu_showcontext" : "Contexte",
+    "skfs_run_check_title" : "Verifier skfs",
+    "skfs_devaddr" : "Device Addr",
+    "skfs_devaddr_det" : "Choisir l'adresse (hexstring) comme 480001 à vérifier",
+    "skfs_clear" : "Clear extra",
+    "skfs_clear_det" : "Netoyer les sessions obsolete",
+    "skfs_button" : "Vérifier",
+
     "end" : "fin"
 }

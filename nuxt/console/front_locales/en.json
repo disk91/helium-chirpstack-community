@@ -478,6 +478,13 @@
   "ccf_stopdate" : "End Date",
   "ccf_couponFor" : "Owner",
 
+  "menu_showcontext" : "Context",
+  "skfs_run_check_title" : "Verify skfs",
+  "skfs_devaddr" : "Device Addr",
+  "skfs_devaddr_det" : "Select the device address (hexstring) like 480001 to check",
+  "skfs_clear" : "Clear extra",
+  "skfs_clear_det" : "Clear the extra sessions",
+  "skfs_button" : "Check",
 
   "end" : "end"
 }
