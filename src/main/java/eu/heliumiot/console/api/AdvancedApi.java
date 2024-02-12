@@ -20,8 +20,11 @@
 package eu.heliumiot.console.api;
 
 import eu.heliumiot.console.api.interfaces.ActionResult;
+import eu.heliumiot.console.api.interfaces.GetDeviceFramesItf;
+import eu.heliumiot.console.jpa.mongodb.DeviceFrames;
 import eu.heliumiot.console.service.ExitService;
 import eu.heliumiot.console.service.NovaService;
+import eu.heliumiot.console.service.PrivDeviceFramesService;
 import eu.heliumiot.console.service.PrometeusService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -53,6 +56,10 @@ public class AdvancedApi {
     @Autowired
     protected NovaService novaService;
 
+    // =========================================================================================
+    // Services
+    // =========================================================================================
+
     @Operation(summary = "Check skfs for given addr, eventually clear the extra session key",
             description = "Search for missing session and extra session on a given addr" +
                 "result is printed in log file, execution is asynchronous after this request.",
@@ -76,6 +83,39 @@ public class AdvancedApi {
         boolean bclear = clear.compareToIgnoreCase("true") == 0;
         novaService.verifySKFsForAGivenAddr(iaddr,bclear);
         return new ResponseEntity<>(ActionResult.SUCESS(), HttpStatus.OK);
+    }
+
+    // =========================================================================================
+    // Context
+    // =========================================================================================
+
+    @Autowired
+    protected PrivDeviceFramesService privDeviceFramesService;
+
+    @Operation(summary = "Get the frame history for a given device",
+        description = "Get the frame history with hotspot used during communications",
+        responses = {
+            @ApiResponse(responseCode = "200", description= "Device Frames", content = @Content(schema = @Schema(implementation = GetDeviceFramesItf.class))),
+            @ApiResponse(responseCode = "204", description= "No Device data", content = @Content(schema = @Schema(implementation = ActionResult.class)))
+        }
+    )
+    @RequestMapping(value="/device/{devEui}/",
+        produces = MediaType.APPLICATION_JSON_VALUE,
+        method= RequestMethod.GET)
+    @PreAuthorize("hasAnyRole('ROLE_USER')")
+    public ResponseEntity<?> getDeviceFrames(
+        HttpServletRequest request,
+        @Parameter(required = true, name = "devEui", description = "Device Eui")
+        @PathVariable String devEui
+    ) {
+        log.debug("Get device frame history");
+        DeviceFrames d = privDeviceFramesService.getDevice(devEui);
+        if ( d != null ) {
+            GetDeviceFramesItf r = new GetDeviceFramesItf();
+            r.initFromDeviceFrames(d);
+            return new ResponseEntity<>(r, HttpStatus.OK);
+        }
+        return new ResponseEntity<>(ActionResult.NODATA(), HttpStatus.NO_CONTENT);
     }
 
 
