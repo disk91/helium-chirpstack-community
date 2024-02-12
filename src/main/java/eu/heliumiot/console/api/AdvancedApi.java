@@ -41,7 +41,7 @@ import org.springframework.web.bind.annotation.*;
 
 @Tag( name = "advanced admin api", description = "advanced admin api" )
 @CrossOrigin
-@RequestMapping(value = "/advanced/3.0")
+@RequestMapping(value = "/console/1.0/adv")
 @RestController
 public class AdvancedApi {
 
