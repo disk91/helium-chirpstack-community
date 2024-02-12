@@ -185,7 +185,11 @@ public class NovaService {
             htss = heliumTenantSetupRepository.findAllByTemplate(false, PageRequest.of(_i,50));
             for ( HeliumTenantSetup hts : htss ) {
                 if ( hts.getRouteId() != null && !hts.isTemplate() ) {
-                    log.info("["+_i+"-"+_j+"/"+cTemplate+"] Exploring tenant "+hts.getTenantUUID()+ " route "+hts.getRouteId());
+                    Tenant t = tenantRepository.findOneTenantById(UUID.fromString(hts.getTenantUUID()));
+                    String tName = "Unknown";
+                    if ( t != null ) tName = t.getName();
+
+                    log.info("["+_i+"-"+_j+"/"+cTemplate+"] Exploring tenant "+tName+" ("+hts.getTenantUUID()+") route "+hts.getRouteId());
                     // get all skfs for tha current route and the devAddr
                     List<skf_v1> skfs =  grpcListSessionsByDevaddr(addr,hts.getRouteId());
                     HashMap<String,skf_v1> inRouteSkfs = new HashMap<>();
@@ -204,7 +208,7 @@ public class NovaService {
                             DeviceSession s = redisDeviceRepository.getDeviceDetails(hd.getDeviceEui());
                             if ( s == null ) continue;
                             String devaddr = HexaConverters.byteToHexString(s.getDevAddr().toByteArray());
-                            log.info(">"+devaddr+"<>"+sAddr+"<");
+                            //log.debug(">"+devaddr+"<>"+sAddr+"<");
                             if ( devaddr.compareToIgnoreCase(sAddr) == 0 ) {
                                 // we found a device
                                 String ntwSEncKey = HexaConverters.byteToHexString(s.getNwkSEncKey().toByteArray()).toLowerCase();
@@ -219,14 +223,14 @@ public class NovaService {
                                         // some error case
                                         log.info(">> Valid session exists for dead device: "+hd.getDeviceEui()+" addr: "+sAddr+" nwks: "+ntwSEncKey);
                                     }
-                                }
-                            } else {
-                                // this device does not have a session registered, normal when inactive
-                                if (   hd.getState() == HeliumDevice.DeviceState.INSERTED
-                                    || hd.getState() == HeliumDevice.DeviceState.ACTIVE
-                                    || hd.getState() == HeliumDevice.DeviceState.INACTIVE
-                                ){
-                                    log.info(">> Missing session for device: " + hd.getDeviceEui() + " addr: " + sAddr);
+                                } else {
+                                    // this device does not have a session registered, normal when inactive
+                                    if (   hd.getState() == HeliumDevice.DeviceState.INSERTED
+                                        || hd.getState() == HeliumDevice.DeviceState.ACTIVE
+                                        || hd.getState() == HeliumDevice.DeviceState.INACTIVE
+                                    ){
+                                        log.info(">> Missing session for device: " + hd.getDeviceEui() + " addr: " + sAddr);
+                                    }
                                 }
                             }
                         }
