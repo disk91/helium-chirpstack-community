@@ -188,15 +188,15 @@ public class NovaService {
                                 // we found a device
                                 String ntwSEncKey = HexaConverters.byteToHexString(s.getNwkSEncKey().toByteArray()).toLowerCase();
                                 if ( inRouteSkfs.get(ntwSEncKey) != null) {
-                                    // fks found
-                                    inRouteSkfs.remove(ntwSEncKey);
-                                    // some error case
-                                    if (   hd.getState() == HeliumDevice.DeviceState.DEACTIVATED
-                                        || hd.getState() == HeliumDevice.DeviceState.OUTOFDCS
-                                        || hd.getState() == HeliumDevice.DeviceState.DELETED
-                                        || hd.getState() == HeliumDevice.DeviceState.DISABLED
+                                    if (  hd.getState() == HeliumDevice.DeviceState.INSERTED
+                                        || hd.getState() == HeliumDevice.DeviceState.ACTIVE
+                                        || hd.getState() == HeliumDevice.DeviceState.INACTIVE
                                     ) {
-                                        log.info(">> Valid session exists for device: "+hd.getDeviceEui()+" addr: "+sAddr+" nwks: "+ntwSEncKey);
+                                        // fks found
+                                        inRouteSkfs.remove(ntwSEncKey);
+                                    } else {
+                                        // some error case
+                                        log.info(">> Valid session exists for dead device: "+hd.getDeviceEui()+" addr: "+sAddr+" nwks: "+ntwSEncKey);
                                     }
                                 }
                             } else {
