@@ -30,12 +30,14 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.data.redis.core.RedisKeyValueAdapter;
 import org.springframework.data.redis.repository.configuration.EnableRedisRepositories;
+import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
 @EnableScheduling
 @EnableWebMvc
 @Configuration
+@EnableAsync
 @SpringBootApplication
 @EnableJpaRepositories(basePackages = "eu.heliumiot.console.jpa")
 @EnableRedisRepositories(basePackages = "eu.heliumiot.console.redis",

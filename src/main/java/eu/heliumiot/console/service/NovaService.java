@@ -16,12 +16,14 @@ import io.grpc.StatusRuntimeException;
 import io.grpc.stub.StreamObserver;
 import org.bouncycastle.crypto.params.Ed25519PrivateKeyParameters;
 import org.bouncycastle.crypto.signers.Ed25519Signer;
+import org.checkerframework.checker.units.qual.A;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Slice;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import com.helium.grpc.*;
@@ -151,6 +153,93 @@ public class NovaService {
         this.readyForSessionRefresh = readyForSessionRefresh;
     }
 
+    // Identify the extra session keys that are not correctly setup
+    @Async
+    public void verifySKFsForAGivenAddr(int addr, boolean clear) {
+        String sAddr = Integer.toHexString(addr);
+        long cTemplate = heliumTenantSetupRepository.count();
+        int _i = 0, _j = 1;
+        Page<HeliumTenantSetup> htss = null;
+        do {
+            htss = heliumTenantSetupRepository.findAllByTemplate(false, PageRequest.of(_i,50));
+            for ( HeliumTenantSetup hts : htss ) {
+                if ( hts.getRouteId() != null && !hts.isTemplate() ) {
+                    log.info("["+_i+"-"+_j+"/"+cTemplate+"] Exploring tenant "+hts.getTenantUUID()+ " route "+hts.getRouteId());
+                    // get all skfs for tha current route and the devAddr
+                    List<skf_v1> skfs =  grpcListSessionsByDevaddr(addr,hts.getRouteId());
+                    HashMap<String,skf_v1> inRouteSkfs = new HashMap<>();
+                    if ( skfs != null ) {
+                        for (skf_v1 skf : skfs) {
+                            inRouteSkfs.put(skf.getSessionKey().toLowerCase(),skf);
+                        }
+                    }
+                    LinkedList<SkfUpdate> skfToRem = new LinkedList<>();
+
+                    // search all devices and filter on that devAddr
+                    Slice<HeliumDevice> devices = heliumDeviceRepository.findHeliumDeviceByTenantUUID(hts.getTenantUUID(), PageRequest.of(0, 500));
+                    boolean quit = false;
+                    do {
+                        for ( HeliumDevice hd : devices.getContent() ) {
+                            DeviceSession s = redisDeviceRepository.getDeviceDetails(hd.getDeviceEui());
+                            if ( s == null ) continue;
+                            String devaddr = HexaConverters.byteToHexString(s.getDevAddr().toByteArray());
+                            log.info(">"+devaddr+"<>"+sAddr+"<");
+                            if ( devaddr.compareToIgnoreCase(sAddr) == 0 ) {
+                                // we found a device
+                                String ntwSEncKey = HexaConverters.byteToHexString(s.getNwkSEncKey().toByteArray()).toLowerCase();
+                                if ( inRouteSkfs.get(ntwSEncKey) != null) {
+                                    // fks found
+                                    inRouteSkfs.remove(ntwSEncKey);
+                                    // some error case
+                                    if (   hd.getState() == HeliumDevice.DeviceState.DEACTIVATED
+                                        || hd.getState() == HeliumDevice.DeviceState.OUTOFDCS
+                                        || hd.getState() == HeliumDevice.DeviceState.DELETED
+                                        || hd.getState() == HeliumDevice.DeviceState.DISABLED
+                                    ) {
+                                        log.info(">> Valid session exists for device: "+hd.getDeviceEui()+" addr: "+sAddr+" nwks: "+ntwSEncKey);
+                                    }
+                                }
+                            } else {
+                                // this device does not have a session registered, normal when inactive
+                                if (   hd.getState() == HeliumDevice.DeviceState.INSERTED
+                                    || hd.getState() == HeliumDevice.DeviceState.ACTIVE
+                                    || hd.getState() == HeliumDevice.DeviceState.INACTIVE
+                                ){
+                                    log.info(">> Missing session for device: " + hd.getDeviceEui() + " addr: " + sAddr);
+                                }
+                            }
+                        }
+                        if ( devices.hasNext() ) {
+                            devices = heliumDeviceRepository.findHeliumDeviceByTenantUUID(hts.getTenantUUID(), devices.nextPageable());
+                        } else {
+                            quit = true;
+                        }
+                    } while ( devices != null && !quit );
+
+                    // if some more session it's a problem ...
+                    for ( String key : inRouteSkfs.keySet() ) {
+                        log.info(">> Found extra sessions for addr: "+sAddr+" nwks: "+key);
+                        if ( clear ) {
+                            skf_v1 skf = inRouteSkfs.get(key);
+                            SkfUpdate su = new SkfUpdate();
+                            su.devAddr = skf.getDevaddr();
+                            su.session = skf.getSessionKey();
+                            skfToRem.add(su);
+                        }
+                    }
+                    if ( clear && !skfToRem.isEmpty()) {
+                        log.info(">> clear the extra skfs");
+                        grpcUpdateSessions(new LinkedList<>(), skfToRem, hts.getRouteId());
+                    }
+                }
+                _j++;
+            }
+            _i++;
+        } while ( htss.hasNext() );
+    }
+
+
+    // Resync the route and session keys
     @Scheduled(fixedDelay = 120_000, initialDelay = 180_000)
     protected void initialRouteAndSessionRefresh() {
         // make sure the tenant refresh has been done
