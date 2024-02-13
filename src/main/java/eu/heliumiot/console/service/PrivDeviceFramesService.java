@@ -4,12 +4,11 @@ package eu.heliumiot.console.service;
 import eu.heliumiot.console.ConsolePrivateConfig;
 import eu.heliumiot.console.api.interfaces.GetDeviceFramesItf;
 import eu.heliumiot.console.api.interfaces.TenantBalanceItf;
-import eu.heliumiot.console.jpa.db.HeliumDevice;
-import eu.heliumiot.console.jpa.db.HeliumTenant;
-import eu.heliumiot.console.jpa.db.HeliumTenantSetup;
-import eu.heliumiot.console.jpa.db.UserTenant;
+import eu.heliumiot.console.jpa.db.*;
 import eu.heliumiot.console.jpa.mongodb.DeviceFrames;
 import eu.heliumiot.console.jpa.mongoRep.DeviceFramesMongoRepository;
+import eu.heliumiot.console.jpa.repository.DeviceRepository;
+import eu.heliumiot.console.jpa.repository.TenantRepository;
 import eu.heliumiot.console.jpa.repository.UserTenantRepository;
 import fr.ingeniousthings.tools.ITNotFoundException;
 import fr.ingeniousthings.tools.ITRightException;
@@ -173,7 +172,11 @@ public class PrivDeviceFramesService {
     protected HeliumDeviceCacheService heliumDeviceCacheService;
 
     @Autowired
-    protected UserTenantRepository userTenantRepository;
+    protected TenantRepository tenantRepository;
+
+    @Autowired
+    protected eu.heliumiot.console.jpa.repository.DeviceRepository deviceRepository;
+
 
     public GetDeviceFramesItf getDeviceByUser(String devEui, String userId)
     throws ITRightException, ITNotFoundException {
@@ -185,13 +188,27 @@ public class PrivDeviceFramesService {
         if ( !user.user.isAdmin() ) {
             // throws ITRightException / ITNotFoundException
             dev = heliumDeviceCacheService.getHeliumDeviceForUser(devEui, userId);
-            if ( dev == null ) throw new ITNotFoundException();
+        } else {
+            dev = heliumDeviceCacheService.getHeliumDevice(devEui);
         }
+        if ( dev == null ) throw new ITNotFoundException();
 
         DeviceFrames df = this.getDevice(devEui);
         if ( df == null ) throw new ITNotFoundException();
 
+        // get Tenant
+        Tenant t = tenantRepository.findOneTenantById(UUID.fromString(dev.getTenantUUID()));
+        if ( t == null ) throw new ITNotFoundException();
+
+        // get Device
+        Device _d = deviceRepository.findOneDeviceByDevEui(dev.getDeviceUUID());
+        if ( _d == null ) throw new ITNotFoundException();
+
         GetDeviceFramesItf r = new GetDeviceFramesItf();
+        r.setDevName(_d.getName());
+        r.setTenantID(dev.getTenantUUID());
+        r.setTenantName(t.getName());
+
         r.initFromDeviceFrames(df);
         return r;
     }

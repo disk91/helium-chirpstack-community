@@ -19,6 +19,28 @@ public class GetDeviceFramesItf {
     protected String devEui;
 
     @Schema(
+        description = "device name",
+        example = "myDevice",
+        requiredMode = Schema.RequiredMode.REQUIRED
+    )
+    protected String devName;
+
+    @Schema(
+        description = "tenant ID",
+        example = "0000156-11515353-121321-221131",
+        requiredMode = Schema.RequiredMode.REQUIRED
+    )
+    protected String tenantID;
+
+    @Schema(
+        description = "tenant Name",
+        example = "myTenant",
+        requiredMode = Schema.RequiredMode.REQUIRED
+    )
+    protected String tenantName;
+
+
+    @Schema(
         description = "last time (since epoc Ms) the device has been seen",
         example = "172485667000",
         requiredMode = Schema.RequiredMode.REQUIRED
@@ -80,6 +102,9 @@ public class GetDeviceFramesItf {
         this.mobile = d.isMobile();
         this.recentFrames = d.getRecentFrames();
         this.hotspotAround = d.getHotspotAround();
+        this.devName = "";
+        this.tenantID = "";
+        this.tenantName ="";
     }
 
     // ===
@@ -146,5 +171,29 @@ public class GetDeviceFramesItf {
 
     public void setHotspotAround(List<HotspotEntry> hotspotAround) {
         this.hotspotAround = hotspotAround;
+    }
+
+    public String getDevName() {
+        return devName;
+    }
+
+    public void setDevName(String devName) {
+        this.devName = devName;
+    }
+
+    public String getTenantID() {
+        return tenantID;
+    }
+
+    public void setTenantID(String tenantID) {
+        this.tenantID = tenantID;
+    }
+
+    public String getTenantName() {
+        return tenantName;
+    }
+
+    public void setTenantName(String tenantName) {
+        this.tenantName = tenantName;
     }
 }
