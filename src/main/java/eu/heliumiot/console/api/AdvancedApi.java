@@ -115,6 +115,7 @@ public class AdvancedApi {
             r.initFromDeviceFrames(d);
             return new ResponseEntity<>(r, HttpStatus.OK);
         }
+        log.warn("Search DeviceFrame not found");
         return new ResponseEntity<>(ActionResult.NODATA(), HttpStatus.NO_CONTENT);
     }
 
