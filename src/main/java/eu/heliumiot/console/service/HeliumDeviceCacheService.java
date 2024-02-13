@@ -20,7 +20,11 @@
 package eu.heliumiot.console.service;
 
 import eu.heliumiot.console.jpa.db.HeliumDevice;
+import eu.heliumiot.console.jpa.db.UserTenant;
 import eu.heliumiot.console.jpa.repository.HeliumDeviceRepository;
+import eu.heliumiot.console.jpa.repository.UserTenantRepository;
+import fr.ingeniousthings.tools.ITNotFoundException;
+import fr.ingeniousthings.tools.ITRightException;
 import fr.ingeniousthings.tools.Now;
 import fr.ingeniousthings.tools.ObjectCache;
 import io.micrometer.core.instrument.Gauge;
@@ -33,6 +37,7 @@ import org.springframework.stereotype.Service;
 
 import jakarta.annotation.PostConstruct;
 import java.util.List;
+import java.util.UUID;
 
 // Main purpose is to not have a circular inclusion and optimize device access with inMemory storage
 @Service
@@ -103,6 +108,25 @@ public class HeliumDeviceCacheService {
         return (this.serviceEnable == false && this.runningJobs == 0);
     }
 
+
+    @Autowired
+    protected UserTenantRepository userTenantRepository;
+
+    /**
+     * Return a HeliumDevice after ownership verification
+     */
+    public HeliumDevice getHeliumDeviceForUser(String devEui, String userId)
+    throws ITNotFoundException, ITRightException {
+        HeliumDevice dev = this.getHeliumDevice(devEui);
+        if ( dev == null ) throw new ITNotFoundException();
+        String tenantId = dev.getTenantUUID();
+        UserTenant ut = userTenantRepository.findOneUserByUserIdAndTenantId(
+            UUID.fromString(userId),
+            UUID.fromString(tenantId)
+        );
+        if ( ut == null ) throw new ITRightException();
+        return dev;
+    }
 
     public HeliumDevice getHeliumDevice(String deviceEui) {
         return getHeliumDevice(deviceEui,true);
