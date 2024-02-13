@@ -26,6 +26,9 @@ import eu.heliumiot.console.service.ExitService;
 import eu.heliumiot.console.service.NovaService;
 import eu.heliumiot.console.service.PrivDeviceFramesService;
 import eu.heliumiot.console.service.PrometeusService;
+import fr.ingeniousthings.tools.ITNotFoundException;
+import fr.ingeniousthings.tools.ITParseException;
+import fr.ingeniousthings.tools.ITRightException;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -96,7 +99,8 @@ public class AdvancedApi {
         description = "Get the frame history with hotspot used during communications",
         responses = {
             @ApiResponse(responseCode = "200", description= "Device Frames", content = @Content(schema = @Schema(implementation = GetDeviceFramesItf.class))),
-            @ApiResponse(responseCode = "204", description= "No Device data", content = @Content(schema = @Schema(implementation = ActionResult.class)))
+            @ApiResponse(responseCode = "204", description= "No Device data", content = @Content(schema = @Schema(implementation = ActionResult.class))),
+            @ApiResponse(responseCode = "403", description= "Not allowed", content = @Content(schema = @Schema(implementation = ActionResult.class)))
         }
     )
     @RequestMapping(value="/device/{devEui}/",
@@ -109,14 +113,14 @@ public class AdvancedApi {
         @PathVariable String devEui
     ) {
         log.debug("Get device frame history");
-        DeviceFrames d = privDeviceFramesService.getDevice(devEui);
-        if ( d != null ) {
-            GetDeviceFramesItf r = new GetDeviceFramesItf();
-            r.initFromDeviceFrames(d);
+        try {
+            GetDeviceFramesItf r = privDeviceFramesService.getDeviceByUser(devEui, request.getUserPrincipal().getName());
             return new ResponseEntity<>(r, HttpStatus.OK);
+        } catch (ITNotFoundException x) {
+            return new ResponseEntity<>(ActionResult.FORBIDDEN(), HttpStatus.FORBIDDEN);
+        } catch (ITRightException x) {
+            return new ResponseEntity<>(ActionResult.NODATA(), HttpStatus.NO_CONTENT);
         }
-        log.warn("Search DeviceFrame not found");
-        return new ResponseEntity<>(ActionResult.NODATA(), HttpStatus.NO_CONTENT);
     }
 
 

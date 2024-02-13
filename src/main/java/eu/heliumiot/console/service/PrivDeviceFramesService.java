@@ -2,13 +2,23 @@ package eu.heliumiot.console.service;
 
 
 import eu.heliumiot.console.ConsolePrivateConfig;
+import eu.heliumiot.console.api.interfaces.GetDeviceFramesItf;
+import eu.heliumiot.console.api.interfaces.TenantBalanceItf;
+import eu.heliumiot.console.jpa.db.HeliumDevice;
+import eu.heliumiot.console.jpa.db.HeliumTenant;
+import eu.heliumiot.console.jpa.db.HeliumTenantSetup;
+import eu.heliumiot.console.jpa.db.UserTenant;
 import eu.heliumiot.console.jpa.mongodb.DeviceFrames;
 import eu.heliumiot.console.jpa.mongoRep.DeviceFramesMongoRepository;
+import eu.heliumiot.console.jpa.repository.UserTenantRepository;
+import fr.ingeniousthings.tools.ITNotFoundException;
+import fr.ingeniousthings.tools.ITRightException;
 import fr.ingeniousthings.tools.Now;
 import fr.ingeniousthings.tools.ObjectCache;
 import io.micrometer.core.instrument.Gauge;
 import io.micrometer.core.instrument.MeterRegistry;
 import jakarta.annotation.PostConstruct;
+import jakarta.servlet.http.HttpServletRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +27,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 @Service
 public class PrivDeviceFramesService {
@@ -151,5 +162,38 @@ public class PrivDeviceFramesService {
         return d;
     }
 
+    // =============================================================
+    // Safe user access
+    // =============================================================
+
+    @Autowired
+    protected UserCacheService userCacheService;
+
+    @Autowired
+    protected HeliumDeviceCacheService heliumDeviceCacheService;
+
+    @Autowired
+    protected UserTenantRepository userTenantRepository;
+
+    public GetDeviceFramesItf getDeviceByUser(String devEui, String userId)
+    throws ITRightException, ITNotFoundException {
+        UserCacheService.UserCacheElement user = userCacheService.getUserById(userId);
+        if (user == null) throw new ITRightException();
+
+        // find Tenant from DeviceId
+        HeliumDevice dev;
+        if ( !user.user.isAdmin() ) {
+            // throws ITRightException / ITNotFoundException
+            dev = heliumDeviceCacheService.getHeliumDeviceForUser(devEui, userId);
+            if ( dev == null ) throw new ITNotFoundException();
+        }
+
+        DeviceFrames df = this.getDevice(devEui);
+        if ( df == null ) throw new ITNotFoundException();
+
+        GetDeviceFramesItf r = new GetDeviceFramesItf();
+        r.initFromDeviceFrames(df);
+        return r;
+    }
 
 }
