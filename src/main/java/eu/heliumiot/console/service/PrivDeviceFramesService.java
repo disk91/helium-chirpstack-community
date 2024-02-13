@@ -205,11 +205,11 @@ public class PrivDeviceFramesService {
         if ( _d == null ) throw new ITNotFoundException();
 
         GetDeviceFramesItf r = new GetDeviceFramesItf();
+        r.initFromDeviceFrames(df);
         r.setDevName(_d.getName());
         r.setTenantID(dev.getTenantUUID());
         r.setTenantName(t.getName());
 
-        r.initFromDeviceFrames(df);
         return r;
     }
 
