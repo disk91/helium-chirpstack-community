@@ -21,16 +21,15 @@ package eu.heliumiot.console.api;
 
 import eu.heliumiot.console.api.interfaces.ActionResult;
 import eu.heliumiot.console.api.interfaces.GetDeviceFramesItf;
+import eu.heliumiot.console.etl.api.HotspotIdent;
 import eu.heliumiot.console.jpa.mongodb.DeviceFrames;
-import eu.heliumiot.console.service.ExitService;
-import eu.heliumiot.console.service.NovaService;
-import eu.heliumiot.console.service.PrivDeviceFramesService;
-import eu.heliumiot.console.service.PrometeusService;
+import eu.heliumiot.console.service.*;
 import fr.ingeniousthings.tools.ITNotFoundException;
 import fr.ingeniousthings.tools.ITParseException;
 import fr.ingeniousthings.tools.ITRightException;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -44,6 +43,8 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @Tag( name = "advanced admin api", description = "advanced admin api" )
 @CrossOrigin
@@ -120,6 +121,44 @@ public class AdvancedApi {
             return new ResponseEntity<>(ActionResult.FORBIDDEN(), HttpStatus.FORBIDDEN);
         } catch (ITRightException x) {
             return new ResponseEntity<>(ActionResult.NODATA(), HttpStatus.NO_CONTENT);
+        }
+    }
+
+    @Autowired
+    protected PrivHotspotService privHotspotService;
+
+    @Operation(summary = "Get existing hotspot around",
+        description = "Get the existing hotspot around",
+        responses = {
+            @ApiResponse(responseCode = "200", description= "Hotspot List",
+                content = @Content(array = @ArraySchema(schema = @Schema( implementation = GetDeviceFramesItf.class)))),
+            @ApiResponse(responseCode = "204", description= "No Hostpot data", content = @Content(schema = @Schema(implementation = ActionResult.class))),
+            @ApiResponse(responseCode = "503", description= "Unavailable", content = @Content(schema = @Schema(implementation = ActionResult.class)))
+        }
+    )
+    @RequestMapping(value="/hotspots-around/{latN}/{latS}/{lonW}/{lonE}/",
+        produces = MediaType.APPLICATION_JSON_VALUE,
+        method= RequestMethod.GET)
+    @PreAuthorize("hasAnyRole('ROLE_USER')")
+    public ResponseEntity<?> getHotspotsAround(
+        HttpServletRequest request,
+        @Parameter(required = true, name = "latN", description = "North Latitude")
+        @PathVariable double latN,
+        @Parameter(required = true, name = "latS", description = "South Latitude")
+        @PathVariable double latS,
+        @Parameter(required = true, name = "lonW", description = "West Longitude")
+        @PathVariable double lonW,
+        @Parameter(required = true, name = "lonE", description = "East Longitude")
+        @PathVariable double lonE
+    ) {
+        log.debug("Get hotspots around proxy");
+        try {
+            List<HotspotIdent> r = privHotspotService.getHostpotAround(latN,latS,lonW,lonE);
+            return new ResponseEntity<>(r, HttpStatus.OK);
+        } catch (ITNotFoundException x) {
+            return new ResponseEntity<>(ActionResult.FORBIDDEN(), HttpStatus.FORBIDDEN);
+        } catch (ITParseException x) {
+            return new ResponseEntity<>(ActionResult.FAILED(), HttpStatus.SERVICE_UNAVAILABLE);
         }
     }
 

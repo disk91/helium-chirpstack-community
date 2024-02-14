@@ -3,11 +3,12 @@ package eu.heliumiot.console.service;
 
 import eu.heliumiot.console.ConsoleConfig;
 import eu.heliumiot.console.ConsolePrivateConfig;
-import eu.heliumiot.console.etl.api.HotspotData;
+import eu.heliumiot.console.etl.api.HotspotIdent;
 import eu.heliumiot.console.etl.api.HotspotState;
 import eu.heliumiot.console.jpa.mongoRep.HotspotsMongoRepository;
 import eu.heliumiot.console.jpa.mongodb.Hotspots;
 import fr.ingeniousthings.tools.ITNotFoundException;
+import fr.ingeniousthings.tools.ITParseException;
 import fr.ingeniousthings.tools.Now;
 import fr.ingeniousthings.tools.ObjectCache;
 import io.micrometer.core.instrument.Gauge;
@@ -16,6 +17,7 @@ import jakarta.annotation.PostConstruct;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.*;
 import org.springframework.http.client.SimpleClientHttpRequestFactory;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -82,7 +84,7 @@ public class PrivHotspotService {
 
         factory = new SimpleClientHttpRequestFactory();
         factory.setConnectTimeout(800);
-        factory.setReadTimeout(1500);
+        factory.setReadTimeout(2500);
 
         Gauge.builder("cons.hotspot.cache_total_time", this.hotspotCache.getTotalCacheTime())
             .description("total time hotspot cache execution")
@@ -266,7 +268,7 @@ public class PrivHotspotService {
 
 
     // ==============================================================
-    // ETL Api
+    // ETL live dapa Api
     // ==============================================================
 
     @Autowired
@@ -324,6 +326,61 @@ public class PrivHotspotService {
         }
     }
 
+    // ==============================================================
+    // ETL Api cache data
+    // ==============================================================
+
+    protected HttpEntity<String> createEtlApiHeaders(){
+        HttpHeaders headers = new HttpHeaders();
+        ArrayList<MediaType> accept = new ArrayList<>();
+        accept.add(MediaType.APPLICATION_JSON);
+        headers.setAccept(accept);
+        headers.add(HttpHeaders.USER_AGENT,"console/"+consoleConfig.getHeliumRouteOui());
+        if ( consolePrivateConfig.getHeliumEtlApiUser() != null && !consolePrivateConfig.getHeliumEtlApiUser().isEmpty()) {
+            String auth = consolePrivateConfig.getHeliumEtlApiUser() + ":" + consolePrivateConfig.getHeliumEtlApiPassword();
+            byte[] encodedAuth = Base64.getEncoder().encode(
+                auth.getBytes(StandardCharsets.US_ASCII));
+            String authHeader = "Basic " + new String(encodedAuth);
+            headers.add(HttpHeaders.AUTHORIZATION, authHeader);
+        }
+        return new HttpEntity<String>(headers);
+    }
+
+
+    public List<HotspotIdent> getHostpotAround(double latN, double latS, double lonW, double lonE) throws ITParseException, ITNotFoundException {
+        // get from ETL
+        RestTemplate restTemplate = new RestTemplate(this.factory);
+        String url = "";
+        try {
+            HttpEntity<String> he = createHeaders();
+            url = consolePrivateConfig.getHeliumEtlApiUrl() + "/hotspot/3.0/search/"+latN+"/"+latS+"/"+lonW+"/"+lonE+"/";
+            ResponseEntity<List<HotspotIdent>> responseEntity =
+                restTemplate.exchange(
+                    url,
+                    HttpMethod.GET,
+                    he,
+                    new ParameterizedTypeReference<List<HotspotIdent>>() {}
+                );
+            if (responseEntity.getStatusCode() == HttpStatus.OK) {
+                if (responseEntity.getBody() != null) {
+                    return responseEntity.getBody();
+                } else {
+                    log.warn("Response from ETL-API with empty body for hotspot around ");
+                    throw new ITNotFoundException();
+                }
+            } else {
+                log.debug("ELT-API Hotspot around not found "+responseEntity.getStatusCode());
+                // if (responseEntity.getBody() != null) log.info(""+responseEntity.getBody());
+                throw new ITNotFoundException();
+            }
+        } catch ( ITNotFoundException x ) {
+            throw new ITNotFoundException();
+        } catch (Exception e) {
+            //e.printStackTrace();
+            log.warn("Exception "+e.getMessage());
+            throw new ITParseException();
+        }
+    }
 
 
 }

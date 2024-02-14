@@ -84,6 +84,16 @@ public class ConsolePrivateConfig {
     @Value("${helium.etl.password:}")
     private String heliumEtlPassword;
 
+    @Value("${helium.etl.api.url:}")
+    private String heliumEtlApiUrl;
+
+    @Value("${helium.etl.api.user:}")
+    private String heliumEtlApiUser;
+
+    @Value("${helium.etl.api.password:}")
+    private String heliumEtlApiPassword;
+
+
     public String getHeliumEtlUrl() {
         return heliumEtlUrl;
     }
@@ -94,6 +104,18 @@ public class ConsolePrivateConfig {
 
     public String getHeliumEtlPassword() {
         return heliumEtlPassword;
+    }
+
+    public String getHeliumEtlApiUrl() {
+        return heliumEtlApiUrl;
+    }
+
+    public String getHeliumEtlApiUser() {
+        return heliumEtlApiUser;
+    }
+
+    public String getHeliumEtlApiPassword() {
+        return heliumEtlApiPassword;
     }
 
     // =====================================
