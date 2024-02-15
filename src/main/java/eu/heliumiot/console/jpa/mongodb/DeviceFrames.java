@@ -128,6 +128,7 @@ public class DeviceFrames implements ClonnableObject<DeviceFrames>{
                 // new hotspot found
                 HotspotEntry he = new HotspotEntry();
                 he.setGatewayId(fh.getHotspotId());
+                he.setRegion(r.getMetadata().getRegion_common_name());
                 he.setSumOfSnr(r.getSnr());
                 he.setSumOfRssi(r.getRssi());
                 he.setCount(1);

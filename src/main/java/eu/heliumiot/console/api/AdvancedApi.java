@@ -20,9 +20,9 @@
 package eu.heliumiot.console.api;
 
 import eu.heliumiot.console.api.interfaces.ActionResult;
-import eu.heliumiot.console.api.interfaces.GetDeviceFramesItf;
+import eu.heliumiot.console.api.interfaces.DeviceFramesGetItf;
+import eu.heliumiot.console.api.interfaces.HotspotGetItf;
 import eu.heliumiot.console.etl.api.HotspotIdent;
-import eu.heliumiot.console.jpa.mongodb.DeviceFrames;
 import eu.heliumiot.console.service.*;
 import fr.ingeniousthings.tools.ITNotFoundException;
 import fr.ingeniousthings.tools.ITParseException;
@@ -99,7 +99,7 @@ public class AdvancedApi {
     @Operation(summary = "Get the frame history for a given device",
         description = "Get the frame history with hotspot used during communications",
         responses = {
-            @ApiResponse(responseCode = "200", description= "Device Frames", content = @Content(schema = @Schema(implementation = GetDeviceFramesItf.class))),
+            @ApiResponse(responseCode = "200", description= "Device Frames", content = @Content(schema = @Schema(implementation = DeviceFramesGetItf.class))),
             @ApiResponse(responseCode = "204", description= "No Device data", content = @Content(schema = @Schema(implementation = ActionResult.class))),
             @ApiResponse(responseCode = "403", description= "Not allowed", content = @Content(schema = @Schema(implementation = ActionResult.class)))
         }
@@ -115,7 +115,7 @@ public class AdvancedApi {
     ) {
         log.debug("Get device frame history");
         try {
-            GetDeviceFramesItf r = privDeviceFramesService.getDeviceByUser(devEui, request.getUserPrincipal().getName());
+            DeviceFramesGetItf r = privDeviceFramesService.getDeviceByUser(devEui, request.getUserPrincipal().getName());
             return new ResponseEntity<>(r, HttpStatus.OK);
         } catch (ITNotFoundException x) {
             return new ResponseEntity<>(ActionResult.FORBIDDEN(), HttpStatus.FORBIDDEN);
@@ -131,7 +131,7 @@ public class AdvancedApi {
         description = "Get the existing hotspot around",
         responses = {
             @ApiResponse(responseCode = "200", description= "Hotspot List",
-                content = @Content(array = @ArraySchema(schema = @Schema( implementation = GetDeviceFramesItf.class)))),
+                content = @Content(array = @ArraySchema(schema = @Schema( implementation = DeviceFramesGetItf.class)))),
             @ApiResponse(responseCode = "204", description= "No Hostpot data", content = @Content(schema = @Schema(implementation = ActionResult.class))),
             @ApiResponse(responseCode = "503", description= "Unavailable", content = @Content(schema = @Schema(implementation = ActionResult.class)))
         }
@@ -161,6 +161,35 @@ public class AdvancedApi {
             return new ResponseEntity<>(ActionResult.FAILED(), HttpStatus.SERVICE_UNAVAILABLE);
         }
     }
+
+    @Operation(summary = "Get details on 1 specific hotspot",
+        description = "Get details on a given hotspot including ETL data (asyn resfresh)",
+        responses = {
+            @ApiResponse(responseCode = "200", description= "Hotspot data", content = @Content(schema = @Schema(implementation = DeviceFramesGetItf.class))),
+            @ApiResponse(responseCode = "204", description= "No hotspot data", content = @Content(schema = @Schema(implementation = ActionResult.class))),
+            @ApiResponse(responseCode = "403", description= "Not allowed", content = @Content(schema = @Schema(implementation = ActionResult.class)))
+        }
+    )
+    @RequestMapping(value="/hotspot/{hotspotId}/",
+        produces = MediaType.APPLICATION_JSON_VALUE,
+        method= RequestMethod.GET)
+    @PreAuthorize("hasAnyRole('ROLE_USER')")
+    public ResponseEntity<?> getHotspotDetails(
+        HttpServletRequest request,
+        @Parameter(required = true, name = "hotspotId", description = "Hotspot Id")
+        @PathVariable String hotspotId
+    ) {
+        log.debug("Get hotspot details");
+        try {
+            HotspotGetItf r = privHotspotService.getHotspotForUser(hotspotId, request.getUserPrincipal().getName());
+            return new ResponseEntity<>(r, HttpStatus.OK);
+        } catch (ITNotFoundException x) {
+            return new ResponseEntity<>(ActionResult.FORBIDDEN(), HttpStatus.FORBIDDEN);
+        } catch (ITRightException x) {
+            return new ResponseEntity<>(ActionResult.NODATA(), HttpStatus.NO_CONTENT);
+        }
+    }
+
 
 
 }

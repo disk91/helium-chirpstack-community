@@ -3,14 +3,12 @@ package eu.heliumiot.console.service;
 
 import eu.heliumiot.console.ConsoleConfig;
 import eu.heliumiot.console.ConsolePrivateConfig;
+import eu.heliumiot.console.api.interfaces.HotspotGetItf;
 import eu.heliumiot.console.etl.api.HotspotIdent;
 import eu.heliumiot.console.etl.api.HotspotState;
 import eu.heliumiot.console.jpa.mongoRep.HotspotsMongoRepository;
 import eu.heliumiot.console.jpa.mongodb.Hotspots;
-import fr.ingeniousthings.tools.ITNotFoundException;
-import fr.ingeniousthings.tools.ITParseException;
-import fr.ingeniousthings.tools.Now;
-import fr.ingeniousthings.tools.ObjectCache;
+import fr.ingeniousthings.tools.*;
 import io.micrometer.core.instrument.Gauge;
 import io.micrometer.core.instrument.MeterRegistry;
 import jakarta.annotation.PostConstruct;
@@ -183,6 +181,24 @@ public class PrivHotspotService {
         }
         this.hotspotCache.put(d,d.getHotspotId(),true);
         return d;
+    }
+
+
+    // =============================================================
+    // API Interface
+    // =============================================================
+
+    public HotspotGetItf getHotspotForUser(String hotspotId, String userId)
+        throws ITRightException, ITNotFoundException {
+        //UserCacheService.UserCacheElement user = userCacheService.getUserById(userId);
+        //if (user == null) throw new ITRightException();
+
+        Hotspots h = this.getHotspot(hotspotId);
+        if ( h == null ) throw new ITNotFoundException();
+        HotspotGetItf r = new HotspotGetItf();
+        r.initFromHotspots(h);
+
+        return r;
     }
 
 

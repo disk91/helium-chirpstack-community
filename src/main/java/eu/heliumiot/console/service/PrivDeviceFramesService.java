@@ -2,14 +2,11 @@ package eu.heliumiot.console.service;
 
 
 import eu.heliumiot.console.ConsolePrivateConfig;
-import eu.heliumiot.console.api.interfaces.GetDeviceFramesItf;
-import eu.heliumiot.console.api.interfaces.TenantBalanceItf;
+import eu.heliumiot.console.api.interfaces.DeviceFramesGetItf;
 import eu.heliumiot.console.jpa.db.*;
 import eu.heliumiot.console.jpa.mongodb.DeviceFrames;
 import eu.heliumiot.console.jpa.mongoRep.DeviceFramesMongoRepository;
-import eu.heliumiot.console.jpa.repository.DeviceRepository;
 import eu.heliumiot.console.jpa.repository.TenantRepository;
-import eu.heliumiot.console.jpa.repository.UserTenantRepository;
 import fr.ingeniousthings.tools.ITNotFoundException;
 import fr.ingeniousthings.tools.ITRightException;
 import fr.ingeniousthings.tools.Now;
@@ -17,7 +14,6 @@ import fr.ingeniousthings.tools.ObjectCache;
 import io.micrometer.core.instrument.Gauge;
 import io.micrometer.core.instrument.MeterRegistry;
 import jakarta.annotation.PostConstruct;
-import jakarta.servlet.http.HttpServletRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -178,7 +174,7 @@ public class PrivDeviceFramesService {
     protected eu.heliumiot.console.jpa.repository.DeviceRepository deviceRepository;
 
 
-    public GetDeviceFramesItf getDeviceByUser(String devEui, String userId)
+    public DeviceFramesGetItf getDeviceByUser(String devEui, String userId)
     throws ITRightException, ITNotFoundException {
         UserCacheService.UserCacheElement user = userCacheService.getUserById(userId);
         if (user == null) throw new ITRightException();
@@ -204,7 +200,7 @@ public class PrivDeviceFramesService {
         Device _d = deviceRepository.findOneDeviceByDevEui(dev.getDeviceUUID());
         if ( _d == null ) throw new ITNotFoundException();
 
-        GetDeviceFramesItf r = new GetDeviceFramesItf();
+        DeviceFramesGetItf r = new DeviceFramesGetItf();
         r.initFromDeviceFrames(df);
         r.setDevName(_d.getName());
         r.setTenantID(dev.getTenantUUID());
