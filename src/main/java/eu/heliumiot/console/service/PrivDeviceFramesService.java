@@ -218,6 +218,9 @@ public class PrivDeviceFramesService {
     public List<DeviceSearchGetItf> searchFromDeviceByUser(String search, String tenantUUID, String userId)
     throws ITNotFoundException, ITRightException {
 
+        if ( ! search.matches("^[a-zA-Z0-9\\-_ +]+$") ) throw new ITNotFoundException();
+        if ( search.length() == 1 && search.matches("^ $") ) search = "";
+
         UserCacheService.UserCacheElement user = userCacheService.getUserById(userId);
         if (user == null) throw new ITRightException();
         if ( !user.user.isAdmin() ) {
