@@ -219,7 +219,7 @@ public class PrivDeviceFramesService {
     throws ITNotFoundException, ITRightException {
 
         if ( ! search.matches("^[a-zA-Z0-9\\-_ +]+$") ) throw new ITNotFoundException();
-        if ( search.length() == 1 && search.matches("^ $") ) search = "";
+        if ( search.length() == 1 && search.charAt(0) == ' ' ) search = "";
 
         UserCacheService.UserCacheElement user = userCacheService.getUserById(userId);
         if (user == null) throw new ITRightException();
