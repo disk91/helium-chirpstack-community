@@ -112,6 +112,33 @@ public class HeliumDeviceCacheService {
     @Autowired
     protected UserTenantRepository userTenantRepository;
 
+    public boolean isUserLinkedToTenant( String userId, String tenantId ) {
+        UserTenant ut = userTenantRepository.findOneUserByUserIdAndTenantId(
+            UUID.fromString(userId),
+            UUID.fromString(tenantId)
+        );
+        return ( ut != null );
+    }
+
+    /**
+     * Search active devices based on name or deveui substring
+     * whe search is empty, get the first one
+     */
+    public List<HeliumDevice> searchDevices( String search, String tenantId, int max ) {
+        if ( !search.isEmpty() ) {
+            return heliumDeviceRepository.findActiveHeliumDevicesByTenantUUID(
+                tenantId,
+                max
+            );
+        } else {
+            return heliumDeviceRepository.searchActiveHeliumDeviceByNameEUIAndTenantID(
+                tenantId,
+                search,
+                max
+            );
+        }
+    }
+
     /**
      * Return a HeliumDevice after ownership verification
      */
@@ -120,11 +147,7 @@ public class HeliumDeviceCacheService {
         HeliumDevice dev = this.getHeliumDevice(devEui);
         if ( dev == null ) throw new ITNotFoundException();
         String tenantId = dev.getTenantUUID();
-        UserTenant ut = userTenantRepository.findOneUserByUserIdAndTenantId(
-            UUID.fromString(userId),
-            UUID.fromString(tenantId)
-        );
-        if ( ut == null ) throw new ITRightException();
+        if ( !isUserLinkedToTenant(userId,tenantId) ) throw new ITRightException();
         return dev;
     }
 
