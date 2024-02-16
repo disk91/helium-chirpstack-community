@@ -36,6 +36,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletRequest;
+import org.bouncycastle.util.encoders.Base64;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -118,15 +119,16 @@ public class AdvancedApi {
         try {
             DeviceFramesGetItf r = privDeviceFramesService.getDeviceByUser(devEui, request.getUserPrincipal().getName());
             return new ResponseEntity<>(r, HttpStatus.OK);
-        } catch (ITNotFoundException x) {
-            return new ResponseEntity<>(ActionResult.FORBIDDEN(), HttpStatus.FORBIDDEN);
         } catch (ITRightException x) {
+            return new ResponseEntity<>(ActionResult.FORBIDDEN(), HttpStatus.FORBIDDEN);
+        } catch (ITNotFoundException x) {
             return new ResponseEntity<>(ActionResult.NODATA(), HttpStatus.NO_CONTENT);
         }
     }
 
     @Operation(summary = "Search active device in a given tenant",
-        description = "Search devices with a search term in devEui or name, when empty returns the first 50. Max 50 returned, no paging",
+        description = "Search devices with a search term in devEui or name, when empty (use ' ') returns the first 50." +
+            "Search keyword is base64 encoded, Max 50 returned, no paging",
         responses = {
             @ApiResponse(responseCode = "200", description= "Device List",
                 content = @Content(array = @ArraySchema(schema = @Schema( implementation = DeviceSearchGetItf.class)))),
@@ -147,15 +149,16 @@ public class AdvancedApi {
     ) {
         log.debug("Search hotspot");
         try {
-            List<DeviceSearchGetItf> r = privDeviceFramesService.searchFromDeviceByUser(search, tenantId, request.getUserPrincipal().getName());
+            String s = new String(Base64.decode(search));
+            List<DeviceSearchGetItf> r = privDeviceFramesService.searchFromDeviceByUser(s, tenantId, request.getUserPrincipal().getName());
             return new ResponseEntity<>(r, HttpStatus.OK);
-        } catch (ITNotFoundException x) {
-            return new ResponseEntity<>(ActionResult.FORBIDDEN(), HttpStatus.FORBIDDEN);
         } catch (ITRightException x) {
+            return new ResponseEntity<>(ActionResult.FORBIDDEN(), HttpStatus.FORBIDDEN);
+        } catch (ITNotFoundException x) {
             return new ResponseEntity<>(ActionResult.NODATA(), HttpStatus.NO_CONTENT);
         }
     }
-    
+
     @Autowired
     protected PrivHotspotService privHotspotService;
 
@@ -188,7 +191,7 @@ public class AdvancedApi {
             List<HotspotIdent> r = privHotspotService.getHostpotAround(latN,latS,lonW,lonE);
             return new ResponseEntity<>(r, HttpStatus.OK);
         } catch (ITNotFoundException x) {
-            return new ResponseEntity<>(ActionResult.FORBIDDEN(), HttpStatus.FORBIDDEN);
+            return new ResponseEntity<>(ActionResult.NODATA(), HttpStatus.NO_CONTENT);
         } catch (ITParseException x) {
             return new ResponseEntity<>(ActionResult.FAILED(), HttpStatus.SERVICE_UNAVAILABLE);
         }
@@ -215,9 +218,9 @@ public class AdvancedApi {
         try {
             HotspotGetItf r = privHotspotService.getHotspotForUser(hotspotId, request.getUserPrincipal().getName());
             return new ResponseEntity<>(r, HttpStatus.OK);
-        } catch (ITNotFoundException x) {
-            return new ResponseEntity<>(ActionResult.FORBIDDEN(), HttpStatus.FORBIDDEN);
         } catch (ITRightException x) {
+            return new ResponseEntity<>(ActionResult.FORBIDDEN(), HttpStatus.FORBIDDEN);
+        } catch (ITNotFoundException x) {
             return new ResponseEntity<>(ActionResult.NODATA(), HttpStatus.NO_CONTENT);
         }
     }
