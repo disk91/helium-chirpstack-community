@@ -106,14 +106,14 @@ public class Hotspots implements ClonnableObject<Hotspots> {
                 rhs.add(bh.clone());
             }
         }
-        setRewardHistories(rhs);
+        h.setRewardHistories(rhs);
         List<WitnessHistory> whs = new ArrayList<>();
         if ( h.getWitnessesHistory() != null ) {
             for (WitnessHistory wh : h.getWitnessesHistory()) {
                 whs.add(wh.clone());
             }
         }
-        setWitnessesHistory(whs);
+        h.setWitnessesHistory(whs);
         return h;
     }
 

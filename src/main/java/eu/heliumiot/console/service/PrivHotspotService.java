@@ -39,7 +39,7 @@ public class PrivHotspotService {
     protected ConsolePrivateConfig consolePrivateConfig;
 
     @Autowired
-    protected HotspotsMongoRepository hotpotMongoRepository;
+    protected HotspotsMongoRepository hotspotMongoRepository;
 
     // =============================================================
     // Cache Management
@@ -65,17 +65,17 @@ public class PrivHotspotService {
                 if ( batch ) {
                     if ( obj != null ) _toSave.add(obj);
                     if ( _toSave.size() > 5000 || last ) {
-                        _toSave.parallelStream().forEach(hotpotMongoRepository::save);
+                        _toSave.parallelStream().forEach(hotspotMongoRepository::save);
                         _toSave.clear();
                     }
                 } else {
-                    hotpotMongoRepository.save(obj);
+                    hotspotMongoRepository.save(obj);
                 }
             }
 
             @Override
             public void bulkCacheUpdate(List<Hotspots> objects) {
-                hotpotMongoRepository.saveAll(objects);
+                hotspotMongoRepository.saveAll(objects);
             }
 
         };
@@ -165,7 +165,7 @@ public class PrivHotspotService {
         Hotspots d = this.hotspotCache.get(hotspotId);
         if ( d == null ) {
             // search in db
-            d = hotpotMongoRepository.findOneHotspotByHotspotId(hotspotId);
+            d = hotspotMongoRepository.findOneHotspotByHotspotId(hotspotId);
             if ( d != null ) {
                 this.hotspotCache.put(d,d.getHotspotId());
             }
@@ -177,7 +177,7 @@ public class PrivHotspotService {
     public Hotspots updateHotspot(Hotspots d) {
         if ( d.getId() == null ) {
             // new entry
-            d = hotpotMongoRepository.save(d);
+            d = hotspotMongoRepository.save(d);
         }
         this.hotspotCache.put(d,d.getHotspotId(),true);
         return d;
@@ -226,59 +226,64 @@ public class PrivHotspotService {
         if( (now - h.getLastEtlUpdate()) > Now.ONE_HOUR && _queueSize < 100 && h.getId() != null) {
             syncPending.add(h);
             synchronized (_queueSizeLock ) {_queueSize++;}
-        } else {
+        } else if ( _queueSize >= 100 ){
             this.metrics_queue_full++;
         }
     }
 
     @Scheduled(fixedRate = 200, initialDelay = 20_000)
     protected void refreshHotspotData() {
-        // take a single pending request to not overload the backend etl
-        if ( _queueSize > 0 ) {
-            boolean oneGet = false;
-            Hotspots h = null;
-            while ( !oneGet ) {
-                // we can have multiple time the same hotspot in queue, do not
-                // refresh it, sound faster here than rechecking the whole queue
-                // every time.
-                if ( _queueSize > 0 ) {
-                    synchronized (_queueSizeLock) {
-                        _queueSize--;
-                    }
-                    h = syncPending.poll();
-                    if ( h!=null && (Now.NowUtcMs() - h.getLastEtlUpdate()) > Now.ONE_HOUR ) {
-                        oneGet = true;
-                    }
-                } else return;
+        try {
+            // take a single pending request to not overload the backend etl
+            if (_queueSize > 0) {
+                boolean oneGet = false;
+                Hotspots h = null;
+                while (!oneGet) {
+                    // we can have multiple time the same hotspot in queue, do not
+                    // refresh it, sound faster here than rechecking the whole queue
+                    // every time.
+                    if (_queueSize > 0) {
+                        synchronized (_queueSizeLock) {
+                            _queueSize--;
+                        }
+                        h = syncPending.poll();
+                        if (h != null && (Now.NowUtcMs() - h.getLastEtlUpdate()) > Now.ONE_HOUR) {
+                            oneGet = true;
+                        }
+                    } else return;
+                }
+                try {
+                    long now = Now.NowUtcMs();
+                    HotspotState hd = getHostpotState(h.getHotspotId());
+                    h.setBrand(hd.getBrand());
+                    h.setLastWitnessMs(hd.getLastWitness());
+                    h.setLastBeaconMs(hd.getLastBeacon());
+                    h.setLastRewardMs(hd.getLastReward());
+                    h.setSumOfIoTRewards((hd.getSumRewardBeacon() + hd.getSumRewardWitness() + hd.getSumRewardDc()) / 1_000_000);
+                    h.setBeaconned(hd.getBeaconned());
+                    h.setWitnessed(hd.getWitnessed());
+                    h.setMaxTxDistance(hd.getMaxTxDistance());
+                    h.setMaxRxDistance(hd.getMaxRxDistance());
+                    h.setMaxRxBudgetLinkDB(hd.getMaxRxBudgetLinkDB());
+                    h.setRewardHistories(hd.getRewardHistories());
+                    h.setWitnessesHistory(hd.getWitnessesHistory());
+                    h.setLastEtlUpdate(Now.NowUtcMs());
+                    h.setFailure(0);
+                    this.metrics_call_total++;
+                    this.metrics_resptm_total += (Now.NowUtcMs() - now);
+                } catch (ITNotFoundException x) {
+                    this.metrics_call_failed++;
+                    int failure = h.getFailure();
+                    h.setFailure(failure + 1);
+                    // does not retry too fast
+                    if (failure >= 2) h.setLastEtlUpdate(Now.NowUtcMs() - 45*Now.ONE_MINUTE);
+                    else addRefreshHostpotData(h);
+                }
+                hotspotMongoRepository.save(h);
             }
-            try {
-                long now = Now.NowUtcMs();
-                HotspotState hd = getHostpotState(h.getHotspotId());
-                h.setBrand(hd.getBrand());
-                h.setLastWitnessMs(hd.getLastWitness());
-                h.setLastBeaconMs(hd.getLastBeacon());
-                h.setLastRewardMs(hd.getLastReward());
-                h.setSumOfIoTRewards((hd.getSumRewardBeacon()+hd.getSumRewardWitness()+hd.getSumRewardDc()) / 1_000_000);
-                h.setBeaconned(hd.getBeaconned());
-                h.setWitnessed(hd.getWitnessed());
-                h.setMaxTxDistance(hd.getMaxTxDistance());
-                h.setMaxRxDistance(hd.getMaxRxDistance());
-                h.setMaxRxBudgetLinkDB(hd.getMaxRxBudgetLinkDB());
-                h.setRewardHistories(hd.getRewardHistories());
-                h.setWitnessesHistory(hd.getWitnessesHistory());
-                h.setLastEtlUpdate(Now.NowUtcMs());
-                h.setFailure(0);
-                this.metrics_call_total++;
-                this.metrics_resptm_total += (Now.NowUtcMs()-now);
-            } catch (ITNotFoundException x) {
-                this.metrics_call_failed++;
-                int failure = h.getFailure();
-                h.setFailure(failure+1);
-                // does not retry too fast
-                if ( failure >= 2 ) h.setLastEtlUpdate(Now.NowUtcMs()-Now.ONE_HOUR);
-                else addRefreshHostpotData(h);
-            }
-            hotpotMongoRepository.save(h);
+        } catch (Exception e) {
+            log.error("refresh Hotspot Data Failure "+e.getMessage());
+            e.printStackTrace();
         }
     }
 
@@ -329,7 +334,7 @@ public class PrivHotspotService {
                     throw new ITNotFoundException();
                 }
             } else {
-                log.debug("ELT Hotspot "+hotspotId+" not found "+responseEntity.getStatusCode());
+                log.debug("ETL Hotspot "+hotspotId+" not found "+responseEntity.getStatusCode());
                 // if (responseEntity.getBody() != null) log.info(""+responseEntity.getBody());
                 throw new ITNotFoundException();
             }
