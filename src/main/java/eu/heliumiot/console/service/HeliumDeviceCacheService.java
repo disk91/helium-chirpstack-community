@@ -133,7 +133,7 @@ public class HeliumDeviceCacheService {
         } else {
             return heliumDeviceRepository.searchActiveHeliumDeviceByNameEUIAndTenantID(
                 tenantId,
-                search,
+                "'%"+search+"%'",
                 max
             );
         }
