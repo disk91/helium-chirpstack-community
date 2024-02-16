@@ -3,14 +3,12 @@ package eu.heliumiot.console.service;
 
 import eu.heliumiot.console.ConsolePrivateConfig;
 import eu.heliumiot.console.api.interfaces.DeviceFramesGetItf;
+import eu.heliumiot.console.api.interfaces.DeviceSearchGetItf;
 import eu.heliumiot.console.jpa.db.*;
 import eu.heliumiot.console.jpa.mongodb.DeviceFrames;
 import eu.heliumiot.console.jpa.mongoRep.DeviceFramesMongoRepository;
 import eu.heliumiot.console.jpa.repository.TenantRepository;
-import fr.ingeniousthings.tools.ITNotFoundException;
-import fr.ingeniousthings.tools.ITRightException;
-import fr.ingeniousthings.tools.Now;
-import fr.ingeniousthings.tools.ObjectCache;
+import fr.ingeniousthings.tools.*;
 import io.micrometer.core.instrument.Gauge;
 import io.micrometer.core.instrument.MeterRegistry;
 import jakarta.annotation.PostConstruct;
@@ -207,6 +205,36 @@ public class PrivDeviceFramesService {
         r.setTenantName(t.getName());
 
         return r;
+    }
+
+    // =============================================================
+    // Search for devices
+    // =============================================================
+
+    // ---
+    // Search in a tenant devices based on full text search on name and deveui
+    // when search empty, return first 50 devices for the list
+    //
+    public List<DeviceSearchGetItf> searchFromDeviceByUser(String search, String tenantUUID, String userId)
+    throws ITNotFoundException, ITRightException {
+
+        UserCacheService.UserCacheElement user = userCacheService.getUserById(userId);
+        if (user == null) throw new ITRightException();
+        if ( !user.user.isAdmin() ) {
+            // check ownership
+            if ( ! heliumDeviceCacheService.isUserLinkedToTenant(userId,tenantUUID) ) throw new ITRightException();
+        }
+        List<HeliumDevice> ds = heliumDeviceCacheService.searchDevices(search, tenantUUID, 50);
+        if ( ds.isEmpty() ) throw new ITNotFoundException();
+
+        ArrayList<DeviceSearchGetItf> r = new ArrayList<>();
+        ds.forEach( d -> {
+            DeviceSearchGetItf _d = new DeviceSearchGetItf();
+            _d.initFromHeliumDevice(d);
+            r.add(_d);
+        });
+        return r;
+
     }
 
 }

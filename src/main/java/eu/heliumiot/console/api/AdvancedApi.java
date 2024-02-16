@@ -21,6 +21,7 @@ package eu.heliumiot.console.api;
 
 import eu.heliumiot.console.api.interfaces.ActionResult;
 import eu.heliumiot.console.api.interfaces.DeviceFramesGetItf;
+import eu.heliumiot.console.api.interfaces.DeviceSearchGetItf;
 import eu.heliumiot.console.api.interfaces.HotspotGetItf;
 import eu.heliumiot.console.etl.api.HotspotIdent;
 import eu.heliumiot.console.service.*;
@@ -124,6 +125,37 @@ public class AdvancedApi {
         }
     }
 
+    @Operation(summary = "Search active device in a given tenant",
+        description = "Search devices with a search term in devEui or name, when empty returns the first 50. Max 50 returned, no paging",
+        responses = {
+            @ApiResponse(responseCode = "200", description= "Device List",
+                content = @Content(array = @ArraySchema(schema = @Schema( implementation = DeviceSearchGetItf.class)))),
+            @ApiResponse(responseCode = "204", description= "No device found", content = @Content(schema = @Schema(implementation = ActionResult.class))),
+            @ApiResponse(responseCode = "403", description= "Not allowed", content = @Content(schema = @Schema(implementation = ActionResult.class)))
+        }
+    )
+    @RequestMapping(value="/devices/search/{search}/{tenantId}/",
+        produces = MediaType.APPLICATION_JSON_VALUE,
+        method= RequestMethod.GET)
+    @PreAuthorize("hasAnyRole('ROLE_USER')")
+    public ResponseEntity<?> getSearchDevices(
+        HttpServletRequest request,
+        @Parameter(required = true, name = "search", description = "Search term or empty")
+        @PathVariable String search,
+        @Parameter(required = true, name = "tenantId", description = "tenant uuid")
+        @PathVariable String tenantId
+    ) {
+        log.debug("Search hotspot");
+        try {
+            List<DeviceSearchGetItf> r = privDeviceFramesService.searchFromDeviceByUser(search, tenantId, request.getUserPrincipal().getName());
+            return new ResponseEntity<>(r, HttpStatus.OK);
+        } catch (ITNotFoundException x) {
+            return new ResponseEntity<>(ActionResult.FORBIDDEN(), HttpStatus.FORBIDDEN);
+        } catch (ITRightException x) {
+            return new ResponseEntity<>(ActionResult.NODATA(), HttpStatus.NO_CONTENT);
+        }
+    }
+    
     @Autowired
     protected PrivHotspotService privHotspotService;
 
@@ -189,6 +221,9 @@ public class AdvancedApi {
             return new ResponseEntity<>(ActionResult.NODATA(), HttpStatus.NO_CONTENT);
         }
     }
+
+
+
 
 
 
