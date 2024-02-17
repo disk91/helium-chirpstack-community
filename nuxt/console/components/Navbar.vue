@@ -13,6 +13,11 @@
       <b-navbar-nav>
         <b-nav-item to="/front/" exact active-class="active" >{{ $t('menu_chirpstack') }}</b-nav-item>
         <b-nav-item to="/front/stats" exact active-class="active" >{{ $t('menu_user_stats') }}</b-nav-item>
+        <b-nav-item v-if="!$config.community" 
+                    to="/front/showcontext" 
+                    exact active-class="active">
+                    {{ $t('menu_showcontext') }}
+        </b-nav-item>
         <b-nav-item to="/front/admusers" exact active-class="active" v-if="$store.state.admin" class="ml-4">{{ $t('menu_admin_users') }}</b-nav-item>
         <b-nav-item to="/front/profiles" exact active-class="active" v-if="$store.state.admin" class="sm">{{ $t('menu_admin_profiles') }}</b-nav-item>
         <b-nav-item to="/front/messages" exact active-class="active" v-if="$store.state.admin" class="sm">{{ $t('menu_admin_messages') }}</b-nav-item>

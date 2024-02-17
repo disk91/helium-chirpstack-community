@@ -4,6 +4,7 @@ export const state = () => ({
     currentTenant:'',
     lastChirpstackUrl:'',
     admin:false,
+    currentDevice:'',
 })
 
 export const getters = {
@@ -27,7 +28,10 @@ export const getters = {
   }, 
   isAdmin(state) {
     return state.admin;
-  }
+  },
+  getCurrentDevice(state) {
+    return state.currentDevice;
+  },
 
 }
 
@@ -47,7 +51,11 @@ export const mutations = {
     },
     setUserAdmin(state, b) {
         state.admin = b;
-    }
+    },
+    setCurrentDevice(state, b) {
+      state.currentDevice = b;
+    },
+
 
 }
 

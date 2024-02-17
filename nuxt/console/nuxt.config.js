@@ -66,6 +66,10 @@ export default {
     couponPost:(process.env.API_HOST || '')+'/console/1.0/tenant/coupon',
     couponGet:(process.env.API_HOST || '')+'/console/1.0/tenant/coupon',
     skfsCheckGet:(process.env.API_HOST || '')+'/console/1.0/adv/checkaddr',
+    ctxDevFramesGet:(process.env.API_HOST || '')+'/console/1.0/adv/device',
+    ctxHotspotAroundGet:(process.env.API_HOST || '')+'/console/1.0/adv/hotspots-around',
+    ctxHotspotGet:(process.env.API_HOST || '')+'/console/1.0/adv/hotspot',
+    ctxDeviceSearchGet:(process.env.API_HOST || '')+'/console/1.0/adv/devices/search',
     termAndUse:process.env.CONSOLE_TERMS || '/',
     maxDevices:process.env.MAX_DEVICES || 500,
     disablePurchase:process.env.DIS_DC_PURCHASE || 'false',
@@ -96,7 +100,8 @@ export default {
     link: [{ rel: 'icon', type: 'image/x-icon', href: '/static/front/favicon.ico' }],
     script: [
       { src: 'https://js.stripe.com/v3/' },
-      { src: 'https://polyfill.io/v3/polyfill.min.js?version=3.52.1&features=fetch'}
+      { src: 'https://polyfill.io/v3/polyfill.min.js?version=3.52.1&features=fetch'},
+      { src: 'https://unpkg.com/@mapbox/leaflet-pip@latest/leaflet-pip.js' },
     ],
   },
 
@@ -131,6 +136,8 @@ export default {
     '@nuxtjs/i18n',
     // simple-code-editor
     'simple-code-editor/nuxt',
+    // leaflet
+    'nuxt-leaflet',
   ],
 
   // Internationalization
