@@ -68,8 +68,11 @@ public class PrometeusService {
     private long loRaFirstUplinkCount = 0;      // the number of different packet (only the first)
     private long loRaLateUplinkTravelTime = 0;  // the travel time for the late packets (over 2s)
     private long loRaLateUplinkCount = 0;       // the number of late packets received
-    private long loRaGatewayUplink = 0;         // the number of uplink (including join) seen at gateway level ( invoiced by hpr )
-    private long loRaInvoicableUplink = 0;      // the number of uplink (including join) proceed by invoice mechanism
+    private long loRaGatewayUplink = 0;         // the number of uplink (including join) seen at gateway level ( invoiced by hpr ) but when timing are incorrect this counter may wrong for invoicing
+    private long loRaInvoicableUplink = 0;      // the number of uplink packets (including join) proceed by invoice mechanism
+    private long loRaInvoicableDownlink = 0;    // the number of downlink packets (including join) proceed by invoice mechanism
+    private long heliumInvoicedPackets = 0;     // the packet invoiced by the HPR
+    private long heliumNotInvoicedPackets = 0;  // packet we received but not attributed to a device
 
     private long loRaMessageProcessingTime = 0; // The time spend for processing lora message on MQTT to see variations
     private long loRaMessageProcessed = 0;      // The number of LoRa / MQTT messages processed
@@ -176,6 +179,12 @@ public class PrometeusService {
         this.loRaMessageProcessingTime += processTime;
         this.loRaMessageProcessed ++;
     }
+
+    public void addHeliumInvoicedPacket() {
+        this.heliumInvoicedPackets++;
+    }
+
+    public void addHeliumNotInvoicedPacket(int cost) { this.heliumNotInvoicedPackets+=cost; }
 
     synchronized public void addLoRaInvoicableUplink(int packets) {
         this.loRaInvoicableUplink += packets;
@@ -443,6 +452,8 @@ public class PrometeusService {
     protected Supplier<Number> getLoRaMessageProcessed() { return ()->loRaMessageProcessed; }
     protected Supplier<Number> getLoRaMessageProcessingTime() { return ()->loRaMessageProcessingTime; }
 
+    private Supplier<Number> getHeliumNotInvoicedPackets() { return ()->heliumNotInvoicedPackets; }
+
     public PrometeusService(MeterRegistry registry) {
 
         Gauge.builder("cons.api.total_time_ms", getApiTotalTimeMs())
@@ -589,6 +600,9 @@ public class PrometeusService {
             .register(registry);
         Gauge.builder("cons.lora.invoicable.uplink", getLoRaInvoicablePacket())
             .description("Number of packets received processed by the invoicing mechanism")
+            .register(registry);
+        Gauge.builder("cons.lora.lns.notinvoiced.uplink", getHeliumNotInvoicedPackets())
+            .description("Number of packets not invoiced by lns")
             .register(registry);
         Gauge.builder("cons.lora.process.duration", getLoRaMessageProcessingTime())
             .description("Duration of the LoRa Frame processing in Mqtt listener")

@@ -335,6 +335,41 @@ public class HeliumTenantService {
     @Autowired
     protected HeliumDeviceCacheService heliumDeviceCacheService;
 
+    public void punish(String tenantUUID, String deviceUUID, int cost) {
+        if ( tenantUUID == null ) {
+            tenantUUID = heliumDeviceCacheService.getTenantId(deviceUUID);
+            if (tenantUUID == null) {
+                log.error("Impossible to find tenantUUID for (" + deviceUUID + ") - 1 ");
+                return;
+            }
+        }
+        HeliumDeviceStatItf i = new HeliumDeviceStatItf();
+        i.setDeviceId(deviceUUID);
+        i.setTenantId(tenantUUID);
+        HeliumTenantSetup ts = heliumTenantSetupService.getHeliumTenantSetup(tenantUUID,false);
+        synchronized (this) {
+            HeliumTenant t = this.getHeliumTenant(tenantUUID,false);
+            if (t != null) {
+                t.setDcBalance(t.getDcBalance() - cost);
+                this.flushHeliumTenant(t);
+
+                // check deactivation
+                if ( ts != null ) {
+                    processBalance(ts,t);
+                } else {
+                    log.error("Punish but HeliumTemplate not found for Tenant "+tenantUUID+" and device "+deviceUUID);
+                }
+
+                // publish message to update the stats async
+                i.setUplinkDc(cost);
+                i.setDuplicateDc(0);
+                i.setUplink(0);
+                i.setDuplicate(0);
+                reportStatToMqtt(i);
+            }
+        }
+    }
+
     public void processUplink( String tenantUUID, String deviceUUID,  int payloadSize, boolean withFirst, int duplicates) {
         if ( tenantUUID == null ) {
             tenantUUID = heliumDeviceCacheService.getTenantId(deviceUUID);
