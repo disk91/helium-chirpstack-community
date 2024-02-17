@@ -14,6 +14,7 @@ import eu.heliumiot.console.service.RoamingService;
 import fr.ingeniousthings.tools.*;
 import io.chirpstack.api.gw.UplinkFrame;
 import io.chirpstack.json.JoinEvent;
+import io.chirpstack.json.LogEvent;
 import io.chirpstack.json.UplinkEvent;
 import io.chirpstack.json.sub.UplinkEventRxInfo;
 import org.eclipse.paho.client.mqttv3.*;
@@ -108,6 +109,7 @@ public class MqttLoRaListener implements MqttCallback {
 
     private Pattern matchUplink;
     private Pattern matchJoin;
+    private Pattern matchLog;
 
     // other interesting patterns
     // application/.*/event/log$
@@ -119,6 +121,7 @@ public class MqttLoRaListener implements MqttCallback {
         // precompile some regex
         matchUplink = Pattern.compile("application/.*/event/up$");
         matchJoin = Pattern.compile("application/.*/event/join$");
+        matchLog = Pattern.compile("application/.*/event/log$");
 
 
         // manage MQTT
@@ -693,6 +696,22 @@ public class MqttLoRaListener implements MqttCallback {
                 } catch (Exception x) {
                     x.printStackTrace();
                 }
+            } else if (matchLog.matcher(e.topic).matches()) {
+                try {
+                    LogEvent le = mapper.readValue(e.message.toString(), LogEvent.class);
+                    log.debug("LOG - Dev: "+ le.getDeviceInfo().getDeviceName() + " Eui: "+ le.getDeviceInfo().getDevEui() + " Tenant: "+le.getDeviceInfo().getTenantId());
+                    if ( le.getCode().compareToIgnoreCase("UPLINK_F_CNT_RESET") == 0 ) {
+                        log.info("Found an UPLINK_F_CNT_RESET for devEui: "+le.getDeviceInfo().getDevEui());
+                        // anormal behavior use as an attack, pay 100 Uplink equivalent
+                        heliumTenantService.punish(
+                            le.getDeviceInfo().getTenantId(),
+                            le.getDeviceInfo().getDevEui(),
+                            100
+                        );
+                    }
+                } catch (Exception x) {
+                    x.printStackTrace();
+                }
             } else {
                 // standard json messages
                 log.debug("MQTT LL - MessageArrived on "+e.topic);
@@ -757,6 +776,7 @@ public class MqttLoRaListener implements MqttCallback {
 
             int postInvoiced = 0;
             int notInvoicable = 0;
+            int cost = 0;
             // clean the dedup packets
             if (packetDedup.size() > PACKET_DEDUP_MAXSZ || (now - lastCleanLateDedup) > 8 * Now.ONE_MINUTE) {
                 boolean isFull = (packetDedup.size() > PACKET_DEDUP_MAXSZ);
@@ -824,14 +844,16 @@ public class MqttLoRaListener implements MqttCallback {
                             }
                             if (!found) {
                                 log.warn("Found a packetDedup without uplink event for " + d.devAddr + " / " + d.fCnt +
-                                    " from " + d.firstGatewayId + " with " + d.duplicates + " dup");
+                                    " from " + d.firstGatewayId + " sz "+d.dataSz+" with " + d.duplicates + " dup");
+                                cost += d.duplicates * ( (d.dataSz/24) + 1);
                                 notInvoicable += d.duplicates;
+                                prometeusService.addHeliumNotInvoicedPacket(cost);
                             }
                         }
                     }
                 }
                 if ( notInvoicable > 0 ) {
-                    log.warn("MQTT LL - cleanDedupCache - late packets invoiced "+postInvoiced+" not invoiced "+notInvoicable);
+                    log.warn("MQTT LL - cleanDedupCache - late packets invoiced "+postInvoiced+" not invoiced "+notInvoicable+" (cost "+cost+"DCs)");
                 } else {
                     if ( postInvoiced > 0 ) log.debug("MQTT LL - cleanDedupCache - late packets invoiced " + postInvoiced);
                 }
