@@ -71,6 +71,7 @@ public class PrometeusService {
     private long loRaInvoicableUplink = 0;      // the number of uplink packets (including join) proceed by invoice mechanism
     private long loRaInvoicableDownlink = 0;    // the number of downlink packets (including join) proceed by invoice mechanism
     private long heliumInvoicedPackets = 0;     // the packet invoiced by the HPR
+    private long heliumNotInvoicedPackets = 0;  // packet we received but not attributed to a device
 
     private long loRaMessageProcessingTime = 0; // The time spend for processing lora message on MQTT to see variations
     private long loRaMessageProcessed = 0;      // The number of LoRa / MQTT messages processed
@@ -181,6 +182,8 @@ public class PrometeusService {
     public void addHeliumInvoicedPacket() {
         this.heliumInvoicedPackets++;
     }
+
+    public void addHeliumNotInvoicedPacket(int cost) { this.heliumNotInvoicedPackets+=cost; }
 
     synchronized public void addLoRaInvoicableUplink(int packets) {
         this.loRaInvoicableUplink += packets;
@@ -459,6 +462,8 @@ public class PrometeusService {
 
     private Supplier<Number> getHeliumInvoicedPackets() { return ()->heliumInvoicedPackets; }
 
+    private Supplier<Number> getHeliumNotInvoicedPackets() { return ()->heliumNotInvoicedPackets; }
+
     public PrometeusService(MeterRegistry registry) {
 
         Gauge.builder("cons.api.total_time_ms", getApiTotalTimeMs())
@@ -611,6 +616,9 @@ public class PrometeusService {
             .register(registry);
         Gauge.builder("cons.lora.hpr.invoiced.uplink", getHeliumInvoicedPackets())
             .description("Number of packets invoiced by helium hpr")
+            .register(registry);
+        Gauge.builder("cons.lora.lns.notinvoiced.uplink", getHeliumNotInvoicedPackets())
+            .description("Number of packets not invoiced by lns")
             .register(registry);
         Gauge.builder("cons.lora.process.duration", getLoRaMessageProcessingTime())
             .description("Duration of the LoRa Frame processing in Mqtt listener")
