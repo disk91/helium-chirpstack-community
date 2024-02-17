@@ -20,6 +20,7 @@
     "bootstrap-vue": "^2.22.0",
     "core-js": "^3.25.3",
     "nuxt": "^2.15.8",
+    "nuxt-leaflet": "^0.0.27",
     "simple-code-editor": "^1.2.2",
     "vue": "^2.7.10",
     "vue-server-renderer": "^2.7.10",
@@ -27,6 +28,7 @@
   },
   "devDependencies": {
     "@babel/eslint-parser": "^7.19.1",
+    "@mapbox/leaflet-pip": "^1.1.0",
     "@nuxt/types": "^2.15.8",
     "@nuxt/typescript-build": "^2.1.0",
     "@nuxtjs/eslint-config-typescript": "^11.0.0",
