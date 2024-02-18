@@ -189,7 +189,7 @@
     #
     # When the link-budget is better for RX2 than for RX1, the Network Server will first
     # try to schedule the downlink in RX2, failing that it will try RX1.
-    rx2_prefer_on_link_budget=false
+    rx2_prefer_on_link_budget=true
 
     # Downlink TX Power (dBm)
     #
