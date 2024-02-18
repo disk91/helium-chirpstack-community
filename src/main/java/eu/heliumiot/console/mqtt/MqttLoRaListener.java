@@ -434,10 +434,16 @@ public class MqttLoRaListener implements MqttCallback {
                 dedup.isJoin = isJoin;
                 if (!isJoin) {
                     // Packet is
-                    // 40 XX XX XX XX YY ZZ ZZ
+                    // 40 XX XX XX XX YY ZZ ZZ K..K FF P..P MM MM MM MM
+                    // MHDR 1B 0x40 here => type = 2
                     // where XX are DevAddr reversed byte order
-                    // YY FCtrl
+                    // YY FCtrl (last 4b = FOpts Sz)
                     // ZZ FCnt
+                    // K..K FOpts 0..120b 0..15B
+                    // FF FPort 1B
+                    // P..P Payload
+                    // MM MIC : 4B
+
                     dedup.deviceEui = null;
                     dedup.tenantId = null;
                     dedup.devAddr = HexaConverters.byteToHexString(payload[4]) +
@@ -445,7 +451,18 @@ public class MqttLoRaListener implements MqttCallback {
                         HexaConverters.byteToHexString(payload[2]) +
                         HexaConverters.byteToHexString(payload[1]);
                     dedup.fCnt = Stuff.getIntFromByte(payload[7]) * 256 + Stuff.getIntFromByte(payload[6]);
-                    dedup.dataSz = 0;
+                    // dataSz is not yet known, get an estimate to monitor the unassociated packets
+                    // Sz will be corrected on chirpstack event reception
+                    if ( payload.length >= 13) {
+                        // 13B minimum payload structure - FOpts Size
+                        dedup.dataSz = (payload.length - 13) - ( Stuff.getIntFromByte(payload[5]) & 0x0F );
+                        if ( dedup.dataSz < 0 ) {
+                            log.error("LoRa Payload Incorrect size computation "+spayload);
+                        }
+                    } else {
+                        log.info("Detect a short LoRa frame under minimum "+spayload);
+                        dedup.dataSz = 0;
+                    }
                     synchronized (lockRecentPacketDedup) {
                         recentPacketDedup.addLast(dedup);
                         // clear the old one
