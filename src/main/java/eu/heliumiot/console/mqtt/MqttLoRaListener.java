@@ -866,13 +866,13 @@ public class MqttLoRaListener implements MqttCallback {
                                     " from " + d.firstGatewayId + " sz "+d.dataSz+" with " + d.duplicates + " dup");
                                 cost += d.duplicates * ( (d.dataSz/24) + 1);
                                 notInvoicable += d.duplicates;
-                                prometeusService.addHeliumNotInvoicedPacket(cost);
                             }
                         }
                     }
                 }
                 if ( notInvoicable > 0 ) {
                     log.warn("MQTT LL - cleanDedupCache - late packets invoiced "+postInvoiced+" not invoiced "+notInvoicable+" (cost "+cost+"DCs)");
+                    prometeusService.addHeliumNotInvoicedPacket(cost);
                 } else {
                     if ( postInvoiced > 0 ) log.debug("MQTT LL - cleanDedupCache - late packets invoiced " + postInvoiced);
                 }
