@@ -125,7 +125,7 @@ public class HeliumDeviceCacheService {
      * whe search is empty, get the first one
      */
     public List<HeliumDevice> searchDevices( String search, String tenantId, int max ) {
-        if ( !search.isEmpty() ) {
+        if ( search.isEmpty() ) {
             return heliumDeviceRepository.findActiveHeliumDevicesByTenantUUID(
                 tenantId,
                 max
