@@ -71,7 +71,7 @@ export default Vue.extend({
                     var devstart = iframeUrl.indexOf('\/devices\/');
                     console.log("&& "+iframeUrl+" "+devstart);
                     if ( devstart > 0 ) {
-                        iframeUrl = iframeUrl.substring(start+9);
+                        iframeUrl = iframeUrl.substring(devstart+9);
                         devstart = iframeUrl.indexOf('\/');
                         if ( devstart > 0 ) iframeUrl = iframeUrl.substring(0,start);
                         this.$store.commit('setCurrentDevice',iframeUrl);
