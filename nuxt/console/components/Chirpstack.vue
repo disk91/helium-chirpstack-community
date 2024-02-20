@@ -69,13 +69,10 @@ export default Vue.extend({
                     }
                     iframeUrl = document.getElementById("chirpstack-frame-id").contentWindow.location.href;
                     var devstart = iframeUrl.indexOf('\/devices\/');
-                    console.log("&& "+iframeUrl+" "+devstart);
                     if ( devstart > 0 ) {
                         iframeUrl = iframeUrl.substring(devstart+9);
                         devstart = iframeUrl.indexOf('\/');
-                        console.log(">> "+devstart);
                         if ( devstart > 0 ) iframeUrl = iframeUrl.substring(0,devstart);
-                        console.log("## "+iframeUrl);
                         this.$store.commit('setCurrentDevice',iframeUrl);
                     } else {
                         // todo, on a rien en localstorage, make it empty to
@@ -84,7 +81,7 @@ export default Vue.extend({
                     }
                 } catch (e) {
                     this.$store.commit('setCurrentDevice', '');
-                    console.log("chirpstack param extraction failed ");
+                    console.log("Chirpstack param extraction failed ");
                 }
             }
 		  } , 1000)
