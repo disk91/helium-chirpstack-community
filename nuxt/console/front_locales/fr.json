@@ -479,14 +479,14 @@
     "ccf_stopdate" : "Fin",
     "ccf_couponFor" : "Propriétaire",
 
-    "menu_showcontext" : "Contexte",
+    "menu_showcontext" : "Analyses",
     "skfs_run_check_title" : "Verifier skfs",
     "skfs_devaddr" : "Device Addr",
     "skfs_devaddr_det" : "Choisir l'adresse (hexstring) comme 480001 à vérifier",
     "skfs_clear" : "Clear extra",
     "skfs_clear_det" : "Netoyer les sessions obsolete",
     "skfs_button" : "Vérifier",
-    
+    "skfs_how_to" : "La verification skfs permet de revalider toutes les session pour une adresse donnée et donc de netoyer les entrées sur-numéraires. Si la case n'est pas cochée, seule une analyse est realisée. Le résultat est afficher dans les logs du back uniquement.",
     "ctx_tenant_title" : "Informations Tenant",
     "ctx_deviceEui" : "Dev EUI",
     "ctx_lastSeen": "Dernier message",
@@ -523,6 +523,11 @@
     "ctx_frame_hscount": "Copies",
     "ctx_frame_rssi": "Rssi",
     "ctx_frame_snr": "Meilleur SNR",
+    "ctx_search_dev": "Recherche d'objets dans le tenant, par nom ou dev Eui",
+    "ctx_device_select": "Sélectionner",
+    "menu_admin_shield": "Adm Renforcement",
+    "shield_admin_title": "Administration du renforcement",
+
 
     "end" : "fin"
 }
