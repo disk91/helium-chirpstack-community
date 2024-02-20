@@ -236,7 +236,7 @@ DEBIAN_FRONTEND=noninteractive apt upgrade -y -qq >/dev/null 2>/dev/null
 
 # Install the expected packages
 cecho "Installing required packages"
-for package in openjdk-21-jdk make build-essential libssl-dev pkg-config protobuf-compiler yarn ca-certificates curl gnupg; do
+for package in openjdk-21-jdk make build-essential libssl-dev pkg-config protobuf-compiler yarn ca-certificates curl gnupg npm; do
   if ! dpkg -l | grep -q "^ii.*$package" ; then
     echo "[x] $package"
     DEBIAN_FRONTEND=noninteractive apt install $package -y -qq >/dev/null
@@ -244,6 +244,10 @@ for package in openjdk-21-jdk make build-essential libssl-dev pkg-config protobu
     echo "[ ] $package"
   fi
 done
+
+# Update node.js
+n lts
+hash -r
 
 # Install docker environement
 DOCKER=0
