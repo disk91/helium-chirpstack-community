@@ -55,7 +55,7 @@ export default Vue.extend({
             if ( document != null ) {
                 //try {
                     var iframeUrl = document.getElementById("chirpstack-frame-id").contentWindow.location.href;
-                    console.log(iframe);
+                    console.log(iframeUrl);
                     var start = iframeUrl.indexOf('\/tenants\/');
                     if ( start > 0 ) {
                         iframeUrl = iframeUrl.substring(start+9);
