@@ -40,6 +40,7 @@
         },
         methods: {
             drawMap(msg:DataContext) {
+                if ( msg.device == undefined ) return;
 
                 if ( ! this.map ) {
                    //this.map = L.map('map').setView([(minLat+(maxLat-minLat)/2), (minLon+(maxLon-minLon)/2)], 11);
@@ -79,16 +80,18 @@
                 // print others
                 msg.hotspots.forEach( h => {
                     let found : boolean = false;
-                    for (let i = 0 ; i < msg.device.hotspotAround.length ; i++ ) {
-                        if ( h.hotspotId === msg.device.hotspotAround[i].gatewayId ) {
-                            found = true;
-                            var marker = L.marker([msg.device.hotspotAround[i].lat, msg.device.hotspotAround[i].lng], {icon: this.greenIcon}).addTo(this.map!);
-                            marker.bindTooltip(h.animalName);
-                            this.markers.push({marker:marker,id:h.hotspotId,icon:this.greenIcon,name:h.animalName});
-                            marker.on('click', () => {
-                                this.$root.$emit("message-context-uhotspot-update", h.hotspotId);
-                            });
-                            break;
+                    if ( msg.device != undefined ) {
+                        for (let i = 0 ; i < msg.device.hotspotAround.length ; i++ ) {
+                            if ( h.hotspotId === msg.device.hotspotAround[i].gatewayId ) {
+                                found = true;
+                                var marker = L.marker([msg.device.hotspotAround[i].lat, msg.device.hotspotAround[i].lng], {icon: this.greenIcon}).addTo(this.map!);
+                                marker.bindTooltip(h.animalName);
+                                this.markers.push({marker:marker,id:h.hotspotId,icon:this.greenIcon,name:h.animalName});
+                                marker.on('click', () => {
+                                    this.$root.$emit("message-context-uhotspot-update", h.hotspotId);
+                                });
+                                break;
+                            }
                         }
                     }
                     if ( !found ) {
@@ -140,10 +143,18 @@
             // clean if exists
             this.$root.$off("message-context-map-update");
             this.$root.$on("message-context-map-update", (msg:DataContext) => {
-                this.drawMap(msg);
+                if ( msg.device == undefined ) {
+                    console.log("CASE");
+                    // clean the markers
+                    this.markers.forEach( (m) => {
+                        m.marker.remove();
+                    });
+                } else {
+                    this.drawMap(msg);
+                }
             });
-            this.$root.$off("message-context-frame-ightlight");
-            this.$root.$on("message-context-frame-ightlight", (msg:FrameEntry) => {
+            this.$root.$off("message-context-frame-hightlight");
+            this.$root.$on("message-context-frame-hightlight", (msg:FrameEntry) => {
                 this.markers.forEach( (m) => {
                     m.marker.setIcon(m.icon);
                     m.marker.bindTooltip(m.name);

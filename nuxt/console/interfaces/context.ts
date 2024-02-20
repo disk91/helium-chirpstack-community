@@ -69,7 +69,7 @@ declare module "vue/types/context" {
 
     interface DataContext {
         // the device data
-        device: GetDeviceFramesItf,
+        device: GetDeviceFramesItf | undefined,
         // bounds
         latS: number,
         latN: number,
@@ -77,6 +77,8 @@ declare module "vue/types/context" {
         lonE: number,
         // hotspots Around
         hotspots: HotspotIdent[],
+        // context
+        tenantID: string,
     }
 
     interface HotspotContext {

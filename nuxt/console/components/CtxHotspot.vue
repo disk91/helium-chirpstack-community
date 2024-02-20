@@ -433,21 +433,31 @@
             // hotspot around
             this.$root.$off("message-context-hotspot-update");
             this.$root.$on("message-context-hotspot-update", (hotspot:HotspotContext) => {
-                this.updateHotspot(hotspot);
-                if ( hotspot.isDetailed ) { 
-                    this.loadHotspot(hotspot.id);
-                } else {
+                if ( hotspot == undefined ) {
+                    this.ctx = {
+                        id: '',
+                        identity: null,
+                        details: null,
+                        isDetailed: false,
+                    };
                     this.hsDetails = null;
-                    this.lnsSeenTrafficData[0].data = [];
-                    this.lnsSeenTrafficOption.xaxis.categories = [];
-                    this.hsSeenWitnessData[0].data = [];
-                    this.hsSeenWitnessData[1].data = [];
-                    this.hsSeenWitnessOption.xaxis.categories = [];
-                    this.hsSeenRewardData[0].data = [];
-                    this.hsSeenRewardData[1].data = [];
-                    this.hsSeenRewardData[2].data = [];
-                    this.hsSeenRewardOption.xaxis.categories = [];
-                } 
+                } else {
+                    this.updateHotspot(hotspot);
+                    if ( hotspot.isDetailed ) { 
+                        this.loadHotspot(hotspot.id);
+                    } else {
+                        this.hsDetails = null;
+                        this.lnsSeenTrafficData[0].data = [];
+                        this.lnsSeenTrafficOption.xaxis.categories = [];
+                        this.hsSeenWitnessData[0].data = [];
+                        this.hsSeenWitnessData[1].data = [];
+                        this.hsSeenWitnessOption.xaxis.categories = [];
+                        this.hsSeenRewardData[0].data = [];
+                        this.hsSeenRewardData[1].data = [];
+                        this.hsSeenRewardData[2].data = [];
+                        this.hsSeenRewardOption.xaxis.categories = [];
+                    } 
+                }
             });
             // reset
             this.init = false;

@@ -5,7 +5,7 @@
                 <div>
                 <b-table 
                 sticky-header
-                :items="ctx.device.recentFrames" 
+                :items="frames" 
                 :fields="fields" 
                 :busy="!init"
                 sort-by="rxTimeMs"
@@ -46,6 +46,7 @@
 
     interface context {
         ctx: DataContext | null,
+        frames: FrameEntry[],
         init: boolean,
         loading: boolean,
         fields: {
@@ -64,6 +65,7 @@
         data() : context {
             return {
                 ctx: null,
+                frames: [],
                 init: false,
                 loading: false,
                 fields : [
@@ -81,7 +83,7 @@
         },
         methods: {
             onRowHovered(row:FrameEntry) {
-                this.$root.$emit("message-context-frame-ightlight", row);
+                this.$root.$emit("message-context-frame-hightlight", row);
             },
             updateFrames(msg:DataContext) {
                 this.ctx = msg;
@@ -128,7 +130,12 @@
             // hotspot around
             this.$root.$off("message-context-frames-update");
             this.$root.$on("message-context-frames-update", (hotspot:DataContext) => {
-                this.updateFrames(hotspot);
+                if ( hotspot.device != undefined ) {
+                    this.frames = hotspot.device.recentFrames;
+                    this.updateFrames(hotspot);
+                } else {
+                    this.frames = [];
+                }
             });
             // reset
             this.init = false;

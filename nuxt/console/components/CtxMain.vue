@@ -13,7 +13,7 @@
             <b-row v-if="!isBusy">
                 <b-col cols="12" class="py-1" style="font-size:0.8rem;">
                     <b-card
-                        :header="dctx.device.tenantName"
+                        :header="(dctx.device)?dctx.device.tenantName:'unknown'"
                         class="ml-0 TenantInfo"
                     >
                     <CtxSelect/>
@@ -23,7 +23,7 @@
             <b-row v-if="!isBusy">
                 <b-col cols="12" class="py-1" style="font-size:0.7rem;">
                     <b-card
-                        :header="dctx.device.devName"
+                        :header="(dctx.device)?dctx.device.devName:'unknown'"
                         class="ml-0 TenantInfo"
                     >
                     <b-row class="py-1">
@@ -34,7 +34,7 @@
                             style="text-align:left;margin-right:2px;font-size:0.8rem;"
                             class="text-info bg-light"
                         >
-                            {{ dctx.device.devEui }}
+                            {{ (dctx.device)?dctx.device.devEui:'unknonwn' }}
                         </b-col>
                      </b-row>
                      <b-row class="py-1">
@@ -66,7 +66,7 @@
             <b-row>
                 <b-col cols="12" class="py-1" style="font-size:0.8rem;">
                     <b-card
-                        :header="dctx.device.devName"
+                        :header="(dctx.device)?dctx.device.devName:'unknown'"
                         class="ml-0 TenantInfo"
                     >
                         <LeafletMap/>
@@ -97,7 +97,7 @@
 
 <script lang="ts">
   import Vue from 'vue'
-  import { GetDeviceFramesItf, HotspotIdent, DataContext, HotspotContext } from 'vue/types/context'
+  import { GetDeviceFramesItf, HotspotIdent, DataContext, HotspotContext, DeviceSearchGetItf } from 'vue/types/context'
 
   interface context {
     errorMessage: string,
@@ -114,72 +114,87 @@
             errorMessage: '',
             isBusy: false,
             dctx: {
-                device: {
-                    tenantName: '',
-                    devEui: '',
-                    devName: '',
-                }
+                device: undefined
             } as DataContext,
             test: "",
         }
       },
       async fetch() {
         let tenantId = this.$store.state.currentTenant;
-        if ( tenantId == undefined || tenantId == null || tenantId.length < 5 ) {
-        } 
-
-        //let deviceId = this.$store.state.currentDevice;
-        let deviceId = "6081f9dde602cd74";
-        
-        let config = {
-            headers: {
-              'Content-Type': 'application/json',
-              'Authorization': 'Bearer '+this.$store.state.consoleBearer,  
+        let deviceId = this.$store.state.currentDevice;
+        if ( tenantId != undefined && tenantId != null && tenantId.length > 5 ) {
+            if ( deviceId != undefined && deviceId != null && deviceId.length > 5 ) {
+                this.loadData(tenantId,deviceId);
+            } else {
+                this.dctx.tenantID = tenantId;
+                this.dctx.device = undefined;
+                this.updateSubContent();
             }
-        };
-        this.errorMessage = '';
-        this.isBusy = true;
-        this.$axios.get<GetDeviceFramesItf>(this.$config.ctxDevFramesGet+'/'+deviceId+'/',config)
-            .then((response) =>{
-                if (response.status == 200 ) {
-                  this.dctx.device = response.data;                
-                  this.$root.$emit("message-context-frames-update", this.dctx);
-
-                  // calculate map borders
-                  this.dctx.latS=1000, this.dctx.lonW=1000, this.dctx.latN=-1000, this.dctx.lonE=-1000;
-                  this.dctx.device.hotspotAround.forEach( h => {
-                      if ( h.lat < this.dctx.latS ) this.dctx.latS = h.lat;
-                      if ( h.lng < this.dctx.lonW ) this.dctx.lonW = h.lng;
-                      if ( h.lat > this.dctx.latN ) this.dctx.latN = h.lat;
-                      if ( h.lng > this.dctx.lonE ) this.dctx.lonE = h.lng;
-                  });
-                  let margin : number = 0.1;
-                  this.$axios.get<HotspotIdent[]>(this.$config.ctxHotspotAroundGet+'/'+(this.dctx.latN+margin)+'/'+(this.dctx.latS-margin)+'/'+(this.dctx.lonW-margin)+'/'+(this.dctx.lonE+margin)+'/',config)
-                    .then((response) =>{
-                        if (response.status == 200 ) {
-                            this.dctx.hotspots = response.data;
-                            this.isBusy = false;
-                            this.$root.$emit("message-context-map-update", this.dctx);
-                        }
-                    }).catch((err) => {
-                        this.dctx.hotspots = [];
-                        this.isBusy = false;
-                        this.$root.$emit("message-context-map-update", this.dctx);
-                        this.errorMessage = 'ctx_error_load_hs_around';
-                    })
-                } else {
-                    this.dctx.hotspots = [];
-                    this.isBusy = false;
-                    this.$root.$emit("message-context-map-update", this.dctx);
-                    this.errorMessage = 'ctx_error_load_hs_around';
-                }
-            }).catch((err) =>{
-               this.dctx = {} as DataContext;
-               this.errorMessage = 'ctx_error_load_device';
-            });
+        }
       },
       methods: {
+        loadData(_tenantId: string, _deviceEui: string) {
+            let config = {
+                headers: {
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer '+this.$store.state.consoleBearer,  
+                }
+            };
+            this.errorMessage = '';
+            this.isBusy = true;
+            this.dctx.tenantID = _tenantId;
+            this.$axios.get<GetDeviceFramesItf>(this.$config.ctxDevFramesGet+'/'+_deviceEui+'/',config)
+                .then((response) =>{
+                    if (response.status == 200 ) {
+                    this.dctx.device = response.data;                
+
+                    // calculate map borders
+                    this.dctx.latS=1000, this.dctx.lonW=1000, this.dctx.latN=-1000, this.dctx.lonE=-1000;
+                    this.dctx.device.hotspotAround.forEach( h => {
+                        if ( h.lat < this.dctx.latS ) this.dctx.latS = h.lat;
+                        if ( h.lng < this.dctx.lonW ) this.dctx.lonW = h.lng;
+                        if ( h.lat > this.dctx.latN ) this.dctx.latN = h.lat;
+                        if ( h.lng > this.dctx.lonE ) this.dctx.lonE = h.lng;
+                    });
+                    let margin : number = 0.1;
+                    this.$axios.get<HotspotIdent[]>(this.$config.ctxHotspotAroundGet+'/'+(this.dctx.latN+margin)+'/'+(this.dctx.latS-margin)+'/'+(this.dctx.lonW-margin)+'/'+(this.dctx.lonE+margin)+'/',config)
+                        .then((response) =>{
+                            if (response.status == 200 ) {
+                                this.dctx.hotspots = response.data;
+                                this.isBusy = false;
+                                this.updateSubContent();
+                            } else {
+                                // 204 case
+                            }
+                        }).catch((err) => {
+                            this.dctx.hotspots = [];
+                            this.isBusy = false;
+                            this.updateSubContent();
+                            this.errorMessage = 'ctx_error_load_hs_around';
+                        })
+                    } else {
+                        // 204 response case
+                        this.dctx.hotspots = [];
+                        this.dctx.device = undefined;
+                        this.isBusy = false;
+                        this.updateSubContent();
+                        this.errorMessage = 'ctx_error_load_hs_around';
+                    }
+                }).catch((err) =>{
+                    this.dctx = {} as DataContext;
+                    this.errorMessage = 'ctx_error_load_device';
+                });
+        },
+        updateSubContent() {
+            setTimeout( () => {
+                this.$root.$emit("message-context-map-update", this.dctx);
+                this.$root.$emit("message-context-select-update", this.dctx);
+                this.$root.$emit("message-context-frames-update", this.dctx);
+                this.$root.$emit("message-context-hotspot-update", undefined);
+            },250);
+        },
         getDevLastSeen() : string {
+            if ( this.dctx.device == undefined ) return 'unknown';
             let now = Date.now();
             let delta = now - this.dctx.device.lastSeen;
             if ( delta < 1000 ) return 'now';
@@ -204,7 +219,7 @@
                     break;
                 }
            }
-           if ( detailed ) {
+           if ( detailed && this.dctx.device != undefined ) {
             for ( let i = 0 ; i < this.dctx.device.hotspotAround.length ; i++ ) {
                 if( this.dctx.device.hotspotAround[i].gatewayId === hotspotId ) {
                     hs.details = this.dctx.device.hotspotAround[i];
@@ -228,6 +243,11 @@
         this.$root.$on("message-context-uhotspot-update", (hotspotId:string) => {
             this.controlHotspotDetails(hotspotId,true);
         });
+        // change device
+        this.$root.$off("message-context-select-change");
+        this.$root.$on("message-context-select-change", (newDevice:DeviceSearchGetItf) => {
+            this.loadData(newDevice.tenantUUID,newDevice.deviceEui.toLowerCase());
+        })
       }
    })
   
