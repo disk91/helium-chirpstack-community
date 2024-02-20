@@ -144,7 +144,6 @@
             this.$root.$off("message-context-map-update");
             this.$root.$on("message-context-map-update", (msg:DataContext) => {
                 if ( msg.device == undefined ) {
-                    console.log("CASE");
                     // clean the markers
                     this.markers.forEach( (m) => {
                         m.marker.remove();
