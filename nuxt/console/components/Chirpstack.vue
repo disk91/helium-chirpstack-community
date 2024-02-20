@@ -53,7 +53,7 @@ export default Vue.extend({
 	    pollData () {
 		  this.polling = setInterval(() => {
             if ( document != null ) {
-                try {
+                //try {
                     var iframeUrl = document.getElementById("chirpstack-frame-id").contentWindow.location.href;
                     var start = iframeUrl.indexOf('\/tenants\/');
                     if ( start > 0 ) {
@@ -78,9 +78,10 @@ export default Vue.extend({
                         // display tenant informations
                         this.$store.commit('setCurrentDevice','');
                     }
-                } catch (e) {
-                    this.$store.commit('setCurrentDevice', '6081f9dde602cd74');
-                }
+                //} catch (e) {
+                //    this.$store.commit('setCurrentDevice', '');
+                //    console.log("url param eextraction failed ");
+                //}
             }
 		  } , 1000)
 	    }
