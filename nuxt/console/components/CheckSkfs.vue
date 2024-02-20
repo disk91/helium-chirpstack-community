@@ -1,7 +1,7 @@
 <template>
     <b-card 
         :header="$t('skfs_run_check_title')"
-        class="mt-2 mr-2"
+        class="mr-2"
     >
         <b-row>
         <b-col cols="6">
@@ -47,6 +47,12 @@
                               variant="primary" 
                               class="mb-2">
                               {{ $t('skfs_button') }}</b-button>
+            </b-col>
+        </b-row>
+        <b-row>
+            <b-col cols="1"></b-col>
+            <b-col cols="11" style="font-size:0.5rem;" class="text-info">
+                {{ $t('skfs_how_to') }}
             </b-col>
         </b-row>
     </b-card>
