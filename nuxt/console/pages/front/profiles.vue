@@ -8,7 +8,6 @@
         </b-col>
         <b-col cols="6">
          <TenantTopActive/>
-         <CheckSkfs v-if="!$config.community"/>
          <InvoiceSetup/>
         </b-col>
       </b-row>
