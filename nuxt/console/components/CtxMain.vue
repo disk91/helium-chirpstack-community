@@ -1,6 +1,12 @@
 <template>
     <div>
-    <b-row v-if="isBusy">
+    <b-row v-if="! isSet">
+        <b-col cols="12" class="text-danger">
+            <b-icon icon="exclamation-circle-fill" variant="danger"></b-icon>
+            {{ $t('ctx_missing_tenant_info') }}
+        </b-col>
+    </b-row>
+    <b-row v-if="isBusy && isSet">
         <b-col cols="12">
             <b-button variant="primary" disabled>
                 <b-spinner small type="grow"></b-spinner>
@@ -8,12 +14,12 @@
             </b-button>
         </b-col>
     </b-row>
-    <b-row>
+    <b-row v-if="isSet">
         <b-col cols="3">
             <b-row v-if="!isBusy">
                 <b-col cols="12" class="py-1" style="font-size:0.8rem;">
                     <b-card
-                        :header="(dctx.device)?dctx.device.tenantName:'unknown'"
+                        :header="(dctx.device)?dctx.device.tenantName:'Please select a device'"
                         class="ml-0 TenantInfo"
                     >
                     <CtxSelect/>
@@ -102,6 +108,7 @@
   interface context {
     errorMessage: string,
     isBusy: boolean,
+    isSet: boolean,
     dctx: DataContext,
     test:string;
   };
@@ -113,6 +120,7 @@
         return {
             errorMessage: '',
             isBusy: false,
+            isSet: false,
             dctx: {
                 device: undefined
             } as DataContext,
@@ -123,6 +131,7 @@
         let tenantId = this.$store.state.currentTenant;
         let deviceId = this.$store.state.currentDevice;
         if ( tenantId != undefined && tenantId != null && tenantId.length > 5 ) {
+            this.isSet = true;
             if ( deviceId != undefined && deviceId != null && deviceId.length > 5 ) {
                 this.loadData(tenantId,deviceId);
             } else {
@@ -130,6 +139,9 @@
                 this.dctx.device = undefined;
                 this.updateSubContent();
             }
+        } else {
+            // nothing configured
+            this.isSet = false;
         }
       },
       methods: {
