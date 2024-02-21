@@ -31,8 +31,14 @@ public class ConsolePrivateConfig {
     @Value("${helium.dev.max.frame.hist:200}")
     private int heliumDevMaxFrameHist;
 
+    @Value("${helium.dev.max.frame.days:21}")
+    private int heliumDevMaxFrameDays;
+
     @Value("${helium.dev.max.hotspot.hist:200}")
     private int heliumDevMaxHotspotHist;
+
+    @Value("${helium.dev.max.hotspot.days:21}")
+    private int heliumDevMaxHotspotDays;
 
     @Value("${helium.dev.frame.cache.size:1000}")
     private int heliumDevFrameCacheSize;
@@ -69,6 +75,14 @@ public class ConsolePrivateConfig {
 
     public long getHeliumHotspotCacheExpiration() {
         return heliumHotspotCacheExpiration;
+    }
+
+    public int getHeliumDevMaxFrameDays() {
+        return heliumDevMaxFrameDays;
+    }
+
+    public int getHeliumDevMaxHotspotDays() {
+        return heliumDevMaxHotspotDays;
     }
 
     // =====================================

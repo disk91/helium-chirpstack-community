@@ -403,5 +403,20 @@ public class PrivHotspotService {
         }
     }
 
+    // ============================================================
+    // Clean old Hotspot
+    // ============================================================
+    @Scheduled(fixedRate = 86_400_000, initialDelay = 1_980_000) // every 24h / first after 33m
+    protected void clearOldHotspot() {
+        long start = Now.NowUtcMs();
+        try {
+            long limit = start - ( consolePrivateConfig.getHeliumDevMaxHotspotDays() * Now.ONE_FULL_DAY );
+            hotspotMongoRepository.deleteHotspotByAge(limit);
+            log.info("clear_old_Hotspot - delete_helium_device_stats_history duration " + (Now.NowUtcMs() - start) / 1000 + "s");
+        } catch ( Exception x ) {
+            log.error("clear_old_Hotspot - error ("+x.getMessage()+") - after "+ (Now.NowUtcMs() - start) / 1000 + "s");
+        }
+    }
+
 
 }

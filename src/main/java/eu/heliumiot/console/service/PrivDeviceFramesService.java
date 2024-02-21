@@ -240,4 +240,20 @@ public class PrivDeviceFramesService {
 
     }
 
+    // ============================================================
+    // Clean old device frame
+    // ============================================================
+    @Scheduled(fixedRate = 86_400_000, initialDelay = 1_560_000) // every 24h / first after 26m
+    protected void clearOldDeviceFrame() {
+        long start = Now.NowUtcMs();
+        try {
+            long limit = start - ( consolePrivateConfig.getHeliumDevMaxFrameDays() * Now.ONE_FULL_DAY );
+            deviceFramesMongoRepository.deleteDeviceFrameByAge(limit);
+            log.info("clear_old_DeviceFrame - delete_helium_device_stats_history duration " + (Now.NowUtcMs() - start) / 1000 + "s");
+        } catch ( Exception x ) {
+            log.error("clear_old_DeviceFrame - error ("+x.getMessage()+") - after "+ (Now.NowUtcMs() - start) / 1000 + "s");
+        }
+    }
+
+
 }
