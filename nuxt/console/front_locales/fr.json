@@ -525,6 +525,7 @@
     "ctx_frame_snr": "Meilleur SNR",
     "ctx_search_dev": "Recherche d'objets dans le tenant, par nom ou dev Eui",
     "ctx_device_select": "Sélectionner",
+    "ctx_missing_tenant_info": "Pour afficher les informations d'analyse des communications, vous devez prealablement selectionner un Tenant dans l'onglet Chirpstack",
     "menu_admin_shield": "Adm Renforcement",
     "shield_admin_title": "Administration du renforcement",
 
