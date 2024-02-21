@@ -524,6 +524,7 @@
   "ctx_frame_snr": "Best SNR",
   "ctx_search_dev": "Tenant search devices by name or dev Eui",
   "ctx_device_select": "Select",
+  "ctx_missing_tenant_info": "Before processing frame analysis, you need to select a tenant or device from the Chirpstack tab.",
   "menu_admin_shield": "Adm Shielding",
   "shield_admin_title": "Shielding Administration",
 
