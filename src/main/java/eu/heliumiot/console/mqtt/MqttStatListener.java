@@ -222,7 +222,6 @@ public class MqttStatListener implements MqttCallback {
                 }
             } else if ( topicName.matches("application/.*/event/join$") ) {
                 try {
-                    log.info(">> "+message.toString());
                     JoinEvent je = mapper.readValue(message.toString(), JoinEvent.class);
                     DeviceFrames d = privDeviceFramesService.getDevice(je.getDeviceInfo().getDevEui());
                     if ( d == null ) {

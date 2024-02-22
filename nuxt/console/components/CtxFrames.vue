@@ -106,10 +106,12 @@
             },
             getFrameType(type:number) : string {
                 if ( type == 0 ) return "Uplink";
+                if ( type == 1 ) return "Join Request";
                 return "Unknown";
             },
             getRssiRange(row:any) : string {
                 let frame : FrameEntry = row.item;
+                if ( frame.hotspots.length == 0 ) return 'NA';
                 let minRssi = 1000, maxRssi = -1000;
                 frame.hotspots.forEach( (h) => {
                     if ( h.rssi > maxRssi ) maxRssi = h.rssi;
@@ -119,6 +121,7 @@
             },
             getBestSnr(row:any) : string {
                 let frame : FrameEntry = row.item;
+                if ( frame.hotspots.length == 0 ) return 'NA';
                 let bestSnr = -1000;
                 frame.hotspots.forEach( (h) => {
                     if ( h.snr > bestSnr ) bestSnr = h.snr;
