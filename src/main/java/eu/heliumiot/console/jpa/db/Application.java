@@ -1,5 +1,5 @@
 /*
- * Copyright (c) - Paul Pinault (aka disk91) - 2020.
+ * Copyright (c) - Paul Pinault (aka disk91) - 2024.
  *
  *    Permission is hereby granted, free of charge, to any person obtaining a copy of this software
  *    and associated documentation files (the "Software"), to deal in the Software without restriction,
@@ -19,11 +19,9 @@
  */
 package eu.heliumiot.console.jpa.db;
 
-import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Immutable;
 
 import jakarta.persistence.*;
-import java.sql.Timestamp;
 import java.util.UUID;
 
 @Entity
