@@ -19,15 +19,13 @@
  */
 package eu.heliumiot.console.api;
 
-import eu.heliumiot.console.api.interfaces.ActionResult;
-import eu.heliumiot.console.api.interfaces.DeviceFramesGetItf;
-import eu.heliumiot.console.api.interfaces.DeviceSearchGetItf;
-import eu.heliumiot.console.api.interfaces.HotspotGetItf;
+import eu.heliumiot.console.api.interfaces.*;
 import eu.heliumiot.console.etl.api.HotspotIdent;
 import eu.heliumiot.console.service.*;
 import fr.ingeniousthings.tools.ITNotFoundException;
 import fr.ingeniousthings.tools.ITParseException;
 import fr.ingeniousthings.tools.ITRightException;
+import fr.ingeniousthings.tools.Now;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
@@ -225,7 +223,54 @@ public class AdvancedApi {
         }
     }
 
+    // ===================================================
+    // Inactive devices
+    // ===================================================
 
+    @Autowired
+    protected PrivDeviceService privDeviceService;
+
+    @Operation(summary = "Get device with no activity",
+        description = "Get the list of device with no activity recently and status",
+        responses = {
+            @ApiResponse(responseCode = "200", description= "Device List",
+                content = @Content(array = @ArraySchema(schema = @Schema( implementation = AdvDeviceInacGetItf.class)))),
+            @ApiResponse(responseCode = "204", description= "No device found", content = @Content(schema = @Schema(implementation = ActionResult.class))),
+            @ApiResponse(responseCode = "403", description= "Rights", content = @Content(schema = @Schema(implementation = ActionResult.class)))
+        }
+    )
+    @RequestMapping(value="/inactive-devices/{tenantId}/{pastHours}/{page}/",
+        produces = MediaType.APPLICATION_JSON_VALUE,
+        method= RequestMethod.GET)
+    @PreAuthorize("hasAnyRole('ROLE_USER')")
+    public ResponseEntity<?> getInactiveDevices(
+        HttpServletRequest request,
+        @Parameter(required = true, name = "tenantId", description = "Tenant Id")
+        @PathVariable String tenantId,
+        @Parameter(required = true, name = "pastHours", description = "Inactive since X hours")
+        @PathVariable int pastHours,
+        @Parameter(required = true, name = "page", description = "get a specific page (200 max per page)")
+        @PathVariable int page
+    ) {
+        long startMs= Now.NowUtcMs();
+        log.debug("Get inactive devices for tenant "+tenantId+" for "+pastHours+" hours");
+        try {
+            AdvDeviceInacGetItf r = privDeviceService.getInactivDeviceByUser(
+                request.getUserPrincipal().getName(),
+                tenantId,
+                page,
+                pastHours
+            );
+            return new ResponseEntity<>(r, HttpStatus.OK);
+        } catch (ITNotFoundException x) {
+            return new ResponseEntity<>(ActionResult.NODATA(), HttpStatus.NO_CONTENT);
+        } catch (ITRightException x) {
+            return new ResponseEntity<>(ActionResult.FORBIDDEN(), HttpStatus.FORBIDDEN);
+        } finally {
+            long duration = Now.NowUtcMs() - startMs;
+            if ( duration > 5_000 ) log.warn("getInactiveDevices - long processing "+duration+" ms for tenant "+tenantId);
+        }
+    }
 
 
 
