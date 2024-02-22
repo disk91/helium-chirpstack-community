@@ -33,7 +33,7 @@ import java.util.List;
 import java.util.UUID;
 
 @Service
-public class HeliumEduService {
+public class PrivHeliumEduService {
 
     private final Logger log = LoggerFactory.getLogger(this.getClass());
 

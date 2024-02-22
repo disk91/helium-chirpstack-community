@@ -1,15 +1,6 @@
 /*
  * Copyright (c) - Paul Pinault (aka disk91) - 2020.
  *
- *    Permission is hereby granted, free of charge, to any person obtaining a copy of this software
- *    and associated documentation files (the "Software"), to deal in the Software without restriction,
- *    including without limitation the rights to use, copy, modify, merge, publish, distribute,
- *    sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is
- *    furnished to do so, subject to the following conditions:
- *
- *    The above copyright notice and this permission notice shall be included in all copies or
- *    substantial portions of the Software.
- *
  *    THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  *    IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS
  *    FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS
@@ -99,7 +90,7 @@ public class AdvancedApi {
     @Operation(summary = "Get the frame history for a given device",
         description = "Get the frame history with hotspot used during communications",
         responses = {
-            @ApiResponse(responseCode = "200", description= "Device Frames", content = @Content(schema = @Schema(implementation = DeviceFramesGetItf.class))),
+            @ApiResponse(responseCode = "200", description= "Device Frames", content = @Content(schema = @Schema(implementation = AdvDeviceFramesGetItf.class))),
             @ApiResponse(responseCode = "204", description= "No Device data", content = @Content(schema = @Schema(implementation = ActionResult.class))),
             @ApiResponse(responseCode = "403", description= "Not allowed", content = @Content(schema = @Schema(implementation = ActionResult.class)))
         }
@@ -115,7 +106,7 @@ public class AdvancedApi {
     ) {
         log.debug("Get device frame history");
         try {
-            DeviceFramesGetItf r = privDeviceFramesService.getDeviceByUser(devEui, request.getUserPrincipal().getName());
+            AdvDeviceFramesGetItf r = privDeviceFramesService.getDeviceByUser(devEui, request.getUserPrincipal().getName());
             return new ResponseEntity<>(r, HttpStatus.OK);
         } catch (ITRightException x) {
             return new ResponseEntity<>(ActionResult.FORBIDDEN(), HttpStatus.FORBIDDEN);
@@ -129,7 +120,7 @@ public class AdvancedApi {
             "Search keyword is base64 encoded, Max 50 returned, no paging",
         responses = {
             @ApiResponse(responseCode = "200", description= "Device List",
-                content = @Content(array = @ArraySchema(schema = @Schema( implementation = DeviceSearchGetItf.class)))),
+                content = @Content(array = @ArraySchema(schema = @Schema( implementation = AdvDeviceSearchGetItf.class)))),
             @ApiResponse(responseCode = "204", description= "No device found", content = @Content(schema = @Schema(implementation = ActionResult.class))),
             @ApiResponse(responseCode = "403", description= "Not allowed", content = @Content(schema = @Schema(implementation = ActionResult.class)))
         }
@@ -148,7 +139,7 @@ public class AdvancedApi {
         log.debug("Search hotspot");
         try {
             String s = new String(Base64.decode(search));
-            List<DeviceSearchGetItf> r = privDeviceFramesService.searchFromDeviceByUser(s, tenantId, request.getUserPrincipal().getName());
+            List<AdvDeviceSearchGetItf> r = privDeviceFramesService.searchFromDeviceByUser(s, tenantId, request.getUserPrincipal().getName());
             return new ResponseEntity<>(r, HttpStatus.OK);
         } catch (ITRightException x) {
             return new ResponseEntity<>(ActionResult.FORBIDDEN(), HttpStatus.FORBIDDEN);
@@ -164,7 +155,7 @@ public class AdvancedApi {
         description = "Get the existing hotspot around",
         responses = {
             @ApiResponse(responseCode = "200", description= "Hotspot List",
-                content = @Content(array = @ArraySchema(schema = @Schema( implementation = DeviceFramesGetItf.class)))),
+                content = @Content(array = @ArraySchema(schema = @Schema( implementation = AdvDeviceFramesGetItf.class)))),
             @ApiResponse(responseCode = "204", description= "No Hostpot data", content = @Content(schema = @Schema(implementation = ActionResult.class))),
             @ApiResponse(responseCode = "503", description= "Unavailable", content = @Content(schema = @Schema(implementation = ActionResult.class)))
         }
@@ -198,7 +189,7 @@ public class AdvancedApi {
     @Operation(summary = "Get details on 1 specific hotspot",
         description = "Get details on a given hotspot including ETL data (asyn resfresh)",
         responses = {
-            @ApiResponse(responseCode = "200", description= "Hotspot data", content = @Content(schema = @Schema(implementation = DeviceFramesGetItf.class))),
+            @ApiResponse(responseCode = "200", description= "Hotspot data", content = @Content(schema = @Schema(implementation = AdvDeviceFramesGetItf.class))),
             @ApiResponse(responseCode = "204", description= "No hotspot data", content = @Content(schema = @Schema(implementation = ActionResult.class))),
             @ApiResponse(responseCode = "403", description= "Not allowed", content = @Content(schema = @Schema(implementation = ActionResult.class)))
         }
@@ -214,7 +205,7 @@ public class AdvancedApi {
     ) {
         log.debug("Get hotspot details");
         try {
-            HotspotGetItf r = privHotspotService.getHotspotForUser(hotspotId, request.getUserPrincipal().getName());
+            AdvHotspotGetItf r = privHotspotService.getHotspotForUser(hotspotId, request.getUserPrincipal().getName());
             return new ResponseEntity<>(r, HttpStatus.OK);
         } catch (ITRightException x) {
             return new ResponseEntity<>(ActionResult.FORBIDDEN(), HttpStatus.FORBIDDEN);

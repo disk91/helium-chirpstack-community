@@ -1,9 +1,20 @@
+/*
+ * Copyright (c) - Paul Pinault (aka disk91) - 2020.
+ *
+ *    THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ *    IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS
+ *    FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS
+ *    OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
+ *    WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR
+ *    IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+ */
+
 package eu.heliumiot.console.service;
 
 
 import eu.heliumiot.console.ConsolePrivateConfig;
-import eu.heliumiot.console.api.interfaces.DeviceFramesGetItf;
-import eu.heliumiot.console.api.interfaces.DeviceSearchGetItf;
+import eu.heliumiot.console.api.interfaces.AdvDeviceFramesGetItf;
+import eu.heliumiot.console.api.interfaces.AdvDeviceSearchGetItf;
 import eu.heliumiot.console.jpa.db.*;
 import eu.heliumiot.console.jpa.mongodb.DeviceFrames;
 import eu.heliumiot.console.jpa.mongoRep.DeviceFramesMongoRepository;
@@ -172,7 +183,7 @@ public class PrivDeviceFramesService {
     protected eu.heliumiot.console.jpa.repository.DeviceRepository deviceRepository;
 
 
-    public DeviceFramesGetItf getDeviceByUser(String devEui, String userId)
+    public AdvDeviceFramesGetItf getDeviceByUser(String devEui, String userId)
     throws ITRightException, ITNotFoundException {
         UserCacheService.UserCacheElement user = userCacheService.getUserById(userId);
         if (user == null) throw new ITRightException();
@@ -198,7 +209,7 @@ public class PrivDeviceFramesService {
         Device _d = deviceRepository.findOneDeviceByDevEui(dev.getDeviceUUID());
         if ( _d == null ) throw new ITNotFoundException();
 
-        DeviceFramesGetItf r = new DeviceFramesGetItf();
+        AdvDeviceFramesGetItf r = new AdvDeviceFramesGetItf();
         r.initFromDeviceFrames(df);
         r.setDevName(_d.getName());
         r.setTenantID(dev.getTenantUUID());
@@ -215,7 +226,7 @@ public class PrivDeviceFramesService {
     // Search in a tenant devices based on full text search on name and deveui
     // when search empty, return first 50 devices for the list
     //
-    public List<DeviceSearchGetItf> searchFromDeviceByUser(String search, String tenantUUID, String userId)
+    public List<AdvDeviceSearchGetItf> searchFromDeviceByUser(String search, String tenantUUID, String userId)
     throws ITNotFoundException, ITRightException {
 
         if ( ! search.matches("^[a-zA-Z0-9\\-_ +]+$") ) throw new ITNotFoundException();
@@ -230,9 +241,9 @@ public class PrivDeviceFramesService {
         List<HeliumDevice> ds = heliumDeviceCacheService.searchDevices(search, tenantUUID, 50);
         if ( ds.isEmpty() ) throw new ITNotFoundException();
 
-        ArrayList<DeviceSearchGetItf> r = new ArrayList<>();
+        ArrayList<AdvDeviceSearchGetItf> r = new ArrayList<>();
         ds.forEach( d -> {
-            DeviceSearchGetItf _d = new DeviceSearchGetItf();
+            AdvDeviceSearchGetItf _d = new AdvDeviceSearchGetItf();
             _d.initFromHeliumDevice(d);
             r.add(_d);
         });

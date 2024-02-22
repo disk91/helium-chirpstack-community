@@ -1,9 +1,20 @@
+/*
+ * Copyright (c) - Paul Pinault (aka disk91) - 2020.
+ *
+ *    THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ *    IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS
+ *    FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS
+ *    OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
+ *    WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR
+ *    IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+ */
+
 package eu.heliumiot.console.service;
 
 
 import eu.heliumiot.console.ConsoleConfig;
 import eu.heliumiot.console.ConsolePrivateConfig;
-import eu.heliumiot.console.api.interfaces.HotspotGetItf;
+import eu.heliumiot.console.api.interfaces.AdvHotspotGetItf;
 import eu.heliumiot.console.etl.api.HotspotIdent;
 import eu.heliumiot.console.etl.api.HotspotState;
 import eu.heliumiot.console.jpa.mongoRep.HotspotsMongoRepository;
@@ -188,14 +199,14 @@ public class PrivHotspotService {
     // API Interface
     // =============================================================
 
-    public HotspotGetItf getHotspotForUser(String hotspotId, String userId)
+    public AdvHotspotGetItf getHotspotForUser(String hotspotId, String userId)
         throws ITRightException, ITNotFoundException {
         //UserCacheService.UserCacheElement user = userCacheService.getUserById(userId);
         //if (user == null) throw new ITRightException();
 
         Hotspots h = this.getHotspot(hotspotId);
         if ( h == null ) throw new ITNotFoundException();
-        HotspotGetItf r = new HotspotGetItf();
+        AdvHotspotGetItf r = new AdvHotspotGetItf();
         r.initFromHotspots(h);
 
         return r;

@@ -20,7 +20,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import java.util.List;
 
 @Tag(name = "Device Frames History", description = "data related to last communication for a given device")
-public class DeviceFramesGetItf {
+public class AdvDeviceFramesGetItf {
 
     @Schema(
         description = "device EUI",
