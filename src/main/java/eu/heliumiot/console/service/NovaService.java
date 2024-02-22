@@ -34,6 +34,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicInteger;
 
 @Service
 public class NovaService {
@@ -373,6 +374,51 @@ public class NovaService {
 
     // cache skf by route
     private HashMap<String,SkfRoute> skfCache = new HashMap<>();
+
+    // search network collision in skfs cache for a given route
+    // -1 if device non found
+    public int countSkfsColisions(String routeId, String eui) {
+        SkfRoute r = skfCache.get(routeId);
+        if ( r == null ) return -1;
+
+        DeviceSession s = redisDeviceRepository.getDeviceDetails(eui);
+        if ( s == null ) return -1;
+
+        String ntwSEncKey = HexaConverters.byteToHexString(s.getNwkSEncKey().toByteArray());
+        String devaddr = HexaConverters.byteToHexString(s.getDevAddr().toByteArray());
+        int iDevAddr = Stuff.hexStrToInt(devaddr);
+
+        AtomicInteger c = new AtomicInteger(0);
+        r.skfsByEui.values().parallelStream().forEach( (sk) -> {
+            if ( sk.getDevaddr() == iDevAddr && sk.getSessionKey().compareToIgnoreCase(ntwSEncKey) == 0 ) c.addAndGet(1);
+        });
+
+        return c.get();
+    }
+
+    public int existSkfs(String routeId, String eui) {
+        DeviceSession s = redisDeviceRepository.getDeviceDetails(eui);
+        if ( s == null ) return -1;
+
+        String ntwSEncKey = HexaConverters.byteToHexString(s.getNwkSEncKey().toByteArray());
+        String devaddr = HexaConverters.byteToHexString(s.getDevAddr().toByteArray());
+        int iDevAddr = Stuff.hexStrToInt(devaddr);
+
+        List<skf_v1> sks = this.grpcListSessionsByDevaddr(iDevAddr, routeId);
+        if ( sks != null ) {
+            AtomicInteger c = new AtomicInteger(0);
+            sks.parallelStream().forEach( (sk) -> {
+                if ( sk.getSessionKey().compareToIgnoreCase(ntwSEncKey) == 0 ) c.addAndGet(1);
+            });
+            return c.get();
+        }
+        return 0;
+    }
+
+
+    public List<eui_pair_v1> getEuiInARoute(String routeId) {
+        return grpcGetEuiFromRoute(routeId);
+    }
 
 
     /**
@@ -1601,7 +1647,6 @@ public class NovaService {
         // else we need to verify it.
         return (session.length() == 32 && session.startsWith("91919193") && session.endsWith(String.format("%08X",addr)));
     }
-
 
     private List<skf_v1> grpcListSessionsByDevaddr(int devAddr, String routeId) {
 

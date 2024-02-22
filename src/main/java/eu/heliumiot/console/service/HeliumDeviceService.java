@@ -1098,4 +1098,23 @@ public class HeliumDeviceService {
         novaService.activateDevices(toReactivate);
     }
 
+    // =================================================
+    // Helper
+    // =================================================
+    private HashMap<String, String> appNameCache = new HashMap<>();
+    public String getApplicationNameFromId(String applicationId) {
+        String n = appNameCache.get(applicationId);
+        if ( n == null ) {
+            Application app = applicationRepository.findOneApplicationById(UUID.fromString(applicationId));
+            if ( app == null ) return null;
+            n = app.getName();
+            if ( appNameCache.size() >= 200 ) {
+                // simple and small cache
+                appNameCache = new HashMap<>();
+            }
+            appNameCache.put(applicationId,n);
+        }
+        return n;
+    }
+
 }

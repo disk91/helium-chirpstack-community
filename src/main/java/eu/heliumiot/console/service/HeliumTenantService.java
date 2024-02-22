@@ -183,9 +183,12 @@ public class HeliumTenantService {
         return heliumTenantRepository.save(t);
     }
 
+    public eu.heliumiot.console.jpa.db.Tenant getTenant(String tenantId) {
+        return tenantRepository.findOneTenantById(UUID.fromString(tenantId));
+    }
+
     public eu.heliumiot.console.jpa.db.Tenant getTenant(UUID tenantId) {
-        eu.heliumiot.console.jpa.db.Tenant t = tenantRepository.findOneTenantById(tenantId);
-        return t;
+        return tenantRepository.findOneTenantById(tenantId);
     }
 
     public boolean clearTenant(String tenantUUID) {
@@ -757,6 +760,21 @@ public class HeliumTenantService {
                 }
             }
         }
+    }
+
+    // ======================================================
+    // HELPER
+    // ======================================================
+    public boolean isTenantOwnedBy(UserCacheService.UserCacheElement user, String tenantId ) {
+        if (!user.user.isAdmin()) {
+            // search if tenant authorization exists
+            UserTenant ut = userTenantRepository.findOneUserByUserIdAndTenantId(
+                UUID.fromString(user.user.getEmail()),
+                UUID.fromString(tenantId)
+            );
+            return ut != null;
+        }
+        return true;
     }
 
 
