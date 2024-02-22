@@ -1,5 +1,5 @@
 /*
- * Copyright (c) - Paul Pinault (aka disk91) - 2018.
+ * Copyright (c) - Paul Pinault (aka disk91) - 2024.
  *
  *    Permission is hereby granted, free of charge, to any person obtaining a copy of this software
  *    and associated documentation files (the "Software"), to deal in the Software without restriction,
