@@ -8,7 +8,9 @@ import eu.heliumiot.console.jpa.mongodb.sub.HotspotEntry;
 import fr.ingeniousthings.tools.ClonnableObject;
 import fr.ingeniousthings.tools.DateConverters;
 import fr.ingeniousthings.tools.Now;
+import io.chirpstack.json.JoinEvent;
 import io.chirpstack.json.UplinkEvent;
+import io.chirpstack.json.sub.UplinkEventDeviceInfo;
 import io.chirpstack.json.sub.UplinkEventRxInfo;
 import org.postgresql.shaded.com.ongres.scram.common.bouncycastle.base64.Base64;
 import org.slf4j.Logger;
@@ -69,10 +71,10 @@ public class DeviceFrames implements ClonnableObject<DeviceFrames>{
     // Constructors
     // ======================================================================
 
-    public void initFromUplinkEvent(UplinkEvent e, ConsolePrivateConfig consolePrivateConfig) {
+    private void initFromEvent(UplinkEventDeviceInfo i, ConsolePrivateConfig consolePrivateConfig ) {
         if ( this.devEui == null ) {
             // new entry
-            this.devEui = e.getDeviceInfo().getDevEui();
+            this.devEui = i.getDevEui();
             this.frameSeen = 0;
             this.lastSaved = 0;
             this.recentFrames = new ArrayList<>();
@@ -92,6 +94,32 @@ public class DeviceFrames implements ClonnableObject<DeviceFrames>{
             }
 
         }
+    }
+
+
+    public void initFromjoinEvent(JoinEvent e, ConsolePrivateConfig consolePrivateConfig) {
+        this.initFromEvent(e.getDeviceInfo(),consolePrivateConfig);
+
+        // all
+        this.lastSeen = Now.NowUtcMs();
+        this.frameSeen++;
+
+        // new FrameEntry
+        FrameEntry fe = new FrameEntry();
+        fe.setDr(-1);
+        fe.setfCnt(0);
+        fe.setDataSize(23);
+        fe.setFrameType(FrameEntry.FRAME_TYPE_JOIN);
+        fe.setRxTimeMs(DateConverters.StringDateToMs(e.getTime()));
+        ArrayList<FrameHotspot> hss = new ArrayList<>();
+        fe.setHotspots(hss);
+        this.recentFrames.add(fe);
+
+    }
+
+    public void initFromUplinkEvent(UplinkEvent e, ConsolePrivateConfig consolePrivateConfig) {
+        this.initFromEvent(e.getDeviceInfo(),consolePrivateConfig);
+
         // all
         this.lastSeen = Now.NowUtcMs();
         this.frameSeen++;

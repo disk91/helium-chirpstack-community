@@ -215,18 +215,25 @@ public class MqttStatListener implements MqttCallback {
                         privHotspotService.updateHotspot(h);
                     });
                 } catch (JsonProcessingException x) {
-                    log.error("MQTT DS - Failed to transform Chiprstack payload "+x.getMessage());
+                    log.error("MQTT DS - Failed to transform Chirpstack payload "+x.getMessage());
                 } catch (Exception x) {
-                    log.error("MQTT DS - Exception in processing chirpstack message "+x.getMessage());
+                    log.error("MQTT DS - Exception in processing Chirpstack message "+x.getMessage());
                     x.printStackTrace();
                 }
             } else if ( topicName.matches("application/.*/event/join$") ) {
                 try {
+                    log.info(">> "+message.toString());
                     JoinEvent je = mapper.readValue(message.toString(), JoinEvent.class);
+                    DeviceFrames d = privDeviceFramesService.getDevice(je.getDeviceInfo().getDevEui());
+                    if ( d == null ) {
+                        d = new DeviceFrames();
+                    }
+                    d.initFromjoinEvent(je,consolePrivateConfig);
+                    privDeviceFramesService.updateDevice(d);
                 } catch (JsonProcessingException x) {
-                    log.error("MQTT DS - Failed to transform Chiprstack payload "+x.getMessage());
+                    log.error("MQTT DS - Failed to transform Chirpstack payload "+x.getMessage());
                 } catch (Exception x) {
-                    log.error("MQTT DS - Exception in processing chirpstack message "+x.getMessage());
+                    log.error("MQTT DS - Exception in processing Chirpstack message "+x.getMessage());
                     x.printStackTrace();
                 }
             } else {
