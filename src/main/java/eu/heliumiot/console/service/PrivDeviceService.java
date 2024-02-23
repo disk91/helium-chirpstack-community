@@ -148,18 +148,19 @@ public class PrivDeviceService {
                 id.setRouteSkfs(1);
 
                 // get the DeviceFrame
-                DeviceFrames df = privDeviceFramesService.getDevice(id.getDevEui());
+                DeviceFrames df = privDeviceFramesService.getDevice(id.getDevEui().toLowerCase());
                 id.setCoverageRisk(1);
-                id.setOnlyJoinReq(false);
+                id.setOnlyJoinReq(1);
                 if (df != null && !df.getRecentFrames().isEmpty()) {
                     id.setRouteEui(2);
-                    AtomicBoolean onlyJoin = new AtomicBoolean(true);
+                    AtomicBoolean haveUplink = new AtomicBoolean(false);
+                    AtomicBoolean haveJoin = new AtomicBoolean(false);
                     AtomicInteger badRadioCount = new AtomicInteger(0);
                     AtomicInteger distRadioCount = new AtomicInteger(0);
                     AtomicInteger badRadioTotal = new AtomicInteger(0);
                     df.getRecentFrames().parallelStream().forEach((f) -> {
                         if (f.getFrameType() == FrameEntry.FRAME_TYPE_UPLINK) {
-                            onlyJoin.set(false);
+                            haveUplink.set(true);
                             boolean bad = true;
                             boolean dist = true;
                             // analyse communications, if SNR is bad or RSSI really low, coverage can explain it
@@ -173,10 +174,13 @@ public class PrivDeviceService {
                             if (bad) badRadioCount.addAndGet(1);
                             if (dist) distRadioCount.addAndGet(1);
                             badRadioTotal.addAndGet(1);
+                        } else if ( f.getFrameType() == FrameEntry.FRAME_TYPE_JOIN) {
+                            haveJoin.set(true);
                         }
                     });
                     log.info("total: "+badRadioTotal.get()+" badSnr: "+badRadioCount.get()+" badRssi: "+distRadioCount.get());
-                    id.setOnlyJoinReq(onlyJoin.get());
+                    if ( haveJoin.get() && !haveUplink.get() ) id.setOnlyJoinReq(2);
+                    if ( haveUplink.get() ) id.setOnlyJoinReq(0);
                     id.setCoverageRisk(1); // default unknown
                     if (badRadioTotal.get() > 0 ) {
                         double badRssiRatio = distRadioCount.get() / (double) badRadioTotal.get();

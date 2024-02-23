@@ -103,10 +103,10 @@ public class AdvDeviceInacSubItf {
 
     @Schema(
         description = "is only Join Req",
-        example = "true",
+        example = "0(false)/1(unknown)/2(true)",
         requiredMode = Schema.RequiredMode.REQUIRED
     )
-    private boolean onlyJoinReq;
+    private int onlyJoinReq;
 
     @Schema(
         description = "is coverage risky",
@@ -209,11 +209,11 @@ public class AdvDeviceInacSubItf {
         this.neverSeen = neverSeen;
     }
 
-    public boolean isOnlyJoinReq() {
+    public int getOnlyJoinReq() {
         return onlyJoinReq;
     }
 
-    public void setOnlyJoinReq(boolean onlyJoinReq) {
+    public void setOnlyJoinReq(int onlyJoinReq) {
         this.onlyJoinReq = onlyJoinReq;
     }
 
