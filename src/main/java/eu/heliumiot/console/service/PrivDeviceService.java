@@ -164,22 +164,27 @@ public class PrivDeviceService {
                             boolean dist = true;
                             // analyse communications, if SNR is bad or RSSI really low, coverage can explain it
                             for (FrameHotspot fh : f.getHotspots()) {
-                                if ((f.getDr() < 2 && fh.getSnr() > -15.0)
+                                if (   (f.getDr() < 2 && fh.getSnr() > -15.0)
                                     || (f.getDr() >= 2 && fh.getSnr() > -7)
                                 ) bad = false;
                                 if (fh.getRssi() > -132) dist = false;
+                                if ( !bad && !dist ) break;
                             }
                             if (bad) badRadioCount.addAndGet(1);
                             if (dist) distRadioCount.addAndGet(1);
                             badRadioTotal.addAndGet(1);
                         }
                     });
+                    log.info("total: "+badRadioTotal.get()+" badSnr: "+badRadioCount.get()+" badRssi: "+distRadioCount.get());
                     id.setOnlyJoinReq(onlyJoin.get());
-                    double badRssiRatio = distRadioCount.get() / (double) badRadioTotal.get();
-                    double badSnrRatio = badRadioCount.get() / (double) badRadioTotal.get();
                     id.setCoverageRisk(1); // default unknown
-                    if (badRssiRatio > 0.75 || badSnrRatio > 0.75) id.setCoverageRisk(2);
-                    if (badRssiRatio < 0.25 && badSnrRatio < 0.25) id.setCoverageRisk(0);
+                    if (badRadioTotal.get() > 0 ) {
+                        double badRssiRatio = distRadioCount.get() / (double) badRadioTotal.get();
+                        double badSnrRatio = badRadioCount.get() / (double) badRadioTotal.get();
+                        log.info("Rssi Ratio: "+badRssiRatio+" Snr Ratio: "+badSnrRatio);
+                        if (badRssiRatio > 0.75 || badSnrRatio > 0.75) id.setCoverageRisk(2);
+                        if (badRssiRatio < 0.25 && badSnrRatio < 0.25) id.setCoverageRisk(0);
+                    }
                 }
 
                 // get potential skfs collisions
