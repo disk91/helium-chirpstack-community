@@ -529,6 +529,27 @@
     "menu_admin_shield": "Adm Renforcement",
     "shield_admin_title": "Administration du renforcement",
 
-
+    "inac_show_all": "Voir tous les inactifs",
+    "inac_main_title": "Objets inactifs",
+    "inac_missing_tenant_info": "Pour afficher les informations d'analyse des inactifs, vous devez prealablement selectionner un Tenant dans l'onglet Chirpstack",
+    "inac_loading_in_progress": "Chargement en cours",
+    "inac_list_title": "Liste des objets inactifs",
+    "inac_select_period": "Inactifs depuis: ",
+    "inac_select_period_txt": "Selectionner la période de recherche durant laquelle les objets n'ont pas été vus.",
+    "inac_apply_button": "Appliquer",
+    "inac_table_deveui": "EUI",
+    "inac_table_devname": "Nom",
+    "inac_table_appName": "Application",
+    "inac_table_created": "Date création",
+    "inac_table_seen": "Dernier message",
+    "inac_table_addr": "Addr",
+    "inac_table_dis": "Désactivé",
+    "inac_table_rteui": "Route Eui",
+    "inac_table_rtskfs": "Route SKF",
+    "inac_table_skcol": "Collision SKF",
+    "inac_table_never": "Jamais vu",
+    "inac_table_joinonly": "Join uniquement",
+    "inac_table_covrisk": "Risque couv.",
+  
     "end" : "fin"
 }

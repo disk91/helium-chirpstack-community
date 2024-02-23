@@ -14,8 +14,7 @@
   import AddTenant from '~/components/AddTenant.vue';
 
   export default Vue.extend({
-      name: "TestPage",
-      
+      name: "TenantInformation",
       auth: false,
       //middleware: 'auth', // not needed as it is globally setup
       components: { 
