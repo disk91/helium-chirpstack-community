@@ -43,19 +43,14 @@
 <script lang="ts">
     import Vue from 'vue';
     import { DataContext, FrameEntry } from 'vue/types/context'; 
+    import { TableField } from 'vue/types/standards';
 
     interface context {
         ctx: DataContext | null,
         frames: FrameEntry[],
         init: boolean,
         loading: boolean,
-        fields: {
-            key: string,
-            label: any,
-            sortable?: boolean,
-            stickyColumn?: boolean,
-            isRowHeader?: boolean,
-        }[],
+        fields: TableField[],
     }
 
     export default Vue.extend({
