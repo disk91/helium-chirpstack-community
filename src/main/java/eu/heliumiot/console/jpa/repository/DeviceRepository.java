@@ -46,7 +46,7 @@ public interface DeviceRepository extends CrudRepository<Device, byte[]> {
 
     public Slice<Device> findDeviceBy(Pageable pageable);
 
-    @Query(value= "SELECT DISTINCT count(device.*) FROM device " +
+    @Query(value= "SELECT count(DISTINCT device.*) FROM device " +
         "JOIN helium_devices ON (device.dev_eui = helium_devices.deviceuuid) " +
         "WHERE helium_devices.tenantuuid = ?1 AND " +
         "device.last_seen_at < to_timestamp(?2 / 1000.0)", nativeQuery = true)
