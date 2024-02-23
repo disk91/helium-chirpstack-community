@@ -136,6 +136,7 @@ public class PrivDeviceService {
                 String aName = heliumDeviceService.getApplicationNameFromId(id.getApplicationId());
                 id.setApplicationName(Objects.requireNonNullElse(aName, "Unknown"));
                 id.setDevEui(HexaConverters.byteToHexString(d.getDevEui()));
+                id.setDevName(d.getName());
                 if (d.getCreatedAt() != null) id.setCreationDate(d.getCreatedAt().getTime());
                 else id.setCreationDate(0);
                 if (d.getLastSeenAt() != null) id.setLastSeenDate(d.getLastSeenAt().getTime());

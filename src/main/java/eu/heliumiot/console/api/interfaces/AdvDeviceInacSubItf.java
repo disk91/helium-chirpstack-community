@@ -24,6 +24,13 @@ public class AdvDeviceInacSubItf {
     private String devEui;
 
     @Schema(
+        description = "Dev Name",
+        example = "my device",
+        requiredMode = Schema.RequiredMode.REQUIRED
+    )
+    private String devName;
+
+    @Schema(
         description = "Application Name",
         example = "myApplication",
         requiredMode = Schema.RequiredMode.REQUIRED
@@ -216,5 +223,13 @@ public class AdvDeviceInacSubItf {
 
     public void setCoverageRisk(int coverageRisk) {
         this.coverageRisk = coverageRisk;
+    }
+
+    public String getDevName() {
+        return devName;
+    }
+
+    public void setDevName(String devName) {
+        this.devName = devName;
     }
 }
