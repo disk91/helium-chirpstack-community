@@ -206,8 +206,6 @@
                     if (response.status == 200 ) {
                         this.dctx.data = response.data;   
                         this.isBusy = false;
-                        this.dctx.data.inactivCount=231;
-                        this.dctx.data.totalPage=2;
                     } else {
                         // 204 response case
                         this.dctx.data = undefined;
