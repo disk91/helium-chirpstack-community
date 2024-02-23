@@ -178,14 +178,14 @@ public class PrivDeviceService {
                             haveJoin.set(true);
                         }
                     });
-                    log.info("total: "+badRadioTotal.get()+" badSnr: "+badRadioCount.get()+" badRssi: "+distRadioCount.get());
+                    log.debug("total: "+badRadioTotal.get()+" badSnr: "+badRadioCount.get()+" badRssi: "+distRadioCount.get());
                     if ( haveJoin.get() && !haveUplink.get() ) id.setOnlyJoinReq(2);
                     if ( haveUplink.get() ) id.setOnlyJoinReq(0);
                     id.setCoverageRisk(1); // default unknown
                     if (badRadioTotal.get() > 0 ) {
                         double badRssiRatio = distRadioCount.get() / (double) badRadioTotal.get();
                         double badSnrRatio = badRadioCount.get() / (double) badRadioTotal.get();
-                        log.info("Rssi Ratio: "+badRssiRatio+" Snr Ratio: "+badSnrRatio);
+                        log.debug("Rssi Ratio: "+badRssiRatio+" Snr Ratio: "+badSnrRatio);
                         if (badRssiRatio > 0.75 || badSnrRatio > 0.75) id.setCoverageRisk(2);
                         if (badRssiRatio < 0.25 && badSnrRatio < 0.25) id.setCoverageRisk(0);
                     }
