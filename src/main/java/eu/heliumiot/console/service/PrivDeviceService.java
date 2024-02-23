@@ -210,6 +210,7 @@ public class PrivDeviceService {
                         else id.setRouteEui(0);
                     }
                 }
+                ids.add(id);
             }
         }
         r.setInactives(ids);
