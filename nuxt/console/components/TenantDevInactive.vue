@@ -3,7 +3,9 @@
         <b-card 
             :header="$t('tenantDevInactive_card_title')"
             class="TenantConsumption mt-3"
+            no-body 
         >
+        <b-card-body>
            <b-row v-if="loadStatSuccess">
             <b-col cols="12">
               <apexchart type="bar" height="300" :options="tenantConsumptionOption" :series="tenantConsumptionData"></apexchart>
@@ -11,7 +13,7 @@
            </b-row>
            <b-row class="ml-0" v-if="! loadStatSuccess">
              <b-col cols="12">
-                <b-card style="border-radius: 0.6rem; height: 500px;" class = "text-center bg-light" body-class="d-flex flex-column">
+                <b-card style="border-radius: 0.6rem; height: 500px;" class = "text-center bg-light" body-class="d-flex flex-column" >
                     <div style="position: absolute; top: 47%; left: 50%; transform: translate(-50%, -50%);">
                         <b-card-text class="small mb-2 text-danger">
                             <b-icon icon="exclamation-circle-fill" variant="danger"></b-icon>
@@ -21,6 +23,17 @@
                 </b-card>
               </b-col>
             </b-row>
+        </b-card-body>
+        <b-card-footer v-if="!$config.community">
+            <b-button 
+                variant="outline-secondary"
+                size="sm"
+                @click="goToDetail()"
+                block
+            > 
+                {{ $t('inac_show_all') }}
+            </b-button>
+        </b-card-footer>
         </b-card>
     </b-overlay>
 </template>
@@ -70,6 +83,8 @@ export default Vue.extend({
     },
     async fetch() {
         let tenantId = this.$store.state.currentTenant;
+        tenantId = '26609461-5db6-4e16-b501-ea6f9844e8a8';
+
         if ( tenantId == undefined || tenantId == null || tenantId.length < 5 ) {
             this.errorMessage = 'error_find_basicstat';
             return;
@@ -96,6 +111,9 @@ export default Vue.extend({
             });
     },
     methods : {
+        goToDetail() {
+            this.$router.push('/front/advInactiv');
+        }
     },
     mounted() {
     },

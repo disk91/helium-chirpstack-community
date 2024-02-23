@@ -528,5 +528,28 @@
   "menu_admin_shield": "Adm Shielding",
   "shield_admin_title": "Shielding Administration",
 
+  "inac_show_all": "See all inactive",
+  "inac_main_title": "Inactiv devices",
+  "inac_missing_tenant_info": "Before processing inactivity analysis, you need to select a tenant from the Chirpstack tab.",
+  "inac_loading_in_progress": "Loading in progress",
+  "inac_list_title": "Inactiv devices list",
+  "inac_select_period": "Inactity period: ",
+  "inac_select_period_txt": "Select the period duration where devices had no communication activity",
+  "inac_apply_button": "Apply",
+  "inac_table_deveui": "EUI",
+  "inac_table_devname": "Name",
+  "inac_table_appName": "Application",
+  "inac_table_created": "Creation Date",
+  "inac_table_seen": "Last Seen",
+  "inac_table_addr": "Addr",
+  "inac_table_dis": "Disabled",
+  "inac_table_rteui": "In Route EUI",
+  "inac_table_rtskfs": "In Route SKF",
+  "inac_table_skcol": "SKF Collision",
+  "inac_table_never": "Never Seen",
+  "inac_table_joinonly": "Only Seen Join",
+  "inac_table_covrisk": "Coverage Risk",
+
+
   "end" : "end"
 }

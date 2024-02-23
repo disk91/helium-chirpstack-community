@@ -70,6 +70,7 @@ export default {
     ctxHotspotAroundGet:(process.env.API_HOST || '')+'/console/1.0/adv/hotspots-around',
     ctxHotspotGet:(process.env.API_HOST || '')+'/console/1.0/adv/hotspot',
     ctxDeviceSearchGet:(process.env.API_HOST || '')+'/console/1.0/adv/devices/search',
+    inacDeviceGet:(process.env.API_HOST || '')+'/console/1.0/adv/inactive-devices',
     termAndUse:process.env.CONSOLE_TERMS || '/',
     maxDevices:process.env.MAX_DEVICES || 500,
     disablePurchase:process.env.DIS_DC_PURCHASE || 'false',
