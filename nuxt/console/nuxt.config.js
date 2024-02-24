@@ -78,7 +78,7 @@ export default {
     disableStatTenant:process.env.DIS_STAT_TENANT || 'false',
     community:process.env.DIS_FULL || 'true',
     mapApiKey:process.env.MAP_KEY || '',
-    frontVersion:'8.0.0'
+    frontVersion:'8.1.0'
   },
 
   // env variables loaded accessible on the server side
