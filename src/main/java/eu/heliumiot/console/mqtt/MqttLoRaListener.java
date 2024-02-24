@@ -455,12 +455,12 @@ public class MqttLoRaListener implements MqttCallback {
                 if (!isJoin) {
                     // Packet is
                     // 40 XX XX XX XX YY ZZ ZZ K..K FF P..P MM MM MM MM
-                    // MHDR 1B 0x40 here => type = 2
+                    // MHDR 1B 0x40 here => type = 2 (up unconf) 4 = (un conf) 6 = RFU 7 = Prop 0 = join Req
                     // where XX are DevAddr reversed byte order
                     // YY FCtrl (last 4b = FOpts Sz)
                     // ZZ FCnt
                     // K..K FOpts 0..120b 0..15B
-                    // FF FPort 1B
+                    // FF FPort 1B (only if Payload > 1B) else it's not here
                     // P..P Payload
                     // MM MIC : 4B
 
@@ -482,11 +482,16 @@ public class MqttLoRaListener implements MqttCallback {
                     if ( pLen >= 13 ) {
                         // 13B minimum payload structure - FOpts Size
                         dedup.dataSz = (pLen - 13) - ( Stuff.getIntFromByte(payload[5]) & 0x0F );
+                        if ( dedup.dataSz == -1 ) dedup.dataSz = 0; // this is an empty payload, FPort absent
                         if ( dedup.dataSz < 0 ) {
                             log.error("LoRa Payload Incorrect size computation "+spayload);
+                            dedup.dataSz = 0;
                         }
                     } else {
-                        log.info("Detect a short LoRa frame under minimum "+spayload);
+                        // when payload len is 0, FPort is not transmitted, frame is 12B
+                        if ( pLen < 12 ) {
+                            log.info("Detect a short LoRa frame under minimum "+spayload);
+                        }
                         dedup.dataSz = 0;
                     }
                     synchronized (lockRecentPacketDedup) {
