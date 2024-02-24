@@ -475,7 +475,7 @@ public class MqttLoRaListener implements MqttCallback {
                     dedup.fCnt = Stuff.getIntFromByte(payload[7]) * 256 + Stuff.getIntFromByte(payload[6]);
                     // dataSz is not yet known, get an estimate to monitor the unassociated packets
                     // Sz will be corrected on chirpstack event reception
-                    if ( payload.length >= 13) {
+                    if ( spayload.length() >= 26) {
                         // 13B minimum payload structure - FOpts Size
                         dedup.dataSz = (payload.length - 13) - ( Stuff.getIntFromByte(payload[5]) & 0x0F );
                         if ( dedup.dataSz < 0 ) {
