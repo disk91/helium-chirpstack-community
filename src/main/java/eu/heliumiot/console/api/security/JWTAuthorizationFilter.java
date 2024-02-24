@@ -150,6 +150,8 @@ public class JWTAuthorizationFilter extends GenericFilterBean {
         } catch (IllegalArgumentException x) {
             // corresponds to a non existing user inside the JWT
             // so can find a signature to be verified
+        } catch (UnsupportedJwtException x) {
+            // sounds like signature problem
         }
         chain.doFilter(request, response);
 
