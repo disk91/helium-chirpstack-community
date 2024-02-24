@@ -99,6 +99,7 @@ public class JWTAuthorizationFilter extends GenericFilterBean {
                                 log.error("### Bearer is signed with invalid algo !!! ");
                                 return null;
                             }
+                            if (user == null) return null;
                             UserCacheService.UserCacheElement u = userCacheService.getUserById(user);
                             if ( u == null ) return null;
                             return userService.generateKeyForUser(u.heliumUser);
