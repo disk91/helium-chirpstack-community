@@ -141,7 +141,9 @@ public class PrivDeviceService {
                 else id.setCreationDate(0);
                 if (d.getLastSeenAt() != null) id.setLastSeenDate(d.getLastSeenAt().getTime());
                 else id.setLastSeenDate(0);
-                id.setDevAddr(HexaConverters.byteToHexString(d.getDevAddr()));
+                if ( d.getDevAddr() != null ) {
+                    id.setDevAddr(HexaConverters.byteToHexString(d.getDevAddr()));
+                } else id.setDevAddr("undefined");
                 id.setDisabled(d.isDisabled());
                 id.setNeverSeen(d.getLastSeenAt() == null || d.getLastSeenAt().getTime() == 0);
                 id.setRouteEui(1);
