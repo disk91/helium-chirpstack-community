@@ -86,8 +86,9 @@ public class JWTAuthorizationFilter extends GenericFilterBean {
         }
 
         // Verify Bearer and return user or error
+        String token = "not init";
         try {
-            String token = authHeader.replace("Bearer ","");
+            token = authHeader.replace("Bearer ","");
             Claims claims = Jwts.parser()
                 .keyLocator(new Locator<Key>() {
                     @Override
@@ -152,6 +153,7 @@ public class JWTAuthorizationFilter extends GenericFilterBean {
             // so can find a signature to be verified
         } catch (UnsupportedJwtException x) {
             // sounds like signature problem
+            log.warn("Invalid token: "+token);
         }
         chain.doFilter(request, response);
 
