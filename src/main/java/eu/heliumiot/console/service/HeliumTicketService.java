@@ -219,7 +219,14 @@ public class HeliumTicketService {
         UserCacheService.UserCacheElement user = userCacheService.getUserById(userUUID);
         if (user == null) throw new ITRightException();
 
-        HeliumTicket t = heliumTicketRepository.findOneHeliumTicketById(UUID.fromString(ticketUUID));
+        UUID u = null;
+        try {
+             u = UUID.fromString(ticketUUID);
+        } catch ( Exception e ) {
+            throw new ITRightException();
+        }
+
+        HeliumTicket t = heliumTicketRepository.findOneHeliumTicketById(u);
         if (t == null) throw new ITRightException("not_found");
 
         if (user.user.isAdmin() || t.getUserUUID().toString().compareToIgnoreCase(userUUID) == 0) {
