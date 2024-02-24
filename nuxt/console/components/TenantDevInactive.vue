@@ -83,7 +83,6 @@ export default Vue.extend({
     },
     async fetch() {
         let tenantId = this.$store.state.currentTenant;
-        tenantId = '26609461-5db6-4e16-b501-ea6f9844e8a8';
 
         if ( tenantId == undefined || tenantId == null || tenantId.length < 5 ) {
             this.errorMessage = 'error_find_basicstat';
