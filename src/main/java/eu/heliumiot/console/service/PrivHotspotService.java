@@ -92,8 +92,8 @@ public class PrivHotspotService {
         };
 
         factory = new SimpleClientHttpRequestFactory();
-        factory.setConnectTimeout(800);
-        factory.setReadTimeout(2500);
+        factory.setConnectTimeout(1000);
+        factory.setReadTimeout(3500);
 
         Gauge.builder("cons.hotspot.cache_total_time", this.hotspotCache.getTotalCacheTime())
             .description("total time hotspot cache execution")
