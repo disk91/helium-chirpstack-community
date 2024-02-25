@@ -355,7 +355,8 @@ public class PrivHotspotService {
             throw new ITNotFoundException();
         } catch (Exception e) {
             //e.printStackTrace();
-            if ( ! e.getMessage().contains("Read timed out") ) {
+            // remove log in most frequent case (API down or API timed out)
+            if ( ! e.getMessage().contains("Read timed out")  && ! e.getMessage().contains("502") ) {
                 log.warn("Exception " + e.getMessage());
             }
             throw new ITNotFoundException();
@@ -413,7 +414,10 @@ public class PrivHotspotService {
             throw new ITNotFoundException();
         } catch (Exception e) {
             //e.printStackTrace();
-            log.warn("Exception "+e.getMessage());
+            // remove log in most frequent case (API down or API timed out)
+            if ( ! e.getMessage().contains("Read timed out")  && ! e.getMessage().contains("502") ) {
+                log.warn("Exception " + e.getMessage());
+            }
             throw new ITParseException();
         }
     }
