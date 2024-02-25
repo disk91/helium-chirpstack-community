@@ -251,7 +251,7 @@ npm install -g n
 n lts
 hash -r
 
-# Install docker environement
+# Install docker environment
 DOCKER=0
 if command -v docker >/dev/null 2>&1; then
   # we have docker, do we need to install ?
