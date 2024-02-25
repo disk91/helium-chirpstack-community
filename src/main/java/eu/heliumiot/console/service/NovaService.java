@@ -381,21 +381,64 @@ public class NovaService {
     protected HeliumDeviceRepository heliumDeviceRepository;
 
 
-    // Cache the skf by route & eui locally
-    protected class SkfRoute {
-        public String routeId;
-        public HashMap<String,skf_v1> skfsByEui;
-        public long refreshTime;        // Last full refresh
-    }
+    private record DeviceRecord(int devaddr, String nkey, String eui){};
+    private static final long collisionSkfsCacheTimeout = 20*Now.ONE_MINUTE;
+    private static final long collisionSkfsCacheCleanTimeout = 10*Now.ONE_MINUTE;
+    private static final int collisionSkfsCacheMaxRoute = 50;
+    private static final int collisionSkfsMaxDevicePerRoute = 20_000;
+    private final TinyCache<String,ArrayList<DeviceRecord>> collisionSkfsCache = new TinyCache<>(
+        collisionSkfsCacheMaxRoute,
+        collisionSkfsCacheTimeout,
+        collisionSkfsCacheCleanTimeout
+    );
 
-    // cache skf by route
-    private HashMap<String,SkfRoute> skfCache = new HashMap<>();
 
     // search network collision in skfs cache for a given route
     // -1 if device non found
-    public int countSkfsColisions(String routeId, String eui) {
-        SkfRoute r = skfCache.get(routeId);
-        if ( r == null ) return -1;
+    public int countSkfsColisions(String tenantId, String eui) {
+
+        ArrayList<DeviceRecord> l = collisionSkfsCache.get(tenantId);
+        if ( l == null ) {
+            l = new ArrayList<>();
+            Slice<HeliumDevice> devices = heliumDeviceRepository.findHeliumDeviceByTenantUUID(tenantId, PageRequest.of(0, 500));
+            boolean quit = false;
+            int inRouteDev = 0;
+            do {
+                for ( HeliumDevice hd : devices.getContent() ) {
+                    switch (hd.getState()) {
+                        case INSERTED:
+                        case ACTIVE:
+                        case INACTIVE:
+                            DeviceSession s = redisDeviceRepository.getDeviceDetails(hd.getDeviceEui());
+                            if ( s == null ) {
+                                // no session yet for that device (just inserted)
+                                log.debug("refreshOneRouteSkf - session not ready for "+hd.getDeviceEui());
+                                continue;
+                            }
+                            String ntwSEncKey = HexaConverters.byteToHexString(s.getNwkSEncKey().toByteArray());
+                            //log.debug("### Ntwks Key "+ntwSEncKey);
+                            String devaddr = HexaConverters.byteToHexString(s.getDevAddr().toByteArray());
+                            int iDevAddr = Stuff.hexStrToInt(devaddr);
+                            DeviceRecord d = new DeviceRecord(iDevAddr,ntwSEncKey,eui);
+                            l.add(d);
+                            inRouteDev++;
+                            break;
+                        default:
+                        case DEACTIVATED:
+                        case OUTOFDCS:
+                        case DELETED:
+                        case DISABLED:
+                            break;
+                    }
+                }
+                if ( devices.hasNext() && inRouteDev < collisionSkfsMaxDevicePerRoute ) {
+                    devices = heliumDeviceRepository.findHeliumDeviceByTenantUUID(tenantId, devices.nextPageable());
+                } else {
+                    quit = true;
+                }
+            } while ( devices != null && !quit );
+            collisionSkfsCache.put(tenantId,l);
+        }
 
         DeviceSession s = redisDeviceRepository.getDeviceDetails(eui);
         if ( s == null ) return -1;
@@ -405,8 +448,8 @@ public class NovaService {
         int iDevAddr = Stuff.hexStrToInt(devaddr);
 
         AtomicInteger c = new AtomicInteger(0);
-        r.skfsByEui.values().parallelStream().forEach( (sk) -> {
-            if ( sk.getDevaddr() == iDevAddr && sk.getSessionKey().compareToIgnoreCase(ntwSEncKey) == 0 ) c.addAndGet(1);
+        l.parallelStream().forEach( (sk) -> {
+            if ( sk.devaddr == iDevAddr && sk.nkey.compareToIgnoreCase(ntwSEncKey) == 0 ) c.addAndGet(1);
         });
 
         return c.get();
@@ -452,6 +495,17 @@ public class NovaService {
     public List<eui_pair_v1> getEuiInARoute(String routeId) {
         return grpcGetEuiFromRoute(routeId);
     }
+
+
+    // Cache the skf by route & eui locally
+    protected static class SkfRoute {
+        public String routeId;
+        public HashMap<String,skf_v1> skfsByEui;
+        public long refreshTime;        // Last full refresh
+    }
+
+    // cache skf by route
+    private HashMap<String,SkfRoute> skfCache = new HashMap<>();
 
 
     /**
