@@ -49,7 +49,7 @@
                         <b-table
                             :items="dctx.data.inactives"
                             :per-page="dctx.data.perPage"
-                            :current-page="currentPage"
+                            current-page=0
                             :fields="fields" 
                             style="font-size:8px;"
                             small
@@ -122,7 +122,8 @@
     isSet: boolean,
     dctx: InactivContext,
     pastHour: number,
-    currentPage: number,
+    currentPage: number,            // what selector have
+    pageToLoad: number,             // what to request to API
     options: SelectOption[],
     fields: TableField[],
   };
@@ -142,7 +143,8 @@
                 data: undefined,
             } as InactivContext,
             pastHour: 168,
-            currentPage: 0,
+            currentPage: 1,
+            pageToLoad: 0,
             options:[
                 { value: 1, text: "last hour" },
                 { value: 4, text: "last 4 hours" },
@@ -175,7 +177,8 @@
       },
       async fetch() {
         let tenantId = this.$store.state.currentTenant;
-        this.currentPage = 0;
+        this.currentPage = 1;
+        this.pageToLoad = 0;
         if ( tenantId != undefined && tenantId != null && tenantId.length > 5 ) {
             this.isSet = true;
             this.dctx.tenantID = tenantId;
@@ -186,12 +189,13 @@
       },
       methods: {
         onPageChange(page : number) {
-            this.currentPage = page - 1;
+            this.pageToLoad = page - 1;
             if ( this.dctx.data != undefined ) this.dctx.data.inactives = [];
             this.loadData();
         },
         updatePeriod() {
-            this.currentPage = 0;
+            this.currentPage = 1;
+            this.pageToLoad = 0;
             this.dctx.data = undefined;
             this.loadData();
         },
@@ -214,11 +218,15 @@
                     } else {
                         // 204 response case
                         this.dctx.data = undefined;
+                        this.currentPage = 1;
+                        this.pageToLoad = 0;
                         this.isBusy = false;
                         this.errorMessage = 'inac_error_nodata';
                     }
                 }).catch((err) =>{
                     this.dctx.data = undefined;
+                    this.currentPage = 1;
+                    this.pageToLoad = 0;
                     this.isBusy = false;
                     this.errorMessage = 'inac_error_load_data';
                 });
