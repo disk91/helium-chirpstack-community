@@ -48,8 +48,9 @@ public interface DeviceRepository extends CrudRepository<Device, byte[]> {
 
     @Query(value= "SELECT count(DISTINCT device.*) FROM device " +
         "JOIN helium_devices ON (device.dev_eui = helium_devices.deviceuuid) " +
-        "WHERE helium_devices.tenantuuid = ?1 AND " +
-        "device.last_seen_at < to_timestamp(?2 / 1000.0)", nativeQuery = true)
+        "WHERE helium_devices.tenantuuid = ?1 " +
+        "AND helium_devices.state <> 5 " +
+        "AND ( device.last_seen_at IS NULL OR device.last_seen_at < to_timestamp(?2 / 1000.0))", nativeQuery = true)
     public long countDeviceByTenantUUIDAndLastSeenLowerThan(
         String tenantId,
         long lastRef
@@ -57,8 +58,9 @@ public interface DeviceRepository extends CrudRepository<Device, byte[]> {
 
     @Query(value= "SELECT DISTINCT device.* FROM device " +
         "JOIN helium_devices ON (device.dev_eui = helium_devices.deviceuuid) " +
-        "WHERE helium_devices.tenantuuid = ?1 AND " +
-        "device.last_seen_at < to_timestamp(?2 / 1000.0) ORDER BY last_seen_at DESC " +
+        "WHERE helium_devices.tenantuuid = ?1 " +
+        "AND helium_devices.state <> 5 " +
+        "AND ( device.last_seen_at IS NULL OR device.last_seen_at < to_timestamp(?2 / 1000.0)) ORDER BY last_seen_at DESC " +
         "LIMIT ?4 OFFSET ?3", nativeQuery = true)
     public List<Device> findDeviceByTenantUUIDAndLastSeenLowerThan(
         String tenantId,
