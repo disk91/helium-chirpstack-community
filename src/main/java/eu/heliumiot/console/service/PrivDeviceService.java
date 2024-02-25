@@ -116,7 +116,7 @@ public class PrivDeviceService {
         List<Device> ds = deviceRepository.findDeviceByTenantUUIDAndLastSeenLowerThan(
             tenantId,
             since,
-            page,
+            ENTRIES_PER_PAGE*page,
             ENTRIES_PER_PAGE
         );
         AdvDeviceInacGetItf r = new AdvDeviceInacGetItf();
