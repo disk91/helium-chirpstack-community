@@ -412,7 +412,19 @@ public class NovaService {
         return c.get();
     }
 
-    public int existSkfs(String routeId, String eui) {
+    // Check the Skfs and cache the values for 15 minutes to optimize access performance
+    // and avoid spamming Nova
+
+    private static final long routeSkfsCacheTimeout = 20*Now.ONE_MINUTE;
+    private static final long routeSkfsCacheCleanTimeout = 10*Now.ONE_MINUTE;
+    private static final int routeSkfsCacheMaxRoute = 50;
+    private final TinyCache<String,List<skf_v1>> routeSkfsCache = new TinyCache<>(
+        routeSkfsCacheMaxRoute,
+        routeSkfsCacheTimeout,
+        routeSkfsCacheCleanTimeout
+    );
+
+    synchronized public int existSkfs(String routeId, String eui) {
         DeviceSession s = redisDeviceRepository.getDeviceDetails(eui);
         if ( s == null ) return -1;
 
@@ -420,11 +432,16 @@ public class NovaService {
         String devaddr = HexaConverters.byteToHexString(s.getDevAddr().toByteArray());
         int iDevAddr = Stuff.hexStrToInt(devaddr);
 
-        List<skf_v1> sks = this.grpcListSessionsByDevaddr(iDevAddr, routeId);
-        if ( sks != null ) {
+        List<skf_v1> cskfs = this.routeSkfsCache.get(routeId);
+        if ( cskfs == null ) {
+            cskfs = this.grpcListSessionsByDevaddr(0, routeId);
+            routeSkfsCache.put(routeId,cskfs);
+        }
+
+        if ( cskfs != null ) {
             AtomicInteger c = new AtomicInteger(0);
-            sks.parallelStream().forEach( (sk) -> {
-                if ( sk.getSessionKey().compareToIgnoreCase(ntwSEncKey) == 0 ) c.addAndGet(1);
+            cskfs.parallelStream().forEach( (sk) -> {
+                if ( sk.getDevaddr() == iDevAddr && sk.getSessionKey().compareToIgnoreCase(ntwSEncKey) == 0 ) c.addAndGet(1);
             });
             return c.get();
         }
