@@ -190,6 +190,7 @@
             this.loadData();
         },
         updatePeriod() {
+            this.currentPage = 0;
             this.loadData();
         },
         loadData() {
