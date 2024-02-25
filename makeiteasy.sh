@@ -246,6 +246,8 @@ for package in openjdk-21-jdk make build-essential libssl-dev pkg-config protobu
 done
 
 # Update node.js
+echo "Installing recent version of node.js"
+npm install -g n
 n lts
 hash -r
 
