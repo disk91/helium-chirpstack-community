@@ -197,6 +197,7 @@
         },
         loadData() {
             let config = {
+                timeout: 60000,
                 headers: {
                 'Content-Type': 'application/json',
                 'Authorization': 'Bearer '+this.$store.state.consoleBearer,  
