@@ -42,7 +42,8 @@ import java.util.List;
 
 @Document(collection = "helium_frames")
 @CompoundIndexes({
-    @CompoundIndex(name = "devEui_Idx", def = "{'devEui' : 'hashed' }")
+    @CompoundIndex(name = "devEui_Idx", def = "{'devEui' : 'hashed' }"),
+    @CompoundIndex(name = "f_lseen_Idx", def = "{'lastSeen' : 1 }"),
 })
 public class DeviceFrames implements ClonnableObject<DeviceFrames>{
 

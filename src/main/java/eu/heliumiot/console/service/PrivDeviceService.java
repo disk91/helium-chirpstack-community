@@ -91,8 +91,11 @@ public class PrivDeviceService {
     @Autowired
     protected NovaService novaService;
 
+    protected static final int ENTRIES_PER_PAGE = 50;
+
     public AdvDeviceInacGetItf getInactivDeviceByUser(String userId, String tenantId, int page, int hoursBefore)
     throws ITRightException, ITNotFoundException {
+        long s = Now.NowUtcMs(),du=0;
         UserCacheService.UserCacheElement user = userCacheService.getUserById(userId);
         if (user == null) throw new ITRightException();
 
@@ -104,24 +107,27 @@ public class PrivDeviceService {
 
         // inactivity since
         long since = Now.NowUtcMs() - ( hoursBefore * Now.ONE_HOUR );
-
         // get a page of inactive
+        du = Now.NowUtcMs() - s; log.info("start - to check duration: "+du+" ms");
         long c = deviceRepository.countDeviceByTenantUUIDAndLastSeenLowerThan(tenantId,since);
-        if ( c < (page * 200) ) throw new ITNotFoundException();
+        if ( c < ((long) page * ENTRIES_PER_PAGE) ) throw new ITNotFoundException();
 
+        du = (Now.NowUtcMs() - s); log.info("start - to count duration: "+du+" ms");
         List<Device> ds = deviceRepository.findDeviceByTenantUUIDAndLastSeenLowerThan(
             tenantId,
             since,
             page,
-            200
+            ENTRIES_PER_PAGE
         );
         AdvDeviceInacGetItf r = new AdvDeviceInacGetItf();
         r.setInactivCount(c);
         r.setTenantUUID(tenantId);
         r.setTenantName(t.getName());
         r.setCurrentPage(page);
-        r.setTotalPage(c / 200);
+        r.setTotalPage(c / ENTRIES_PER_PAGE);
+        r.setPerPage(ENTRIES_PER_PAGE);
         ArrayList<AdvDeviceInacSubItf> ids = new ArrayList<>();
+        du = (Now.NowUtcMs() - s); log.info("start - to list duration: "+du+" ms");
 
         if ( ! ds.isEmpty() ) {
             HeliumTenantSetup hts = heliumTenantSetupService.getHeliumTenantSetup(tenantId, false);
@@ -129,8 +135,14 @@ public class PrivDeviceService {
             if ( hts != null && user.user.isAdmin() ) {
                 euis = novaService.getEuiInARoute(hts.getRouteId());
             }
-
+            du = (Now.NowUtcMs() - s); log.info("start - to Nova route: "+du+" ms");
+            long allDev = 0;
+            long allRt = 0;
+            long allFr = 0; long cFr = 0;
+            long allFrR = 0;
             for (Device d : ds) {
+                long oneDevS = Now.NowUtcMs();
+
                 AdvDeviceInacSubItf id = new AdvDeviceInacSubItf();
                 id.setApplicationId(d.getApplicationId().toString());
                 String aName = heliumDeviceService.getApplicationNameFromId(id.getApplicationId());
@@ -150,7 +162,9 @@ public class PrivDeviceService {
                 id.setRouteSkfs(1);
 
                 // get the DeviceFrame
+                long oneFrS = Now.NowUtcMs();
                 DeviceFrames df = privDeviceFramesService.getDevice(id.getDevEui().toLowerCase());
+                allFrR += (Now.NowUtcMs() - oneFrS);
                 id.setCoverageRisk(1);
                 id.setOnlyJoinReq(1);
                 if (df != null && !df.getRecentFrames().isEmpty()) {
@@ -192,6 +206,8 @@ public class PrivDeviceService {
                         if (badRssiRatio < 0.25 && badSnrRatio < 0.25) id.setCoverageRisk(0);
                     }
                 }
+                allFr += ( Now.NowUtcMs() - oneFrS );
+                cFr++;
 
                 // get potential skfs collisions
                 if (hts != null) {
@@ -203,6 +219,7 @@ public class PrivDeviceService {
                     id.setSkfsCollision(1);
                 }
 
+                long oneRt = Now.NowUtcMs();
                 // admin deep check
                 if (user.user.isAdmin() && hts != null) {
                     // verify route & skfs
@@ -222,9 +239,17 @@ public class PrivDeviceService {
                         else id.setRouteEui(0);
                     }
                 }
+                allRt += (Now.NowUtcMs()-oneRt);
                 ids.add(id);
+
+                allDev += Now.NowUtcMs() - oneDevS;
             }
+            log.info("avg frame query: "+(allFrR/cFr)+" ms "+allFrR+" / "+cFr);
+            log.info("avg frame process: "+(allFr/cFr)+" ms "+allFr+" / "+cFr);
+            log.info("avg skfs check: "+(allRt/ds.size())+" ms "+allRt+" / "+ds.size());
+            log.info("avg dev process: "+(allDev/ds.size())+" ms "+allDev+" / "+ds.size());
         }
+        du = (Now.NowUtcMs() - s); log.info("start - to end "+du+" ms");
         r.setInactives(ids);
         return r;
     }

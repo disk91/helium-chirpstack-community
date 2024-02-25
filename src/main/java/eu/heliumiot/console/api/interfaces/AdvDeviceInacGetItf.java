@@ -54,6 +54,13 @@ public class AdvDeviceInacGetItf {
     private long totalPage;
 
     @Schema(
+        description = "max entries per page",
+        example = "50",
+        requiredMode = Schema.RequiredMode.REQUIRED
+    )
+    private long perPage;
+
+    @Schema(
         description = "List of inactiv devices",
         example = "",
         requiredMode = Schema.RequiredMode.REQUIRED
@@ -112,5 +119,13 @@ public class AdvDeviceInacGetItf {
 
     public void setTotalPage(long totalPage) {
         this.totalPage = totalPage;
+    }
+
+    public long getPerPage() {
+        return perPage;
+    }
+
+    public void setPerPage(long perPage) {
+        this.perPage = perPage;
     }
 }

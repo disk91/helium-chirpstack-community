@@ -41,14 +41,14 @@
                         <b-pagination
                             v-model="currentPage"
                             :total-rows="dctx.data.inactivCount"
-                            :per-page="200"
+                            :per-page="dctx.data.perPage"
                             aria-controls="my-table"
                             @change="onPageChange"
                         >
                         </b-pagination>
                         <b-table
                             :items="dctx.data.inactives"
-                            :per-page="200"
+                            :per-page="dctx.data.perPage"
                             :current-page="dctx.data.currentPage"
                             :fields="fields" 
                             style="font-size:8px;"
@@ -175,6 +175,7 @@
       },
       async fetch() {
         let tenantId = this.$store.state.currentTenant;
+        this.currentPage = 0;
         if ( tenantId != undefined && tenantId != null && tenantId.length > 5 ) {
             this.isSet = true;
             this.dctx.tenantID = tenantId;

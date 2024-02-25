@@ -35,7 +35,8 @@ import java.util.List;
 
 @Document(collection = "helium_hotspots")
 @CompoundIndexes({
-    @CompoundIndex(name = "hotspot_Idx", def = "{'hotspotId' : 'hashed' }")
+    @CompoundIndex(name = "hotspot_Idx", def = "{'hotspotId' : 'hashed' }"),
+    @CompoundIndex(name = "h_lseen_Idx", def = "{'lastSeen' : 1 }"),
 })
 public class Hotspots implements ClonnableObject<Hotspots> {
 
