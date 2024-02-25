@@ -263,8 +263,8 @@ public class PrivHotspotService {
                         }
                     } else return;
                 }
+                long now = Now.NowUtcMs();
                 try {
-                    long now = Now.NowUtcMs();
                     HotspotState hd = getHostpotState(h.getHotspotId());
                     h.setBrand(hd.getBrand());
                     h.setLastWitnessMs(hd.getLastWitness());
@@ -284,6 +284,8 @@ public class PrivHotspotService {
                     this.metrics_resptm_total += (Now.NowUtcMs() - now);
                 } catch (ITNotFoundException x) {
                     this.metrics_call_failed++;
+                    this.metrics_call_total++;
+                    this.metrics_resptm_total += (Now.NowUtcMs() - now);
                     int failure = h.getFailure();
                     h.setFailure(failure + 1);
                     // does not retry too fast
@@ -353,7 +355,9 @@ public class PrivHotspotService {
             throw new ITNotFoundException();
         } catch (Exception e) {
             //e.printStackTrace();
-            log.warn("Exception "+e.getMessage());
+            if ( ! e.getMessage().contains("Read timed out") ) {
+                log.warn("Exception " + e.getMessage());
+            }
             throw new ITNotFoundException();
         }
     }
