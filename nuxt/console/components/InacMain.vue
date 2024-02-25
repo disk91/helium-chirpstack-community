@@ -49,7 +49,7 @@
                         <b-table
                             :items="dctx.data.inactives"
                             :per-page="dctx.data.perPage"
-                            :current-page="dctx.data.currentPage"
+                            :current-page="currentPage"
                             :fields="fields" 
                             style="font-size:8px;"
                             small
