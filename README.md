@@ -139,7 +139,7 @@ SUCH HOLDER OR OTHER PARTY HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES.
 ~ git checkout v4.6.0
 ```
 
-````
+```
 ./protoc/bin/protoc -I ./chirpstack/api/proto -I ./googleapis/ --java_out ./out ./chirpstack/api/proto/common/common.proto
 ./protoc/bin/protoc -I ./chirpstack/api/proto -I ./googleapis/ --java_out ./out ./chirpstack/api/proto/api/user.proto 
 ./protoc/bin/protoc -I ./chirpstack/api/proto -I ./googleapis/ --java_out ./out ./chirpstack/api/proto/api/device.proto
@@ -150,10 +150,15 @@ SUCH HOLDER OR OTHER PARTY HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES.
 ./protoc/bin/protoc -I ./chirpstack/api/proto -I ./googleapis/ --java_out ./out ./chirpstack/api/proto/stream/api_request.proto
 ./protoc/bin/protoc -I ./chirpstack/api/proto -I ./googleapis/ --java_out ./out ./chirpstack/api/proto/stream/frame.proto
 ./protoc/bin/protoc -I ./chirpstack/api/proto -I ./googleapis/ --java_out ./out ./chirpstack/api/proto/gw/gw.proto
-````
+```
 
 Install OpenJDK21
 ```
 apt-get install openjdk-21-jdk
 update-java-alternatives --set /usr/lib/jvm/java-1.21.0-openjdk-amd64
+```
+
+Update Gradle
+```
+./gradlew wrapper --gradle-version 8.5
 ```
