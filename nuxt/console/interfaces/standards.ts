@@ -1,16 +1,16 @@
 declare module "vue/types/standards" {
 
   interface SelectOption {
-        value: number,
-        text: string,
+        value: number;
+        text: string;
   }
 
   interface TableField {
-    key: string,
-    label: any,
-    sortable?: boolean,
-    stickyColumn?: boolean,
-    isRowHeader?: boolean,
+    key: string;
+    label: any;
+    sortable?: boolean;
+    stickyColumn?: boolean;
+    isRowHeader?: boolean;
   }
 
 }
