@@ -187,10 +187,12 @@
       methods: {
         onPageChange(page : number) {
             this.currentPage = page - 1;
+            if ( this.dctx.data != undefined ) this.dctx.data.inactives = [];
             this.loadData();
         },
         updatePeriod() {
             this.currentPage = 0;
+            this.dctx.data = undefined;
             this.loadData();
         },
         loadData() {

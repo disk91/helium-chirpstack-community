@@ -211,7 +211,7 @@ public class PrivDeviceService {
 
                 // get potential skfs collisions
                 if (hts != null) {
-                    int col = novaService.countSkfsColisions(hts.getRouteId(), id.getDevEui());
+                    int col = novaService.countSkfsColisions(hts.getTenantUUID(), id.getDevEui());
                     if (col >= 1) id.setRouteSkfs(2);
                     if (col > 1) id.setSkfsCollision(2);
                     if (col == 0) id.setRouteSkfs(0);
