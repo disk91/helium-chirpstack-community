@@ -43,7 +43,7 @@ import static eu.heliumiot.console.service.HeliumParameterService.PARAM_MQTT_STA
 public class MqttStatListener implements MqttCallback {
     private final Logger log = LoggerFactory.getLogger(this.getClass());
 
-    protected static final int MQTT_QOS = 2;
+    protected static final int MQTT_QOS = 0;
 
     @Autowired
     private ConsoleConfig mqttConfig;
@@ -88,7 +88,7 @@ public class MqttStatListener implements MqttCallback {
             //log.info("Password :"+mqttConfig.getPassword());
             log.info("MQTT DS Id : "+clientId);
             this.mqttClient = new MqttClient(mqttConfig.getMqttServer(), clientId, persistence);
-            this.connectionOptions.setCleanSession(false);          // restart by processing pending events
+            this.connectionOptions.setCleanSession(true);           // restart clearing pending events
             this.connectionOptions.setAutomaticReconnect(false);    // reconnect managed manually
             this.connectionOptions.setConnectionTimeout(5);         // do not wait more than 5s to reconnect
             this.connectionOptions.setKeepAliveInterval(60);
