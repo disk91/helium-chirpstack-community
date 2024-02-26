@@ -55,6 +55,13 @@
                             small
                             headVariant="dark"
                         >
+                            <template #head()="data">
+                                {{ data.label }}
+                                <span v-if="tips.get(data.field.key)!=undefined" v-b-tooltip.hover.html="getHelp(data.field)">
+                                    <b-icon icon="info-circle" variant="white" class="ml-1"></b-icon>
+                                </span>
+                            </template>
+
                             <template #cell(creationDate)="row">
                                 {{ getTimeStr(row.value) }} 
                             </template>
@@ -81,6 +88,10 @@
                                 <b-icon v-if="row.value==0" icon="check-circle" variant="success"></b-icon>
                             </template>
                             <template #cell(neverSeen)="row" style="font-size:10px;" >
+                                <b-icon v-if="row.value" icon="x-circle" variant="danger"></b-icon>
+                                <b-icon v-if="!row.value" icon="check-circle" variant="success"></b-icon>
+                            </template>
+                            <template #cell(neverUplink)="row" style="font-size:10px;" >
                                 <b-icon v-if="row.value" icon="x-circle" variant="danger"></b-icon>
                                 <b-icon v-if="!row.value" icon="check-circle" variant="success"></b-icon>
                             </template>
@@ -126,6 +137,7 @@
     pageToLoad: number,             // what to request to API
     options: SelectOption[],
     fields: TableField[],
+    tips: Map<string,string | undefined>,
   };
 
 
@@ -168,10 +180,24 @@
                     {key: 'routeEui', label: this.$t('inac_table_rteui')},
                     {key: 'routeSkfs', label: this.$t('inac_table_rtskfs')},
                     {key: 'skfsCollision', label: this.$t('inac_table_skcol')},
+                    {key: 'neverUplink', label: this.$t('inac_table_neverup')},
                     {key: 'neverSeen', label: this.$t('inac_table_never')},
                     {key: 'onlyJoinReq', label: this.$t('inac_table_joinonly')},
                     {key: 'coverageRisk', label: this.$t('inac_table_covrisk')},
                 ],
+            tips: new Map([
+                ['devAddr',this.$t('inac_table_addr_tip') as string],
+                ['creationDate',this.$t('inac_table_created_tip') as string],
+                ['lastSeenDate',this.$t('inac_table_seen_tip') as string],
+                ['disabled',this.$t('inac_table_dis_tip') as string],
+                ['routeEui',this.$t('inac_table_rteui_tip') as string],
+                ['routeSkfs',this.$t('inac_table_rtskfs_tip') as string],
+                ['skfsCollision',this.$t('inac_table_skcol_tip') as string],
+                ['neverUplink',this.$t('inac_table_neverup_tip') as string],
+                ['neverSeen',this.$t('inac_table_never_tip') as string],
+                ['onlyJoinReq',this.$t('inac_table_joinonly_tip') as string],
+                ['coverageRisk',this.$t('inac_table_covrisk_tip') as string],
+            ]),
 
         }
       },
@@ -188,6 +214,14 @@
         }
       },
       methods: {
+        getHelp(field : TableField) : string {
+            console.log(field);
+            let t = this.tips.get(field.key);
+            if (  t !== undefined ) {
+                return t;
+            }
+            return '';
+        },
         onPageChange(page : number) {
             this.pageToLoad = page - 1;
             if ( this.dctx.data != undefined ) this.dctx.data.inactives = [];

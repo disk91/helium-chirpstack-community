@@ -102,6 +102,13 @@ public class AdvDeviceInacSubItf {
     private boolean neverSeen;
 
     @Schema(
+        description = "is never uplink",
+        example = "true",
+        requiredMode = Schema.RequiredMode.REQUIRED
+    )
+    private boolean neverUplink;
+
+    @Schema(
         description = "is only Join Req",
         example = "0(false)/1(unknown)/2(true)",
         requiredMode = Schema.RequiredMode.REQUIRED
@@ -231,5 +238,13 @@ public class AdvDeviceInacSubItf {
 
     public void setDevName(String devName) {
         this.devName = devName;
+    }
+
+    public boolean isNeverUplink() {
+        return neverUplink;
+    }
+
+    public void setNeverUplink(boolean neverUplink) {
+        this.neverUplink = neverUplink;
     }
 }

@@ -23,6 +23,7 @@ declare module "vue/types/inactiv" {
         routeSkfs: number;
         skfsCollision: number;
         neverSeen: boolean;
+        neverUplink: boolean;
         onlyJoinReq: number;
         coverageRisk: number;
       }

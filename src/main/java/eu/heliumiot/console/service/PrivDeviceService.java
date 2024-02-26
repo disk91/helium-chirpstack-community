@@ -155,9 +155,14 @@ public class PrivDeviceService {
                 else id.setLastSeenDate(0);
                 if ( d.getDevAddr() != null ) {
                     id.setDevAddr(HexaConverters.byteToHexString(d.getDevAddr()));
-                } else id.setDevAddr("undefined");
+                    id.setNeverSeen(false);
+                    id.setNeverUplink(d.getLastSeenAt() == null || d.getLastSeenAt().getTime() == 0);
+                } else {
+                    id.setNeverSeen(true);
+                    id.setNeverUplink(true);
+                    id.setDevAddr("undefined");
+                }
                 id.setDisabled(d.isDisabled());
-                id.setNeverSeen(d.getLastSeenAt() == null || d.getLastSeenAt().getTime() == 0);
                 id.setRouteEui(1);
                 id.setRouteSkfs(1);
 
