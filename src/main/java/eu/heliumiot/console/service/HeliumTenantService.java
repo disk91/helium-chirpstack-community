@@ -768,11 +768,17 @@ public class HeliumTenantService {
     public boolean isTenantOwnedBy(UserCacheService.UserCacheElement user, String tenantId ) {
         if (!user.user.isAdmin()) {
             // search if tenant authorization exists
-            UserTenant ut = userTenantRepository.findOneUserByUserIdAndTenantId(
-                UUID.fromString(user.user.getEmail()),
-                UUID.fromString(tenantId)
-            );
-            return ut != null;
+            try {
+                UUID uTenantId = UUID.fromString(tenantId);
+                UserTenant ut = userTenantRepository.findOneUserByUserIdAndTenantId(
+                    user.user.getId(),
+                    uTenantId
+                );
+                return ut != null;
+            } catch (IllegalArgumentException x) {
+                log.warn("Tenant ID is invalid "+tenantId);
+                return false;
+            }
         }
         return true;
     }
