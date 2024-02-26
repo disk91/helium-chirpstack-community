@@ -108,11 +108,9 @@ public class PrivDeviceService {
         // inactivity since
         long since = Now.NowUtcMs() - ( hoursBefore * Now.ONE_HOUR );
         // get a page of inactive
-        du = Now.NowUtcMs() - s; log.info("start - to check duration: "+du+" ms");
         long c = deviceRepository.countDeviceByTenantUUIDAndLastSeenLowerThan(tenantId,since);
         if ( c < ((long) page * ENTRIES_PER_PAGE) ) throw new ITNotFoundException();
 
-        du = (Now.NowUtcMs() - s); log.info("start - to count duration: "+du+" ms");
         List<Device> ds = deviceRepository.findDeviceByTenantUUIDAndLastSeenLowerThan(
             tenantId,
             since,
@@ -127,7 +125,6 @@ public class PrivDeviceService {
         r.setTotalPage(c / ENTRIES_PER_PAGE);
         r.setPerPage(ENTRIES_PER_PAGE);
         ArrayList<AdvDeviceInacSubItf> ids = new ArrayList<>();
-        du = (Now.NowUtcMs() - s); log.info("start - to list duration: "+du+" ms");
 
         if ( ! ds.isEmpty() ) {
             HeliumTenantSetup hts = heliumTenantSetupService.getHeliumTenantSetup(tenantId, false);
@@ -135,7 +132,6 @@ public class PrivDeviceService {
             if ( hts != null && user.user.isAdmin() ) {
                 euis = novaService.getEuiInARoute(hts.getRouteId());
             }
-            du = (Now.NowUtcMs() - s); log.info("start - to Nova route: "+du+" ms");
             long allDev = 0;
             long allRt = 0;
             long allFr = 0; long cFr = 0;
@@ -249,12 +245,8 @@ public class PrivDeviceService {
 
                 allDev += Now.NowUtcMs() - oneDevS;
             }
-            log.info("avg frame query: "+(allFrR/cFr)+" ms "+allFrR+" / "+cFr);
-            log.info("avg frame process: "+(allFr/cFr)+" ms "+allFr+" / "+cFr);
-            log.info("avg skfs check: "+(allRt/ds.size())+" ms "+allRt+" / "+ds.size());
-            log.info("avg dev process: "+(allDev/ds.size())+" ms "+allDev+" / "+ds.size());
         }
-        du = (Now.NowUtcMs() - s); log.info("start - to end "+du+" ms");
+        du = (Now.NowUtcMs() - s); log.debug("getInactivDeviceByUser - duration "+du+" ms");
         r.setInactives(ids);
         return r;
     }
