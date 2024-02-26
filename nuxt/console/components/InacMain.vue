@@ -210,7 +210,7 @@
             this.errorMessage = '';
             this.isBusy = true;
             
-            this.$axios.get<AdvDeviceInacGetItf>(this.$config.inacDeviceGet+'/'+this.dctx.tenantID+'/'+this.pastHour+'/'+this.currentPage+'/',config)
+            this.$axios.get<AdvDeviceInacGetItf>(this.$config.inacDeviceGet+'/'+this.dctx.tenantID+'/'+this.pastHour+'/'+this.pageToLoad+'/',config)
                 .then((response) =>{
                     if (response.status == 200 ) {
                         this.dctx.data = response.data;   
