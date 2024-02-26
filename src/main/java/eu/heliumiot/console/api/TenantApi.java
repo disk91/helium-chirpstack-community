@@ -47,10 +47,8 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import jakarta.servlet.http.HttpServletRequest;
-import java.util.Enumeration;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Optional;
+
+import java.util.*;
 
 @Tag( name = "tenant api", description = "Information about tenant api" )
 @CrossOrigin
@@ -89,9 +87,11 @@ public class TenantApi {
         long startMs= Now.NowUtcMs();
         log.debug("Get tenant ID dc balance for "+request.getUserPrincipal().getName());
         try {
+            UUID utenant = UUID.fromString(tenantId);
+
             TenantBalanceItf r = heliumTenantService.getTenantDcBalance(request.getUserPrincipal().getName(), tenantId);
             return new ResponseEntity<>(r, HttpStatus.OK);
-        } catch (ITRightException x) {
+        } catch (ITRightException | IllegalArgumentException x ) {
             prometeusService.addApiTotalError();
             return new ResponseEntity<>(ActionResult.FORBIDDEN(), HttpStatus.FORBIDDEN);
         } finally {
@@ -157,9 +157,10 @@ public class TenantApi {
         long startMs= Now.NowUtcMs();
         log.debug("Get tenant setup for "+request.getUserPrincipal().getName());
         try {
+            UUID utenant = UUID.fromString(tenantId);
             TenantSetupRespItf r = heliumTenantService.getTenantSetup(request.getUserPrincipal().getName(), tenantId);
             return new ResponseEntity<>(r, HttpStatus.OK);
-        } catch (ITRightException x) {
+        } catch (ITRightException | IllegalArgumentException x) {
             prometeusService.addApiTotalError();
             return new ResponseEntity<>(ActionResult.FORBIDDEN(), HttpStatus.FORBIDDEN);
         } finally {
@@ -259,9 +260,11 @@ public class TenantApi {
         long startMs= Now.NowUtcMs();
         log.debug("Get one tenant setup "+request.getUserPrincipal().getName());
         try {
+            UUID utenant = UUID.fromString(tenantId);
+
             TenantSetupTemplateListRespItf r = heliumTenantSetupService.getOneTenantSetup(request.getUserPrincipal().getName(), tenantId);
             return new ResponseEntity<>(r, HttpStatus.OK);
-        } catch (ITRightException x) {
+        } catch (ITRightException | IllegalArgumentException x) {
             prometeusService.addApiTotalError();
             return new ResponseEntity<>(ActionResult.FORBIDDEN(), HttpStatus.FORBIDDEN);
         } catch (ITNotFoundException x) {
@@ -354,9 +357,10 @@ public class TenantApi {
         long startMs= Now.NowUtcMs();
         log.debug("Delete tenant setup ("+tenantId+") by "+request.getUserPrincipal().getName());
         try {
+            UUID utenant = UUID.fromString(tenantId);
             heliumTenantSetupService.deleteTenantSetupTemplate(request.getUserPrincipal().getName(), tenantId);
             return new ResponseEntity<>(ActionResult.SUCESS(), HttpStatus.OK);
-        } catch (ITRightException x) {
+        } catch (ITRightException | IllegalArgumentException x ) {
             prometeusService.addApiTotalError();
             return new ResponseEntity<>(ActionResult.FORBIDDEN(), HttpStatus.FORBIDDEN);
         } finally {
@@ -560,9 +564,10 @@ public class TenantApi {
         long startMs= Now.NowUtcMs();
         log.debug("Get tenant basic stats "+request.getUserPrincipal().getName()+" for tenant "+tenantId);
         try {
+            UUID utenant = UUID.fromString(tenantId);
             TenantBasicStatRespItf r = heliumTenantService.getTenantBasicStat(request.getUserPrincipal().getName(),tenantId);
             return new ResponseEntity<>(r, HttpStatus.OK);
-        } catch (ITParseException x) {
+        } catch (ITParseException | IllegalArgumentException x) {
             prometeusService.addApiTotalError();
             return new ResponseEntity<>(ActionResult.BADREQUEST(), HttpStatus.BAD_REQUEST);
         } catch (ITRightException x) {
@@ -593,9 +598,10 @@ public class TenantApi {
         long startMs= Now.NowUtcMs();
         log.debug("Get tenant activity stats "+request.getUserPrincipal().getName()+" for tenant "+tenantId);
         try {
+            UUID utenant = UUID.fromString(tenantId);
             TenantSetupStatsRespItf r = heliumTenantService.getTenantActivityStat(request.getUserPrincipal().getName(),tenantId);
             return new ResponseEntity<>(r, HttpStatus.OK);
-        } catch (ITParseException x) {
+        } catch (ITParseException | IllegalArgumentException x) {
             prometeusService.addApiTotalError();
             return new ResponseEntity<>(ActionResult.BADREQUEST(), HttpStatus.BAD_REQUEST);
         } catch (ITRightException x) {
@@ -626,9 +632,10 @@ public class TenantApi {
         long startMs= Now.NowUtcMs();
         log.debug("Get tenant device activity stats "+request.getUserPrincipal().getName()+" for tenant "+tenantId);
         try {
+            UUID utenant = UUID.fromString(tenantId);
             TenantSetupStatsRespItf r = heliumTenantService.getTenantDeviceActivityStat(request.getUserPrincipal().getName(),tenantId);
             return new ResponseEntity<>(r, HttpStatus.OK);
-        } catch (ITParseException x) {
+        } catch (ITParseException | IllegalArgumentException x) {
             prometeusService.addApiTotalError();
             return new ResponseEntity<>(ActionResult.BADREQUEST(), HttpStatus.BAD_REQUEST);
         } catch (ITRightException x) {
@@ -659,9 +666,10 @@ public class TenantApi {
         long startMs= Now.NowUtcMs();
         log.debug("Get tenant device inactivity stats "+request.getUserPrincipal().getName()+" for tenant "+tenantId);
         try {
+            UUID utenant = UUID.fromString(tenantId);
             TenantSetupStatsRespItf r = heliumTenantService.getTenantDeviceInactivityStat(request.getUserPrincipal().getName(),tenantId);
             return new ResponseEntity<>(r, HttpStatus.OK);
-        } catch (ITParseException x) {
+        } catch (ITParseException | IllegalArgumentException x) {
             prometeusService.addApiTotalError();
             return new ResponseEntity<>(ActionResult.BADREQUEST(), HttpStatus.BAD_REQUEST);
         } catch (ITRightException x) {
@@ -728,6 +736,7 @@ public class TenantApi {
         long startMs= Now.NowUtcMs();
         log.debug("Create API key for "+request.getUserPrincipal().getName());
         try {
+            UUID utenant = UUID.fromString(tenantId);
             if ( request.getHeader("X-Chripstack-Bearer") == null || request.getHeader("X-Chripstack-Bearer").length() < 10  ) {
                 throw new ITRightException("invalid_bearer");
             }
@@ -739,7 +748,7 @@ public class TenantApi {
             ActionResult a = ActionResult.FORBIDDEN();
             a.setMessage(x.getMessage());
             return new ResponseEntity<>(a, HttpStatus.FORBIDDEN);
-        } catch ( ITParseException x ) {
+        } catch ( ITParseException | IllegalArgumentException x ) {
             prometeusService.addApiTotalError();
             ActionResult a = ActionResult.BADREQUEST();
             a.setMessage(x.getMessage());
@@ -770,6 +779,8 @@ public class TenantApi {
         long startMs= Now.NowUtcMs();
         log.debug("Delete API key for "+request.getUserPrincipal().getName());
         try {
+            UUID utenant = UUID.fromString(tenantId);
+
             if ( request.getHeader("X-Chripstack-Bearer") == null && request.getHeader("X-Chripstack-Bearer").length() > 10  ) {
                 throw new ITRightException("invalid_bearer");
             }
@@ -782,7 +793,7 @@ public class TenantApi {
             ActionResult a = ActionResult.FORBIDDEN();
             a.setMessage(x.getMessage());
             return new ResponseEntity<>(a, HttpStatus.FORBIDDEN);
-        } catch ( ITParseException x ) {
+        } catch ( ITParseException | IllegalArgumentException x ) {
             prometeusService.addApiTotalError();
             ActionResult a = ActionResult.BADREQUEST();
             a.setMessage(x.getMessage());

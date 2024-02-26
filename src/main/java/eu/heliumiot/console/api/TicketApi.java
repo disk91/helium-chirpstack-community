@@ -46,6 +46,7 @@ import org.springframework.web.bind.annotation.*;
 
 import jakarta.servlet.http.HttpServletRequest;
 import java.util.List;
+import java.util.UUID;
 
 @Tag( name = "ticket api", description = "Ticket api" )
 @CrossOrigin
@@ -141,9 +142,11 @@ public class TicketApi {
         long startMs= Now.NowUtcMs();
         log.debug("Get ticket details for "+request.getUserPrincipal().getName()+", id "+ticketId);
         try {
+            UUID utenant = UUID.fromString(ticketId);
+
             TicketDetailRespItf r = heliumTicketService.getTicketDetails(request.getUserPrincipal().getName(), ticketId);
             return new ResponseEntity<>(r, HttpStatus.OK);
-        } catch (ITRightException x) {
+        } catch (ITRightException | IllegalArgumentException x) {
             prometeusService.addApiTotalError();
             ActionResult r = ActionResult.FORBIDDEN();
             r.setMessage(x.getMessage());

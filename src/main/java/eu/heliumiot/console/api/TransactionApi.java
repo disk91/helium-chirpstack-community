@@ -48,6 +48,7 @@ import org.springframework.web.bind.annotation.*;
 import jakarta.servlet.http.HttpServletRequest;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 @Tag( name = "transaction api", description = "transaction management api" )
 @CrossOrigin
@@ -236,6 +237,8 @@ public class TransactionApi {
         long startMs= Now.NowUtcMs();
         log.debug("Get invoice "+ txUUID +" setup for "+request.getUserPrincipal().getName());
         try {
+            UUID utxuuid = UUID.fromString(txUUID);
+
             byte [] r = transactionService.getInvoice(request.getUserPrincipal().getName(), txUUID);
             return new ResponseEntity<>(r, HttpStatus.OK);
         } catch ( ITRightException x ) {
@@ -243,7 +246,7 @@ public class TransactionApi {
             ActionResult a = ActionResult.FORBIDDEN();
             a.setMessage(x.getMessage());
             return new ResponseEntity<>(a, HttpStatus.FORBIDDEN);
-        } catch ( ITParseException x ) {
+        } catch ( ITParseException | IllegalArgumentException x ) {
             prometeusService.addApiTotalError();
             ActionResult a = ActionResult.BADREQUEST();
             a.setMessage(x.getMessage());
