@@ -550,6 +550,18 @@
     "inac_table_never": "Jamais vu",
     "inac_table_joinonly": "Join uniquement",
     "inac_table_covrisk": "Risque couv.",
-  
+    "inac_table_neverup": "Aucun Uplink",
+    "inac_table_addr_tip": "<b>Device Addr attributed</b><br/>A device address is attributed when a Join Request has been received. Indicating the Uplink communication has been established by the past.",
+    "inac_table_created_tip": "<b>Device Chirpstack Registration</b><br/>Date of the device registration in Chirpstack.",
+    "inac_table_seen_tip":"<b>Device last uplink</b><br/>Device last Uplink recieved, this date is not updated in case of Join Message. A date here is indicating the device has been able to Join network successfuly by the past.",
+    "inac_table_dis_tip":"<b>Disable device</b><br/>The <span style='color:#f00;'>&#10754;</span> is diplayed when the device has been disabled. The device can be enabled from the device configuration page using the related switch button.",
+    "inac_table_rteui_tip":"<b>Helium EUI route configuration</b><br/>The <span style='color:#f00;'>&#10754;</span> is diplayed when the device EUI route is not registered on Helium router. It means the device won't be able to Join. If the device just registered it's normal. Otherwise, sent a Service Request indicating the device EUI. The <span style='color:#e93;'>&#10754;</span> means, the status can't be computed, it's a normal behavior.",
+    "inac_table_rtskfs_tip":"<b>Helium EUI session filter</b><br/>The <span style='color:#f00;'>&#10754;</span> is diplayed when the device session key filter is not registered on Helium router. It means the device won't be able to Uplink. If the device never Join it's normal. Otherwise, sent a Service Request indicating the device EUI. The <span style='color:#e93;'>&#10754;</span> means, the status can't be computed, it's a normal behavior.",
+    "inac_table_neverup_tip":"<b>Device Uplinked</b><br/>The <span style='color:#f00;'>&#10754;</span> is diplayed when the device uplink has never been seen. It can be because device never emitted, or never join success. The <span style='color:#e93;'>&#10754;</span> means, the status can't be computed, it's a normal behavior.",
+    "inac_table_never_tip":"<b>Device Seen</b><br/>The <span style='color:#f00;'>&#10754;</span> is diplayed when the device has never been seen, including Join and Uplink. It can be because device never emitted or the route EUI is not setup. The <span style='color:#e93;'>&#10754;</span> means, the status can't be computed, it's a normal behavior.",
+    "inac_table_joinonly_tip":"<b>Device Recently Joined Req only</b><br/>The <span style='color:#f00;'>&#10754;</span> is diplayed when the device in the recent communication only sent Join Request and never succeeded in getting connected. It can be a problem of noise on reception or a problem of hotspot involved in communication. You can inclease max_copy to try to resolve, you can get more information on frame analysis. The <span style='color:#e93;'>&#10754;</span> means, the status can't be computed, it's a normal behavior.",
+    "inac_table_covrisk_tip":"<b>Device Link Quality</b><br/>The <span style='color:#f00;'>&#10754;</span> is diplayed when the device reception conditions are bad and may be the cause of miscommunications. The <span style='color:#e93;'>&#10754;</span> means link quality is unknown or not good but average. You can get more information for the Frame Analysis page.",
+    "inac_table_skcol_tip":"<b>Session Key Filter Collision</b><br/>The <span style='color:#f00;'>&#10754;</span> is diplayed when the device shares the same session than another. This prevent data to be correctly route to the device. Change your appKey in a such situation. The <span style='color:#e93;'>&#10754;</span> is displayed when the check is not performed, this is a normal behavior.",
+
     "end" : "fin"
 }
