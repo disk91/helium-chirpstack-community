@@ -36,6 +36,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.UUID;
 
 @Tag( name = "advanced admin api", description = "advanced admin api" )
 @CrossOrigin
@@ -138,14 +139,16 @@ public class AdvancedApi {
     ) {
         log.debug("Search hotspot");
         try {
+            UUID utenant = UUID.fromString(tenantId);
             String s = new String(Base64.decode(search));
             List<AdvDeviceSearchGetItf> r = privDeviceFramesService.searchFromDeviceByUser(s, tenantId, request.getUserPrincipal().getName());
             return new ResponseEntity<>(r, HttpStatus.OK);
-        } catch (ITRightException x) {
+        } catch (ITRightException | IllegalArgumentException x) {
             return new ResponseEntity<>(ActionResult.FORBIDDEN(), HttpStatus.FORBIDDEN);
         } catch (ITNotFoundException x) {
             return new ResponseEntity<>(ActionResult.NODATA(), HttpStatus.NO_CONTENT);
         }
+
     }
 
     @Autowired
@@ -246,6 +249,7 @@ public class AdvancedApi {
         long startMs= Now.NowUtcMs();
         log.debug("Get inactive devices for tenant "+tenantId+" for "+pastHours+" hours");
         try {
+            UUID utenant = UUID.fromString(tenantId);
             AdvDeviceInacGetItf r = privDeviceService.getInactivDeviceByUser(
                 request.getUserPrincipal().getName(),
                 tenantId,
@@ -255,16 +259,13 @@ public class AdvancedApi {
             return new ResponseEntity<>(r, HttpStatus.OK);
         } catch (ITNotFoundException x) {
             return new ResponseEntity<>(ActionResult.NODATA(), HttpStatus.NO_CONTENT);
-        } catch (ITRightException x) {
+        } catch (ITRightException | IllegalArgumentException x) {
             return new ResponseEntity<>(ActionResult.FORBIDDEN(), HttpStatus.FORBIDDEN);
         } finally {
             long duration = Now.NowUtcMs() - startMs;
             if ( duration > 5_000 ) log.warn("getInactiveDevices - long processing "+duration+" ms for tenant "+tenantId);
         }
     }
-
-
-
 
 }
 
