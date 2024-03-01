@@ -434,6 +434,8 @@ public class MqttLoRaListener implements MqttCallback {
                 if ( nsRx > rx ) {
                     log.info("RX : "+rx+" / NS: "+nsRx);
                     rx = nsRx;
+                } else {
+                    log.info("NS "+uf.getRxInfo().getNsTime().getNanos()+" "+uf.getRxInfo().getNsTime().toString());
                 }
             }
 
