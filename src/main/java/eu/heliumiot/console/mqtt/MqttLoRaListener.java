@@ -427,18 +427,12 @@ public class MqttLoRaListener implements MqttCallback {
             byte[] payload = uf.getPhyPayload().toByteArray();
 
             // Here we have a problem: the timestamp is a second and not ms, so we have an average offset of 500ms whatever
+            // As a reminder for the next time, the nsTime we see in the front end is "network server time" so the reception time
+            // on the network server, this one is in ns but is not the precise time from the hotspot and this is also why, here the
+            // value is 0 (not yet enriched)
+            // potential fields time_since_gps_epoch / fine_time_since_gps_epoch could be more interesting but filled when the GW as a GPS or TDOA
             long rx = (uf.getRxInfo().getGwTime().getSeconds() * 1000) + (uf.getRxInfo().getGwTime().getNanos() / 1_000_000);
-
-            if ( uf.getRxInfo().getNsTime() != null ) {
-                long nsRx = (uf.getRxInfo().getNsTime().getSeconds() * 1000) + (uf.getRxInfo().getNsTime().getNanos() / 1_000_000);
-                if ( nsRx > rx ) {
-                    log.info("RX : "+rx+" / NS: "+nsRx);
-                    rx = nsRx;
-                } else {
-                    log.info("NS "+uf.getRxInfo().getNsTime().getNanos()+" "+uf.getRxInfo().getNsTime().toString());
-                }
-            }
-
+            
             boolean isJoin = (payload[0] == 0 && payload.length == 23);
             if ( !isJoin ) {
                 // join packets are free, other invoiced
