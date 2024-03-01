@@ -429,6 +429,14 @@ public class MqttLoRaListener implements MqttCallback {
             // Here we have a problem: the timestamp is a second and not ms, so we have an average offset of 500ms whatever
             long rx = (uf.getRxInfo().getGwTime().getSeconds() * 1000) + (uf.getRxInfo().getGwTime().getNanos() / 1_000_000);
 
+            if ( uf.getRxInfo().getNsTime() != null ) {
+                long nsRx = (uf.getRxInfo().getNsTime().getSeconds() * 1000) + (uf.getRxInfo().getNsTime().getNanos() / 1_000_000);
+                if ( nsRx > rx ) {
+                    log.info("RX : "+rx+" / NS: "+nsRx);
+                    rx = nsRx;
+                }
+            }
+
             boolean isJoin = (payload[0] == 0 && payload.length == 23);
             if ( !isJoin ) {
                 // join packets are free, other invoiced
