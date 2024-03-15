@@ -413,6 +413,8 @@ public class HeliumTenantService {
 
                 // check deactivation
                 if ( !processBalance(ts,t) ) {
+                    // when the dcBalance is lower than lower limit
+                    // save & raise alarm, not sure of the interest
                     this.flushHeliumTenant(t);
                 } else {
                     int p = (ts.getDcPer24BMessage() > 0 )?1:0;
@@ -604,7 +606,7 @@ public class HeliumTenantService {
                 if ( !processBalance(ts,t) ) {
                     this.flushHeliumTenant(t);
                 } else  if ( ts.getDcPerJoinRequest() > 0 ){
-                    prometeusService.addLoRaInvoicableUplink(packets);
+                    prometeusService.addLoRaInvoicableJoin(packets);
                 }
             }
         }
@@ -613,7 +615,7 @@ public class HeliumTenantService {
 
 
     /**
-     * Process the tenant balance and return false when the balance has reached a minimum
+     * Check the tenant balance and return false when the balance has reached a minimum
      * value and devices needs to be blocked.
      * The device modification is asynchronously managed
      * @return false when the tenant runs out of DCs and deactivation is requested

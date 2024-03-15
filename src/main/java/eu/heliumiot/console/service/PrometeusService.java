@@ -88,8 +88,9 @@ public class PrometeusService {
     private long loRaLateUplinkTravelTime = 0;  // the travel time for the late packets (over 2s)
     private long loRaLateUplinkCount = 0;       // the number of late packets received
     private long loRaGatewayUplink = 0;         // the number of uplink (including join) seen at gateway level ( invoiced by hpr ) but when timing are incorrect this counter may wrong for invoicing
-    private long loRaInvoicableUplink = 0;      // the number of uplink packets (including join) proceed by invoice mechanism
-    private long loRaInvoicableDownlink = 0;    // the number of downlink packets (including join) proceed by invoice mechanism
+    private long loRaInvoicableUplink = 0;      // the number of uplink packets proceed by invoice mechanism
+    private long loRaInvoicableDownlink = 0;    // the number of downlink packets (including accept) proceed by invoice mechanism
+    private long loRaInvoicableJoin = 0;        // the number of join packets (including join) proceed by invoice mechanism
     private long heliumInvoicedPackets = 0;     // the packet invoiced by the HPR
     private long heliumNotInvoicedPackets = 0;  // packet we received but not attributed to a device
 
@@ -207,6 +208,10 @@ public class PrometeusService {
 
     synchronized public void addLoRaInvoicableUplink(int packets) {
         this.loRaInvoicableUplink += packets;
+    }
+
+    synchronized public void addLoRaInvoicableJoin(int packets) {
+        this.loRaInvoicableJoin += packets;
     }
 
     synchronized public void addLoRaInvoicableDownlink(int packets) {
@@ -421,6 +426,10 @@ public class PrometeusService {
         return ()->loRaInvoicableUplink;
     }
 
+    private Supplier<Number> getLoRaInvoicableJoinPacket() {
+        return ()->loRaInvoicableJoin;
+    }
+
     private Supplier<Number> getLoRaInvoicableDwnPacket() {
         return ()->loRaInvoicableDownlink;
     }
@@ -630,6 +639,9 @@ public class PrometeusService {
             .register(registry);
         Gauge.builder("cons.lora.invoicable.uplink", getLoRaInvoicableUpPacket())
             .description("Number of uplink packets received processed by the invoicing mechanism")
+            .register(registry);
+        Gauge.builder("cons.lora.invoicable.join", getLoRaInvoicableJoinPacket())
+            .description("Number of join packets received processed by the invoicing mechanism")
             .register(registry);
         Gauge.builder("cons.lora.invoicable.downlink", getLoRaInvoicableDwnPacket())
             .description("Number of downlink packets received processed by the invoicing mechanism")

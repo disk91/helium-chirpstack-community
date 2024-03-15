@@ -1213,6 +1213,21 @@
                 }
               }
             ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "bal up + dwn"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "purple",
+                  "mode": "fixed"
+                }
+              }
+            ]
           }
         ]
       },
@@ -1255,7 +1270,8 @@
             "uid": "PBFA97CFB590B2093"
           },
           "editorMode": "code",
-          "expr": "(increase(cons_lora_gateway_uplink[1m])+increase(cons_lora_join_request[1m]))-(increase(cons_lora_uplinks[1m])+increase(cons_lora_duplicates[1m])+increase(cons_lora_invoicable_uplink[1m]))",
+          "expr": "(increase(cons_lora_gateway_uplink[1m])+increase(cons_lora_join_request[1m]))-(increase(cons_lora_uplinks[1m])+increase(cons_lora_duplicates[1m]))",
+          "hide": true,
           "legendFormat": "unpaid packets",
           "range": true,
           "refId": "A"
@@ -1276,6 +1292,32 @@
           "range": true,
           "refId": "B",
           "useBackend": false
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "PBFA97CFB590B2093"
+          },
+          "editorMode": "code",
+          "expr": "increase(cons_lora_hpr_invoiced_uplink[1m]) - increase(cons_lora_invoicable_uplink[1m])",
+          "hide": false,
+          "instant": false,
+          "legendFormat": "bal up (hpr - lns)",
+          "range": true,
+          "refId": "C"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "PBFA97CFB590B2093"
+          },
+          "editorMode": "code",
+          "expr": "increase(cons_lora_hpr_invoiced_uplink[1m]) + increase(cons_lora_join_request[1m]) - increase(cons_lora_invoicable_uplink[1m]) - increase(cons_lora_invoicable_join[1m]) - increase(cons_lora_invoicable_downlink[1m])",
+          "hide": false,
+          "instant": false,
+          "legendFormat": "bal up + dwn",
+          "range": true,
+          "refId": "D"
         }
       ],
       "title": "Unpaid packets / m",
@@ -2241,8 +2283,7 @@
                 "mode": "absolute",
                 "steps": [
                   {
-                    "color": "green",
-                    "value": null
+                    "color": "green"
                   },
                   {
                     "color": "red",
@@ -2336,8 +2377,7 @@
                 "mode": "absolute",
                 "steps": [
                   {
-                    "color": "green",
-                    "value": null
+                    "color": "green"
                   },
                   {
                     "color": "red",
@@ -2435,8 +2475,7 @@
                 "mode": "absolute",
                 "steps": [
                   {
-                    "color": "green",
-                    "value": null
+                    "color": "green"
                   },
                   {
                     "color": "red",
@@ -2534,8 +2573,7 @@
                 "mode": "absolute",
                 "steps": [
                   {
-                    "color": "green",
-                    "value": null
+                    "color": "green"
                   },
                   {
                     "color": "red",
@@ -2665,8 +2703,7 @@
                 "mode": "absolute",
                 "steps": [
                   {
-                    "color": "green",
-                    "value": null
+                    "color": "green"
                   },
                   {
                     "color": "red",
@@ -2760,8 +2797,7 @@
                 "mode": "absolute",
                 "steps": [
                   {
-                    "color": "green",
-                    "value": null
+                    "color": "green"
                   },
                   {
                     "color": "red",
@@ -2859,8 +2895,7 @@
                 "mode": "absolute",
                 "steps": [
                   {
-                    "color": "green",
-                    "value": null
+                    "color": "green"
                   },
                   {
                     "color": "red",
@@ -3769,8 +3804,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -3877,8 +3911,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -3963,8 +3996,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "light-red",
@@ -4067,8 +4099,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -4205,8 +4236,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -4299,8 +4329,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -4406,8 +4435,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -4501,8 +4529,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -4596,8 +4623,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -6088,6 +6114,6 @@
   "timezone": "",
   "title": "Chirpstack",
   "uid": "6pIR3ibVz",
-  "version": 31,
+  "version": 33,
   "weekStart": ""
 }

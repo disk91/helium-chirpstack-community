@@ -362,6 +362,61 @@ public class MqttLoRaListener implements MqttCallback {
     }
 
     // ===============================================================
+    // Keep track of strange hotspot
+    // ===============================================================
+
+    protected static final int HS_NOT_INVOICED_MAX_DEVICES = 10;
+    protected static final int HS_NOT_INVOICED_MAX_HS = 100;
+
+    protected static final long HS_CLEAR_AFTER = 6*Now.ONE_HOUR;
+
+    // Track some hotspot where we see not invoiced traffic and want to
+    // understand why and who they are.
+    protected static class HotspotNotInvoiced {
+        public String eui;
+        public String id;
+        public long seenFrom;
+        public long seenLast;
+
+        public long invoicedPackets;
+        public long nonInvoicedPackets;
+        public ArrayList<String> seeDevices;
+
+        // ---
+        public HotspotNotInvoiced(String eui) {
+            this.eui = eui;
+            this.id = null;
+            this.seenFrom = Now.NowUtcMs();
+            this.seenLast = this.seenFrom;
+            this.invoicedPackets = 0;
+            this.nonInvoicedPackets = 0;
+            this.seeDevices = new ArrayList<>();
+        }
+
+        public void addNonInvoicedPacket() {
+            this.seenLast = Now.NowUtcMs();
+            this.nonInvoicedPackets++;
+        }
+
+        public void addInvoicedPacket(String device) {
+            this.seenLast = Now.NowUtcMs();
+            this.invoicedPackets++;
+            boolean found = false;
+            for ( String dev : this.seeDevices ) {
+                if ( dev.compareTo(device) == 0 ) { found = true; break; };
+            }
+            if ( !found && this.seeDevices.size() < HS_NOT_INVOICED_MAX_DEVICES ) {
+                this.seeDevices.add(device);
+            }
+        }
+
+    }
+
+    protected final Object lockHotspotHash =  new Object();
+    protected HashMap<String,HotspotNotInvoiced> hotspotHash = new HashMap<>();
+
+
+    // ===============================================================
     // Keep track of packets
     // ===============================================================
 
@@ -433,7 +488,7 @@ public class MqttLoRaListener implements MqttCallback {
             // potential fields time_since_gps_epoch / fine_time_since_gps_epoch could be more interesting but filled when the GW as a GPS or TDOA
             long rx = (uf.getRxInfo().getGwTime().getSeconds() * 1000) + (uf.getRxInfo().getGwTime().getNanos() / 1_000_000);
             
-            boolean isJoin = (payload[0] == 0 && payload.length == 23);
+            boolean isJoin = ((payload[0] & 0xE0) == 0 && payload.length == 23);
             if ( !isJoin ) {
                 // join packets are free, other invoiced
                 prometeusService.addHeliumInvoicedPacket();
@@ -467,6 +522,11 @@ public class MqttLoRaListener implements MqttCallback {
                     // FF FPort 1B (only if Payload > 1B) else it's not here
                     // P..P Payload
                     // MM MIC : 4B
+
+                    if ( (payload[0] & 0xE0) != 0x40 && (payload[0] & 0xE0) != 0x80 ) {
+                        // not a Uplink packet
+                        log.warn(">> Receiving a packet with Frame Type "+((payload[0] & 0xE0) >> 5)+" from "+dedup.firstGatewayId);
+                    }
 
                     dedup.deviceEui = null;
                     dedup.tenantId = null;
@@ -567,7 +627,7 @@ public class MqttLoRaListener implements MqttCallback {
 
                     // Measure uplink confirmed processing time
                     // Based on GW time, so it's an approximation
-                    if ((payload[0] & 0xC0) == 0x80 && uf.getRxInfo().getGwTime().getSeconds() > 0) {
+                    if ((payload[0] & 0xE0) == 0x80 && rx > 0) {
                         // header for confirmed frame - compute elapse time in ms
                         prometeusService.addLoRaUplinkConf(
                             e.arrivalTime - rx
@@ -723,6 +783,21 @@ public class MqttLoRaListener implements MqttCallback {
                         synchronized (lockPreprocessedPacketDedup) {
                             if (preprocessedPacketDedup.size() < 1000) this.preprocessedPacketDedup.add(d);
                             else log.warn("preprocessedPacketDedup is full");
+                        }
+                    }
+
+                    // Process the Hotspot Not Invoiced update
+                    // if one of the device hotspot is under monitoring, we identify it and associate the devices
+                    if ( HS_NOT_INVOICED_MAX_HS > 0 ) {
+                        for ( UplinkEventRxInfo rx : up.getRxInfo() ) {
+                            HotspotNotInvoiced hni = null;
+                            synchronized (lockHotspotHash) {
+                                hni = hotspotHash.get(rx.getGatewayId().toLowerCase());
+                            }
+                            if ( hni != null ) {
+                                if ( hni.id == null ) hni.id = rx.getMetadata().getGateway_id();
+                                hni.addInvoicedPacket(up.getDeviceInfo().getDevEui());
+                            }
                         }
                     }
 
@@ -895,6 +970,32 @@ public class MqttLoRaListener implements MqttCallback {
                                 }
                             }
                             if (!found) {
+                                // trace Hotspot information
+                                HotspotNotInvoiced hni = hotspotHash.get(d.firstGatewayId);
+                                if ( hni != null ) {
+                                    hni.addNonInvoicedPacket();
+                                } else {
+                                    if ( hotspotHash.size() >= HS_NOT_INVOICED_MAX_HS ) {
+                                        // clean structure
+                                        ArrayList<String> _toRemove = new ArrayList<>();
+                                        for ( HotspotNotInvoiced _hni : hotspotHash.values() ) {
+                                            if ( _hni.seenLast < ( now - HS_CLEAR_AFTER ) ) {
+                                                _toRemove.add(_hni.eui);
+                                            }
+                                        }
+                                        synchronized (lockHotspotHash) {
+                                            for ( String s : _toRemove ) hotspotHash.remove(s);
+                                        }
+                                    }
+                                    if ( hotspotHash.size() < HS_NOT_INVOICED_MAX_HS ) {
+                                        hni = new HotspotNotInvoiced(d.firstGatewayId);
+                                        hni.addNonInvoicedPacket();
+                                        hotspotHash.put(d.firstGatewayId,hni);
+                                    } else {
+                                        log.warn("Hotspot "+d.firstGatewayId+" will not track, too many under monitoring already");
+                                    }
+                                }
+                                // log
                                 log.warn("Found a packetDedup without uplink event for " + d.devAddr + " / " + d.fCnt +
                                     " from " + d.firstGatewayId + " sz "+d.dataSz+" with " + d.duplicates + " dup");
                                 cost += d.duplicates * ( (d.dataSz/24) + 1);
@@ -908,6 +1009,14 @@ public class MqttLoRaListener implements MqttCallback {
                     prometeusService.addHeliumNotInvoicedPacket(cost);
                 } else {
                     if ( postInvoiced > 0 ) log.debug("MQTT LL - cleanDedupCache - late packets invoiced " + postInvoiced);
+                }
+
+                // display information about hni
+                for ( HotspotNotInvoiced hni : hotspotHash.values() ) {
+                    if ( hni.seenLast > ( now - Now.ONE_HOUR ) ) {
+                       log.info("HS Non Invoiced "+hni.eui+" ("+((hni.id!=null)?hni.id:"Unknown")+") "+hni.invoicedPackets+" invoiced vs "+hni.nonInvoicedPackets+" missed ");
+                       for ( String dev : hni.seeDevices ) log.info("  Device : "+dev);
+                    }
                 }
 
                 // clean
