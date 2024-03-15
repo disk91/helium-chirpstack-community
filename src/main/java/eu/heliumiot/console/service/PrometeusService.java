@@ -531,7 +531,7 @@ public class PrometeusService {
         Gauge.builder("cons.lora.uplinks", getLoRaTotalUplink())
                 .description("number LoRa uplink proceeded")
                 .register(registry);
-        Gauge.builder("cons.lora.duplicates", getLoRaTotalUplink())
+        Gauge.builder("cons.lora.duplicates", getLoRaTotalDuplicates())
             .description("number LoRa duplicates proceeded")
             .register(registry);
         Gauge.builder("cons.lora.travel_time_ms", getLoRaUplinkToProcessTime())
