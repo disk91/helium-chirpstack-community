@@ -25,13 +25,13 @@
   #
   # This sets the max. number of open connections that are allowed in the
   # PostgreSQL connection pool.
-  max_open_connections=10
+  max_open_connections=30
 
   # Min idle connections.
   #
   # This sets the min. number of idle connections in the PostgreSQL connection
   # pool (0 = equal to max_open_connections).
-  min_idle_connections=0
+  min_idle_connections=10
 
 
 # Redis configuration.
@@ -53,6 +53,17 @@
   # instance.
   cluster=false
 
+  # Max open connections.
+  #
+  # This sets the max. number of open connections that are allowed in the
+  # Redis connection pool.
+  max_open_connections=250
+
+  # Min idle connections.
+  #
+  # This sets the min. number of idle connections in the Redis connection
+  # pool (0 = equal to max_open_connections).
+  min_idle_connections=150
 
 # Network related configuration.
 [network]
