@@ -996,7 +996,7 @@ public class MqttLoRaListener implements MqttCallback {
                                     }
                                 }
                                 // log
-                                log.warn("Found a packetDedup without uplink event for " + d.devAddr + " / " + d.fCnt +
+                                log.warn("Found a packetDedup without uplink event at "+DateConverters.msToStringDate(d.firstArrivalTime)+" for " + d.devAddr + " / " + d.fCnt +
                                     " from " + d.firstGatewayId + " sz "+d.dataSz+" with " + d.duplicates + " dup");
                                 cost += d.duplicates * ( (d.dataSz/24) + 1);
                                 notInvoicable += d.duplicates;
@@ -1013,9 +1013,11 @@ public class MqttLoRaListener implements MqttCallback {
 
                 // display information about hni
                 for ( HotspotNotInvoiced hni : hotspotHash.values() ) {
-                    if ( hni.seenLast > ( now - Now.ONE_HOUR ) ) {
+                    if ( hni.seenLast > ( now - Now.ONE_HOUR ) && hni.nonInvoicedPackets > 30 ) {
                        log.info("HS Non Invoiced "+hni.eui+" ("+((hni.id!=null)?hni.id:"Unknown")+") "+hni.invoicedPackets+" invoiced vs "+hni.nonInvoicedPackets+" missed ");
-                       for ( String dev : hni.seeDevices ) log.info("  Device : "+dev);
+                       String devs = "";
+                       for ( String dev : hni.seeDevices ) devs = devs.concat("[").concat(dev).concat("], ");
+                       log.info("  Device : "+devs);
                     }
                 }
 

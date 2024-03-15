@@ -20,9 +20,11 @@
 
 package fr.ingeniousthings.tools;
 
+import java.text.SimpleDateFormat;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
+import java.util.Date;
 
 public class DateConverters {
 
@@ -31,5 +33,11 @@ public class DateConverters {
         DateTimeFormatter formatter = DateTimeFormatter.ISO_OFFSET_DATE_TIME;
         ZonedDateTime dateTime = ZonedDateTime.parse(d, formatter);
         return dateTime.toInstant().toEpochMilli();
+    }
+
+    private static final SimpleDateFormat _sdf = new SimpleDateFormat("yy-MM-dd HH:mm:ss");
+
+    public static String msToStringDate(long ms) {
+        return _sdf.format(new Date(ms));
     }
 }
