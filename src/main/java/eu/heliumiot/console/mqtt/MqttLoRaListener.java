@@ -990,7 +990,7 @@ public class MqttLoRaListener implements MqttCallback {
                                     if ( hotspotHash.size() < HS_NOT_INVOICED_MAX_HS ) {
                                         hni = new HotspotNotInvoiced(d.firstGatewayId);
                                         hni.addNonInvoicedPacket();
-                                        hotspotHash.put(d.firstGatewayId,hni);
+                                        hotspotHash.put(d.firstGatewayId.toLowerCase(),hni);
                                     } else {
                                         log.warn("Hotspot "+d.firstGatewayId+" will not track, too many under monitoring already");
                                     }
