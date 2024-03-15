@@ -444,6 +444,7 @@ public class MqttLoRaListener implements MqttCallback {
         public boolean isJoin;              // true when a join packet
         public String key;                  // entry key
         public String firstGatewayId;       // for identification
+        public String secondGatewayId;      // backup if exists
         public String devAddr;              // device devaddr for identification
         public int fCnt;                    // for identification
         public int dataSz;                  // data size for invoicing
@@ -504,7 +505,8 @@ public class MqttLoRaListener implements MqttCallback {
                 // *** FIRST
                 // first time we see this packet
                 dedup = new ToDedup();
-                dedup.firstGatewayId = uf.getRxInfo().getGatewayId();
+                dedup.firstGatewayId = uf.getRxInfo().getGatewayId().toLowerCase();
+                dedup.secondGatewayId = null;
                 dedup.firstArrivalTime = e.arrivalTime;
                 dedup.firstRxTime = rx;
                 dedup.key = spayload;
@@ -598,6 +600,7 @@ public class MqttLoRaListener implements MqttCallback {
                 // *** COPY
                 // Update the stat on existing packet
                 dedup.duplicates++;
+                if ( dedup.secondGatewayId == null ) dedup.secondGatewayId = uf.getRxInfo().getGatewayId().toLowerCase();
                 // update the late stats
                 if ((e.arrivalTime - dedup.firstArrivalTime) > mqttConfig.getChirpstackDedupDelayMs()) {
                     if ( !isJoin) {
@@ -716,11 +719,12 @@ public class MqttLoRaListener implements MqttCallback {
                     synchronized (lockRecentPacketDedup) {
                         theDedup = recentPacketDedup.parallelStream().filter(dedup -> {
                             if (dedup.fCnt == (up.getfCnt() & 0xFFFF) && !dedup.isJoin && dedup.devAddr.compareToIgnoreCase(up.getDevAddr()) == 0) {
-                                if (dedup.deviceEui != null && dedup.deviceEui.compareToIgnoreCase(up.getDeviceInfo().getDevEui()) == 0) {
+                                if (dedup.deviceEui != null && dedup.deviceEui.compareToIgnoreCase(up.getDeviceInfo().getDevEui().toLowerCase()) == 0) {
                                     return true;
                                 } else {
                                     for (UplinkEventRxInfo gw : up.getRxInfo()) {
-                                        if (gw.getGatewayId().compareToIgnoreCase(dedup.firstGatewayId) == 0)
+                                        String gwId = gw.getGatewayId().toLowerCase();
+                                        if (  gwId.compareTo(dedup.firstGatewayId) == 0 || ( dedup.secondGatewayId !=null && gwId.compareTo(dedup.secondGatewayId) == 0) )
                                             return true;
                                     }
                                 }
@@ -739,7 +743,8 @@ public class MqttLoRaListener implements MqttCallback {
                                     return true;
                                 } else {
                                     for (UplinkEventRxInfo gw : up.getRxInfo()) {
-                                        if (gw.getGatewayId().compareToIgnoreCase(dedup.firstGatewayId) == 0)
+                                        String gwId = gw.getGatewayId().toLowerCase();
+                                        if (  gwId.compareTo(dedup.firstGatewayId) == 0 || ( dedup.secondGatewayId !=null && gwId.compareTo(dedup.secondGatewayId) == 0) )
                                             return true;
                                     }
                                 }
@@ -775,7 +780,10 @@ public class MqttLoRaListener implements MqttCallback {
                         d.tenantId = up.getDeviceInfo().getTenantId();
                         d.duplicatesInvoiced = up.getRxInfo().size(); // this is a total invoiced ( first + duplicate )
                         d.dataSz = dataSz;
-                        d.firstGatewayId = up.getRxInfo().get(0).getGatewayId();
+                        d.firstGatewayId = up.getRxInfo().get(0).getGatewayId().toLowerCase();
+                        if ( up.getRxInfo().size() > 1 ) {
+                            d.secondGatewayId = up.getRxInfo().get(1).getGatewayId().toLowerCase();
+                        }
                         d.firstArrivalTime = Now.NowUtcMs();
                         d.key = null;
                         d.duplicates = 0;
