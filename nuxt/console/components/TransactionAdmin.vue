@@ -61,7 +61,7 @@
                         <b-icon-file-pdf
                             v-if="transaction.status == 'succeeded' && transaction.type == 1"
                             class="text-dark"
-                            @click="getInvoice(transaction.transactionUUID)"
+                            @click="getInvoice(transaction.transactionUUID,transaction.createAt)"
                         />                 
                     </b-col>
                   </b-row>
@@ -139,7 +139,7 @@ export default Vue.extend({
                 return '$'+cost.toLocaleString("en-US") 
             } else return 'N/A';
         },
-        getInvoice(txId:string) {
+        getInvoice(txId:string,ts:BigInt) {
             let config = {
                 headers: {
                 'Content-Type': 'application/json',
@@ -147,22 +147,32 @@ export default Vue.extend({
                 'Authorization': 'Bearer '+this.$store.state.consoleBearer,  
                 }
             };
-        this.$axios.get(this.$config.transactionInvoice+'/'+txId+'/',{
-                responseType: 'blob',
-                headers: config.headers
-            })
-            .then((response) =>{
-                if (response.status == 200 ) {
-                    const blob = new Blob([response.data], {
-                        type: 'application/pdf',
-                     });
-                     const objectUrl = window.URL.createObjectURL(blob)
-                     window.open(objectUrl)                    
-                }
-            }).catch((err) =>{
-               this.errorMessage = 'error_load_transactions';
-               this.transactions = [];
-            })
+            let m = new Date(ts as any);
+            var dateString = m.getUTCFullYear() + 
+                            ("0" + (m.getMonth()+1)).slice(-2) +
+                            ("0" + m.getDate()).slice(-2) + '_' +
+                            ("0" + m.getHours()).slice(-2) +
+                            ("0" + m.getMinutes()).slice(-2);
+            this.$axios.get(this.$config.transactionInvoice+'/'+txId+'/',{
+                    responseType: 'blob',
+                    headers: config.headers
+                })
+                .then((response) =>{
+                    if (response.status == 200 ) {
+                        const blob = new Blob([response.data], {
+                            type: 'application/pdf',
+                        });
+                        const objectUrl = window.URL.createObjectURL(blob)
+                        var link = document.createElement('a');
+                        link.href = objectUrl;
+                        link.download = dateString+'_Helium-Iot.pdf';
+                        link.dispatchEvent(new MouseEvent('click'));
+                        window.URL.revokeObjectURL(objectUrl);                  
+                    }
+                }).catch((err) =>{
+                    this.errorMessage = 'error_load_transactions';
+                    this.transactions = [];
+                })
         }
     },
     mounted() {

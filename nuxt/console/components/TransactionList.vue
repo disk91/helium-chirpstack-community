@@ -140,7 +140,7 @@ export default Vue.extend({
                 return '$'+cost.toLocaleString("en-US") 
             } else return 'N/A';
         },
-        getInvoice(txId:string,ts:number) {
+        getInvoice(txId:string,ts:BigInt) {
             let config = {
                 headers: {
                 'Content-Type': 'application/json',
@@ -171,8 +171,8 @@ export default Vue.extend({
                         window.URL.revokeObjectURL(objectUrl);                  
                     }
                 }).catch((err) =>{
-                this.errorMessage = 'error_load_transactions';
-                this.transactions = [];
+                    this.errorMessage = 'error_load_transactions';
+                    this.transactions = [];
                 })
         }
     },
