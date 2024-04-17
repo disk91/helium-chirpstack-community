@@ -109,7 +109,7 @@ public class HeliumTenantService {
      * @param tenantUUID
      * @return
      */
-    protected HeliumTenant getHeliumTenant(String tenantUUID, boolean autoCreate){
+    synchronized protected HeliumTenant getHeliumTenant(String tenantUUID, boolean autoCreate){
         // @TODO - on peut optimiser en cachant le resultat tant qu'il n'a pas changé
         //         de cette facon on ne fait pas un appel a chaque fois
         HeliumTenant t = heliumTenantRepository.findOneHeliumTenantByTenantUUID(tenantUUID);

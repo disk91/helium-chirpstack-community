@@ -1648,6 +1648,9 @@ public class NovaService {
         long now = Now.NowUtcMs();
         ArrayList<route_update_euis_req_v1> requests = new ArrayList<>();
         for( NovaDevice device : devices) {
+            // skip devEui == 0
+            if ( device.devEui.compareTo("0000000000000000") == 0 ) continue;
+
             log.debug("  Process DevEUI "+device.devEui);
             eui_pair_v1 eui = eui_pair_v1.newBuilder()
                     .setDevEui(Tools.EuiStringToLong(device.devEui))
