@@ -41,7 +41,7 @@ public class JpaFilter implements SchemaFilter {
 
     @Override
     public boolean includeTable(Table table) {
-        log.error("#### look for table "+table.getName());
+        //log.error("#### look for table "+table.getName());
         // make sure we process only the helium_* tables
         if ( table.getName().startsWith("helium_") ) {
             return true;
