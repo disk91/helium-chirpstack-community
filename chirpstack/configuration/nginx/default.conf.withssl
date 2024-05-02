@@ -80,6 +80,10 @@ server {
 	   return 301 /static/front/mqtt.png;
 	}
 
+    location ~ api\.GatewayService/Create$ {
+        return 400;
+    }
+    
     location = / {
          if ( $override = "front" ) { return 301 /front/; }
          proxy_pass http://chirpstack$request_uri;
