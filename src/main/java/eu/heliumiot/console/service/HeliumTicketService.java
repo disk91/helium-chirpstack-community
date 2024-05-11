@@ -240,7 +240,12 @@ public class HeliumTicketService {
             r.setDetails(t.getDetail());
             if (t.getUserUUID() != user.user.getId()) {
                 UserCacheService.UserCacheElement owner = userCacheService.getUserById(t.getUserUUID().toString());
-                r.setOwner(owner.user.getEmail());
+                if( owner == null ) {
+                    // happen when the user is deleted
+                    r.setOwner("Deleted user");
+                } else {
+                    r.setOwner(owner.user.getEmail());
+                }
             } else {
                 r.setOwner(user.user.getEmail());
             }
