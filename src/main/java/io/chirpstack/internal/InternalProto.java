@@ -96,103 +96,100 @@ public final class InternalProto {
     java.lang.String[] descriptorData = {
       "\n\027internal/internal.proto\022\010internal\032\023com" +
       "mon/common.proto\032\013gw/gw.proto\032\037google/pr" +
-      "otobuf/timestamp.proto\"\333\013\n\rDeviceSession" +
-      "\022\017\n\007dev_eui\030\001 \001(\014\022\020\n\010dev_addr\030\002 \001(\014\022\020\n\010j" +
-      "oin_eui\030\003 \001(\014\022\'\n\013mac_version\030\004 \001(\0162\022.com" +
-      "mon.MacVersion\022\027\n\017f_nwk_s_int_key\030\005 \001(\014\022" +
-      "\027\n\017s_nwk_s_int_key\030\006 \001(\014\022\025\n\rnwk_s_enc_ke" +
-      "y\030\007 \001(\014\022&\n\tapp_s_key\030\010 \001(\0132\023.common.KeyE" +
-      "nvelope\022\031\n\021js_session_key_id\030* \001(\014\022\020\n\010f_" +
-      "cnt_up\030\t \001(\r\022\024\n\014n_f_cnt_down\030\n \001(\r\022\024\n\014a_" +
-      "f_cnt_down\030\013 \001(\r\022\022\n\nconf_f_cnt\030\014 \001(\r\022\030\n\020" +
-      "skip_f_cnt_check\030\r \001(\010\022\021\n\trx1_delay\030\016 \001(" +
-      "\r\022\025\n\rrx1_dr_offset\030\017 \001(\r\022\016\n\006rx2_dr\030\020 \001(\r" +
-      "\022\025\n\rrx2_frequency\030\021 \001(\r\022&\n\036enabled_uplin" +
-      "k_channel_indices\030\022 \003(\r\022O\n\025extra_uplink_" +
-      "channels\030\023 \003(\01320.internal.DeviceSession." +
-      "ExtraUplinkChannelsEntry\022\034\n\024class_b_ping" +
-      "_slot_dr\030\024 \001(\r\022\036\n\026class_b_ping_slot_freq" +
-      "\030\025 \001(\r\022\034\n\024class_b_ping_slot_nb\030\026 \001(\r\022\020\n\010" +
-      "nb_trans\030\027 \001(\r\022\026\n\016tx_power_index\030\030 \001(\r\022\n" +
-      "\n\002dr\030\031 \001(\r\022\013\n\003adr\030\032 \001(\010\022$\n\034max_supported" +
-      "_tx_power_index\030\033 \001(\r\022$\n\034min_supported_t" +
-      "x_power_index\030\034 \001(\r\022>\n\035pending_rejoin_de" +
-      "vice_session\030\035 \001(\0132\027.internal.DeviceSess" +
-      "ion\0226\n\022uplink_adr_history\030\036 \003(\0132\032.intern" +
-      "al.UplinkAdrHistory\022R\n\027mac_command_error" +
-      "_count\030\037 \003(\01321.internal.DeviceSession.Ma" +
-      "cCommandErrorCountEntry\022>\n\032last_device_s" +
-      "tatus_request\030  \001(\0132\032.google.protobuf.Ti" +
-      "mestamp\022\036\n\026rejoin_request_enabled\030! \001(\010\022" +
-      "\"\n\032rejoin_request_max_count_n\030\" \001(\r\022!\n\031r" +
-      "ejoin_request_max_time_n\030# \001(\r\022\026\n\016rejoin" +
-      "_count_0\030$ \001(\r\022\037\n\027uplink_dwell_time_400m" +
-      "s\030% \001(\010\022!\n\031downlink_dwell_time_400ms\030& \001" +
-      "(\010\022\035\n\025uplink_max_eirp_index\030\' \001(\r\022\030\n\020reg" +
-      "ion_config_id\030( \001(\t\022\036\n\005relay\030) \001(\0132\017.int" +
-      "ernal.Relay\032Z\n\030ExtraUplinkChannelsEntry\022" +
-      "\013\n\003key\030\001 \001(\r\022-\n\005value\030\002 \001(\0132\036.internal.D" +
-      "eviceSessionChannel:\0028\001\032;\n\031MacCommandErr" +
-      "orCountEntry\022\013\n\003key\030\001 \001(\r\022\r\n\005value\030\002 \001(\r" +
-      ":\0028\001\"s\n\020UplinkAdrHistory\022\r\n\005f_cnt\030\001 \001(\r\022" +
-      "\017\n\007max_snr\030\002 \001(\002\022\020\n\010max_rssi\030\005 \001(\005\022\026\n\016tx" +
-      "_power_index\030\003 \001(\r\022\025\n\rgateway_count\030\004 \001(" +
-      "\r\"\227\005\n\005Relay\022&\n\007devices\030\001 \003(\0132\025.internal." +
-      "RelayDevice\022&\n\007filters\030\002 \003(\0132\025.internal." +
-      "RelayFilter\022\017\n\007enabled\030\003 \001(\010\022\027\n\017cad_peri" +
-      "odicity\030\004 \001(\r\022\035\n\025default_channel_index\030\005" +
-      " \001(\r\022\033\n\023second_channel_freq\030\006 \001(\r\022\031\n\021sec" +
-      "ond_channel_dr\030\007 \001(\r\022!\n\031second_channel_a" +
-      "ck_offset\030\010 \001(\r\022\032\n\022ed_activation_mode\030\t " +
-      "\001(\r\022\035\n\025ed_smart_enable_level\030\n \001(\r\022\023\n\013ed" +
-      "_back_off\030\013 \001(\r\022\"\n\032join_req_limit_reload" +
-      "_rate\030\014 \001(\r\022 \n\030notify_limit_reload_rate\030" +
-      "\r \001(\r\022\'\n\037global_uplink_limit_reload_rate" +
-      "\030\016 \001(\r\022!\n\031overall_limit_reload_rate\030\017 \001(" +
-      "\r\022\"\n\032join_req_limit_bucket_size\030\020 \001(\r\022 \n" +
-      "\030notify_limit_bucket_size\030\021 \001(\r\022\'\n\037globa" +
-      "l_uplink_limit_bucket_size\030\022 \001(\r\022!\n\031over" +
-      "all_limit_bucket_size\030\023 \001(\r\022\025\n\red_relay_" +
-      "only\030\024 \001(\010\022\017\n\007w_f_cnt\030\025 \001(\r\"\374\001\n\013RelayDev" +
-      "ice\022\r\n\005index\030\001 \001(\r\022\020\n\010join_eui\030\002 \001(\014\022\017\n\007" +
-      "dev_eui\030\003 \001(\014\022\020\n\010dev_addr\030\004 \001(\014\022\026\n\016root_" +
-      "wor_s_key\030\005 \001(\014\022\023\n\013provisioned\030\006 \001(\010\022 \n\030" +
-      "uplink_limit_bucket_size\030\007 \001(\r\022 \n\030uplink" +
-      "_limit_reload_rate\030\010 \001(\r\0228\n\024w_f_cnt_last" +
-      "_request\030\t \001(\0132\032.google.protobuf.Timesta" +
-      "mp\"d\n\013RelayFilter\022\r\n\005index\030\001 \001(\r\022\016\n\006acti" +
-      "on\030\002 \001(\r\022\017\n\007dev_eui\030\003 \001(\014\022\020\n\010join_eui\030\004 " +
-      "\001(\014\022\023\n\013provisioned\030\005 \001(\010\"I\n\024DeviceSessio" +
-      "nChannel\022\021\n\tfrequency\030\001 \001(\r\022\016\n\006min_dr\030\002 " +
-      "\001(\r\022\016\n\006max_dr\030\003 \001(\r\"d\n\023DeviceGatewayRxIn" +
-      "fo\022\017\n\007dev_eui\030\001 \001(\014\022\n\n\002dr\030\002 \001(\r\0220\n\005items" +
-      "\030\003 \003(\0132!.internal.DeviceGatewayRxInfoIte" +
-      "m\"\301\001\n\027DeviceGatewayRxInfoItem\022\022\n\ngateway" +
-      "_id\030\001 \001(\014\022\014\n\004rssi\030\002 \001(\005\022\020\n\010lora_snr\030\003 \001(" +
-      "\002\022\017\n\007antenna\030\004 \001(\r\022\r\n\005board\030\005 \001(\r\022\017\n\007con" +
-      "text\030\006 \001(\014\022\025\n\ris_private_up\030\007 \001(\010\022\027\n\017is_" +
-      "private_down\030\010 \001(\010\022\021\n\ttenant_id\030\t \001(\014\"\266\002" +
-      "\n\rDownlinkFrame\022\023\n\013downlink_id\030\001 \001(\r\022\017\n\007" +
-      "dev_eui\030\002 \001(\014\022\034\n\024device_queue_item_id\030\003 " +
-      "\001(\014\022\032\n\022multicast_group_id\030\004 \001(\014\022%\n\035multi" +
-      "cast_group_queue_item_id\030\005 \001(\014\022)\n\016downli" +
-      "nk_frame\030\006 \001(\0132\021.gw.DownlinkFrame\022\027\n\017enc" +
-      "rypted_fopts\030\010 \001(\010\022\025\n\rnwk_s_enc_key\030\t \001(" +
-      "\014\022\024\n\014n_f_cnt_down\030\n \001(\r\022\024\n\014a_f_cnt_down\030" +
-      "\013 \001(\r\022\027\n\017dev_eui_relayed\030\014 \001(\014\"O\n\025LoraCl" +
-      "oudGeolocBuffer\0226\n\007uplinks\030\001 \003(\0132%.inter" +
-      "nal.LoraCloudGeolocBufferUplink\"@\n\033LoraC" +
-      "loudGeolocBufferUplink\022!\n\007rx_info\030\001 \003(\0132" +
-      "\020.gw.UplinkRxInfo\"\350\001\n\033PassiveRoamingDevi" +
-      "ceSession\022\022\n\nsession_id\030\001 \001(\014\022\016\n\006net_id\030" +
-      "\002 \001(\014\022\020\n\010dev_addr\030\003 \001(\014\022\017\n\007dev_eui\030\004 \001(\014" +
-      "\022\023\n\013lorawan_1_1\030\005 \001(\010\022\027\n\017f_nwk_s_int_key" +
-      "\030\006 \001(\014\022,\n\010lifetime\030\007 \001(\0132\032.google.protob" +
-      "uf.Timestamp\022\020\n\010f_cnt_up\030\010 \001(\r\022\024\n\014valida" +
-      "te_mic\030\t \001(\010Bn\n\026io.chirpstack.internalB\r" +
-      "InternalProtoP\001Z-github.com/chirpstack/c" +
-      "hirpstack/api/go/v4/gw\252\002\023Chirpstack.Inte" +
-      "rnalb\006proto3"
+      "otobuf/timestamp.proto\"\270\013\n\rDeviceSession" +
+      "\022\020\n\010dev_addr\030\002 \001(\014\022\'\n\013mac_version\030\004 \001(\0162" +
+      "\022.common.MacVersion\022\027\n\017f_nwk_s_int_key\030\005" +
+      " \001(\014\022\027\n\017s_nwk_s_int_key\030\006 \001(\014\022\025\n\rnwk_s_e" +
+      "nc_key\030\007 \001(\014\022&\n\tapp_s_key\030\010 \001(\0132\023.common" +
+      ".KeyEnvelope\022\031\n\021js_session_key_id\030* \001(\014\022" +
+      "\020\n\010f_cnt_up\030\t \001(\r\022\024\n\014n_f_cnt_down\030\n \001(\r\022" +
+      "\024\n\014a_f_cnt_down\030\013 \001(\r\022\022\n\nconf_f_cnt\030\014 \001(" +
+      "\r\022\030\n\020skip_f_cnt_check\030\r \001(\010\022\021\n\trx1_delay" +
+      "\030\016 \001(\r\022\025\n\rrx1_dr_offset\030\017 \001(\r\022\016\n\006rx2_dr\030" +
+      "\020 \001(\r\022\025\n\rrx2_frequency\030\021 \001(\r\022&\n\036enabled_" +
+      "uplink_channel_indices\030\022 \003(\r\022O\n\025extra_up" +
+      "link_channels\030\023 \003(\01320.internal.DeviceSes" +
+      "sion.ExtraUplinkChannelsEntry\022\034\n\024class_b" +
+      "_ping_slot_dr\030\024 \001(\r\022\036\n\026class_b_ping_slot" +
+      "_freq\030\025 \001(\r\022\034\n\024class_b_ping_slot_nb\030\026 \001(" +
+      "\r\022\020\n\010nb_trans\030\027 \001(\r\022\026\n\016tx_power_index\030\030 " +
+      "\001(\r\022\n\n\002dr\030\031 \001(\r\022\013\n\003adr\030\032 \001(\010\022$\n\034max_supp" +
+      "orted_tx_power_index\030\033 \001(\r\022$\n\034min_suppor" +
+      "ted_tx_power_index\030\034 \001(\r\022>\n\035pending_rejo" +
+      "in_device_session\030\035 \001(\0132\027.internal.Devic" +
+      "eSession\0226\n\022uplink_adr_history\030\036 \003(\0132\032.i" +
+      "nternal.UplinkAdrHistory\022R\n\027mac_command_" +
+      "error_count\030\037 \003(\01321.internal.DeviceSessi" +
+      "on.MacCommandErrorCountEntry\022>\n\032last_dev" +
+      "ice_status_request\030  \001(\0132\032.google.protob" +
+      "uf.Timestamp\022\036\n\026rejoin_request_enabled\030!" +
+      " \001(\010\022\"\n\032rejoin_request_max_count_n\030\" \001(\r" +
+      "\022!\n\031rejoin_request_max_time_n\030# \001(\r\022\026\n\016r" +
+      "ejoin_count_0\030$ \001(\r\022\037\n\027uplink_dwell_time" +
+      "_400ms\030% \001(\010\022!\n\031downlink_dwell_time_400m" +
+      "s\030& \001(\010\022\035\n\025uplink_max_eirp_index\030\' \001(\r\022\030" +
+      "\n\020region_config_id\030( \001(\t\022\036\n\005relay\030) \001(\0132" +
+      "\017.internal.Relay\032Z\n\030ExtraUplinkChannelsE" +
+      "ntry\022\013\n\003key\030\001 \001(\r\022-\n\005value\030\002 \001(\0132\036.inter" +
+      "nal.DeviceSessionChannel:\0028\001\032;\n\031MacComma" +
+      "ndErrorCountEntry\022\013\n\003key\030\001 \001(\r\022\r\n\005value\030" +
+      "\002 \001(\r:\0028\001\"s\n\020UplinkAdrHistory\022\r\n\005f_cnt\030\001" +
+      " \001(\r\022\017\n\007max_snr\030\002 \001(\002\022\020\n\010max_rssi\030\005 \001(\005\022" +
+      "\026\n\016tx_power_index\030\003 \001(\r\022\025\n\rgateway_count" +
+      "\030\004 \001(\r\"\227\005\n\005Relay\022&\n\007devices\030\001 \003(\0132\025.inte" +
+      "rnal.RelayDevice\022&\n\007filters\030\002 \003(\0132\025.inte" +
+      "rnal.RelayFilter\022\017\n\007enabled\030\003 \001(\010\022\027\n\017cad" +
+      "_periodicity\030\004 \001(\r\022\035\n\025default_channel_in" +
+      "dex\030\005 \001(\r\022\033\n\023second_channel_freq\030\006 \001(\r\022\031" +
+      "\n\021second_channel_dr\030\007 \001(\r\022!\n\031second_chan" +
+      "nel_ack_offset\030\010 \001(\r\022\032\n\022ed_activation_mo" +
+      "de\030\t \001(\r\022\035\n\025ed_smart_enable_level\030\n \001(\r\022" +
+      "\023\n\013ed_back_off\030\013 \001(\r\022\"\n\032join_req_limit_r" +
+      "eload_rate\030\014 \001(\r\022 \n\030notify_limit_reload_" +
+      "rate\030\r \001(\r\022\'\n\037global_uplink_limit_reload" +
+      "_rate\030\016 \001(\r\022!\n\031overall_limit_reload_rate" +
+      "\030\017 \001(\r\022\"\n\032join_req_limit_bucket_size\030\020 \001" +
+      "(\r\022 \n\030notify_limit_bucket_size\030\021 \001(\r\022\'\n\037" +
+      "global_uplink_limit_bucket_size\030\022 \001(\r\022!\n" +
+      "\031overall_limit_bucket_size\030\023 \001(\r\022\025\n\red_r" +
+      "elay_only\030\024 \001(\010\022\017\n\007w_f_cnt\030\025 \001(\r\"\374\001\n\013Rel" +
+      "ayDevice\022\r\n\005index\030\001 \001(\r\022\020\n\010join_eui\030\002 \001(" +
+      "\014\022\017\n\007dev_eui\030\003 \001(\014\022\020\n\010dev_addr\030\004 \001(\014\022\026\n\016" +
+      "root_wor_s_key\030\005 \001(\014\022\023\n\013provisioned\030\006 \001(" +
+      "\010\022 \n\030uplink_limit_bucket_size\030\007 \001(\r\022 \n\030u" +
+      "plink_limit_reload_rate\030\010 \001(\r\0228\n\024w_f_cnt" +
+      "_last_request\030\t \001(\0132\032.google.protobuf.Ti" +
+      "mestamp\"d\n\013RelayFilter\022\r\n\005index\030\001 \001(\r\022\016\n" +
+      "\006action\030\002 \001(\r\022\017\n\007dev_eui\030\003 \001(\014\022\020\n\010join_e" +
+      "ui\030\004 \001(\014\022\023\n\013provisioned\030\005 \001(\010\"I\n\024DeviceS" +
+      "essionChannel\022\021\n\tfrequency\030\001 \001(\r\022\016\n\006min_" +
+      "dr\030\002 \001(\r\022\016\n\006max_dr\030\003 \001(\r\"d\n\023DeviceGatewa" +
+      "yRxInfo\022\017\n\007dev_eui\030\001 \001(\014\022\n\n\002dr\030\002 \001(\r\0220\n\005" +
+      "items\030\003 \003(\0132!.internal.DeviceGatewayRxIn" +
+      "foItem\"\301\001\n\027DeviceGatewayRxInfoItem\022\022\n\nga" +
+      "teway_id\030\001 \001(\014\022\014\n\004rssi\030\002 \001(\005\022\020\n\010lora_snr" +
+      "\030\003 \001(\002\022\017\n\007antenna\030\004 \001(\r\022\r\n\005board\030\005 \001(\r\022\017" +
+      "\n\007context\030\006 \001(\014\022\025\n\ris_private_up\030\007 \001(\010\022\027" +
+      "\n\017is_private_down\030\010 \001(\010\022\021\n\ttenant_id\030\t \001" +
+      "(\014\"\266\002\n\rDownlinkFrame\022\023\n\013downlink_id\030\001 \001(" +
+      "\r\022\017\n\007dev_eui\030\002 \001(\014\022\034\n\024device_queue_item_" +
+      "id\030\003 \001(\014\022\032\n\022multicast_group_id\030\004 \001(\014\022%\n\035" +
+      "multicast_group_queue_item_id\030\005 \001(\014\022)\n\016d" +
+      "ownlink_frame\030\006 \001(\0132\021.gw.DownlinkFrame\022\027" +
+      "\n\017encrypted_fopts\030\010 \001(\010\022\025\n\rnwk_s_enc_key" +
+      "\030\t \001(\014\022\024\n\014n_f_cnt_down\030\n \001(\r\022\024\n\014a_f_cnt_" +
+      "down\030\013 \001(\r\022\027\n\017dev_eui_relayed\030\014 \001(\014\"O\n\025L" +
+      "oraCloudGeolocBuffer\0226\n\007uplinks\030\001 \003(\0132%." +
+      "internal.LoraCloudGeolocBufferUplink\"@\n\033" +
+      "LoraCloudGeolocBufferUplink\022!\n\007rx_info\030\001" +
+      " \003(\0132\020.gw.UplinkRxInfo\"\350\001\n\033PassiveRoamin" +
+      "gDeviceSession\022\022\n\nsession_id\030\001 \001(\014\022\016\n\006ne" +
+      "t_id\030\002 \001(\014\022\020\n\010dev_addr\030\003 \001(\014\022\017\n\007dev_eui\030" +
+      "\004 \001(\014\022\023\n\013lorawan_1_1\030\005 \001(\010\022\027\n\017f_nwk_s_in" +
+      "t_key\030\006 \001(\014\022,\n\010lifetime\030\007 \001(\0132\032.google.p" +
+      "rotobuf.Timestamp\022\020\n\010f_cnt_up\030\010 \001(\r\022\024\n\014v" +
+      "alidate_mic\030\t \001(\010B)\n\026io.chirpstack.inter" +
+      "nalB\rInternalProtoP\001b\006proto3"
     };
     descriptor = com.google.protobuf.Descriptors.FileDescriptor
       .internalBuildGeneratedFileFrom(descriptorData,
@@ -206,7 +203,7 @@ public final class InternalProto {
     internal_static_internal_DeviceSession_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_internal_DeviceSession_descriptor,
-        new java.lang.String[] { "DevEui", "DevAddr", "JoinEui", "MacVersion", "FNwkSIntKey", "SNwkSIntKey", "NwkSEncKey", "AppSKey", "JsSessionKeyId", "FCntUp", "NFCntDown", "AFCntDown", "ConfFCnt", "SkipFCntCheck", "Rx1Delay", "Rx1DrOffset", "Rx2Dr", "Rx2Frequency", "EnabledUplinkChannelIndices", "ExtraUplinkChannels", "ClassBPingSlotDr", "ClassBPingSlotFreq", "ClassBPingSlotNb", "NbTrans", "TxPowerIndex", "Dr", "Adr", "MaxSupportedTxPowerIndex", "MinSupportedTxPowerIndex", "PendingRejoinDeviceSession", "UplinkAdrHistory", "MacCommandErrorCount", "LastDeviceStatusRequest", "RejoinRequestEnabled", "RejoinRequestMaxCountN", "RejoinRequestMaxTimeN", "RejoinCount0", "UplinkDwellTime400Ms", "DownlinkDwellTime400Ms", "UplinkMaxEirpIndex", "RegionConfigId", "Relay", });
+        new java.lang.String[] { "DevAddr", "MacVersion", "FNwkSIntKey", "SNwkSIntKey", "NwkSEncKey", "AppSKey", "JsSessionKeyId", "FCntUp", "NFCntDown", "AFCntDown", "ConfFCnt", "SkipFCntCheck", "Rx1Delay", "Rx1DrOffset", "Rx2Dr", "Rx2Frequency", "EnabledUplinkChannelIndices", "ExtraUplinkChannels", "ClassBPingSlotDr", "ClassBPingSlotFreq", "ClassBPingSlotNb", "NbTrans", "TxPowerIndex", "Dr", "Adr", "MaxSupportedTxPowerIndex", "MinSupportedTxPowerIndex", "PendingRejoinDeviceSession", "UplinkAdrHistory", "MacCommandErrorCount", "LastDeviceStatusRequest", "RejoinRequestEnabled", "RejoinRequestMaxCountN", "RejoinRequestMaxTimeN", "RejoinCount0", "UplinkDwellTime400Ms", "DownlinkDwellTime400Ms", "UplinkMaxEirpIndex", "RegionConfigId", "Relay", });
     internal_static_internal_DeviceSession_ExtraUplinkChannelsEntry_descriptor =
       internal_static_internal_DeviceSession_descriptor.getNestedTypes().get(0);
     internal_static_internal_DeviceSession_ExtraUplinkChannelsEntry_fieldAccessorTable = new

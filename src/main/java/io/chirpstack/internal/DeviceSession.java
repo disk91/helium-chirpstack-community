@@ -17,9 +17,7 @@ private static final long serialVersionUID = 0L;
     super(builder);
   }
   private DeviceSession() {
-    devEui_ = com.google.protobuf.ByteString.EMPTY;
     devAddr_ = com.google.protobuf.ByteString.EMPTY;
-    joinEui_ = com.google.protobuf.ByteString.EMPTY;
     macVersion_ = 0;
     fNwkSIntKey_ = com.google.protobuf.ByteString.EMPTY;
     sNwkSIntKey_ = com.google.protobuf.ByteString.EMPTY;
@@ -65,21 +63,6 @@ private static final long serialVersionUID = 0L;
   }
 
   private int bitField0_;
-  public static final int DEV_EUI_FIELD_NUMBER = 1;
-  private com.google.protobuf.ByteString devEui_ = com.google.protobuf.ByteString.EMPTY;
-  /**
-   * <pre>
-   * Device EUI.
-   * </pre>
-   *
-   * <code>bytes dev_eui = 1;</code>
-   * @return The devEui.
-   */
-  @java.lang.Override
-  public com.google.protobuf.ByteString getDevEui() {
-    return devEui_;
-  }
-
   public static final int DEV_ADDR_FIELD_NUMBER = 2;
   private com.google.protobuf.ByteString devAddr_ = com.google.protobuf.ByteString.EMPTY;
   /**
@@ -93,21 +76,6 @@ private static final long serialVersionUID = 0L;
   @java.lang.Override
   public com.google.protobuf.ByteString getDevAddr() {
     return devAddr_;
-  }
-
-  public static final int JOIN_EUI_FIELD_NUMBER = 3;
-  private com.google.protobuf.ByteString joinEui_ = com.google.protobuf.ByteString.EMPTY;
-  /**
-   * <pre>
-   * Join EUI.
-   * </pre>
-   *
-   * <code>bytes join_eui = 3;</code>
-   * @return The joinEui.
-   */
-  @java.lang.Override
-  public com.google.protobuf.ByteString getJoinEui() {
-    return joinEui_;
   }
 
   public static final int MAC_VERSION_FIELD_NUMBER = 4;
@@ -1110,14 +1078,8 @@ io.chirpstack.internal.DeviceSessionChannel defaultValue) {
   public void writeTo(com.google.protobuf.CodedOutputStream output)
                       throws java.io.IOException {
     getSerializedSize();
-    if (!devEui_.isEmpty()) {
-      output.writeBytes(1, devEui_);
-    }
     if (!devAddr_.isEmpty()) {
       output.writeBytes(2, devAddr_);
-    }
-    if (!joinEui_.isEmpty()) {
-      output.writeBytes(3, joinEui_);
     }
     if (macVersion_ != io.chirpstack.api.MacVersion.LORAWAN_1_0_0.getNumber()) {
       output.writeEnum(4, macVersion_);
@@ -1255,17 +1217,9 @@ io.chirpstack.internal.DeviceSessionChannel defaultValue) {
     if (size != -1) return size;
 
     size = 0;
-    if (!devEui_.isEmpty()) {
-      size += com.google.protobuf.CodedOutputStream
-        .computeBytesSize(1, devEui_);
-    }
     if (!devAddr_.isEmpty()) {
       size += com.google.protobuf.CodedOutputStream
         .computeBytesSize(2, devAddr_);
-    }
-    if (!joinEui_.isEmpty()) {
-      size += com.google.protobuf.CodedOutputStream
-        .computeBytesSize(3, joinEui_);
     }
     if (macVersion_ != io.chirpstack.api.MacVersion.LORAWAN_1_0_0.getNumber()) {
       size += com.google.protobuf.CodedOutputStream
@@ -1459,12 +1413,8 @@ io.chirpstack.internal.DeviceSessionChannel defaultValue) {
     }
     io.chirpstack.internal.DeviceSession other = (io.chirpstack.internal.DeviceSession) obj;
 
-    if (!getDevEui()
-        .equals(other.getDevEui())) return false;
     if (!getDevAddr()
         .equals(other.getDevAddr())) return false;
-    if (!getJoinEui()
-        .equals(other.getJoinEui())) return false;
     if (macVersion_ != other.macVersion_) return false;
     if (!getFNwkSIntKey()
         .equals(other.getFNwkSIntKey())) return false;
@@ -1565,12 +1515,8 @@ io.chirpstack.internal.DeviceSessionChannel defaultValue) {
     }
     int hash = 41;
     hash = (19 * hash) + getDescriptor().hashCode();
-    hash = (37 * hash) + DEV_EUI_FIELD_NUMBER;
-    hash = (53 * hash) + getDevEui().hashCode();
     hash = (37 * hash) + DEV_ADDR_FIELD_NUMBER;
     hash = (53 * hash) + getDevAddr().hashCode();
-    hash = (37 * hash) + JOIN_EUI_FIELD_NUMBER;
-    hash = (53 * hash) + getJoinEui().hashCode();
     hash = (37 * hash) + MAC_VERSION_FIELD_NUMBER;
     hash = (53 * hash) + macVersion_;
     hash = (37 * hash) + F_NWK_S_INT_KEY_FIELD_NUMBER;
@@ -1838,9 +1784,7 @@ io.chirpstack.internal.DeviceSessionChannel defaultValue) {
       super.clear();
       bitField0_ = 0;
       bitField1_ = 0;
-      devEui_ = com.google.protobuf.ByteString.EMPTY;
       devAddr_ = com.google.protobuf.ByteString.EMPTY;
-      joinEui_ = com.google.protobuf.ByteString.EMPTY;
       macVersion_ = 0;
       fNwkSIntKey_ = com.google.protobuf.ByteString.EMPTY;
       sNwkSIntKey_ = com.google.protobuf.ByteString.EMPTY;
@@ -1882,7 +1826,7 @@ io.chirpstack.internal.DeviceSessionChannel defaultValue) {
         uplinkAdrHistory_ = null;
         uplinkAdrHistoryBuilder_.clear();
       }
-      bitField0_ = (bitField0_ & ~0x40000000);
+      bitField0_ = (bitField0_ & ~0x10000000);
       internalGetMutableMacCommandErrorCount().clear();
       lastDeviceStatusRequest_ = null;
       if (lastDeviceStatusRequestBuilder_ != null) {
@@ -1937,9 +1881,9 @@ io.chirpstack.internal.DeviceSessionChannel defaultValue) {
 
     private void buildPartialRepeatedFields(io.chirpstack.internal.DeviceSession result) {
       if (uplinkAdrHistoryBuilder_ == null) {
-        if (((bitField0_ & 0x40000000) != 0)) {
+        if (((bitField0_ & 0x10000000) != 0)) {
           uplinkAdrHistory_ = java.util.Collections.unmodifiableList(uplinkAdrHistory_);
-          bitField0_ = (bitField0_ & ~0x40000000);
+          bitField0_ = (bitField0_ & ~0x10000000);
         }
         result.uplinkAdrHistory_ = uplinkAdrHistory_;
       } else {
@@ -1950,144 +1894,138 @@ io.chirpstack.internal.DeviceSessionChannel defaultValue) {
     private void buildPartial0(io.chirpstack.internal.DeviceSession result) {
       int from_bitField0_ = bitField0_;
       if (((from_bitField0_ & 0x00000001) != 0)) {
-        result.devEui_ = devEui_;
-      }
-      if (((from_bitField0_ & 0x00000002) != 0)) {
         result.devAddr_ = devAddr_;
       }
-      if (((from_bitField0_ & 0x00000004) != 0)) {
-        result.joinEui_ = joinEui_;
-      }
-      if (((from_bitField0_ & 0x00000008) != 0)) {
+      if (((from_bitField0_ & 0x00000002) != 0)) {
         result.macVersion_ = macVersion_;
       }
-      if (((from_bitField0_ & 0x00000010) != 0)) {
+      if (((from_bitField0_ & 0x00000004) != 0)) {
         result.fNwkSIntKey_ = fNwkSIntKey_;
       }
-      if (((from_bitField0_ & 0x00000020) != 0)) {
+      if (((from_bitField0_ & 0x00000008) != 0)) {
         result.sNwkSIntKey_ = sNwkSIntKey_;
       }
-      if (((from_bitField0_ & 0x00000040) != 0)) {
+      if (((from_bitField0_ & 0x00000010) != 0)) {
         result.nwkSEncKey_ = nwkSEncKey_;
       }
       int to_bitField0_ = 0;
-      if (((from_bitField0_ & 0x00000080) != 0)) {
+      if (((from_bitField0_ & 0x00000020) != 0)) {
         result.appSKey_ = appSKeyBuilder_ == null
             ? appSKey_
             : appSKeyBuilder_.build();
         to_bitField0_ |= 0x00000001;
       }
-      if (((from_bitField0_ & 0x00000100) != 0)) {
+      if (((from_bitField0_ & 0x00000040) != 0)) {
         result.jsSessionKeyId_ = jsSessionKeyId_;
       }
-      if (((from_bitField0_ & 0x00000200) != 0)) {
+      if (((from_bitField0_ & 0x00000080) != 0)) {
         result.fCntUp_ = fCntUp_;
       }
-      if (((from_bitField0_ & 0x00000400) != 0)) {
+      if (((from_bitField0_ & 0x00000100) != 0)) {
         result.nFCntDown_ = nFCntDown_;
       }
-      if (((from_bitField0_ & 0x00000800) != 0)) {
+      if (((from_bitField0_ & 0x00000200) != 0)) {
         result.aFCntDown_ = aFCntDown_;
       }
-      if (((from_bitField0_ & 0x00001000) != 0)) {
+      if (((from_bitField0_ & 0x00000400) != 0)) {
         result.confFCnt_ = confFCnt_;
       }
-      if (((from_bitField0_ & 0x00002000) != 0)) {
+      if (((from_bitField0_ & 0x00000800) != 0)) {
         result.skipFCntCheck_ = skipFCntCheck_;
       }
-      if (((from_bitField0_ & 0x00004000) != 0)) {
+      if (((from_bitField0_ & 0x00001000) != 0)) {
         result.rx1Delay_ = rx1Delay_;
       }
-      if (((from_bitField0_ & 0x00008000) != 0)) {
+      if (((from_bitField0_ & 0x00002000) != 0)) {
         result.rx1DrOffset_ = rx1DrOffset_;
       }
-      if (((from_bitField0_ & 0x00010000) != 0)) {
+      if (((from_bitField0_ & 0x00004000) != 0)) {
         result.rx2Dr_ = rx2Dr_;
       }
-      if (((from_bitField0_ & 0x00020000) != 0)) {
+      if (((from_bitField0_ & 0x00008000) != 0)) {
         result.rx2Frequency_ = rx2Frequency_;
       }
-      if (((from_bitField0_ & 0x00040000) != 0)) {
+      if (((from_bitField0_ & 0x00010000) != 0)) {
         enabledUplinkChannelIndices_.makeImmutable();
         result.enabledUplinkChannelIndices_ = enabledUplinkChannelIndices_;
       }
-      if (((from_bitField0_ & 0x00080000) != 0)) {
+      if (((from_bitField0_ & 0x00020000) != 0)) {
         result.extraUplinkChannels_ = internalGetExtraUplinkChannels().build(ExtraUplinkChannelsDefaultEntryHolder.defaultEntry);
       }
-      if (((from_bitField0_ & 0x00100000) != 0)) {
+      if (((from_bitField0_ & 0x00040000) != 0)) {
         result.classBPingSlotDr_ = classBPingSlotDr_;
       }
-      if (((from_bitField0_ & 0x00200000) != 0)) {
+      if (((from_bitField0_ & 0x00080000) != 0)) {
         result.classBPingSlotFreq_ = classBPingSlotFreq_;
       }
-      if (((from_bitField0_ & 0x00400000) != 0)) {
+      if (((from_bitField0_ & 0x00100000) != 0)) {
         result.classBPingSlotNb_ = classBPingSlotNb_;
       }
-      if (((from_bitField0_ & 0x00800000) != 0)) {
+      if (((from_bitField0_ & 0x00200000) != 0)) {
         result.nbTrans_ = nbTrans_;
       }
-      if (((from_bitField0_ & 0x01000000) != 0)) {
+      if (((from_bitField0_ & 0x00400000) != 0)) {
         result.txPowerIndex_ = txPowerIndex_;
       }
-      if (((from_bitField0_ & 0x02000000) != 0)) {
+      if (((from_bitField0_ & 0x00800000) != 0)) {
         result.dr_ = dr_;
       }
-      if (((from_bitField0_ & 0x04000000) != 0)) {
+      if (((from_bitField0_ & 0x01000000) != 0)) {
         result.adr_ = adr_;
       }
-      if (((from_bitField0_ & 0x08000000) != 0)) {
+      if (((from_bitField0_ & 0x02000000) != 0)) {
         result.maxSupportedTxPowerIndex_ = maxSupportedTxPowerIndex_;
       }
-      if (((from_bitField0_ & 0x10000000) != 0)) {
+      if (((from_bitField0_ & 0x04000000) != 0)) {
         result.minSupportedTxPowerIndex_ = minSupportedTxPowerIndex_;
       }
-      if (((from_bitField0_ & 0x20000000) != 0)) {
+      if (((from_bitField0_ & 0x08000000) != 0)) {
         result.pendingRejoinDeviceSession_ = pendingRejoinDeviceSessionBuilder_ == null
             ? pendingRejoinDeviceSession_
             : pendingRejoinDeviceSessionBuilder_.build();
         to_bitField0_ |= 0x00000002;
       }
-      if (((from_bitField0_ & 0x80000000) != 0)) {
+      if (((from_bitField0_ & 0x20000000) != 0)) {
         result.macCommandErrorCount_ = internalGetMacCommandErrorCount();
         result.macCommandErrorCount_.makeImmutable();
+      }
+      if (((from_bitField0_ & 0x40000000) != 0)) {
+        result.lastDeviceStatusRequest_ = lastDeviceStatusRequestBuilder_ == null
+            ? lastDeviceStatusRequest_
+            : lastDeviceStatusRequestBuilder_.build();
+        to_bitField0_ |= 0x00000004;
+      }
+      if (((from_bitField0_ & 0x80000000) != 0)) {
+        result.rejoinRequestEnabled_ = rejoinRequestEnabled_;
       }
       result.bitField0_ |= to_bitField0_;
     }
 
     private void buildPartial1(io.chirpstack.internal.DeviceSession result) {
       int from_bitField1_ = bitField1_;
-      int to_bitField0_ = 0;
       if (((from_bitField1_ & 0x00000001) != 0)) {
-        result.lastDeviceStatusRequest_ = lastDeviceStatusRequestBuilder_ == null
-            ? lastDeviceStatusRequest_
-            : lastDeviceStatusRequestBuilder_.build();
-        to_bitField0_ |= 0x00000004;
-      }
-      if (((from_bitField1_ & 0x00000002) != 0)) {
-        result.rejoinRequestEnabled_ = rejoinRequestEnabled_;
-      }
-      if (((from_bitField1_ & 0x00000004) != 0)) {
         result.rejoinRequestMaxCountN_ = rejoinRequestMaxCountN_;
       }
-      if (((from_bitField1_ & 0x00000008) != 0)) {
+      if (((from_bitField1_ & 0x00000002) != 0)) {
         result.rejoinRequestMaxTimeN_ = rejoinRequestMaxTimeN_;
       }
-      if (((from_bitField1_ & 0x00000010) != 0)) {
+      if (((from_bitField1_ & 0x00000004) != 0)) {
         result.rejoinCount0_ = rejoinCount0_;
       }
-      if (((from_bitField1_ & 0x00000020) != 0)) {
+      if (((from_bitField1_ & 0x00000008) != 0)) {
         result.uplinkDwellTime400Ms_ = uplinkDwellTime400Ms_;
       }
-      if (((from_bitField1_ & 0x00000040) != 0)) {
+      if (((from_bitField1_ & 0x00000010) != 0)) {
         result.downlinkDwellTime400Ms_ = downlinkDwellTime400Ms_;
       }
-      if (((from_bitField1_ & 0x00000080) != 0)) {
+      if (((from_bitField1_ & 0x00000020) != 0)) {
         result.uplinkMaxEirpIndex_ = uplinkMaxEirpIndex_;
       }
-      if (((from_bitField1_ & 0x00000100) != 0)) {
+      if (((from_bitField1_ & 0x00000040) != 0)) {
         result.regionConfigId_ = regionConfigId_;
       }
-      if (((from_bitField1_ & 0x00000200) != 0)) {
+      int to_bitField0_ = 0;
+      if (((from_bitField1_ & 0x00000080) != 0)) {
         result.relay_ = relayBuilder_ == null
             ? relay_
             : relayBuilder_.build();
@@ -2140,14 +2078,8 @@ io.chirpstack.internal.DeviceSessionChannel defaultValue) {
 
     public Builder mergeFrom(io.chirpstack.internal.DeviceSession other) {
       if (other == io.chirpstack.internal.DeviceSession.getDefaultInstance()) return this;
-      if (other.getDevEui() != com.google.protobuf.ByteString.EMPTY) {
-        setDevEui(other.getDevEui());
-      }
       if (other.getDevAddr() != com.google.protobuf.ByteString.EMPTY) {
         setDevAddr(other.getDevAddr());
-      }
-      if (other.getJoinEui() != com.google.protobuf.ByteString.EMPTY) {
-        setJoinEui(other.getJoinEui());
       }
       if (other.macVersion_ != 0) {
         setMacVersionValue(other.getMacVersionValue());
@@ -2198,7 +2130,7 @@ io.chirpstack.internal.DeviceSessionChannel defaultValue) {
         if (enabledUplinkChannelIndices_.isEmpty()) {
           enabledUplinkChannelIndices_ = other.enabledUplinkChannelIndices_;
           enabledUplinkChannelIndices_.makeImmutable();
-          bitField0_ |= 0x00040000;
+          bitField0_ |= 0x00010000;
         } else {
           ensureEnabledUplinkChannelIndicesIsMutable();
           enabledUplinkChannelIndices_.addAll(other.enabledUplinkChannelIndices_);
@@ -2207,7 +2139,7 @@ io.chirpstack.internal.DeviceSessionChannel defaultValue) {
       }
       internalGetMutableExtraUplinkChannels().mergeFrom(
           other.internalGetExtraUplinkChannels());
-      bitField0_ |= 0x00080000;
+      bitField0_ |= 0x00020000;
       if (other.getClassBPingSlotDr() != 0) {
         setClassBPingSlotDr(other.getClassBPingSlotDr());
       }
@@ -2242,7 +2174,7 @@ io.chirpstack.internal.DeviceSessionChannel defaultValue) {
         if (!other.uplinkAdrHistory_.isEmpty()) {
           if (uplinkAdrHistory_.isEmpty()) {
             uplinkAdrHistory_ = other.uplinkAdrHistory_;
-            bitField0_ = (bitField0_ & ~0x40000000);
+            bitField0_ = (bitField0_ & ~0x10000000);
           } else {
             ensureUplinkAdrHistoryIsMutable();
             uplinkAdrHistory_.addAll(other.uplinkAdrHistory_);
@@ -2255,7 +2187,7 @@ io.chirpstack.internal.DeviceSessionChannel defaultValue) {
             uplinkAdrHistoryBuilder_.dispose();
             uplinkAdrHistoryBuilder_ = null;
             uplinkAdrHistory_ = other.uplinkAdrHistory_;
-            bitField0_ = (bitField0_ & ~0x40000000);
+            bitField0_ = (bitField0_ & ~0x10000000);
             uplinkAdrHistoryBuilder_ = 
               com.google.protobuf.GeneratedMessageV3.alwaysUseFieldBuilders ?
                  getUplinkAdrHistoryFieldBuilder() : null;
@@ -2266,7 +2198,7 @@ io.chirpstack.internal.DeviceSessionChannel defaultValue) {
       }
       internalGetMutableMacCommandErrorCount().mergeFrom(
           other.internalGetMacCommandErrorCount());
-      bitField0_ |= 0x80000000;
+      bitField0_ |= 0x20000000;
       if (other.hasLastDeviceStatusRequest()) {
         mergeLastDeviceStatusRequest(other.getLastDeviceStatusRequest());
       }
@@ -2293,7 +2225,7 @@ io.chirpstack.internal.DeviceSessionChannel defaultValue) {
       }
       if (!other.getRegionConfigId().isEmpty()) {
         regionConfigId_ = other.regionConfigId_;
-        bitField1_ |= 0x00000100;
+        bitField1_ |= 0x00000040;
         onChanged();
       }
       if (other.hasRelay()) {
@@ -2325,91 +2257,81 @@ io.chirpstack.internal.DeviceSessionChannel defaultValue) {
             case 0:
               done = true;
               break;
-            case 10: {
-              devEui_ = input.readBytes();
-              bitField0_ |= 0x00000001;
-              break;
-            } // case 10
             case 18: {
               devAddr_ = input.readBytes();
-              bitField0_ |= 0x00000002;
+              bitField0_ |= 0x00000001;
               break;
             } // case 18
-            case 26: {
-              joinEui_ = input.readBytes();
-              bitField0_ |= 0x00000004;
-              break;
-            } // case 26
             case 32: {
               macVersion_ = input.readEnum();
-              bitField0_ |= 0x00000008;
+              bitField0_ |= 0x00000002;
               break;
             } // case 32
             case 42: {
               fNwkSIntKey_ = input.readBytes();
-              bitField0_ |= 0x00000010;
+              bitField0_ |= 0x00000004;
               break;
             } // case 42
             case 50: {
               sNwkSIntKey_ = input.readBytes();
-              bitField0_ |= 0x00000020;
+              bitField0_ |= 0x00000008;
               break;
             } // case 50
             case 58: {
               nwkSEncKey_ = input.readBytes();
-              bitField0_ |= 0x00000040;
+              bitField0_ |= 0x00000010;
               break;
             } // case 58
             case 66: {
               input.readMessage(
                   getAppSKeyFieldBuilder().getBuilder(),
                   extensionRegistry);
-              bitField0_ |= 0x00000080;
+              bitField0_ |= 0x00000020;
               break;
             } // case 66
             case 72: {
               fCntUp_ = input.readUInt32();
-              bitField0_ |= 0x00000200;
+              bitField0_ |= 0x00000080;
               break;
             } // case 72
             case 80: {
               nFCntDown_ = input.readUInt32();
-              bitField0_ |= 0x00000400;
+              bitField0_ |= 0x00000100;
               break;
             } // case 80
             case 88: {
               aFCntDown_ = input.readUInt32();
-              bitField0_ |= 0x00000800;
+              bitField0_ |= 0x00000200;
               break;
             } // case 88
             case 96: {
               confFCnt_ = input.readUInt32();
-              bitField0_ |= 0x00001000;
+              bitField0_ |= 0x00000400;
               break;
             } // case 96
             case 104: {
               skipFCntCheck_ = input.readBool();
-              bitField0_ |= 0x00002000;
+              bitField0_ |= 0x00000800;
               break;
             } // case 104
             case 112: {
               rx1Delay_ = input.readUInt32();
-              bitField0_ |= 0x00004000;
+              bitField0_ |= 0x00001000;
               break;
             } // case 112
             case 120: {
               rx1DrOffset_ = input.readUInt32();
-              bitField0_ |= 0x00008000;
+              bitField0_ |= 0x00002000;
               break;
             } // case 120
             case 128: {
               rx2Dr_ = input.readUInt32();
-              bitField0_ |= 0x00010000;
+              bitField0_ |= 0x00004000;
               break;
             } // case 128
             case 136: {
               rx2Frequency_ = input.readUInt32();
-              bitField0_ |= 0x00020000;
+              bitField0_ |= 0x00008000;
               break;
             } // case 136
             case 144: {
@@ -2434,59 +2356,59 @@ io.chirpstack.internal.DeviceSessionChannel defaultValue) {
                   ExtraUplinkChannelsDefaultEntryHolder.defaultEntry.getParserForType(), extensionRegistry);
               internalGetMutableExtraUplinkChannels().ensureBuilderMap().put(
                   extraUplinkChannels__.getKey(), extraUplinkChannels__.getValue());
-              bitField0_ |= 0x00080000;
+              bitField0_ |= 0x00020000;
               break;
             } // case 154
             case 160: {
               classBPingSlotDr_ = input.readUInt32();
-              bitField0_ |= 0x00100000;
+              bitField0_ |= 0x00040000;
               break;
             } // case 160
             case 168: {
               classBPingSlotFreq_ = input.readUInt32();
-              bitField0_ |= 0x00200000;
+              bitField0_ |= 0x00080000;
               break;
             } // case 168
             case 176: {
               classBPingSlotNb_ = input.readUInt32();
-              bitField0_ |= 0x00400000;
+              bitField0_ |= 0x00100000;
               break;
             } // case 176
             case 184: {
               nbTrans_ = input.readUInt32();
-              bitField0_ |= 0x00800000;
+              bitField0_ |= 0x00200000;
               break;
             } // case 184
             case 192: {
               txPowerIndex_ = input.readUInt32();
-              bitField0_ |= 0x01000000;
+              bitField0_ |= 0x00400000;
               break;
             } // case 192
             case 200: {
               dr_ = input.readUInt32();
-              bitField0_ |= 0x02000000;
+              bitField0_ |= 0x00800000;
               break;
             } // case 200
             case 208: {
               adr_ = input.readBool();
-              bitField0_ |= 0x04000000;
+              bitField0_ |= 0x01000000;
               break;
             } // case 208
             case 216: {
               maxSupportedTxPowerIndex_ = input.readUInt32();
-              bitField0_ |= 0x08000000;
+              bitField0_ |= 0x02000000;
               break;
             } // case 216
             case 224: {
               minSupportedTxPowerIndex_ = input.readUInt32();
-              bitField0_ |= 0x10000000;
+              bitField0_ |= 0x04000000;
               break;
             } // case 224
             case 234: {
               input.readMessage(
                   getPendingRejoinDeviceSessionFieldBuilder().getBuilder(),
                   extensionRegistry);
-              bitField0_ |= 0x20000000;
+              bitField0_ |= 0x08000000;
               break;
             } // case 234
             case 242: {
@@ -2508,66 +2430,66 @@ io.chirpstack.internal.DeviceSessionChannel defaultValue) {
                   MacCommandErrorCountDefaultEntryHolder.defaultEntry.getParserForType(), extensionRegistry);
               internalGetMutableMacCommandErrorCount().getMutableMap().put(
                   macCommandErrorCount__.getKey(), macCommandErrorCount__.getValue());
-              bitField0_ |= 0x80000000;
+              bitField0_ |= 0x20000000;
               break;
             } // case 250
             case 258: {
               input.readMessage(
                   getLastDeviceStatusRequestFieldBuilder().getBuilder(),
                   extensionRegistry);
-              bitField1_ |= 0x00000001;
+              bitField0_ |= 0x40000000;
               break;
             } // case 258
             case 264: {
               rejoinRequestEnabled_ = input.readBool();
-              bitField1_ |= 0x00000002;
+              bitField0_ |= 0x80000000;
               break;
             } // case 264
             case 272: {
               rejoinRequestMaxCountN_ = input.readUInt32();
-              bitField1_ |= 0x00000004;
+              bitField1_ |= 0x00000001;
               break;
             } // case 272
             case 280: {
               rejoinRequestMaxTimeN_ = input.readUInt32();
-              bitField1_ |= 0x00000008;
+              bitField1_ |= 0x00000002;
               break;
             } // case 280
             case 288: {
               rejoinCount0_ = input.readUInt32();
-              bitField1_ |= 0x00000010;
+              bitField1_ |= 0x00000004;
               break;
             } // case 288
             case 296: {
               uplinkDwellTime400Ms_ = input.readBool();
-              bitField1_ |= 0x00000020;
+              bitField1_ |= 0x00000008;
               break;
             } // case 296
             case 304: {
               downlinkDwellTime400Ms_ = input.readBool();
-              bitField1_ |= 0x00000040;
+              bitField1_ |= 0x00000010;
               break;
             } // case 304
             case 312: {
               uplinkMaxEirpIndex_ = input.readUInt32();
-              bitField1_ |= 0x00000080;
+              bitField1_ |= 0x00000020;
               break;
             } // case 312
             case 322: {
               regionConfigId_ = input.readStringRequireUtf8();
-              bitField1_ |= 0x00000100;
+              bitField1_ |= 0x00000040;
               break;
             } // case 322
             case 330: {
               input.readMessage(
                   getRelayFieldBuilder().getBuilder(),
                   extensionRegistry);
-              bitField1_ |= 0x00000200;
+              bitField1_ |= 0x00000080;
               break;
             } // case 330
             case 338: {
               jsSessionKeyId_ = input.readBytes();
-              bitField0_ |= 0x00000100;
+              bitField0_ |= 0x00000040;
               break;
             } // case 338
             default: {
@@ -2587,50 +2509,6 @@ io.chirpstack.internal.DeviceSessionChannel defaultValue) {
     }
     private int bitField0_;
     private int bitField1_;
-
-    private com.google.protobuf.ByteString devEui_ = com.google.protobuf.ByteString.EMPTY;
-    /**
-     * <pre>
-     * Device EUI.
-     * </pre>
-     *
-     * <code>bytes dev_eui = 1;</code>
-     * @return The devEui.
-     */
-    @java.lang.Override
-    public com.google.protobuf.ByteString getDevEui() {
-      return devEui_;
-    }
-    /**
-     * <pre>
-     * Device EUI.
-     * </pre>
-     *
-     * <code>bytes dev_eui = 1;</code>
-     * @param value The devEui to set.
-     * @return This builder for chaining.
-     */
-    public Builder setDevEui(com.google.protobuf.ByteString value) {
-      if (value == null) { throw new NullPointerException(); }
-      devEui_ = value;
-      bitField0_ |= 0x00000001;
-      onChanged();
-      return this;
-    }
-    /**
-     * <pre>
-     * Device EUI.
-     * </pre>
-     *
-     * <code>bytes dev_eui = 1;</code>
-     * @return This builder for chaining.
-     */
-    public Builder clearDevEui() {
-      bitField0_ = (bitField0_ & ~0x00000001);
-      devEui_ = getDefaultInstance().getDevEui();
-      onChanged();
-      return this;
-    }
 
     private com.google.protobuf.ByteString devAddr_ = com.google.protobuf.ByteString.EMPTY;
     /**
@@ -2657,7 +2535,7 @@ io.chirpstack.internal.DeviceSessionChannel defaultValue) {
     public Builder setDevAddr(com.google.protobuf.ByteString value) {
       if (value == null) { throw new NullPointerException(); }
       devAddr_ = value;
-      bitField0_ |= 0x00000002;
+      bitField0_ |= 0x00000001;
       onChanged();
       return this;
     }
@@ -2670,52 +2548,8 @@ io.chirpstack.internal.DeviceSessionChannel defaultValue) {
      * @return This builder for chaining.
      */
     public Builder clearDevAddr() {
-      bitField0_ = (bitField0_ & ~0x00000002);
+      bitField0_ = (bitField0_ & ~0x00000001);
       devAddr_ = getDefaultInstance().getDevAddr();
-      onChanged();
-      return this;
-    }
-
-    private com.google.protobuf.ByteString joinEui_ = com.google.protobuf.ByteString.EMPTY;
-    /**
-     * <pre>
-     * Join EUI.
-     * </pre>
-     *
-     * <code>bytes join_eui = 3;</code>
-     * @return The joinEui.
-     */
-    @java.lang.Override
-    public com.google.protobuf.ByteString getJoinEui() {
-      return joinEui_;
-    }
-    /**
-     * <pre>
-     * Join EUI.
-     * </pre>
-     *
-     * <code>bytes join_eui = 3;</code>
-     * @param value The joinEui to set.
-     * @return This builder for chaining.
-     */
-    public Builder setJoinEui(com.google.protobuf.ByteString value) {
-      if (value == null) { throw new NullPointerException(); }
-      joinEui_ = value;
-      bitField0_ |= 0x00000004;
-      onChanged();
-      return this;
-    }
-    /**
-     * <pre>
-     * Join EUI.
-     * </pre>
-     *
-     * <code>bytes join_eui = 3;</code>
-     * @return This builder for chaining.
-     */
-    public Builder clearJoinEui() {
-      bitField0_ = (bitField0_ & ~0x00000004);
-      joinEui_ = getDefaultInstance().getJoinEui();
       onChanged();
       return this;
     }
@@ -2743,7 +2577,7 @@ io.chirpstack.internal.DeviceSessionChannel defaultValue) {
      */
     public Builder setMacVersionValue(int value) {
       macVersion_ = value;
-      bitField0_ |= 0x00000008;
+      bitField0_ |= 0x00000002;
       onChanged();
       return this;
     }
@@ -2773,7 +2607,7 @@ io.chirpstack.internal.DeviceSessionChannel defaultValue) {
       if (value == null) {
         throw new NullPointerException();
       }
-      bitField0_ |= 0x00000008;
+      bitField0_ |= 0x00000002;
       macVersion_ = value.getNumber();
       onChanged();
       return this;
@@ -2787,7 +2621,7 @@ io.chirpstack.internal.DeviceSessionChannel defaultValue) {
      * @return This builder for chaining.
      */
     public Builder clearMacVersion() {
-      bitField0_ = (bitField0_ & ~0x00000008);
+      bitField0_ = (bitField0_ & ~0x00000002);
       macVersion_ = 0;
       onChanged();
       return this;
@@ -2818,7 +2652,7 @@ io.chirpstack.internal.DeviceSessionChannel defaultValue) {
     public Builder setFNwkSIntKey(com.google.protobuf.ByteString value) {
       if (value == null) { throw new NullPointerException(); }
       fNwkSIntKey_ = value;
-      bitField0_ |= 0x00000010;
+      bitField0_ |= 0x00000004;
       onChanged();
       return this;
     }
@@ -2831,7 +2665,7 @@ io.chirpstack.internal.DeviceSessionChannel defaultValue) {
      * @return This builder for chaining.
      */
     public Builder clearFNwkSIntKey() {
-      bitField0_ = (bitField0_ & ~0x00000010);
+      bitField0_ = (bitField0_ & ~0x00000004);
       fNwkSIntKey_ = getDefaultInstance().getFNwkSIntKey();
       onChanged();
       return this;
@@ -2862,7 +2696,7 @@ io.chirpstack.internal.DeviceSessionChannel defaultValue) {
     public Builder setSNwkSIntKey(com.google.protobuf.ByteString value) {
       if (value == null) { throw new NullPointerException(); }
       sNwkSIntKey_ = value;
-      bitField0_ |= 0x00000020;
+      bitField0_ |= 0x00000008;
       onChanged();
       return this;
     }
@@ -2875,7 +2709,7 @@ io.chirpstack.internal.DeviceSessionChannel defaultValue) {
      * @return This builder for chaining.
      */
     public Builder clearSNwkSIntKey() {
-      bitField0_ = (bitField0_ & ~0x00000020);
+      bitField0_ = (bitField0_ & ~0x00000008);
       sNwkSIntKey_ = getDefaultInstance().getSNwkSIntKey();
       onChanged();
       return this;
@@ -2906,7 +2740,7 @@ io.chirpstack.internal.DeviceSessionChannel defaultValue) {
     public Builder setNwkSEncKey(com.google.protobuf.ByteString value) {
       if (value == null) { throw new NullPointerException(); }
       nwkSEncKey_ = value;
-      bitField0_ |= 0x00000040;
+      bitField0_ |= 0x00000010;
       onChanged();
       return this;
     }
@@ -2919,7 +2753,7 @@ io.chirpstack.internal.DeviceSessionChannel defaultValue) {
      * @return This builder for chaining.
      */
     public Builder clearNwkSEncKey() {
-      bitField0_ = (bitField0_ & ~0x00000040);
+      bitField0_ = (bitField0_ & ~0x00000010);
       nwkSEncKey_ = getDefaultInstance().getNwkSEncKey();
       onChanged();
       return this;
@@ -2937,7 +2771,7 @@ io.chirpstack.internal.DeviceSessionChannel defaultValue) {
      * @return Whether the appSKey field is set.
      */
     public boolean hasAppSKey() {
-      return ((bitField0_ & 0x00000080) != 0);
+      return ((bitField0_ & 0x00000020) != 0);
     }
     /**
      * <pre>
@@ -2970,7 +2804,7 @@ io.chirpstack.internal.DeviceSessionChannel defaultValue) {
       } else {
         appSKeyBuilder_.setMessage(value);
       }
-      bitField0_ |= 0x00000080;
+      bitField0_ |= 0x00000020;
       onChanged();
       return this;
     }
@@ -2988,7 +2822,7 @@ io.chirpstack.internal.DeviceSessionChannel defaultValue) {
       } else {
         appSKeyBuilder_.setMessage(builderForValue.build());
       }
-      bitField0_ |= 0x00000080;
+      bitField0_ |= 0x00000020;
       onChanged();
       return this;
     }
@@ -3001,7 +2835,7 @@ io.chirpstack.internal.DeviceSessionChannel defaultValue) {
      */
     public Builder mergeAppSKey(io.chirpstack.api.KeyEnvelope value) {
       if (appSKeyBuilder_ == null) {
-        if (((bitField0_ & 0x00000080) != 0) &&
+        if (((bitField0_ & 0x00000020) != 0) &&
           appSKey_ != null &&
           appSKey_ != io.chirpstack.api.KeyEnvelope.getDefaultInstance()) {
           getAppSKeyBuilder().mergeFrom(value);
@@ -3012,7 +2846,7 @@ io.chirpstack.internal.DeviceSessionChannel defaultValue) {
         appSKeyBuilder_.mergeFrom(value);
       }
       if (appSKey_ != null) {
-        bitField0_ |= 0x00000080;
+        bitField0_ |= 0x00000020;
         onChanged();
       }
       return this;
@@ -3025,7 +2859,7 @@ io.chirpstack.internal.DeviceSessionChannel defaultValue) {
      * <code>.common.KeyEnvelope app_s_key = 8;</code>
      */
     public Builder clearAppSKey() {
-      bitField0_ = (bitField0_ & ~0x00000080);
+      bitField0_ = (bitField0_ & ~0x00000020);
       appSKey_ = null;
       if (appSKeyBuilder_ != null) {
         appSKeyBuilder_.dispose();
@@ -3042,7 +2876,7 @@ io.chirpstack.internal.DeviceSessionChannel defaultValue) {
      * <code>.common.KeyEnvelope app_s_key = 8;</code>
      */
     public io.chirpstack.api.KeyEnvelope.Builder getAppSKeyBuilder() {
-      bitField0_ |= 0x00000080;
+      bitField0_ |= 0x00000020;
       onChanged();
       return getAppSKeyFieldBuilder().getBuilder();
     }
@@ -3107,7 +2941,7 @@ io.chirpstack.internal.DeviceSessionChannel defaultValue) {
     public Builder setJsSessionKeyId(com.google.protobuf.ByteString value) {
       if (value == null) { throw new NullPointerException(); }
       jsSessionKeyId_ = value;
-      bitField0_ |= 0x00000100;
+      bitField0_ |= 0x00000040;
       onChanged();
       return this;
     }
@@ -3120,7 +2954,7 @@ io.chirpstack.internal.DeviceSessionChannel defaultValue) {
      * @return This builder for chaining.
      */
     public Builder clearJsSessionKeyId() {
-      bitField0_ = (bitField0_ & ~0x00000100);
+      bitField0_ = (bitField0_ & ~0x00000040);
       jsSessionKeyId_ = getDefaultInstance().getJsSessionKeyId();
       onChanged();
       return this;
@@ -3151,7 +2985,7 @@ io.chirpstack.internal.DeviceSessionChannel defaultValue) {
     public Builder setFCntUp(int value) {
 
       fCntUp_ = value;
-      bitField0_ |= 0x00000200;
+      bitField0_ |= 0x00000080;
       onChanged();
       return this;
     }
@@ -3164,7 +2998,7 @@ io.chirpstack.internal.DeviceSessionChannel defaultValue) {
      * @return This builder for chaining.
      */
     public Builder clearFCntUp() {
-      bitField0_ = (bitField0_ & ~0x00000200);
+      bitField0_ = (bitField0_ & ~0x00000080);
       fCntUp_ = 0;
       onChanged();
       return this;
@@ -3195,7 +3029,7 @@ io.chirpstack.internal.DeviceSessionChannel defaultValue) {
     public Builder setNFCntDown(int value) {
 
       nFCntDown_ = value;
-      bitField0_ |= 0x00000400;
+      bitField0_ |= 0x00000100;
       onChanged();
       return this;
     }
@@ -3208,7 +3042,7 @@ io.chirpstack.internal.DeviceSessionChannel defaultValue) {
      * @return This builder for chaining.
      */
     public Builder clearNFCntDown() {
-      bitField0_ = (bitField0_ & ~0x00000400);
+      bitField0_ = (bitField0_ & ~0x00000100);
       nFCntDown_ = 0;
       onChanged();
       return this;
@@ -3239,7 +3073,7 @@ io.chirpstack.internal.DeviceSessionChannel defaultValue) {
     public Builder setAFCntDown(int value) {
 
       aFCntDown_ = value;
-      bitField0_ |= 0x00000800;
+      bitField0_ |= 0x00000200;
       onChanged();
       return this;
     }
@@ -3252,7 +3086,7 @@ io.chirpstack.internal.DeviceSessionChannel defaultValue) {
      * @return This builder for chaining.
      */
     public Builder clearAFCntDown() {
-      bitField0_ = (bitField0_ & ~0x00000800);
+      bitField0_ = (bitField0_ & ~0x00000200);
       aFCntDown_ = 0;
       onChanged();
       return this;
@@ -3285,7 +3119,7 @@ io.chirpstack.internal.DeviceSessionChannel defaultValue) {
     public Builder setConfFCnt(int value) {
 
       confFCnt_ = value;
-      bitField0_ |= 0x00001000;
+      bitField0_ |= 0x00000400;
       onChanged();
       return this;
     }
@@ -3299,7 +3133,7 @@ io.chirpstack.internal.DeviceSessionChannel defaultValue) {
      * @return This builder for chaining.
      */
     public Builder clearConfFCnt() {
-      bitField0_ = (bitField0_ & ~0x00001000);
+      bitField0_ = (bitField0_ & ~0x00000400);
       confFCnt_ = 0;
       onChanged();
       return this;
@@ -3330,7 +3164,7 @@ io.chirpstack.internal.DeviceSessionChannel defaultValue) {
     public Builder setSkipFCntCheck(boolean value) {
 
       skipFCntCheck_ = value;
-      bitField0_ |= 0x00002000;
+      bitField0_ |= 0x00000800;
       onChanged();
       return this;
     }
@@ -3343,7 +3177,7 @@ io.chirpstack.internal.DeviceSessionChannel defaultValue) {
      * @return This builder for chaining.
      */
     public Builder clearSkipFCntCheck() {
-      bitField0_ = (bitField0_ & ~0x00002000);
+      bitField0_ = (bitField0_ & ~0x00000800);
       skipFCntCheck_ = false;
       onChanged();
       return this;
@@ -3374,7 +3208,7 @@ io.chirpstack.internal.DeviceSessionChannel defaultValue) {
     public Builder setRx1Delay(int value) {
 
       rx1Delay_ = value;
-      bitField0_ |= 0x00004000;
+      bitField0_ |= 0x00001000;
       onChanged();
       return this;
     }
@@ -3387,7 +3221,7 @@ io.chirpstack.internal.DeviceSessionChannel defaultValue) {
      * @return This builder for chaining.
      */
     public Builder clearRx1Delay() {
-      bitField0_ = (bitField0_ & ~0x00004000);
+      bitField0_ = (bitField0_ & ~0x00001000);
       rx1Delay_ = 0;
       onChanged();
       return this;
@@ -3418,7 +3252,7 @@ io.chirpstack.internal.DeviceSessionChannel defaultValue) {
     public Builder setRx1DrOffset(int value) {
 
       rx1DrOffset_ = value;
-      bitField0_ |= 0x00008000;
+      bitField0_ |= 0x00002000;
       onChanged();
       return this;
     }
@@ -3431,7 +3265,7 @@ io.chirpstack.internal.DeviceSessionChannel defaultValue) {
      * @return This builder for chaining.
      */
     public Builder clearRx1DrOffset() {
-      bitField0_ = (bitField0_ & ~0x00008000);
+      bitField0_ = (bitField0_ & ~0x00002000);
       rx1DrOffset_ = 0;
       onChanged();
       return this;
@@ -3462,7 +3296,7 @@ io.chirpstack.internal.DeviceSessionChannel defaultValue) {
     public Builder setRx2Dr(int value) {
 
       rx2Dr_ = value;
-      bitField0_ |= 0x00010000;
+      bitField0_ |= 0x00004000;
       onChanged();
       return this;
     }
@@ -3475,7 +3309,7 @@ io.chirpstack.internal.DeviceSessionChannel defaultValue) {
      * @return This builder for chaining.
      */
     public Builder clearRx2Dr() {
-      bitField0_ = (bitField0_ & ~0x00010000);
+      bitField0_ = (bitField0_ & ~0x00004000);
       rx2Dr_ = 0;
       onChanged();
       return this;
@@ -3506,7 +3340,7 @@ io.chirpstack.internal.DeviceSessionChannel defaultValue) {
     public Builder setRx2Frequency(int value) {
 
       rx2Frequency_ = value;
-      bitField0_ |= 0x00020000;
+      bitField0_ |= 0x00008000;
       onChanged();
       return this;
     }
@@ -3519,7 +3353,7 @@ io.chirpstack.internal.DeviceSessionChannel defaultValue) {
      * @return This builder for chaining.
      */
     public Builder clearRx2Frequency() {
-      bitField0_ = (bitField0_ & ~0x00020000);
+      bitField0_ = (bitField0_ & ~0x00008000);
       rx2Frequency_ = 0;
       onChanged();
       return this;
@@ -3530,7 +3364,7 @@ io.chirpstack.internal.DeviceSessionChannel defaultValue) {
       if (!enabledUplinkChannelIndices_.isModifiable()) {
         enabledUplinkChannelIndices_ = makeMutableCopy(enabledUplinkChannelIndices_);
       }
-      bitField0_ |= 0x00040000;
+      bitField0_ |= 0x00010000;
     }
     /**
      * <pre>
@@ -3583,7 +3417,7 @@ io.chirpstack.internal.DeviceSessionChannel defaultValue) {
 
       ensureEnabledUplinkChannelIndicesIsMutable();
       enabledUplinkChannelIndices_.setInt(index, value);
-      bitField0_ |= 0x00040000;
+      bitField0_ |= 0x00010000;
       onChanged();
       return this;
     }
@@ -3600,7 +3434,7 @@ io.chirpstack.internal.DeviceSessionChannel defaultValue) {
 
       ensureEnabledUplinkChannelIndicesIsMutable();
       enabledUplinkChannelIndices_.addInt(value);
-      bitField0_ |= 0x00040000;
+      bitField0_ |= 0x00010000;
       onChanged();
       return this;
     }
@@ -3618,7 +3452,7 @@ io.chirpstack.internal.DeviceSessionChannel defaultValue) {
       ensureEnabledUplinkChannelIndicesIsMutable();
       com.google.protobuf.AbstractMessageLite.Builder.addAll(
           values, enabledUplinkChannelIndices_);
-      bitField0_ |= 0x00040000;
+      bitField0_ |= 0x00010000;
       onChanged();
       return this;
     }
@@ -3632,7 +3466,7 @@ io.chirpstack.internal.DeviceSessionChannel defaultValue) {
      */
     public Builder clearEnabledUplinkChannelIndices() {
       enabledUplinkChannelIndices_ = emptyIntList();
-      bitField0_ = (bitField0_ & ~0x00040000);
+      bitField0_ = (bitField0_ & ~0x00010000);
       onChanged();
       return this;
     }
@@ -3665,7 +3499,7 @@ io.chirpstack.internal.DeviceSessionChannel defaultValue) {
       if (extraUplinkChannels_ == null) {
         extraUplinkChannels_ = new com.google.protobuf.MapFieldBuilder<>(extraUplinkChannelsConverter);
       }
-      bitField0_ |= 0x00080000;
+      bitField0_ |= 0x00020000;
       onChanged();
       return extraUplinkChannels_;
     }
@@ -3739,7 +3573,7 @@ io.chirpstack.internal.DeviceSessionChannel defaultValue) {
       return extraUplinkChannelsConverter.build(map.get(key));
     }
     public Builder clearExtraUplinkChannels() {
-      bitField0_ = (bitField0_ & ~0x00080000);
+      bitField0_ = (bitField0_ & ~0x00020000);
       internalGetMutableExtraUplinkChannels().clear();
       return this;
     }
@@ -3763,7 +3597,7 @@ io.chirpstack.internal.DeviceSessionChannel defaultValue) {
     @java.lang.Deprecated
     public java.util.Map<java.lang.Integer, io.chirpstack.internal.DeviceSessionChannel>
         getMutableExtraUplinkChannels() {
-      bitField0_ |= 0x00080000;
+      bitField0_ |= 0x00020000;
       return internalGetMutableExtraUplinkChannels().ensureMessageMap();
     }
     /**
@@ -3780,7 +3614,7 @@ io.chirpstack.internal.DeviceSessionChannel defaultValue) {
       if (value == null) { throw new NullPointerException("map value"); }
       internalGetMutableExtraUplinkChannels().ensureBuilderMap()
           .put(key, value);
-      bitField0_ |= 0x00080000;
+      bitField0_ |= 0x00020000;
       return this;
     }
     /**
@@ -3799,7 +3633,7 @@ io.chirpstack.internal.DeviceSessionChannel defaultValue) {
       }
       internalGetMutableExtraUplinkChannels().ensureBuilderMap()
           .putAll(values);
-      bitField0_ |= 0x00080000;
+      bitField0_ |= 0x00020000;
       return this;
     }
     /**
@@ -3849,7 +3683,7 @@ io.chirpstack.internal.DeviceSessionChannel defaultValue) {
     public Builder setClassBPingSlotDr(int value) {
 
       classBPingSlotDr_ = value;
-      bitField0_ |= 0x00100000;
+      bitField0_ |= 0x00040000;
       onChanged();
       return this;
     }
@@ -3862,7 +3696,7 @@ io.chirpstack.internal.DeviceSessionChannel defaultValue) {
      * @return This builder for chaining.
      */
     public Builder clearClassBPingSlotDr() {
-      bitField0_ = (bitField0_ & ~0x00100000);
+      bitField0_ = (bitField0_ & ~0x00040000);
       classBPingSlotDr_ = 0;
       onChanged();
       return this;
@@ -3893,7 +3727,7 @@ io.chirpstack.internal.DeviceSessionChannel defaultValue) {
     public Builder setClassBPingSlotFreq(int value) {
 
       classBPingSlotFreq_ = value;
-      bitField0_ |= 0x00200000;
+      bitField0_ |= 0x00080000;
       onChanged();
       return this;
     }
@@ -3906,7 +3740,7 @@ io.chirpstack.internal.DeviceSessionChannel defaultValue) {
      * @return This builder for chaining.
      */
     public Builder clearClassBPingSlotFreq() {
-      bitField0_ = (bitField0_ & ~0x00200000);
+      bitField0_ = (bitField0_ & ~0x00080000);
       classBPingSlotFreq_ = 0;
       onChanged();
       return this;
@@ -3937,7 +3771,7 @@ io.chirpstack.internal.DeviceSessionChannel defaultValue) {
     public Builder setClassBPingSlotNb(int value) {
 
       classBPingSlotNb_ = value;
-      bitField0_ |= 0x00400000;
+      bitField0_ |= 0x00100000;
       onChanged();
       return this;
     }
@@ -3950,7 +3784,7 @@ io.chirpstack.internal.DeviceSessionChannel defaultValue) {
      * @return This builder for chaining.
      */
     public Builder clearClassBPingSlotNb() {
-      bitField0_ = (bitField0_ & ~0x00400000);
+      bitField0_ = (bitField0_ & ~0x00100000);
       classBPingSlotNb_ = 0;
       onChanged();
       return this;
@@ -3981,7 +3815,7 @@ io.chirpstack.internal.DeviceSessionChannel defaultValue) {
     public Builder setNbTrans(int value) {
 
       nbTrans_ = value;
-      bitField0_ |= 0x00800000;
+      bitField0_ |= 0x00200000;
       onChanged();
       return this;
     }
@@ -3994,7 +3828,7 @@ io.chirpstack.internal.DeviceSessionChannel defaultValue) {
      * @return This builder for chaining.
      */
     public Builder clearNbTrans() {
-      bitField0_ = (bitField0_ & ~0x00800000);
+      bitField0_ = (bitField0_ & ~0x00200000);
       nbTrans_ = 0;
       onChanged();
       return this;
@@ -4031,7 +3865,7 @@ io.chirpstack.internal.DeviceSessionChannel defaultValue) {
     public Builder setTxPowerIndex(int value) {
 
       txPowerIndex_ = value;
-      bitField0_ |= 0x01000000;
+      bitField0_ |= 0x00400000;
       onChanged();
       return this;
     }
@@ -4047,7 +3881,7 @@ io.chirpstack.internal.DeviceSessionChannel defaultValue) {
      * @return This builder for chaining.
      */
     public Builder clearTxPowerIndex() {
-      bitField0_ = (bitField0_ & ~0x01000000);
+      bitField0_ = (bitField0_ & ~0x00400000);
       txPowerIndex_ = 0;
       onChanged();
       return this;
@@ -4080,7 +3914,7 @@ io.chirpstack.internal.DeviceSessionChannel defaultValue) {
     public Builder setDr(int value) {
 
       dr_ = value;
-      bitField0_ |= 0x02000000;
+      bitField0_ |= 0x00800000;
       onChanged();
       return this;
     }
@@ -4094,7 +3928,7 @@ io.chirpstack.internal.DeviceSessionChannel defaultValue) {
      * @return This builder for chaining.
      */
     public Builder clearDr() {
-      bitField0_ = (bitField0_ & ~0x02000000);
+      bitField0_ = (bitField0_ & ~0x00800000);
       dr_ = 0;
       onChanged();
       return this;
@@ -4125,7 +3959,7 @@ io.chirpstack.internal.DeviceSessionChannel defaultValue) {
     public Builder setAdr(boolean value) {
 
       adr_ = value;
-      bitField0_ |= 0x04000000;
+      bitField0_ |= 0x01000000;
       onChanged();
       return this;
     }
@@ -4138,7 +3972,7 @@ io.chirpstack.internal.DeviceSessionChannel defaultValue) {
      * @return This builder for chaining.
      */
     public Builder clearAdr() {
-      bitField0_ = (bitField0_ & ~0x04000000);
+      bitField0_ = (bitField0_ & ~0x01000000);
       adr_ = false;
       onChanged();
       return this;
@@ -4171,7 +4005,7 @@ io.chirpstack.internal.DeviceSessionChannel defaultValue) {
     public Builder setMaxSupportedTxPowerIndex(int value) {
 
       maxSupportedTxPowerIndex_ = value;
-      bitField0_ |= 0x08000000;
+      bitField0_ |= 0x02000000;
       onChanged();
       return this;
     }
@@ -4185,7 +4019,7 @@ io.chirpstack.internal.DeviceSessionChannel defaultValue) {
      * @return This builder for chaining.
      */
     public Builder clearMaxSupportedTxPowerIndex() {
-      bitField0_ = (bitField0_ & ~0x08000000);
+      bitField0_ = (bitField0_ & ~0x02000000);
       maxSupportedTxPowerIndex_ = 0;
       onChanged();
       return this;
@@ -4218,7 +4052,7 @@ io.chirpstack.internal.DeviceSessionChannel defaultValue) {
     public Builder setMinSupportedTxPowerIndex(int value) {
 
       minSupportedTxPowerIndex_ = value;
-      bitField0_ |= 0x10000000;
+      bitField0_ |= 0x04000000;
       onChanged();
       return this;
     }
@@ -4232,7 +4066,7 @@ io.chirpstack.internal.DeviceSessionChannel defaultValue) {
      * @return This builder for chaining.
      */
     public Builder clearMinSupportedTxPowerIndex() {
-      bitField0_ = (bitField0_ & ~0x10000000);
+      bitField0_ = (bitField0_ & ~0x04000000);
       minSupportedTxPowerIndex_ = 0;
       onChanged();
       return this;
@@ -4251,7 +4085,7 @@ io.chirpstack.internal.DeviceSessionChannel defaultValue) {
      * @return Whether the pendingRejoinDeviceSession field is set.
      */
     public boolean hasPendingRejoinDeviceSession() {
-      return ((bitField0_ & 0x20000000) != 0);
+      return ((bitField0_ & 0x08000000) != 0);
     }
     /**
      * <pre>
@@ -4286,7 +4120,7 @@ io.chirpstack.internal.DeviceSessionChannel defaultValue) {
       } else {
         pendingRejoinDeviceSessionBuilder_.setMessage(value);
       }
-      bitField0_ |= 0x20000000;
+      bitField0_ |= 0x08000000;
       onChanged();
       return this;
     }
@@ -4305,7 +4139,7 @@ io.chirpstack.internal.DeviceSessionChannel defaultValue) {
       } else {
         pendingRejoinDeviceSessionBuilder_.setMessage(builderForValue.build());
       }
-      bitField0_ |= 0x20000000;
+      bitField0_ |= 0x08000000;
       onChanged();
       return this;
     }
@@ -4319,7 +4153,7 @@ io.chirpstack.internal.DeviceSessionChannel defaultValue) {
      */
     public Builder mergePendingRejoinDeviceSession(io.chirpstack.internal.DeviceSession value) {
       if (pendingRejoinDeviceSessionBuilder_ == null) {
-        if (((bitField0_ & 0x20000000) != 0) &&
+        if (((bitField0_ & 0x08000000) != 0) &&
           pendingRejoinDeviceSession_ != null &&
           pendingRejoinDeviceSession_ != io.chirpstack.internal.DeviceSession.getDefaultInstance()) {
           getPendingRejoinDeviceSessionBuilder().mergeFrom(value);
@@ -4330,7 +4164,7 @@ io.chirpstack.internal.DeviceSessionChannel defaultValue) {
         pendingRejoinDeviceSessionBuilder_.mergeFrom(value);
       }
       if (pendingRejoinDeviceSession_ != null) {
-        bitField0_ |= 0x20000000;
+        bitField0_ |= 0x08000000;
         onChanged();
       }
       return this;
@@ -4344,7 +4178,7 @@ io.chirpstack.internal.DeviceSessionChannel defaultValue) {
      * <code>.internal.DeviceSession pending_rejoin_device_session = 29;</code>
      */
     public Builder clearPendingRejoinDeviceSession() {
-      bitField0_ = (bitField0_ & ~0x20000000);
+      bitField0_ = (bitField0_ & ~0x08000000);
       pendingRejoinDeviceSession_ = null;
       if (pendingRejoinDeviceSessionBuilder_ != null) {
         pendingRejoinDeviceSessionBuilder_.dispose();
@@ -4362,7 +4196,7 @@ io.chirpstack.internal.DeviceSessionChannel defaultValue) {
      * <code>.internal.DeviceSession pending_rejoin_device_session = 29;</code>
      */
     public io.chirpstack.internal.DeviceSession.Builder getPendingRejoinDeviceSessionBuilder() {
-      bitField0_ |= 0x20000000;
+      bitField0_ |= 0x08000000;
       onChanged();
       return getPendingRejoinDeviceSessionFieldBuilder().getBuilder();
     }
@@ -4407,9 +4241,9 @@ io.chirpstack.internal.DeviceSessionChannel defaultValue) {
     private java.util.List<io.chirpstack.internal.UplinkAdrHistory> uplinkAdrHistory_ =
       java.util.Collections.emptyList();
     private void ensureUplinkAdrHistoryIsMutable() {
-      if (!((bitField0_ & 0x40000000) != 0)) {
+      if (!((bitField0_ & 0x10000000) != 0)) {
         uplinkAdrHistory_ = new java.util.ArrayList<io.chirpstack.internal.UplinkAdrHistory>(uplinkAdrHistory_);
-        bitField0_ |= 0x40000000;
+        bitField0_ |= 0x10000000;
        }
     }
 
@@ -4647,7 +4481,7 @@ io.chirpstack.internal.DeviceSessionChannel defaultValue) {
     public Builder clearUplinkAdrHistory() {
       if (uplinkAdrHistoryBuilder_ == null) {
         uplinkAdrHistory_ = java.util.Collections.emptyList();
-        bitField0_ = (bitField0_ & ~0x40000000);
+        bitField0_ = (bitField0_ & ~0x10000000);
         onChanged();
       } else {
         uplinkAdrHistoryBuilder_.clear();
@@ -4780,7 +4614,7 @@ io.chirpstack.internal.DeviceSessionChannel defaultValue) {
         uplinkAdrHistoryBuilder_ = new com.google.protobuf.RepeatedFieldBuilderV3<
             io.chirpstack.internal.UplinkAdrHistory, io.chirpstack.internal.UplinkAdrHistory.Builder, io.chirpstack.internal.UplinkAdrHistoryOrBuilder>(
                 uplinkAdrHistory_,
-                ((bitField0_ & 0x40000000) != 0),
+                ((bitField0_ & 0x10000000) != 0),
                 getParentForChildren(),
                 isClean());
         uplinkAdrHistory_ = null;
@@ -4807,7 +4641,7 @@ io.chirpstack.internal.DeviceSessionChannel defaultValue) {
       if (!macCommandErrorCount_.isMutable()) {
         macCommandErrorCount_ = macCommandErrorCount_.copy();
       }
-      bitField0_ |= 0x80000000;
+      bitField0_ |= 0x20000000;
       onChanged();
       return macCommandErrorCount_;
     }
@@ -4881,7 +4715,7 @@ io.chirpstack.internal.DeviceSessionChannel defaultValue) {
       return map.get(key);
     }
     public Builder clearMacCommandErrorCount() {
-      bitField0_ = (bitField0_ & ~0x80000000);
+      bitField0_ = (bitField0_ & ~0x20000000);
       internalGetMutableMacCommandErrorCount().getMutableMap()
           .clear();
       return this;
@@ -4906,7 +4740,7 @@ io.chirpstack.internal.DeviceSessionChannel defaultValue) {
     @java.lang.Deprecated
     public java.util.Map<java.lang.Integer, java.lang.Integer>
         getMutableMacCommandErrorCount() {
-      bitField0_ |= 0x80000000;
+      bitField0_ |= 0x20000000;
       return internalGetMutableMacCommandErrorCount().getMutableMap();
     }
     /**
@@ -4923,7 +4757,7 @@ io.chirpstack.internal.DeviceSessionChannel defaultValue) {
 
       internalGetMutableMacCommandErrorCount().getMutableMap()
           .put(key, value);
-      bitField0_ |= 0x80000000;
+      bitField0_ |= 0x20000000;
       return this;
     }
     /**
@@ -4937,7 +4771,7 @@ io.chirpstack.internal.DeviceSessionChannel defaultValue) {
         java.util.Map<java.lang.Integer, java.lang.Integer> values) {
       internalGetMutableMacCommandErrorCount().getMutableMap()
           .putAll(values);
-      bitField0_ |= 0x80000000;
+      bitField0_ |= 0x20000000;
       return this;
     }
 
@@ -4953,7 +4787,7 @@ io.chirpstack.internal.DeviceSessionChannel defaultValue) {
      * @return Whether the lastDeviceStatusRequest field is set.
      */
     public boolean hasLastDeviceStatusRequest() {
-      return ((bitField1_ & 0x00000001) != 0);
+      return ((bitField0_ & 0x40000000) != 0);
     }
     /**
      * <pre>
@@ -4986,7 +4820,7 @@ io.chirpstack.internal.DeviceSessionChannel defaultValue) {
       } else {
         lastDeviceStatusRequestBuilder_.setMessage(value);
       }
-      bitField1_ |= 0x00000001;
+      bitField0_ |= 0x40000000;
       onChanged();
       return this;
     }
@@ -5004,7 +4838,7 @@ io.chirpstack.internal.DeviceSessionChannel defaultValue) {
       } else {
         lastDeviceStatusRequestBuilder_.setMessage(builderForValue.build());
       }
-      bitField1_ |= 0x00000001;
+      bitField0_ |= 0x40000000;
       onChanged();
       return this;
     }
@@ -5017,7 +4851,7 @@ io.chirpstack.internal.DeviceSessionChannel defaultValue) {
      */
     public Builder mergeLastDeviceStatusRequest(com.google.protobuf.Timestamp value) {
       if (lastDeviceStatusRequestBuilder_ == null) {
-        if (((bitField1_ & 0x00000001) != 0) &&
+        if (((bitField0_ & 0x40000000) != 0) &&
           lastDeviceStatusRequest_ != null &&
           lastDeviceStatusRequest_ != com.google.protobuf.Timestamp.getDefaultInstance()) {
           getLastDeviceStatusRequestBuilder().mergeFrom(value);
@@ -5028,7 +4862,7 @@ io.chirpstack.internal.DeviceSessionChannel defaultValue) {
         lastDeviceStatusRequestBuilder_.mergeFrom(value);
       }
       if (lastDeviceStatusRequest_ != null) {
-        bitField1_ |= 0x00000001;
+        bitField0_ |= 0x40000000;
         onChanged();
       }
       return this;
@@ -5041,7 +4875,7 @@ io.chirpstack.internal.DeviceSessionChannel defaultValue) {
      * <code>.google.protobuf.Timestamp last_device_status_request = 32;</code>
      */
     public Builder clearLastDeviceStatusRequest() {
-      bitField1_ = (bitField1_ & ~0x00000001);
+      bitField0_ = (bitField0_ & ~0x40000000);
       lastDeviceStatusRequest_ = null;
       if (lastDeviceStatusRequestBuilder_ != null) {
         lastDeviceStatusRequestBuilder_.dispose();
@@ -5058,7 +4892,7 @@ io.chirpstack.internal.DeviceSessionChannel defaultValue) {
      * <code>.google.protobuf.Timestamp last_device_status_request = 32;</code>
      */
     public com.google.protobuf.Timestamp.Builder getLastDeviceStatusRequestBuilder() {
-      bitField1_ |= 0x00000001;
+      bitField0_ |= 0x40000000;
       onChanged();
       return getLastDeviceStatusRequestFieldBuilder().getBuilder();
     }
@@ -5125,7 +4959,7 @@ io.chirpstack.internal.DeviceSessionChannel defaultValue) {
     public Builder setRejoinRequestEnabled(boolean value) {
 
       rejoinRequestEnabled_ = value;
-      bitField1_ |= 0x00000002;
+      bitField0_ |= 0x80000000;
       onChanged();
       return this;
     }
@@ -5139,7 +4973,7 @@ io.chirpstack.internal.DeviceSessionChannel defaultValue) {
      * @return This builder for chaining.
      */
     public Builder clearRejoinRequestEnabled() {
-      bitField1_ = (bitField1_ & ~0x00000002);
+      bitField0_ = (bitField0_ & ~0x80000000);
       rejoinRequestEnabled_ = false;
       onChanged();
       return this;
@@ -5172,7 +5006,7 @@ io.chirpstack.internal.DeviceSessionChannel defaultValue) {
     public Builder setRejoinRequestMaxCountN(int value) {
 
       rejoinRequestMaxCountN_ = value;
-      bitField1_ |= 0x00000004;
+      bitField1_ |= 0x00000001;
       onChanged();
       return this;
     }
@@ -5186,7 +5020,7 @@ io.chirpstack.internal.DeviceSessionChannel defaultValue) {
      * @return This builder for chaining.
      */
     public Builder clearRejoinRequestMaxCountN() {
-      bitField1_ = (bitField1_ & ~0x00000004);
+      bitField1_ = (bitField1_ & ~0x00000001);
       rejoinRequestMaxCountN_ = 0;
       onChanged();
       return this;
@@ -5219,7 +5053,7 @@ io.chirpstack.internal.DeviceSessionChannel defaultValue) {
     public Builder setRejoinRequestMaxTimeN(int value) {
 
       rejoinRequestMaxTimeN_ = value;
-      bitField1_ |= 0x00000008;
+      bitField1_ |= 0x00000002;
       onChanged();
       return this;
     }
@@ -5233,7 +5067,7 @@ io.chirpstack.internal.DeviceSessionChannel defaultValue) {
      * @return This builder for chaining.
      */
     public Builder clearRejoinRequestMaxTimeN() {
-      bitField1_ = (bitField1_ & ~0x00000008);
+      bitField1_ = (bitField1_ & ~0x00000002);
       rejoinRequestMaxTimeN_ = 0;
       onChanged();
       return this;
@@ -5266,7 +5100,7 @@ io.chirpstack.internal.DeviceSessionChannel defaultValue) {
     public Builder setRejoinCount0(int value) {
 
       rejoinCount0_ = value;
-      bitField1_ |= 0x00000010;
+      bitField1_ |= 0x00000004;
       onChanged();
       return this;
     }
@@ -5280,7 +5114,7 @@ io.chirpstack.internal.DeviceSessionChannel defaultValue) {
      * @return This builder for chaining.
      */
     public Builder clearRejoinCount0() {
-      bitField1_ = (bitField1_ & ~0x00000010);
+      bitField1_ = (bitField1_ & ~0x00000004);
       rejoinCount0_ = 0;
       onChanged();
       return this;
@@ -5311,7 +5145,7 @@ io.chirpstack.internal.DeviceSessionChannel defaultValue) {
     public Builder setUplinkDwellTime400Ms(boolean value) {
 
       uplinkDwellTime400Ms_ = value;
-      bitField1_ |= 0x00000020;
+      bitField1_ |= 0x00000008;
       onChanged();
       return this;
     }
@@ -5324,7 +5158,7 @@ io.chirpstack.internal.DeviceSessionChannel defaultValue) {
      * @return This builder for chaining.
      */
     public Builder clearUplinkDwellTime400Ms() {
-      bitField1_ = (bitField1_ & ~0x00000020);
+      bitField1_ = (bitField1_ & ~0x00000008);
       uplinkDwellTime400Ms_ = false;
       onChanged();
       return this;
@@ -5355,7 +5189,7 @@ io.chirpstack.internal.DeviceSessionChannel defaultValue) {
     public Builder setDownlinkDwellTime400Ms(boolean value) {
 
       downlinkDwellTime400Ms_ = value;
-      bitField1_ |= 0x00000040;
+      bitField1_ |= 0x00000010;
       onChanged();
       return this;
     }
@@ -5368,7 +5202,7 @@ io.chirpstack.internal.DeviceSessionChannel defaultValue) {
      * @return This builder for chaining.
      */
     public Builder clearDownlinkDwellTime400Ms() {
-      bitField1_ = (bitField1_ & ~0x00000040);
+      bitField1_ = (bitField1_ & ~0x00000010);
       downlinkDwellTime400Ms_ = false;
       onChanged();
       return this;
@@ -5399,7 +5233,7 @@ io.chirpstack.internal.DeviceSessionChannel defaultValue) {
     public Builder setUplinkMaxEirpIndex(int value) {
 
       uplinkMaxEirpIndex_ = value;
-      bitField1_ |= 0x00000080;
+      bitField1_ |= 0x00000020;
       onChanged();
       return this;
     }
@@ -5412,7 +5246,7 @@ io.chirpstack.internal.DeviceSessionChannel defaultValue) {
      * @return This builder for chaining.
      */
     public Builder clearUplinkMaxEirpIndex() {
-      bitField1_ = (bitField1_ & ~0x00000080);
+      bitField1_ = (bitField1_ & ~0x00000020);
       uplinkMaxEirpIndex_ = 0;
       onChanged();
       return this;
@@ -5473,7 +5307,7 @@ io.chirpstack.internal.DeviceSessionChannel defaultValue) {
         java.lang.String value) {
       if (value == null) { throw new NullPointerException(); }
       regionConfigId_ = value;
-      bitField1_ |= 0x00000100;
+      bitField1_ |= 0x00000040;
       onChanged();
       return this;
     }
@@ -5487,7 +5321,7 @@ io.chirpstack.internal.DeviceSessionChannel defaultValue) {
      */
     public Builder clearRegionConfigId() {
       regionConfigId_ = getDefaultInstance().getRegionConfigId();
-      bitField1_ = (bitField1_ & ~0x00000100);
+      bitField1_ = (bitField1_ & ~0x00000040);
       onChanged();
       return this;
     }
@@ -5505,7 +5339,7 @@ io.chirpstack.internal.DeviceSessionChannel defaultValue) {
       if (value == null) { throw new NullPointerException(); }
       checkByteStringIsUtf8(value);
       regionConfigId_ = value;
-      bitField1_ |= 0x00000100;
+      bitField1_ |= 0x00000040;
       onChanged();
       return this;
     }
@@ -5522,7 +5356,7 @@ io.chirpstack.internal.DeviceSessionChannel defaultValue) {
      * @return Whether the relay field is set.
      */
     public boolean hasRelay() {
-      return ((bitField1_ & 0x00000200) != 0);
+      return ((bitField1_ & 0x00000080) != 0);
     }
     /**
      * <pre>
@@ -5555,7 +5389,7 @@ io.chirpstack.internal.DeviceSessionChannel defaultValue) {
       } else {
         relayBuilder_.setMessage(value);
       }
-      bitField1_ |= 0x00000200;
+      bitField1_ |= 0x00000080;
       onChanged();
       return this;
     }
@@ -5573,7 +5407,7 @@ io.chirpstack.internal.DeviceSessionChannel defaultValue) {
       } else {
         relayBuilder_.setMessage(builderForValue.build());
       }
-      bitField1_ |= 0x00000200;
+      bitField1_ |= 0x00000080;
       onChanged();
       return this;
     }
@@ -5586,7 +5420,7 @@ io.chirpstack.internal.DeviceSessionChannel defaultValue) {
      */
     public Builder mergeRelay(io.chirpstack.internal.Relay value) {
       if (relayBuilder_ == null) {
-        if (((bitField1_ & 0x00000200) != 0) &&
+        if (((bitField1_ & 0x00000080) != 0) &&
           relay_ != null &&
           relay_ != io.chirpstack.internal.Relay.getDefaultInstance()) {
           getRelayBuilder().mergeFrom(value);
@@ -5597,7 +5431,7 @@ io.chirpstack.internal.DeviceSessionChannel defaultValue) {
         relayBuilder_.mergeFrom(value);
       }
       if (relay_ != null) {
-        bitField1_ |= 0x00000200;
+        bitField1_ |= 0x00000080;
         onChanged();
       }
       return this;
@@ -5610,7 +5444,7 @@ io.chirpstack.internal.DeviceSessionChannel defaultValue) {
      * <code>.internal.Relay relay = 41;</code>
      */
     public Builder clearRelay() {
-      bitField1_ = (bitField1_ & ~0x00000200);
+      bitField1_ = (bitField1_ & ~0x00000080);
       relay_ = null;
       if (relayBuilder_ != null) {
         relayBuilder_.dispose();
@@ -5627,7 +5461,7 @@ io.chirpstack.internal.DeviceSessionChannel defaultValue) {
      * <code>.internal.Relay relay = 41;</code>
      */
     public io.chirpstack.internal.Relay.Builder getRelayBuilder() {
-      bitField1_ |= 0x00000200;
+      bitField1_ |= 0x00000080;
       onChanged();
       return getRelayFieldBuilder().getBuilder();
     }

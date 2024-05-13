@@ -289,110 +289,112 @@ public final class DeviceProto {
       "vation\030\001 \001(\0132\025.api.DeviceActivation\"*\n\027D" +
       "eactivateDeviceRequest\022\017\n\007dev_eui\030\001 \001(\t\"" +
       "-\n\032GetDeviceActivationRequest\022\017\n\007dev_eui" +
-      "\030\001 \001(\t\"O\n\033GetDeviceActivationResponse\0220\n" +
-      "\021device_activation\030\001 \001(\0132\025.api.DeviceAct" +
-      "ivation\"*\n\027GetRandomDevAddrRequest\022\017\n\007de" +
-      "v_eui\030\001 \001(\t\",\n\030GetRandomDevAddrResponse\022" +
-      "\020\n\010dev_addr\030\001 \001(\t\"\250\001\n\027GetDeviceMetricsRe" +
-      "quest\022\017\n\007dev_eui\030\001 \001(\t\022)\n\005start\030\002 \001(\0132\032." +
-      "google.protobuf.Timestamp\022\'\n\003end\030\003 \001(\0132\032" +
-      ".google.protobuf.Timestamp\022(\n\013aggregatio" +
-      "n\030\004 \001(\0162\023.common.Aggregation\"\223\002\n\030GetDevi" +
-      "ceMetricsResponse\022;\n\007metrics\030\001 \003(\0132*.api" +
-      ".GetDeviceMetricsResponse.MetricsEntry\0229" +
-      "\n\006states\030\002 \003(\0132).api.GetDeviceMetricsRes" +
-      "ponse.StatesEntry\032>\n\014MetricsEntry\022\013\n\003key" +
-      "\030\001 \001(\t\022\035\n\005value\030\002 \001(\0132\016.common.Metric:\0028" +
-      "\001\032?\n\013StatesEntry\022\013\n\003key\030\001 \001(\t\022\037\n\005value\030\002" +
-      " \001(\0132\020.api.DeviceState:\0028\001\"*\n\013DeviceStat" +
-      "e\022\014\n\004name\030\002 \001(\t\022\r\n\005value\030\003 \001(\t\"\254\001\n\033GetDe" +
-      "viceLinkMetricsRequest\022\017\n\007dev_eui\030\001 \001(\t\022" +
+      "\030\001 \001(\t\"\207\001\n\033GetDeviceActivationResponse\0220" +
+      "\n\021device_activation\030\001 \001(\0132\025.api.DeviceAc" +
+      "tivation\0226\n\023join_server_context\030\002 \001(\0132\031." +
+      "common.JoinServerContext\"*\n\027GetRandomDev" +
+      "AddrRequest\022\017\n\007dev_eui\030\001 \001(\t\",\n\030GetRando" +
+      "mDevAddrResponse\022\020\n\010dev_addr\030\001 \001(\t\"\250\001\n\027G" +
+      "etDeviceMetricsRequest\022\017\n\007dev_eui\030\001 \001(\t\022" +
       ")\n\005start\030\002 \001(\0132\032.google.protobuf.Timesta" +
       "mp\022\'\n\003end\030\003 \001(\0132\032.google.protobuf.Timest" +
       "amp\022(\n\013aggregation\030\004 \001(\0162\023.common.Aggreg" +
-      "ation\"\373\001\n\034GetDeviceLinkMetricsResponse\022\"" +
-      "\n\nrx_packets\030\001 \001(\0132\016.common.Metric\022\037\n\007gw" +
-      "_rssi\030\002 \001(\0132\016.common.Metric\022\036\n\006gw_snr\030\003 " +
-      "\001(\0132\016.common.Metric\022+\n\023rx_packets_per_fr" +
-      "eq\030\004 \001(\0132\016.common.Metric\022)\n\021rx_packets_p" +
-      "er_dr\030\005 \001(\0132\016.common.Metric\022\036\n\006errors\030\006 " +
-      "\001(\0132\016.common.Metric\"\306\001\n\017DeviceQueueItem\022" +
-      "\n\n\002id\030\001 \001(\t\022\017\n\007dev_eui\030\002 \001(\t\022\021\n\tconfirme" +
-      "d\030\003 \001(\010\022\016\n\006f_port\030\004 \001(\r\022\014\n\004data\030\005 \001(\014\022\'\n" +
-      "\006object\030\006 \001(\0132\027.google.protobuf.Struct\022\022" +
-      "\n\nis_pending\030\007 \001(\010\022\022\n\nf_cnt_down\030\010 \001(\r\022\024" +
-      "\n\014is_encrypted\030\t \001(\010\"I\n\035EnqueueDeviceQue" +
-      "ueItemRequest\022(\n\nqueue_item\030\001 \001(\0132\024.api." +
-      "DeviceQueueItem\",\n\036EnqueueDeviceQueueIte" +
-      "mResponse\022\n\n\002id\030\001 \001(\t\"*\n\027FlushDeviceQueu" +
-      "eRequest\022\017\n\007dev_eui\030\001 \001(\t\"A\n\032GetDeviceQu" +
-      "eueItemsRequest\022\017\n\007dev_eui\030\001 \001(\t\022\022\n\ncoun" +
-      "t_only\030\002 \001(\010\"X\n\033GetDeviceQueueItemsRespo" +
-      "nse\022\023\n\013total_count\030\001 \001(\r\022$\n\006result\030\002 \003(\013" +
-      "2\024.api.DeviceQueueItem\"(\n\025FlushDevNonces" +
-      "Request\022\017\n\007dev_eui\030\001 \001(\t\"/\n\034GetDeviceNex" +
-      "tFCntDownRequest\022\017\n\007dev_eui\030\001 \001(\t\"3\n\035Get" +
-      "DeviceNextFCntDownResponse\022\022\n\nf_cnt_down" +
-      "\030\001 \001(\r2\342\021\n\rDeviceService\022S\n\006Create\022\030.api" +
-      ".CreateDeviceRequest\032\026.google.protobuf.E" +
-      "mpty\"\027\202\323\344\223\002\021\"\014/api/devices:\001*\022T\n\003Get\022\025.a" +
-      "pi.GetDeviceRequest\032\026.api.GetDeviceRespo" +
-      "nse\"\036\202\323\344\223\002\030\022\026/api/devices/{dev_eui}\022d\n\006U" +
-      "pdate\022\030.api.UpdateDeviceRequest\032\026.google" +
-      ".protobuf.Empty\"(\202\323\344\223\002\"\032\035/api/devices/{d" +
-      "evice.dev_eui}:\001*\022Z\n\006Delete\022\030.api.Delete" +
-      "DeviceRequest\032\026.google.protobuf.Empty\"\036\202" +
-      "\323\344\223\002\030*\026/api/devices/{dev_eui}\022O\n\004List\022\027." +
-      "api.ListDevicesRequest\032\030.api.ListDevices" +
-      "Response\"\024\202\323\344\223\002\016\022\014/api/devices\022v\n\nCreate" +
-      "Keys\022\034.api.CreateDeviceKeysRequest\032\026.goo" +
-      "gle.protobuf.Empty\"2\202\323\344\223\002,\"\'/api/devices" +
-      "/{device_keys.dev_eui}/keys:\001*\022e\n\007GetKey" +
-      "s\022\031.api.GetDeviceKeysRequest\032\032.api.GetDe" +
-      "viceKeysResponse\"#\202\323\344\223\002\035\022\033/api/devices/{" +
-      "dev_eui}/keys\022v\n\nUpdateKeys\022\034.api.Update" +
-      "DeviceKeysRequest\032\026.google.protobuf.Empt" +
-      "y\"2\202\323\344\223\002,\032\'/api/devices/{device_keys.dev" +
-      "_eui}/keys:\001*\022g\n\nDeleteKeys\022\034.api.Delete" +
-      "DeviceKeysRequest\032\026.google.protobuf.Empt" +
-      "y\"#\202\323\344\223\002\035*\033/api/devices/{dev_eui}/keys\022o" +
-      "\n\016FlushDevNonces\022\032.api.FlushDevNoncesReq" +
-      "uest\032\026.google.protobuf.Empty\")\202\323\344\223\002#*!/a" +
-      "pi/devices/{dev_eui}/dev-nonces\022|\n\010Activ" +
-      "ate\022\032.api.ActivateDeviceRequest\032\026.google" +
-      ".protobuf.Empty\"<\202\323\344\223\0026\"1/api/devices/{d" +
-      "evice_activation.dev_eui}/activate:\001*\022m\n" +
-      "\nDeactivate\022\034.api.DeactivateDeviceReques" +
-      "t\032\026.google.protobuf.Empty\")\202\323\344\223\002#*!/api/" +
-      "devices/{dev_eui}/activation\022}\n\rGetActiv" +
-      "ation\022\037.api.GetDeviceActivationRequest\032 " +
-      ".api.GetDeviceActivationResponse\")\202\323\344\223\002#" +
-      "\022!/api/devices/{dev_eui}/activation\022\203\001\n\020" +
-      "GetRandomDevAddr\022\034.api.GetRandomDevAddrR" +
-      "equest\032\035.api.GetRandomDevAddrResponse\"2\202" +
-      "\323\344\223\002,\"*/api/devices/{dev_eui}/get-random" +
-      "-dev-addr\022q\n\nGetMetrics\022\034.api.GetDeviceM" +
-      "etricsRequest\032\035.api.GetDeviceMetricsResp" +
-      "onse\"&\202\323\344\223\002 \022\036/api/devices/{dev_eui}/met" +
-      "rics\022\202\001\n\016GetLinkMetrics\022 .api.GetDeviceL" +
-      "inkMetricsRequest\032!.api.GetDeviceLinkMet" +
-      "ricsResponse\"+\202\323\344\223\002%\022#/api/devices/{dev_" +
-      "eui}/link-metrics\022\206\001\n\007Enqueue\022\".api.Enqu" +
-      "eueDeviceQueueItemRequest\032#.api.EnqueueD" +
-      "eviceQueueItemResponse\"2\202\323\344\223\002,\"\'/api/dev" +
-      "ices/{queue_item.dev_eui}/queue:\001*\022h\n\nFl" +
-      "ushQueue\022\034.api.FlushDeviceQueueRequest\032\026" +
-      ".google.protobuf.Empty\"$\202\323\344\223\002\036*\034/api/dev" +
-      "ices/{dev_eui}/queue\022s\n\010GetQueue\022\037.api.G" +
-      "etDeviceQueueItemsRequest\032 .api.GetDevic" +
-      "eQueueItemsResponse\"$\202\323\344\223\002\036\022\034/api/device" +
-      "s/{dev_eui}/queue\022\217\001\n\017GetNextFCntDown\022!." +
-      "api.GetDeviceNextFCntDownRequest\032\".api.G" +
-      "etDeviceNextFCntDownResponse\"5\202\323\344\223\002/\"*/a" +
-      "pi/devices/{dev_eui}/get-next-f-cnt-down" +
-      ":\001*Bc\n\021io.chirpstack.apiB\013DeviceProtoP\001Z" +
-      ".github.com/chirpstack/chirpstack/api/go" +
-      "/v4/api\252\002\016Chirpstack.Apib\006proto3"
+      "ation\"\223\002\n\030GetDeviceMetricsResponse\022;\n\007me" +
+      "trics\030\001 \003(\0132*.api.GetDeviceMetricsRespon" +
+      "se.MetricsEntry\0229\n\006states\030\002 \003(\0132).api.Ge" +
+      "tDeviceMetricsResponse.StatesEntry\032>\n\014Me" +
+      "tricsEntry\022\013\n\003key\030\001 \001(\t\022\035\n\005value\030\002 \001(\0132\016" +
+      ".common.Metric:\0028\001\032?\n\013StatesEntry\022\013\n\003key" +
+      "\030\001 \001(\t\022\037\n\005value\030\002 \001(\0132\020.api.DeviceState:" +
+      "\0028\001\"*\n\013DeviceState\022\014\n\004name\030\002 \001(\t\022\r\n\005valu" +
+      "e\030\003 \001(\t\"\254\001\n\033GetDeviceLinkMetricsRequest\022" +
+      "\017\n\007dev_eui\030\001 \001(\t\022)\n\005start\030\002 \001(\0132\032.google" +
+      ".protobuf.Timestamp\022\'\n\003end\030\003 \001(\0132\032.googl" +
+      "e.protobuf.Timestamp\022(\n\013aggregation\030\004 \001(" +
+      "\0162\023.common.Aggregation\"\373\001\n\034GetDeviceLink" +
+      "MetricsResponse\022\"\n\nrx_packets\030\001 \001(\0132\016.co" +
+      "mmon.Metric\022\037\n\007gw_rssi\030\002 \001(\0132\016.common.Me" +
+      "tric\022\036\n\006gw_snr\030\003 \001(\0132\016.common.Metric\022+\n\023" +
+      "rx_packets_per_freq\030\004 \001(\0132\016.common.Metri" +
+      "c\022)\n\021rx_packets_per_dr\030\005 \001(\0132\016.common.Me" +
+      "tric\022\036\n\006errors\030\006 \001(\0132\016.common.Metric\"\306\001\n" +
+      "\017DeviceQueueItem\022\n\n\002id\030\001 \001(\t\022\017\n\007dev_eui\030" +
+      "\002 \001(\t\022\021\n\tconfirmed\030\003 \001(\010\022\016\n\006f_port\030\004 \001(\r" +
+      "\022\014\n\004data\030\005 \001(\014\022\'\n\006object\030\006 \001(\0132\027.google." +
+      "protobuf.Struct\022\022\n\nis_pending\030\007 \001(\010\022\022\n\nf" +
+      "_cnt_down\030\010 \001(\r\022\024\n\014is_encrypted\030\t \001(\010\"I\n" +
+      "\035EnqueueDeviceQueueItemRequest\022(\n\nqueue_" +
+      "item\030\001 \001(\0132\024.api.DeviceQueueItem\",\n\036Enqu" +
+      "eueDeviceQueueItemResponse\022\n\n\002id\030\001 \001(\t\"*" +
+      "\n\027FlushDeviceQueueRequest\022\017\n\007dev_eui\030\001 \001" +
+      "(\t\"A\n\032GetDeviceQueueItemsRequest\022\017\n\007dev_" +
+      "eui\030\001 \001(\t\022\022\n\ncount_only\030\002 \001(\010\"X\n\033GetDevi" +
+      "ceQueueItemsResponse\022\023\n\013total_count\030\001 \001(" +
+      "\r\022$\n\006result\030\002 \003(\0132\024.api.DeviceQueueItem\"" +
+      "(\n\025FlushDevNoncesRequest\022\017\n\007dev_eui\030\001 \001(" +
+      "\t\"/\n\034GetDeviceNextFCntDownRequest\022\017\n\007dev" +
+      "_eui\030\001 \001(\t\"3\n\035GetDeviceNextFCntDownRespo" +
+      "nse\022\022\n\nf_cnt_down\030\001 \001(\r2\342\021\n\rDeviceServic" +
+      "e\022S\n\006Create\022\030.api.CreateDeviceRequest\032\026." +
+      "google.protobuf.Empty\"\027\202\323\344\223\002\021\"\014/api/devi" +
+      "ces:\001*\022T\n\003Get\022\025.api.GetDeviceRequest\032\026.a" +
+      "pi.GetDeviceResponse\"\036\202\323\344\223\002\030\022\026/api/devic" +
+      "es/{dev_eui}\022d\n\006Update\022\030.api.UpdateDevic" +
+      "eRequest\032\026.google.protobuf.Empty\"(\202\323\344\223\002\"" +
+      "\032\035/api/devices/{device.dev_eui}:\001*\022Z\n\006De" +
+      "lete\022\030.api.DeleteDeviceRequest\032\026.google." +
+      "protobuf.Empty\"\036\202\323\344\223\002\030*\026/api/devices/{de" +
+      "v_eui}\022O\n\004List\022\027.api.ListDevicesRequest\032" +
+      "\030.api.ListDevicesResponse\"\024\202\323\344\223\002\016\022\014/api/" +
+      "devices\022v\n\nCreateKeys\022\034.api.CreateDevice" +
+      "KeysRequest\032\026.google.protobuf.Empty\"2\202\323\344" +
+      "\223\002,\"\'/api/devices/{device_keys.dev_eui}/" +
+      "keys:\001*\022e\n\007GetKeys\022\031.api.GetDeviceKeysRe" +
+      "quest\032\032.api.GetDeviceKeysResponse\"#\202\323\344\223\002" +
+      "\035\022\033/api/devices/{dev_eui}/keys\022v\n\nUpdate" +
+      "Keys\022\034.api.UpdateDeviceKeysRequest\032\026.goo" +
+      "gle.protobuf.Empty\"2\202\323\344\223\002,\032\'/api/devices" +
+      "/{device_keys.dev_eui}/keys:\001*\022g\n\nDelete" +
+      "Keys\022\034.api.DeleteDeviceKeysRequest\032\026.goo" +
+      "gle.protobuf.Empty\"#\202\323\344\223\002\035*\033/api/devices" +
+      "/{dev_eui}/keys\022o\n\016FlushDevNonces\022\032.api." +
+      "FlushDevNoncesRequest\032\026.google.protobuf." +
+      "Empty\")\202\323\344\223\002#*!/api/devices/{dev_eui}/de" +
+      "v-nonces\022|\n\010Activate\022\032.api.ActivateDevic" +
+      "eRequest\032\026.google.protobuf.Empty\"<\202\323\344\223\0026" +
+      "\"1/api/devices/{device_activation.dev_eu" +
+      "i}/activate:\001*\022m\n\nDeactivate\022\034.api.Deact" +
+      "ivateDeviceRequest\032\026.google.protobuf.Emp" +
+      "ty\")\202\323\344\223\002#*!/api/devices/{dev_eui}/activ" +
+      "ation\022}\n\rGetActivation\022\037.api.GetDeviceAc" +
+      "tivationRequest\032 .api.GetDeviceActivatio" +
+      "nResponse\")\202\323\344\223\002#\022!/api/devices/{dev_eui" +
+      "}/activation\022\203\001\n\020GetRandomDevAddr\022\034.api." +
+      "GetRandomDevAddrRequest\032\035.api.GetRandomD" +
+      "evAddrResponse\"2\202\323\344\223\002,\"*/api/devices/{de" +
+      "v_eui}/get-random-dev-addr\022q\n\nGetMetrics" +
+      "\022\034.api.GetDeviceMetricsRequest\032\035.api.Get" +
+      "DeviceMetricsResponse\"&\202\323\344\223\002 \022\036/api/devi" +
+      "ces/{dev_eui}/metrics\022\202\001\n\016GetLinkMetrics" +
+      "\022 .api.GetDeviceLinkMetricsRequest\032!.api" +
+      ".GetDeviceLinkMetricsResponse\"+\202\323\344\223\002%\022#/" +
+      "api/devices/{dev_eui}/link-metrics\022\206\001\n\007E" +
+      "nqueue\022\".api.EnqueueDeviceQueueItemReque" +
+      "st\032#.api.EnqueueDeviceQueueItemResponse\"" +
+      "2\202\323\344\223\002,\"\'/api/devices/{queue_item.dev_eu" +
+      "i}/queue:\001*\022h\n\nFlushQueue\022\034.api.FlushDev" +
+      "iceQueueRequest\032\026.google.protobuf.Empty\"" +
+      "$\202\323\344\223\002\036*\034/api/devices/{dev_eui}/queue\022s\n" +
+      "\010GetQueue\022\037.api.GetDeviceQueueItemsReque" +
+      "st\032 .api.GetDeviceQueueItemsResponse\"$\202\323" +
+      "\344\223\002\036\022\034/api/devices/{dev_eui}/queue\022\217\001\n\017G" +
+      "etNextFCntDown\022!.api.GetDeviceNextFCntDo" +
+      "wnRequest\032\".api.GetDeviceNextFCntDownRes" +
+      "ponse\"5\202\323\344\223\002/\"*/api/devices/{dev_eui}/ge" +
+      "t-next-f-cnt-down:\001*Bc\n\021io.chirpstack.ap" +
+      "iB\013DeviceProtoP\001Z.github.com/chirpstack/" +
+      "chirpstack/api/go/v4/api\252\002\016Chirpstack.Ap" +
+      "ib\006proto3"
     };
     descriptor = com.google.protobuf.Descriptors.FileDescriptor
       .internalBuildGeneratedFileFrom(descriptorData,
@@ -540,7 +542,7 @@ public final class DeviceProto {
     internal_static_api_GetDeviceActivationResponse_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_api_GetDeviceActivationResponse_descriptor,
-        new java.lang.String[] { "DeviceActivation", });
+        new java.lang.String[] { "DeviceActivation", "JoinServerContext", });
     internal_static_api_GetRandomDevAddrRequest_descriptor =
       getDescriptor().getMessageTypes().get(21);
     internal_static_api_GetRandomDevAddrRequest_fieldAccessorTable = new

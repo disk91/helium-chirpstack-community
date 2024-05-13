@@ -91,6 +91,11 @@ public final class InternalProto {
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
       internal_static_api_OpenIdConnect_fieldAccessorTable;
   static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_api_OAuth2_descriptor;
+  static final 
+    com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+      internal_static_api_OAuth2_fieldAccessorTable;
+  static final com.google.protobuf.Descriptors.Descriptor
     internal_static_api_OpenIdConnectLoginRequest_descriptor;
   static final 
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
@@ -100,6 +105,16 @@ public final class InternalProto {
   static final 
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
       internal_static_api_OpenIdConnectLoginResponse_fieldAccessorTable;
+  static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_api_OAuth2LoginRequest_descriptor;
+  static final 
+    com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+      internal_static_api_OAuth2LoginRequest_fieldAccessorTable;
+  static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_api_OAuth2LoginResponse_descriptor;
+  static final 
+    com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+      internal_static_api_OAuth2LoginResponse_fieldAccessorTable;
   static final com.google.protobuf.Descriptors.Descriptor
     internal_static_api_GetDevicesSummaryRequest_descriptor;
   static final 
@@ -214,76 +229,84 @@ public final class InternalProto {
       "name\030\004 \001(\t\022\026\n\016application_id\030\005 \001(\t\022\030\n\020ap" +
       "plication_name\030\006 \001(\t\022\026\n\016device_dev_eui\030\007" +
       " \001(\t\022\023\n\013device_name\030\010 \001(\t\022\022\n\ngateway_id\030" +
-      "\t \001(\t\022\024\n\014gateway_name\030\n \001(\t\">\n\020SettingsR" +
+      "\t \001(\t\022\024\n\014gateway_name\030\n \001(\t\"[\n\020SettingsR" +
       "esponse\022*\n\016openid_connect\030\001 \001(\0132\022.api.Op" +
-      "enIdConnect\"q\n\rOpenIdConnect\022\017\n\007enabled\030" +
-      "\001 \001(\010\022\033\n\tlogin_url\030\002 \001(\tR\010loginURL\022\023\n\013lo" +
-      "gin_label\030\003 \001(\t\022\035\n\nlogout_url\030\004 \001(\tR\tlog" +
-      "outURL\"8\n\031OpenIdConnectLoginRequest\022\014\n\004c" +
-      "ode\030\001 \001(\t\022\r\n\005state\030\002 \001(\t\"+\n\032OpenIdConnec" +
-      "tLoginResponse\022\r\n\005token\030\001 \001(\t\"-\n\030GetDevi" +
-      "cesSummaryRequest\022\021\n\ttenant_id\030\001 \001(\t\"\322\001\n" +
-      "\031GetDevicesSummaryResponse\022\024\n\014active_cou" +
-      "nt\030\001 \001(\r\022\026\n\016inactive_count\030\002 \001(\r\022=\n\010dr_c" +
-      "ount\030\003 \003(\0132+.api.GetDevicesSummaryRespon" +
-      "se.DrCountEntry\022\030\n\020never_seen_count\030\004 \001(" +
-      "\r\032.\n\014DrCountEntry\022\013\n\003key\030\001 \001(\r\022\r\n\005value\030" +
-      "\002 \001(\r:\0028\001\".\n\031GetGatewaysSummaryRequest\022\021" +
-      "\n\ttenant_id\030\001 \001(\t\"c\n\032GetGatewaysSummaryR" +
-      "esponse\022\024\n\014online_count\030\001 \001(\r\022\025\n\roffline" +
-      "_count\030\002 \001(\r\022\030\n\020never_seen_count\030\003 \001(\r\"\307" +
-      "\001\n\007LogItem\022\n\n\002id\030\001 \001(\t\022(\n\004time\030\002 \001(\0132\032.g" +
-      "oogle.protobuf.Timestamp\022\023\n\013description\030" +
-      "\003 \001(\t\022\014\n\004body\030\004 \001(\t\0220\n\nproperties\030\005 \003(\0132" +
-      "\034.api.LogItem.PropertiesEntry\0321\n\017Propert" +
-      "iesEntry\022\013\n\003key\030\001 \001(\t\022\r\n\005value\030\002 \001(\t:\0028\001" +
-      "\"0\n\032StreamGatewayFramesRequest\022\022\n\ngatewa" +
-      "y_id\030\001 \001(\t\",\n\031StreamDeviceFramesRequest\022" +
-      "\017\n\007dev_eui\030\001 \001(\t\",\n\031StreamDeviceEventsRe" +
-      "quest\022\017\n\007dev_eui\030\001 \001(\t\";\n\023ListRegionsRes" +
-      "ponse\022$\n\007regions\030\001 \003(\0132\023.api.RegionListI" +
-      "tem\"Q\n\016RegionListItem\022\n\n\002id\030\001 \001(\t\022\036\n\006reg" +
-      "ion\030\002 \001(\0162\016.common.Region\022\023\n\013description" +
-      "\030\003 \001(\t\"\036\n\020GetRegionRequest\022\n\n\002id\030\001 \001(\t\"\250" +
-      "\002\n\021GetRegionResponse\022\n\n\002id\030\001 \001(\t\022\036\n\006regi" +
-      "on\030\002 \001(\0162\016.common.Region\022\021\n\tuser_info\030\003 " +
-      "\001(\t\022+\n\017uplink_channels\030\004 \003(\0132\022.api.Regio" +
-      "nChannel\022\021\n\trx1_delay\030\005 \001(\r\022\025\n\rrx1_dr_of" +
-      "fset\030\006 \001(\r\022\016\n\006rx2_dr\030\007 \001(\r\022\025\n\rrx2_freque" +
-      "ncy\030\010 \001(\r\022\034\n\024class_b_ping_slot_dr\030\t \001(\r\022" +
-      "#\n\033class_b_ping_slot_frequency\030\n \001(\r\022\023\n\013" +
-      "description\030\013 \001(\t\"B\n\rRegionChannel\022\021\n\tfr" +
-      "equency\030\001 \001(\r\022\016\n\006dr_min\030\002 \001(\r\022\016\n\006dr_max\030" +
-      "\003 \001(\r2\264\010\n\017InternalService\0220\n\005Login\022\021.api" +
-      ".LoginRequest\032\022.api.LoginResponse\"\000\0229\n\007P" +
-      "rofile\022\026.google.protobuf.Empty\032\024.api.Pro" +
-      "fileResponse\"\000\022E\n\014GlobalSearch\022\030.api.Glo" +
-      "balSearchRequest\032\031.api.GlobalSearchRespo" +
-      "nse\"\000\022E\n\014CreateApiKey\022\030.api.CreateApiKey" +
-      "Request\032\031.api.CreateApiKeyResponse\"\000\022B\n\014" +
-      "DeleteApiKey\022\030.api.DeleteApiKeyRequest\032\026" +
-      ".google.protobuf.Empty\"\000\022B\n\013ListApiKeys\022" +
-      "\027.api.ListApiKeysRequest\032\030.api.ListApiKe" +
-      "ysResponse\"\000\022;\n\010Settings\022\026.google.protob" +
-      "uf.Empty\032\025.api.SettingsResponse\"\000\022W\n\022Ope" +
-      "nIdConnectLogin\022\036.api.OpenIdConnectLogin" +
-      "Request\032\037.api.OpenIdConnectLoginResponse" +
-      "\"\000\022T\n\021GetDevicesSummary\022\035.api.GetDevices" +
-      "SummaryRequest\032\036.api.GetDevicesSummaryRe" +
-      "sponse\"\000\022W\n\022GetGatewaysSummary\022\036.api.Get" +
-      "GatewaysSummaryRequest\032\037.api.GetGateways" +
-      "SummaryResponse\"\000\022H\n\023StreamGatewayFrames" +
-      "\022\037.api.StreamGatewayFramesRequest\032\014.api." +
-      "LogItem\"\0000\001\022F\n\022StreamDeviceFrames\022\036.api." +
-      "StreamDeviceFramesRequest\032\014.api.LogItem\"" +
-      "\0000\001\022F\n\022StreamDeviceEvents\022\036.api.StreamDe" +
-      "viceEventsRequest\032\014.api.LogItem\"\0000\001\022A\n\013L" +
-      "istRegions\022\026.google.protobuf.Empty\032\030.api" +
-      ".ListRegionsResponse\"\000\022<\n\tGetRegion\022\025.ap" +
-      "i.GetRegionRequest\032\026.api.GetRegionRespon" +
-      "se\"\000Be\n\021io.chirpstack.apiB\rInternalProto" +
-      "P\001Z.github.com/chirpstack/chirpstack/api" +
-      "/go/v4/api\252\002\016Chirpstack.Apib\006proto3"
+      "enIdConnect\022\033\n\006oauth2\030\002 \001(\0132\013.api.OAuth2" +
+      "\"t\n\rOpenIdConnect\022\017\n\007enabled\030\001 \001(\010\022\021\n\tlo" +
+      "gin_url\030\002 \001(\t\022\023\n\013login_label\030\003 \001(\t\022\022\n\nlo" +
+      "gout_url\030\004 \001(\t\022\026\n\016login_redirect\030\005 \001(\010\"m" +
+      "\n\006OAuth2\022\017\n\007enabled\030\001 \001(\010\022\021\n\tlogin_url\030\002" +
+      " \001(\t\022\023\n\013login_label\030\003 \001(\t\022\022\n\nlogout_url\030" +
+      "\004 \001(\t\022\026\n\016login_redirect\030\005 \001(\010\"8\n\031OpenIdC" +
+      "onnectLoginRequest\022\014\n\004code\030\001 \001(\t\022\r\n\005stat" +
+      "e\030\002 \001(\t\"+\n\032OpenIdConnectLoginResponse\022\r\n" +
+      "\005token\030\001 \001(\t\"1\n\022OAuth2LoginRequest\022\014\n\004co" +
+      "de\030\001 \001(\t\022\r\n\005state\030\002 \001(\t\"$\n\023OAuth2LoginRe" +
+      "sponse\022\r\n\005token\030\001 \001(\t\"-\n\030GetDevicesSumma" +
+      "ryRequest\022\021\n\ttenant_id\030\001 \001(\t\"\322\001\n\031GetDevi" +
+      "cesSummaryResponse\022\024\n\014active_count\030\001 \001(\r" +
+      "\022\026\n\016inactive_count\030\002 \001(\r\022=\n\010dr_count\030\003 \003" +
+      "(\0132+.api.GetDevicesSummaryResponse.DrCou" +
+      "ntEntry\022\030\n\020never_seen_count\030\004 \001(\r\032.\n\014DrC" +
+      "ountEntry\022\013\n\003key\030\001 \001(\r\022\r\n\005value\030\002 \001(\r:\0028" +
+      "\001\".\n\031GetGatewaysSummaryRequest\022\021\n\ttenant" +
+      "_id\030\001 \001(\t\"c\n\032GetGatewaysSummaryResponse\022" +
+      "\024\n\014online_count\030\001 \001(\r\022\025\n\roffline_count\030\002" +
+      " \001(\r\022\030\n\020never_seen_count\030\003 \001(\r\"\307\001\n\007LogIt" +
+      "em\022\n\n\002id\030\001 \001(\t\022(\n\004time\030\002 \001(\0132\032.google.pr" +
+      "otobuf.Timestamp\022\023\n\013description\030\003 \001(\t\022\014\n" +
+      "\004body\030\004 \001(\t\0220\n\nproperties\030\005 \003(\0132\034.api.Lo" +
+      "gItem.PropertiesEntry\0321\n\017PropertiesEntry" +
+      "\022\013\n\003key\030\001 \001(\t\022\r\n\005value\030\002 \001(\t:\0028\001\"0\n\032Stre" +
+      "amGatewayFramesRequest\022\022\n\ngateway_id\030\001 \001" +
+      "(\t\",\n\031StreamDeviceFramesRequest\022\017\n\007dev_e" +
+      "ui\030\001 \001(\t\",\n\031StreamDeviceEventsRequest\022\017\n" +
+      "\007dev_eui\030\001 \001(\t\";\n\023ListRegionsResponse\022$\n" +
+      "\007regions\030\001 \003(\0132\023.api.RegionListItem\"Q\n\016R" +
+      "egionListItem\022\n\n\002id\030\001 \001(\t\022\036\n\006region\030\002 \001(" +
+      "\0162\016.common.Region\022\023\n\013description\030\003 \001(\t\"\036" +
+      "\n\020GetRegionRequest\022\n\n\002id\030\001 \001(\t\"\250\002\n\021GetRe" +
+      "gionResponse\022\n\n\002id\030\001 \001(\t\022\036\n\006region\030\002 \001(\016" +
+      "2\016.common.Region\022\021\n\tuser_info\030\003 \001(\t\022+\n\017u" +
+      "plink_channels\030\004 \003(\0132\022.api.RegionChannel" +
+      "\022\021\n\trx1_delay\030\005 \001(\r\022\025\n\rrx1_dr_offset\030\006 \001" +
+      "(\r\022\016\n\006rx2_dr\030\007 \001(\r\022\025\n\rrx2_frequency\030\010 \001(" +
+      "\r\022\034\n\024class_b_ping_slot_dr\030\t \001(\r\022#\n\033class" +
+      "_b_ping_slot_frequency\030\n \001(\r\022\023\n\013descript" +
+      "ion\030\013 \001(\t\"B\n\rRegionChannel\022\021\n\tfrequency\030" +
+      "\001 \001(\r\022\016\n\006dr_min\030\002 \001(\r\022\016\n\006dr_max\030\003 \001(\r2\370\010" +
+      "\n\017InternalService\0220\n\005Login\022\021.api.LoginRe" +
+      "quest\032\022.api.LoginResponse\"\000\0229\n\007Profile\022\026" +
+      ".google.protobuf.Empty\032\024.api.ProfileResp" +
+      "onse\"\000\022E\n\014GlobalSearch\022\030.api.GlobalSearc" +
+      "hRequest\032\031.api.GlobalSearchResponse\"\000\022E\n" +
+      "\014CreateApiKey\022\030.api.CreateApiKeyRequest\032" +
+      "\031.api.CreateApiKeyResponse\"\000\022B\n\014DeleteAp" +
+      "iKey\022\030.api.DeleteApiKeyRequest\032\026.google." +
+      "protobuf.Empty\"\000\022B\n\013ListApiKeys\022\027.api.Li" +
+      "stApiKeysRequest\032\030.api.ListApiKeysRespon" +
+      "se\"\000\022;\n\010Settings\022\026.google.protobuf.Empty" +
+      "\032\025.api.SettingsResponse\"\000\022W\n\022OpenIdConne" +
+      "ctLogin\022\036.api.OpenIdConnectLoginRequest\032" +
+      "\037.api.OpenIdConnectLoginResponse\"\000\022B\n\013OA" +
+      "uth2Login\022\027.api.OAuth2LoginRequest\032\030.api" +
+      ".OAuth2LoginResponse\"\000\022T\n\021GetDevicesSumm" +
+      "ary\022\035.api.GetDevicesSummaryRequest\032\036.api" +
+      ".GetDevicesSummaryResponse\"\000\022W\n\022GetGatew" +
+      "aysSummary\022\036.api.GetGatewaysSummaryReque" +
+      "st\032\037.api.GetGatewaysSummaryResponse\"\000\022H\n" +
+      "\023StreamGatewayFrames\022\037.api.StreamGateway" +
+      "FramesRequest\032\014.api.LogItem\"\0000\001\022F\n\022Strea" +
+      "mDeviceFrames\022\036.api.StreamDeviceFramesRe" +
+      "quest\032\014.api.LogItem\"\0000\001\022F\n\022StreamDeviceE" +
+      "vents\022\036.api.StreamDeviceEventsRequest\032\014." +
+      "api.LogItem\"\0000\001\022A\n\013ListRegions\022\026.google." +
+      "protobuf.Empty\032\030.api.ListRegionsResponse" +
+      "\"\000\022<\n\tGetRegion\022\025.api.GetRegionRequest\032\026" +
+      ".api.GetRegionResponse\"\000Be\n\021io.chirpstac" +
+      "k.apiB\rInternalProtoP\001Z.github.com/chirp" +
+      "stack/chirpstack/api/go/v4/api\252\002\016Chirpst" +
+      "ack.Apib\006proto3"
     };
     descriptor = com.google.protobuf.Descriptors.FileDescriptor
       .internalBuildGeneratedFileFrom(descriptorData,
@@ -376,33 +399,51 @@ public final class InternalProto {
     internal_static_api_SettingsResponse_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_api_SettingsResponse_descriptor,
-        new java.lang.String[] { "OpenidConnect", });
+        new java.lang.String[] { "OpenidConnect", "Oauth2", });
     internal_static_api_OpenIdConnect_descriptor =
       getDescriptor().getMessageTypes().get(14);
     internal_static_api_OpenIdConnect_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_api_OpenIdConnect_descriptor,
-        new java.lang.String[] { "Enabled", "LoginUrl", "LoginLabel", "LogoutUrl", });
-    internal_static_api_OpenIdConnectLoginRequest_descriptor =
+        new java.lang.String[] { "Enabled", "LoginUrl", "LoginLabel", "LogoutUrl", "LoginRedirect", });
+    internal_static_api_OAuth2_descriptor =
       getDescriptor().getMessageTypes().get(15);
+    internal_static_api_OAuth2_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
+        internal_static_api_OAuth2_descriptor,
+        new java.lang.String[] { "Enabled", "LoginUrl", "LoginLabel", "LogoutUrl", "LoginRedirect", });
+    internal_static_api_OpenIdConnectLoginRequest_descriptor =
+      getDescriptor().getMessageTypes().get(16);
     internal_static_api_OpenIdConnectLoginRequest_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_api_OpenIdConnectLoginRequest_descriptor,
         new java.lang.String[] { "Code", "State", });
     internal_static_api_OpenIdConnectLoginResponse_descriptor =
-      getDescriptor().getMessageTypes().get(16);
+      getDescriptor().getMessageTypes().get(17);
     internal_static_api_OpenIdConnectLoginResponse_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_api_OpenIdConnectLoginResponse_descriptor,
         new java.lang.String[] { "Token", });
+    internal_static_api_OAuth2LoginRequest_descriptor =
+      getDescriptor().getMessageTypes().get(18);
+    internal_static_api_OAuth2LoginRequest_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
+        internal_static_api_OAuth2LoginRequest_descriptor,
+        new java.lang.String[] { "Code", "State", });
+    internal_static_api_OAuth2LoginResponse_descriptor =
+      getDescriptor().getMessageTypes().get(19);
+    internal_static_api_OAuth2LoginResponse_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
+        internal_static_api_OAuth2LoginResponse_descriptor,
+        new java.lang.String[] { "Token", });
     internal_static_api_GetDevicesSummaryRequest_descriptor =
-      getDescriptor().getMessageTypes().get(17);
+      getDescriptor().getMessageTypes().get(20);
     internal_static_api_GetDevicesSummaryRequest_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_api_GetDevicesSummaryRequest_descriptor,
         new java.lang.String[] { "TenantId", });
     internal_static_api_GetDevicesSummaryResponse_descriptor =
-      getDescriptor().getMessageTypes().get(18);
+      getDescriptor().getMessageTypes().get(21);
     internal_static_api_GetDevicesSummaryResponse_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_api_GetDevicesSummaryResponse_descriptor,
@@ -414,19 +455,19 @@ public final class InternalProto {
         internal_static_api_GetDevicesSummaryResponse_DrCountEntry_descriptor,
         new java.lang.String[] { "Key", "Value", });
     internal_static_api_GetGatewaysSummaryRequest_descriptor =
-      getDescriptor().getMessageTypes().get(19);
+      getDescriptor().getMessageTypes().get(22);
     internal_static_api_GetGatewaysSummaryRequest_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_api_GetGatewaysSummaryRequest_descriptor,
         new java.lang.String[] { "TenantId", });
     internal_static_api_GetGatewaysSummaryResponse_descriptor =
-      getDescriptor().getMessageTypes().get(20);
+      getDescriptor().getMessageTypes().get(23);
     internal_static_api_GetGatewaysSummaryResponse_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_api_GetGatewaysSummaryResponse_descriptor,
         new java.lang.String[] { "OnlineCount", "OfflineCount", "NeverSeenCount", });
     internal_static_api_LogItem_descriptor =
-      getDescriptor().getMessageTypes().get(21);
+      getDescriptor().getMessageTypes().get(24);
     internal_static_api_LogItem_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_api_LogItem_descriptor,
@@ -438,49 +479,49 @@ public final class InternalProto {
         internal_static_api_LogItem_PropertiesEntry_descriptor,
         new java.lang.String[] { "Key", "Value", });
     internal_static_api_StreamGatewayFramesRequest_descriptor =
-      getDescriptor().getMessageTypes().get(22);
+      getDescriptor().getMessageTypes().get(25);
     internal_static_api_StreamGatewayFramesRequest_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_api_StreamGatewayFramesRequest_descriptor,
         new java.lang.String[] { "GatewayId", });
     internal_static_api_StreamDeviceFramesRequest_descriptor =
-      getDescriptor().getMessageTypes().get(23);
+      getDescriptor().getMessageTypes().get(26);
     internal_static_api_StreamDeviceFramesRequest_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_api_StreamDeviceFramesRequest_descriptor,
         new java.lang.String[] { "DevEui", });
     internal_static_api_StreamDeviceEventsRequest_descriptor =
-      getDescriptor().getMessageTypes().get(24);
+      getDescriptor().getMessageTypes().get(27);
     internal_static_api_StreamDeviceEventsRequest_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_api_StreamDeviceEventsRequest_descriptor,
         new java.lang.String[] { "DevEui", });
     internal_static_api_ListRegionsResponse_descriptor =
-      getDescriptor().getMessageTypes().get(25);
+      getDescriptor().getMessageTypes().get(28);
     internal_static_api_ListRegionsResponse_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_api_ListRegionsResponse_descriptor,
         new java.lang.String[] { "Regions", });
     internal_static_api_RegionListItem_descriptor =
-      getDescriptor().getMessageTypes().get(26);
+      getDescriptor().getMessageTypes().get(29);
     internal_static_api_RegionListItem_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_api_RegionListItem_descriptor,
         new java.lang.String[] { "Id", "Region", "Description", });
     internal_static_api_GetRegionRequest_descriptor =
-      getDescriptor().getMessageTypes().get(27);
+      getDescriptor().getMessageTypes().get(30);
     internal_static_api_GetRegionRequest_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_api_GetRegionRequest_descriptor,
         new java.lang.String[] { "Id", });
     internal_static_api_GetRegionResponse_descriptor =
-      getDescriptor().getMessageTypes().get(28);
+      getDescriptor().getMessageTypes().get(31);
     internal_static_api_GetRegionResponse_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_api_GetRegionResponse_descriptor,
         new java.lang.String[] { "Id", "Region", "UserInfo", "UplinkChannels", "Rx1Delay", "Rx1DrOffset", "Rx2Dr", "Rx2Frequency", "ClassBPingSlotDr", "ClassBPingSlotFrequency", "Description", });
     internal_static_api_RegionChannel_descriptor =
-      getDescriptor().getMessageTypes().get(29);
+      getDescriptor().getMessageTypes().get(32);
     internal_static_api_RegionChannel_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_api_RegionChannel_descriptor,

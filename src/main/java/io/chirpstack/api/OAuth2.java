@@ -5,18 +5,18 @@
 package io.chirpstack.api;
 
 /**
- * Protobuf type {@code api.OpenIdConnect}
+ * Protobuf type {@code api.OAuth2}
  */
-public final class OpenIdConnect extends
+public final class OAuth2 extends
     com.google.protobuf.GeneratedMessageV3 implements
-    // @@protoc_insertion_point(message_implements:api.OpenIdConnect)
-    OpenIdConnectOrBuilder {
+    // @@protoc_insertion_point(message_implements:api.OAuth2)
+    OAuth2OrBuilder {
 private static final long serialVersionUID = 0L;
-  // Use OpenIdConnect.newBuilder() to construct.
-  private OpenIdConnect(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
+  // Use OAuth2.newBuilder() to construct.
+  private OAuth2(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
     super(builder);
   }
-  private OpenIdConnect() {
+  private OAuth2() {
     loginUrl_ = "";
     loginLabel_ = "";
     logoutUrl_ = "";
@@ -26,27 +26,27 @@ private static final long serialVersionUID = 0L;
   @SuppressWarnings({"unused"})
   protected java.lang.Object newInstance(
       UnusedPrivateParameter unused) {
-    return new OpenIdConnect();
+    return new OAuth2();
   }
 
   public static final com.google.protobuf.Descriptors.Descriptor
       getDescriptor() {
-    return io.chirpstack.api.InternalProto.internal_static_api_OpenIdConnect_descriptor;
+    return io.chirpstack.api.InternalProto.internal_static_api_OAuth2_descriptor;
   }
 
   @java.lang.Override
   protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
       internalGetFieldAccessorTable() {
-    return io.chirpstack.api.InternalProto.internal_static_api_OpenIdConnect_fieldAccessorTable
+    return io.chirpstack.api.InternalProto.internal_static_api_OAuth2_fieldAccessorTable
         .ensureFieldAccessorsInitialized(
-            io.chirpstack.api.OpenIdConnect.class, io.chirpstack.api.OpenIdConnect.Builder.class);
+            io.chirpstack.api.OAuth2.class, io.chirpstack.api.OAuth2.Builder.class);
   }
 
   public static final int ENABLED_FIELD_NUMBER = 1;
   private boolean enabled_ = false;
   /**
    * <pre>
-   * Enable OpenId Connect authentication.
+   * OAuth2 is enabled.
    * </pre>
    *
    * <code>bool enabled = 1;</code>
@@ -278,10 +278,10 @@ private static final long serialVersionUID = 0L;
     if (obj == this) {
      return true;
     }
-    if (!(obj instanceof io.chirpstack.api.OpenIdConnect)) {
+    if (!(obj instanceof io.chirpstack.api.OAuth2)) {
       return super.equals(obj);
     }
-    io.chirpstack.api.OpenIdConnect other = (io.chirpstack.api.OpenIdConnect) obj;
+    io.chirpstack.api.OAuth2 other = (io.chirpstack.api.OAuth2) obj;
 
     if (getEnabled()
         != other.getEnabled()) return false;
@@ -321,44 +321,44 @@ private static final long serialVersionUID = 0L;
     return hash;
   }
 
-  public static io.chirpstack.api.OpenIdConnect parseFrom(
+  public static io.chirpstack.api.OAuth2 parseFrom(
       java.nio.ByteBuffer data)
       throws com.google.protobuf.InvalidProtocolBufferException {
     return PARSER.parseFrom(data);
   }
-  public static io.chirpstack.api.OpenIdConnect parseFrom(
+  public static io.chirpstack.api.OAuth2 parseFrom(
       java.nio.ByteBuffer data,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws com.google.protobuf.InvalidProtocolBufferException {
     return PARSER.parseFrom(data, extensionRegistry);
   }
-  public static io.chirpstack.api.OpenIdConnect parseFrom(
+  public static io.chirpstack.api.OAuth2 parseFrom(
       com.google.protobuf.ByteString data)
       throws com.google.protobuf.InvalidProtocolBufferException {
     return PARSER.parseFrom(data);
   }
-  public static io.chirpstack.api.OpenIdConnect parseFrom(
+  public static io.chirpstack.api.OAuth2 parseFrom(
       com.google.protobuf.ByteString data,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws com.google.protobuf.InvalidProtocolBufferException {
     return PARSER.parseFrom(data, extensionRegistry);
   }
-  public static io.chirpstack.api.OpenIdConnect parseFrom(byte[] data)
+  public static io.chirpstack.api.OAuth2 parseFrom(byte[] data)
       throws com.google.protobuf.InvalidProtocolBufferException {
     return PARSER.parseFrom(data);
   }
-  public static io.chirpstack.api.OpenIdConnect parseFrom(
+  public static io.chirpstack.api.OAuth2 parseFrom(
       byte[] data,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws com.google.protobuf.InvalidProtocolBufferException {
     return PARSER.parseFrom(data, extensionRegistry);
   }
-  public static io.chirpstack.api.OpenIdConnect parseFrom(java.io.InputStream input)
+  public static io.chirpstack.api.OAuth2 parseFrom(java.io.InputStream input)
       throws java.io.IOException {
     return com.google.protobuf.GeneratedMessageV3
         .parseWithIOException(PARSER, input);
   }
-  public static io.chirpstack.api.OpenIdConnect parseFrom(
+  public static io.chirpstack.api.OAuth2 parseFrom(
       java.io.InputStream input,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws java.io.IOException {
@@ -366,26 +366,26 @@ private static final long serialVersionUID = 0L;
         .parseWithIOException(PARSER, input, extensionRegistry);
   }
 
-  public static io.chirpstack.api.OpenIdConnect parseDelimitedFrom(java.io.InputStream input)
+  public static io.chirpstack.api.OAuth2 parseDelimitedFrom(java.io.InputStream input)
       throws java.io.IOException {
     return com.google.protobuf.GeneratedMessageV3
         .parseDelimitedWithIOException(PARSER, input);
   }
 
-  public static io.chirpstack.api.OpenIdConnect parseDelimitedFrom(
+  public static io.chirpstack.api.OAuth2 parseDelimitedFrom(
       java.io.InputStream input,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws java.io.IOException {
     return com.google.protobuf.GeneratedMessageV3
         .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
   }
-  public static io.chirpstack.api.OpenIdConnect parseFrom(
+  public static io.chirpstack.api.OAuth2 parseFrom(
       com.google.protobuf.CodedInputStream input)
       throws java.io.IOException {
     return com.google.protobuf.GeneratedMessageV3
         .parseWithIOException(PARSER, input);
   }
-  public static io.chirpstack.api.OpenIdConnect parseFrom(
+  public static io.chirpstack.api.OAuth2 parseFrom(
       com.google.protobuf.CodedInputStream input,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws java.io.IOException {
@@ -398,7 +398,7 @@ private static final long serialVersionUID = 0L;
   public static Builder newBuilder() {
     return DEFAULT_INSTANCE.toBuilder();
   }
-  public static Builder newBuilder(io.chirpstack.api.OpenIdConnect prototype) {
+  public static Builder newBuilder(io.chirpstack.api.OAuth2 prototype) {
     return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
   }
   @java.lang.Override
@@ -414,26 +414,26 @@ private static final long serialVersionUID = 0L;
     return builder;
   }
   /**
-   * Protobuf type {@code api.OpenIdConnect}
+   * Protobuf type {@code api.OAuth2}
    */
   public static final class Builder extends
       com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
-      // @@protoc_insertion_point(builder_implements:api.OpenIdConnect)
-      io.chirpstack.api.OpenIdConnectOrBuilder {
+      // @@protoc_insertion_point(builder_implements:api.OAuth2)
+      io.chirpstack.api.OAuth2OrBuilder {
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
-      return io.chirpstack.api.InternalProto.internal_static_api_OpenIdConnect_descriptor;
+      return io.chirpstack.api.InternalProto.internal_static_api_OAuth2_descriptor;
     }
 
     @java.lang.Override
     protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
         internalGetFieldAccessorTable() {
-      return io.chirpstack.api.InternalProto.internal_static_api_OpenIdConnect_fieldAccessorTable
+      return io.chirpstack.api.InternalProto.internal_static_api_OAuth2_fieldAccessorTable
           .ensureFieldAccessorsInitialized(
-              io.chirpstack.api.OpenIdConnect.class, io.chirpstack.api.OpenIdConnect.Builder.class);
+              io.chirpstack.api.OAuth2.class, io.chirpstack.api.OAuth2.Builder.class);
     }
 
-    // Construct using io.chirpstack.api.OpenIdConnect.newBuilder()
+    // Construct using io.chirpstack.api.OAuth2.newBuilder()
     private Builder() {
 
     }
@@ -458,17 +458,17 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public com.google.protobuf.Descriptors.Descriptor
         getDescriptorForType() {
-      return io.chirpstack.api.InternalProto.internal_static_api_OpenIdConnect_descriptor;
+      return io.chirpstack.api.InternalProto.internal_static_api_OAuth2_descriptor;
     }
 
     @java.lang.Override
-    public io.chirpstack.api.OpenIdConnect getDefaultInstanceForType() {
-      return io.chirpstack.api.OpenIdConnect.getDefaultInstance();
+    public io.chirpstack.api.OAuth2 getDefaultInstanceForType() {
+      return io.chirpstack.api.OAuth2.getDefaultInstance();
     }
 
     @java.lang.Override
-    public io.chirpstack.api.OpenIdConnect build() {
-      io.chirpstack.api.OpenIdConnect result = buildPartial();
+    public io.chirpstack.api.OAuth2 build() {
+      io.chirpstack.api.OAuth2 result = buildPartial();
       if (!result.isInitialized()) {
         throw newUninitializedMessageException(result);
       }
@@ -476,14 +476,14 @@ private static final long serialVersionUID = 0L;
     }
 
     @java.lang.Override
-    public io.chirpstack.api.OpenIdConnect buildPartial() {
-      io.chirpstack.api.OpenIdConnect result = new io.chirpstack.api.OpenIdConnect(this);
+    public io.chirpstack.api.OAuth2 buildPartial() {
+      io.chirpstack.api.OAuth2 result = new io.chirpstack.api.OAuth2(this);
       if (bitField0_ != 0) { buildPartial0(result); }
       onBuilt();
       return result;
     }
 
-    private void buildPartial0(io.chirpstack.api.OpenIdConnect result) {
+    private void buildPartial0(io.chirpstack.api.OAuth2 result) {
       int from_bitField0_ = bitField0_;
       if (((from_bitField0_ & 0x00000001) != 0)) {
         result.enabled_ = enabled_;
@@ -536,16 +536,16 @@ private static final long serialVersionUID = 0L;
     }
     @java.lang.Override
     public Builder mergeFrom(com.google.protobuf.Message other) {
-      if (other instanceof io.chirpstack.api.OpenIdConnect) {
-        return mergeFrom((io.chirpstack.api.OpenIdConnect)other);
+      if (other instanceof io.chirpstack.api.OAuth2) {
+        return mergeFrom((io.chirpstack.api.OAuth2)other);
       } else {
         super.mergeFrom(other);
         return this;
       }
     }
 
-    public Builder mergeFrom(io.chirpstack.api.OpenIdConnect other) {
-      if (other == io.chirpstack.api.OpenIdConnect.getDefaultInstance()) return this;
+    public Builder mergeFrom(io.chirpstack.api.OAuth2 other) {
+      if (other == io.chirpstack.api.OAuth2.getDefaultInstance()) return this;
       if (other.getEnabled() != false) {
         setEnabled(other.getEnabled());
       }
@@ -638,7 +638,7 @@ private static final long serialVersionUID = 0L;
     private boolean enabled_ ;
     /**
      * <pre>
-     * Enable OpenId Connect authentication.
+     * OAuth2 is enabled.
      * </pre>
      *
      * <code>bool enabled = 1;</code>
@@ -650,7 +650,7 @@ private static final long serialVersionUID = 0L;
     }
     /**
      * <pre>
-     * Enable OpenId Connect authentication.
+     * OAuth2 is enabled.
      * </pre>
      *
      * <code>bool enabled = 1;</code>
@@ -666,7 +666,7 @@ private static final long serialVersionUID = 0L;
     }
     /**
      * <pre>
-     * Enable OpenId Connect authentication.
+     * OAuth2 is enabled.
      * </pre>
      *
      * <code>bool enabled = 1;</code>
@@ -1011,23 +1011,23 @@ private static final long serialVersionUID = 0L;
     }
 
 
-    // @@protoc_insertion_point(builder_scope:api.OpenIdConnect)
+    // @@protoc_insertion_point(builder_scope:api.OAuth2)
   }
 
-  // @@protoc_insertion_point(class_scope:api.OpenIdConnect)
-  private static final io.chirpstack.api.OpenIdConnect DEFAULT_INSTANCE;
+  // @@protoc_insertion_point(class_scope:api.OAuth2)
+  private static final io.chirpstack.api.OAuth2 DEFAULT_INSTANCE;
   static {
-    DEFAULT_INSTANCE = new io.chirpstack.api.OpenIdConnect();
+    DEFAULT_INSTANCE = new io.chirpstack.api.OAuth2();
   }
 
-  public static io.chirpstack.api.OpenIdConnect getDefaultInstance() {
+  public static io.chirpstack.api.OAuth2 getDefaultInstance() {
     return DEFAULT_INSTANCE;
   }
 
-  private static final com.google.protobuf.Parser<OpenIdConnect>
-      PARSER = new com.google.protobuf.AbstractParser<OpenIdConnect>() {
+  private static final com.google.protobuf.Parser<OAuth2>
+      PARSER = new com.google.protobuf.AbstractParser<OAuth2>() {
     @java.lang.Override
-    public OpenIdConnect parsePartialFrom(
+    public OAuth2 parsePartialFrom(
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
@@ -1046,17 +1046,17 @@ private static final long serialVersionUID = 0L;
     }
   };
 
-  public static com.google.protobuf.Parser<OpenIdConnect> parser() {
+  public static com.google.protobuf.Parser<OAuth2> parser() {
     return PARSER;
   }
 
   @java.lang.Override
-  public com.google.protobuf.Parser<OpenIdConnect> getParserForType() {
+  public com.google.protobuf.Parser<OAuth2> getParserForType() {
     return PARSER;
   }
 
   @java.lang.Override
-  public io.chirpstack.api.OpenIdConnect getDefaultInstanceForType() {
+  public io.chirpstack.api.OAuth2 getDefaultInstanceForType() {
     return DEFAULT_INSTANCE;
   }
 

@@ -10,16 +10,6 @@ public interface DeviceSessionOrBuilder extends
 
   /**
    * <pre>
-   * Device EUI.
-   * </pre>
-   *
-   * <code>bytes dev_eui = 1;</code>
-   * @return The devEui.
-   */
-  com.google.protobuf.ByteString getDevEui();
-
-  /**
-   * <pre>
    * Device address.
    * </pre>
    *
@@ -27,16 +17,6 @@ public interface DeviceSessionOrBuilder extends
    * @return The devAddr.
    */
   com.google.protobuf.ByteString getDevAddr();
-
-  /**
-   * <pre>
-   * Join EUI.
-   * </pre>
-   *
-   * <code>bytes join_eui = 3;</code>
-   * @return The joinEui.
-   */
-  com.google.protobuf.ByteString getJoinEui();
 
   /**
    * <pre>

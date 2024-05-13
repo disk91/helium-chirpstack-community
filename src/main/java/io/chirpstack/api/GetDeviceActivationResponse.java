@@ -78,6 +78,53 @@ private static final long serialVersionUID = 0L;
     return deviceActivation_ == null ? io.chirpstack.api.DeviceActivation.getDefaultInstance() : deviceActivation_;
   }
 
+  public static final int JOIN_SERVER_CONTEXT_FIELD_NUMBER = 2;
+  private io.chirpstack.api.JoinServerContext joinServerContext_;
+  /**
+   * <pre>
+   * Join-Server context.
+   * A non-empty value indicatest that ChirpStack does not have access to
+   * the AppSKey and that the encryption / decryption of the payloads is
+   * the responsibility of the end-application.
+   * </pre>
+   *
+   * <code>.common.JoinServerContext join_server_context = 2;</code>
+   * @return Whether the joinServerContext field is set.
+   */
+  @java.lang.Override
+  public boolean hasJoinServerContext() {
+    return ((bitField0_ & 0x00000002) != 0);
+  }
+  /**
+   * <pre>
+   * Join-Server context.
+   * A non-empty value indicatest that ChirpStack does not have access to
+   * the AppSKey and that the encryption / decryption of the payloads is
+   * the responsibility of the end-application.
+   * </pre>
+   *
+   * <code>.common.JoinServerContext join_server_context = 2;</code>
+   * @return The joinServerContext.
+   */
+  @java.lang.Override
+  public io.chirpstack.api.JoinServerContext getJoinServerContext() {
+    return joinServerContext_ == null ? io.chirpstack.api.JoinServerContext.getDefaultInstance() : joinServerContext_;
+  }
+  /**
+   * <pre>
+   * Join-Server context.
+   * A non-empty value indicatest that ChirpStack does not have access to
+   * the AppSKey and that the encryption / decryption of the payloads is
+   * the responsibility of the end-application.
+   * </pre>
+   *
+   * <code>.common.JoinServerContext join_server_context = 2;</code>
+   */
+  @java.lang.Override
+  public io.chirpstack.api.JoinServerContextOrBuilder getJoinServerContextOrBuilder() {
+    return joinServerContext_ == null ? io.chirpstack.api.JoinServerContext.getDefaultInstance() : joinServerContext_;
+  }
+
   private byte memoizedIsInitialized = -1;
   @java.lang.Override
   public final boolean isInitialized() {
@@ -95,6 +142,9 @@ private static final long serialVersionUID = 0L;
     if (((bitField0_ & 0x00000001) != 0)) {
       output.writeMessage(1, getDeviceActivation());
     }
+    if (((bitField0_ & 0x00000002) != 0)) {
+      output.writeMessage(2, getJoinServerContext());
+    }
     getUnknownFields().writeTo(output);
   }
 
@@ -107,6 +157,10 @@ private static final long serialVersionUID = 0L;
     if (((bitField0_ & 0x00000001) != 0)) {
       size += com.google.protobuf.CodedOutputStream
         .computeMessageSize(1, getDeviceActivation());
+    }
+    if (((bitField0_ & 0x00000002) != 0)) {
+      size += com.google.protobuf.CodedOutputStream
+        .computeMessageSize(2, getJoinServerContext());
     }
     size += getUnknownFields().getSerializedSize();
     memoizedSize = size;
@@ -128,6 +182,11 @@ private static final long serialVersionUID = 0L;
       if (!getDeviceActivation()
           .equals(other.getDeviceActivation())) return false;
     }
+    if (hasJoinServerContext() != other.hasJoinServerContext()) return false;
+    if (hasJoinServerContext()) {
+      if (!getJoinServerContext()
+          .equals(other.getJoinServerContext())) return false;
+    }
     if (!getUnknownFields().equals(other.getUnknownFields())) return false;
     return true;
   }
@@ -142,6 +201,10 @@ private static final long serialVersionUID = 0L;
     if (hasDeviceActivation()) {
       hash = (37 * hash) + DEVICE_ACTIVATION_FIELD_NUMBER;
       hash = (53 * hash) + getDeviceActivation().hashCode();
+    }
+    if (hasJoinServerContext()) {
+      hash = (37 * hash) + JOIN_SERVER_CONTEXT_FIELD_NUMBER;
+      hash = (53 * hash) + getJoinServerContext().hashCode();
     }
     hash = (29 * hash) + getUnknownFields().hashCode();
     memoizedHashCode = hash;
@@ -274,6 +337,7 @@ private static final long serialVersionUID = 0L;
       if (com.google.protobuf.GeneratedMessageV3
               .alwaysUseFieldBuilders) {
         getDeviceActivationFieldBuilder();
+        getJoinServerContextFieldBuilder();
       }
     }
     @java.lang.Override
@@ -284,6 +348,11 @@ private static final long serialVersionUID = 0L;
       if (deviceActivationBuilder_ != null) {
         deviceActivationBuilder_.dispose();
         deviceActivationBuilder_ = null;
+      }
+      joinServerContext_ = null;
+      if (joinServerContextBuilder_ != null) {
+        joinServerContextBuilder_.dispose();
+        joinServerContextBuilder_ = null;
       }
       return this;
     }
@@ -324,6 +393,12 @@ private static final long serialVersionUID = 0L;
             ? deviceActivation_
             : deviceActivationBuilder_.build();
         to_bitField0_ |= 0x00000001;
+      }
+      if (((from_bitField0_ & 0x00000002) != 0)) {
+        result.joinServerContext_ = joinServerContextBuilder_ == null
+            ? joinServerContext_
+            : joinServerContextBuilder_.build();
+        to_bitField0_ |= 0x00000002;
       }
       result.bitField0_ |= to_bitField0_;
     }
@@ -375,6 +450,9 @@ private static final long serialVersionUID = 0L;
       if (other.hasDeviceActivation()) {
         mergeDeviceActivation(other.getDeviceActivation());
       }
+      if (other.hasJoinServerContext()) {
+        mergeJoinServerContext(other.getJoinServerContext());
+      }
       this.mergeUnknownFields(other.getUnknownFields());
       onChanged();
       return this;
@@ -408,6 +486,13 @@ private static final long serialVersionUID = 0L;
               bitField0_ |= 0x00000001;
               break;
             } // case 10
+            case 18: {
+              input.readMessage(
+                  getJoinServerContextFieldBuilder().getBuilder(),
+                  extensionRegistry);
+              bitField0_ |= 0x00000002;
+              break;
+            } // case 18
             default: {
               if (!super.parseUnknownField(input, extensionRegistry, tag)) {
                 done = true; // was an endgroup tag
@@ -580,6 +665,190 @@ private static final long serialVersionUID = 0L;
         deviceActivation_ = null;
       }
       return deviceActivationBuilder_;
+    }
+
+    private io.chirpstack.api.JoinServerContext joinServerContext_;
+    private com.google.protobuf.SingleFieldBuilderV3<
+        io.chirpstack.api.JoinServerContext, io.chirpstack.api.JoinServerContext.Builder, io.chirpstack.api.JoinServerContextOrBuilder> joinServerContextBuilder_;
+    /**
+     * <pre>
+     * Join-Server context.
+     * A non-empty value indicatest that ChirpStack does not have access to
+     * the AppSKey and that the encryption / decryption of the payloads is
+     * the responsibility of the end-application.
+     * </pre>
+     *
+     * <code>.common.JoinServerContext join_server_context = 2;</code>
+     * @return Whether the joinServerContext field is set.
+     */
+    public boolean hasJoinServerContext() {
+      return ((bitField0_ & 0x00000002) != 0);
+    }
+    /**
+     * <pre>
+     * Join-Server context.
+     * A non-empty value indicatest that ChirpStack does not have access to
+     * the AppSKey and that the encryption / decryption of the payloads is
+     * the responsibility of the end-application.
+     * </pre>
+     *
+     * <code>.common.JoinServerContext join_server_context = 2;</code>
+     * @return The joinServerContext.
+     */
+    public io.chirpstack.api.JoinServerContext getJoinServerContext() {
+      if (joinServerContextBuilder_ == null) {
+        return joinServerContext_ == null ? io.chirpstack.api.JoinServerContext.getDefaultInstance() : joinServerContext_;
+      } else {
+        return joinServerContextBuilder_.getMessage();
+      }
+    }
+    /**
+     * <pre>
+     * Join-Server context.
+     * A non-empty value indicatest that ChirpStack does not have access to
+     * the AppSKey and that the encryption / decryption of the payloads is
+     * the responsibility of the end-application.
+     * </pre>
+     *
+     * <code>.common.JoinServerContext join_server_context = 2;</code>
+     */
+    public Builder setJoinServerContext(io.chirpstack.api.JoinServerContext value) {
+      if (joinServerContextBuilder_ == null) {
+        if (value == null) {
+          throw new NullPointerException();
+        }
+        joinServerContext_ = value;
+      } else {
+        joinServerContextBuilder_.setMessage(value);
+      }
+      bitField0_ |= 0x00000002;
+      onChanged();
+      return this;
+    }
+    /**
+     * <pre>
+     * Join-Server context.
+     * A non-empty value indicatest that ChirpStack does not have access to
+     * the AppSKey and that the encryption / decryption of the payloads is
+     * the responsibility of the end-application.
+     * </pre>
+     *
+     * <code>.common.JoinServerContext join_server_context = 2;</code>
+     */
+    public Builder setJoinServerContext(
+        io.chirpstack.api.JoinServerContext.Builder builderForValue) {
+      if (joinServerContextBuilder_ == null) {
+        joinServerContext_ = builderForValue.build();
+      } else {
+        joinServerContextBuilder_.setMessage(builderForValue.build());
+      }
+      bitField0_ |= 0x00000002;
+      onChanged();
+      return this;
+    }
+    /**
+     * <pre>
+     * Join-Server context.
+     * A non-empty value indicatest that ChirpStack does not have access to
+     * the AppSKey and that the encryption / decryption of the payloads is
+     * the responsibility of the end-application.
+     * </pre>
+     *
+     * <code>.common.JoinServerContext join_server_context = 2;</code>
+     */
+    public Builder mergeJoinServerContext(io.chirpstack.api.JoinServerContext value) {
+      if (joinServerContextBuilder_ == null) {
+        if (((bitField0_ & 0x00000002) != 0) &&
+          joinServerContext_ != null &&
+          joinServerContext_ != io.chirpstack.api.JoinServerContext.getDefaultInstance()) {
+          getJoinServerContextBuilder().mergeFrom(value);
+        } else {
+          joinServerContext_ = value;
+        }
+      } else {
+        joinServerContextBuilder_.mergeFrom(value);
+      }
+      if (joinServerContext_ != null) {
+        bitField0_ |= 0x00000002;
+        onChanged();
+      }
+      return this;
+    }
+    /**
+     * <pre>
+     * Join-Server context.
+     * A non-empty value indicatest that ChirpStack does not have access to
+     * the AppSKey and that the encryption / decryption of the payloads is
+     * the responsibility of the end-application.
+     * </pre>
+     *
+     * <code>.common.JoinServerContext join_server_context = 2;</code>
+     */
+    public Builder clearJoinServerContext() {
+      bitField0_ = (bitField0_ & ~0x00000002);
+      joinServerContext_ = null;
+      if (joinServerContextBuilder_ != null) {
+        joinServerContextBuilder_.dispose();
+        joinServerContextBuilder_ = null;
+      }
+      onChanged();
+      return this;
+    }
+    /**
+     * <pre>
+     * Join-Server context.
+     * A non-empty value indicatest that ChirpStack does not have access to
+     * the AppSKey and that the encryption / decryption of the payloads is
+     * the responsibility of the end-application.
+     * </pre>
+     *
+     * <code>.common.JoinServerContext join_server_context = 2;</code>
+     */
+    public io.chirpstack.api.JoinServerContext.Builder getJoinServerContextBuilder() {
+      bitField0_ |= 0x00000002;
+      onChanged();
+      return getJoinServerContextFieldBuilder().getBuilder();
+    }
+    /**
+     * <pre>
+     * Join-Server context.
+     * A non-empty value indicatest that ChirpStack does not have access to
+     * the AppSKey and that the encryption / decryption of the payloads is
+     * the responsibility of the end-application.
+     * </pre>
+     *
+     * <code>.common.JoinServerContext join_server_context = 2;</code>
+     */
+    public io.chirpstack.api.JoinServerContextOrBuilder getJoinServerContextOrBuilder() {
+      if (joinServerContextBuilder_ != null) {
+        return joinServerContextBuilder_.getMessageOrBuilder();
+      } else {
+        return joinServerContext_ == null ?
+            io.chirpstack.api.JoinServerContext.getDefaultInstance() : joinServerContext_;
+      }
+    }
+    /**
+     * <pre>
+     * Join-Server context.
+     * A non-empty value indicatest that ChirpStack does not have access to
+     * the AppSKey and that the encryption / decryption of the payloads is
+     * the responsibility of the end-application.
+     * </pre>
+     *
+     * <code>.common.JoinServerContext join_server_context = 2;</code>
+     */
+    private com.google.protobuf.SingleFieldBuilderV3<
+        io.chirpstack.api.JoinServerContext, io.chirpstack.api.JoinServerContext.Builder, io.chirpstack.api.JoinServerContextOrBuilder> 
+        getJoinServerContextFieldBuilder() {
+      if (joinServerContextBuilder_ == null) {
+        joinServerContextBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
+            io.chirpstack.api.JoinServerContext, io.chirpstack.api.JoinServerContext.Builder, io.chirpstack.api.JoinServerContextOrBuilder>(
+                getJoinServerContext(),
+                getParentForChildren(),
+                isClean());
+        joinServerContext_ = null;
+      }
+      return joinServerContextBuilder_;
     }
     @java.lang.Override
     public final Builder setUnknownFields(

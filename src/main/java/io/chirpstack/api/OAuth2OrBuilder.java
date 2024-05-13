@@ -4,13 +4,13 @@
 // Protobuf Java Version: 3.25.1
 package io.chirpstack.api;
 
-public interface OpenIdConnectOrBuilder extends
-    // @@protoc_insertion_point(interface_extends:api.OpenIdConnect)
+public interface OAuth2OrBuilder extends
+    // @@protoc_insertion_point(interface_extends:api.OAuth2)
     com.google.protobuf.MessageOrBuilder {
 
   /**
    * <pre>
-   * Enable OpenId Connect authentication.
+   * OAuth2 is enabled.
    * </pre>
    *
    * <code>bool enabled = 1;</code>

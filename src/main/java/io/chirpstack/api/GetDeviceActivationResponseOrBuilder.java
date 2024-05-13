@@ -34,4 +34,40 @@ public interface GetDeviceActivationResponseOrBuilder extends
    * <code>.api.DeviceActivation device_activation = 1;</code>
    */
   io.chirpstack.api.DeviceActivationOrBuilder getDeviceActivationOrBuilder();
+
+  /**
+   * <pre>
+   * Join-Server context.
+   * A non-empty value indicatest that ChirpStack does not have access to
+   * the AppSKey and that the encryption / decryption of the payloads is
+   * the responsibility of the end-application.
+   * </pre>
+   *
+   * <code>.common.JoinServerContext join_server_context = 2;</code>
+   * @return Whether the joinServerContext field is set.
+   */
+  boolean hasJoinServerContext();
+  /**
+   * <pre>
+   * Join-Server context.
+   * A non-empty value indicatest that ChirpStack does not have access to
+   * the AppSKey and that the encryption / decryption of the payloads is
+   * the responsibility of the end-application.
+   * </pre>
+   *
+   * <code>.common.JoinServerContext join_server_context = 2;</code>
+   * @return The joinServerContext.
+   */
+  io.chirpstack.api.JoinServerContext getJoinServerContext();
+  /**
+   * <pre>
+   * Join-Server context.
+   * A non-empty value indicatest that ChirpStack does not have access to
+   * the AppSKey and that the encryption / decryption of the payloads is
+   * the responsibility of the end-application.
+   * </pre>
+   *
+   * <code>.common.JoinServerContext join_server_context = 2;</code>
+   */
+  io.chirpstack.api.JoinServerContextOrBuilder getJoinServerContextOrBuilder();
 }

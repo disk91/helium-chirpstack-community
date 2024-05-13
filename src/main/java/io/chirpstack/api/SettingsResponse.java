@@ -78,6 +78,44 @@ private static final long serialVersionUID = 0L;
     return openidConnect_ == null ? io.chirpstack.api.OpenIdConnect.getDefaultInstance() : openidConnect_;
   }
 
+  public static final int OAUTH2_FIELD_NUMBER = 2;
+  private io.chirpstack.api.OAuth2 oauth2_;
+  /**
+   * <pre>
+   * OAuth2 settings.
+   * </pre>
+   *
+   * <code>.api.OAuth2 oauth2 = 2;</code>
+   * @return Whether the oauth2 field is set.
+   */
+  @java.lang.Override
+  public boolean hasOauth2() {
+    return ((bitField0_ & 0x00000002) != 0);
+  }
+  /**
+   * <pre>
+   * OAuth2 settings.
+   * </pre>
+   *
+   * <code>.api.OAuth2 oauth2 = 2;</code>
+   * @return The oauth2.
+   */
+  @java.lang.Override
+  public io.chirpstack.api.OAuth2 getOauth2() {
+    return oauth2_ == null ? io.chirpstack.api.OAuth2.getDefaultInstance() : oauth2_;
+  }
+  /**
+   * <pre>
+   * OAuth2 settings.
+   * </pre>
+   *
+   * <code>.api.OAuth2 oauth2 = 2;</code>
+   */
+  @java.lang.Override
+  public io.chirpstack.api.OAuth2OrBuilder getOauth2OrBuilder() {
+    return oauth2_ == null ? io.chirpstack.api.OAuth2.getDefaultInstance() : oauth2_;
+  }
+
   private byte memoizedIsInitialized = -1;
   @java.lang.Override
   public final boolean isInitialized() {
@@ -95,6 +133,9 @@ private static final long serialVersionUID = 0L;
     if (((bitField0_ & 0x00000001) != 0)) {
       output.writeMessage(1, getOpenidConnect());
     }
+    if (((bitField0_ & 0x00000002) != 0)) {
+      output.writeMessage(2, getOauth2());
+    }
     getUnknownFields().writeTo(output);
   }
 
@@ -107,6 +148,10 @@ private static final long serialVersionUID = 0L;
     if (((bitField0_ & 0x00000001) != 0)) {
       size += com.google.protobuf.CodedOutputStream
         .computeMessageSize(1, getOpenidConnect());
+    }
+    if (((bitField0_ & 0x00000002) != 0)) {
+      size += com.google.protobuf.CodedOutputStream
+        .computeMessageSize(2, getOauth2());
     }
     size += getUnknownFields().getSerializedSize();
     memoizedSize = size;
@@ -128,6 +173,11 @@ private static final long serialVersionUID = 0L;
       if (!getOpenidConnect()
           .equals(other.getOpenidConnect())) return false;
     }
+    if (hasOauth2() != other.hasOauth2()) return false;
+    if (hasOauth2()) {
+      if (!getOauth2()
+          .equals(other.getOauth2())) return false;
+    }
     if (!getUnknownFields().equals(other.getUnknownFields())) return false;
     return true;
   }
@@ -142,6 +192,10 @@ private static final long serialVersionUID = 0L;
     if (hasOpenidConnect()) {
       hash = (37 * hash) + OPENID_CONNECT_FIELD_NUMBER;
       hash = (53 * hash) + getOpenidConnect().hashCode();
+    }
+    if (hasOauth2()) {
+      hash = (37 * hash) + OAUTH2_FIELD_NUMBER;
+      hash = (53 * hash) + getOauth2().hashCode();
     }
     hash = (29 * hash) + getUnknownFields().hashCode();
     memoizedHashCode = hash;
@@ -274,6 +328,7 @@ private static final long serialVersionUID = 0L;
       if (com.google.protobuf.GeneratedMessageV3
               .alwaysUseFieldBuilders) {
         getOpenidConnectFieldBuilder();
+        getOauth2FieldBuilder();
       }
     }
     @java.lang.Override
@@ -284,6 +339,11 @@ private static final long serialVersionUID = 0L;
       if (openidConnectBuilder_ != null) {
         openidConnectBuilder_.dispose();
         openidConnectBuilder_ = null;
+      }
+      oauth2_ = null;
+      if (oauth2Builder_ != null) {
+        oauth2Builder_.dispose();
+        oauth2Builder_ = null;
       }
       return this;
     }
@@ -324,6 +384,12 @@ private static final long serialVersionUID = 0L;
             ? openidConnect_
             : openidConnectBuilder_.build();
         to_bitField0_ |= 0x00000001;
+      }
+      if (((from_bitField0_ & 0x00000002) != 0)) {
+        result.oauth2_ = oauth2Builder_ == null
+            ? oauth2_
+            : oauth2Builder_.build();
+        to_bitField0_ |= 0x00000002;
       }
       result.bitField0_ |= to_bitField0_;
     }
@@ -375,6 +441,9 @@ private static final long serialVersionUID = 0L;
       if (other.hasOpenidConnect()) {
         mergeOpenidConnect(other.getOpenidConnect());
       }
+      if (other.hasOauth2()) {
+        mergeOauth2(other.getOauth2());
+      }
       this.mergeUnknownFields(other.getUnknownFields());
       onChanged();
       return this;
@@ -408,6 +477,13 @@ private static final long serialVersionUID = 0L;
               bitField0_ |= 0x00000001;
               break;
             } // case 10
+            case 18: {
+              input.readMessage(
+                  getOauth2FieldBuilder().getBuilder(),
+                  extensionRegistry);
+              bitField0_ |= 0x00000002;
+              break;
+            } // case 18
             default: {
               if (!super.parseUnknownField(input, extensionRegistry, tag)) {
                 done = true; // was an endgroup tag
@@ -580,6 +656,163 @@ private static final long serialVersionUID = 0L;
         openidConnect_ = null;
       }
       return openidConnectBuilder_;
+    }
+
+    private io.chirpstack.api.OAuth2 oauth2_;
+    private com.google.protobuf.SingleFieldBuilderV3<
+        io.chirpstack.api.OAuth2, io.chirpstack.api.OAuth2.Builder, io.chirpstack.api.OAuth2OrBuilder> oauth2Builder_;
+    /**
+     * <pre>
+     * OAuth2 settings.
+     * </pre>
+     *
+     * <code>.api.OAuth2 oauth2 = 2;</code>
+     * @return Whether the oauth2 field is set.
+     */
+    public boolean hasOauth2() {
+      return ((bitField0_ & 0x00000002) != 0);
+    }
+    /**
+     * <pre>
+     * OAuth2 settings.
+     * </pre>
+     *
+     * <code>.api.OAuth2 oauth2 = 2;</code>
+     * @return The oauth2.
+     */
+    public io.chirpstack.api.OAuth2 getOauth2() {
+      if (oauth2Builder_ == null) {
+        return oauth2_ == null ? io.chirpstack.api.OAuth2.getDefaultInstance() : oauth2_;
+      } else {
+        return oauth2Builder_.getMessage();
+      }
+    }
+    /**
+     * <pre>
+     * OAuth2 settings.
+     * </pre>
+     *
+     * <code>.api.OAuth2 oauth2 = 2;</code>
+     */
+    public Builder setOauth2(io.chirpstack.api.OAuth2 value) {
+      if (oauth2Builder_ == null) {
+        if (value == null) {
+          throw new NullPointerException();
+        }
+        oauth2_ = value;
+      } else {
+        oauth2Builder_.setMessage(value);
+      }
+      bitField0_ |= 0x00000002;
+      onChanged();
+      return this;
+    }
+    /**
+     * <pre>
+     * OAuth2 settings.
+     * </pre>
+     *
+     * <code>.api.OAuth2 oauth2 = 2;</code>
+     */
+    public Builder setOauth2(
+        io.chirpstack.api.OAuth2.Builder builderForValue) {
+      if (oauth2Builder_ == null) {
+        oauth2_ = builderForValue.build();
+      } else {
+        oauth2Builder_.setMessage(builderForValue.build());
+      }
+      bitField0_ |= 0x00000002;
+      onChanged();
+      return this;
+    }
+    /**
+     * <pre>
+     * OAuth2 settings.
+     * </pre>
+     *
+     * <code>.api.OAuth2 oauth2 = 2;</code>
+     */
+    public Builder mergeOauth2(io.chirpstack.api.OAuth2 value) {
+      if (oauth2Builder_ == null) {
+        if (((bitField0_ & 0x00000002) != 0) &&
+          oauth2_ != null &&
+          oauth2_ != io.chirpstack.api.OAuth2.getDefaultInstance()) {
+          getOauth2Builder().mergeFrom(value);
+        } else {
+          oauth2_ = value;
+        }
+      } else {
+        oauth2Builder_.mergeFrom(value);
+      }
+      if (oauth2_ != null) {
+        bitField0_ |= 0x00000002;
+        onChanged();
+      }
+      return this;
+    }
+    /**
+     * <pre>
+     * OAuth2 settings.
+     * </pre>
+     *
+     * <code>.api.OAuth2 oauth2 = 2;</code>
+     */
+    public Builder clearOauth2() {
+      bitField0_ = (bitField0_ & ~0x00000002);
+      oauth2_ = null;
+      if (oauth2Builder_ != null) {
+        oauth2Builder_.dispose();
+        oauth2Builder_ = null;
+      }
+      onChanged();
+      return this;
+    }
+    /**
+     * <pre>
+     * OAuth2 settings.
+     * </pre>
+     *
+     * <code>.api.OAuth2 oauth2 = 2;</code>
+     */
+    public io.chirpstack.api.OAuth2.Builder getOauth2Builder() {
+      bitField0_ |= 0x00000002;
+      onChanged();
+      return getOauth2FieldBuilder().getBuilder();
+    }
+    /**
+     * <pre>
+     * OAuth2 settings.
+     * </pre>
+     *
+     * <code>.api.OAuth2 oauth2 = 2;</code>
+     */
+    public io.chirpstack.api.OAuth2OrBuilder getOauth2OrBuilder() {
+      if (oauth2Builder_ != null) {
+        return oauth2Builder_.getMessageOrBuilder();
+      } else {
+        return oauth2_ == null ?
+            io.chirpstack.api.OAuth2.getDefaultInstance() : oauth2_;
+      }
+    }
+    /**
+     * <pre>
+     * OAuth2 settings.
+     * </pre>
+     *
+     * <code>.api.OAuth2 oauth2 = 2;</code>
+     */
+    private com.google.protobuf.SingleFieldBuilderV3<
+        io.chirpstack.api.OAuth2, io.chirpstack.api.OAuth2.Builder, io.chirpstack.api.OAuth2OrBuilder> 
+        getOauth2FieldBuilder() {
+      if (oauth2Builder_ == null) {
+        oauth2Builder_ = new com.google.protobuf.SingleFieldBuilderV3<
+            io.chirpstack.api.OAuth2, io.chirpstack.api.OAuth2.Builder, io.chirpstack.api.OAuth2OrBuilder>(
+                getOauth2(),
+                getParentForChildren(),
+                isClean());
+        oauth2_ = null;
+      }
+      return oauth2Builder_;
     }
     @java.lang.Override
     public final Builder setUnknownFields(

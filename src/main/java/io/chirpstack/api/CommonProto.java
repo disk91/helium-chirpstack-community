@@ -35,6 +35,11 @@ public final class CommonProto {
   static final 
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
       internal_static_common_MetricDataset_fieldAccessorTable;
+  static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_common_JoinServerContext_descriptor;
+  static final 
+    com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+      internal_static_common_JoinServerContext_fieldAccessorTable;
 
   public static com.google.protobuf.Descriptors.FileDescriptor
       getDescriptor() {
@@ -54,33 +59,35 @@ public final class CommonProto {
       "\003(\0132\032.google.protobuf.Timestamp\022\'\n\010datas" +
       "ets\030\003 \003(\0132\025.common.MetricDataset\022 \n\004kind" +
       "\030\004 \001(\0162\022.common.MetricKind\",\n\rMetricData" +
-      "set\022\r\n\005label\030\001 \001(\t\022\014\n\004data\030\002 \003(\002*,\n\nModu" +
-      "lation\022\010\n\004LORA\020\000\022\007\n\003FSK\020\001\022\013\n\007LR_FHSS\020\002*\252" +
-      "\001\n\006Region\022\t\n\005EU868\020\000\022\t\n\005US915\020\002\022\t\n\005CN779" +
-      "\020\003\022\t\n\005EU433\020\004\022\t\n\005AU915\020\005\022\t\n\005CN470\020\006\022\t\n\005A" +
-      "S923\020\007\022\013\n\007AS923_2\020\014\022\013\n\007AS923_3\020\r\022\013\n\007AS92" +
-      "3_4\020\016\022\t\n\005KR920\020\010\022\t\n\005IN865\020\t\022\t\n\005RU864\020\n\022\013" +
-      "\n\007ISM2400\020\013*\263\001\n\005MType\022\020\n\014JOIN_REQUEST\020\000\022" +
-      "\017\n\013JOIN_ACCEPT\020\001\022\027\n\023UNCONFIRMED_DATA_UP\020" +
-      "\002\022\031\n\025UNCONFIRMED_DATA_DOWN\020\003\022\025\n\021CONFIRME" +
-      "D_DATA_UP\020\004\022\027\n\023CONFIRMED_DATA_DOWN\020\005\022\022\n\016" +
-      "REJOIN_REQUEST\020\006\022\017\n\013PROPRIETARY\020\007*~\n\nMac" +
-      "Version\022\021\n\rLORAWAN_1_0_0\020\000\022\021\n\rLORAWAN_1_" +
-      "0_1\020\001\022\021\n\rLORAWAN_1_0_2\020\002\022\021\n\rLORAWAN_1_0_" +
-      "3\020\003\022\021\n\rLORAWAN_1_0_4\020\004\022\021\n\rLORAWAN_1_1_0\020" +
-      "\005*e\n\021RegParamsRevision\022\005\n\001A\020\000\022\005\n\001B\020\001\022\017\n\013" +
-      "RP002_1_0_0\020\002\022\017\n\013RP002_1_0_1\020\003\022\017\n\013RP002_" +
-      "1_0_2\020\004\022\017\n\013RP002_1_0_3\020\005*\216\001\n\016LocationSou" +
-      "rce\022\013\n\007UNKNOWN\020\000\022\007\n\003GPS\020\001\022\n\n\006CONFIG\020\002\022\025\n" +
-      "\021GEO_RESOLVER_TDOA\020\003\022\025\n\021GEO_RESOLVER_RSS" +
-      "I\020\004\022\025\n\021GEO_RESOLVER_GNSS\020\005\022\025\n\021GEO_RESOLV" +
-      "ER_WIFI\020\006*+\n\013Aggregation\022\010\n\004HOUR\020\000\022\007\n\003DA" +
-      "Y\020\001\022\t\n\005MONTH\020\002*2\n\nMetricKind\022\013\n\007COUNTER\020" +
-      "\000\022\014\n\010ABSOLUTE\020\001\022\t\n\005GAUGE\020\002*4\n\013DeviceClas" +
-      "s\022\013\n\007CLASS_A\020\000\022\013\n\007CLASS_B\020\001\022\013\n\007CLASS_C\020\002" +
-      "Bi\n\021io.chirpstack.apiB\013CommonProtoP\001Z1gi" +
-      "thub.com/chirpstack/chirpstack/api/go/v4" +
-      "/common\252\002\021Chirpstack.Commonb\006proto3"
+      "set\022\r\n\005label\030\001 \001(\t\022\014\n\004data\030\002 \003(\002\"S\n\021Join" +
+      "ServerContext\022\026\n\016session_key_id\030\001 \001(\t\022&\n" +
+      "\tapp_s_key\030\002 \001(\0132\023.common.KeyEnvelope*,\n" +
+      "\nModulation\022\010\n\004LORA\020\000\022\007\n\003FSK\020\001\022\013\n\007LR_FHS" +
+      "S\020\002*\252\001\n\006Region\022\t\n\005EU868\020\000\022\t\n\005US915\020\002\022\t\n\005" +
+      "CN779\020\003\022\t\n\005EU433\020\004\022\t\n\005AU915\020\005\022\t\n\005CN470\020\006" +
+      "\022\t\n\005AS923\020\007\022\013\n\007AS923_2\020\014\022\013\n\007AS923_3\020\r\022\013\n" +
+      "\007AS923_4\020\016\022\t\n\005KR920\020\010\022\t\n\005IN865\020\t\022\t\n\005RU86" +
+      "4\020\n\022\013\n\007ISM2400\020\013*\263\001\n\005MType\022\020\n\014JOIN_REQUE" +
+      "ST\020\000\022\017\n\013JOIN_ACCEPT\020\001\022\027\n\023UNCONFIRMED_DAT" +
+      "A_UP\020\002\022\031\n\025UNCONFIRMED_DATA_DOWN\020\003\022\025\n\021CON" +
+      "FIRMED_DATA_UP\020\004\022\027\n\023CONFIRMED_DATA_DOWN\020" +
+      "\005\022\022\n\016REJOIN_REQUEST\020\006\022\017\n\013PROPRIETARY\020\007*~" +
+      "\n\nMacVersion\022\021\n\rLORAWAN_1_0_0\020\000\022\021\n\rLORAW" +
+      "AN_1_0_1\020\001\022\021\n\rLORAWAN_1_0_2\020\002\022\021\n\rLORAWAN" +
+      "_1_0_3\020\003\022\021\n\rLORAWAN_1_0_4\020\004\022\021\n\rLORAWAN_1" +
+      "_1_0\020\005*e\n\021RegParamsRevision\022\005\n\001A\020\000\022\005\n\001B\020" +
+      "\001\022\017\n\013RP002_1_0_0\020\002\022\017\n\013RP002_1_0_1\020\003\022\017\n\013R" +
+      "P002_1_0_2\020\004\022\017\n\013RP002_1_0_3\020\005*\216\001\n\016Locati" +
+      "onSource\022\013\n\007UNKNOWN\020\000\022\007\n\003GPS\020\001\022\n\n\006CONFIG" +
+      "\020\002\022\025\n\021GEO_RESOLVER_TDOA\020\003\022\025\n\021GEO_RESOLVE" +
+      "R_RSSI\020\004\022\025\n\021GEO_RESOLVER_GNSS\020\005\022\025\n\021GEO_R" +
+      "ESOLVER_WIFI\020\006*+\n\013Aggregation\022\010\n\004HOUR\020\000\022" +
+      "\007\n\003DAY\020\001\022\t\n\005MONTH\020\002*2\n\nMetricKind\022\013\n\007COU" +
+      "NTER\020\000\022\014\n\010ABSOLUTE\020\001\022\t\n\005GAUGE\020\002*4\n\013Devic" +
+      "eClass\022\013\n\007CLASS_A\020\000\022\013\n\007CLASS_B\020\001\022\013\n\007CLAS" +
+      "S_C\020\002Bi\n\021io.chirpstack.apiB\013CommonProtoP" +
+      "\001Z1github.com/chirpstack/chirpstack/api/" +
+      "go/v4/common\252\002\021Chirpstack.Commonb\006proto3"
     };
     descriptor = com.google.protobuf.Descriptors.FileDescriptor
       .internalBuildGeneratedFileFrom(descriptorData,
@@ -111,6 +118,12 @@ public final class CommonProto {
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_common_MetricDataset_descriptor,
         new java.lang.String[] { "Label", "Data", });
+    internal_static_common_JoinServerContext_descriptor =
+      getDescriptor().getMessageTypes().get(4);
+    internal_static_common_JoinServerContext_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
+        internal_static_common_JoinServerContext_descriptor,
+        new java.lang.String[] { "SessionKeyId", "AppSKey", });
     com.google.protobuf.TimestampProto.getDescriptor();
   }
 
