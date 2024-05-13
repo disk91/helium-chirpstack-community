@@ -5,6 +5,14 @@
 - Follow progress and roadmap on the [project board](https://github.com/users/disk91/projects/1/views/1)
 - Public console running the software [console.helium-iot.xyz](https://console.helium-iot.xyz)
 
+### Version
+**Do not use the master version in production, they are in-progress not tested at scale versions, please use the Released Versions**
+
+### Chirpstack support
+- Chirpstack 4.7.0
+- Never change the Chirpstack version, this project is specific for a given Chirpstack version, wait for project update before upgrading Chirpstack.
+
+
 ### Features (development in progress)
 
 - Manage fully configurable billing capabilities for helium
@@ -32,36 +40,6 @@
 - Manage device live migration from console
 - Manage device live Region change
 - Manage Helium integration with forwarder
-
-
-#### MVP1 - terminated
-The MVP1 aim to support the backend device management to support the self hosting situation. It allows to detect device 
-addition / removal to declare it on the Helium router automatically. This MVP also supports the DC consumption counting
-and allows a large number of invoicing situations as defined above. All the billing configuration is driven by a 
-configuration file for the default and can be overrided in the database at a tenant level. This MVP also build the usage 
-statistics for later explaination of the invoicing.
-
-#### MVP2 - terminated (tag V0.2)
-The MVP2 aim to provide a muti-tenant, self boarding solution allowing seamless access to chirpstack and DC balance display.
-It allows platform administrator to manage the tenant billing settings and router DC balance.
-
-#### MVP3 - terminated (tag V0.3)
-The MVP3 aim to provide the payment solution for increasing the tenant DC balance. It is planned to have a stripe support
-for payment. Crypto payment will be developed once migrated to Solana, when the environment will be in place to test this.
-It includes invoice generation for customers and Ticketing solution. It also allows to transfer DCs between tenants.
-
-### MVP4 - terminated (tag V1.0.0)
-The MVP4 aim to allow user to migrate devices from a legacy console to the new chirpstack / helium environment based on a wizard.
-It allows to migrate one or many devices from one environment to another.
-
-#### MVP5 - in progress
-The MVP4 aime to provide the user screen to manage all the specific situation like device reactivation, access to invoice, 
-consumption statistics... It also includes the users/customer communication solutions for the platform administrator.
-
-#### MVP6 - pending
-The MVP6 may address some specific program support like university program to offer a free access to Helium network for
-universities. Support of coupons will allow larger program solution including devkit including communications ...
-
 
 ## Build the application
 
@@ -112,7 +90,7 @@ Thank you to the following persons contributing to the project:
 - [DeflateAwning](https://github.com/DeflateAwning) for fixing grammar and improving english translations.
 
 
-## Misc
+## Misc for developers
 - Nova service GRPC proto can be found on - https://github.com/helium/proto/blob/master/src/service/iot_config.proto
 - Protoc - version used 25.1 - https://github.com/protocolbuffers/protobuf
 - Stub pluggin - https://github.com/grpc/grpc-java/releases
@@ -130,7 +108,14 @@ Thank you to the following persons contributing to the project:
 - Chirpstack grpc api found on - https://github.com/chirpstack/chirpstack.git
 ```bash
 # for chirpstack grpc api
-~ git checkout v4.6.0
+~ git checkout v4.7.0
+```
+
+Add following headers in file `chirpstack/api/proto/internal/internal.proto`
+```proto
+option java_package = "io.chirpstack.internal";
+option java_multiple_files = true;
+option java_outer_classname = "InternalProto";
 ```
 
 ````
