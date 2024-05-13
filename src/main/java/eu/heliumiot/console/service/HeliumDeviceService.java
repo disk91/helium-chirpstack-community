@@ -31,7 +31,6 @@ import eu.heliumiot.console.jpa.repository.HeliumTenantSetupRepository;
 import eu.heliumiot.console.mqtt.MqttSender;
 import eu.heliumiot.console.mqtt.api.HeliumDeviceActDeactItf;
 import eu.heliumiot.console.mqtt.api.HeliumDeviceStatItf;
-import eu.heliumiot.console.redis.RedisDeviceRepository;
 import fr.ingeniousthings.tools.HexaConverters;
 import fr.ingeniousthings.tools.Now;
 import io.chirpstack.internal.DeviceSession;

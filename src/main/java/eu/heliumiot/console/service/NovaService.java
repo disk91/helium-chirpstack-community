@@ -27,7 +27,6 @@ import eu.heliumiot.console.jpa.db.*;
 import eu.heliumiot.console.jpa.repository.HeliumDeviceRepository;
 import eu.heliumiot.console.jpa.repository.HeliumTenantSetupRepository;
 import eu.heliumiot.console.jpa.repository.TenantRepository;
-import eu.heliumiot.console.redis.RedisDeviceRepository;
 import fr.ingeniousthings.tools.*;
 import io.chirpstack.internal.DeviceSession;
 import io.grpc.ManagedChannel;
