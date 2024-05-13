@@ -157,7 +157,6 @@ public class TenantApi {
         long startMs= Now.NowUtcMs();
         log.debug("Get tenant setup for "+request.getUserPrincipal().getName());
         try {
-            UUID utenant = UUID.fromString(tenantId);
             TenantSetupRespItf r = heliumTenantService.getTenantSetup(request.getUserPrincipal().getName(), tenantId);
             return new ResponseEntity<>(r, HttpStatus.OK);
         } catch (ITRightException | IllegalArgumentException x) {

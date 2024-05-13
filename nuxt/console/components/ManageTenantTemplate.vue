@@ -199,6 +199,12 @@
                                 :placeholder="$t('tsl_limitDcRatePerDevice')"
                   ></b-form-input>
               </b-form-group>
+            </div><div class="col-md-6">
+              <b-form-group :description="$t('tip_maxcopy')" style="text-align:left;" class="mb-1 small">
+                  <b-form-input v-model.number="template.maxCopy" type="number" size="sm"
+                                :placeholder="$t('tsl_maxcopy')"
+                  ></b-form-input>
+              </b-form-group>
             </div></div>
             <b-button block @click="tenantSDelete"
                               :disabled="! disableName"
@@ -274,6 +280,7 @@
             {key: 'maxDcPerDevice', sortable: false, label : this.$t('tsl_maxDcPerDevice')},
             {key: 'limitDcRatePeriodMs', sortable: false, label : this.$t('tsl_limitDcRatePeriodMs')},
             {key: 'limitDcRatePerDevice', sortable: false, label : this.$t('tsl_limitDcRatePerDevice')},
+            {key: 'maxCopy', sortable: false, label : this.$t('tsl_maxcopy')},
           ],
           errorMessage: '',
           isBusy : true,
@@ -328,6 +335,7 @@
             case 'maxDcPerDevice' : return this.$t('tip_maxDcPerDevice').toString();
             case 'limitDcRatePeriodMs' : return this.$t('tip_limitDcRatePeriodMs').toString();
             case 'limitDcRatePerDevice' : return this.$t('tip_limitDcRatePerDevice').toString();
+            case 'maxCopy' : return this.$t('tip_maxcopy').toString();
           }
         },
         onLineClick(d:any) {
