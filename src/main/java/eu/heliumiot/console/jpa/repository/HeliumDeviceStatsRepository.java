@@ -43,7 +43,7 @@ public interface HeliumDeviceStatsRepository extends CrudRepository<HeliumDevice
     );
 
 
-    @Query(value = "SELECT '00000000-0000-0000-0000-000000000000' as id, 0 as day, 0 as last_commit, " +
+    @Query(value = "SELECT uuid_generate_v4() as id, 0 as day, 0 as last_commit, " +
                           "'00000000-0000-0000-0000-000000000000' as deviceuuid, " +
                           "?1 as tenantuuid, " +
                           "SUM(activity_dc) as activity_dc, SUM(downlink) as downlink, SUM(downlink_dc) as downlink_dc, " +

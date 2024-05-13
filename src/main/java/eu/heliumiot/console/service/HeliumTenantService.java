@@ -1191,13 +1191,12 @@ public class HeliumTenantService {
 
         long duration = 7*Now.ONE_FULL_DAY;
         long start = Now.TodayMidnightUtc() - duration;
-        TenantBasicStatRespItf stats = heliumTenantStatService.getStatForTenantFromDate(
+
+        return heliumTenantStatService.getStatForTenantFromDate(
                 tenantId,
                 start,
                 duration
         );
-
-        return stats;
     }
 
     public TenantSetupStatsRespItf getTenantActivityStat(String userId, String tenantId)

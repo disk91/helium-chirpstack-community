@@ -564,7 +564,6 @@ public class TenantApi {
         long startMs= Now.NowUtcMs();
         log.debug("Get tenant basic stats "+request.getUserPrincipal().getName()+" for tenant "+tenantId);
         try {
-            UUID utenant = UUID.fromString(tenantId);
             TenantBasicStatRespItf r = heliumTenantService.getTenantBasicStat(request.getUserPrincipal().getName(),tenantId);
             return new ResponseEntity<>(r, HttpStatus.OK);
         } catch (ITParseException | IllegalArgumentException x) {
