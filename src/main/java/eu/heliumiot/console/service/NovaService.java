@@ -64,7 +64,7 @@ public class NovaService {
     protected static final int SKFS_MAX_COPIES = 0;
     protected static final int GRPC_NOVA_API_TIMEOUT = 10;  // 10s timeout for GPRC to not be blocking
     @Autowired
-    protected RedisDeviceRepository redisDeviceRepository;
+    protected DeviceService deviceService;
 
     @Autowired
     protected HeliumTStoNovaProxyService heliumTStoNovaProxyService;
@@ -205,7 +205,7 @@ public class NovaService {
                     boolean quit = false;
                     do {
                         for ( HeliumDevice hd : devices.getContent() ) {
-                            DeviceSession s = redisDeviceRepository.getDeviceDetails(hd.getDeviceEui());
+                            DeviceSession s = deviceService.getDeviceSession(hd.getDeviceUUID());
                             if ( s == null ) continue;
                             String devaddr = HexaConverters.byteToHexString(s.getDevAddr().toByteArray());
                             //log.debug(">"+devaddr+"<>"+sAddr+"<");
@@ -413,7 +413,7 @@ public class NovaService {
                         case INSERTED:
                         case ACTIVE:
                         case INACTIVE:
-                            DeviceSession s = redisDeviceRepository.getDeviceDetails(hd.getDeviceEui());
+                            DeviceSession s = deviceService.getDeviceSession(hd.getDeviceUUID());
                             if ( s == null ) {
                                 // no session yet for that device (just inserted)
                                 log.debug("refreshOneRouteSkf - session not ready for "+hd.getDeviceEui());
@@ -444,7 +444,7 @@ public class NovaService {
             collisionSkfsCache.put(tenantId,l);
         }
 
-        DeviceSession s = redisDeviceRepository.getDeviceDetails(eui);
+        DeviceSession s = deviceService.getDeviceSession(eui);
         if ( s == null ) return -1;
 
         String ntwSEncKey = HexaConverters.byteToHexString(s.getNwkSEncKey().toByteArray());
@@ -472,7 +472,7 @@ public class NovaService {
     );
 
     synchronized public int existSkfs(String routeId, String eui) {
-        DeviceSession s = redisDeviceRepository.getDeviceDetails(eui);
+        DeviceSession s = deviceService.getDeviceSession(eui);
         if ( s == null ) return -1;
 
         String ntwSEncKey = HexaConverters.byteToHexString(s.getNwkSEncKey().toByteArray());
@@ -524,7 +524,7 @@ public class NovaService {
         if ( r != null && (Now.NowUtcMs() - r.refreshTime) < 2*Now.ONE_HOUR ) {
             // get new information about this EUI
             log.debug("refreshOneEuiSkf - use cache for "+eui);
-            DeviceSession s = redisDeviceRepository.getDeviceDetails(eui);
+            DeviceSession s = deviceService.getDeviceSession(eui);
             String ntwSEncKey = HexaConverters.byteToHexString(s.getNwkSEncKey().toByteArray());
             String devaddr = HexaConverters.byteToHexString(s.getDevAddr().toByteArray());
             int iDevAddr = Stuff.hexStrToInt(devaddr);
@@ -603,7 +603,7 @@ public class NovaService {
                     case INSERTED:
                     case ACTIVE:
                     case INACTIVE:
-                        DeviceSession s = redisDeviceRepository.getDeviceDetails(hd.getDeviceEui());
+                        DeviceSession s = deviceService.getDeviceSession(hd.getDeviceUUID());
                         if ( s == null ) {
                             // no session yet for that device (just inserted)
                             log.debug("refreshOneRouteSkf - session not ready for "+hd.getDeviceEui());

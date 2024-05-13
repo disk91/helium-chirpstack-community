@@ -19,7 +19,10 @@
  */
 package eu.heliumiot.console.jpa.db;
 
+import com.google.protobuf.InvalidProtocolBufferException;
 import fr.ingeniousthings.tools.HexaConverters;
+import fr.ingeniousthings.tools.ITNotFoundException;
+import io.chirpstack.internal.DeviceSession;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Immutable;
 
@@ -60,6 +63,10 @@ public class Device {
     @Column(name = "join_eui")
     private byte[] join_eui;
 
+    // This fields contains a protobuf content with devAddr, nwkSKey, appSKey ...
+    @Column(name = "device_session")
+    private byte[] deviceSession;
+
 
     // --
     public String getAppEui() {
@@ -93,6 +100,45 @@ public class Device {
         return null;
     }
 
+    /**
+     * Return the device Network Session Key from the byte array representing it
+     * @return Session key for that device or ITNotFoundException if not initialized
+     * ---
+     * FNwkSIntKey - a network session key that is used by the end device to calculate the MIC (partially)
+     *               of all uplink data messages for ensuring message integrity.
+     * SNwkSIntKey - a network session key that is used by the end device to calculate the MIC (partially)
+     *               of all uplink data messagse and calculate the MIC of all downlink data messages for
+     *               ensuring message integrity.
+     * NwkSEncKey - a network session key that is used to encrypt and decrypt the payloads with MAC commands
+     *              of the uplink and downlink data messages for ensuring message confidentiality
+     * The 3 keys are identical
+     */
+    public String getNwkSkey() throws ITNotFoundException {
+        if( this.deviceSession != null ) {
+            try {
+                DeviceSession ds = DeviceSession.parseFrom(this.deviceSession);
+                return HexaConverters.byteToHexString(ds.getNwkSEncKey().toByteArray());
+            } catch (InvalidProtocolBufferException x) {
+                throw new ITNotFoundException("Impossible to parse deviceSession");
+            }
+        } else throw new ITNotFoundException("No device session found");
+    }
+
+    /**
+     * Return the device Session Key from the byte array representing it. This is the commmon expected format
+     * from the rest of the solution
+     * @return
+     * @throws ITNotFoundException
+     */
+    public DeviceSession getDeviceSessionDetails() throws ITNotFoundException {
+        if( this.deviceSession != null ) {
+            try {
+                return DeviceSession.parseFrom(this.deviceSession);
+            } catch (InvalidProtocolBufferException x) {
+                throw new ITNotFoundException("Impossible to parse deviceSession");
+            }
+        } else throw new ITNotFoundException("No device session found");
+    }
 
     // ---
 
@@ -191,5 +237,13 @@ public class Device {
 
     public void setJoin_eui(byte[] join_eui) {
         this.join_eui = join_eui;
+    }
+
+    public byte[] getDeviceSession() {
+        return deviceSession;
+    }
+
+    public void setDeviceSession(byte[] deviceSession) {
+        this.deviceSession = deviceSession;
     }
 }

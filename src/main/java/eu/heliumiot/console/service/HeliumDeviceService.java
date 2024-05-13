@@ -199,7 +199,7 @@ public class HeliumDeviceService {
     protected ConsoleConfig consoleConfig;
 
     @Autowired
-    protected RedisDeviceRepository redisDeviceRepository;
+    protected DeviceService deviceService;
 
     /**
      * Search for new device added into the device table
@@ -265,7 +265,7 @@ public class HeliumDeviceService {
                 // configuration, it's better to not process a device too fast
                 // when it comes from migration process, lets make it for all now
                 if ( dev.getVariables().contains("migrated\": \"true") ) {
-                    DeviceSession s = redisDeviceRepository.getDeviceDetails(devEui);
+                    DeviceSession s = deviceService.getDeviceSession(dev.getDevEui());
                     if ( s == null ) {
                         log.debug("scanNewDevicesJob - Session for "+devEui+ " not ready");
                         // wait a minute

@@ -82,4 +82,17 @@ public class HexaConverters {
         return s;
     }
 
+    /**
+     * Convert a hex string to a byte array
+     * @param s
+     * @return byte array
+     */
+    public static byte [] hexStringToByteArray(String s) {
+        byte [] r = new byte[s.length()/2];
+        for ( int i = 0; i < s.length(); i+=2 ) {
+            r[i/2] = (byte) Integer.parseInt(s.substring(i, i+2), 16);
+        }
+        return r;
+    }
+
 }
