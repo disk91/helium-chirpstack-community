@@ -674,7 +674,11 @@ public class TransactionService {
                 }
                 offset -= 16;
                 contentStream.newLineAtOffset(0, -16);
-                contentStream.showText(cc);
+                try {
+                    contentStream.showText(cc);
+                } catch ( java.lang.IllegalArgumentException x ) {
+                    contentStream.showText("Only ASCII chars supported");
+                }
                 contentStream.endText();
                 offset -= 16;
             }
@@ -878,6 +882,13 @@ public class TransactionService {
             document.close();
             return out.toByteArray();
         } catch (IOException x) {
+            log.warn("Failed to create invoice "+x.getMessage());
+            StackTraceElement [] st = x.getStackTrace();
+            for ( StackTraceElement s : st ) {
+                if ( s.getClassName().toLowerCase().contains("transactionservice")) {
+                    log.warn(s.toString());
+                }
+            }
             throw new ITParseException("pdf_failure");
         }
 
