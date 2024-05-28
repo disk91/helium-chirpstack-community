@@ -78,7 +78,7 @@ export default {
     disableStatTenant:process.env.DIS_STAT_TENANT || 'false',
     community:process.env.DIS_FULL || 'true',
     mapApiKey:process.env.MAP_KEY || '',
-    frontVersion:'1.9.0'
+    frontVersion:'1.9.1'
   },
 
   // env variables loaded accessible on the server side
@@ -198,7 +198,7 @@ export default {
       }
     },
   },
-  
+
 
   // Build Configuration: https://go.nuxtjs.dev/config-build
   build: {},
