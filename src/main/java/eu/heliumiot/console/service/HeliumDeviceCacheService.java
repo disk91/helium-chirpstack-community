@@ -176,7 +176,11 @@ public class HeliumDeviceCacheService {
     }
 
     public void flushHeliumDevice(HeliumDevice hdev) {
-        heliumDeviceRepository.save(hdev);
+        try {
+            heliumDeviceRepository.save(hdev);
+        } catch (Exception e) {
+            log.error("Error saving device "+hdev.getDeviceEui(),e);
+        }
         heliumDeviceCache.remove(hdev.getDeviceEui().toUpperCase(),false);
     }
 
