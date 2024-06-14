@@ -274,6 +274,7 @@ public class NovaService {
             long start = Now.NowUtcMs();
             try {
                 log.info("Initial Route Refresh");
+
                 long cTemplate = heliumTenantSetupRepository.count();
                 // process all routes
                 int _i = 0, _j = 1;
@@ -288,10 +289,12 @@ public class NovaService {
                             route_v1 r = grpcGetOneRoute(hts.getRouteId());
                             if ( r == null ) { log.error("A known route does not exist"); continue; }
 
+
                             // verify if route server are ok
                             boolean toBeUpdated = false;
                             if ( r.getServer().getHost().compareTo(consoleConfig.getHeliumRouteHost()) != 0
                                 || r.getIgnoreEmptySkf() != consoleConfig.isHeliumRouteRejectEmptySKF()
+                                || r.getNetId() != netIdValue
                             ) {
                                 toBeUpdated = true;
                             } else {
@@ -1441,7 +1444,7 @@ public class NovaService {
             long now = Now.NowUtcMs();
             route_v1 newRoute = route_v1.newBuilder()
                     .setId(oldRoute.getId())
-                    .setNetId(oldRoute.getNetId())
+                    .setNetId(netIdValue)
                     .setOui(oldRoute.getOui())
                     .setServer(server)
                     .setMaxCopies(maxCopy)
