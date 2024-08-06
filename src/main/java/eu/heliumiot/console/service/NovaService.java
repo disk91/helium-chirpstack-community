@@ -189,7 +189,7 @@ public class NovaService {
                     if ( t != null ) tName = t.getName();
 
                     log.info("["+_i+"-"+_j+"/"+cTemplate+"] Exploring tenant "+tName+" ("+hts.getTenantUUID()+") route "+hts.getRouteId());
-                    // get all skfs for tha current route and the devAddr
+                    // get all skfs for the current route and the devAddr
                     List<skf_v1> skfs =  grpcListSessionsByDevaddr(addr,hts.getRouteId());
                     HashMap<String,skf_v1> inRouteSkfs = new HashMap<>();
                     if ( skfs != null ) {
@@ -292,25 +292,46 @@ public class NovaService {
 
                             // verify if route server are ok
                             boolean toBeUpdated = false;
-                            if ( r.getServer().getHost().compareTo(consoleConfig.getHeliumRouteHost()) != 0
-                                || r.getIgnoreEmptySkf() != consoleConfig.isHeliumRouteRejectEmptySKF()
-                                || r.getNetId() != netIdValue
-                            ) {
-                                toBeUpdated = true;
-                            } else {
-                                // check the region list
-                                for (RegionSupported reg : regionsSupported) {
+                            boolean toBeRecreated = false;
+                            if ( r.getNetId() != netIdValue ) toBeRecreated = true;
+                            else {
+                                if (r.getServer().getHost().compareTo(consoleConfig.getHeliumRouteHost()) != 0
+                                    || r.getIgnoreEmptySkf() != consoleConfig.isHeliumRouteRejectEmptySKF()
+                                ) {
                                     toBeUpdated = true;
-                                    for (protocol_gwmp_mapping_v1 gwp : r.getServer().getGwmp().getMappingList()) {
-                                        if (gwp.getRegion() == reg.regionValue && gwp.getPort() == reg.port) {
-                                            toBeUpdated = false;
-                                            break;
+                                } else {
+                                    // check the region list
+                                    for (RegionSupported reg : regionsSupported) {
+                                        toBeUpdated = true;
+                                        for (protocol_gwmp_mapping_v1 gwp : r.getServer().getGwmp().getMappingList()) {
+                                            if (gwp.getRegion() == reg.regionValue && gwp.getPort() == reg.port) {
+                                                toBeUpdated = false;
+                                                break;
+                                            }
                                         }
+                                        if (toBeUpdated) break;
                                     }
-                                    if ( toBeUpdated ) break;
                                 }
                             }
-                            if ( toBeUpdated ) {
+                            if ( toBeRecreated ) {
+                                log.info("Recreate route definition "+hts.getRouteId());
+                                log.error("This is not implemented");
+                                // @TODO
+
+                                // addDelayedRouteRemoval(r.getId());
+                                // delete route
+                                // delete euis - cascade
+                                // delete skfs - cascade
+
+                                // create route
+                                // create euis
+                                // create skfs
+
+                                // Other way => if tenantSetup is updated to have tennantUUID = "000000-0000-0000-0000-000000000000" route will be deleted on restart
+                                // if helium_tenant corresponding entry is removed, the route will be recreated automatically
+                                // Problem will be related to the DC balance lost and max_copy in this operation
+
+                            } else if ( toBeUpdated ) {
                                 log.info("Updating route definition "+hts.getRouteId());
                                 grpcUpdateOneRoute(hts.getRouteId(),hts.getMaxCopy(),true);
                             }
@@ -357,7 +378,7 @@ public class NovaService {
                        log.error("initialRouteCheck - route ("+r.getId()+") does not have tenant setup");
                        error++;
                    } else {
-                       // check if we have a corresponding tenant
+                       // when we have a tenant setup, check we have a tenant attached or delete all of this
                        if ( hts.size() > 1 ) log.warn("Multiple tenant setup for a single route");
                        Tenant t = tenantRepository.findOneTenantById(UUID.fromString(hts.get(0).getTenantUUID()));
                        if ( t == null ) {
@@ -418,7 +439,7 @@ public class NovaService {
                             DeviceSession s = deviceService.getDeviceSession(hd.getDeviceUUID());
                             if ( s == null ) {
                                 // no session yet for that device (just inserted)
-                                log.debug("refreshOneRouteSkf - session not ready for "+hd.getDeviceEui());
+                                log.debug("countSkfsColisions - session not ready for "+hd.getDeviceEui());
                                 continue;
                             }
                             String ntwSEncKey = HexaConverters.byteToHexString(s.getNwkSEncKey().toByteArray());
@@ -1444,7 +1465,7 @@ public class NovaService {
             long now = Now.NowUtcMs();
             route_v1 newRoute = route_v1.newBuilder()
                     .setId(oldRoute.getId())
-                    .setNetId(netIdValue)
+                    .setNetId(oldRoute.getNetId())      // the netId can't be updated
                     .setOui(oldRoute.getOui())
                     .setServer(server)
                     .setMaxCopies(maxCopy)
