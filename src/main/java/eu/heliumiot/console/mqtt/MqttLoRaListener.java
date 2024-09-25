@@ -841,7 +841,7 @@ public class MqttLoRaListener implements MqttCallback {
                         heliumTenantService.punish(
                             le.getDeviceInfo().getTenantId(),
                             le.getDeviceInfo().getDevEui(),
-                            100
+                            1
                         );
                     }
                 } catch (Exception x) {
