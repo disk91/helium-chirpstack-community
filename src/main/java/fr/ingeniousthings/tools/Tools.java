@@ -49,6 +49,7 @@ public class Tools {
 
     public static long EuiStringToLong(String eui) {
         long out = 0;
+        if ( eui == null )  return 0;
         for ( int i = 0 ; i < eui.length() ; i+=2 ) {
             long k = Stuff.hexStrToInt(eui.substring(i,i+2));
             out <<= 8;
