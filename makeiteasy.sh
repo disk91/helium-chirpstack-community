@@ -166,13 +166,16 @@ askForOui() {
 
 askForNetid() {
   if [ $NETID == "00000" ] ; then
-    read -p "What is your NetId 000024 / C00053? [24|CX] " netid
+    read -p "What is your NetId 000024 / C00053 / 00003C? [24|CX|3C] " netid
     case $netid in
       24 )
 	 NETID="000024"
 	 ;;
       C[Xx] )
 	 NETID="C00053"
+	 ;;
+      3[Cc] )
+	 NETID="00003C"
 	 ;;
       *)
 	echo "Invalid NetId"
