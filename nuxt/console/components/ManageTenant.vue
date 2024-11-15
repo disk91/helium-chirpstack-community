@@ -258,6 +258,12 @@
                                 :placeholder="$t('tsl_limitDcRatePerDevice')"
                   ></b-form-input>
               </b-form-group>
+            </div><div class="col-md-6">
+              <b-form-group :description="$t('tip_punishment')" style="text-align:left;" class="mb-1 small">
+                  <b-form-input v-model.number="tenantDetails.dcPerPunishment" type="number" size="sm"
+                                :placeholder="$t('tsl_punishment')"
+                  ></b-form-input>
+              </b-form-group>
             </div></div>
             <b-card-text class="text-danger" style="text-align:center;" >
                 {{ $t(errorMessageMod)}} 
