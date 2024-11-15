@@ -38,6 +38,8 @@ declare module "vue/types/tenantStat" {
         joinDc : number,
         dcPerJoinAccept : number,
         joinAcceptDc : number,
+        dcPerPunishment : number,
+        punishmentDc : number
     }
     interface TenantUpdateMaxCopyReqItf {
         tenantId : string,

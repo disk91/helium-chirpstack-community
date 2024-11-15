@@ -246,7 +246,20 @@
                                 </div>
                             </b-list-group-item>
 
-
+                            <b-list-group-item v-if="(basicStat.dcPerPunishment > 0)" class="border-0 p-0" style="text-align:left; line-height: 1;" variant="secondary">
+                                <div class="d-flex w-100">
+                                    <div class="col-md-5 p-1"> 
+                                        <span class="text-dark p-0" style="font-size:0.8rem; ">{{ $t('tsl_punishment') }}</span><br/>
+                                        <span class="text-black-50 p-0" style="font-size:0.6rem; ">{{ $t('tip_punishment') }}</span>
+                                    </div>
+                                    <div class="col-md-3 text-dark p-2" style="font-size:0.8rem; text-align:right;"> {{ basicStat.dcPerPunishment }} DCs</div>
+                                    <div class="col-md-4 text-dark p-2" style="font-size:0.8rem; text-align:right;">
+                                        <span class="text-dark p-0" style="font-size:0.8rem; "></span> {{ basicStat.punishmentDc }} DCs<br/>
+                                        <span class="text-dark p-0" style="font-size:0.6rem; "></span>
+                                    </div>
+                                </div>
+                            </b-list-group-item>
+                            
                         </b-list-group>
                     </b-card>
                     <TenantDevInactive/>

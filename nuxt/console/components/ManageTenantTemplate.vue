@@ -205,6 +205,12 @@
                                 :placeholder="$t('tsl_maxcopy')"
                   ></b-form-input>
               </b-form-group>
+            </div><div class="col-md-6">
+              <b-form-group :description="$t('tip_punishment')" style="text-align:left;" class="mb-1 small">
+                  <b-form-input v-model.number="template.dcPerPunishment" type="number" size="sm"
+                                :placeholder="$t('tsl_punishment')"
+                  ></b-form-input>
+              </b-form-group>
             </div></div>
             <b-button block @click="tenantSDelete"
                               :disabled="! disableName"
@@ -281,6 +287,7 @@
             {key: 'limitDcRatePeriodMs', sortable: false, label : this.$t('tsl_limitDcRatePeriodMs')},
             {key: 'limitDcRatePerDevice', sortable: false, label : this.$t('tsl_limitDcRatePerDevice')},
             {key: 'maxCopy', sortable: false, label : this.$t('tsl_maxcopy')},
+            {key: 'dcPerPunishment', sortable: false, label: this.$t('tsl_punishment')}
           ],
           errorMessage: '',
           isBusy : true,
