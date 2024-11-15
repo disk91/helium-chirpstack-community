@@ -128,6 +128,7 @@ public class HeliumTenantSetupService {
             ts.setDcPerJoinRequest(consoleConfig.getHeliumBillingDcPerJoinRequest());
             ts.setDcPerJoinAccept(consoleConfig.getHeliumBillingDcPerJoinAccept());
             ts.setMaxJoinRequestDup(consoleConfig.getHeliumBillingMaxJoinRequestDup());
+            ts.setDcPerPunishment(consoleConfig.getHeliumBillingDcPunishment());
             ts.setRouteId("N/A");
             ts.setTemplate(true);
             heliumTenantSetupRepository.save(ts);
@@ -285,6 +286,7 @@ public class HeliumTenantSetupService {
         ts.setDcPerJoinRequest(def.getDcPerJoinRequest());
         ts.setDcPerJoinAccept(def.getDcPerJoinAccept());
         ts.setMaxJoinRequestDup(def.getMaxJoinRequestDup());
+        ts.setDcPerPunishment(def.getDcPerPunishment());
         heliumTenantSetupRepository.save(ts);
         return ts;
     }
@@ -333,6 +335,7 @@ public class HeliumTenantSetupService {
             ts.setDcPerJoinRequest(def.getDcPerJoinRequest());
             ts.setDcPerJoinAccept(def.getDcPerJoinAccept());
             ts.setMaxJoinRequestDup(def.getMaxJoinRequestDup());
+            ts.setDcPerPunishment(def.getDcPerPunishment());
             r.add(ts);
         }
 
@@ -375,6 +378,7 @@ public class HeliumTenantSetupService {
         ts.setDcPerJoinRequest(def.getDcPerJoinRequest());
         ts.setDcPerJoinAccept(def.getDcPerJoinAccept());
         ts.setMaxJoinRequestDup(def.getMaxJoinRequestDup());
+        ts.setDcPerPunishment(def.getDcPerPunishment());
         return ts;
     }
 
@@ -417,6 +421,7 @@ public class HeliumTenantSetupService {
         ts.setDcPerJoinRequest(def.getDcPerJoinRequest());
         ts.setDcPerJoinAccept(def.getDcPerJoinAccept());
         ts.setMaxJoinRequestDup(def.getMaxJoinRequestDup());
+        ts.setDcPerPunishment(def.getDcPerPunishment());
 
         heliumTenantSetupRepository.save(ts);
         this.heliumSetupCache.remove(ts.getTenantUUID(),false);
@@ -480,6 +485,7 @@ public class HeliumTenantSetupService {
         ts.setDcPerJoinRequest(def.getDcPerJoinRequest());
         ts.setDcPerJoinAccept(def.getDcPerJoinAccept());
         ts.setMaxJoinRequestDup(def.getMaxJoinRequestDup());
+        ts.setDcPerPunishment(def.getDcPerPunishment());
         heliumTenantSetupRepository.save(ts);
     }
 

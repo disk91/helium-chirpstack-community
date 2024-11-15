@@ -23,8 +23,6 @@ package eu.heliumiot.console.api.interfaces;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.tags.Tag;
 
-import java.util.UUID;
-
 @Tag(name = "Tenant update request Interface", description = "existing tenant update request interface")
 public class TenantSetupTemplateCreateReqItf {
 
@@ -190,6 +188,14 @@ public class TenantSetupTemplateCreateReqItf {
         requiredMode = Schema.RequiredMode.REQUIRED
     )
     private int dcPerJoinAccept;
+
+    @Schema(
+            description = "Number od DCs invoiced to punish inappropriate behavior",
+            example = "100",
+            requiredMode = Schema.RequiredMode.REQUIRED
+    )
+    private int dcPerPunishment;
+
 
     // ---
 
@@ -376,5 +382,13 @@ public class TenantSetupTemplateCreateReqItf {
 
     public void setDcPerJoinAccept(int dcPerJoinAccept) {
         this.dcPerJoinAccept = dcPerJoinAccept;
+    }
+
+    public int getDcPerPunishment() {
+        return dcPerPunishment;
+    }
+
+    public void setDcPerPunishment(int dcPerPunishment) {
+        this.dcPerPunishment = dcPerPunishment;
     }
 }

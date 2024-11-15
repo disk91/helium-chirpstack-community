@@ -20,7 +20,6 @@
 package eu.heliumiot.console.jpa.db;
 
 import fr.ingeniousthings.tools.ClonnableObject;
-import org.hibernate.annotations.GenericGenerator;
 
 import jakarta.persistence.*;
 import java.util.UUID;
@@ -110,6 +109,10 @@ public class HeliumTenantSetup implements ClonnableObject<HeliumTenantSetup> {
     private int maxJoinRequestDup;
     @Column(name = "dc_per_join_accept", columnDefinition = "int4")
     private int dcPerJoinAccept;
+
+    // Punishement for attack attempt
+    @Column(name = "dc_per_punishment", columnDefinition = "int4")
+    private int dcPerPunishment;
 
     // ---
     public HeliumTenantSetup clone() {
@@ -326,5 +329,13 @@ public class HeliumTenantSetup implements ClonnableObject<HeliumTenantSetup> {
 
     public void setDcPerJoinAccept(int dcPerJoinAccept) {
         this.dcPerJoinAccept = dcPerJoinAccept;
+    }
+
+    public int getDcPerPunishment() {
+        return dcPerPunishment;
+    }
+
+    public void setDcPerPunishment(int dcPerPunishment) {
+        this.dcPerPunishment = dcPerPunishment;
     }
 }

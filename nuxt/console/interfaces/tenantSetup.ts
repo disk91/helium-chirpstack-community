@@ -17,6 +17,7 @@ declare module "vue/types/tenantSetup" {
         maxDcPerDevice: bigint,
         limitDcRatePeriodMs: bigint,
         limitDcRatePerDevice : bigint,
+        dcPerPunishment: bigint,
         dcPrice : number,
         dcMin : bigint,
         maxCopy : bigint,

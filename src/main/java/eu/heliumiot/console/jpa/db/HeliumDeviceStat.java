@@ -72,6 +72,9 @@ public class HeliumDeviceStat implements ClonnableObject<HeliumDeviceStat> {
     @Column(name = "join_accept_dc", columnDefinition = "int4")
     private int joinAcceptDc;
 
+    @Column(name = "punishment_dc", columnDefinition = "int4")
+    private int punishmentDc;
+
     // ---
 
     public HeliumDeviceStat clone() {
@@ -215,5 +218,13 @@ public class HeliumDeviceStat implements ClonnableObject<HeliumDeviceStat> {
 
     public void setJoinAcceptDc(int joinAcceptDc) {
         this.joinAcceptDc = joinAcceptDc;
+    }
+
+    public int getPunishmentDc() {
+        return punishmentDc;
+    }
+
+    public void setPunishmentDc(int punishmentDc) {
+        this.punishmentDc = punishmentDc;
     }
 }

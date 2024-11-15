@@ -840,8 +840,7 @@ public class MqttLoRaListener implements MqttCallback {
                         // anormal behavior use as an attack, pay 100 Uplink equivalent
                         heliumTenantService.punish(
                             le.getDeviceInfo().getTenantId(),
-                            le.getDeviceInfo().getDevEui(),
-                            1
+                            le.getDeviceInfo().getDevEui()
                         );
                     }
                 } catch (Exception x) {

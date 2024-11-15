@@ -289,6 +289,20 @@ public class TenantBasicStatRespItf implements ClonnableObject<TenantBasicStatRe
     )
     private int joinAcceptDc;
 
+    @Schema(
+            description = "Cost in DCs to punish inappropriate behavior",
+            example = "100",
+            requiredMode = Schema.RequiredMode.REQUIRED
+    )
+    private int dcPerPunishment;
+
+    @Schema(
+            description = "Number of DCs invoiced to punish inappropriate behavior",
+            example = "1000",
+            requiredMode = Schema.RequiredMode.REQUIRED
+    )
+    private int punishmentDc;
+
 
     // ----
 
@@ -596,5 +610,21 @@ public class TenantBasicStatRespItf implements ClonnableObject<TenantBasicStatRe
 
     public void setJoinAcceptDc(int joinAcceptDc) {
         this.joinAcceptDc = joinAcceptDc;
+    }
+
+    public int getDcPerPunishment() {
+        return dcPerPunishment;
+    }
+
+    public void setDcPerPunishment(int dcPerPunishment) {
+        this.dcPerPunishment = dcPerPunishment;
+    }
+
+    public int getPunishmentDc() {
+        return punishmentDc;
+    }
+
+    public void setPunishmentDc(int punishmentDc) {
+        this.punishmentDc = punishmentDc;
     }
 }

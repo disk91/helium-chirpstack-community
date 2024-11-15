@@ -257,6 +257,13 @@ public class ConsoleConfig {
     @Value ("${helium.billing.dcPerJoinAccept:0}")
     private int heliumBillingDcPerJoinAccept;
 
+    @Value ("${helium.billing.dcPunishment:100}")
+    private int heliumBillingDcPunishment;
+
+    public int getHeliumBillingDcPunishment() {
+        return heliumBillingDcPunishment;
+    }
+
     public int getHeliumBillingVat() {
         return heliumBillingVat;
     }

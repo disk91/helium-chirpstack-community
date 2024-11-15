@@ -186,6 +186,7 @@ public class HeliumDeviceStatService {
             s.setJoinReq(0);
             s.setJoinDc(0);
             s.setJoinAcceptDc(0);
+            s.setPunishmentDc(0);
             s = heliumDeviceStatsRepository.save(s);
             this.heliumDeviceStatCache.put(s,devId);
         }
@@ -208,6 +209,7 @@ public class HeliumDeviceStatService {
         s.setJoinReq(s.getJoinReq()+e.getJoin());
         s.setJoinDc(s.getJoinDc()+e.getJoinDc());
         s.setJoinAcceptDc(s.getJoinAcceptDc()+e.getJoinAcceptDc());
+        s.setPunishmentDc(s.getPunishmentDc());
         this.heliumDeviceStatCache.put(s,e.getDeviceId()); // refresh update status
     }
 

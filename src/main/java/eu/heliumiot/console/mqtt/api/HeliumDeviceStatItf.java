@@ -46,6 +46,7 @@ public class HeliumDeviceStatItf {
     protected int duplicateJoin=0;
     protected int joinDc = 0;
     protected int joinAcceptDc = 0;
+    protected int punishmentDc = 0;
 
     // ---
 
@@ -176,5 +177,13 @@ public class HeliumDeviceStatItf {
 
     public void setDuplicateJoin(int duplicateJoin) {
         this.duplicateJoin = duplicateJoin;
+    }
+
+    public int getPunishmentDc() {
+        return punishmentDc;
+    }
+
+    public void setPunishmentDc(int punishmentDc) {
+        this.punishmentDc = punishmentDc;
     }
 }

@@ -338,7 +338,7 @@ public class HeliumTenantService {
     @Autowired
     protected HeliumDeviceCacheService heliumDeviceCacheService;
 
-    public void punish(String tenantUUID, String deviceUUID, int cost) {
+    public void punish(String tenantUUID, String deviceUUID) {
         if ( tenantUUID == null ) {
             tenantUUID = heliumDeviceCacheService.getTenantId(deviceUUID);
             if (tenantUUID == null) {
@@ -350,6 +350,12 @@ public class HeliumTenantService {
         i.setDeviceId(deviceUUID);
         i.setTenantId(tenantUUID);
         HeliumTenantSetup ts = heliumTenantSetupService.getHeliumTenantSetup(tenantUUID,false);
+        int cost;
+        if (ts != null) {
+            cost = ts.getDcPerPunishment();
+        } else {
+            cost = consoleConfig.getHeliumBillingDcPunishment();
+        }
         synchronized (this) {
             HeliumTenant t = this.getHeliumTenant(tenantUUID,false);
             if (t != null) {
@@ -364,10 +370,11 @@ public class HeliumTenantService {
                 }
 
                 // publish message to update the stats async
-                i.setUplinkDc(cost);
+                i.setUplinkDc(0);
                 i.setDuplicateDc(0);
                 i.setUplink(0);
                 i.setDuplicate(0);
+                i.setPunishmentDc(cost);
                 reportStatToMqtt(i);
             }
         }
@@ -409,6 +416,7 @@ public class HeliumTenantService {
                 i.setDuplicateDc(duplicateDc);
                 i.setUplink((withFirst)?1:0);
                 i.setDuplicate(duplicates);
+                i.setPunishmentDc(0);
                 reportStatToMqtt(i);
 
                 // check deactivation
@@ -459,6 +467,7 @@ public class HeliumTenantService {
                 // publish message to update the stats async
                 i.setDownlinkDc(downlinkDc);
                 i.setDownlink(1);
+                i.setPunishmentDc(0);
                 reportStatToMqtt(i);
 
                 // check deactivation
@@ -533,6 +542,7 @@ public class HeliumTenantService {
                 i.setUplink(0);
                 i.setUplinkDc(0);
                 i.setJoinDc(0);
+                i.setPunishmentDc(0);
                 i.setJoinAcceptDc(ts.getDcPerJoinAccept());
                 reportStatToMqtt(i);
 
@@ -600,6 +610,7 @@ public class HeliumTenantService {
                 i.setDownlink(0);
                 i.setJoinDc(packets*ts.getDcPerJoinRequest());
                 i.setJoinAcceptDc(0);
+                i.setPunishmentDc(0);
                 reportStatToMqtt(i);
 
                 // check deactivation
@@ -1156,7 +1167,7 @@ public class HeliumTenantService {
             if ( t == null ) continue;
             k.setTenantName(t.getName());
             List<UserTenant> u = userTenantRepository.findUserTenantByTenantIdAndIsAdmin(t.getId(),true);
-            if ( u.size() == 0 ) k.setOwnerEmail("admin");
+            if (u.isEmpty()) k.setOwnerEmail("admin");
             else {
                 UserCacheService.UserCacheElement uc = userCacheService.getUserById(u.get(0).getUserId().toString());
                 k.setOwnerEmail(uc.user.getEmail());
