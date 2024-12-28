@@ -988,14 +988,14 @@ public class NovaService {
         try {
             byte[] owner_b = Base58.decode(consoleConfig.getHeliumGprcPublicKey());
             if (owner_b.length == 38) {
-                byte owner_b2[] = new byte[33];
+                byte[] owner_b2 = new byte[33];
                 for (int i = 0; i < 33; i++) {
                     owner_b2[i] = owner_b[i + 1];
                 }
                 this.owner = ByteString.copyFrom(owner_b2);
             } else if (owner_b.length == 37) {
                 // no leading  0
-                byte owner_b2[] = new byte[33];
+                byte[] owner_b2 = new byte[33];
                 for (int i = 0; i < 33; i++) {
                     owner_b2[i] = owner_b[i];
                 }
