@@ -122,7 +122,7 @@ public class NovaService {
         try {
 
             ArrayList<String> toRefresh = new ArrayList<>();
-            if (delayedSessionRefresh.size() > 0) {
+            if (!delayedSessionRefresh.isEmpty()) {
 
                 // get all the pending device to be updated
                 synchronized (delayedSessionRefresh) {
@@ -135,7 +135,7 @@ public class NovaService {
                     // get routeId to be refreshed
                     String routeId = heliumTStoNovaProxyService.getRouteIdFromEui(devEUI);
                     if ( routeId == null ) {
-                        log.warn("flushDelayedSessionUpdate - the route is not existing for "+devEUI);
+                        log.warn("flushDelayedSessionUpdate - the route is not existing for {}", devEUI);
                         // process later
                         // @todo - after a certain time we should clear this, the route may be simply deleted
                         addDelayedSessionRefresh(devEUI);
@@ -152,7 +152,7 @@ public class NovaService {
         } finally {
             this.runningJobs--;
         }
-        log.debug("End Running flushDelayedSessionUpdate - duration " + (Now.NowUtcMs() - start) + "ms");
+        log.debug("End Running flushDelayedSessionUpdate - duration {}ms", Now.NowUtcMs() - start);
 
     }
 
@@ -188,7 +188,7 @@ public class NovaService {
                     String tName = "Unknown";
                     if ( t != null ) tName = t.getName();
 
-                    log.info("["+_i+"-"+_j+"/"+cTemplate+"] Exploring tenant "+tName+" ("+hts.getTenantUUID()+") route "+hts.getRouteId());
+                    log.info("[{}-{}/{}] Exploring tenant {} ({}) route {}", _i, _j, cTemplate, tName, hts.getTenantUUID(), hts.getRouteId());
                     // get all skfs for the current route and the devAddr
                     List<skf_v1> skfs =  grpcListSessionsByDevaddr(addr,hts.getRouteId());
                     HashMap<String,skf_v1> inRouteSkfs = new HashMap<>();
@@ -228,7 +228,7 @@ public class NovaService {
                                         || hd.getState() == HeliumDevice.DeviceState.ACTIVE
                                         || hd.getState() == HeliumDevice.DeviceState.INACTIVE
                                     ){
-                                        log.info(">> Missing session for device: " + hd.getDeviceEui() + " addr: " + sAddr);
+                                        log.info(">> Missing session for device: {} addr: {}", hd.getDeviceEui(), sAddr);
                                     }
                                 }
                             }
@@ -242,7 +242,7 @@ public class NovaService {
 
                     // if some more session it's a problem ...
                     for ( String key : inRouteSkfs.keySet() ) {
-                        log.info(">> Found extra sessions for addr: "+sAddr+" nwks: "+key);
+                        log.info(">> Found extra sessions for addr: {} nwks: {}", sAddr, key);
                         if ( clear ) {
                             skf_v1 skf = inRouteSkfs.get(key);
                             SkfUpdate su = new SkfUpdate();
@@ -284,7 +284,7 @@ public class NovaService {
                     for ( HeliumTenantSetup hts : htss ) {
                         if ( hts.getRouteId() != null && !hts.isTemplate() ) {
                             // process one route
-                            log.info("["+_i+"-"+_j+"/"+cTemplate+"] Refreshing tenant "+hts.getTenantUUID()+ " route "+hts.getRouteId());
+                            log.info("[{}-{}/{}] Refreshing tenant {} route {}", _i, _j, cTemplate, hts.getTenantUUID(), hts.getRouteId());
                             // search the route
                             route_v1 r = grpcGetOneRoute(hts.getRouteId());
                             if ( r == null ) { log.error("A known route does not exist"); continue; }
@@ -314,7 +314,7 @@ public class NovaService {
                                 }
                             }
                             if ( toBeRecreated ) {
-                                log.info("Recreate route definition "+hts.getRouteId());
+                                log.info("Recreate route definition {}", hts.getRouteId());
                                 log.error("This is not implemented");
                                 // @TODO
 
@@ -332,7 +332,7 @@ public class NovaService {
                                 // Problem will be related to the DC balance lost and max_copy in this operation
 
                             } else if ( toBeUpdated ) {
-                                log.info("Updating route definition "+hts.getRouteId());
+                                log.info("Updating route definition {}", hts.getRouteId());
                                 grpcUpdateOneRoute(hts.getRouteId(),hts.getMaxCopy(),true);
                             }
 
@@ -348,7 +348,7 @@ public class NovaService {
             } finally {
                 this.runningJobs--;
             }
-            log.debug("End Running initialNovaSessionRefresh - duration " + (Now.NowUtcMs() - start) + "ms");
+            log.debug("End Running initialNovaSessionRefresh - duration {}ms", Now.NowUtcMs() - start);
         }
         this.initialSessionRefreshDone = true;
     }
@@ -365,7 +365,7 @@ public class NovaService {
 
         route_list_res_v1 routes = this.grpcListRoutes();
         if ( routes != null ) {
-            log.info("initialRouteCheck - found "+routes.getRoutesCount()+" routes registered ");
+            log.info("initialRouteCheck - found {} routes registered ", routes.getRoutesCount());
             int anotherServer=0;
             int found=0;
             int error=0;
@@ -374,19 +374,19 @@ public class NovaService {
                 if ( r.getServer().getHost().compareToIgnoreCase(consoleConfig.getHeliumRouteHost()) == 0 ){
                     // search if it has a tenant
                    List<HeliumTenantSetup> hts = heliumTenantSetupRepository.findHeliumTenantSetupByRouteId(r.getId());
-                   if ( hts == null || hts.size() == 0 ) {
-                       log.error("initialRouteCheck - route ("+r.getId()+") does not have tenant setup");
+                   if ( hts == null || hts.isEmpty()) {
+                       log.error("initialRouteCheck - route ({}) does not have tenant setup", r.getId());
                        error++;
                    } else {
                        // when we have a tenant setup, check we have a tenant attached or delete all of this
                        if ( hts.size() > 1 ) log.warn("Multiple tenant setup for a single route");
                        Tenant t = tenantRepository.findOneTenantById(UUID.fromString(hts.get(0).getTenantUUID()));
                        if ( t == null ) {
-                           log.error("initialRouteCheck - route ("+r.getId()+") does not have tenant");
+                           log.error("initialRouteCheck - route ({}) does not have tenant", r.getId());
                            addDelayedRouteRemoval(r.getId());
                            // not the best as TenantSetup use a cache but on restart we should
                            // be in a situation where a deleted tenant is in cache
-                           heliumTenantSetupRepository.delete(hts.get(0));
+                           heliumTenantSetupRepository.delete(hts.getFirst());
                            toRemove++;
                        } else {
                            found++;
@@ -396,7 +396,7 @@ public class NovaService {
                     anotherServer++;
                 }
             }
-            log.info("initialRouteCheck - end of process - total("+routes.getRoutesCount()+") found("+found+") removed("+toRemove+") error("+error+") external("+anotherServer+")");
+            log.info("initialRouteCheck - end of process - total({}) found({}) removed({}) error({}) external({})", routes.getRoutesCount(), found, toRemove, error, anotherServer);
             initialRouteCheckDone=true;
         } else {
             log.error("initialRouteCheck - problem in getting routes");
@@ -411,7 +411,7 @@ public class NovaService {
     private record DeviceRecord(int devaddr, String nkey, String eui){};
     private static final long collisionSkfsCacheTimeout = 20*Now.ONE_MINUTE;
     private static final long collisionSkfsCacheCleanTimeout = 10*Now.ONE_MINUTE;
-    private static final int collisionSkfsCacheMaxRoute = 50;
+    private static final int collisionSkfsCacheMaxRoute = 500;
     private static final int collisionSkfsMaxDevicePerRoute = 20_000;
     private final TinyCache<String,ArrayList<DeviceRecord>> collisionSkfsCache = new TinyCache<>(
         collisionSkfsCacheMaxRoute,
@@ -439,7 +439,7 @@ public class NovaService {
                             DeviceSession s = deviceService.getDeviceSession(hd.getDeviceUUID());
                             if ( s == null ) {
                                 // no session yet for that device (just inserted)
-                                log.debug("countSkfsColisions - session not ready for "+hd.getDeviceEui());
+                                log.debug("countSkfsColisions - session not ready for {}", hd.getDeviceEui());
                                 continue;
                             }
                             String ntwSEncKey = HexaConverters.byteToHexString(s.getNwkSEncKey().toByteArray());
@@ -487,7 +487,7 @@ public class NovaService {
 
     private static final long routeSkfsCacheTimeout = 20*Now.ONE_MINUTE;
     private static final long routeSkfsCacheCleanTimeout = 10*Now.ONE_MINUTE;
-    private static final int routeSkfsCacheMaxRoute = 50;
+    private static final int routeSkfsCacheMaxRoute = 500;
     private final TinyCache<String,List<skf_v1>> routeSkfsCache = new TinyCache<>(
         routeSkfsCacheMaxRoute,
         routeSkfsCacheTimeout,
@@ -546,7 +546,7 @@ public class NovaService {
         SkfRoute r = skfCache.get(routeId);
         if ( r != null && (Now.NowUtcMs() - r.refreshTime) < 2*Now.ONE_HOUR ) {
             // get new information about this EUI
-            log.debug("refreshOneEuiSkf - use cache for "+eui);
+            log.debug("refreshOneEuiSkf - use cache for {}", eui);
             DeviceSession s = deviceService.getDeviceSession(eui);
             String ntwSEncKey = HexaConverters.byteToHexString(s.getNwkSEncKey().toByteArray());
             String devaddr = HexaConverters.byteToHexString(s.getDevAddr().toByteArray());
@@ -556,7 +556,7 @@ public class NovaService {
             // find the previous one and remove it
             skf_v1 old = r.skfsByEui.get(eui);
             if ( old != null) {
-                log.debug("Key "+old.getSessionKey()+" found for deletion");
+                log.debug("Key {} found for deletion", old.getSessionKey());
                 SkfUpdate su = new SkfUpdate();
                 su.devAddr = old.getDevaddr();
                 su.session = old.getSessionKey();
@@ -566,7 +566,7 @@ public class NovaService {
             } else {
                 // debug
                 for ( String _eui : r.skfsByEui.keySet() ) {
-                    log.debug("> "+_eui);
+                    log.debug("> {}", _eui);
                 }
             }
 
@@ -575,7 +575,7 @@ public class NovaService {
             su.devAddr = iDevAddr;
             su.session = ntwSEncKey;
             skfToAdd.add(su);
-            log.debug("Key "+ntwSEncKey+" to be added");
+            log.debug("Key {} to be added", ntwSEncKey);
             grpcUpdateSessions(skfToAdd,skfToRem,routeId);
 
             skf_v1 n = skf_v1.newBuilder()
@@ -594,7 +594,7 @@ public class NovaService {
     public synchronized void refreshOneRouteSkf(String routeId) {
 
         // Trace
-        log.debug("refreshOneRouteSkf - "+routeId);
+        log.debug("refreshOneRouteSkf - {}", routeId);
 
         // get the route SKF entries
         List<skf_v1> inRouteSkfs =  grpcListSessionsByDevaddr(0,routeId);
@@ -629,7 +629,7 @@ public class NovaService {
                         DeviceSession s = deviceService.getDeviceSession(hd.getDeviceUUID());
                         if ( s == null ) {
                             // no session yet for that device (just inserted)
-                            log.debug("refreshOneRouteSkf - session not ready for "+hd.getDeviceEui());
+                            log.debug("refreshOneRouteSkf - session not ready for {}", hd.getDeviceEui());
                             continue;
                         }
                         String ntwSEncKey = HexaConverters.byteToHexString(s.getNwkSEncKey().toByteArray());
@@ -716,7 +716,7 @@ public class NovaService {
                 su.session = s.getSessionKey();
                 skfToAdd.add(su);
             } else {
-                log.warn("The route "+routeId+" contains redundant add skf for devAddr "+Integer.toHexString(s.getDevaddr())+ " key "+s.getSessionKey());
+                log.warn("The route {} contains redundant add skf for devAddr {} key {}", routeId, Integer.toHexString(s.getDevaddr()), s.getSessionKey());
             }
         }
         LinkedList<SkfUpdate> skfToRem = new LinkedList<>();
@@ -727,7 +727,7 @@ public class NovaService {
                 su.session = s.getSessionKey();
                 skfToRem.add(su);
             } else {
-                log.warn("The route "+routeId+" contains redundant del skf for devAddr "+Integer.toHexString(s.getDevaddr())+ " key "+s.getSessionKey());
+                log.warn("The route {} contains redundant del skf for devAddr {} key {}", routeId, Integer.toHexString(s.getDevaddr()), s.getSessionKey());
             }
         }
         grpcUpdateSessions(skfToAdd,skfToRem,routeId);
@@ -772,7 +772,7 @@ public class NovaService {
                 if ( d.devEui.compareToIgnoreCase(dev.devEui) == 0 ) { found = true; break; }
             }
             if ( !found ) {
-                log.debug("To be added " + dev.devEui + " (" + dev.appEui + ") " + dev.routeId);
+                log.debug("To be added {} ({}) {}", dev.devEui, dev.appEui, dev.routeId);
                 this.delayedEuisRefreshAddition.add(dev);
             }
         }
@@ -786,7 +786,7 @@ public class NovaService {
                 if ( d.devEui.compareToIgnoreCase(dev.devEui) == 0 ) { found = true; break; }
             }
             if ( !found ) {
-                log.debug("To be deleted " + dev.devEui + " (" + dev.appEui + ") " + dev.routeId);
+                log.debug("To be deleted {} ({}) {}", dev.devEui, dev.appEui, dev.routeId);
                 this.delayedEuisRefreshRemoval.add(dev);
             }
         }
@@ -860,7 +860,7 @@ public class NovaService {
                 this.delayedEuisRefreshAddition.clear();
             }
 
-            if ( toRemove.size() > 0 ) {
+            if (!toRemove.isEmpty()) {
                 for ( String routeId: toRemove.keySet() ) {
                     ArrayList<NovaDevice> _toRemove = toRemove.get(routeId);
                     if ( ! grpcAddRemoveInRoutes(_toRemove,routeId, false) ) {
@@ -871,7 +871,7 @@ public class NovaService {
                     }
                 }
             }
-            if ( toAdd.size() > 0 ) {
+            if (!toAdd.isEmpty()) {
                 for ( String routeId: toAdd.keySet() ) {
                     ArrayList<NovaDevice> _toAdd = toAdd.get(routeId);
                     if (!grpcAddRemoveInRoutes(_toAdd, routeId,true)) {
@@ -899,7 +899,7 @@ public class NovaService {
         for (NovaDevice d : devices) {
             this.addDelayedSessionRefresh(d.devEui);
             this.addDelayedEuisRefreshRemoval(d);
-            log.debug("Deactivating device " + d.devEui);
+            log.debug("Deactivating device {}", d.devEui);
         }
         return true;
     }
@@ -908,7 +908,7 @@ public class NovaService {
         for (NovaDevice d : devices) {
             this.addDelayedSessionRefresh(d.devEui);
             this.addDelayedEuisRefreshAddition(d);
-            log.debug("Activating device " + d.devEui);
+            log.debug("Activating device {}", d.devEui);
         }
         return true;
     }
@@ -976,9 +976,9 @@ public class NovaService {
                 return;
             }
 
-        } catch (IOException x) {
+        } catch ( IOException x ) {
             log.error("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
-            log.error("Impossible to access private key file " + x.getMessage());
+            log.error("Impossible to access private key file {}", x.getMessage());
             log.error("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
             ConsoleApplication.requestingExitForStartupFailure = true;
             return;
@@ -1022,12 +1022,12 @@ public class NovaService {
 
         // Verify the rest of the configuration
         String _netId = consoleConfig.getHeliumRouteNetid();
-        if ( _netId != null && _netId.length() > 0 ) {
+        if ( _netId != null && !_netId.isEmpty()) {
             netIdValue = Stuff.hexStrToInt(_netId);
         }
 
         regionsSupported = new ArrayList<>();
-        if ( consoleConfig.getHeliumRouteRegions().length() > 0 ) {
+        if (!consoleConfig.getHeliumRouteRegions().isEmpty()) {
             for ( String reg : consoleConfig.getHeliumRouteRegions().split(",") ) {
                 RegionSupported r = new RegionSupported();
                 String[] regionData = reg.split(":");
@@ -1081,8 +1081,8 @@ public class NovaService {
 
         if (   netIdValue == 0
             || consoleConfig.getHeliumRouteOui() == 0
-            || consoleConfig.getHeliumRouteHost().length() == 0
-            || regionsSupported.size() == 0
+            || consoleConfig.getHeliumRouteHost().isEmpty()
+            || regionsSupported.isEmpty()
         ) {
             log.error("############################################################################");
             log.error("Impossible to start GRPC - properties file is not correctly setup");
@@ -1143,12 +1143,12 @@ public class NovaService {
             if ( response != null && response.getDevaddrConstraintsCount() > 0) {
                 this.addresses = new ArrayList<>();
                 addresses.addAll(response.getDevaddrConstraintsList());
-                log.debug("GPRC found "+addresses.size()+"addresses range");
-                log.debug("GPRC get addresses duration " + (Now.NowUtcMs() - start) + "ms");
+                log.debug("GPRC found {} addresses range", addresses.size());
+                log.debug("GPRC get addresses duration {}ms", Now.NowUtcMs() - start);
                 return addresses;
             }
         } catch ( Exception x ) {
-            log.error("GRPC get addresses error with message "+x.getMessage());
+            log.error("GRPC get addresses error with message {}", x.getMessage());
             prometeusService.addHeliumTotalError();
         } finally {
             if ( channel != null ) channel.shutdown();
@@ -1163,7 +1163,7 @@ public class NovaService {
         if ( ! this.grpcInitOk ) return false;
 
         long start = Now.NowUtcMs();
-        log.debug("GRPC delete route "+routeId);
+        log.debug("GRPC delete route {}", routeId);
 
         ManagedChannel channel = null;
         try {
@@ -1191,11 +1191,11 @@ public class NovaService {
                     .setSignature(ByteString.copyFrom(signature))
                     .build());
 
-            log.debug("GPRC route deletion duration " + (Now.NowUtcMs() - start) + "ms");
-            log.debug("GRPC deletion " + response.getRoute().getId());
+            log.debug("GPRC route deletion duration {}ms", Now.NowUtcMs() - start);
+            log.debug("GRPC deletion {}", response.getRoute().getId());
             return true;
         } catch ( Exception x ) {
-            log.error("GRPC route deletion error for route "+routeId+" with message "+x.getMessage());
+            log.error("GRPC route deletion error for route {} with message {}", routeId, x.getMessage());
             prometeusService.addHeliumTotalError();
         } finally {
             if ( channel != null ) channel.shutdown();
@@ -1208,7 +1208,6 @@ public class NovaService {
     private route_v1 grpcCreateNewRoute(String tenantId, int max_copy) {
 
         if ( ! this.grpcInitOk ) return null;
-
 
         StreamObserver<route_devaddr_ranges_res_v1> responseObserver = new StreamObserver<>() {
             @Override
@@ -1232,7 +1231,7 @@ public class NovaService {
 
 
         long start = Now.NowUtcMs();
-        log.debug("GRPC Create route for tenant "+tenantId);
+        log.debug("GRPC Create route for tenant {}", tenantId);
         ManagedChannel channel = null;
 
         List<devaddr_constraint_v1> addrs = this.getAddresses();
@@ -1266,7 +1265,7 @@ public class NovaService {
 
             server_v1 server = server_v1.newBuilder()
                     .setHost(consoleConfig.getHeliumRouteHost()) // https:://
-                    .setPort(this.regionsSupported.get(0).port)
+                    .setPort(this.regionsSupported.getFirst().port)
                     .setGwmp(gwmp)
                     .build();
 
@@ -1311,7 +1310,7 @@ public class NovaService {
                             .setEndAddr(addr.getEndAddr())
                             .build();
 
-                    log.debug("Add devAddr Range : "+String.format("0x%08X",addr.getStartAddr())+" / "+String.format("0x%08X",addr.getEndAddr()));
+                    log.debug("Add devAddr Range : {} / {}", String.format("0x%08X", addr.getStartAddr()), String.format("0x%08X", addr.getEndAddr()));
 
                     route_update_devaddr_ranges_req_v1 addrToSign = route_update_devaddr_ranges_req_v1.newBuilder()
                             .setAction(action_v1.add)
@@ -1352,11 +1351,11 @@ public class NovaService {
             // we can identify it with the size : 30 chars
             this.grpcAddRandomSkf(response.getRoute().getId());
 
-            log.debug("GPRC route creation duration " + (Now.NowUtcMs() - start) + "ms");
-            log.debug("GRPC route " + response.getRoute().getId());
+            log.debug("GPRC route creation duration {}ms", Now.NowUtcMs() - start);
+            log.debug("GRPC route {}",response.getRoute().getId());
             return response.getRoute();
         } catch ( Exception x ) {
-            log.warn("GRPC create route error "+x.getMessage());
+            log.warn("GRPC create route error {}", x.getMessage());
             prometeusService.addHeliumTotalError();
         } finally {
             if ( channel != null ) channel.shutdown();
@@ -1376,7 +1375,7 @@ public class NovaService {
         if ( ! this.grpcInitOk ) return null;
 
         long start = Now.NowUtcMs();
-        log.debug("GRPC GET route "+routeId);
+        log.debug("GRPC GET route {}",routeId);
         ManagedChannel channel = null;
         try {
             channel = ManagedChannelBuilder.forAddress(
@@ -1404,11 +1403,11 @@ public class NovaService {
                     .setSignature(ByteString.copyFrom(signature))
                     .build());
 
-            log.debug("GPRC GET route duration " + (Now.NowUtcMs() - start) + "ms");
-            log.debug("GRPC route " + response.getRoute().getId());
+            log.debug("GPRC GET route duration {}ms", Now.NowUtcMs() - start);
+            log.debug("GRPC route {}", response.getRoute().getId());
             return response.getRoute();
         } catch ( Exception x ) {
-            log.warn("GRPC GET route error "+x.getMessage());
+            log.warn("GRPC GET route error {}", x.getMessage());
             x.printStackTrace();
             prometeusService.addHeliumTotalError();
         } finally {
@@ -1427,7 +1426,7 @@ public class NovaService {
         if ( ! this.grpcInitOk ) return null;
 
         long start = Now.NowUtcMs();
-        log.debug("GRPC UPDATE route (maxcopy)"+routeId);
+        log.debug("GRPC UPDATE route (maxcopy) {}", routeId);
 
         route_v1 oldRoute = grpcGetOneRoute(routeId);
         if ( oldRoute == null ) return null;
@@ -1456,7 +1455,7 @@ public class NovaService {
                         .build();
                 server = server_v1.newBuilder()
                         .setHost(consoleConfig.getHeliumRouteHost()) // https:://
-                        .setPort(this.regionsSupported.get(0).port)
+                        .setPort(this.regionsSupported.getFirst().port)
                         .setGwmp(gwmp)
                         .build();
                 if ( maxCopy == -1 ) maxCopy = oldRoute.getMaxCopies();
@@ -1491,10 +1490,10 @@ public class NovaService {
                     .setSigner(this.owner)
                     .build());
 
-            log.debug("GPRC UPDATE route duration " + (Now.NowUtcMs() - start) + "ms");
+            log.debug("GPRC UPDATE route duration {}ms", Now.NowUtcMs() - start);
             return response.getRoute();
         } catch ( Exception x ) {
-            log.warn("GRPC UPDATE route error "+x.getMessage());
+            log.warn("GRPC UPDATE route error {}", x.getMessage());
             x.printStackTrace();
             prometeusService.addHeliumTotalError();
         } finally {
@@ -1509,7 +1508,7 @@ public class NovaService {
         if ( ! this.grpcInitOk ) return null;
 
         long start = Now.NowUtcMs();
-        log.debug("GRPC GET route EUIs "+routeId);
+        log.debug("GRPC GET route EUIs {}", routeId);
         ManagedChannel channel = null;
         try {
             channel = ManagedChannelBuilder.forAddress(
@@ -1541,11 +1540,11 @@ public class NovaService {
                 rl.add(response.next());
             }
 
-            log.debug("GPRC GET route EUIs duration " + (Now.NowUtcMs() - start) + "ms");
-            log.debug("GRPC route " + routeId + " has " + rl.size() + " entries ");
+            log.debug("GPRC GET route EUIs duration {}ms", Now.NowUtcMs() - start);
+            log.debug("GRPC route {} has {} entries ", routeId, rl.size());
             return rl;
         } catch ( Exception x ) {
-            log.warn("GRPC GET route EUIs error "+x.getMessage());
+            log.warn("GRPC GET route EUIs error {}", x.getMessage());
             prometeusService.addHeliumTotalError();
             x.printStackTrace();
         } finally {
@@ -1588,8 +1587,8 @@ public class NovaService {
                     .setSigner(this.owner)
                     .setSignature(ByteString.copyFrom(signature))
                     .build());
-            log.debug("GPRC list route duration " + (Now.NowUtcMs() - start) + "ms");
-            log.debug("GRPC routes (" + response.getRoutesCount() + ")");
+            log.debug("GPRC list route duration {}ms", Now.NowUtcMs() - start);
+            log.debug("GRPC routes ({})", response.getRoutesCount());
             /*
             for (route_v1 route : response.getRoutesList()) {
                 log.debug("GRPC route id " + route.getId() + " with " + route.getEuisList().size() + " euis");
@@ -1657,9 +1656,9 @@ public class NovaService {
         if ( ! this.grpcInitOk ) return false;
         long start = Now.NowUtcMs();
         if ( add ) {
-            log.debug("GRPC Add routes ("+devices.size()+") in "+routeId);
+            log.debug("GRPC Add routes ({}) in {}", devices.size(), routeId);
         } else {
-            log.debug("GRPC Remove routes ("+devices.size()+") in "+routeId);
+            log.debug("GRPC Remove routes ({}) in {}", devices.size(), routeId);
         }
 
         ManagedChannel channel = ManagedChannelBuilder.forAddress(
@@ -1674,7 +1673,7 @@ public class NovaService {
             // skip devEui == 0
             if ( device.devEui.compareTo("0000000000000000") == 0 ) continue;
 
-            log.debug("  Process DevEUI "+device.devEui);
+            log.debug("  Process DevEUI {}", device.devEui);
             eui_pair_v1 eui = eui_pair_v1.newBuilder()
                     .setDevEui(Tools.EuiStringToLong(device.devEui))
                     .setAppEui(Tools.EuiStringToLong(device.appEui))
@@ -1713,7 +1712,7 @@ public class NovaService {
         } catch ( RuntimeException x ) {
             reqObserver.onError(x);
             prometeusService.addHeliumTotalError();
-            log.error("GRPC error during route update "+x.getMessage());
+            log.error("GRPC error during route update {}", x.getMessage());
             x.printStackTrace();
             return false;
         } finally {
@@ -1770,7 +1769,7 @@ public class NovaService {
         if ( ! this.grpcInitOk ) return null;
 
         long start = Now.NowUtcMs();
-        log.debug("GRPC List sessions for "+String.format("0x%08X",devAddr)+ " in route "+routeId);
+        log.debug("GRPC List sessions for {} in route {}", String.format("0x%08X", devAddr), routeId);
         ManagedChannel channel = null;
         try {
             channel = ManagedChannelBuilder.forAddress(
@@ -1834,8 +1833,8 @@ public class NovaService {
                 ret.add(response.next());
             }
 
-            log.debug("GPRC skf list duration " + (Now.NowUtcMs() - start) + "ms");
-            log.debug("GRPC skf found "+ret.size()+" entries");
+            log.debug("GPRC skf list duration {}ms", Now.NowUtcMs() - start);
+            log.debug("GRPC skf found {} entries", ret.size());
             return ret;
         } catch ( StatusRuntimeException x ) {
             prometeusService.addHeliumTotalError();
@@ -1862,7 +1861,7 @@ public class NovaService {
 
         if ( ! this.grpcInitOk ) return false;
         long start = Now.NowUtcMs();
-        log.debug("GRPC Session Update Add:"+toAddSession.size()+" Del:"+toRemoveSession.size()+" for "+routeId);
+        log.debug("GRPC Session Update Add:{} Del:{} for {}", toAddSession.size(), toRemoveSession.size(), routeId);
 
         ManagedChannel channel = ManagedChannelBuilder.forAddress(
                 consoleConfig.getHeliumGrpcServer(),
@@ -1874,9 +1873,9 @@ public class NovaService {
 
             long now = Now.NowUtcMs();
             int actions = 0; // max 50 actions at a time
-            while (toAddSession.size() > 0 || toRemoveSession.size() > 0) {
+            while (!toAddSession.isEmpty() || !toRemoveSession.isEmpty()) {
                 ArrayList<route_skf_update_req_v1.route_skf_update_v1> updates = new ArrayList<>();
-                while (toAddSession.size() > 0 && actions < 50) {
+                while (!toAddSession.isEmpty() && actions < 50) {
                     SkfUpdate session = toAddSession.poll();
 
                     boolean inRange = false;
@@ -1896,11 +1895,11 @@ public class NovaService {
                                 .build();
                         updates.add(update);
                     } else {
-                        log.debug("Request to add skf with out-of-range devaddr ("+Integer.toHexString(session.devAddr)+") in route "+routeId);
+                        log.debug("Request to add skf with out-of-range devaddr ({}) in route {}", Integer.toHexString(session.devAddr), routeId);
                     }
                     actions++;
                 }
-                while (toRemoveSession.size() > 0 && actions < 50) {
+                while (!toRemoveSession.isEmpty() && actions < 50) {
                     SkfUpdate session = toRemoveSession.poll();
 
                     boolean inRange = false;
@@ -1919,14 +1918,14 @@ public class NovaService {
                                 .setMaxCopies(SKFS_MAX_COPIES)
                                 .build();
                         updates.add(update);
-                        log.debug("Remove SKFS "+session.devAddr+" with session "+Integer.toHexString(session.devAddr)+" in route "+routeId);
+                        log.debug("Remove SKFS {} with session {} in route {}", session.devAddr, Integer.toHexString(session.devAddr), routeId);
                         actions++;
                     } else {
-                        log.debug("Request to remove skf with out-of-range devaddr ("+Integer.toHexString(session.devAddr)+") in route "+routeId);
+                        log.debug("Request to remove skf with out-of-range devaddr ({}) in route {}", Integer.toHexString(session.devAddr), routeId);
                     }
                 }
                 // execute
-                if ( updates.size() > 0 ) {
+                if (!updates.isEmpty()) {
                     route_skf_update_req_v1 requestToSign = route_skf_update_req_v1.newBuilder()
                             .setRouteId(routeId)
                             .addAllUpdates(updates)
@@ -1951,11 +1950,11 @@ public class NovaService {
                 }
                 actions = 0;
             }
-            log.debug("GPRC skf update duration " + (Now.NowUtcMs() - start) + "ms");
+            log.debug("GPRC skf update duration {}ms", Now.NowUtcMs() - start);
             return true;
         } catch ( StatusRuntimeException x ) {
             prometeusService.addHeliumTotalError();
-            log.warn("Skf Update Nova Backend not reachable "+x.getMessage());
+            log.warn("Skf Update Nova Backend not reachable {}", x.getMessage());
             return false;
         } finally {
             if ( channel != null ) channel.shutdown();
