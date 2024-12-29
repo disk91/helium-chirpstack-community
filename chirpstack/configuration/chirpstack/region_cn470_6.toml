@@ -50,7 +50,7 @@
         #
         # Note: an increase of this value will decrease the performance.
         # For more information: https://www.hivemq.com/blog/mqtt-essentials-part-6-mqtt-quality-of-service-levels
-        qos=0
+        qos=1
 
         # Clean session
         #
