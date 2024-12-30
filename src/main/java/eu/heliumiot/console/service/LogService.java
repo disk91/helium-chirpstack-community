@@ -24,9 +24,7 @@ public class LogService {
     private final Logger log = LoggerFactory.getLogger(this.getClass());
 
     Object privLogService = null;
-
-    // @TODO utiliser un objet avec plus d'info que juste un message à passer  ... et ecrire en base ou mettre en API ..
-
+    
     /**
      * LogService is a full version component only providing an API doing nothing in the community version
      * It provides inMemory Logs for debug & info level And Persistent logs for warning & error level
@@ -35,7 +33,7 @@ public class LogService {
     @PostConstruct
     private void initLogService() {
         try {
-            Class<?> clazz = Class.forName("eu.heliumiot.service.PrivLogService");
+            Class<?> clazz = Class.forName("eu.heliumiot.console.service.PrivLogService");
             privLogService = clazz.getDeclaredConstructor().newInstance();
         } catch (ClassNotFoundException e) {
             privLogService = null;
