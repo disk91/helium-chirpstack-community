@@ -27,10 +27,9 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 import com.google.protobuf.InvalidProtocolBufferException;
 import eu.heliumiot.console.ConsoleConfig;
 import eu.heliumiot.console.jpa.db.HeliumParameter;
-import eu.heliumiot.console.service.HeliumParameterService;
-import eu.heliumiot.console.service.HeliumTenantService;
-import eu.heliumiot.console.service.PrometeusService;
-import eu.heliumiot.console.service.RoamingService;
+import eu.heliumiot.console.service.*;
+import eu.heliumiot.console.service.interfaces.LogEntry;
+import eu.heliumiot.console.service.interfaces.LogLevel;
 import eu.heliumiot.console.tools.LoRaWanHelper;
 import fr.ingeniousthings.tools.*;
 import io.chirpstack.api.gw.UplinkFrame;
@@ -478,6 +477,9 @@ public class MqttLoRaListener implements MqttCallback {
     @Autowired
     protected LoRaWanHelper loRaWanHelper;
 
+    @Autowired
+    protected LogService logService;
+
     public void processBridgeMessage(long now, MqttEvent e) {
         try {
             UplinkFrame uf = UplinkFrame.parseFrom(e.message.getPayload());
@@ -498,6 +500,14 @@ public class MqttLoRaListener implements MqttCallback {
                 // join packets are free, other invoiced
                 prometeusService.addHeliumInvoicedPacket();
             }
+
+            // internal test to be removed
+            logService.log(new LogEntry(
+                    LogLevel.WARN,
+                    "MqttLoRaListener",
+                    "One packet received",
+                    0
+            ));
 
             String spayload = HexaConverters.byteToHexString(payload);
             // Manage arrival time for the first frame
