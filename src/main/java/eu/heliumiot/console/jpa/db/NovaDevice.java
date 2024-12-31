@@ -25,4 +25,5 @@ public class NovaDevice {
     public String appEui;
 
     public String routeId;
+    public long timeMs = 0;
 }

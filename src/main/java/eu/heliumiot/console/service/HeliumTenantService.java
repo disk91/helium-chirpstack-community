@@ -674,7 +674,7 @@ public class HeliumTenantService {
     public boolean processBalanceIncrease(String tenantUUID, long amount) {
         HeliumTenantSetup ts = heliumTenantSetupService.getHeliumTenantSetup(tenantUUID,false);
         if ( ts == null ) {
-            log.error("Impossible to find tenant setup for "+tenantUUID);
+            log.error("Impossible to find tenant setup for {}", tenantUUID);
             return false;
         }
         long balance = 0;
@@ -682,7 +682,7 @@ public class HeliumTenantService {
         boolean toReactivate = false;
         synchronized (this) {
             HeliumTenant t = this.getHeliumTenant(tenantUUID,false);
-            if (t != null && ts != null) {
+            if (t != null) {
                 initialBalance = t.getDcBalance();
                 t.setDcBalance(initialBalance + amount);
                 balance = t.getDcBalance();
@@ -753,7 +753,7 @@ public class HeliumTenantService {
             HeliumTenantSetup s = heliumTenantSetupService.getHeliumTenantSetup(t.getTenantUUID(),false);
             if ( s != null && s.getDcBalanceStop() < t.getDcBalance() ) {
                 // we have a candidate to be restored
-                log.warn("Tenant "+t.getTenantUUID()+" was deactivated with valid DC Balance "+t.getDcBalance()+" / "+s.getDcBalanceStop());
+                log.warn("Tenant {} was deactivated with valid DC Balance {} / {}", t.getTenantUUID(), t.getDcBalance(), s.getDcBalanceStop());
                 HeliumTenantActDeactItf i = new HeliumTenantActDeactItf();
                 i.setActivateTenant(true);
                 i.setDeactivateTenant(false);
@@ -789,7 +789,7 @@ public class HeliumTenantService {
                 );
                 return ut != null;
             } catch (IllegalArgumentException x) {
-                log.warn("Tenant ID is invalid "+tenantId);
+                log.warn("Tenant ID is invalid {}", tenantId);
                 return false;
             }
         }
@@ -825,7 +825,7 @@ public class HeliumTenantService {
                     UUID.fromString(userId),
                     true
             );
-            if ( uts == null || uts.size() == 0 ) throw new ITRightException();
+            if ( uts == null || uts.isEmpty()) throw new ITRightException();
 
             for ( UserTenant ut : uts ) {
                 HeliumTenant ht = this.getHeliumTenant(ut.getTenantId().toString(),true);
@@ -855,7 +855,7 @@ public class HeliumTenantService {
             List<UserTenant> uts = userTenantRepository.findUserTenantByUserId(
                     UUID.fromString(userId)
             );
-            if ( uts == null || uts.size() == 0 ) throw new ITRightException();
+            if ( uts == null || uts.isEmpty()) throw new ITRightException();
 
             for ( UserTenant ut : uts ) {
                 eu.heliumiot.console.jpa.db.Tenant t = this.getTenant(ut.getTenantId());
@@ -956,7 +956,7 @@ public class HeliumTenantService {
 
         // check profile
         String profile = HELIUM_TENANT_SETUP_DEFAULT;
-        if  (req.getCouponCode().length() > 0) {
+        if  (!req.getCouponCode().isEmpty()) {
             // process verification ...
             // set profile based on the invitation code verification
             String uuid = heliumTenantSetupService.acquiresCoupon(req.getCouponCode());

@@ -243,7 +243,7 @@ public class HeliumDeviceService {
                                 // save this
                                 heliumDeviceRepository.save(hdev);
                             }
-                            log.debug("scanNewDevicesJob - Force Del " + hdev.getDeviceEui());
+                            log.debug("scanNewDevicesJob - Force Del {}", hdev.getDeviceEui());
                             prometeusService.addDeviceDeletion();
                         } else continue;
                     } else {
@@ -266,14 +266,14 @@ public class HeliumDeviceService {
                 if ( dev.getVariables().contains("migrated\": \"true") ) {
                     DeviceSession s = deviceService.getDeviceSession(dev.getDevEui());
                     if ( s == null ) {
-                        log.debug("scanNewDevicesJob - Session for "+devEui+ " not ready");
+                        log.debug("scanNewDevicesJob - Session for {} not ready", devEui);
                         // wait a minute
                         if ( (start - dev.getCreatedAt().getTime()) < consoleConfig.getHeliumMigrationGracefulSessionPeriod() ) {
-                            log.debug("scanNewDevicesJob - skip device "+devEui);
+                            log.debug("scanNewDevicesJob - skip device {}", devEui);
                             continue;
                         }
                     } else {
-                        log.debug("scanNewDevicesJob - Device "+devEui+" is ready to process");
+                        log.debug("scanNewDevicesJob - Device {} is ready to process", devEui);
                     }
                 }
 
@@ -388,9 +388,9 @@ public class HeliumDeviceService {
                             this.reportDeviceActivationOnMqtt(hdev);
                             // save this
                             heliumDeviceRepository.save(hdev);
-                            log.debug("scanNewDevicesJob - Enabling device " + hdev.getDeviceEui());
+                            log.debug("scanNewDevicesJob - Enabling device {}", hdev.getDeviceEui());
                         } else {
-                            log.debug("scanNewDevicesJob - skip re-enable device when out of dcs "+ hdev.getDeviceEui() );
+                            log.debug("scanNewDevicesJob - skip re-enable device when out of dcs {}", hdev.getDeviceEui());
                         }
                     } else {
                         log.error("Try to reactivate a device not in a tenant");
@@ -501,7 +501,7 @@ public class HeliumDeviceService {
      * @return
      */
     public List<NovaDevice> clearInvalidRouteEuis(String routeId, boolean commit) {
-        log.debug("clearInvalidRouteEuis - Processing route "+routeId);
+        log.debug("clearInvalidRouteEuis - Processing route {}", routeId);
         long start = Now.NowUtcMs();
         ArrayList<NovaDevice> invalids = new ArrayList<>();
         List<NovaDevice> all = novaService.getAllKnownDevices(routeId);
@@ -512,11 +512,12 @@ public class HeliumDeviceService {
             HeliumDevice hd = this.heliumDeviceCacheService.getHeliumDevice(dev.devEui,false);
             if ( hd == null ) {
                 // this device does not exist
-                log.debug("Device "+dev.devEui+" / "+ dev.appEui+" can be cleared");
+                log.debug("Device {} / {} can be cleared - not exists",dev.devEui,dev.appEui);
                 invalids.add(dev);
             } else  {
                 if ( dev.appEui.compareToIgnoreCase(hd.getApplicationEui()) != 0 ) {
-                    log.debug("Device "+dev.devEui+" exists but with wrong appEUI, removing it");
+                    log.debug("Device {} exists but with wrong appEUI, removing it", dev.devEui);
+                    dev.timeMs = Now.NowUtcMs();
                     invalids.add(dev);
                 } else {
                     switch (hd.getState()) {
@@ -530,7 +531,7 @@ public class HeliumDeviceService {
                         case OUTOFDCS:
                         case DELETED:
                         case DISABLED:
-                            log.debug("Device " + dev.devEui + " / " + dev.appEui + " can be cleared");
+                            log.debug("Device {} / {} can be cleared - disabled",dev.devEui,dev.appEui);
                             invalids.add(dev);
                             break;
                     }
@@ -559,8 +560,8 @@ public class HeliumDeviceService {
         List<NovaDevice> all = novaService.getAllKnownDevices(routeId);
         if ( all == null ) return missing; // better do nothing that big mistake
 
-        log.debug("searchMissingRouteEuis - Processing route : "+routeId);
-        log.debug("searchMissingRouteEuis - Existing "+all.size()+" euis in the route");
+        log.debug("searchMissingRouteEuis - Processing route : {}", routeId);
+        log.debug("searchMissingRouteEuis - Existing {} euis in the route", all.size());
         HashMap<String,NovaDevice> all_= new HashMap<>();
         for ( NovaDevice n : all ) {
             all_.put((""+n.devEui+n.appEui).toLowerCase(),n);
@@ -580,8 +581,9 @@ public class HeliumDeviceService {
                                 n.devEui= d.getDeviceEui();
                                 n.appEui= d.getApplicationEui();
                                 n.routeId= routeId;
+                                n.timeMs= Now.NowUtcMs();
                                 missing.add(n);
-                                log.debug("Device "+n.devEui+" / "+ n.appEui+" should be added");
+                                log.debug("Device {} / {} should be added", n.devEui, n.appEui);
                             }
                             break;
 
@@ -600,6 +602,7 @@ public class HeliumDeviceService {
                 } else nextPage = false;
             } while (nextPage);
         }
+        if (!missing.isEmpty()) log.info("Found {} devices to add in the route {}", missing.size(), routeId);
         if (commit) novaService.activateDevices(missing);
         prometeusService.addRouteUpdate(start);
         return missing;
@@ -634,7 +637,7 @@ public class HeliumDeviceService {
                         HeliumDevice hdev = heliumDeviceCacheService.getHeliumDevice(devEui,false);
                         if ( hdev != null ) {
                             if ( hdev.getApplicationEui().compareTo(appEui) != 0) {
-                                log.debug("Found an appEui to update : "+devEui +" ("+appEui+")");
+                                log.debug("Found an appEui to update : {} ({})", devEui, appEui);
                                 hdev.setApplicationEui(appEui);
                                 heliumDeviceRepository.save(hdev);
                             }
@@ -643,7 +646,7 @@ public class HeliumDeviceService {
                     pDevices++;
                     if ((Now.NowUtcMs() - lastTrace) > 30_000) {
                         lastTrace = Now.NowUtcMs();
-                        log.info("resyncOnce - Phase 1 - "+pDevices+" / "+cDevices+" devices already processed");
+                        log.info("resyncOnce - Phase 1 - {} / {} devices already processed", pDevices, cDevices);
                     }
                 }
                 if ( allDevices.hasNext() ) {
@@ -651,6 +654,7 @@ public class HeliumDeviceService {
                     nextPage = true;
                 } else nextPage = false;
             } while (nextPage);
+            log.info("resyncOnce - Phase 1 - {} / {} devices processed", pDevices, cDevices);
         }
 
         // Scan all Helium tenants
@@ -668,15 +672,16 @@ public class HeliumDeviceService {
                 pTemplate++;
                 if ((Now.NowUtcMs() - lastTrace) > 30_000) {
                     lastTrace = Now.NowUtcMs();
-                    log.info("resyncOnce - Phase 2 - "+pTemplate+" / "+cTemplate+" templates already processed");
+                    log.info("resyncOnce - Phase 2 - {} / {} tenants already processed", pTemplate, cTemplate);
                 }
             }
             i++;
         } while ( htss.hasNext() );
+        log.info("resyncOnce - Phase 2 - {} / {} tenants processed", pTemplate, cTemplate);
 
         resynced = true;
         novaService.setReadyForSessionRefresh(true);
-        log.info("resyncOnce - processed in " + (Now.NowUtcMs() - start) + "ms");
+        log.info("resyncOnce - processed in {}ms", Now.NowUtcMs() - start);
     }
 
 
@@ -942,21 +947,21 @@ public class HeliumDeviceService {
      *
      */
     public void processTenantDeactivation(String tenantID) {
-        log.debug("Start tenant deactivation for "+tenantID);
+        log.debug("Start tenant deactivation for {}", tenantID);
         long start = Now.NowUtcMs();
 
         // Avoid to process the same tenant many times on high traffic
         DeactivationRequest r = lastDeactivation.get(tenantID);
-        if ( r != null && (start - r.lastRequest) < 10_000 ) {
+        if ( r != null && (start - r.lastRequest) < 120_000 ) {
             // skip this one
-            log.debug("Skip tenant deactivation request for "+tenantID);
+            log.debug("Skip tenant deactivation request for {}", tenantID);
             return;
         }
         if ( r != null ) {
             r.lastRequest = start;
             r.retries++;
             if ( r.retries > 10 ) {
-                log.error("More than 10 trials to deactivate a tenant is not normal for "+tenantID);
+                log.error("More than 10 trials to deactivate a tenant is not normal for {}", tenantID);
             }
         } else {
             r = new DeactivationRequest();
@@ -968,45 +973,55 @@ public class HeliumDeviceService {
 
         ArrayList<NovaDevice> toDeactivate = new ArrayList<>();
         synchronized (this) {
-            List<HeliumDevice> devices = heliumDeviceRepository.findHeliumDeviceByTenantUUID(tenantID);
             HeliumTenantSetup hts = heliumTenantSetupService.getHeliumTenantSetup(tenantID,false);
             if ( hts == null ) {
-                log.error("Found a tenant w/o tenantSTemplate "+tenantID);
+                log.error("Found a tenant w/o tenantSTemplate {}", tenantID);
             }
-            for ( HeliumDevice d : devices ) {
+            Slice<HeliumDevice> allDevices = heliumDeviceRepository.findHeliumDeviceByTenantUUID(tenantID, PageRequest.of(0, 200));
+            boolean nextPage = false;
+            if ( allDevices != null ) {
+                do {
+                    for (HeliumDevice d : allDevices) {
 
-                if (
-                        d.getState() == HeliumDevice.DeviceState.ACTIVE ||
-                        d.getState() == HeliumDevice.DeviceState.INACTIVE ||
-                        d.getState() == HeliumDevice.DeviceState.INSERTED ||
-                        d.getState() == HeliumDevice.DeviceState.OUTOFDCS       // not normal but we have the case the device was still running event if ...
-                ) {
+                        if (
+                                d.getState() == HeliumDevice.DeviceState.ACTIVE ||
+                                        d.getState() == HeliumDevice.DeviceState.INACTIVE ||
+                                        d.getState() == HeliumDevice.DeviceState.INSERTED ||
+                                        d.getState() == HeliumDevice.DeviceState.OUTOFDCS       // not normal but we have the case the device was still running event if ...
+                        ) {
 
-                    d.setState(HeliumDevice.DeviceState.OUTOFDCS);
-                    d.setToUpdate(false);
-                    heliumDeviceRepository.save(d);
+                            d.setState(HeliumDevice.DeviceState.OUTOFDCS);
+                            d.setToUpdate(false);
+                            heliumDeviceRepository.save(d);
 
-                    if ( hts != null ) {
-                        NovaDevice n = new NovaDevice();
-                        n.devEui = d.getDeviceEui();
-                        n.appEui = d.getApplicationEui();
-                        n.routeId = hts.getRouteId();
-                        toDeactivate.add(n);
+                            if (hts != null) {
+                                NovaDevice n = new NovaDevice();
+                                n.devEui = d.getDeviceEui();
+                                n.appEui = d.getApplicationEui();
+                                n.routeId = hts.getRouteId();
+                                n.timeMs = Now.NowUtcMs();
+                                toDeactivate.add(n);
+                            }
+
+                        }
                     }
-
-                }
+                    if (allDevices.hasNext()) {
+                        allDevices = heliumDeviceRepository.findHeliumDeviceByTenantUUID(tenantID, allDevices.nextPageable());
+                        nextPage = true;
+                    } else nextPage = false;
+                } while (nextPage);
             }
         }
         novaService.deactivateDevices(toDeactivate);
         heliumTenantService.commitTenantDeactivation(tenantID);
-        log.info("tenantDeactivation ("+tenantID+")- processed in " + (Now.NowUtcMs() - start) + "ms");
+        log.info("tenantDeactivation ({})- processed in {}ms", tenantID, Now.NowUtcMs() - start);
 
         // clean the deactivation cache
         if ( lastDeactivation.size() > 5 ) {
             ArrayList<String> cleanup = new ArrayList<>();
             for ( DeactivationRequest d : lastDeactivation.values() ) {
-                if ( d.lastRequest < (start - 300_000) ) {
-                    // more than 5 minutes pending
+                if ( d.lastRequest < (start - 600_000) ) {
+                    // more than 10 minutes pending
                     cleanup.add(d.tenantID);
                 }
             }
@@ -1018,76 +1033,85 @@ public class HeliumDeviceService {
     }
 
     public void processTenantReactivation(String tenantID) {
-        log.debug("Start tenant reactivation for "+tenantID);
+        log.debug("Start tenant reactivation for {}", tenantID);
         long start = Now.NowUtcMs();
 
         HeliumTenantSetup hts = heliumTenantSetupService.getHeliumTenantSetup(tenantID,false);
         if ( hts == null ) {
-            log.error("Found a tenant w/o tenantSTemplate "+tenantID);
+            log.error("Found a tenant w/o tenantSTemplate {}", tenantID);
             return;
         }
 
         ArrayList<NovaDevice> toReactivate = new ArrayList<>();
         synchronized (this) {
-            // @todo optimisation by searching only the concerned devices
-            List<HeliumDevice> devices = heliumDeviceRepository.findHeliumDeviceByTenantUUID(tenantID);
-            for ( HeliumDevice d : devices ) {
 
-                if (
-                        d.getState() == HeliumDevice.DeviceState.OUTOFDCS
-                ) {
-                    d.setState(HeliumDevice.DeviceState.INSERTED);
-                    d.setLastActivityInvoiced(start);
-                    d.setLastInactivityInvoiced(start);
-                    d.setToUpdate(true);
-                    d.setLastSeen(start);
-                    heliumDeviceRepository.save(d);
+            Slice<HeliumDevice> allDevices = heliumDeviceRepository.findHeliumDeviceByTenantUUID(tenantID, PageRequest.of(0, 200));
+            boolean nextPage = false;
+            if ( allDevices != null ) {
+                do {
+                    for (HeliumDevice d : allDevices) {
 
-                    NovaDevice n = new NovaDevice();
-                    n.devEui = d.getDeviceEui();
-                    n.appEui = d.getApplicationEui();
-                    n.routeId = hts.getRouteId();
-                    toReactivate.add(n);
+                        if (
+                                d.getState() == HeliumDevice.DeviceState.OUTOFDCS
+                        ) {
+                            d.setState(HeliumDevice.DeviceState.INSERTED);
+                            d.setLastActivityInvoiced(start);
+                            d.setLastInactivityInvoiced(start);
+                            d.setToUpdate(true);
+                            d.setLastSeen(start);
+                            heliumDeviceRepository.save(d);
 
-                }
+                            NovaDevice n = new NovaDevice();
+                            n.devEui = d.getDeviceEui();
+                            n.appEui = d.getApplicationEui();
+                            n.routeId = hts.getRouteId();
+                            n.timeMs = Now.NowUtcMs();
+                            toReactivate.add(n);
+                        }
+                    }
+                    if (allDevices.hasNext()) {
+                        allDevices = heliumDeviceRepository.findHeliumDeviceByTenantUUID(tenantID, allDevices.nextPageable());
+                        nextPage = true;
+                    } else nextPage = false;
+                } while (nextPage);
             }
         }
         novaService.activateDevices(toReactivate);
         heliumTenantService.commitTenantReactivation(tenantID);
-        log.info("tenantReactivation ("+tenantID+")- processed in " + (Now.NowUtcMs() - start) + "ms");
+        log.info("tenantReactivation ({})- processed in {}ms", tenantID, Now.NowUtcMs() - start);
 
     }
 
 
     public void processDeviceDeactivation(HeliumDeviceActDeactItf creds) {
-        log.debug("Start device deactivation for "+creds.getDeviceId());
+        log.debug("Start device deactivation for {}", creds.getDeviceId());
         long start = Now.NowUtcMs();
 
         ArrayList<NovaDevice> toDeactivate = new ArrayList<>();
         HeliumTenantSetup hts = heliumTenantSetupService.getHeliumTenantSetup(creds.getTenantId(),false);
         if ( hts == null ) {
-            log.error("Found a tenant w/o tenantSTemplate "+creds.getTenantId());
+            log.error("Found a tenant w/o tenantSTemplate {}", creds.getTenantId());
             return;
         }
-
 
         NovaDevice n = new NovaDevice();
         n.devEui = creds.getDeviceId();
         n.appEui = creds.getAppEui();
         n.routeId = hts.getRouteId();
+        n.timeMs = Now.NowUtcMs();
         toDeactivate.add(n);
 
         novaService.deactivateDevices(toDeactivate);
     }
 
     public void processDeviceReactivation(HeliumDeviceActDeactItf creds) {
-        log.debug("Start device (re)activation for "+creds.getDeviceId());
+        log.debug("Start device (re)activation for {}", creds.getDeviceId());
         long start = Now.NowUtcMs();
 
         ArrayList<NovaDevice> toReactivate = new ArrayList<>();
         HeliumTenantSetup hts = heliumTenantSetupService.getHeliumTenantSetup(creds.getTenantId(),false);
         if ( hts == null ) {
-            log.error("Found a tenant w/o tenantSTemplate "+creds.getTenantId());
+            log.error("Found a tenant w/o tenantSTemplate {}", creds.getTenantId());
             return;
         }
 
@@ -1095,6 +1119,7 @@ public class HeliumDeviceService {
         n.devEui = creds.getDeviceId();
         n.appEui = creds.getAppEui();
         n.routeId = hts.getRouteId();
+        n.timeMs = Now.NowUtcMs();
         toReactivate.add(n);
 
         novaService.activateDevices(toReactivate);

@@ -35,7 +35,6 @@ import io.grpc.StatusRuntimeException;
 import io.grpc.stub.StreamObserver;
 import org.bouncycastle.crypto.params.Ed25519PrivateKeyParameters;
 import org.bouncycastle.crypto.signers.Ed25519Signer;
-import org.checkerframework.checker.units.qual.A;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -61,7 +60,7 @@ public class NovaService {
     private final Logger log = LoggerFactory.getLogger(this.getClass());
 
     protected static final int SKFS_MAX_COPIES = 0;
-    protected static final int GRPC_NOVA_API_TIMEOUT = 10;  // 10s timeout for GPRC to not be blocking
+    protected static final int GRPC_NOVA_API_TIMEOUT = 20;  // 20s timeout for GPRC to not be blocking but need a certain time for big updates
     @Autowired
     protected DeviceService deviceService;
 
@@ -761,33 +760,36 @@ public class NovaService {
     }
 
     // List of deviceEUI we want the add / remove in the list
-    protected final ArrayList<NovaDevice> delayedEuisRefreshAddition = new ArrayList<>();
-    protected final ArrayList<NovaDevice> delayedEuisRefreshRemoval = new ArrayList<>();
+    protected final HashMap<String,NovaDevice> delayedEuisRefreshAddition = new HashMap<>();
+    protected final HashMap<String,NovaDevice> delayedEuisRefreshRemoval = new HashMap<>();
 
     protected void addDelayedEuisRefreshAddition(NovaDevice dev) {
         if (dev.routeId == null) return;
+        // make sure so we don't have to retest this later
+        dev.devEui = dev.devEui.toLowerCase();
+        dev.appEui = dev.appEui.toLowerCase();
+        if ( dev.timeMs == 0 ) dev.timeMs = Now.NowUtcMs();
         synchronized (delayedEuisRefreshAddition) {
-            boolean found = false;
-            for ( NovaDevice d : this.delayedEuisRefreshAddition ) {
-                if ( d.devEui.compareToIgnoreCase(dev.devEui) == 0 ) { found = true; break; }
-            }
+            boolean found = delayedEuisRefreshAddition.get(dev.devEui.toLowerCase()) != null;
             if ( !found ) {
                 log.debug("To be added {} ({}) {}", dev.devEui, dev.appEui, dev.routeId);
-                this.delayedEuisRefreshAddition.add(dev);
+                this.delayedEuisRefreshAddition.put(dev.devEui.toLowerCase(),dev);
             }
         }
     }
 
     protected void addDelayedEuisRefreshRemoval(NovaDevice dev) {
         if (dev.routeId == null) return;
+        // make sure so we don't have to retest this later
+        dev.devEui = dev.devEui.toLowerCase();
+        dev.appEui = dev.appEui.toLowerCase();
+        if ( dev.timeMs == 0 ) dev.timeMs = Now.NowUtcMs();
+
         synchronized (delayedEuisRefreshRemoval) {
-            boolean found = false;
-            for ( NovaDevice d : this.delayedEuisRefreshRemoval ) {
-                if ( d.devEui.compareToIgnoreCase(dev.devEui) == 0 ) { found = true; break; }
-            }
+            boolean found = delayedEuisRefreshRemoval.get(dev.devEui.toLowerCase()) != null;
             if ( !found ) {
                 log.debug("To be deleted {} ({}) {}", dev.devEui, dev.appEui, dev.routeId);
-                this.delayedEuisRefreshRemoval.add(dev);
+                this.delayedEuisRefreshRemoval.put(dev.devEui.toLowerCase(),dev);
             }
         }
     }
@@ -806,9 +808,9 @@ public class NovaService {
         try {
 
             // First delete the route mark as to be deleted
-            ArrayList<String> routeRemoval = new ArrayList<>();
+            ArrayList<String> routeRemoval;
             synchronized (delayedRouteRemoval) {
-                routeRemoval.addAll(delayedRouteRemoval);
+                routeRemoval = new ArrayList<>(delayedRouteRemoval);
                 this.delayedRouteRemoval.clear();
             }
             for ( String routeId : routeRemoval ) {
@@ -817,47 +819,67 @@ public class NovaService {
                 }
             }
 
-
-            // Compute the real list (priority on removal)
+            // Compute the real Euis list (priority on removal)
             // Add = Add - Remove
             // Remove = Remove
             HashMap<String,ArrayList<NovaDevice>> toRemove = new HashMap<>();
             synchronized (delayedEuisRefreshRemoval) {
-                for ( NovaDevice n : delayedEuisRefreshRemoval ) {
-                    ArrayList<NovaDevice> trh = toRemove.get(n.routeId);
-                    if ( trh == null ) {
-                        trh = new ArrayList<>();
-                        toRemove.put(n.routeId,trh);
-                    }
+
+                // scan the removal list and get the 2000 first elements
+                // (the HPR API refuse around 5000 elements and also requires longer timeout)
+                int inList = 0;
+                ArrayList<String> keys = new ArrayList<>(delayedEuisRefreshRemoval.keySet());
+                for ( String key : keys ) {
+                    NovaDevice n = delayedEuisRefreshRemoval.get(key);
+                    // list devices by routes, create the route entry if not exists
+                    ArrayList<NovaDevice> trh = toRemove.computeIfAbsent(n.routeId, k -> new ArrayList<>());
+                    // add the device in the route entry
                     trh.add(n);
+                    // clear the device from the delayed list
+                    delayedEuisRefreshRemoval.remove(key);
+                    inList++;
+                    if ( inList > 2000 ) break;
                 }
-                this.delayedEuisRefreshRemoval.clear();
+
             }
 
             HashMap<String,ArrayList<NovaDevice>> toAdd = new HashMap<>();
             synchronized (delayedEuisRefreshAddition) {
-                for ( NovaDevice n : delayedEuisRefreshAddition ) {
+
+                // doing the same with the device addition
+                // scan the addition list and get the 2000 first elements
+                int inList = 0;
+                ArrayList<String> keys = new ArrayList<>(delayedEuisRefreshAddition.keySet());
+                for ( String key : keys) {
+                    NovaDevice n = delayedEuisRefreshAddition.get(key);
                     boolean found = false;
-                    ArrayList<NovaDevice> _toremove = toRemove.get(n.routeId);
-                    if ( _toremove != null ) {
-                        for (NovaDevice r : _toremove) {
-                            if (n.devEui.compareToIgnoreCase(r.devEui) == 0
-                                    && n.appEui.compareToIgnoreCase(r.appEui) == 0) {
-                                found = true;
-                                break;
+
+                    // search in the pending removal list
+                    NovaDevice ns = delayedEuisRefreshRemoval.get(n.devEui);
+                    if ( ns != null && ns.appEui.compareTo(n.appEui) == 0  /* && ns.timeMs > n.timeMs */ ) {
+                        found = true;
+                    } else {
+                        ArrayList<NovaDevice> _toremove = toRemove.get(n.routeId);
+                        if (_toremove != null) {
+                            for (NovaDevice r : _toremove) {
+                                if (n.devEui.compareTo(r.devEui) == 0 && n.appEui.compareTo(r.appEui) == 0 /* && r.timeMs > n.timeMs */) {
+                                    found = true;
+                                    break;
+                                }
                             }
                         }
                     }
+                    // when the device is to be removed, don't add it when removed after being created
+                    // that would be the best but until making further test, best is to delete and not create.
                     if (!found) {
-                        ArrayList<NovaDevice> _toAdd = toAdd.get(n.routeId);
-                        if ( _toAdd == null ) {
-                            _toAdd = new ArrayList<>();
-                            toAdd.put(n.routeId,_toAdd);
-                        }
+                        ArrayList<NovaDevice> _toAdd = toAdd.computeIfAbsent(n.routeId, k -> new ArrayList<>());
                         _toAdd.add(n);
+                        inList++;
                     }
+
+                    delayedEuisRefreshAddition.remove(key);
+                    if ( inList > 2000 ) break;
                 }
-                this.delayedEuisRefreshAddition.clear();
             }
 
             if (!toRemove.isEmpty()) {
@@ -874,7 +896,7 @@ public class NovaService {
             if (!toAdd.isEmpty()) {
                 for ( String routeId: toAdd.keySet() ) {
                     ArrayList<NovaDevice> _toAdd = toAdd.get(routeId);
-                    if (!grpcAddRemoveInRoutes(_toAdd, routeId,true)) {
+                    if ( ! grpcAddRemoveInRoutes(_toAdd, routeId,true)) {
                         // restore the removal for next pass
                         for (NovaDevice d : _toAdd) {
                             this.addDelayedEuisRefreshAddition(d);
@@ -887,7 +909,7 @@ public class NovaService {
             this.runningJobs--;
             this.flushDelayedEuisUpdateRunning = false;
         }
-        log.debug("End Running flushDelayedEuisUpdate - duration " + (Now.NowUtcMs() - start) + "ms");
+        log.debug("End Running flushDelayedEuisUpdate - duration {}ms", Now.NowUtcMs() - start);
 
     }
 
@@ -1630,6 +1652,7 @@ public class NovaService {
     /**
      * Update an existing route by adding or removing EUIs in this route
      * boolean to select add (true) or removal (false)
+     * @TODO - Apparently when the number of updates is or XXk device is silently fails...
      * @param devices
      * @param add
      */
