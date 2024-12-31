@@ -24,13 +24,12 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import eu.heliumiot.console.ConsoleConfig;
 import eu.heliumiot.console.jpa.db.*;
-import eu.heliumiot.console.jpa.repository.ApplicationRepository;
-import eu.heliumiot.console.jpa.repository.DeviceRepository;
-import eu.heliumiot.console.jpa.repository.HeliumDeviceRepository;
-import eu.heliumiot.console.jpa.repository.HeliumTenantSetupRepository;
+import eu.heliumiot.console.jpa.repository.*;
 import eu.heliumiot.console.mqtt.MqttSender;
 import eu.heliumiot.console.mqtt.api.HeliumDeviceActDeactItf;
 import eu.heliumiot.console.mqtt.api.HeliumDeviceStatItf;
+import eu.heliumiot.console.service.interfaces.LogEntry;
+import eu.heliumiot.console.service.interfaces.LogLevel;
 import fr.ingeniousthings.tools.HexaConverters;
 import fr.ingeniousthings.tools.Now;
 import io.chirpstack.internal.DeviceSession;
@@ -53,6 +52,9 @@ import java.util.UUID;
 
 @Service
 public class HeliumDeviceService {
+
+    @Autowired
+    private LogService logService;
 
     private final Logger log = LoggerFactory.getLogger(this.getClass());
 
@@ -89,6 +91,8 @@ public class HeliumDeviceService {
     @Autowired
     protected HeliumTenantSetupService heliumTenantSetupService;
 
+    @Autowired
+    protected TenantRepository tenantRepository;
 
     @Autowired
     protected HeliumDeviceStatService heliumDeviceStatService;
@@ -751,7 +755,7 @@ public class HeliumDeviceService {
                                 // count the number of periods since last calculation
                                 long inactivityPeriod = (now - hdev.getLastInactivityInvoiced());
                                 long inactivityPeriods = inactivityPeriod / hts.getInactivityBillingPeriodMs();
-                                log.debug("Found " + inactivityPeriods + " periods of inactivity for device " + hdev.getDeviceEui());
+                                log.debug("Found {} periods of inactivity for device {}", inactivityPeriods, hdev.getDeviceEui());
                                 if (inactivityPeriods > 0) {
                                     hdev.setLastInactivityInvoiced(hdev.getLastInactivityInvoiced() + inactivityPeriods * hts.getInactivityBillingPeriodMs());
                                     hdev.setLastActivityInvoiced(hdev.getLastActivityInvoiced() + inactivityPeriods * hts.getInactivityBillingPeriodMs());
@@ -776,7 +780,7 @@ public class HeliumDeviceService {
                                 // active device within the period of time
                                 long activityPeriod = (now - hdev.getLastActivityInvoiced());
                                 long activityPeriods = activityPeriod / hts.getActivityBillingPeriodMs();
-                                log.debug("Found " + activityPeriods + " periods of activity for device " + hdev.getDeviceEui());
+                                log.debug("Found {} periods of activity for device {}", activityPeriods, hdev.getDeviceEui());
                                 if (activityPeriods > 0) {
                                     hdev.setLastActivityInvoiced(hdev.getLastActivityInvoiced() + activityPeriods * hts.getActivityBillingPeriodMs());
                                     hdev.setLastInactivityInvoiced(lastSeenDevice);
@@ -902,7 +906,7 @@ public class HeliumDeviceService {
                                     sumDcs += e.getPunishmentDc();
                                 }
                                 if (sumDcs > hts.getLimitDcRatePerDevice()) {
-                                    log.debug("deviceActivityJob - deactivate device (limitDCs) " + hdev.getDeviceEui() + " consumed "+sumDcs);
+                                    log.debug("deviceActivityJob - deactivate device (limitDCs) {} consumed {}", hdev.getDeviceEui(), sumDcs);
                                     hdev.setState(HeliumDevice.DeviceState.DEACTIVATED);
                                     hdev.setToUpdate(false);
                                     // Call Nova Api to deactivate the device asynchronously
@@ -924,7 +928,7 @@ public class HeliumDeviceService {
         } finally {
             this.runningJobs--;
         }
-        log.debug("deviceActivityJob - processed in " + (Now.NowUtcMs() - start) + "ms");
+        log.debug("deviceActivityJob - processed in {}ms", Now.NowUtcMs() - start);
 
     }
 
@@ -971,12 +975,23 @@ public class HeliumDeviceService {
             lastDeactivation.put(tenantID,r);
         }
 
+        String tName = "Unknown";
+        HeliumTenantSetup hts = heliumTenantSetupService.getHeliumTenantSetup(tenantID,false);
+        if ( hts == null ) {
+            log.error("Found a tenant w/o tenantSTemplate {}", tenantID);
+        } else {
+            Tenant t = tenantRepository.findOneTenantById(UUID.fromString(hts.getTenantUUID()));
+            if ( t != null ) tName = t.getName();
+        }
         ArrayList<NovaDevice> toDeactivate = new ArrayList<>();
+
+        logService.log(new LogEntry(
+                LogLevel.INFO,
+                "TENANT",
+                "Tenant deactivation request for "+tName+" ("+tenantID+")",
+                Now.NowUtcMs()
+        ));
         synchronized (this) {
-            HeliumTenantSetup hts = heliumTenantSetupService.getHeliumTenantSetup(tenantID,false);
-            if ( hts == null ) {
-                log.error("Found a tenant w/o tenantSTemplate {}", tenantID);
-            }
             Slice<HeliumDevice> allDevices = heliumDeviceRepository.findHeliumDeviceByTenantUUID(tenantID, PageRequest.of(0, 200));
             boolean nextPage = false;
             if ( allDevices != null ) {
@@ -1036,13 +1051,23 @@ public class HeliumDeviceService {
         log.debug("Start tenant reactivation for {}", tenantID);
         long start = Now.NowUtcMs();
 
+        String tName = "Unknown";
         HeliumTenantSetup hts = heliumTenantSetupService.getHeliumTenantSetup(tenantID,false);
         if ( hts == null ) {
             log.error("Found a tenant w/o tenantSTemplate {}", tenantID);
             return;
+        } else {
+            Tenant t = tenantRepository.findOneTenantById(UUID.fromString(hts.getTenantUUID()));
+            if ( t != null ) tName = t.getName();
         }
-
         ArrayList<NovaDevice> toReactivate = new ArrayList<>();
+
+        logService.log(new LogEntry(
+                LogLevel.INFO,
+                "TENANT",
+                "Tenant reactivation request for "+tName+" ("+tenantID+")",
+                Now.NowUtcMs()
+        ));
         synchronized (this) {
 
             Slice<HeliumDevice> allDevices = heliumDeviceRepository.findHeliumDeviceByTenantUUID(tenantID, PageRequest.of(0, 200));
