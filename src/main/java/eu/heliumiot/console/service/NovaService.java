@@ -27,6 +27,8 @@ import eu.heliumiot.console.jpa.db.*;
 import eu.heliumiot.console.jpa.repository.HeliumDeviceRepository;
 import eu.heliumiot.console.jpa.repository.HeliumTenantSetupRepository;
 import eu.heliumiot.console.jpa.repository.TenantRepository;
+import eu.heliumiot.console.service.interfaces.LogEntry;
+import eu.heliumiot.console.service.interfaces.LogLevel;
 import fr.ingeniousthings.tools.*;
 import io.chirpstack.internal.DeviceSession;
 import io.grpc.ManagedChannel;
@@ -58,9 +60,11 @@ import java.util.concurrent.atomic.AtomicInteger;
 public class NovaService {
 
     private final Logger log = LoggerFactory.getLogger(this.getClass());
+    @Autowired
+    protected LogService logService;
 
     protected static final int SKFS_MAX_COPIES = 0;
-    protected static final int GRPC_NOVA_API_TIMEOUT = 20;  // 20s timeout for GPRC to not be blocking but need a certain time for big updates
+    protected static final int GRPC_NOVA_API_TIMEOUT = 30;  // 30s timeout for GPRC to not be blocking but need a certain time for big updates
     @Autowired
     protected DeviceService deviceService;
 
@@ -219,7 +223,7 @@ public class NovaService {
                                         inRouteSkfs.remove(ntwSEncKey);
                                     } else {
                                         // some error case
-                                        log.info(">> Valid session exists for dead device: "+hd.getDeviceEui()+" addr: "+sAddr+" nwks: "+ntwSEncKey);
+                                        log.info(">> Valid session exists for dead device: {} addr: {} nwks: {}", hd.getDeviceEui(), sAddr, ntwSEncKey);
                                     }
                                 } else {
                                     // this device does not have a session registered, normal when inactive
@@ -252,7 +256,9 @@ public class NovaService {
                     }
                     if ( clear && !skfToRem.isEmpty()) {
                         log.info(">> clear the extra skfs");
-                        grpcUpdateSessions(new LinkedList<>(), skfToRem, hts.getRouteId());
+                        if ( !grpcUpdateSessions(new LinkedList<>(), skfToRem, hts.getRouteId()) ) {
+                            log.error("verifySKFsForAGivenAddr - Failed to remove extra skfs");
+                        }
                     }
                 }
                 _j++;
@@ -560,14 +566,15 @@ public class NovaService {
                 su.devAddr = old.getDevaddr();
                 su.session = old.getSessionKey();
                 skfToRem.add(su);
-                // update the previous entry in cache
-                r.skfsByEui.remove(eui);
-            } else {
+            }
+            /*
+            else {
                 // debug
                 for ( String _eui : r.skfsByEui.keySet() ) {
                     log.debug("> {}", _eui);
                 }
             }
+            */
 
             LinkedList<SkfUpdate> skfToAdd = new LinkedList<>();
             SkfUpdate su = new SkfUpdate();
@@ -575,15 +582,23 @@ public class NovaService {
             su.session = ntwSEncKey;
             skfToAdd.add(su);
             log.debug("Key {} to be added", ntwSEncKey);
-            grpcUpdateSessions(skfToAdd,skfToRem,routeId);
+            if ( ! grpcUpdateSessions(skfToAdd,skfToRem,routeId) ) {
+                log.warn("Filed to update skfs for {}", eui);
+            } else {
+                if ( old != null ) {
+                    // update the previous entry in cache
+                    r.skfsByEui.remove(eui);
+                }
+                // add the new entry in cache
+                skf_v1 n = skf_v1.newBuilder()
+                        .setDevaddr(iDevAddr)
+                        .setRouteId(routeId)
+                        .setSessionKey(ntwSEncKey)
+                        .setMaxCopies(SKFS_MAX_COPIES)
+                        .build();
+                r.skfsByEui.put(eui,n);
+            }
 
-            skf_v1 n = skf_v1.newBuilder()
-                    .setDevaddr(iDevAddr)
-                    .setRouteId(routeId)
-                    .setSessionKey(ntwSEncKey)
-                    .setMaxCopies(SKFS_MAX_COPIES)
-                    .build();
-            r.skfsByEui.put(eui,n);
         } else {
             this.refreshOneRouteSkf(routeId);
         }
@@ -729,7 +744,9 @@ public class NovaService {
                 log.warn("The route {} contains redundant del skf for devAddr {} key {}", routeId, Integer.toHexString(s.getDevaddr()), s.getSessionKey());
             }
         }
-        grpcUpdateSessions(skfToAdd,skfToRem,routeId);
+        if ( ! grpcUpdateSessions(skfToAdd,skfToRem,routeId) ) {
+            log.error("The route {} failed to update skfs", routeId);
+        }
 
         // fix the route with non empty skf missing
         if ( ! hasNonEmpty && ! consoleConfig.isHeliumRouteRejectEmptySKF() ) {
@@ -1622,7 +1639,7 @@ public class NovaService {
             return response;
         } catch ( StatusRuntimeException x ) {
             prometeusService.addHeliumTotalError();
-            log.warn("Nova Backend not reachable");
+            log.warn("GPRC list route - Nova Backend not reachable");
             return null;
         } finally {
             if ( channel != null ) channel.shutdown();
@@ -1777,7 +1794,7 @@ public class NovaService {
                 add.add(skf);
             }
         }
-        this.grpcUpdateSessions(add,del,routeId);
+        grpcUpdateSessions(add,del,routeId);
     }
 
     public boolean isRandomSkf(int addr, String session, String routeId) {
@@ -1861,7 +1878,7 @@ public class NovaService {
             return ret;
         } catch ( StatusRuntimeException x ) {
             prometeusService.addHeliumTotalError();
-            log.warn("Nova Backend not reachable");
+            log.warn("GPRC skf list - Nova Backend not reachable");
             return null;
         } finally {
             if ( channel != null ) channel.shutdown();
@@ -1885,6 +1902,7 @@ public class NovaService {
         if ( ! this.grpcInitOk ) return false;
         long start = Now.NowUtcMs();
         log.debug("GRPC Session Update Add:{} Del:{} for {}", toAddSession.size(), toRemoveSession.size(), routeId);
+        int toProcess = toAddSession.size() + toRemoveSession.size();
 
         ManagedChannel channel = ManagedChannelBuilder.forAddress(
                 consoleConfig.getHeliumGrpcServer(),
@@ -1948,37 +1966,64 @@ public class NovaService {
                     }
                 }
                 // execute
-                if (!updates.isEmpty()) {
-                    route_skf_update_req_v1 requestToSign = route_skf_update_req_v1.newBuilder()
-                            .setRouteId(routeId)
-                            .addAllUpdates(updates)
-                            .setTimestamp(now)
-                            .setSigner(this.owner)
-                            .clearSignature()
-                            .build();
+                int retry = 0;
+                boolean success = false;
+                while ( !success && retry < 3 ) {
+                    try {
+                        if (!updates.isEmpty()) {
+                            route_skf_update_req_v1 requestToSign = route_skf_update_req_v1.newBuilder()
+                                    .setRouteId(routeId)
+                                    .addAllUpdates(updates)
+                                    .setTimestamp(now)
+                                    .setSigner(this.owner)
+                                    .clearSignature()
+                                    .build();
 
-                    byte[] requestToSignContent = requestToSign.toByteArray();
-                    this.signer.update(requestToSignContent, 0, requestToSignContent.length);
-                    byte[] signature = signer.generateSignature();
+                            byte[] requestToSignContent = requestToSign.toByteArray();
+                            this.signer.update(requestToSignContent, 0, requestToSignContent.length);
+                            byte[] signature = signer.generateSignature();
 
-                    route_skf_update_req_v1 request = route_skf_update_req_v1.newBuilder()
-                            .setRouteId(routeId)
-                            .addAllUpdates(updates)
-                            .setTimestamp(now)
-                            .setSigner(this.owner)
-                            .setSignature(ByteString.copyFrom(signature))
-                            .build();
+                            route_skf_update_req_v1 request = route_skf_update_req_v1.newBuilder()
+                                    .setRouteId(routeId)
+                                    .addAllUpdates(updates)
+                                    .setTimestamp(now)
+                                    .setSigner(this.owner)
+                                    .setSignature(ByteString.copyFrom(signature))
+                                    .build();
 
-                    route_skf_update_res_v1 response = stub.updateSkfs(request);
+                            route_skf_update_res_v1 response = stub.updateSkfs(request);
+                        }
+                        toProcess -= actions;
+                        actions = 0;
+                        success = true;
+                    } catch (StatusRuntimeException x) {
+                        prometeusService.addHeliumTotalError();
+                        log.warn("Skf Update Nova Backend not reachable {}", x.getMessage());
+
+                        // rebuild a new channel to make sure
+                        if ( channel != null ) channel.shutdown();
+                        channel = ManagedChannelBuilder.forAddress(
+                                consoleConfig.getHeliumGrpcServer(),
+                                consoleConfig.getHeliumGrpcPort()
+                        ).usePlaintext().build();
+                        stub = routeGrpc.newBlockingStub(channel);
+                        stub = stub.withDeadlineAfter(GRPC_NOVA_API_TIMEOUT, TimeUnit.SECONDS);
+                        retry++;
+                    }
                 }
-                actions = 0;
+                if ( retry >= 3 ) {
+                    logService.log(new LogEntry(
+                            LogLevel.ERROR,
+                            "HPRCONFIG",
+                            "Skf Update failed, ("+toProcess+") sessions may not be up-to-date.",
+                            Now.NowUtcMs()
+                    ));
+                    log.error("Skf Update failed after 3 retries, missing updates ({})", toProcess);
+                    return false;
+                }
             }
             log.debug("GPRC skf update duration {}ms", Now.NowUtcMs() - start);
             return true;
-        } catch ( StatusRuntimeException x ) {
-            prometeusService.addHeliumTotalError();
-            log.warn("Skf Update Nova Backend not reachable {}", x.getMessage());
-            return false;
         } finally {
             if ( channel != null ) channel.shutdown();
             prometeusService.addHeliumApiTotalTimeMs(start);
