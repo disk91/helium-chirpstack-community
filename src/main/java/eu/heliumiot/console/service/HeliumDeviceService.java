@@ -30,8 +30,10 @@ import eu.heliumiot.console.mqtt.api.HeliumDeviceActDeactItf;
 import eu.heliumiot.console.mqtt.api.HeliumDeviceStatItf;
 import eu.heliumiot.console.service.interfaces.LogEntry;
 import eu.heliumiot.console.service.interfaces.LogLevel;
+import fr.ingeniousthings.tools.DateConverters;
 import fr.ingeniousthings.tools.HexaConverters;
 import fr.ingeniousthings.tools.Now;
+import fr.ingeniousthings.tools.Tools;
 import io.chirpstack.internal.DeviceSession;
 import jakarta.annotation.PostConstruct;
 import org.slf4j.Logger;
@@ -122,7 +124,7 @@ public class HeliumDeviceService {
 
     // return true when the service has stopped all the running jobs
     public boolean hasStopped() {
-        return (this.serviceEnable == false && this.runningJobs == 0);
+        return (!this.serviceEnable && this.runningJobs == 0);
     }
 
 
@@ -144,7 +146,13 @@ public class HeliumDeviceService {
                     break;
             }
         } else {
-            log.warn("Got a device activation request for not existing device or just setup, is this case happen too often ? ("+devEui+")");
+            // test if the device exist and it's age
+            Device d = deviceRepository.findOneDeviceByDevEui(Tools.EuiStringToByteArray(devEui));
+            if ( d == null ) {
+                log.error("Got a device activation request for not existing device ({})", devEui);
+            } else if ( d.getCreatedAt().getTime() > (Now.NowUtcMs() - 60_000) ) {
+                log.warn("Got a device activation request for an existing device ({}) w/o helium dev created ? ({})", DateConverters.msToStringDate(d.getCreatedAt().getTime()), devEui);
+            } // normal behavior for new devices ...
         }
     }
 
@@ -310,7 +318,7 @@ public class HeliumDeviceService {
                 if (a != null) {
                     hdev.setTenantUUID(a.getTenantId().toString());
                 } else {
-                    log.error("Device creation failed : the application " + dev.getApplicationId() + " does not exists");
+                    log.error("Device creation failed : the application {} does not exists", dev.getApplicationId());
                     continue;
                 }
 
@@ -331,7 +339,7 @@ public class HeliumDeviceService {
                 this.reportDeviceActivationOnMqtt(hdev);
 
                 prometeusService.addDeviceCreation();
-                log.debug("scanNewDevicesJob - Add " + hdev.getDeviceEui());
+                log.debug("scanNewDevicesJob - Add {}", hdev.getDeviceEui());
             }
             if (lastCreated > 0) {
                 p.setLongValue(lastCreated - 1); // 1 ms before to make sure
@@ -351,10 +359,10 @@ public class HeliumDeviceService {
                     String appEui = udev.getAppEui();
                     if ( appEui != null && hdev.getApplicationEui().compareToIgnoreCase(appEui) != 0 ) {
                         // appEUI updated
-                        log.debug("Device " + udev.getName() + " have a new appEUI " + appEui);
+                        log.debug("Device {} have a new appEUI {}", udev.getName(), appEui);
                         HeliumTenantSetup ts = heliumTenantSetupService.getHeliumTenantSetup(hdev.getTenantUUID(),false);
                         if (ts == null) {
-                            log.error("Find a device with invalid tenantUUID "+hdev.getDeviceEui()+ " / "+hdev.getTenantUUID());
+                            log.error("Find a device with invalid tenantUUID {} / {}", hdev.getDeviceEui(), hdev.getTenantUUID());
                             continue;
                         }
 
@@ -405,7 +413,7 @@ public class HeliumDeviceService {
         } finally {
             this.runningJobs--;
         }
-        log.debug("End Running scanNewDevicesJob - duration "+(Now.NowUtcMs()-start)+"ms");
+        log.debug("End Running scanNewDevicesJob - duration {}ms", Now.NowUtcMs() - start);
     }
 
     /**
@@ -445,7 +453,7 @@ public class HeliumDeviceService {
                     toRemove.add(c);
                     // save this
                     heliumDeviceRepository.save(hdev);
-                    log.debug("scanDeletedDevicesJob - Del " + hdev.getDeviceEui());
+                    log.debug("scanDeletedDevicesJob - Del {}", hdev.getDeviceEui());
                     prometeusService.addDeviceDeletion();
                 }
 
@@ -468,14 +476,14 @@ public class HeliumDeviceService {
                             toRemove.add(c);
                             // save this
                             heliumDeviceRepository.save(hdev);
-                            log.debug("scanDeletedDevicesJob - Disable " + hdev.getDeviceEui());
+                            log.debug("scanDeletedDevicesJob - Disable {}", hdev.getDeviceEui());
                             break;
 
                         case DELETED:
                         case OUTOFDCS:
                         case DEACTIVATED:
                         case DISABLED:
-                            log.debug("scanDeletedDevicesJob - a device in a non active status has been disabled "+hdev.getDeviceEui());
+                            log.debug("scanDeletedDevicesJob - a device in a non active status has been disabled {}", hdev.getDeviceEui());
                             break;
                     }
                 }
@@ -489,7 +497,7 @@ public class HeliumDeviceService {
         } finally {
             this.runningJobs--;
         }
-        log.debug("End Running scanDeletedDevicesJob - duration "+(Now.NowUtcMs()-start)+"ms");
+        log.debug("End Running scanDeletedDevicesJob - duration {}ms", Now.NowUtcMs() - start);
     }
 
     // ===========================================================

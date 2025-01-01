@@ -131,10 +131,7 @@ public abstract class ObjectCache<K, T extends ClonnableObject<T>> {
 
     // Set the max live of an element, will be regularly checked
     protected long expirationMs;
-    /**
-     * Init the cache system
-     * @param maxSize
-     */
+
     public ObjectCache(String name, int maxSize) {
         this(name,maxSize,-1);
     }
@@ -172,8 +169,8 @@ public abstract class ObjectCache<K, T extends ClonnableObject<T>> {
     /**
      * This class defines what to do when an object is modified and removed from cache
      * Non modified objects are not concerned.
-     * @param obj
-     * @param key
+     * @param obj -
+     * @param key -
      */
     public abstract void onCacheRemoval(K key,T obj, boolean batch, boolean last);
 
@@ -221,13 +218,13 @@ public abstract class ObjectCache<K, T extends ClonnableObject<T>> {
                     // average situation... when above 2ms, better not use the cache !
                     // forget the 100 first request as the creation can be really long
                     // and get bad stats
-                    double avg = (this.total100CacheTime / (total100CacheTry - 100));
+                    double avg = ((double) this.total100CacheTime / (total100CacheTry - 100));
                     if ( avg > 2_000_000) {
                         this.tooLong = true;
                     }
 
                     if (this.tooLong || avg > 500_000) {
-                        log.info(this.name + " avg cache tm : " + (this.total100CacheTime / (total100CacheTry - 100)) + "ns");
+                        log.info("{} avg cache tm : {}ns", this.name, this.total100CacheTime / (total100CacheTry - 100));
                     }
 
                     if ( avg < 50_000 ) this.tooLong = false;
@@ -239,16 +236,16 @@ public abstract class ObjectCache<K, T extends ClonnableObject<T>> {
             }
         }
 
-        log.debug("get duration "+(Now.NanoTime()-start)+"ns");
+        log.debug("get duration {}ns", Now.NanoTime() - start);
         return (c!=null)?c.getObj():null;
     }
 
     /**
      * Reward compatibility, add a new object in cache without forcing update
      * as a default behavior
-     * @param obj
-     * @param key
-     * @return
+     * @param obj -
+     * @param key -
+     * @return -
      */
     public synchronized boolean put(T obj, K key) {
         return put(obj,key,false);
@@ -258,10 +255,10 @@ public abstract class ObjectCache<K, T extends ClonnableObject<T>> {
     /**
      * Add an element into the cache if we still have some place in cache,
      * call cache cleaner if not anyMore place
-     * @param obj
-     * @param key
+     * @param obj -
+     * @param key -
      * @param forceUpdate - when true, a new object is marked at to updated
-     * @return
+     * @return -
      */
     public synchronized boolean put(T obj, K key, boolean forceUpdate) {
         long start = Now.NanoTime();
@@ -308,13 +305,13 @@ public abstract class ObjectCache<K, T extends ClonnableObject<T>> {
         }
         this.totalCacheTry++;
         this.totalCacheTime+=(Now.NanoTime()-start);
-        log.debug("put duration "+(Now.NanoTime()-start)+"ns");
+        log.debug("put duration {}ns", Now.NanoTime() - start);
         return ret;
     }
 
     /**
      * Remove a element from the cache
-     * @param key
+     * @param key - key to remove
      * @param callAction - true when you want to call the flush action on removal if modified
      */
     public void remove(K key, boolean callAction) {
@@ -352,7 +349,7 @@ public abstract class ObjectCache<K, T extends ClonnableObject<T>> {
             long cachedPeriod = now - c.getLastAccessTime();
             if ( cachedPeriod > Now.ONE_HOUR ) c.setScore(-1000);
             else if ( cachedPeriod > 15*Now.ONE_MINUTE ) c.setScore(c.getScore() - 500);
-            else if ( cachedPeriod >  1*Now.ONE_MINUTE ) c.setScore((int)(c.getScore() - 30*(cachedPeriod/Now.ONE_MINUTE)));
+            else if ( cachedPeriod >    Now.ONE_MINUTE) c.setScore((int)(c.getScore() - 30*(cachedPeriod/Now.ONE_MINUTE)));
             else c.setScore((int)(c.getScore() - 5*(cachedPeriod/1000)));
 
             if ( c.getScore() >= -900 ){
@@ -397,13 +394,13 @@ public abstract class ObjectCache<K, T extends ClonnableObject<T>> {
 
         // Check cacheSize
         if ( this.cacheSize != realCount ) {
-            log.warn("Cache "+this.name+" does not have the right count of elements: "+this.cacheSize+" vs real "+realCount);
+            log.warn("Cache {} does not have the right count of elements: {} vs real {}", this.name, this.cacheSize, realCount);
             this.cacheSize = realCount;
         }
 
         // Update stats
         this.lastGCDurationMs = (Now.NanoTime() - start)/1_000_000;
-        log.info("End of cache clean, removed: "+keysToBeRemoved.size()+" updated: "+keysToBeUpdated.size()+" in: "+this.lastGCDurationMs+"ms");
+        log.debug("End of cache clean, removed: {} updated: {} in: {}ms", keysToBeRemoved.size(), keysToBeUpdated.size(), this.lastGCDurationMs);
 
         this.inClean = false;
     }
@@ -432,7 +429,7 @@ public abstract class ObjectCache<K, T extends ClonnableObject<T>> {
 
             if ( (Now.NowUtcMs() - lastLog) > 10_000 ) {
                 lastLog = Now.NowUtcMs();
-                log.info("CacheObject - flush ("+this.name+") "+((100*progress)/this.cacheSize)+"% total "+progress+" over 10s");
+                log.info("CacheObject - flush ({}) {}% total {} over 10s", this.name, (100 * progress) / this.cacheSize, progress);
             }
 
         }
@@ -501,7 +498,7 @@ public abstract class ObjectCache<K, T extends ClonnableObject<T>> {
                     c.setUpdated(false);
                     if ((Now.NowUtcMs() - lastLog) > 10_000) {
                         lastLog = Now.NowUtcMs();
-                        log.info("CacheObject - commit " + ((100 * progress) / this.cacheSize) + "% total " + toUpdate);
+                        log.info("CacheObject - commit {}% total {}", (100 * progress) / this.cacheSize, toUpdate);
                     }
                 }
             }
@@ -522,16 +519,16 @@ public abstract class ObjectCache<K, T extends ClonnableObject<T>> {
             total++;
         }
 
-        log.info("---------- Cache log (" + this.name + ") -------------");
-        log.info("-- Size    " + this.cacheUsage() + "% "+ this.cacheSize + " / " + this.maxCacheSize);
-        log.info("-- Updated " + toUpdate + " - unsaved: "+unSaved+" / " + total+ " objects");
-        log.info("-- Miss    " + ((totalCacheTry>0)?Math.floor(100.0 * this.cacheMissStat / this.totalCacheTry):"NA") + "% " + this.cacheMissStat + " / " + this.totalCacheTry);
-        log.info("-- Avg Tm  " + ((totalCacheTry>0)?Math.floor(this.totalCacheTime / (double)this.totalCacheTry):"NA") + "ns average");
+        log.info("---------- Cache log ({}) -------------", this.name);
+        log.info("-- Size    {}% {} / {}", this.cacheUsage(), this.cacheSize, this.maxCacheSize);
+        log.info("-- Updated {} - unsaved: {} / {} objects", toUpdate, unSaved, total);
+        log.info("-- Miss    {}% {} / {}", (totalCacheTry > 0) ? Math.floor(100.0 * this.cacheMissStat / this.totalCacheTry) : "NA", this.cacheMissStat, this.totalCacheTry);
+        log.info("-- Avg Tm  {}ns average", (totalCacheTry > 0) ? Math.floor(this.totalCacheTime / (double) this.totalCacheTry) : "NA");
         if (this.lastGCMs > 0) {
             if ( this.lastGCDurationMs > 1000 ) {
-                log.info("-- GC      " + (Now.NowUtcMs() - this.lastGCMs) / (60_000) + "m ago, duration " + this.lastGCDurationMs/1000 + "s");
+                log.info("-- GC      {}m ago, duration {}s", (Now.NowUtcMs() - this.lastGCMs) / (60_000), this.lastGCDurationMs / 1000);
             } else {
-                log.info("-- GC      " + (Now.NowUtcMs() - this.lastGCMs) / (60_000) + "m ago, duration " + this.lastGCDurationMs + "ms");
+                log.info("-- GC      {}m ago, duration {}ms", (Now.NowUtcMs() - this.lastGCMs) / (60_000), this.lastGCDurationMs);
             }
         } else {
             log.info("-- GC      NEVER" );

@@ -747,13 +747,13 @@ public class HeliumTenantService {
     // processing of the reactivation has been missed
     @Scheduled(fixedRateString = "${helium.tenant.activation.scanPeriod}", initialDelay = 40_000)
     protected void backgroundTenantReactivation() {
-        log.info("running backgroundTenantReactivation");
+        log.debug("running backgroundTenantReactivation");
         List<HeliumTenant> ts = heliumTenantRepository.findHeliumTenantByState(HeliumTenant.TenantState.DEACTIVATED);
         for ( HeliumTenant t : ts ) {
             HeliumTenantSetup s = heliumTenantSetupService.getHeliumTenantSetup(t.getTenantUUID(),false);
             if ( s != null && s.getDcBalanceStop() < t.getDcBalance() ) {
                 // we have a candidate to be restored
-                log.warn("Tenant {} was deactivated with valid DC Balance {} / {}", t.getTenantUUID(), t.getDcBalance(), s.getDcBalanceStop());
+                log.warn("Tenant {} was deactivated and now have a valid DC Balance {} / {}", t.getTenantUUID(), t.getDcBalance(), s.getDcBalanceStop());
                 HeliumTenantActDeactItf i = new HeliumTenantActDeactItf();
                 i.setActivateTenant(true);
                 i.setDeactivateTenant(false);
