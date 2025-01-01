@@ -51,6 +51,8 @@ public class HeliumDeviceStatHistory {
     private int joinDc;
     @Column(name = "join_accept_dc", columnDefinition = "int4")
     private int joinAcceptDc;
+    @Column(name = "punishment_dc", columnDefinition = "int4")
+    private int punishmentDc;
 
     // ---
 
@@ -189,5 +191,13 @@ public class HeliumDeviceStatHistory {
 
     public void setJoinAcceptDc(int joinAcceptDc) {
         this.joinAcceptDc = joinAcceptDc;
+    }
+
+    public int getPunishmentDc() {
+        return punishmentDc;
+    }
+
+    public void setPunishmentDc(int punishmentDc) {
+        this.punishmentDc = punishmentDc;
     }
 }
