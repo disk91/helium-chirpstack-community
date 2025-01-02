@@ -676,6 +676,7 @@ public class HeliumDeviceService {
         int i = 0;
         long cTemplate = heliumTenantSetupRepository.count();
         long pTemplate = 0;
+        long template = 0;
         Page<HeliumTenantSetup> htss = null;
         do {
             htss = heliumTenantSetupRepository.findAllByTemplate(false,PageRequest.of(i,50));
@@ -683,16 +684,16 @@ public class HeliumDeviceService {
                 if ( hts.getRouteId() != null && !hts.isTemplate() ) {
                     this.clearInvalidRouteEuis(hts.getRouteId(), true);
                     this.searchMissingRouteEuis(hts.getTenantUUID(),hts.getRouteId(),true);
-                }
+                } else template++;
                 pTemplate++;
                 if ((Now.NowUtcMs() - lastTrace) > 30_000) {
                     lastTrace = Now.NowUtcMs();
-                    log.info("resyncOnce - Phase 2 - {} / {} tenants already processed", pTemplate, cTemplate);
+                    log.info("resyncOnce - Phase 2 - {} / {} ({}) tenants already processed", pTemplate, (cTemplate-template), cTemplate);
                 }
             }
             i++;
         } while ( htss.hasNext() );
-        log.info("resyncOnce - Phase 2 - {} / {} tenants processed", pTemplate, cTemplate);
+        log.info("resyncOnce - Phase 2 - {} / {} ({}) tenants processed", pTemplate, (cTemplate-template), cTemplate);
 
         resynced = true;
         novaService.setReadyForSessionRefresh(true);
@@ -1014,13 +1015,10 @@ public class HeliumDeviceService {
                 Now.NowUtcMs()
         ));
         int deactivated = 0;
-        int garbaged = 0;
         synchronized (this) {
-            Slice<HeliumDevice> allDevices = heliumDeviceRepository.findHeliumDeviceByTenantUUID(tenantID, PageRequest.of(0, 200, Sort.by("id")));
+            List<HeliumDevice> devices = heliumDeviceRepository.findHeliumDeviceByTenantUuid(tenantID,HeliumDeviceRepository.FIRST_DEVICE_EUI,200);
             boolean nextPage = false;
-            boolean step1 = true;
-            if ( allDevices != null ) {
-                List<HeliumDevice> devices = allDevices.getContent();
+            if ( devices != null ) {
                 do {
                     for (HeliumDevice d : devices) {
 
@@ -1042,7 +1040,6 @@ public class HeliumDeviceService {
                                 n.routeId = hts.getRouteId();
                                 n.timeMs = Now.NowUtcMs();
                                 deactivated++;
-                                if ( !step1 ) garbaged++;
 
                                 // request for async EUI deactivation
                                 novaService.addDelayedEuisRefreshRemoval(n);
@@ -1050,20 +1047,15 @@ public class HeliumDeviceService {
 
                         }
                     }
-                    if (step1 && allDevices.hasNext()) {
-                        allDevices = heliumDeviceRepository.findHeliumDeviceByTenantUUID(tenantID, allDevices.nextPageable());
-                        devices = allDevices.getContent();
+                    if ( devices.size() == 200 ) {
+                        devices = heliumDeviceRepository.findHeliumDeviceByTenantUuid(tenantID, devices.getLast().getDeviceEui(),200);
                         nextPage = true;
                     } else {
-                        step1 = false;
-                        devices = heliumDeviceRepository.findHeliumDeviceToDeactivate(tenantID, 200);
-                        if( devices == null || devices.isEmpty() ) {
-                            nextPage = false;
-                        }
+                        nextPage = false;
                     }
-                } while (nextPage);
+                } while (nextPage && devices != null);
             }
-            log.info("tenantDeactivation ({})- deactivating {} ({}) devices", tenantID,deactivated, garbaged);
+            log.info("tenantDeactivation ({})- deactivating {} devices", tenantID,deactivated);
             // session deactivation is made per tenant, no need to call it for each device, one is enough
             novaService.addDelayedRouteRefresh(tenantID);
         }
@@ -1102,14 +1094,12 @@ public class HeliumDeviceService {
 
             // Paging is a good solution but at the end, we still have not proceeded devices...
             // So at the end, we need to check if some devices are still in the OUTOFDCS state
-            Slice<HeliumDevice> allDevices = heliumDeviceRepository.findHeliumDeviceByTenantUUID(tenantID, PageRequest.of(0, 200, Sort.by("id")));
+            List<HeliumDevice> devices = heliumDeviceRepository.findHeliumDeviceByTenantUuid(tenantID,HeliumDeviceRepository.FIRST_DEVICE_EUI,200);
             boolean nextPage = false;
-            boolean step1 = true;
             int reactivated = 0;
-            int garbaged = 0;
-            if ( allDevices != null ) {
+            if ( devices != null ) {
                 do {
-                    for (HeliumDevice d : allDevices.getContent()) {
+                    for (HeliumDevice d : devices) {
 
                         if (
                                 d.getState() == HeliumDevice.DeviceState.OUTOFDCS
@@ -1127,23 +1117,18 @@ public class HeliumDeviceService {
                             n.routeId = hts.getRouteId();
                             n.timeMs = Now.NowUtcMs();
                             reactivated++;
-                            if ( !step1 ) garbaged++;
                             novaService.addDelayedEuisRefreshAddition(n);
                         }
                     }
-                    if (step1 && allDevices.hasNext()) {
-                        allDevices = heliumDeviceRepository.findHeliumDeviceByTenantUUID(tenantID, allDevices.nextPageable());
+                    if ( devices.size() == 200 ) {
+                        devices = heliumDeviceRepository.findHeliumDeviceByTenantUuid(tenantID, devices.getLast().getDeviceEui(),200);
                         nextPage = true;
                     } else {
-                        step1 = false;
-                        // Unclear but after the global process, we still have some devices to process
-                        // this is a kind of garbage collection ...
-                        allDevices = heliumDeviceRepository.findHeliumDeviceByTenantUUIDAndState(tenantID, HeliumDevice.DeviceState.OUTOFDCS, PageRequest.of(0, 200));
-                        nextPage = (allDevices != null);
+                        nextPage = false;
                     }
-                } while (nextPage);
+                } while (nextPage && devices != null);
             }
-            log.info("tenantReactivation ({})- activating {}({}) devices", tenantID,reactivated,garbaged);
+            log.info("tenantReactivation ({})- activating {} devices", tenantID,reactivated);
             // session deactivation is made per tenant, no need to call it for each device, one is enough
             novaService.addDelayedRouteRefresh(tenantID);
         }

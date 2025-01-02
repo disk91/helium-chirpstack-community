@@ -664,66 +664,68 @@ public class NovaService {
         }
         // get associated devices
         int processed = 0;
-        Slice<HeliumDevice> devices = heliumDeviceRepository.findHeliumDeviceByTenantUUID(hts.getTenantUUID(), PageRequest.of(0, 500, Sort.by("id")));
+        List<HeliumDevice> devices = heliumDeviceRepository.findHeliumDeviceByTenantUuid(hts.getTenantUUID(), HeliumDeviceRepository.FIRST_DEVICE_EUI,200);
         boolean quit = false;
-        do {
-            for ( HeliumDevice hd : devices.getContent() ) {
-                processed++;
-                switch (hd.getState()) {
-                    case INSERTED:
-                    case ACTIVE:
-                    case INACTIVE:
-                        DeviceSession s = deviceService.getDeviceSession(hd.getDeviceUUID());
-                        if ( s == null ) {
-                            // no session yet for that device (just inserted)
-                            log.debug("refreshOneRouteSkf - session not ready for {}", hd.getDeviceEui());
-                            continue;
-                        }
-                        String ntwSEncKey = HexaConverters.byteToHexString(s.getNwkSEncKey().toByteArray());
-                        //log.debug("### Ntwks Key "+ntwSEncKey);
-                        String devaddr = HexaConverters.byteToHexString(s.getDevAddr().toByteArray());
-                        // trace to identify all device for a given devaddr
-                        //if ( devaddr.compareToIgnoreCase("480009b1") == 0 ) {
-                        //    log.info("### route: "+routeId+" dev: "+hd.getDeviceEui()+" devaddr: 0x"+devaddr);
-                        // }
-                        int iDevAddr = Stuff.hexStrToInt(devaddr);
-                        boolean keep = false;
-                        for (skf_v1 skf : inRouteSkfs) {
-                            if (skf.getDevaddr() == iDevAddr && skf.getSessionKey().compareToIgnoreCase(ntwSEncKey) == 0) {
-                                // found
-                                toKep.add(skf);
-                                r.skfsByEui.put(hd.getDeviceEui().toLowerCase(),skf);
-                                keep = true;
-                                break;
+        if ( devices != null ) {
+            do {
+                for (HeliumDevice hd : devices) {
+                    processed++;
+                    switch (hd.getState()) {
+                        case INSERTED:
+                        case ACTIVE:
+                        case INACTIVE:
+                            DeviceSession s = deviceService.getDeviceSession(hd.getDeviceUUID());
+                            if (s == null) {
+                                // no session yet for that device (just inserted)
+                                log.debug("refreshOneRouteSkf - session not ready for {}", hd.getDeviceEui());
+                                continue;
                             }
-                        }
-                        if (!keep) {
-                            // missing entry
-                            skf_v1 sa = skf_v1.newBuilder()
-                                    .setDevaddr(iDevAddr)
-                                    .setSessionKey(ntwSEncKey)
-                                    .setRouteId(routeId)
-                                    .setMaxCopies(SKFS_MAX_COPIES)
-                                    .build();
-                            toAdd.add(sa);
-                            r.skfsByEui.put(hd.getDeviceEui().toLowerCase(),sa);
-                        }
-                        break;
-                    default:
-                    case DEACTIVATED:
-                    case OUTOFDCS:
-                    case DELETED:
-                    case DISABLED:
-                        log.debug("refreshOneRouteSkf - {} not added due to state {}", hd.getDeviceEui(), hd.getState());
-                        break;
+                            String ntwSEncKey = HexaConverters.byteToHexString(s.getNwkSEncKey().toByteArray());
+                            //log.debug("### Ntwks Key "+ntwSEncKey);
+                            String devaddr = HexaConverters.byteToHexString(s.getDevAddr().toByteArray());
+                            // trace to identify all device for a given devaddr
+                            //if ( devaddr.compareToIgnoreCase("480009b1") == 0 ) {
+                            //    log.info("### route: "+routeId+" dev: "+hd.getDeviceEui()+" devaddr: 0x"+devaddr);
+                            // }
+                            int iDevAddr = Stuff.hexStrToInt(devaddr);
+                            boolean keep = false;
+                            for (skf_v1 skf : inRouteSkfs) {
+                                if (skf.getDevaddr() == iDevAddr && skf.getSessionKey().compareToIgnoreCase(ntwSEncKey) == 0) {
+                                    // found
+                                    toKep.add(skf);
+                                    r.skfsByEui.put(hd.getDeviceEui().toLowerCase(), skf);
+                                    keep = true;
+                                    break;
+                                }
+                            }
+                            if (!keep) {
+                                // missing entry
+                                skf_v1 sa = skf_v1.newBuilder()
+                                        .setDevaddr(iDevAddr)
+                                        .setSessionKey(ntwSEncKey)
+                                        .setRouteId(routeId)
+                                        .setMaxCopies(SKFS_MAX_COPIES)
+                                        .build();
+                                toAdd.add(sa);
+                                r.skfsByEui.put(hd.getDeviceEui().toLowerCase(), sa);
+                            }
+                            break;
+                        default:
+                        case DEACTIVATED:
+                        case OUTOFDCS:
+                        case DELETED:
+                        case DISABLED:
+                            log.debug("refreshOneRouteSkf - {} not added due to state {}", hd.getDeviceEui(), hd.getState());
+                            break;
+                    }
                 }
-            }
-            if ( devices.hasNext() ) {
-                devices = heliumDeviceRepository.findHeliumDeviceByTenantUUID(hts.getTenantUUID(), devices.nextPageable());
-            } else {
-                quit = true;
-            }
-        } while ( devices != null && !quit );
+                if (devices.size() == 200) {
+                    devices = heliumDeviceRepository.findHeliumDeviceByTenantUuid(hts.getTenantUUID(), devices.getLast().getDeviceEui(), 200);
+                } else {
+                    quit = true;
+                }
+            } while (devices != null && !quit);
+        }
 
         log.info("refreshOneRouteSkf - scan route {} exists {} processed {} devices",inRouteSkfs.size(), routeId, processed);
 

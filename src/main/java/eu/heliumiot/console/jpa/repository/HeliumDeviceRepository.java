@@ -33,6 +33,8 @@ import java.util.UUID;
 @Repository
 public interface HeliumDeviceRepository extends CrudRepository<HeliumDevice, UUID> {
 
+    public static final String FIRST_DEVICE_EUI = "FFFFFFFFFFFFFFFF";
+
     public HeliumDevice findOneHeliumDeviceByDeviceEui(String deviceId);
 
     @Query(value = "SELECT helium_devices.* FROM helium_devices LEFT JOIN device ON (device.dev_eui = helium_devices.deviceuuid) WHERE device.dev_eui is null AND helium_devices.state <> 5", nativeQuery = true)
@@ -53,19 +55,27 @@ public interface HeliumDeviceRepository extends CrudRepository<HeliumDevice, UUI
             String tenantUUID
     );
 
+
     public Slice<HeliumDevice> findHeliumDeviceByTenantUUID(
             String tenantUUID,
             Pageable pageable
     );
 
-    public Slice<HeliumDevice> findHeliumDeviceByTenantUUIDAndState(
+
+    // Apparently the use of Slice does not allow to get all devices, sometimes you get more,
+    // sometimes you get less... so let's review the way to get a page based on sort ; it's efficient enough on large dataset here
+    @Query(value= "SELECT * FROM helium_devices " +
+            "WHERE tenantuuid = ?1 AND device_eui < ?2 ORDER BY device_eui DESC LIMIT ?3" +
+            " LIMIT ?2", nativeQuery = true)
+    public List<HeliumDevice> findHeliumDeviceByTenantUuid(
             String tenantUUID,
-            HeliumDevice.DeviceState state,
-            Pageable pageable
+            String deviceEuiStart, // first is 'FFFFFFFFFFFFFFFF', next page use the last deviceEui of the previous page
+            int limit
     );
 
+
     @Query(value= "SELECT * FROM helium_devices " +
-            "WHERE tenantuuid = ?1 AND ( helium_devices.state < 3 OR helium_devices.state == 4 )" +
+            "WHERE tenantuuid = ?1 AND ( helium_devices.state < 3 OR helium_devices.state = 4 )" +
             " LIMIT ?2", nativeQuery = true)
     public List<HeliumDevice> findHeliumDeviceToDeactivate(
             String tenantUUID,
