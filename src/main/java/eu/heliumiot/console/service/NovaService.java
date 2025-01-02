@@ -43,7 +43,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Slice;
-import org.springframework.data.domain.Sort;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
@@ -998,7 +997,7 @@ public class NovaService {
 
     protected static class RegionSupported {
         public String regionString;
-        public region regionValue;
+        public Region.region regionValue;
         public int port;
     }
 
@@ -1119,32 +1118,32 @@ public class NovaService {
                     //##                    CD900_1A,RU864,EU868_A,EU868_B,EU868_C,EU868_D,EU868_E,EU868_F,AU915_SB1,AU915_SB2,
                     //##                    AS923_1A,AS923_1C,AS923_1D,AS923_1E,AS923_1F
                     switch (regionData[0]) {
-                        case "US915": r.regionValue = region.US915; break;
-                        case "EU868": r.regionValue = region.EU868; break;
-                        case "CN470": r.regionValue = region.CN470; break;
-                        case "AU915": r.regionValue = region.AU915; break;
-                        case "AS923_1": r.regionValue = region.AS923_1; break;
-                        case "KR920": r.regionValue = region.KR920; break;
-                        case "IN865": r.regionValue = region.IN865; break;
-                        case "AS923_2": r.regionValue = region.AS923_2; break;
-                        case "AS923_3": r.regionValue = region.AS923_3; break;
-                        case "AS923_4": r.regionValue = region.AS923_4; break;
-                        case "AS923_1B": r.regionValue = region.AS923_1B; break;
-                        case "CD900_1A": r.regionValue = region.CD900_1A; break;
-                        case "RU864": r.regionValue = region.RU864; break;
-                        case "EU868_A": r.regionValue = region.EU868_A; break;
-                        case "EU868_B": r.regionValue = region.EU868_B; break;
-                        case "EU868_C": r.regionValue = region.EU868_C; break;
-                        case "EU868_D": r.regionValue = region.EU868_D; break;
-                        case "EU868_E": r.regionValue = region.EU868_E; break;
-                        case "EU868_F": r.regionValue = region.EU868_F; break;
-                        case "AU915_SB1": r.regionValue = region.AU915_SB1; break;
-                        case "AU915_SB2": r.regionValue = region.AU915_SB2; break;
-                        case "AS923_1A": r.regionValue = region.AS923_1A; break;
-                        case "AS923_1C": r.regionValue = region.AS923_1C; break;
-                        case "AS923_1D": r.regionValue = region.AS923_1D; break;
-                        case "AS923_1E": r.regionValue = region.AS923_1E; break;
-                        case "AS923_1F": r.regionValue = region.AS923_1F; break;
+                        case "US915": r.regionValue = Region.region.US915; break;
+                        case "EU868": r.regionValue = Region.region.EU868; break;
+                        case "CN470": r.regionValue = Region.region.CN470; break;
+                        case "AU915": r.regionValue = Region.region.AU915; break;
+                        case "AS923_1": r.regionValue = Region.region.AS923_1; break;
+                        case "KR920": r.regionValue = Region.region.KR920; break;
+                        case "IN865": r.regionValue = Region.region.IN865; break;
+                        case "AS923_2": r.regionValue = Region.region.AS923_2; break;
+                        case "AS923_3": r.regionValue = Region.region.AS923_3; break;
+                        case "AS923_4": r.regionValue = Region.region.AS923_4; break;
+                        case "AS923_1B": r.regionValue = Region.region.AS923_1B; break;
+                        case "CD900_1A": r.regionValue = Region.region.CD900_1A; break;
+                        case "RU864": r.regionValue = Region.region.RU864; break;
+                        case "EU868_A": r.regionValue = Region.region.EU868_A; break;
+                        case "EU868_B": r.regionValue = Region.region.EU868_B; break;
+                        case "EU868_C": r.regionValue = Region.region.EU868_C; break;
+                        case "EU868_D": r.regionValue = Region.region.EU868_D; break;
+                        case "EU868_E": r.regionValue = Region.region.EU868_E; break;
+                        case "EU868_F": r.regionValue = Region.region.EU868_F; break;
+                        case "AU915_SB1": r.regionValue = Region.region.AU915_SB1; break;
+                        case "AU915_SB2": r.regionValue = Region.region.AU915_SB2; break;
+                        case "AS923_1A": r.regionValue = Region.region.AS923_1A; break;
+                        case "AS923_1C": r.regionValue = Region.region.AS923_1C; break;
+                        case "AS923_1D": r.regionValue = Region.region.AS923_1D; break;
+                        case "AS923_1E": r.regionValue = Region.region.AS923_1E; break;
+                        case "AS923_1F": r.regionValue = Region.region.AS923_1F; break;
                         default:
                             log.error("Unsupported Region "+r.regionString);
                             r.port = 0;
