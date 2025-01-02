@@ -65,8 +65,7 @@ public interface HeliumDeviceRepository extends CrudRepository<HeliumDevice, UUI
     // Apparently the use of Slice does not allow to get all devices, sometimes you get more,
     // sometimes you get less... so let's review the way to get a page based on sort ; it's efficient enough on large dataset here
     @Query(value= "SELECT * FROM helium_devices " +
-            "WHERE tenantuuid = ?1 AND device_eui < ?2 ORDER BY device_eui DESC LIMIT ?3" +
-            " LIMIT ?2", nativeQuery = true)
+            "WHERE tenantuuid = ?1 AND device_eui < ?2 ORDER BY device_eui DESC LIMIT ?3", nativeQuery = true)
     public List<HeliumDevice> findHeliumDeviceByTenantUuid(
             String tenantUUID,
             String deviceEuiStart, // first is 'FFFFFFFFFFFFFFFF', next page use the last deviceEui of the previous page
