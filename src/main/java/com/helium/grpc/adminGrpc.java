@@ -4,40 +4,37 @@ import static io.grpc.MethodDescriptor.generateFullMethodName;
 
 /**
  */
-@jakarta.annotation.Generated(
-    value = "by gRPC proto compiler (version 1.53.0)",
-    comments = "Source: service/iot_config.proto")
 @io.grpc.stub.annotations.GrpcGenerated
 public final class adminGrpc {
 
   private adminGrpc() {}
 
-  public static final String SERVICE_NAME = "helium.iot_config.admin";
+  public static final java.lang.String SERVICE_NAME = "helium.iot_config.admin";
 
   // Static method descriptors that strictly reflect the proto.
-  private static volatile io.grpc.MethodDescriptor<admin_add_key_req_v1,
-      admin_key_res_v1> getAddKeyMethod;
+  private static volatile io.grpc.MethodDescriptor<com.helium.grpc.admin_add_key_req_v1,
+      com.helium.grpc.admin_key_res_v1> getAddKeyMethod;
 
   @io.grpc.stub.annotations.RpcMethod(
       fullMethodName = SERVICE_NAME + '/' + "add_key",
-      requestType = admin_add_key_req_v1.class,
-      responseType = admin_key_res_v1.class,
+      requestType = com.helium.grpc.admin_add_key_req_v1.class,
+      responseType = com.helium.grpc.admin_key_res_v1.class,
       methodType = io.grpc.MethodDescriptor.MethodType.UNARY)
-  public static io.grpc.MethodDescriptor<admin_add_key_req_v1,
-      admin_key_res_v1> getAddKeyMethod() {
-    io.grpc.MethodDescriptor<admin_add_key_req_v1, admin_key_res_v1> getAddKeyMethod;
+  public static io.grpc.MethodDescriptor<com.helium.grpc.admin_add_key_req_v1,
+      com.helium.grpc.admin_key_res_v1> getAddKeyMethod() {
+    io.grpc.MethodDescriptor<com.helium.grpc.admin_add_key_req_v1, com.helium.grpc.admin_key_res_v1> getAddKeyMethod;
     if ((getAddKeyMethod = adminGrpc.getAddKeyMethod) == null) {
       synchronized (adminGrpc.class) {
         if ((getAddKeyMethod = adminGrpc.getAddKeyMethod) == null) {
           adminGrpc.getAddKeyMethod = getAddKeyMethod =
-              io.grpc.MethodDescriptor.<admin_add_key_req_v1, admin_key_res_v1>newBuilder()
+              io.grpc.MethodDescriptor.<com.helium.grpc.admin_add_key_req_v1, com.helium.grpc.admin_key_res_v1>newBuilder()
               .setType(io.grpc.MethodDescriptor.MethodType.UNARY)
               .setFullMethodName(generateFullMethodName(SERVICE_NAME, "add_key"))
               .setSampledToLocalTracing(true)
               .setRequestMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
-                  admin_add_key_req_v1.getDefaultInstance()))
+                  com.helium.grpc.admin_add_key_req_v1.getDefaultInstance()))
               .setResponseMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
-                  admin_key_res_v1.getDefaultInstance()))
+                  com.helium.grpc.admin_key_res_v1.getDefaultInstance()))
               .setSchemaDescriptor(new adminMethodDescriptorSupplier("add_key"))
               .build();
         }
@@ -46,29 +43,29 @@ public final class adminGrpc {
     return getAddKeyMethod;
   }
 
-  private static volatile io.grpc.MethodDescriptor<admin_remove_key_req_v1,
-      admin_key_res_v1> getRemoveKeyMethod;
+  private static volatile io.grpc.MethodDescriptor<com.helium.grpc.admin_remove_key_req_v1,
+      com.helium.grpc.admin_key_res_v1> getRemoveKeyMethod;
 
   @io.grpc.stub.annotations.RpcMethod(
       fullMethodName = SERVICE_NAME + '/' + "remove_key",
-      requestType = admin_remove_key_req_v1.class,
-      responseType = admin_key_res_v1.class,
+      requestType = com.helium.grpc.admin_remove_key_req_v1.class,
+      responseType = com.helium.grpc.admin_key_res_v1.class,
       methodType = io.grpc.MethodDescriptor.MethodType.UNARY)
-  public static io.grpc.MethodDescriptor<admin_remove_key_req_v1,
-      admin_key_res_v1> getRemoveKeyMethod() {
-    io.grpc.MethodDescriptor<admin_remove_key_req_v1, admin_key_res_v1> getRemoveKeyMethod;
+  public static io.grpc.MethodDescriptor<com.helium.grpc.admin_remove_key_req_v1,
+      com.helium.grpc.admin_key_res_v1> getRemoveKeyMethod() {
+    io.grpc.MethodDescriptor<com.helium.grpc.admin_remove_key_req_v1, com.helium.grpc.admin_key_res_v1> getRemoveKeyMethod;
     if ((getRemoveKeyMethod = adminGrpc.getRemoveKeyMethod) == null) {
       synchronized (adminGrpc.class) {
         if ((getRemoveKeyMethod = adminGrpc.getRemoveKeyMethod) == null) {
           adminGrpc.getRemoveKeyMethod = getRemoveKeyMethod =
-              io.grpc.MethodDescriptor.<admin_remove_key_req_v1, admin_key_res_v1>newBuilder()
+              io.grpc.MethodDescriptor.<com.helium.grpc.admin_remove_key_req_v1, com.helium.grpc.admin_key_res_v1>newBuilder()
               .setType(io.grpc.MethodDescriptor.MethodType.UNARY)
               .setFullMethodName(generateFullMethodName(SERVICE_NAME, "remove_key"))
               .setSampledToLocalTracing(true)
               .setRequestMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
-                  admin_remove_key_req_v1.getDefaultInstance()))
+                  com.helium.grpc.admin_remove_key_req_v1.getDefaultInstance()))
               .setResponseMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
-                  admin_key_res_v1.getDefaultInstance()))
+                  com.helium.grpc.admin_key_res_v1.getDefaultInstance()))
               .setSchemaDescriptor(new adminMethodDescriptorSupplier("remove_key"))
               .build();
         }
@@ -77,29 +74,29 @@ public final class adminGrpc {
     return getRemoveKeyMethod;
   }
 
-  private static volatile io.grpc.MethodDescriptor<admin_load_region_req_v1,
-      admin_load_region_res_v1> getLoadRegionMethod;
+  private static volatile io.grpc.MethodDescriptor<com.helium.grpc.admin_load_region_req_v1,
+      com.helium.grpc.admin_load_region_res_v1> getLoadRegionMethod;
 
   @io.grpc.stub.annotations.RpcMethod(
       fullMethodName = SERVICE_NAME + '/' + "load_region",
-      requestType = admin_load_region_req_v1.class,
-      responseType = admin_load_region_res_v1.class,
+      requestType = com.helium.grpc.admin_load_region_req_v1.class,
+      responseType = com.helium.grpc.admin_load_region_res_v1.class,
       methodType = io.grpc.MethodDescriptor.MethodType.UNARY)
-  public static io.grpc.MethodDescriptor<admin_load_region_req_v1,
-      admin_load_region_res_v1> getLoadRegionMethod() {
-    io.grpc.MethodDescriptor<admin_load_region_req_v1, admin_load_region_res_v1> getLoadRegionMethod;
+  public static io.grpc.MethodDescriptor<com.helium.grpc.admin_load_region_req_v1,
+      com.helium.grpc.admin_load_region_res_v1> getLoadRegionMethod() {
+    io.grpc.MethodDescriptor<com.helium.grpc.admin_load_region_req_v1, com.helium.grpc.admin_load_region_res_v1> getLoadRegionMethod;
     if ((getLoadRegionMethod = adminGrpc.getLoadRegionMethod) == null) {
       synchronized (adminGrpc.class) {
         if ((getLoadRegionMethod = adminGrpc.getLoadRegionMethod) == null) {
           adminGrpc.getLoadRegionMethod = getLoadRegionMethod =
-              io.grpc.MethodDescriptor.<admin_load_region_req_v1, admin_load_region_res_v1>newBuilder()
+              io.grpc.MethodDescriptor.<com.helium.grpc.admin_load_region_req_v1, com.helium.grpc.admin_load_region_res_v1>newBuilder()
               .setType(io.grpc.MethodDescriptor.MethodType.UNARY)
               .setFullMethodName(generateFullMethodName(SERVICE_NAME, "load_region"))
               .setSampledToLocalTracing(true)
               .setRequestMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
-                  admin_load_region_req_v1.getDefaultInstance()))
+                  com.helium.grpc.admin_load_region_req_v1.getDefaultInstance()))
               .setResponseMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
-                  admin_load_region_res_v1.getDefaultInstance()))
+                  com.helium.grpc.admin_load_region_res_v1.getDefaultInstance()))
               .setSchemaDescriptor(new adminMethodDescriptorSupplier("load_region"))
               .build();
         }
@@ -108,29 +105,29 @@ public final class adminGrpc {
     return getLoadRegionMethod;
   }
 
-  private static volatile io.grpc.MethodDescriptor<region_params_req_v1,
-      region_params_res_v1> getRegionParamsMethod;
+  private static volatile io.grpc.MethodDescriptor<com.helium.grpc.region_params_req_v1,
+      com.helium.grpc.region_params_res_v1> getRegionParamsMethod;
 
   @io.grpc.stub.annotations.RpcMethod(
       fullMethodName = SERVICE_NAME + '/' + "region_params",
-      requestType = region_params_req_v1.class,
-      responseType = region_params_res_v1.class,
+      requestType = com.helium.grpc.region_params_req_v1.class,
+      responseType = com.helium.grpc.region_params_res_v1.class,
       methodType = io.grpc.MethodDescriptor.MethodType.UNARY)
-  public static io.grpc.MethodDescriptor<region_params_req_v1,
-      region_params_res_v1> getRegionParamsMethod() {
-    io.grpc.MethodDescriptor<region_params_req_v1, region_params_res_v1> getRegionParamsMethod;
+  public static io.grpc.MethodDescriptor<com.helium.grpc.region_params_req_v1,
+      com.helium.grpc.region_params_res_v1> getRegionParamsMethod() {
+    io.grpc.MethodDescriptor<com.helium.grpc.region_params_req_v1, com.helium.grpc.region_params_res_v1> getRegionParamsMethod;
     if ((getRegionParamsMethod = adminGrpc.getRegionParamsMethod) == null) {
       synchronized (adminGrpc.class) {
         if ((getRegionParamsMethod = adminGrpc.getRegionParamsMethod) == null) {
           adminGrpc.getRegionParamsMethod = getRegionParamsMethod =
-              io.grpc.MethodDescriptor.<region_params_req_v1, region_params_res_v1>newBuilder()
+              io.grpc.MethodDescriptor.<com.helium.grpc.region_params_req_v1, com.helium.grpc.region_params_res_v1>newBuilder()
               .setType(io.grpc.MethodDescriptor.MethodType.UNARY)
               .setFullMethodName(generateFullMethodName(SERVICE_NAME, "region_params"))
               .setSampledToLocalTracing(true)
               .setRequestMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
-                  region_params_req_v1.getDefaultInstance()))
+                  com.helium.grpc.region_params_req_v1.getDefaultInstance()))
               .setResponseMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
-                  region_params_res_v1.getDefaultInstance()))
+                  com.helium.grpc.region_params_res_v1.getDefaultInstance()))
               .setSchemaDescriptor(new adminMethodDescriptorSupplier("region_params"))
               .build();
         }
@@ -145,7 +142,7 @@ public final class adminGrpc {
   public static adminStub newStub(io.grpc.Channel channel) {
     io.grpc.stub.AbstractStub.StubFactory<adminStub> factory =
       new io.grpc.stub.AbstractStub.StubFactory<adminStub>() {
-        @Override
+        @java.lang.Override
         public adminStub newStub(io.grpc.Channel channel, io.grpc.CallOptions callOptions) {
           return new adminStub(channel, callOptions);
         }
@@ -160,7 +157,7 @@ public final class adminGrpc {
       io.grpc.Channel channel) {
     io.grpc.stub.AbstractStub.StubFactory<adminBlockingStub> factory =
       new io.grpc.stub.AbstractStub.StubFactory<adminBlockingStub>() {
-        @Override
+        @java.lang.Override
         public adminBlockingStub newStub(io.grpc.Channel channel, io.grpc.CallOptions callOptions) {
           return new adminBlockingStub(channel, callOptions);
         }
@@ -175,7 +172,7 @@ public final class adminGrpc {
       io.grpc.Channel channel) {
     io.grpc.stub.AbstractStub.StubFactory<adminFutureStub> factory =
       new io.grpc.stub.AbstractStub.StubFactory<adminFutureStub>() {
-        @Override
+        @java.lang.Override
         public adminFutureStub newStub(io.grpc.Channel channel, io.grpc.CallOptions callOptions) {
           return new adminFutureStub(channel, callOptions);
         }
@@ -185,15 +182,15 @@ public final class adminGrpc {
 
   /**
    */
-  public static abstract class adminImplBase implements io.grpc.BindableService {
+  public interface AsyncService {
 
     /**
      * <pre>
      * Authorize a public key for validating trusted rpcs
      * </pre>
      */
-    public void addKey(admin_add_key_req_v1 request,
-                       io.grpc.stub.StreamObserver<admin_key_res_v1> responseObserver) {
+    default void addKey(com.helium.grpc.admin_add_key_req_v1 request,
+        io.grpc.stub.StreamObserver<com.helium.grpc.admin_key_res_v1> responseObserver) {
       io.grpc.stub.ServerCalls.asyncUnimplementedUnaryCall(getAddKeyMethod(), responseObserver);
     }
 
@@ -202,8 +199,8 @@ public final class adminGrpc {
      * Deauthorize a public key for validating trusted rpcs
      * </pre>
      */
-    public void removeKey(admin_remove_key_req_v1 request,
-                          io.grpc.stub.StreamObserver<admin_key_res_v1> responseObserver) {
+    default void removeKey(com.helium.grpc.admin_remove_key_req_v1 request,
+        io.grpc.stub.StreamObserver<com.helium.grpc.admin_key_res_v1> responseObserver) {
       io.grpc.stub.ServerCalls.asyncUnimplementedUnaryCall(getRemoveKeyMethod(), responseObserver);
     }
 
@@ -213,8 +210,8 @@ public final class adminGrpc {
      * admin only)
      * </pre>
      */
-    public void loadRegion(admin_load_region_req_v1 request,
-                           io.grpc.stub.StreamObserver<admin_load_region_res_v1> responseObserver) {
+    default void loadRegion(com.helium.grpc.admin_load_region_req_v1 request,
+        io.grpc.stub.StreamObserver<com.helium.grpc.admin_load_region_res_v1> responseObserver) {
       io.grpc.stub.ServerCalls.asyncUnimplementedUnaryCall(getLoadRegionMethod(), responseObserver);
     }
 
@@ -223,54 +220,34 @@ public final class adminGrpc {
      * Return the region params for the specified region
      * </pre>
      */
-    public void regionParams(region_params_req_v1 request,
-                             io.grpc.stub.StreamObserver<region_params_res_v1> responseObserver) {
+    default void regionParams(com.helium.grpc.region_params_req_v1 request,
+        io.grpc.stub.StreamObserver<com.helium.grpc.region_params_res_v1> responseObserver) {
       io.grpc.stub.ServerCalls.asyncUnimplementedUnaryCall(getRegionParamsMethod(), responseObserver);
-    }
-
-    @Override public final io.grpc.ServerServiceDefinition bindService() {
-      return io.grpc.ServerServiceDefinition.builder(getServiceDescriptor())
-          .addMethod(
-            getAddKeyMethod(),
-            io.grpc.stub.ServerCalls.asyncUnaryCall(
-              new MethodHandlers<
-                admin_add_key_req_v1,
-                admin_key_res_v1>(
-                  this, METHODID_ADD_KEY)))
-          .addMethod(
-            getRemoveKeyMethod(),
-            io.grpc.stub.ServerCalls.asyncUnaryCall(
-              new MethodHandlers<
-                admin_remove_key_req_v1,
-                admin_key_res_v1>(
-                  this, METHODID_REMOVE_KEY)))
-          .addMethod(
-            getLoadRegionMethod(),
-            io.grpc.stub.ServerCalls.asyncUnaryCall(
-              new MethodHandlers<
-                admin_load_region_req_v1,
-                admin_load_region_res_v1>(
-                  this, METHODID_LOAD_REGION)))
-          .addMethod(
-            getRegionParamsMethod(),
-            io.grpc.stub.ServerCalls.asyncUnaryCall(
-              new MethodHandlers<
-                region_params_req_v1,
-                region_params_res_v1>(
-                  this, METHODID_REGION_PARAMS)))
-          .build();
     }
   }
 
   /**
+   * Base class for the server implementation of the service admin.
    */
-  public static final class adminStub extends io.grpc.stub.AbstractAsyncStub<adminStub> {
+  public static abstract class adminImplBase
+      implements io.grpc.BindableService, AsyncService {
+
+    @java.lang.Override public final io.grpc.ServerServiceDefinition bindService() {
+      return adminGrpc.bindService(this);
+    }
+  }
+
+  /**
+   * A stub to allow clients to do asynchronous rpc calls to service admin.
+   */
+  public static final class adminStub
+      extends io.grpc.stub.AbstractAsyncStub<adminStub> {
     private adminStub(
         io.grpc.Channel channel, io.grpc.CallOptions callOptions) {
       super(channel, callOptions);
     }
 
-    @Override
+    @java.lang.Override
     protected adminStub build(
         io.grpc.Channel channel, io.grpc.CallOptions callOptions) {
       return new adminStub(channel, callOptions);
@@ -281,8 +258,8 @@ public final class adminGrpc {
      * Authorize a public key for validating trusted rpcs
      * </pre>
      */
-    public void addKey(admin_add_key_req_v1 request,
-                       io.grpc.stub.StreamObserver<admin_key_res_v1> responseObserver) {
+    public void addKey(com.helium.grpc.admin_add_key_req_v1 request,
+        io.grpc.stub.StreamObserver<com.helium.grpc.admin_key_res_v1> responseObserver) {
       io.grpc.stub.ClientCalls.asyncUnaryCall(
           getChannel().newCall(getAddKeyMethod(), getCallOptions()), request, responseObserver);
     }
@@ -292,8 +269,8 @@ public final class adminGrpc {
      * Deauthorize a public key for validating trusted rpcs
      * </pre>
      */
-    public void removeKey(admin_remove_key_req_v1 request,
-                          io.grpc.stub.StreamObserver<admin_key_res_v1> responseObserver) {
+    public void removeKey(com.helium.grpc.admin_remove_key_req_v1 request,
+        io.grpc.stub.StreamObserver<com.helium.grpc.admin_key_res_v1> responseObserver) {
       io.grpc.stub.ClientCalls.asyncUnaryCall(
           getChannel().newCall(getRemoveKeyMethod(), getCallOptions()), request, responseObserver);
     }
@@ -304,8 +281,8 @@ public final class adminGrpc {
      * admin only)
      * </pre>
      */
-    public void loadRegion(admin_load_region_req_v1 request,
-                           io.grpc.stub.StreamObserver<admin_load_region_res_v1> responseObserver) {
+    public void loadRegion(com.helium.grpc.admin_load_region_req_v1 request,
+        io.grpc.stub.StreamObserver<com.helium.grpc.admin_load_region_res_v1> responseObserver) {
       io.grpc.stub.ClientCalls.asyncUnaryCall(
           getChannel().newCall(getLoadRegionMethod(), getCallOptions()), request, responseObserver);
     }
@@ -315,22 +292,24 @@ public final class adminGrpc {
      * Return the region params for the specified region
      * </pre>
      */
-    public void regionParams(region_params_req_v1 request,
-                             io.grpc.stub.StreamObserver<region_params_res_v1> responseObserver) {
+    public void regionParams(com.helium.grpc.region_params_req_v1 request,
+        io.grpc.stub.StreamObserver<com.helium.grpc.region_params_res_v1> responseObserver) {
       io.grpc.stub.ClientCalls.asyncUnaryCall(
           getChannel().newCall(getRegionParamsMethod(), getCallOptions()), request, responseObserver);
     }
   }
 
   /**
+   * A stub to allow clients to do synchronous rpc calls to service admin.
    */
-  public static final class adminBlockingStub extends io.grpc.stub.AbstractBlockingStub<adminBlockingStub> {
+  public static final class adminBlockingStub
+      extends io.grpc.stub.AbstractBlockingStub<adminBlockingStub> {
     private adminBlockingStub(
         io.grpc.Channel channel, io.grpc.CallOptions callOptions) {
       super(channel, callOptions);
     }
 
-    @Override
+    @java.lang.Override
     protected adminBlockingStub build(
         io.grpc.Channel channel, io.grpc.CallOptions callOptions) {
       return new adminBlockingStub(channel, callOptions);
@@ -341,7 +320,7 @@ public final class adminGrpc {
      * Authorize a public key for validating trusted rpcs
      * </pre>
      */
-    public admin_key_res_v1 addKey(admin_add_key_req_v1 request) {
+    public com.helium.grpc.admin_key_res_v1 addKey(com.helium.grpc.admin_add_key_req_v1 request) {
       return io.grpc.stub.ClientCalls.blockingUnaryCall(
           getChannel(), getAddKeyMethod(), getCallOptions(), request);
     }
@@ -351,7 +330,7 @@ public final class adminGrpc {
      * Deauthorize a public key for validating trusted rpcs
      * </pre>
      */
-    public admin_key_res_v1 removeKey(admin_remove_key_req_v1 request) {
+    public com.helium.grpc.admin_key_res_v1 removeKey(com.helium.grpc.admin_remove_key_req_v1 request) {
       return io.grpc.stub.ClientCalls.blockingUnaryCall(
           getChannel(), getRemoveKeyMethod(), getCallOptions(), request);
     }
@@ -362,7 +341,7 @@ public final class adminGrpc {
      * admin only)
      * </pre>
      */
-    public admin_load_region_res_v1 loadRegion(admin_load_region_req_v1 request) {
+    public com.helium.grpc.admin_load_region_res_v1 loadRegion(com.helium.grpc.admin_load_region_req_v1 request) {
       return io.grpc.stub.ClientCalls.blockingUnaryCall(
           getChannel(), getLoadRegionMethod(), getCallOptions(), request);
     }
@@ -372,21 +351,23 @@ public final class adminGrpc {
      * Return the region params for the specified region
      * </pre>
      */
-    public region_params_res_v1 regionParams(region_params_req_v1 request) {
+    public com.helium.grpc.region_params_res_v1 regionParams(com.helium.grpc.region_params_req_v1 request) {
       return io.grpc.stub.ClientCalls.blockingUnaryCall(
           getChannel(), getRegionParamsMethod(), getCallOptions(), request);
     }
   }
 
   /**
+   * A stub to allow clients to do ListenableFuture-style rpc calls to service admin.
    */
-  public static final class adminFutureStub extends io.grpc.stub.AbstractFutureStub<adminFutureStub> {
+  public static final class adminFutureStub
+      extends io.grpc.stub.AbstractFutureStub<adminFutureStub> {
     private adminFutureStub(
         io.grpc.Channel channel, io.grpc.CallOptions callOptions) {
       super(channel, callOptions);
     }
 
-    @Override
+    @java.lang.Override
     protected adminFutureStub build(
         io.grpc.Channel channel, io.grpc.CallOptions callOptions) {
       return new adminFutureStub(channel, callOptions);
@@ -397,8 +378,8 @@ public final class adminGrpc {
      * Authorize a public key for validating trusted rpcs
      * </pre>
      */
-    public com.google.common.util.concurrent.ListenableFuture<admin_key_res_v1> addKey(
-        admin_add_key_req_v1 request) {
+    public com.google.common.util.concurrent.ListenableFuture<com.helium.grpc.admin_key_res_v1> addKey(
+        com.helium.grpc.admin_add_key_req_v1 request) {
       return io.grpc.stub.ClientCalls.futureUnaryCall(
           getChannel().newCall(getAddKeyMethod(), getCallOptions()), request);
     }
@@ -408,8 +389,8 @@ public final class adminGrpc {
      * Deauthorize a public key for validating trusted rpcs
      * </pre>
      */
-    public com.google.common.util.concurrent.ListenableFuture<admin_key_res_v1> removeKey(
-        admin_remove_key_req_v1 request) {
+    public com.google.common.util.concurrent.ListenableFuture<com.helium.grpc.admin_key_res_v1> removeKey(
+        com.helium.grpc.admin_remove_key_req_v1 request) {
       return io.grpc.stub.ClientCalls.futureUnaryCall(
           getChannel().newCall(getRemoveKeyMethod(), getCallOptions()), request);
     }
@@ -420,8 +401,8 @@ public final class adminGrpc {
      * admin only)
      * </pre>
      */
-    public com.google.common.util.concurrent.ListenableFuture<admin_load_region_res_v1> loadRegion(
-        admin_load_region_req_v1 request) {
+    public com.google.common.util.concurrent.ListenableFuture<com.helium.grpc.admin_load_region_res_v1> loadRegion(
+        com.helium.grpc.admin_load_region_req_v1 request) {
       return io.grpc.stub.ClientCalls.futureUnaryCall(
           getChannel().newCall(getLoadRegionMethod(), getCallOptions()), request);
     }
@@ -431,8 +412,8 @@ public final class adminGrpc {
      * Return the region params for the specified region
      * </pre>
      */
-    public com.google.common.util.concurrent.ListenableFuture<region_params_res_v1> regionParams(
-        region_params_req_v1 request) {
+    public com.google.common.util.concurrent.ListenableFuture<com.helium.grpc.region_params_res_v1> regionParams(
+        com.helium.grpc.region_params_req_v1 request) {
       return io.grpc.stub.ClientCalls.futureUnaryCall(
           getChannel().newCall(getRegionParamsMethod(), getCallOptions()), request);
     }
@@ -448,41 +429,41 @@ public final class adminGrpc {
       io.grpc.stub.ServerCalls.ServerStreamingMethod<Req, Resp>,
       io.grpc.stub.ServerCalls.ClientStreamingMethod<Req, Resp>,
       io.grpc.stub.ServerCalls.BidiStreamingMethod<Req, Resp> {
-    private final adminImplBase serviceImpl;
+    private final AsyncService serviceImpl;
     private final int methodId;
 
-    MethodHandlers(adminImplBase serviceImpl, int methodId) {
+    MethodHandlers(AsyncService serviceImpl, int methodId) {
       this.serviceImpl = serviceImpl;
       this.methodId = methodId;
     }
 
-    @Override
-    @SuppressWarnings("unchecked")
+    @java.lang.Override
+    @java.lang.SuppressWarnings("unchecked")
     public void invoke(Req request, io.grpc.stub.StreamObserver<Resp> responseObserver) {
       switch (methodId) {
         case METHODID_ADD_KEY:
-          serviceImpl.addKey((admin_add_key_req_v1) request,
-              (io.grpc.stub.StreamObserver<admin_key_res_v1>) responseObserver);
+          serviceImpl.addKey((com.helium.grpc.admin_add_key_req_v1) request,
+              (io.grpc.stub.StreamObserver<com.helium.grpc.admin_key_res_v1>) responseObserver);
           break;
         case METHODID_REMOVE_KEY:
-          serviceImpl.removeKey((admin_remove_key_req_v1) request,
-              (io.grpc.stub.StreamObserver<admin_key_res_v1>) responseObserver);
+          serviceImpl.removeKey((com.helium.grpc.admin_remove_key_req_v1) request,
+              (io.grpc.stub.StreamObserver<com.helium.grpc.admin_key_res_v1>) responseObserver);
           break;
         case METHODID_LOAD_REGION:
-          serviceImpl.loadRegion((admin_load_region_req_v1) request,
-              (io.grpc.stub.StreamObserver<admin_load_region_res_v1>) responseObserver);
+          serviceImpl.loadRegion((com.helium.grpc.admin_load_region_req_v1) request,
+              (io.grpc.stub.StreamObserver<com.helium.grpc.admin_load_region_res_v1>) responseObserver);
           break;
         case METHODID_REGION_PARAMS:
-          serviceImpl.regionParams((region_params_req_v1) request,
-              (io.grpc.stub.StreamObserver<region_params_res_v1>) responseObserver);
+          serviceImpl.regionParams((com.helium.grpc.region_params_req_v1) request,
+              (io.grpc.stub.StreamObserver<com.helium.grpc.region_params_res_v1>) responseObserver);
           break;
         default:
           throw new AssertionError();
       }
     }
 
-    @Override
-    @SuppressWarnings("unchecked")
+    @java.lang.Override
+    @java.lang.SuppressWarnings("unchecked")
     public io.grpc.stub.StreamObserver<Req> invoke(
         io.grpc.stub.StreamObserver<Resp> responseObserver) {
       switch (methodId) {
@@ -492,16 +473,49 @@ public final class adminGrpc {
     }
   }
 
+  public static final io.grpc.ServerServiceDefinition bindService(AsyncService service) {
+    return io.grpc.ServerServiceDefinition.builder(getServiceDescriptor())
+        .addMethod(
+          getAddKeyMethod(),
+          io.grpc.stub.ServerCalls.asyncUnaryCall(
+            new MethodHandlers<
+              com.helium.grpc.admin_add_key_req_v1,
+              com.helium.grpc.admin_key_res_v1>(
+                service, METHODID_ADD_KEY)))
+        .addMethod(
+          getRemoveKeyMethod(),
+          io.grpc.stub.ServerCalls.asyncUnaryCall(
+            new MethodHandlers<
+              com.helium.grpc.admin_remove_key_req_v1,
+              com.helium.grpc.admin_key_res_v1>(
+                service, METHODID_REMOVE_KEY)))
+        .addMethod(
+          getLoadRegionMethod(),
+          io.grpc.stub.ServerCalls.asyncUnaryCall(
+            new MethodHandlers<
+              com.helium.grpc.admin_load_region_req_v1,
+              com.helium.grpc.admin_load_region_res_v1>(
+                service, METHODID_LOAD_REGION)))
+        .addMethod(
+          getRegionParamsMethod(),
+          io.grpc.stub.ServerCalls.asyncUnaryCall(
+            new MethodHandlers<
+              com.helium.grpc.region_params_req_v1,
+              com.helium.grpc.region_params_res_v1>(
+                service, METHODID_REGION_PARAMS)))
+        .build();
+  }
+
   private static abstract class adminBaseDescriptorSupplier
       implements io.grpc.protobuf.ProtoFileDescriptorSupplier, io.grpc.protobuf.ProtoServiceDescriptorSupplier {
     adminBaseDescriptorSupplier() {}
 
-    @Override
+    @java.lang.Override
     public com.google.protobuf.Descriptors.FileDescriptor getFileDescriptor() {
-      return IotConfig.getDescriptor();
+      return com.helium.grpc.IotConfig.getDescriptor();
     }
 
-    @Override
+    @java.lang.Override
     public com.google.protobuf.Descriptors.ServiceDescriptor getServiceDescriptor() {
       return getFileDescriptor().findServiceByName("admin");
     }
@@ -515,13 +529,13 @@ public final class adminGrpc {
   private static final class adminMethodDescriptorSupplier
       extends adminBaseDescriptorSupplier
       implements io.grpc.protobuf.ProtoMethodDescriptorSupplier {
-    private final String methodName;
+    private final java.lang.String methodName;
 
-    adminMethodDescriptorSupplier(String methodName) {
+    adminMethodDescriptorSupplier(java.lang.String methodName) {
       this.methodName = methodName;
     }
 
-    @Override
+    @java.lang.Override
     public com.google.protobuf.Descriptors.MethodDescriptor getMethodDescriptor() {
       return getServiceDescriptor().findMethodByName(methodName);
     }

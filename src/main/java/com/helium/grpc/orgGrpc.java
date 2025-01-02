@@ -4,40 +4,37 @@ import static io.grpc.MethodDescriptor.generateFullMethodName;
 
 /**
  */
-@jakarta.annotation.Generated(
-    value = "by gRPC proto compiler (version 1.53.0)",
-    comments = "Source: service/iot_config.proto")
 @io.grpc.stub.annotations.GrpcGenerated
 public final class orgGrpc {
 
   private orgGrpc() {}
 
-  public static final String SERVICE_NAME = "helium.iot_config.org";
+  public static final java.lang.String SERVICE_NAME = "helium.iot_config.org";
 
   // Static method descriptors that strictly reflect the proto.
-  private static volatile io.grpc.MethodDescriptor<org_list_req_v1,
-      org_list_res_v1> getListMethod;
+  private static volatile io.grpc.MethodDescriptor<com.helium.grpc.org_list_req_v1,
+      com.helium.grpc.org_list_res_v1> getListMethod;
 
   @io.grpc.stub.annotations.RpcMethod(
       fullMethodName = SERVICE_NAME + '/' + "list",
-      requestType = org_list_req_v1.class,
-      responseType = org_list_res_v1.class,
+      requestType = com.helium.grpc.org_list_req_v1.class,
+      responseType = com.helium.grpc.org_list_res_v1.class,
       methodType = io.grpc.MethodDescriptor.MethodType.UNARY)
-  public static io.grpc.MethodDescriptor<org_list_req_v1,
-      org_list_res_v1> getListMethod() {
-    io.grpc.MethodDescriptor<org_list_req_v1, org_list_res_v1> getListMethod;
+  public static io.grpc.MethodDescriptor<com.helium.grpc.org_list_req_v1,
+      com.helium.grpc.org_list_res_v1> getListMethod() {
+    io.grpc.MethodDescriptor<com.helium.grpc.org_list_req_v1, com.helium.grpc.org_list_res_v1> getListMethod;
     if ((getListMethod = orgGrpc.getListMethod) == null) {
       synchronized (orgGrpc.class) {
         if ((getListMethod = orgGrpc.getListMethod) == null) {
           orgGrpc.getListMethod = getListMethod =
-              io.grpc.MethodDescriptor.<org_list_req_v1, org_list_res_v1>newBuilder()
+              io.grpc.MethodDescriptor.<com.helium.grpc.org_list_req_v1, com.helium.grpc.org_list_res_v1>newBuilder()
               .setType(io.grpc.MethodDescriptor.MethodType.UNARY)
               .setFullMethodName(generateFullMethodName(SERVICE_NAME, "list"))
               .setSampledToLocalTracing(true)
               .setRequestMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
-                  org_list_req_v1.getDefaultInstance()))
+                  com.helium.grpc.org_list_req_v1.getDefaultInstance()))
               .setResponseMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
-                  org_list_res_v1.getDefaultInstance()))
+                  com.helium.grpc.org_list_res_v1.getDefaultInstance()))
               .setSchemaDescriptor(new orgMethodDescriptorSupplier("list"))
               .build();
         }
@@ -46,29 +43,29 @@ public final class orgGrpc {
     return getListMethod;
   }
 
-  private static volatile io.grpc.MethodDescriptor<org_get_req_v1,
-      org_res_v1> getGetMethod;
+  private static volatile io.grpc.MethodDescriptor<com.helium.grpc.org_get_req_v1,
+      com.helium.grpc.org_res_v1> getGetMethod;
 
   @io.grpc.stub.annotations.RpcMethod(
       fullMethodName = SERVICE_NAME + '/' + "get",
-      requestType = org_get_req_v1.class,
-      responseType = org_res_v1.class,
+      requestType = com.helium.grpc.org_get_req_v1.class,
+      responseType = com.helium.grpc.org_res_v1.class,
       methodType = io.grpc.MethodDescriptor.MethodType.UNARY)
-  public static io.grpc.MethodDescriptor<org_get_req_v1,
-      org_res_v1> getGetMethod() {
-    io.grpc.MethodDescriptor<org_get_req_v1, org_res_v1> getGetMethod;
+  public static io.grpc.MethodDescriptor<com.helium.grpc.org_get_req_v1,
+      com.helium.grpc.org_res_v1> getGetMethod() {
+    io.grpc.MethodDescriptor<com.helium.grpc.org_get_req_v1, com.helium.grpc.org_res_v1> getGetMethod;
     if ((getGetMethod = orgGrpc.getGetMethod) == null) {
       synchronized (orgGrpc.class) {
         if ((getGetMethod = orgGrpc.getGetMethod) == null) {
           orgGrpc.getGetMethod = getGetMethod =
-              io.grpc.MethodDescriptor.<org_get_req_v1, org_res_v1>newBuilder()
+              io.grpc.MethodDescriptor.<com.helium.grpc.org_get_req_v1, com.helium.grpc.org_res_v1>newBuilder()
               .setType(io.grpc.MethodDescriptor.MethodType.UNARY)
               .setFullMethodName(generateFullMethodName(SERVICE_NAME, "get"))
               .setSampledToLocalTracing(true)
               .setRequestMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
-                  org_get_req_v1.getDefaultInstance()))
+                  com.helium.grpc.org_get_req_v1.getDefaultInstance()))
               .setResponseMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
-                  org_res_v1.getDefaultInstance()))
+                  com.helium.grpc.org_res_v1.getDefaultInstance()))
               .setSchemaDescriptor(new orgMethodDescriptorSupplier("get"))
               .build();
         }
@@ -77,29 +74,29 @@ public final class orgGrpc {
     return getGetMethod;
   }
 
-  private static volatile io.grpc.MethodDescriptor<org_create_helium_req_v1,
-      org_res_v1> getCreateHeliumMethod;
+  private static volatile io.grpc.MethodDescriptor<com.helium.grpc.org_create_helium_req_v1,
+      com.helium.grpc.org_res_v1> getCreateHeliumMethod;
 
   @io.grpc.stub.annotations.RpcMethod(
       fullMethodName = SERVICE_NAME + '/' + "create_helium",
-      requestType = org_create_helium_req_v1.class,
-      responseType = org_res_v1.class,
+      requestType = com.helium.grpc.org_create_helium_req_v1.class,
+      responseType = com.helium.grpc.org_res_v1.class,
       methodType = io.grpc.MethodDescriptor.MethodType.UNARY)
-  public static io.grpc.MethodDescriptor<org_create_helium_req_v1,
-      org_res_v1> getCreateHeliumMethod() {
-    io.grpc.MethodDescriptor<org_create_helium_req_v1, org_res_v1> getCreateHeliumMethod;
+  public static io.grpc.MethodDescriptor<com.helium.grpc.org_create_helium_req_v1,
+      com.helium.grpc.org_res_v1> getCreateHeliumMethod() {
+    io.grpc.MethodDescriptor<com.helium.grpc.org_create_helium_req_v1, com.helium.grpc.org_res_v1> getCreateHeliumMethod;
     if ((getCreateHeliumMethod = orgGrpc.getCreateHeliumMethod) == null) {
       synchronized (orgGrpc.class) {
         if ((getCreateHeliumMethod = orgGrpc.getCreateHeliumMethod) == null) {
           orgGrpc.getCreateHeliumMethod = getCreateHeliumMethod =
-              io.grpc.MethodDescriptor.<org_create_helium_req_v1, org_res_v1>newBuilder()
+              io.grpc.MethodDescriptor.<com.helium.grpc.org_create_helium_req_v1, com.helium.grpc.org_res_v1>newBuilder()
               .setType(io.grpc.MethodDescriptor.MethodType.UNARY)
               .setFullMethodName(generateFullMethodName(SERVICE_NAME, "create_helium"))
               .setSampledToLocalTracing(true)
               .setRequestMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
-                  org_create_helium_req_v1.getDefaultInstance()))
+                  com.helium.grpc.org_create_helium_req_v1.getDefaultInstance()))
               .setResponseMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
-                  org_res_v1.getDefaultInstance()))
+                  com.helium.grpc.org_res_v1.getDefaultInstance()))
               .setSchemaDescriptor(new orgMethodDescriptorSupplier("create_helium"))
               .build();
         }
@@ -108,29 +105,29 @@ public final class orgGrpc {
     return getCreateHeliumMethod;
   }
 
-  private static volatile io.grpc.MethodDescriptor<org_create_roamer_req_v1,
-      org_res_v1> getCreateRoamerMethod;
+  private static volatile io.grpc.MethodDescriptor<com.helium.grpc.org_create_roamer_req_v1,
+      com.helium.grpc.org_res_v1> getCreateRoamerMethod;
 
   @io.grpc.stub.annotations.RpcMethod(
       fullMethodName = SERVICE_NAME + '/' + "create_roamer",
-      requestType = org_create_roamer_req_v1.class,
-      responseType = org_res_v1.class,
+      requestType = com.helium.grpc.org_create_roamer_req_v1.class,
+      responseType = com.helium.grpc.org_res_v1.class,
       methodType = io.grpc.MethodDescriptor.MethodType.UNARY)
-  public static io.grpc.MethodDescriptor<org_create_roamer_req_v1,
-      org_res_v1> getCreateRoamerMethod() {
-    io.grpc.MethodDescriptor<org_create_roamer_req_v1, org_res_v1> getCreateRoamerMethod;
+  public static io.grpc.MethodDescriptor<com.helium.grpc.org_create_roamer_req_v1,
+      com.helium.grpc.org_res_v1> getCreateRoamerMethod() {
+    io.grpc.MethodDescriptor<com.helium.grpc.org_create_roamer_req_v1, com.helium.grpc.org_res_v1> getCreateRoamerMethod;
     if ((getCreateRoamerMethod = orgGrpc.getCreateRoamerMethod) == null) {
       synchronized (orgGrpc.class) {
         if ((getCreateRoamerMethod = orgGrpc.getCreateRoamerMethod) == null) {
           orgGrpc.getCreateRoamerMethod = getCreateRoamerMethod =
-              io.grpc.MethodDescriptor.<org_create_roamer_req_v1, org_res_v1>newBuilder()
+              io.grpc.MethodDescriptor.<com.helium.grpc.org_create_roamer_req_v1, com.helium.grpc.org_res_v1>newBuilder()
               .setType(io.grpc.MethodDescriptor.MethodType.UNARY)
               .setFullMethodName(generateFullMethodName(SERVICE_NAME, "create_roamer"))
               .setSampledToLocalTracing(true)
               .setRequestMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
-                  org_create_roamer_req_v1.getDefaultInstance()))
+                  com.helium.grpc.org_create_roamer_req_v1.getDefaultInstance()))
               .setResponseMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
-                  org_res_v1.getDefaultInstance()))
+                  com.helium.grpc.org_res_v1.getDefaultInstance()))
               .setSchemaDescriptor(new orgMethodDescriptorSupplier("create_roamer"))
               .build();
         }
@@ -139,29 +136,29 @@ public final class orgGrpc {
     return getCreateRoamerMethod;
   }
 
-  private static volatile io.grpc.MethodDescriptor<org_update_req_v1,
-      org_res_v1> getUpdateMethod;
+  private static volatile io.grpc.MethodDescriptor<com.helium.grpc.org_update_req_v1,
+      com.helium.grpc.org_res_v1> getUpdateMethod;
 
   @io.grpc.stub.annotations.RpcMethod(
       fullMethodName = SERVICE_NAME + '/' + "update",
-      requestType = org_update_req_v1.class,
-      responseType = org_res_v1.class,
+      requestType = com.helium.grpc.org_update_req_v1.class,
+      responseType = com.helium.grpc.org_res_v1.class,
       methodType = io.grpc.MethodDescriptor.MethodType.UNARY)
-  public static io.grpc.MethodDescriptor<org_update_req_v1,
-      org_res_v1> getUpdateMethod() {
-    io.grpc.MethodDescriptor<org_update_req_v1, org_res_v1> getUpdateMethod;
+  public static io.grpc.MethodDescriptor<com.helium.grpc.org_update_req_v1,
+      com.helium.grpc.org_res_v1> getUpdateMethod() {
+    io.grpc.MethodDescriptor<com.helium.grpc.org_update_req_v1, com.helium.grpc.org_res_v1> getUpdateMethod;
     if ((getUpdateMethod = orgGrpc.getUpdateMethod) == null) {
       synchronized (orgGrpc.class) {
         if ((getUpdateMethod = orgGrpc.getUpdateMethod) == null) {
           orgGrpc.getUpdateMethod = getUpdateMethod =
-              io.grpc.MethodDescriptor.<org_update_req_v1, org_res_v1>newBuilder()
+              io.grpc.MethodDescriptor.<com.helium.grpc.org_update_req_v1, com.helium.grpc.org_res_v1>newBuilder()
               .setType(io.grpc.MethodDescriptor.MethodType.UNARY)
               .setFullMethodName(generateFullMethodName(SERVICE_NAME, "update"))
               .setSampledToLocalTracing(true)
               .setRequestMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
-                  org_update_req_v1.getDefaultInstance()))
+                  com.helium.grpc.org_update_req_v1.getDefaultInstance()))
               .setResponseMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
-                  org_res_v1.getDefaultInstance()))
+                  com.helium.grpc.org_res_v1.getDefaultInstance()))
               .setSchemaDescriptor(new orgMethodDescriptorSupplier("update"))
               .build();
         }
@@ -170,29 +167,29 @@ public final class orgGrpc {
     return getUpdateMethod;
   }
 
-  private static volatile io.grpc.MethodDescriptor<org_disable_req_v1,
-      org_disable_res_v1> getDisableMethod;
+  private static volatile io.grpc.MethodDescriptor<com.helium.grpc.org_disable_req_v1,
+      com.helium.grpc.org_disable_res_v1> getDisableMethod;
 
   @io.grpc.stub.annotations.RpcMethod(
       fullMethodName = SERVICE_NAME + '/' + "disable",
-      requestType = org_disable_req_v1.class,
-      responseType = org_disable_res_v1.class,
+      requestType = com.helium.grpc.org_disable_req_v1.class,
+      responseType = com.helium.grpc.org_disable_res_v1.class,
       methodType = io.grpc.MethodDescriptor.MethodType.UNARY)
-  public static io.grpc.MethodDescriptor<org_disable_req_v1,
-      org_disable_res_v1> getDisableMethod() {
-    io.grpc.MethodDescriptor<org_disable_req_v1, org_disable_res_v1> getDisableMethod;
+  public static io.grpc.MethodDescriptor<com.helium.grpc.org_disable_req_v1,
+      com.helium.grpc.org_disable_res_v1> getDisableMethod() {
+    io.grpc.MethodDescriptor<com.helium.grpc.org_disable_req_v1, com.helium.grpc.org_disable_res_v1> getDisableMethod;
     if ((getDisableMethod = orgGrpc.getDisableMethod) == null) {
       synchronized (orgGrpc.class) {
         if ((getDisableMethod = orgGrpc.getDisableMethod) == null) {
           orgGrpc.getDisableMethod = getDisableMethod =
-              io.grpc.MethodDescriptor.<org_disable_req_v1, org_disable_res_v1>newBuilder()
+              io.grpc.MethodDescriptor.<com.helium.grpc.org_disable_req_v1, com.helium.grpc.org_disable_res_v1>newBuilder()
               .setType(io.grpc.MethodDescriptor.MethodType.UNARY)
               .setFullMethodName(generateFullMethodName(SERVICE_NAME, "disable"))
               .setSampledToLocalTracing(true)
               .setRequestMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
-                  org_disable_req_v1.getDefaultInstance()))
+                  com.helium.grpc.org_disable_req_v1.getDefaultInstance()))
               .setResponseMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
-                  org_disable_res_v1.getDefaultInstance()))
+                  com.helium.grpc.org_disable_res_v1.getDefaultInstance()))
               .setSchemaDescriptor(new orgMethodDescriptorSupplier("disable"))
               .build();
         }
@@ -201,29 +198,29 @@ public final class orgGrpc {
     return getDisableMethod;
   }
 
-  private static volatile io.grpc.MethodDescriptor<org_enable_req_v1,
-      org_enable_res_v1> getEnableMethod;
+  private static volatile io.grpc.MethodDescriptor<com.helium.grpc.org_enable_req_v1,
+      com.helium.grpc.org_enable_res_v1> getEnableMethod;
 
   @io.grpc.stub.annotations.RpcMethod(
       fullMethodName = SERVICE_NAME + '/' + "enable",
-      requestType = org_enable_req_v1.class,
-      responseType = org_enable_res_v1.class,
+      requestType = com.helium.grpc.org_enable_req_v1.class,
+      responseType = com.helium.grpc.org_enable_res_v1.class,
       methodType = io.grpc.MethodDescriptor.MethodType.UNARY)
-  public static io.grpc.MethodDescriptor<org_enable_req_v1,
-      org_enable_res_v1> getEnableMethod() {
-    io.grpc.MethodDescriptor<org_enable_req_v1, org_enable_res_v1> getEnableMethod;
+  public static io.grpc.MethodDescriptor<com.helium.grpc.org_enable_req_v1,
+      com.helium.grpc.org_enable_res_v1> getEnableMethod() {
+    io.grpc.MethodDescriptor<com.helium.grpc.org_enable_req_v1, com.helium.grpc.org_enable_res_v1> getEnableMethod;
     if ((getEnableMethod = orgGrpc.getEnableMethod) == null) {
       synchronized (orgGrpc.class) {
         if ((getEnableMethod = orgGrpc.getEnableMethod) == null) {
           orgGrpc.getEnableMethod = getEnableMethod =
-              io.grpc.MethodDescriptor.<org_enable_req_v1, org_enable_res_v1>newBuilder()
+              io.grpc.MethodDescriptor.<com.helium.grpc.org_enable_req_v1, com.helium.grpc.org_enable_res_v1>newBuilder()
               .setType(io.grpc.MethodDescriptor.MethodType.UNARY)
               .setFullMethodName(generateFullMethodName(SERVICE_NAME, "enable"))
               .setSampledToLocalTracing(true)
               .setRequestMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
-                  org_enable_req_v1.getDefaultInstance()))
+                  com.helium.grpc.org_enable_req_v1.getDefaultInstance()))
               .setResponseMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
-                  org_enable_res_v1.getDefaultInstance()))
+                  com.helium.grpc.org_enable_res_v1.getDefaultInstance()))
               .setSchemaDescriptor(new orgMethodDescriptorSupplier("enable"))
               .build();
         }
@@ -238,7 +235,7 @@ public final class orgGrpc {
   public static orgStub newStub(io.grpc.Channel channel) {
     io.grpc.stub.AbstractStub.StubFactory<orgStub> factory =
       new io.grpc.stub.AbstractStub.StubFactory<orgStub>() {
-        @Override
+        @java.lang.Override
         public orgStub newStub(io.grpc.Channel channel, io.grpc.CallOptions callOptions) {
           return new orgStub(channel, callOptions);
         }
@@ -253,7 +250,7 @@ public final class orgGrpc {
       io.grpc.Channel channel) {
     io.grpc.stub.AbstractStub.StubFactory<orgBlockingStub> factory =
       new io.grpc.stub.AbstractStub.StubFactory<orgBlockingStub>() {
-        @Override
+        @java.lang.Override
         public orgBlockingStub newStub(io.grpc.Channel channel, io.grpc.CallOptions callOptions) {
           return new orgBlockingStub(channel, callOptions);
         }
@@ -268,7 +265,7 @@ public final class orgGrpc {
       io.grpc.Channel channel) {
     io.grpc.stub.AbstractStub.StubFactory<orgFutureStub> factory =
       new io.grpc.stub.AbstractStub.StubFactory<orgFutureStub>() {
-        @Override
+        @java.lang.Override
         public orgFutureStub newStub(io.grpc.Channel channel, io.grpc.CallOptions callOptions) {
           return new orgFutureStub(channel, callOptions);
         }
@@ -278,15 +275,15 @@ public final class orgGrpc {
 
   /**
    */
-  public static abstract class orgImplBase implements io.grpc.BindableService {
+  public interface AsyncService {
 
     /**
      * <pre>
      * List Org (no auth)
      * </pre>
      */
-    public void list(org_list_req_v1 request,
-                     io.grpc.stub.StreamObserver<org_list_res_v1> responseObserver) {
+    default void list(com.helium.grpc.org_list_req_v1 request,
+        io.grpc.stub.StreamObserver<com.helium.grpc.org_list_res_v1> responseObserver) {
       io.grpc.stub.ServerCalls.asyncUnimplementedUnaryCall(getListMethod(), responseObserver);
     }
 
@@ -295,8 +292,8 @@ public final class orgGrpc {
      * Get Org (no auth)
      * </pre>
      */
-    public void get(org_get_req_v1 request,
-                    io.grpc.stub.StreamObserver<org_res_v1> responseObserver) {
+    default void get(com.helium.grpc.org_get_req_v1 request,
+        io.grpc.stub.StreamObserver<com.helium.grpc.org_res_v1> responseObserver) {
       io.grpc.stub.ServerCalls.asyncUnimplementedUnaryCall(getGetMethod(), responseObserver);
     }
 
@@ -305,8 +302,8 @@ public final class orgGrpc {
      * Create Org on Helium Network (auth admin only)
      * </pre>
      */
-    public void createHelium(org_create_helium_req_v1 request,
-                             io.grpc.stub.StreamObserver<org_res_v1> responseObserver) {
+    default void createHelium(com.helium.grpc.org_create_helium_req_v1 request,
+        io.grpc.stub.StreamObserver<com.helium.grpc.org_res_v1> responseObserver) {
       io.grpc.stub.ServerCalls.asyncUnimplementedUnaryCall(getCreateHeliumMethod(), responseObserver);
     }
 
@@ -315,8 +312,8 @@ public final class orgGrpc {
      * Create Org on any network (auth admin only)
      * </pre>
      */
-    public void createRoamer(org_create_roamer_req_v1 request,
-                             io.grpc.stub.StreamObserver<org_res_v1> responseObserver) {
+    default void createRoamer(com.helium.grpc.org_create_roamer_req_v1 request,
+        io.grpc.stub.StreamObserver<com.helium.grpc.org_res_v1> responseObserver) {
       io.grpc.stub.ServerCalls.asyncUnimplementedUnaryCall(getCreateRoamerMethod(), responseObserver);
     }
 
@@ -327,8 +324,8 @@ public final class orgGrpc {
      * Modify owner and add/remove devaddr constraints (auth admin only)
      * </pre>
      */
-    public void update(org_update_req_v1 request,
-                       io.grpc.stub.StreamObserver<org_res_v1> responseObserver) {
+    default void update(com.helium.grpc.org_update_req_v1 request,
+        io.grpc.stub.StreamObserver<com.helium.grpc.org_res_v1> responseObserver) {
       io.grpc.stub.ServerCalls.asyncUnimplementedUnaryCall(getUpdateMethod(), responseObserver);
     }
 
@@ -338,8 +335,8 @@ public final class orgGrpc {
      * for all associated routes (auth admin only)
      * </pre>
      */
-    public void disable(org_disable_req_v1 request,
-                        io.grpc.stub.StreamObserver<org_disable_res_v1> responseObserver) {
+    default void disable(com.helium.grpc.org_disable_req_v1 request,
+        io.grpc.stub.StreamObserver<com.helium.grpc.org_disable_res_v1> responseObserver) {
       io.grpc.stub.ServerCalls.asyncUnimplementedUnaryCall(getDisableMethod(), responseObserver);
     }
 
@@ -349,75 +346,34 @@ public final class orgGrpc {
      * for all associated routes (auth admin only)
      * </pre>
      */
-    public void enable(org_enable_req_v1 request,
-                       io.grpc.stub.StreamObserver<org_enable_res_v1> responseObserver) {
+    default void enable(com.helium.grpc.org_enable_req_v1 request,
+        io.grpc.stub.StreamObserver<com.helium.grpc.org_enable_res_v1> responseObserver) {
       io.grpc.stub.ServerCalls.asyncUnimplementedUnaryCall(getEnableMethod(), responseObserver);
-    }
-
-    @Override public final io.grpc.ServerServiceDefinition bindService() {
-      return io.grpc.ServerServiceDefinition.builder(getServiceDescriptor())
-          .addMethod(
-            getListMethod(),
-            io.grpc.stub.ServerCalls.asyncUnaryCall(
-              new MethodHandlers<
-                org_list_req_v1,
-                org_list_res_v1>(
-                  this, METHODID_LIST)))
-          .addMethod(
-            getGetMethod(),
-            io.grpc.stub.ServerCalls.asyncUnaryCall(
-              new MethodHandlers<
-                org_get_req_v1,
-                org_res_v1>(
-                  this, METHODID_GET)))
-          .addMethod(
-            getCreateHeliumMethod(),
-            io.grpc.stub.ServerCalls.asyncUnaryCall(
-              new MethodHandlers<
-                org_create_helium_req_v1,
-                org_res_v1>(
-                  this, METHODID_CREATE_HELIUM)))
-          .addMethod(
-            getCreateRoamerMethod(),
-            io.grpc.stub.ServerCalls.asyncUnaryCall(
-              new MethodHandlers<
-                org_create_roamer_req_v1,
-                org_res_v1>(
-                  this, METHODID_CREATE_ROAMER)))
-          .addMethod(
-            getUpdateMethod(),
-            io.grpc.stub.ServerCalls.asyncUnaryCall(
-              new MethodHandlers<
-                org_update_req_v1,
-                org_res_v1>(
-                  this, METHODID_UPDATE)))
-          .addMethod(
-            getDisableMethod(),
-            io.grpc.stub.ServerCalls.asyncUnaryCall(
-              new MethodHandlers<
-                org_disable_req_v1,
-                org_disable_res_v1>(
-                  this, METHODID_DISABLE)))
-          .addMethod(
-            getEnableMethod(),
-            io.grpc.stub.ServerCalls.asyncUnaryCall(
-              new MethodHandlers<
-                org_enable_req_v1,
-                org_enable_res_v1>(
-                  this, METHODID_ENABLE)))
-          .build();
     }
   }
 
   /**
+   * Base class for the server implementation of the service org.
    */
-  public static final class orgStub extends io.grpc.stub.AbstractAsyncStub<orgStub> {
+  public static abstract class orgImplBase
+      implements io.grpc.BindableService, AsyncService {
+
+    @java.lang.Override public final io.grpc.ServerServiceDefinition bindService() {
+      return orgGrpc.bindService(this);
+    }
+  }
+
+  /**
+   * A stub to allow clients to do asynchronous rpc calls to service org.
+   */
+  public static final class orgStub
+      extends io.grpc.stub.AbstractAsyncStub<orgStub> {
     private orgStub(
         io.grpc.Channel channel, io.grpc.CallOptions callOptions) {
       super(channel, callOptions);
     }
 
-    @Override
+    @java.lang.Override
     protected orgStub build(
         io.grpc.Channel channel, io.grpc.CallOptions callOptions) {
       return new orgStub(channel, callOptions);
@@ -428,8 +384,8 @@ public final class orgGrpc {
      * List Org (no auth)
      * </pre>
      */
-    public void list(org_list_req_v1 request,
-                     io.grpc.stub.StreamObserver<org_list_res_v1> responseObserver) {
+    public void list(com.helium.grpc.org_list_req_v1 request,
+        io.grpc.stub.StreamObserver<com.helium.grpc.org_list_res_v1> responseObserver) {
       io.grpc.stub.ClientCalls.asyncUnaryCall(
           getChannel().newCall(getListMethod(), getCallOptions()), request, responseObserver);
     }
@@ -439,8 +395,8 @@ public final class orgGrpc {
      * Get Org (no auth)
      * </pre>
      */
-    public void get(org_get_req_v1 request,
-                    io.grpc.stub.StreamObserver<org_res_v1> responseObserver) {
+    public void get(com.helium.grpc.org_get_req_v1 request,
+        io.grpc.stub.StreamObserver<com.helium.grpc.org_res_v1> responseObserver) {
       io.grpc.stub.ClientCalls.asyncUnaryCall(
           getChannel().newCall(getGetMethod(), getCallOptions()), request, responseObserver);
     }
@@ -450,8 +406,8 @@ public final class orgGrpc {
      * Create Org on Helium Network (auth admin only)
      * </pre>
      */
-    public void createHelium(org_create_helium_req_v1 request,
-                             io.grpc.stub.StreamObserver<org_res_v1> responseObserver) {
+    public void createHelium(com.helium.grpc.org_create_helium_req_v1 request,
+        io.grpc.stub.StreamObserver<com.helium.grpc.org_res_v1> responseObserver) {
       io.grpc.stub.ClientCalls.asyncUnaryCall(
           getChannel().newCall(getCreateHeliumMethod(), getCallOptions()), request, responseObserver);
     }
@@ -461,8 +417,8 @@ public final class orgGrpc {
      * Create Org on any network (auth admin only)
      * </pre>
      */
-    public void createRoamer(org_create_roamer_req_v1 request,
-                             io.grpc.stub.StreamObserver<org_res_v1> responseObserver) {
+    public void createRoamer(com.helium.grpc.org_create_roamer_req_v1 request,
+        io.grpc.stub.StreamObserver<com.helium.grpc.org_res_v1> responseObserver) {
       io.grpc.stub.ClientCalls.asyncUnaryCall(
           getChannel().newCall(getCreateRoamerMethod(), getCallOptions()), request, responseObserver);
     }
@@ -474,8 +430,8 @@ public final class orgGrpc {
      * Modify owner and add/remove devaddr constraints (auth admin only)
      * </pre>
      */
-    public void update(org_update_req_v1 request,
-                       io.grpc.stub.StreamObserver<org_res_v1> responseObserver) {
+    public void update(com.helium.grpc.org_update_req_v1 request,
+        io.grpc.stub.StreamObserver<com.helium.grpc.org_res_v1> responseObserver) {
       io.grpc.stub.ClientCalls.asyncUnaryCall(
           getChannel().newCall(getUpdateMethod(), getCallOptions()), request, responseObserver);
     }
@@ -486,8 +442,8 @@ public final class orgGrpc {
      * for all associated routes (auth admin only)
      * </pre>
      */
-    public void disable(org_disable_req_v1 request,
-                        io.grpc.stub.StreamObserver<org_disable_res_v1> responseObserver) {
+    public void disable(com.helium.grpc.org_disable_req_v1 request,
+        io.grpc.stub.StreamObserver<com.helium.grpc.org_disable_res_v1> responseObserver) {
       io.grpc.stub.ClientCalls.asyncUnaryCall(
           getChannel().newCall(getDisableMethod(), getCallOptions()), request, responseObserver);
     }
@@ -498,22 +454,24 @@ public final class orgGrpc {
      * for all associated routes (auth admin only)
      * </pre>
      */
-    public void enable(org_enable_req_v1 request,
-                       io.grpc.stub.StreamObserver<org_enable_res_v1> responseObserver) {
+    public void enable(com.helium.grpc.org_enable_req_v1 request,
+        io.grpc.stub.StreamObserver<com.helium.grpc.org_enable_res_v1> responseObserver) {
       io.grpc.stub.ClientCalls.asyncUnaryCall(
           getChannel().newCall(getEnableMethod(), getCallOptions()), request, responseObserver);
     }
   }
 
   /**
+   * A stub to allow clients to do synchronous rpc calls to service org.
    */
-  public static final class orgBlockingStub extends io.grpc.stub.AbstractBlockingStub<orgBlockingStub> {
+  public static final class orgBlockingStub
+      extends io.grpc.stub.AbstractBlockingStub<orgBlockingStub> {
     private orgBlockingStub(
         io.grpc.Channel channel, io.grpc.CallOptions callOptions) {
       super(channel, callOptions);
     }
 
-    @Override
+    @java.lang.Override
     protected orgBlockingStub build(
         io.grpc.Channel channel, io.grpc.CallOptions callOptions) {
       return new orgBlockingStub(channel, callOptions);
@@ -524,7 +482,7 @@ public final class orgGrpc {
      * List Org (no auth)
      * </pre>
      */
-    public org_list_res_v1 list(org_list_req_v1 request) {
+    public com.helium.grpc.org_list_res_v1 list(com.helium.grpc.org_list_req_v1 request) {
       return io.grpc.stub.ClientCalls.blockingUnaryCall(
           getChannel(), getListMethod(), getCallOptions(), request);
     }
@@ -534,7 +492,7 @@ public final class orgGrpc {
      * Get Org (no auth)
      * </pre>
      */
-    public org_res_v1 get(org_get_req_v1 request) {
+    public com.helium.grpc.org_res_v1 get(com.helium.grpc.org_get_req_v1 request) {
       return io.grpc.stub.ClientCalls.blockingUnaryCall(
           getChannel(), getGetMethod(), getCallOptions(), request);
     }
@@ -544,7 +502,7 @@ public final class orgGrpc {
      * Create Org on Helium Network (auth admin only)
      * </pre>
      */
-    public org_res_v1 createHelium(org_create_helium_req_v1 request) {
+    public com.helium.grpc.org_res_v1 createHelium(com.helium.grpc.org_create_helium_req_v1 request) {
       return io.grpc.stub.ClientCalls.blockingUnaryCall(
           getChannel(), getCreateHeliumMethod(), getCallOptions(), request);
     }
@@ -554,7 +512,7 @@ public final class orgGrpc {
      * Create Org on any network (auth admin only)
      * </pre>
      */
-    public org_res_v1 createRoamer(org_create_roamer_req_v1 request) {
+    public com.helium.grpc.org_res_v1 createRoamer(com.helium.grpc.org_create_roamer_req_v1 request) {
       return io.grpc.stub.ClientCalls.blockingUnaryCall(
           getChannel(), getCreateRoamerMethod(), getCallOptions(), request);
     }
@@ -566,7 +524,7 @@ public final class orgGrpc {
      * Modify owner and add/remove devaddr constraints (auth admin only)
      * </pre>
      */
-    public org_res_v1 update(org_update_req_v1 request) {
+    public com.helium.grpc.org_res_v1 update(com.helium.grpc.org_update_req_v1 request) {
       return io.grpc.stub.ClientCalls.blockingUnaryCall(
           getChannel(), getUpdateMethod(), getCallOptions(), request);
     }
@@ -577,7 +535,7 @@ public final class orgGrpc {
      * for all associated routes (auth admin only)
      * </pre>
      */
-    public org_disable_res_v1 disable(org_disable_req_v1 request) {
+    public com.helium.grpc.org_disable_res_v1 disable(com.helium.grpc.org_disable_req_v1 request) {
       return io.grpc.stub.ClientCalls.blockingUnaryCall(
           getChannel(), getDisableMethod(), getCallOptions(), request);
     }
@@ -588,21 +546,23 @@ public final class orgGrpc {
      * for all associated routes (auth admin only)
      * </pre>
      */
-    public org_enable_res_v1 enable(org_enable_req_v1 request) {
+    public com.helium.grpc.org_enable_res_v1 enable(com.helium.grpc.org_enable_req_v1 request) {
       return io.grpc.stub.ClientCalls.blockingUnaryCall(
           getChannel(), getEnableMethod(), getCallOptions(), request);
     }
   }
 
   /**
+   * A stub to allow clients to do ListenableFuture-style rpc calls to service org.
    */
-  public static final class orgFutureStub extends io.grpc.stub.AbstractFutureStub<orgFutureStub> {
+  public static final class orgFutureStub
+      extends io.grpc.stub.AbstractFutureStub<orgFutureStub> {
     private orgFutureStub(
         io.grpc.Channel channel, io.grpc.CallOptions callOptions) {
       super(channel, callOptions);
     }
 
-    @Override
+    @java.lang.Override
     protected orgFutureStub build(
         io.grpc.Channel channel, io.grpc.CallOptions callOptions) {
       return new orgFutureStub(channel, callOptions);
@@ -613,8 +573,8 @@ public final class orgGrpc {
      * List Org (no auth)
      * </pre>
      */
-    public com.google.common.util.concurrent.ListenableFuture<org_list_res_v1> list(
-        org_list_req_v1 request) {
+    public com.google.common.util.concurrent.ListenableFuture<com.helium.grpc.org_list_res_v1> list(
+        com.helium.grpc.org_list_req_v1 request) {
       return io.grpc.stub.ClientCalls.futureUnaryCall(
           getChannel().newCall(getListMethod(), getCallOptions()), request);
     }
@@ -624,8 +584,8 @@ public final class orgGrpc {
      * Get Org (no auth)
      * </pre>
      */
-    public com.google.common.util.concurrent.ListenableFuture<org_res_v1> get(
-        org_get_req_v1 request) {
+    public com.google.common.util.concurrent.ListenableFuture<com.helium.grpc.org_res_v1> get(
+        com.helium.grpc.org_get_req_v1 request) {
       return io.grpc.stub.ClientCalls.futureUnaryCall(
           getChannel().newCall(getGetMethod(), getCallOptions()), request);
     }
@@ -635,8 +595,8 @@ public final class orgGrpc {
      * Create Org on Helium Network (auth admin only)
      * </pre>
      */
-    public com.google.common.util.concurrent.ListenableFuture<org_res_v1> createHelium(
-        org_create_helium_req_v1 request) {
+    public com.google.common.util.concurrent.ListenableFuture<com.helium.grpc.org_res_v1> createHelium(
+        com.helium.grpc.org_create_helium_req_v1 request) {
       return io.grpc.stub.ClientCalls.futureUnaryCall(
           getChannel().newCall(getCreateHeliumMethod(), getCallOptions()), request);
     }
@@ -646,8 +606,8 @@ public final class orgGrpc {
      * Create Org on any network (auth admin only)
      * </pre>
      */
-    public com.google.common.util.concurrent.ListenableFuture<org_res_v1> createRoamer(
-        org_create_roamer_req_v1 request) {
+    public com.google.common.util.concurrent.ListenableFuture<com.helium.grpc.org_res_v1> createRoamer(
+        com.helium.grpc.org_create_roamer_req_v1 request) {
       return io.grpc.stub.ClientCalls.futureUnaryCall(
           getChannel().newCall(getCreateRoamerMethod(), getCallOptions()), request);
     }
@@ -659,8 +619,8 @@ public final class orgGrpc {
      * Modify owner and add/remove devaddr constraints (auth admin only)
      * </pre>
      */
-    public com.google.common.util.concurrent.ListenableFuture<org_res_v1> update(
-        org_update_req_v1 request) {
+    public com.google.common.util.concurrent.ListenableFuture<com.helium.grpc.org_res_v1> update(
+        com.helium.grpc.org_update_req_v1 request) {
       return io.grpc.stub.ClientCalls.futureUnaryCall(
           getChannel().newCall(getUpdateMethod(), getCallOptions()), request);
     }
@@ -671,8 +631,8 @@ public final class orgGrpc {
      * for all associated routes (auth admin only)
      * </pre>
      */
-    public com.google.common.util.concurrent.ListenableFuture<org_disable_res_v1> disable(
-        org_disable_req_v1 request) {
+    public com.google.common.util.concurrent.ListenableFuture<com.helium.grpc.org_disable_res_v1> disable(
+        com.helium.grpc.org_disable_req_v1 request) {
       return io.grpc.stub.ClientCalls.futureUnaryCall(
           getChannel().newCall(getDisableMethod(), getCallOptions()), request);
     }
@@ -683,8 +643,8 @@ public final class orgGrpc {
      * for all associated routes (auth admin only)
      * </pre>
      */
-    public com.google.common.util.concurrent.ListenableFuture<org_enable_res_v1> enable(
-        org_enable_req_v1 request) {
+    public com.google.common.util.concurrent.ListenableFuture<com.helium.grpc.org_enable_res_v1> enable(
+        com.helium.grpc.org_enable_req_v1 request) {
       return io.grpc.stub.ClientCalls.futureUnaryCall(
           getChannel().newCall(getEnableMethod(), getCallOptions()), request);
     }
@@ -703,53 +663,53 @@ public final class orgGrpc {
       io.grpc.stub.ServerCalls.ServerStreamingMethod<Req, Resp>,
       io.grpc.stub.ServerCalls.ClientStreamingMethod<Req, Resp>,
       io.grpc.stub.ServerCalls.BidiStreamingMethod<Req, Resp> {
-    private final orgImplBase serviceImpl;
+    private final AsyncService serviceImpl;
     private final int methodId;
 
-    MethodHandlers(orgImplBase serviceImpl, int methodId) {
+    MethodHandlers(AsyncService serviceImpl, int methodId) {
       this.serviceImpl = serviceImpl;
       this.methodId = methodId;
     }
 
-    @Override
-    @SuppressWarnings("unchecked")
+    @java.lang.Override
+    @java.lang.SuppressWarnings("unchecked")
     public void invoke(Req request, io.grpc.stub.StreamObserver<Resp> responseObserver) {
       switch (methodId) {
         case METHODID_LIST:
-          serviceImpl.list((org_list_req_v1) request,
-              (io.grpc.stub.StreamObserver<org_list_res_v1>) responseObserver);
+          serviceImpl.list((com.helium.grpc.org_list_req_v1) request,
+              (io.grpc.stub.StreamObserver<com.helium.grpc.org_list_res_v1>) responseObserver);
           break;
         case METHODID_GET:
-          serviceImpl.get((org_get_req_v1) request,
-              (io.grpc.stub.StreamObserver<org_res_v1>) responseObserver);
+          serviceImpl.get((com.helium.grpc.org_get_req_v1) request,
+              (io.grpc.stub.StreamObserver<com.helium.grpc.org_res_v1>) responseObserver);
           break;
         case METHODID_CREATE_HELIUM:
-          serviceImpl.createHelium((org_create_helium_req_v1) request,
-              (io.grpc.stub.StreamObserver<org_res_v1>) responseObserver);
+          serviceImpl.createHelium((com.helium.grpc.org_create_helium_req_v1) request,
+              (io.grpc.stub.StreamObserver<com.helium.grpc.org_res_v1>) responseObserver);
           break;
         case METHODID_CREATE_ROAMER:
-          serviceImpl.createRoamer((org_create_roamer_req_v1) request,
-              (io.grpc.stub.StreamObserver<org_res_v1>) responseObserver);
+          serviceImpl.createRoamer((com.helium.grpc.org_create_roamer_req_v1) request,
+              (io.grpc.stub.StreamObserver<com.helium.grpc.org_res_v1>) responseObserver);
           break;
         case METHODID_UPDATE:
-          serviceImpl.update((org_update_req_v1) request,
-              (io.grpc.stub.StreamObserver<org_res_v1>) responseObserver);
+          serviceImpl.update((com.helium.grpc.org_update_req_v1) request,
+              (io.grpc.stub.StreamObserver<com.helium.grpc.org_res_v1>) responseObserver);
           break;
         case METHODID_DISABLE:
-          serviceImpl.disable((org_disable_req_v1) request,
-              (io.grpc.stub.StreamObserver<org_disable_res_v1>) responseObserver);
+          serviceImpl.disable((com.helium.grpc.org_disable_req_v1) request,
+              (io.grpc.stub.StreamObserver<com.helium.grpc.org_disable_res_v1>) responseObserver);
           break;
         case METHODID_ENABLE:
-          serviceImpl.enable((org_enable_req_v1) request,
-              (io.grpc.stub.StreamObserver<org_enable_res_v1>) responseObserver);
+          serviceImpl.enable((com.helium.grpc.org_enable_req_v1) request,
+              (io.grpc.stub.StreamObserver<com.helium.grpc.org_enable_res_v1>) responseObserver);
           break;
         default:
           throw new AssertionError();
       }
     }
 
-    @Override
-    @SuppressWarnings("unchecked")
+    @java.lang.Override
+    @java.lang.SuppressWarnings("unchecked")
     public io.grpc.stub.StreamObserver<Req> invoke(
         io.grpc.stub.StreamObserver<Resp> responseObserver) {
       switch (methodId) {
@@ -759,16 +719,70 @@ public final class orgGrpc {
     }
   }
 
+  public static final io.grpc.ServerServiceDefinition bindService(AsyncService service) {
+    return io.grpc.ServerServiceDefinition.builder(getServiceDescriptor())
+        .addMethod(
+          getListMethod(),
+          io.grpc.stub.ServerCalls.asyncUnaryCall(
+            new MethodHandlers<
+              com.helium.grpc.org_list_req_v1,
+              com.helium.grpc.org_list_res_v1>(
+                service, METHODID_LIST)))
+        .addMethod(
+          getGetMethod(),
+          io.grpc.stub.ServerCalls.asyncUnaryCall(
+            new MethodHandlers<
+              com.helium.grpc.org_get_req_v1,
+              com.helium.grpc.org_res_v1>(
+                service, METHODID_GET)))
+        .addMethod(
+          getCreateHeliumMethod(),
+          io.grpc.stub.ServerCalls.asyncUnaryCall(
+            new MethodHandlers<
+              com.helium.grpc.org_create_helium_req_v1,
+              com.helium.grpc.org_res_v1>(
+                service, METHODID_CREATE_HELIUM)))
+        .addMethod(
+          getCreateRoamerMethod(),
+          io.grpc.stub.ServerCalls.asyncUnaryCall(
+            new MethodHandlers<
+              com.helium.grpc.org_create_roamer_req_v1,
+              com.helium.grpc.org_res_v1>(
+                service, METHODID_CREATE_ROAMER)))
+        .addMethod(
+          getUpdateMethod(),
+          io.grpc.stub.ServerCalls.asyncUnaryCall(
+            new MethodHandlers<
+              com.helium.grpc.org_update_req_v1,
+              com.helium.grpc.org_res_v1>(
+                service, METHODID_UPDATE)))
+        .addMethod(
+          getDisableMethod(),
+          io.grpc.stub.ServerCalls.asyncUnaryCall(
+            new MethodHandlers<
+              com.helium.grpc.org_disable_req_v1,
+              com.helium.grpc.org_disable_res_v1>(
+                service, METHODID_DISABLE)))
+        .addMethod(
+          getEnableMethod(),
+          io.grpc.stub.ServerCalls.asyncUnaryCall(
+            new MethodHandlers<
+              com.helium.grpc.org_enable_req_v1,
+              com.helium.grpc.org_enable_res_v1>(
+                service, METHODID_ENABLE)))
+        .build();
+  }
+
   private static abstract class orgBaseDescriptorSupplier
       implements io.grpc.protobuf.ProtoFileDescriptorSupplier, io.grpc.protobuf.ProtoServiceDescriptorSupplier {
     orgBaseDescriptorSupplier() {}
 
-    @Override
+    @java.lang.Override
     public com.google.protobuf.Descriptors.FileDescriptor getFileDescriptor() {
-      return IotConfig.getDescriptor();
+      return com.helium.grpc.IotConfig.getDescriptor();
     }
 
-    @Override
+    @java.lang.Override
     public com.google.protobuf.Descriptors.ServiceDescriptor getServiceDescriptor() {
       return getFileDescriptor().findServiceByName("org");
     }
@@ -782,13 +796,13 @@ public final class orgGrpc {
   private static final class orgMethodDescriptorSupplier
       extends orgBaseDescriptorSupplier
       implements io.grpc.protobuf.ProtoMethodDescriptorSupplier {
-    private final String methodName;
+    private final java.lang.String methodName;
 
-    orgMethodDescriptorSupplier(String methodName) {
+    orgMethodDescriptorSupplier(java.lang.String methodName) {
       this.methodName = methodName;
     }
 
-    @Override
+    @java.lang.Override
     public com.google.protobuf.Descriptors.MethodDescriptor getMethodDescriptor() {
       return getServiceDescriptor().findMethodByName(methodName);
     }

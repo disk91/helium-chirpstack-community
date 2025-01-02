@@ -676,7 +676,6 @@ public class HeliumDeviceService {
         int i = 0;
         long cTemplate = heliumTenantSetupRepository.count();
         long pTemplate = 0;
-        long template = 0;
         Page<HeliumTenantSetup> htss = null;
         do {
             htss = heliumTenantSetupRepository.findAllByTemplate(false,PageRequest.of(i,50));
@@ -684,16 +683,16 @@ public class HeliumDeviceService {
                 if ( hts.getRouteId() != null && !hts.isTemplate() ) {
                     this.clearInvalidRouteEuis(hts.getRouteId(), true);
                     this.searchMissingRouteEuis(hts.getTenantUUID(),hts.getRouteId(),true);
-                } else template++;
+                }
                 pTemplate++;
                 if ((Now.NowUtcMs() - lastTrace) > 30_000) {
                     lastTrace = Now.NowUtcMs();
-                    log.info("resyncOnce - Phase 2 - {} / {} ({}) tenants already processed", pTemplate, (cTemplate-template), cTemplate);
+                    log.info("resyncOnce - Phase 2 - {} / {} tenants already processed", pTemplate, cTemplate);
                 }
             }
             i++;
         } while ( htss.hasNext() );
-        log.info("resyncOnce - Phase 2 - {} / {} ({}) tenants processed", pTemplate, (cTemplate-template), cTemplate);
+        log.info("resyncOnce - Phase 2 - {} / {} tenants processed", pTemplate, cTemplate);
 
         resynced = true;
         novaService.setReadyForSessionRefresh(true);

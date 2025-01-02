@@ -4,40 +4,37 @@ import static io.grpc.MethodDescriptor.generateFullMethodName;
 
 /**
  */
-@jakarta.annotation.Generated(
-    value = "by gRPC proto compiler (version 1.53.0)",
-    comments = "Source: service/iot_config.proto")
 @io.grpc.stub.annotations.GrpcGenerated
 public final class gatewayGrpc {
 
   private gatewayGrpc() {}
 
-  public static final String SERVICE_NAME = "helium.iot_config.gateway";
+  public static final java.lang.String SERVICE_NAME = "helium.iot_config.gateway";
 
   // Static method descriptors that strictly reflect the proto.
-  private static volatile io.grpc.MethodDescriptor<gateway_region_params_req_v1,
-      gateway_region_params_res_v1> getRegionParamsMethod;
+  private static volatile io.grpc.MethodDescriptor<com.helium.grpc.gateway_region_params_req_v1,
+      com.helium.grpc.gateway_region_params_res_v1> getRegionParamsMethod;
 
   @io.grpc.stub.annotations.RpcMethod(
       fullMethodName = SERVICE_NAME + '/' + "region_params",
-      requestType = gateway_region_params_req_v1.class,
-      responseType = gateway_region_params_res_v1.class,
+      requestType = com.helium.grpc.gateway_region_params_req_v1.class,
+      responseType = com.helium.grpc.gateway_region_params_res_v1.class,
       methodType = io.grpc.MethodDescriptor.MethodType.UNARY)
-  public static io.grpc.MethodDescriptor<gateway_region_params_req_v1,
-      gateway_region_params_res_v1> getRegionParamsMethod() {
-    io.grpc.MethodDescriptor<gateway_region_params_req_v1, gateway_region_params_res_v1> getRegionParamsMethod;
+  public static io.grpc.MethodDescriptor<com.helium.grpc.gateway_region_params_req_v1,
+      com.helium.grpc.gateway_region_params_res_v1> getRegionParamsMethod() {
+    io.grpc.MethodDescriptor<com.helium.grpc.gateway_region_params_req_v1, com.helium.grpc.gateway_region_params_res_v1> getRegionParamsMethod;
     if ((getRegionParamsMethod = gatewayGrpc.getRegionParamsMethod) == null) {
       synchronized (gatewayGrpc.class) {
         if ((getRegionParamsMethod = gatewayGrpc.getRegionParamsMethod) == null) {
           gatewayGrpc.getRegionParamsMethod = getRegionParamsMethod =
-              io.grpc.MethodDescriptor.<gateway_region_params_req_v1, gateway_region_params_res_v1>newBuilder()
+              io.grpc.MethodDescriptor.<com.helium.grpc.gateway_region_params_req_v1, com.helium.grpc.gateway_region_params_res_v1>newBuilder()
               .setType(io.grpc.MethodDescriptor.MethodType.UNARY)
               .setFullMethodName(generateFullMethodName(SERVICE_NAME, "region_params"))
               .setSampledToLocalTracing(true)
               .setRequestMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
-                  gateway_region_params_req_v1.getDefaultInstance()))
+                  com.helium.grpc.gateway_region_params_req_v1.getDefaultInstance()))
               .setResponseMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
-                  gateway_region_params_res_v1.getDefaultInstance()))
+                  com.helium.grpc.gateway_region_params_res_v1.getDefaultInstance()))
               .setSchemaDescriptor(new gatewayMethodDescriptorSupplier("region_params"))
               .build();
         }
@@ -46,29 +43,29 @@ public final class gatewayGrpc {
     return getRegionParamsMethod;
   }
 
-  private static volatile io.grpc.MethodDescriptor<gateway_location_req_v1,
-      gateway_location_res_v1> getLocationMethod;
+  private static volatile io.grpc.MethodDescriptor<com.helium.grpc.gateway_location_req_v1,
+      com.helium.grpc.gateway_location_res_v1> getLocationMethod;
 
   @io.grpc.stub.annotations.RpcMethod(
       fullMethodName = SERVICE_NAME + '/' + "location",
-      requestType = gateway_location_req_v1.class,
-      responseType = gateway_location_res_v1.class,
+      requestType = com.helium.grpc.gateway_location_req_v1.class,
+      responseType = com.helium.grpc.gateway_location_res_v1.class,
       methodType = io.grpc.MethodDescriptor.MethodType.UNARY)
-  public static io.grpc.MethodDescriptor<gateway_location_req_v1,
-      gateway_location_res_v1> getLocationMethod() {
-    io.grpc.MethodDescriptor<gateway_location_req_v1, gateway_location_res_v1> getLocationMethod;
+  public static io.grpc.MethodDescriptor<com.helium.grpc.gateway_location_req_v1,
+      com.helium.grpc.gateway_location_res_v1> getLocationMethod() {
+    io.grpc.MethodDescriptor<com.helium.grpc.gateway_location_req_v1, com.helium.grpc.gateway_location_res_v1> getLocationMethod;
     if ((getLocationMethod = gatewayGrpc.getLocationMethod) == null) {
       synchronized (gatewayGrpc.class) {
         if ((getLocationMethod = gatewayGrpc.getLocationMethod) == null) {
           gatewayGrpc.getLocationMethod = getLocationMethod =
-              io.grpc.MethodDescriptor.<gateway_location_req_v1, gateway_location_res_v1>newBuilder()
+              io.grpc.MethodDescriptor.<com.helium.grpc.gateway_location_req_v1, com.helium.grpc.gateway_location_res_v1>newBuilder()
               .setType(io.grpc.MethodDescriptor.MethodType.UNARY)
               .setFullMethodName(generateFullMethodName(SERVICE_NAME, "location"))
               .setSampledToLocalTracing(true)
               .setRequestMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
-                  gateway_location_req_v1.getDefaultInstance()))
+                  com.helium.grpc.gateway_location_req_v1.getDefaultInstance()))
               .setResponseMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
-                  gateway_location_res_v1.getDefaultInstance()))
+                  com.helium.grpc.gateway_location_res_v1.getDefaultInstance()))
               .setSchemaDescriptor(new gatewayMethodDescriptorSupplier("location"))
               .build();
         }
@@ -77,29 +74,29 @@ public final class gatewayGrpc {
     return getLocationMethod;
   }
 
-  private static volatile io.grpc.MethodDescriptor<gateway_info_req_v1,
-      gateway_info_res_v1> getInfoMethod;
+  private static volatile io.grpc.MethodDescriptor<com.helium.grpc.gateway_info_req_v1,
+      com.helium.grpc.gateway_info_res_v1> getInfoMethod;
 
   @io.grpc.stub.annotations.RpcMethod(
       fullMethodName = SERVICE_NAME + '/' + "info",
-      requestType = gateway_info_req_v1.class,
-      responseType = gateway_info_res_v1.class,
+      requestType = com.helium.grpc.gateway_info_req_v1.class,
+      responseType = com.helium.grpc.gateway_info_res_v1.class,
       methodType = io.grpc.MethodDescriptor.MethodType.UNARY)
-  public static io.grpc.MethodDescriptor<gateway_info_req_v1,
-      gateway_info_res_v1> getInfoMethod() {
-    io.grpc.MethodDescriptor<gateway_info_req_v1, gateway_info_res_v1> getInfoMethod;
+  public static io.grpc.MethodDescriptor<com.helium.grpc.gateway_info_req_v1,
+      com.helium.grpc.gateway_info_res_v1> getInfoMethod() {
+    io.grpc.MethodDescriptor<com.helium.grpc.gateway_info_req_v1, com.helium.grpc.gateway_info_res_v1> getInfoMethod;
     if ((getInfoMethod = gatewayGrpc.getInfoMethod) == null) {
       synchronized (gatewayGrpc.class) {
         if ((getInfoMethod = gatewayGrpc.getInfoMethod) == null) {
           gatewayGrpc.getInfoMethod = getInfoMethod =
-              io.grpc.MethodDescriptor.<gateway_info_req_v1, gateway_info_res_v1>newBuilder()
+              io.grpc.MethodDescriptor.<com.helium.grpc.gateway_info_req_v1, com.helium.grpc.gateway_info_res_v1>newBuilder()
               .setType(io.grpc.MethodDescriptor.MethodType.UNARY)
               .setFullMethodName(generateFullMethodName(SERVICE_NAME, "info"))
               .setSampledToLocalTracing(true)
               .setRequestMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
-                  gateway_info_req_v1.getDefaultInstance()))
+                  com.helium.grpc.gateway_info_req_v1.getDefaultInstance()))
               .setResponseMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
-                  gateway_info_res_v1.getDefaultInstance()))
+                  com.helium.grpc.gateway_info_res_v1.getDefaultInstance()))
               .setSchemaDescriptor(new gatewayMethodDescriptorSupplier("info"))
               .build();
         }
@@ -108,29 +105,29 @@ public final class gatewayGrpc {
     return getInfoMethod;
   }
 
-  private static volatile io.grpc.MethodDescriptor<gateway_info_stream_req_v1,
-      gateway_info_stream_res_v1> getInfoStreamMethod;
+  private static volatile io.grpc.MethodDescriptor<com.helium.grpc.gateway_info_stream_req_v1,
+      com.helium.grpc.gateway_info_stream_res_v1> getInfoStreamMethod;
 
   @io.grpc.stub.annotations.RpcMethod(
       fullMethodName = SERVICE_NAME + '/' + "info_stream",
-      requestType = gateway_info_stream_req_v1.class,
-      responseType = gateway_info_stream_res_v1.class,
+      requestType = com.helium.grpc.gateway_info_stream_req_v1.class,
+      responseType = com.helium.grpc.gateway_info_stream_res_v1.class,
       methodType = io.grpc.MethodDescriptor.MethodType.SERVER_STREAMING)
-  public static io.grpc.MethodDescriptor<gateway_info_stream_req_v1,
-      gateway_info_stream_res_v1> getInfoStreamMethod() {
-    io.grpc.MethodDescriptor<gateway_info_stream_req_v1, gateway_info_stream_res_v1> getInfoStreamMethod;
+  public static io.grpc.MethodDescriptor<com.helium.grpc.gateway_info_stream_req_v1,
+      com.helium.grpc.gateway_info_stream_res_v1> getInfoStreamMethod() {
+    io.grpc.MethodDescriptor<com.helium.grpc.gateway_info_stream_req_v1, com.helium.grpc.gateway_info_stream_res_v1> getInfoStreamMethod;
     if ((getInfoStreamMethod = gatewayGrpc.getInfoStreamMethod) == null) {
       synchronized (gatewayGrpc.class) {
         if ((getInfoStreamMethod = gatewayGrpc.getInfoStreamMethod) == null) {
           gatewayGrpc.getInfoStreamMethod = getInfoStreamMethod =
-              io.grpc.MethodDescriptor.<gateway_info_stream_req_v1, gateway_info_stream_res_v1>newBuilder()
+              io.grpc.MethodDescriptor.<com.helium.grpc.gateway_info_stream_req_v1, com.helium.grpc.gateway_info_stream_res_v1>newBuilder()
               .setType(io.grpc.MethodDescriptor.MethodType.SERVER_STREAMING)
               .setFullMethodName(generateFullMethodName(SERVICE_NAME, "info_stream"))
               .setSampledToLocalTracing(true)
               .setRequestMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
-                  gateway_info_stream_req_v1.getDefaultInstance()))
+                  com.helium.grpc.gateway_info_stream_req_v1.getDefaultInstance()))
               .setResponseMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
-                  gateway_info_stream_res_v1.getDefaultInstance()))
+                  com.helium.grpc.gateway_info_stream_res_v1.getDefaultInstance()))
               .setSchemaDescriptor(new gatewayMethodDescriptorSupplier("info_stream"))
               .build();
         }
@@ -145,7 +142,7 @@ public final class gatewayGrpc {
   public static gatewayStub newStub(io.grpc.Channel channel) {
     io.grpc.stub.AbstractStub.StubFactory<gatewayStub> factory =
       new io.grpc.stub.AbstractStub.StubFactory<gatewayStub>() {
-        @Override
+        @java.lang.Override
         public gatewayStub newStub(io.grpc.Channel channel, io.grpc.CallOptions callOptions) {
           return new gatewayStub(channel, callOptions);
         }
@@ -160,7 +157,7 @@ public final class gatewayGrpc {
       io.grpc.Channel channel) {
     io.grpc.stub.AbstractStub.StubFactory<gatewayBlockingStub> factory =
       new io.grpc.stub.AbstractStub.StubFactory<gatewayBlockingStub>() {
-        @Override
+        @java.lang.Override
         public gatewayBlockingStub newStub(io.grpc.Channel channel, io.grpc.CallOptions callOptions) {
           return new gatewayBlockingStub(channel, callOptions);
         }
@@ -175,7 +172,7 @@ public final class gatewayGrpc {
       io.grpc.Channel channel) {
     io.grpc.stub.AbstractStub.StubFactory<gatewayFutureStub> factory =
       new io.grpc.stub.AbstractStub.StubFactory<gatewayFutureStub>() {
-        @Override
+        @java.lang.Override
         public gatewayFutureStub newStub(io.grpc.Channel channel, io.grpc.CallOptions callOptions) {
           return new gatewayFutureStub(channel, callOptions);
         }
@@ -185,7 +182,7 @@ public final class gatewayGrpc {
 
   /**
    */
-  public static abstract class gatewayImplBase implements io.grpc.BindableService {
+  public interface AsyncService {
 
     /**
      * <pre>
@@ -193,8 +190,8 @@ public final class gatewayGrpc {
      * address (no auth, but signature validated)
      * </pre>
      */
-    public void regionParams(gateway_region_params_req_v1 request,
-                             io.grpc.stub.StreamObserver<gateway_region_params_res_v1> responseObserver) {
+    default void regionParams(com.helium.grpc.gateway_region_params_req_v1 request,
+        io.grpc.stub.StreamObserver<com.helium.grpc.gateway_region_params_res_v1> responseObserver) {
       io.grpc.stub.ServerCalls.asyncUnimplementedUnaryCall(getRegionParamsMethod(), responseObserver);
     }
 
@@ -203,8 +200,8 @@ public final class gatewayGrpc {
      * Get H3 Location for a gateway (auth admin only)
      * </pre>
      */
-    public void location(gateway_location_req_v1 request,
-                         io.grpc.stub.StreamObserver<gateway_location_res_v1> responseObserver) {
+    default void location(com.helium.grpc.gateway_location_req_v1 request,
+        io.grpc.stub.StreamObserver<com.helium.grpc.gateway_location_res_v1> responseObserver) {
       io.grpc.stub.ServerCalls.asyncUnimplementedUnaryCall(getLocationMethod(), responseObserver);
     }
 
@@ -213,8 +210,8 @@ public final class gatewayGrpc {
      * Get info for the specified gateway
      * </pre>
      */
-    public void info(gateway_info_req_v1 request,
-                     io.grpc.stub.StreamObserver<gateway_info_res_v1> responseObserver) {
+    default void info(com.helium.grpc.gateway_info_req_v1 request,
+        io.grpc.stub.StreamObserver<com.helium.grpc.gateway_info_res_v1> responseObserver) {
       io.grpc.stub.ServerCalls.asyncUnimplementedUnaryCall(getInfoMethod(), responseObserver);
     }
 
@@ -223,54 +220,34 @@ public final class gatewayGrpc {
      * Get a stream of gateway info
      * </pre>
      */
-    public void infoStream(gateway_info_stream_req_v1 request,
-                           io.grpc.stub.StreamObserver<gateway_info_stream_res_v1> responseObserver) {
+    default void infoStream(com.helium.grpc.gateway_info_stream_req_v1 request,
+        io.grpc.stub.StreamObserver<com.helium.grpc.gateway_info_stream_res_v1> responseObserver) {
       io.grpc.stub.ServerCalls.asyncUnimplementedUnaryCall(getInfoStreamMethod(), responseObserver);
-    }
-
-    @Override public final io.grpc.ServerServiceDefinition bindService() {
-      return io.grpc.ServerServiceDefinition.builder(getServiceDescriptor())
-          .addMethod(
-            getRegionParamsMethod(),
-            io.grpc.stub.ServerCalls.asyncUnaryCall(
-              new MethodHandlers<
-                gateway_region_params_req_v1,
-                gateway_region_params_res_v1>(
-                  this, METHODID_REGION_PARAMS)))
-          .addMethod(
-            getLocationMethod(),
-            io.grpc.stub.ServerCalls.asyncUnaryCall(
-              new MethodHandlers<
-                gateway_location_req_v1,
-                gateway_location_res_v1>(
-                  this, METHODID_LOCATION)))
-          .addMethod(
-            getInfoMethod(),
-            io.grpc.stub.ServerCalls.asyncUnaryCall(
-              new MethodHandlers<
-                gateway_info_req_v1,
-                gateway_info_res_v1>(
-                  this, METHODID_INFO)))
-          .addMethod(
-            getInfoStreamMethod(),
-            io.grpc.stub.ServerCalls.asyncServerStreamingCall(
-              new MethodHandlers<
-                gateway_info_stream_req_v1,
-                gateway_info_stream_res_v1>(
-                  this, METHODID_INFO_STREAM)))
-          .build();
     }
   }
 
   /**
+   * Base class for the server implementation of the service gateway.
    */
-  public static final class gatewayStub extends io.grpc.stub.AbstractAsyncStub<gatewayStub> {
+  public static abstract class gatewayImplBase
+      implements io.grpc.BindableService, AsyncService {
+
+    @java.lang.Override public final io.grpc.ServerServiceDefinition bindService() {
+      return gatewayGrpc.bindService(this);
+    }
+  }
+
+  /**
+   * A stub to allow clients to do asynchronous rpc calls to service gateway.
+   */
+  public static final class gatewayStub
+      extends io.grpc.stub.AbstractAsyncStub<gatewayStub> {
     private gatewayStub(
         io.grpc.Channel channel, io.grpc.CallOptions callOptions) {
       super(channel, callOptions);
     }
 
-    @Override
+    @java.lang.Override
     protected gatewayStub build(
         io.grpc.Channel channel, io.grpc.CallOptions callOptions) {
       return new gatewayStub(channel, callOptions);
@@ -282,8 +259,8 @@ public final class gatewayGrpc {
      * address (no auth, but signature validated)
      * </pre>
      */
-    public void regionParams(gateway_region_params_req_v1 request,
-                             io.grpc.stub.StreamObserver<gateway_region_params_res_v1> responseObserver) {
+    public void regionParams(com.helium.grpc.gateway_region_params_req_v1 request,
+        io.grpc.stub.StreamObserver<com.helium.grpc.gateway_region_params_res_v1> responseObserver) {
       io.grpc.stub.ClientCalls.asyncUnaryCall(
           getChannel().newCall(getRegionParamsMethod(), getCallOptions()), request, responseObserver);
     }
@@ -293,8 +270,8 @@ public final class gatewayGrpc {
      * Get H3 Location for a gateway (auth admin only)
      * </pre>
      */
-    public void location(gateway_location_req_v1 request,
-                         io.grpc.stub.StreamObserver<gateway_location_res_v1> responseObserver) {
+    public void location(com.helium.grpc.gateway_location_req_v1 request,
+        io.grpc.stub.StreamObserver<com.helium.grpc.gateway_location_res_v1> responseObserver) {
       io.grpc.stub.ClientCalls.asyncUnaryCall(
           getChannel().newCall(getLocationMethod(), getCallOptions()), request, responseObserver);
     }
@@ -304,8 +281,8 @@ public final class gatewayGrpc {
      * Get info for the specified gateway
      * </pre>
      */
-    public void info(gateway_info_req_v1 request,
-                     io.grpc.stub.StreamObserver<gateway_info_res_v1> responseObserver) {
+    public void info(com.helium.grpc.gateway_info_req_v1 request,
+        io.grpc.stub.StreamObserver<com.helium.grpc.gateway_info_res_v1> responseObserver) {
       io.grpc.stub.ClientCalls.asyncUnaryCall(
           getChannel().newCall(getInfoMethod(), getCallOptions()), request, responseObserver);
     }
@@ -315,22 +292,24 @@ public final class gatewayGrpc {
      * Get a stream of gateway info
      * </pre>
      */
-    public void infoStream(gateway_info_stream_req_v1 request,
-                           io.grpc.stub.StreamObserver<gateway_info_stream_res_v1> responseObserver) {
+    public void infoStream(com.helium.grpc.gateway_info_stream_req_v1 request,
+        io.grpc.stub.StreamObserver<com.helium.grpc.gateway_info_stream_res_v1> responseObserver) {
       io.grpc.stub.ClientCalls.asyncServerStreamingCall(
           getChannel().newCall(getInfoStreamMethod(), getCallOptions()), request, responseObserver);
     }
   }
 
   /**
+   * A stub to allow clients to do synchronous rpc calls to service gateway.
    */
-  public static final class gatewayBlockingStub extends io.grpc.stub.AbstractBlockingStub<gatewayBlockingStub> {
+  public static final class gatewayBlockingStub
+      extends io.grpc.stub.AbstractBlockingStub<gatewayBlockingStub> {
     private gatewayBlockingStub(
         io.grpc.Channel channel, io.grpc.CallOptions callOptions) {
       super(channel, callOptions);
     }
 
-    @Override
+    @java.lang.Override
     protected gatewayBlockingStub build(
         io.grpc.Channel channel, io.grpc.CallOptions callOptions) {
       return new gatewayBlockingStub(channel, callOptions);
@@ -342,7 +321,7 @@ public final class gatewayGrpc {
      * address (no auth, but signature validated)
      * </pre>
      */
-    public gateway_region_params_res_v1 regionParams(gateway_region_params_req_v1 request) {
+    public com.helium.grpc.gateway_region_params_res_v1 regionParams(com.helium.grpc.gateway_region_params_req_v1 request) {
       return io.grpc.stub.ClientCalls.blockingUnaryCall(
           getChannel(), getRegionParamsMethod(), getCallOptions(), request);
     }
@@ -352,7 +331,7 @@ public final class gatewayGrpc {
      * Get H3 Location for a gateway (auth admin only)
      * </pre>
      */
-    public gateway_location_res_v1 location(gateway_location_req_v1 request) {
+    public com.helium.grpc.gateway_location_res_v1 location(com.helium.grpc.gateway_location_req_v1 request) {
       return io.grpc.stub.ClientCalls.blockingUnaryCall(
           getChannel(), getLocationMethod(), getCallOptions(), request);
     }
@@ -362,7 +341,7 @@ public final class gatewayGrpc {
      * Get info for the specified gateway
      * </pre>
      */
-    public gateway_info_res_v1 info(gateway_info_req_v1 request) {
+    public com.helium.grpc.gateway_info_res_v1 info(com.helium.grpc.gateway_info_req_v1 request) {
       return io.grpc.stub.ClientCalls.blockingUnaryCall(
           getChannel(), getInfoMethod(), getCallOptions(), request);
     }
@@ -372,22 +351,24 @@ public final class gatewayGrpc {
      * Get a stream of gateway info
      * </pre>
      */
-    public java.util.Iterator<gateway_info_stream_res_v1> infoStream(
-        gateway_info_stream_req_v1 request) {
+    public java.util.Iterator<com.helium.grpc.gateway_info_stream_res_v1> infoStream(
+        com.helium.grpc.gateway_info_stream_req_v1 request) {
       return io.grpc.stub.ClientCalls.blockingServerStreamingCall(
           getChannel(), getInfoStreamMethod(), getCallOptions(), request);
     }
   }
 
   /**
+   * A stub to allow clients to do ListenableFuture-style rpc calls to service gateway.
    */
-  public static final class gatewayFutureStub extends io.grpc.stub.AbstractFutureStub<gatewayFutureStub> {
+  public static final class gatewayFutureStub
+      extends io.grpc.stub.AbstractFutureStub<gatewayFutureStub> {
     private gatewayFutureStub(
         io.grpc.Channel channel, io.grpc.CallOptions callOptions) {
       super(channel, callOptions);
     }
 
-    @Override
+    @java.lang.Override
     protected gatewayFutureStub build(
         io.grpc.Channel channel, io.grpc.CallOptions callOptions) {
       return new gatewayFutureStub(channel, callOptions);
@@ -399,8 +380,8 @@ public final class gatewayGrpc {
      * address (no auth, but signature validated)
      * </pre>
      */
-    public com.google.common.util.concurrent.ListenableFuture<gateway_region_params_res_v1> regionParams(
-        gateway_region_params_req_v1 request) {
+    public com.google.common.util.concurrent.ListenableFuture<com.helium.grpc.gateway_region_params_res_v1> regionParams(
+        com.helium.grpc.gateway_region_params_req_v1 request) {
       return io.grpc.stub.ClientCalls.futureUnaryCall(
           getChannel().newCall(getRegionParamsMethod(), getCallOptions()), request);
     }
@@ -410,8 +391,8 @@ public final class gatewayGrpc {
      * Get H3 Location for a gateway (auth admin only)
      * </pre>
      */
-    public com.google.common.util.concurrent.ListenableFuture<gateway_location_res_v1> location(
-        gateway_location_req_v1 request) {
+    public com.google.common.util.concurrent.ListenableFuture<com.helium.grpc.gateway_location_res_v1> location(
+        com.helium.grpc.gateway_location_req_v1 request) {
       return io.grpc.stub.ClientCalls.futureUnaryCall(
           getChannel().newCall(getLocationMethod(), getCallOptions()), request);
     }
@@ -421,8 +402,8 @@ public final class gatewayGrpc {
      * Get info for the specified gateway
      * </pre>
      */
-    public com.google.common.util.concurrent.ListenableFuture<gateway_info_res_v1> info(
-        gateway_info_req_v1 request) {
+    public com.google.common.util.concurrent.ListenableFuture<com.helium.grpc.gateway_info_res_v1> info(
+        com.helium.grpc.gateway_info_req_v1 request) {
       return io.grpc.stub.ClientCalls.futureUnaryCall(
           getChannel().newCall(getInfoMethod(), getCallOptions()), request);
     }
@@ -438,41 +419,41 @@ public final class gatewayGrpc {
       io.grpc.stub.ServerCalls.ServerStreamingMethod<Req, Resp>,
       io.grpc.stub.ServerCalls.ClientStreamingMethod<Req, Resp>,
       io.grpc.stub.ServerCalls.BidiStreamingMethod<Req, Resp> {
-    private final gatewayImplBase serviceImpl;
+    private final AsyncService serviceImpl;
     private final int methodId;
 
-    MethodHandlers(gatewayImplBase serviceImpl, int methodId) {
+    MethodHandlers(AsyncService serviceImpl, int methodId) {
       this.serviceImpl = serviceImpl;
       this.methodId = methodId;
     }
 
-    @Override
-    @SuppressWarnings("unchecked")
+    @java.lang.Override
+    @java.lang.SuppressWarnings("unchecked")
     public void invoke(Req request, io.grpc.stub.StreamObserver<Resp> responseObserver) {
       switch (methodId) {
         case METHODID_REGION_PARAMS:
-          serviceImpl.regionParams((gateway_region_params_req_v1) request,
-              (io.grpc.stub.StreamObserver<gateway_region_params_res_v1>) responseObserver);
+          serviceImpl.regionParams((com.helium.grpc.gateway_region_params_req_v1) request,
+              (io.grpc.stub.StreamObserver<com.helium.grpc.gateway_region_params_res_v1>) responseObserver);
           break;
         case METHODID_LOCATION:
-          serviceImpl.location((gateway_location_req_v1) request,
-              (io.grpc.stub.StreamObserver<gateway_location_res_v1>) responseObserver);
+          serviceImpl.location((com.helium.grpc.gateway_location_req_v1) request,
+              (io.grpc.stub.StreamObserver<com.helium.grpc.gateway_location_res_v1>) responseObserver);
           break;
         case METHODID_INFO:
-          serviceImpl.info((gateway_info_req_v1) request,
-              (io.grpc.stub.StreamObserver<gateway_info_res_v1>) responseObserver);
+          serviceImpl.info((com.helium.grpc.gateway_info_req_v1) request,
+              (io.grpc.stub.StreamObserver<com.helium.grpc.gateway_info_res_v1>) responseObserver);
           break;
         case METHODID_INFO_STREAM:
-          serviceImpl.infoStream((gateway_info_stream_req_v1) request,
-              (io.grpc.stub.StreamObserver<gateway_info_stream_res_v1>) responseObserver);
+          serviceImpl.infoStream((com.helium.grpc.gateway_info_stream_req_v1) request,
+              (io.grpc.stub.StreamObserver<com.helium.grpc.gateway_info_stream_res_v1>) responseObserver);
           break;
         default:
           throw new AssertionError();
       }
     }
 
-    @Override
-    @SuppressWarnings("unchecked")
+    @java.lang.Override
+    @java.lang.SuppressWarnings("unchecked")
     public io.grpc.stub.StreamObserver<Req> invoke(
         io.grpc.stub.StreamObserver<Resp> responseObserver) {
       switch (methodId) {
@@ -482,16 +463,49 @@ public final class gatewayGrpc {
     }
   }
 
+  public static final io.grpc.ServerServiceDefinition bindService(AsyncService service) {
+    return io.grpc.ServerServiceDefinition.builder(getServiceDescriptor())
+        .addMethod(
+          getRegionParamsMethod(),
+          io.grpc.stub.ServerCalls.asyncUnaryCall(
+            new MethodHandlers<
+              com.helium.grpc.gateway_region_params_req_v1,
+              com.helium.grpc.gateway_region_params_res_v1>(
+                service, METHODID_REGION_PARAMS)))
+        .addMethod(
+          getLocationMethod(),
+          io.grpc.stub.ServerCalls.asyncUnaryCall(
+            new MethodHandlers<
+              com.helium.grpc.gateway_location_req_v1,
+              com.helium.grpc.gateway_location_res_v1>(
+                service, METHODID_LOCATION)))
+        .addMethod(
+          getInfoMethod(),
+          io.grpc.stub.ServerCalls.asyncUnaryCall(
+            new MethodHandlers<
+              com.helium.grpc.gateway_info_req_v1,
+              com.helium.grpc.gateway_info_res_v1>(
+                service, METHODID_INFO)))
+        .addMethod(
+          getInfoStreamMethod(),
+          io.grpc.stub.ServerCalls.asyncServerStreamingCall(
+            new MethodHandlers<
+              com.helium.grpc.gateway_info_stream_req_v1,
+              com.helium.grpc.gateway_info_stream_res_v1>(
+                service, METHODID_INFO_STREAM)))
+        .build();
+  }
+
   private static abstract class gatewayBaseDescriptorSupplier
       implements io.grpc.protobuf.ProtoFileDescriptorSupplier, io.grpc.protobuf.ProtoServiceDescriptorSupplier {
     gatewayBaseDescriptorSupplier() {}
 
-    @Override
+    @java.lang.Override
     public com.google.protobuf.Descriptors.FileDescriptor getFileDescriptor() {
-      return IotConfig.getDescriptor();
+      return com.helium.grpc.IotConfig.getDescriptor();
     }
 
-    @Override
+    @java.lang.Override
     public com.google.protobuf.Descriptors.ServiceDescriptor getServiceDescriptor() {
       return getFileDescriptor().findServiceByName("gateway");
     }
@@ -505,13 +519,13 @@ public final class gatewayGrpc {
   private static final class gatewayMethodDescriptorSupplier
       extends gatewayBaseDescriptorSupplier
       implements io.grpc.protobuf.ProtoMethodDescriptorSupplier {
-    private final String methodName;
+    private final java.lang.String methodName;
 
-    gatewayMethodDescriptorSupplier(String methodName) {
+    gatewayMethodDescriptorSupplier(java.lang.String methodName) {
       this.methodName = methodName;
     }
 
-    @Override
+    @java.lang.Override
     public com.google.protobuf.Descriptors.MethodDescriptor getMethodDescriptor() {
       return getServiceDescriptor().findMethodByName(methodName);
     }
