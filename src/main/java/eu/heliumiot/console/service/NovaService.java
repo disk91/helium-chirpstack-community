@@ -96,15 +96,27 @@ public class NovaService {
     // -----
 
     // List of deviceEUI we want the associated devAddr to be refreshed
-    protected final ArrayList<String> delayedSessionRefresh = new ArrayList<>();
+    protected record SessionRefreshRequest(String devEUI, long time, long retry) {};
+    protected final HashMap<String, SessionRefreshRequest> delayedSessionRefresh = new HashMap<>();
+    protected final HashMap<String, String> delayedRouteRefresh = new HashMap<>();
+
+    protected void addDelayedSessionRefresh(SessionRefreshRequest session) {
+        synchronized (delayedSessionRefresh) {
+            if ( ! this.delayedSessionRefresh.containsKey(session.devEUI) ) {
+                this.delayedSessionRefresh.put(session.devEUI, session);
+            }
+        }
+    }
 
     protected void addDelayedSessionRefresh(String devEUI) {
-        synchronized (delayedSessionRefresh) {
-            boolean found = false;
-            for ( String s : this.delayedSessionRefresh ) {
-                if ( s.compareToIgnoreCase(devEUI) == 0 ) { found = true; break; }
+        addDelayedSessionRefresh(new SessionRefreshRequest(devEUI,Now.NowUtcMs(),0));
+    }
+
+    protected void addDelayedRouteRefresh(String tenantId) {
+        synchronized (delayedRouteRefresh) {
+            if ( ! this.delayedRouteRefresh.containsKey(tenantId) ) {
+                this.delayedRouteRefresh.put(tenantId, tenantId);
             }
-            if ( !found )this.delayedSessionRefresh.add(devEUI);
         }
     }
 
@@ -124,34 +136,52 @@ public class NovaService {
         long start = Now.NowUtcMs();
         try {
 
-            ArrayList<String> toRefresh = new ArrayList<>();
+            HashMap<String,String> routes = new HashMap<>();
             if (!delayedSessionRefresh.isEmpty()) {
+                ArrayList<SessionRefreshRequest> toRefresh;
 
-                // get all the pending device to be updated
+                // get all the pending device to be updated to map the associated route
                 synchronized (delayedSessionRefresh) {
-                    toRefresh.addAll(delayedSessionRefresh);
+                    toRefresh = new ArrayList<>(delayedSessionRefresh.values());
                     delayedSessionRefresh.clear();
                 }
 
-                HashMap<String,String> routes = new HashMap<>();
-                for (String devEUI : toRefresh) {
+                for (SessionRefreshRequest session : toRefresh) {
                     // get routeId to be refreshed
-                    String routeId = heliumTStoNovaProxyService.getRouteIdFromEui(devEUI);
-                    if ( routeId == null ) {
-                        log.warn("flushDelayedSessionUpdate - the route is not existing for {}", devEUI);
+                    String routeId = heliumTStoNovaProxyService.getRouteIdFromEui(session.devEUI);
+                    if (routeId == null
+                            && (session.time < (Now.NowUtcMs() - 15 * Now.ONE_MINUTE)
+                            || session.retry < 3)
+                    ) {
+                        log.warn("flushDelayedSessionUpdate - the route is not existing for {}", session.devEUI);
                         // process later
-                        // @todo - after a certain time we should clear this, the route may be simply deleted
-                        addDelayedSessionRefresh(devEUI);
+                        addDelayedSessionRefresh(new SessionRefreshRequest(session.devEUI, session.time, session.retry + 1));
                     } else {
-                        routes.putIfAbsent(routeId,routeId);
+                        routes.putIfAbsent(routeId, routeId);
                     }
                 }
-
-                for ( String route : routes.values() ) {
-                    this.refreshOneRouteSkf(route);
-                }
-
             }
+            if ( !delayedRouteRefresh.isEmpty() ) {
+                log.warn("flushDelayedSessionUpdate - some session are still pending");
+                ArrayList<String> tenantToRefresh;
+                synchronized (delayedSessionRefresh) {
+                    tenantToRefresh = new ArrayList<>(delayedRouteRefresh.values());
+                    delayedRouteRefresh.clear();
+                }
+                for (String tenantId : tenantToRefresh) {
+                    HeliumTenantSetup hts = heliumTenantSetupRepository.findOneHeliumTenantSetupByTenantUUID(tenantId);
+                    if (hts != null) {
+                        routes.putIfAbsent(hts.getRouteId(), hts.getRouteId());
+                    } else {
+                        log.error("flushDelayedSessionUpdate - tenant {} does not exist", tenantId);
+                    }
+                }
+            }
+
+            for ( String route : routes.values() ) {
+                this.refreshOneRouteSkf(route);
+            }
+
         } finally {
             this.runningJobs--;
         }
@@ -681,7 +711,7 @@ public class NovaService {
                     case OUTOFDCS:
                     case DELETED:
                     case DISABLED:
-                        log.debug("refreshOneRouteSkf - "+hd.getDeviceEui()+" not added due to state "+hd.getState());
+                        log.debug("refreshOneRouteSkf - {} not added due to state {}", hd.getDeviceEui(), hd.getState());
                         break;
                 }
             }

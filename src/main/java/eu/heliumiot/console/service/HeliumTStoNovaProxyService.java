@@ -55,7 +55,7 @@ public class HeliumTStoNovaProxyService {
             if (ht != null) {
                 return ht.getRouteId();
             } else {
-                log.error("Tenant with id " + tenantId + " does not exist");
+                log.error("Tenant with id {} does not exist", tenantId);
             }
         }
         return null;

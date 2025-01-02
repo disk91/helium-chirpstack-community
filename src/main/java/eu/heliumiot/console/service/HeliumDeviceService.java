@@ -43,6 +43,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Slice;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
@@ -943,11 +944,13 @@ public class HeliumDeviceService {
     @Autowired
     protected NovaService novaService;
 
-    protected class DeactivationRequest {
-        public String tenantID;
-        public long lastRequest;
-        public int retries;
-    }
+    public record DeactivationRequest (
+            String tenantID,
+            long lastRequest,
+            int retries,
+            boolean done
+    ) {}
+
     protected HashMap<String,DeactivationRequest> lastDeactivation = new HashMap<>();
 
     /**
@@ -958,29 +961,39 @@ public class HeliumDeviceService {
      *          we should filter redundancy on the previous layer...
      *
      */
+    @Async
     public void processTenantDeactivation(String tenantID) {
-        log.debug("Start tenant deactivation for {}", tenantID);
         long start = Now.NowUtcMs();
 
-        // Avoid to process the same tenant many times on high traffic
-        DeactivationRequest r = lastDeactivation.get(tenantID);
-        if ( r != null && (start - r.lastRequest) < 120_000 ) {
-            // skip this one
-            log.debug("Skip tenant deactivation request for {}", tenantID);
-            return;
+        // clean the deactivation cache
+        ArrayList<String> cleanup = new ArrayList<>();
+        for ( DeactivationRequest d : lastDeactivation.values() ) {
+            if ( d.done && d.lastRequest < (start - 900_000) ) {
+                // more than 15 minutes pending
+                cleanup.add(d.tenantID);
+            }
         }
-        if ( r != null ) {
-            r.lastRequest = start;
-            r.retries++;
-            if ( r.retries > 10 ) {
+        for ( String s : cleanup ) {
+            lastDeactivation.remove(s);
+        }
+
+        // recreate deactivation cache
+        DeactivationRequest r = lastDeactivation.get(tenantID);
+        if (r != null) {
+            if ( !r.done ) return; // in progress deactivation, no need to retry in parallel
+            else if  ( (start - r.lastRequest) < 30_000 ) return; // reenter too fast
+            else if ( r.retries > 10 ) {
                 log.error("More than 10 trials to deactivate a tenant is not normal for {}", tenantID);
+                return;
+            } else {
+                r = new DeactivationRequest(tenantID, start, r.retries+1, false);
+                lastDeactivation.put(tenantID, r);
+                log.debug("Retry tenant deactivation for {}", tenantID);
             }
         } else {
-            r = new DeactivationRequest();
-            r.retries=0;
-            r.lastRequest=start;
-            r.tenantID=tenantID;
-            lastDeactivation.put(tenantID,r);
+            r = new DeactivationRequest(tenantID, start, 0, false);
+            lastDeactivation.put(tenantID, r);
+            log.debug("Start tenant deactivation for {}", tenantID);
         }
 
         String tName = "Unknown";
@@ -991,7 +1004,6 @@ public class HeliumDeviceService {
             Tenant t = tenantRepository.findOneTenantById(UUID.fromString(hts.getTenantUUID()));
             if ( t != null ) tName = t.getName();
         }
-        ArrayList<NovaDevice> toDeactivate = new ArrayList<>();
 
         logService.log(new LogEntry(
                 LogLevel.INFO,
@@ -999,6 +1011,7 @@ public class HeliumDeviceService {
                 "Tenant deactivation request for "+tName+" ("+tenantID+")",
                 Now.NowUtcMs()
         ));
+        int deactivated = 0;
         synchronized (this) {
             Slice<HeliumDevice> allDevices = heliumDeviceRepository.findHeliumDeviceByTenantUUID(tenantID, PageRequest.of(0, 200));
             boolean nextPage = false;
@@ -1008,9 +1021,9 @@ public class HeliumDeviceService {
 
                         if (
                                 d.getState() == HeliumDevice.DeviceState.ACTIVE ||
-                                        d.getState() == HeliumDevice.DeviceState.INACTIVE ||
-                                        d.getState() == HeliumDevice.DeviceState.INSERTED ||
-                                        d.getState() == HeliumDevice.DeviceState.OUTOFDCS       // not normal but we have the case the device was still running event if ...
+                                d.getState() == HeliumDevice.DeviceState.INACTIVE ||
+                                d.getState() == HeliumDevice.DeviceState.INSERTED ||
+                                d.getState() == HeliumDevice.DeviceState.OUTOFDCS       // not normal but we have the case the device was still running event if ...
                         ) {
 
                             d.setState(HeliumDevice.DeviceState.OUTOFDCS);
@@ -1023,7 +1036,10 @@ public class HeliumDeviceService {
                                 n.appEui = d.getApplicationEui();
                                 n.routeId = hts.getRouteId();
                                 n.timeMs = Now.NowUtcMs();
-                                toDeactivate.add(n);
+                                deactivated++;
+
+                                // request for async EUI deactivation
+                                novaService.addDelayedEuisRefreshRemoval(n);
                             }
 
                         }
@@ -1034,27 +1050,20 @@ public class HeliumDeviceService {
                     } else nextPage = false;
                 } while (nextPage);
             }
+            log.info("tenantDeactivation ({})- deactivating {} devices", tenantID,deactivated);
+            // session deactivation is made per tenant, no need to call it for each device, one is enough
+            novaService.addDelayedRouteRefresh(tenantID);
         }
-        novaService.deactivateDevices(toDeactivate);
+
         heliumTenantService.commitTenantDeactivation(tenantID);
         log.info("tenantDeactivation ({})- processed in {}ms", tenantID, Now.NowUtcMs() - start);
 
-        // clean the deactivation cache
-        if ( lastDeactivation.size() > 5 ) {
-            ArrayList<String> cleanup = new ArrayList<>();
-            for ( DeactivationRequest d : lastDeactivation.values() ) {
-                if ( d.lastRequest < (start - 600_000) ) {
-                    // more than 10 minutes pending
-                    cleanup.add(d.tenantID);
-                }
-            }
-            for ( String s : cleanup ) {
-                lastDeactivation.remove(s);
-            }
-        }
+        // Update the deactivation cache
+        lastDeactivation.put(tenantID, new DeactivationRequest(tenantID, r.lastRequest, r.retries, true));
 
     }
 
+    @Async
     public void processTenantReactivation(String tenantID) {
         log.debug("Start tenant reactivation for {}", tenantID);
         long start = Now.NowUtcMs();
@@ -1080,6 +1089,7 @@ public class HeliumDeviceService {
 
             Slice<HeliumDevice> allDevices = heliumDeviceRepository.findHeliumDeviceByTenantUUID(tenantID, PageRequest.of(0, 200));
             boolean nextPage = false;
+            int reactivated = 0;
             if ( allDevices != null ) {
                 do {
                     for (HeliumDevice d : allDevices) {
@@ -1099,7 +1109,8 @@ public class HeliumDeviceService {
                             n.appEui = d.getApplicationEui();
                             n.routeId = hts.getRouteId();
                             n.timeMs = Now.NowUtcMs();
-                            toReactivate.add(n);
+                            reactivated++;
+                            novaService.addDelayedEuisRefreshAddition(n);
                         }
                     }
                     if (allDevices.hasNext()) {
@@ -1108,8 +1119,11 @@ public class HeliumDeviceService {
                     } else nextPage = false;
                 } while (nextPage);
             }
+            log.info("tenantReactivation ({})- activating {} devices", tenantID,reactivated);
+            // session deactivation is made per tenant, no need to call it for each device, one is enough
+            novaService.addDelayedRouteRefresh(tenantID);
         }
-        novaService.activateDevices(toReactivate);
+
         heliumTenantService.commitTenantReactivation(tenantID);
         log.info("tenantReactivation ({})- processed in {}ms", tenantID, Now.NowUtcMs() - start);
 
