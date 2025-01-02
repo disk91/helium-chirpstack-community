@@ -43,6 +43,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Slice;
+import org.springframework.data.domain.Sort;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
@@ -662,10 +663,12 @@ public class NovaService {
             log.error("Try to refresh a route but the route does not exists in database");
         }
         // get associated devices
-        Slice<HeliumDevice> devices = heliumDeviceRepository.findHeliumDeviceByTenantUUID(hts.getTenantUUID(), PageRequest.of(0, 500));
+        int processed = 0;
+        Slice<HeliumDevice> devices = heliumDeviceRepository.findHeliumDeviceByTenantUUID(hts.getTenantUUID(), PageRequest.of(0, 500, Sort.by("id")));
         boolean quit = false;
         do {
             for ( HeliumDevice hd : devices.getContent() ) {
+                processed++;
                 switch (hd.getState()) {
                     case INSERTED:
                     case ACTIVE:
@@ -721,6 +724,8 @@ public class NovaService {
                 quit = true;
             }
         } while ( devices != null && !quit );
+
+        log.info("refreshOneRouteSkf - scan route {} exists {} processed {} devices",inRouteSkfs.size(), routeId, processed);
 
         // search for session to be removed
         boolean hasNonEmpty = false;            // search & make sure this route have the dummy session keys
@@ -1923,6 +1928,10 @@ public class NovaService {
     }
 
 
+    /**
+     * Update the session keys for a given route with skfs to remove and to add
+     * the whole list is given in one single time
+     */
     private boolean grpcUpdateSessions(
             LinkedList<SkfUpdate> toAddSession,
             LinkedList<SkfUpdate> toRemoveSession,
@@ -1933,20 +1942,19 @@ public class NovaService {
         long start = Now.NowUtcMs();
         log.debug("GRPC Session Update Add:{} Del:{} for {}", toAddSession.size(), toRemoveSession.size(), routeId);
         int toProcess = toAddSession.size() + toRemoveSession.size();
-
         ManagedChannel channel = ManagedChannelBuilder.forAddress(
                 consoleConfig.getHeliumGrpcServer(),
                 consoleConfig.getHeliumGrpcPort()
         ).usePlaintext().build();
-        routeGrpc.routeBlockingStub stub = routeGrpc.newBlockingStub(channel);
-        stub = stub.withDeadlineAfter(GRPC_NOVA_API_TIMEOUT, TimeUnit.SECONDS);
+
         try {
 
             long now = Now.NowUtcMs();
-            int actions = 0; // max 50 actions at a time
+            long lastCall = now;
+            int actions = 0; // max 100 actions at a time
             while (!toAddSession.isEmpty() || !toRemoveSession.isEmpty()) {
                 ArrayList<route_skf_update_req_v1.route_skf_update_v1> updates = new ArrayList<>();
-                while (!toAddSession.isEmpty() && actions < 50) {
+                while (!toAddSession.isEmpty() && actions < 100) {
                     SkfUpdate session = toAddSession.poll();
 
                     boolean inRange = false;
@@ -1970,7 +1978,7 @@ public class NovaService {
                     }
                     actions++;
                 }
-                while (!toRemoveSession.isEmpty() && actions < 50) {
+                while (!toRemoveSession.isEmpty() && actions < 100) {
                     SkfUpdate session = toRemoveSession.poll();
 
                     boolean inRange = false;
@@ -1999,6 +2007,8 @@ public class NovaService {
                 int retry = 0;
                 boolean success = false;
                 while ( !success && retry < 3 ) {
+                    if ( (Now.NowUtcMs() - lastCall) < 100 ) Tools.sleep(100); // at least have 100 ms in between API calls to try reduce pressure
+                    lastCall = Now.NowUtcMs();
                     try {
                         if (!updates.isEmpty()) {
                             route_skf_update_req_v1 requestToSign = route_skf_update_req_v1.newBuilder()
@@ -2021,7 +2031,11 @@ public class NovaService {
                                     .setSignature(ByteString.copyFrom(signature))
                                     .build();
 
+                            // try to generate a new stub on every trial to avoid the "channel shutdown" issue after timeout
+                            routeGrpc.routeBlockingStub stub = routeGrpc.newBlockingStub(channel);
+                            stub = stub.withDeadlineAfter(GRPC_NOVA_API_TIMEOUT, TimeUnit.SECONDS);
                             route_skf_update_res_v1 response = stub.updateSkfs(request);
+
                         }
                         toProcess -= actions;
                         actions = 0;
@@ -2029,15 +2043,6 @@ public class NovaService {
                     } catch (StatusRuntimeException x) {
                         prometeusService.addHeliumTotalError();
                         log.warn("Skf Update Nova Backend not reachable {}", x.getMessage());
-
-                        // rebuild a new channel to make sure
-                        if ( channel != null ) channel.shutdown();
-                        channel = ManagedChannelBuilder.forAddress(
-                                consoleConfig.getHeliumGrpcServer(),
-                                consoleConfig.getHeliumGrpcPort()
-                        ).usePlaintext().build();
-                        stub = routeGrpc.newBlockingStub(channel);
-                        stub = stub.withDeadlineAfter(GRPC_NOVA_API_TIMEOUT, TimeUnit.SECONDS);
                         retry++;
                     }
                 }

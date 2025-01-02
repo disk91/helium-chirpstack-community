@@ -58,6 +58,21 @@ public interface HeliumDeviceRepository extends CrudRepository<HeliumDevice, UUI
             Pageable pageable
     );
 
+    public Slice<HeliumDevice> findHeliumDeviceByTenantUUIDAndState(
+            String tenantUUID,
+            HeliumDevice.DeviceState state,
+            Pageable pageable
+    );
+
+    @Query(value= "SELECT * FROM helium_devices " +
+            "WHERE tenantuuid = ?1 AND ( helium_devices.state < 3 OR helium_devices.state == 4 )" +
+            " LIMIT ?2", nativeQuery = true)
+    public List<HeliumDevice> findHeliumDeviceToDeactivate(
+            String tenantUUID,
+            int limit
+    );
+
+
     @Query(value= "SELECT * FROM helium_devices WHERE tenantuuid = ?1 AND helium_devices.state < 3 LIMIT ?2", nativeQuery = true)
     public List<HeliumDevice> findActiveHeliumDevicesByTenantUUID(
             String tenantUUID,
