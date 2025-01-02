@@ -217,7 +217,7 @@ public class HeliumDeviceService {
      * Search for new device added into the device table
      */
     @Scheduled(fixedRateString = "${helium.device.new.scanPeriod}", initialDelay = 5_000) // default : 30s
-    private void scanNewDevicesJob() {
+    protected void scanNewDevicesJob() {
         if ( ! this.serviceEnable ) return;
         this.runningJobs++;
         long start = Now.NowUtcMs();
@@ -422,7 +422,7 @@ public class HeliumDeviceService {
       Scan for deactivated devices also
      */
     @Scheduled(fixedRateString = "${helium.device.deleted.scanPeriod}", initialDelay = 30_000)
-    private void scanDeletedDevicesJob() {
+    protected void scanDeletedDevicesJob() {
         if ( ! this.serviceEnable ) return;
         this.runningJobs++;
         long start = Now.NowUtcMs();
@@ -629,7 +629,7 @@ public class HeliumDeviceService {
 
     // resync the devices in the route
     @Scheduled(fixedRate = 3600_000, initialDelay = 55_000)
-    private void resyncOnce() {
+    protected void resyncOnce() {
         if (resynced) return;
         long start = Now.NowUtcMs();
         log.info("resyncOnce - start db & helium route resync");
@@ -712,7 +712,7 @@ public class HeliumDeviceService {
 
     // Manage the device Activity
     @Scheduled(fixedRateString = "${helium.device.activation.scanPeriod}", initialDelay = 120_000)
-    private void deviceActivityJob() {
+    protected void deviceActivityJob() {
         if ( ! this.serviceEnable ) return;
         this.runningJobs++;
         long start = Now.NowUtcMs();
