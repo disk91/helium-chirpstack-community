@@ -970,7 +970,7 @@ public class HeliumDeviceService {
         // clean the deactivation cache
         ArrayList<String> cleanup = new ArrayList<>();
         for ( DeactivationRequest d : lastDeactivation.values() ) {
-            if ( d.done && d.lastRequest < (start - 900_000) ) {
+            if ( d.done && d.lastRequest < (start - 15*Now.ONE_MINUTE) ) {
                 // more than 15 minutes pending
                 cleanup.add(d.tenantID);
             }
@@ -983,9 +983,9 @@ public class HeliumDeviceService {
         DeactivationRequest r = lastDeactivation.get(tenantID);
         if (r != null) {
             if ( !r.done ) return; // in progress deactivation, no need to retry in parallel
-            else if  ( (start - r.lastRequest) < 30_000 ) return; // reenter too fast
-            else if ( r.retries > 10 ) {
-                log.error("More than 10 trials to deactivate a tenant is not normal for {}", tenantID);
+            else if  ( (start - r.lastRequest) < 5*Now.ONE_MINUTE ) return; // reenter too fast
+            else if ( r.retries > 5 ) {
+                log.error("More than 5 trials to deactivate a tenant is not normal for {}", tenantID);
                 return;
             } else {
                 r = new DeactivationRequest(tenantID, start, r.retries+1, false);

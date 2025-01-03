@@ -1719,23 +1719,24 @@ public class NovaService {
      */
     public boolean grpcAddRemoveInRoutes(List<NovaDevice> devices, String routeId, boolean add) {
 
+        final AtomicInteger counter = new AtomicInteger(0);
         StreamObserver<route_euis_res_v1> responseObserver = new StreamObserver<route_euis_res_v1>() {
-            private long updated = 0;
             @Override
             public void onNext(route_euis_res_v1 value) {
-                updated++;
+                // Why this is never called ?
                 log.debug("Eui Updated");
             }
 
             @Override
             public void onError(Throwable t) {
-                log.error("Eui update failed avec {} updates {}",updated,t.getMessage());
+                log.error("Eui update failed {}", t.getMessage());
+                log.error("Failed on entry {}", counter.get());
+
             }
 
-            // @TODO : back to debug
             @Override
             public void onCompleted() {
-                log.info("End of Eui updates {}",updated);
+                log.debug("End of Eui updates");
             }
         };
 
@@ -1743,9 +1744,9 @@ public class NovaService {
         if ( ! this.grpcInitOk ) return false;
         long start = Now.NowUtcMs();
         if ( add ) {
-            log.debug("GRPC Add routes ({}) in {}", devices.size(), routeId);
+            log.info("GRPC Add routes ({}) in {}", devices.size(), routeId);
         } else {
-            log.debug("GRPC Remove routes ({}) in {}", devices.size(), routeId);
+            log.info("GRPC Remove routes ({}) in {}", devices.size(), routeId);
         }
 
         ManagedChannel channel = ManagedChannelBuilder.forAddress(
@@ -1791,9 +1792,12 @@ public class NovaService {
 
         long startNova = Now.NowUtcMs();
         StreamObserver<route_update_euis_req_v1> reqObserver = stub.updateEuis(responseObserver);
+        int updated = 0;
         try {
             for ( route_update_euis_req_v1 req : requests ) {
+                counter.incrementAndGet();
                 reqObserver.onNext(req);
+                updated++;
             }
             reqObserver.onCompleted();
         } catch ( RuntimeException x ) {
@@ -1804,7 +1808,7 @@ public class NovaService {
             return false;
         } finally {
             //@TODO to remove
-            log.info(">> exit Eui update");
+            log.info(">> exit Eui update {} / {}",updated,devices.size());
             if ( channel != null ) channel.shutdown();
             prometeusService.addHeliumApiTotalTimeMs(startNova);
         }
