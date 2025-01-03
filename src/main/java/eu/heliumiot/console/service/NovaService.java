@@ -1735,7 +1735,7 @@ public class NovaService {
 
             @Override
             public void onCompleted() {
-                log.debug("End of Eui updates");
+                log.info("End of Eui updates");
             }
         };
 
