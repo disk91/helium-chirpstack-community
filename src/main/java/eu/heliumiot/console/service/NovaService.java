@@ -1012,6 +1012,7 @@ public class NovaService {
 
     private byte[] privateKey;
     private ByteString owner;
+    private final Object asyncSignerAccess = new Object();
     private Ed25519Signer signer;
     protected boolean grpcInitOk = false;
 
@@ -1265,8 +1266,12 @@ public class NovaService {
                     .clearSignature()
                     .build();
             byte[] requestToSignContent = delToSign.toByteArray();
-            this.signer.update(requestToSignContent, 0, requestToSignContent.length);
-            byte[] signature = signer.generateSignature();
+
+            byte [] signature;
+            synchronized (asyncSignerAccess) {
+                this.signer.update(requestToSignContent, 0, requestToSignContent.length);
+                signature = signer.generateSignature();
+            }
 
             route_res_v1 response = stub.delete(route_delete_req_v1.newBuilder()
                     .setId(routeId)
@@ -1274,6 +1279,7 @@ public class NovaService {
                     .setSigner(this.owner)
                     .setSignature(ByteString.copyFrom(signature))
                     .build());
+
 
             log.debug("GPRC route deletion duration {}ms", Now.NowUtcMs() - start);
             log.debug("GRPC deletion {}", response.getRoute().getId());
@@ -1372,8 +1378,12 @@ public class NovaService {
                     .build();
 
             byte[] requestToSignContent = createToSign.toByteArray();
-            this.signer.update(requestToSignContent, 0, requestToSignContent.length);
-            byte[] signature = signer.generateSignature();
+
+            byte [] signature;
+            synchronized (asyncSignerAccess) {
+                this.signer.update(requestToSignContent, 0, requestToSignContent.length);
+                signature = signer.generateSignature();
+            }
 
             route_res_v1 response = stub.create(route_create_req_v1.newBuilder()
                     .setOui(consoleConfig.getHeliumRouteOui())
@@ -1405,8 +1415,12 @@ public class NovaService {
                             .build();
 
                     byte[] addrToSignContent = addrToSign.toByteArray();
-                    this.signer.update(addrToSignContent, 0, addrToSignContent.length);
-                    byte[] sign = signer.generateSignature();
+
+                    byte[] sign;
+                    synchronized (asyncSignerAccess) {
+                        this.signer.update(addrToSignContent, 0, addrToSignContent.length);
+                        sign = signer.generateSignature();
+                    }
 
                     route_update_devaddr_ranges_req_v1 request = route_update_devaddr_ranges_req_v1.newBuilder()
                             .setAction(action_v1.add)
@@ -1477,8 +1491,12 @@ public class NovaService {
                     .clearSignature()
                     .build();
             byte[] requestToSignContent = requestToSign.toByteArray();
-            this.signer.update(requestToSignContent, 0, requestToSignContent.length);
-            byte[] signature = signer.generateSignature();
+
+            byte[] signature;
+            synchronized (asyncSignerAccess) {
+                this.signer.update(requestToSignContent, 0, requestToSignContent.length);
+                signature = signer.generateSignature();
+            }
 
             route_res_v1 response = stub.get(route_get_req_v1.newBuilder()
                     .setId(routeId)
@@ -1564,8 +1582,12 @@ public class NovaService {
                     .setSigner(this.owner)
                     .build();
             byte[] requestToSignContent = requestToSign.toByteArray();
-            this.signer.update(requestToSignContent, 0, requestToSignContent.length);
-            byte[] signature = signer.generateSignature();
+
+            byte[] signature;
+            synchronized (asyncSignerAccess) {
+                this.signer.update(requestToSignContent, 0, requestToSignContent.length);
+                signature = signer.generateSignature();
+            }
 
             route_res_v1 response = stub.update(route_update_req_v1.newBuilder()
                     .setRoute(newRoute)
@@ -1610,8 +1632,12 @@ public class NovaService {
                     .clearSignature()
                     .build();
             byte[] requestToSignContent = requestToSign.toByteArray();
-            this.signer.update(requestToSignContent, 0, requestToSignContent.length);
-            byte[] signature = signer.generateSignature();
+
+            byte[] signature;
+            synchronized (asyncSignerAccess) {
+                this.signer.update(requestToSignContent, 0, requestToSignContent.length);
+                signature = signer.generateSignature();
+            }
 
             Iterator<eui_pair_v1> response = stub.getEuis(route_get_euis_req_v1.newBuilder()
                     .setRouteId(routeId)
@@ -1662,8 +1688,12 @@ public class NovaService {
                     .clearSignature()
                     .build();
             byte[] requestToSignContent = requestToSign.toByteArray();
-            this.signer.update(requestToSignContent, 0, requestToSignContent.length);
-            byte[] signature = signer.generateSignature();
+
+            byte[] signature;
+            synchronized (asyncSignerAccess) {
+                this.signer.update(requestToSignContent, 0, requestToSignContent.length);
+                signature = signer.generateSignature();
+            }
 
             route_list_res_v1 response = stub.list(route_list_req_v1.newBuilder()
                     .setOui(consoleConfig.getHeliumRouteOui())
@@ -1755,49 +1785,53 @@ public class NovaService {
                 consoleConfig.getHeliumGrpcServer(),
                 consoleConfig.getHeliumGrpcPort()
         ).usePlaintext().build();
-        routeGrpc.routeStub stub = routeGrpc.newStub(channel);
-
-        long now = Now.NowUtcMs();
-        ArrayList<route_update_euis_req_v1> requests = new ArrayList<>();
-        for( NovaDevice device : devices) {
-            // skip devEui == 0
-            if ( device.devEui.compareTo("0000000000000000") == 0 ) continue;
-
-            log.debug("  Process DevEUI {}", device.devEui);
-            eui_pair_v1 eui = eui_pair_v1.newBuilder()
-                    .setDevEui(Tools.EuiStringToLong(device.devEui))
-                    .setAppEui(Tools.EuiStringToLong(device.appEui))
-                    .setRouteId(routeId)
-                    .build();
-
-            route_update_euis_req_v1 requestToSign = route_update_euis_req_v1.newBuilder()
-                    .setTimestamp(now)
-                    .setActionValue(((add)?action_v1.add_VALUE:action_v1.remove_VALUE))
-                    .setEuiPair(eui)
-                    .setSigner(this.owner)
-                    .clearSignature()
-                    .build();
-            byte[] requestToSignContent = requestToSign.toByteArray();
-            this.signer.update(requestToSignContent, 0, requestToSignContent.length);
-            byte[] signature = signer.generateSignature();
-
-            route_update_euis_req_v1 request = route_update_euis_req_v1.newBuilder()
-                    .setTimestamp(now)
-                    .setActionValue(((add)?action_v1.add_VALUE:action_v1.remove_VALUE))
-                    .setEuiPair(eui)
-                    .setSigner(this.owner)
-                    .setSignature(ByteString.copyFrom(signature))
-                    .build();
-
-            requests.add(request);
-        }
-
         long startNova = Now.NowUtcMs();
         int retry = 0;
         int updated = 0;
         try {
             do {
                 if ( retry > 0 ) log.warn("Retry {} / 3", retry);
+                routeGrpc.routeStub stub = routeGrpc.newStub(channel);
+
+                long now = Now.NowUtcMs();
+                ArrayList<route_update_euis_req_v1> requests = new ArrayList<>();
+                for( NovaDevice device : devices) {
+                    // skip devEui == 0
+                    if ( device.devEui.compareTo("0000000000000000") == 0 ) continue;
+
+                    log.debug("  Process DevEUI {}", device.devEui);
+                    eui_pair_v1 eui = eui_pair_v1.newBuilder()
+                            .setDevEui(Tools.EuiStringToLong(device.devEui))
+                            .setAppEui(Tools.EuiStringToLong(device.appEui))
+                            .setRouteId(routeId)
+                            .build();
+
+                    route_update_euis_req_v1 requestToSign = route_update_euis_req_v1.newBuilder()
+                            .setTimestamp(now)
+                            .setActionValue(((add)?action_v1.add_VALUE:action_v1.remove_VALUE))
+                            .setEuiPair(eui)
+                            .setSigner(this.owner)
+                            .clearSignature()
+                            .build();
+                    byte[] requestToSignContent = requestToSign.toByteArray();
+
+                    byte[] signature;
+                    synchronized (asyncSignerAccess) {
+                        this.signer.update(requestToSignContent, 0, requestToSignContent.length);
+                        signature = signer.generateSignature();
+                    }
+
+                    route_update_euis_req_v1 request = route_update_euis_req_v1.newBuilder()
+                            .setTimestamp(now)
+                            .setActionValue(((add)?action_v1.add_VALUE:action_v1.remove_VALUE))
+                            .setEuiPair(eui)
+                            .setSigner(this.owner)
+                            .setSignature(ByteString.copyFrom(signature))
+                            .build();
+
+                    requests.add(request);
+                }
+
                 updated = 0;
                 failureCounter.set(0);
                 StreamObserver<route_update_euis_req_v1> reqObserver = stub.updateEuis(responseObserver);
@@ -1811,7 +1845,7 @@ public class NovaService {
 
                     // wait for the end of the update to get the eventual error with a timeout
                     long startWait = Now.NowUtcMs();
-                    while (!isCompleted.get() && (Now.NowUtcMs() - startWait) < 20_000) {
+                    while (!isCompleted.get() && (Now.NowUtcMs() - startWait) < 20_000 && failureCounter.get() == 0 ) {
                         Tools.sleep(10);
                     }
                 } catch (RuntimeException x) {
@@ -1900,8 +1934,12 @@ public class NovaService {
                         .clearSignature()
                         .build();
                 byte[] requestToSignContent = requestToSign.toByteArray();
-                this.signer.update(requestToSignContent, 0, requestToSignContent.length);
-                byte[] signature = signer.generateSignature();
+
+                byte[] signature;
+                synchronized (asyncSignerAccess) {
+                    this.signer.update(requestToSignContent, 0, requestToSignContent.length);
+                    signature = signer.generateSignature();
+                }
 
                 route_skf_get_req_v1 request = route_skf_get_req_v1.newBuilder()
                             .setRouteId(routeId)
@@ -1923,8 +1961,12 @@ public class NovaService {
                         .build();
 
                 byte[] requestToSignContent = requestToSign.toByteArray();
-                this.signer.update(requestToSignContent, 0, requestToSignContent.length);
-                byte[] signature = signer.generateSignature();
+
+                byte[] signature;
+                synchronized (asyncSignerAccess) {
+                    this.signer.update(requestToSignContent, 0, requestToSignContent.length);
+                    signature = signer.generateSignature();
+                }
 
                 route_skf_list_req_v1 request = route_skf_list_req_v1.newBuilder()
                         .setRouteId(routeId)
@@ -2053,8 +2095,12 @@ public class NovaService {
                                     .build();
 
                             byte[] requestToSignContent = requestToSign.toByteArray();
-                            this.signer.update(requestToSignContent, 0, requestToSignContent.length);
-                            byte[] signature = signer.generateSignature();
+
+                            byte[] signature;
+                            synchronized (asyncSignerAccess) {
+                                this.signer.update(requestToSignContent, 0, requestToSignContent.length);
+                                signature = signer.generateSignature();
+                            }
 
                             route_skf_update_req_v1 request = route_skf_update_req_v1.newBuilder()
                                     .setRouteId(routeId)
