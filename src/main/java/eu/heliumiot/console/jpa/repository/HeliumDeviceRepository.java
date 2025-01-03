@@ -56,12 +56,6 @@ public interface HeliumDeviceRepository extends CrudRepository<HeliumDevice, UUI
     );
 
 
-    public Slice<HeliumDevice> findHeliumDeviceByTenantUUID(
-            String tenantUUID,
-            Pageable pageable
-    );
-
-
     // Apparently the use of Slice does not allow to get all devices, sometimes you get more,
     // sometimes you get less... so let's review the way to get a page based on sort ; it's efficient enough on large dataset here
     @Query(value= "SELECT * FROM helium_devices " +

@@ -233,10 +233,10 @@ public class NovaService {
                     LinkedList<SkfUpdate> skfToRem = new LinkedList<>();
 
                     // search all devices and filter on that devAddr
-                    Slice<HeliumDevice> devices = heliumDeviceRepository.findHeliumDeviceByTenantUUID(hts.getTenantUUID(), PageRequest.of(0, 500));
+                    List<HeliumDevice> devices = heliumDeviceRepository.findHeliumDeviceByTenantUuid(hts.getTenantUUID(),HeliumDeviceRepository.FIRST_DEVICE_EUI,500);
                     boolean quit = false;
                     do {
-                        for ( HeliumDevice hd : devices.getContent() ) {
+                        for ( HeliumDevice hd : devices ) {
                             DeviceSession s = deviceService.getDeviceSession(hd.getDeviceUUID());
                             if ( s == null ) continue;
                             String devaddr = HexaConverters.byteToHexString(s.getDevAddr().toByteArray());
@@ -266,8 +266,8 @@ public class NovaService {
                                 }
                             }
                         }
-                        if ( devices.hasNext() ) {
-                            devices = heliumDeviceRepository.findHeliumDeviceByTenantUUID(hts.getTenantUUID(), devices.nextPageable());
+                        if ( devices.size() == 500 ) {
+                            devices = heliumDeviceRepository.findHeliumDeviceByTenantUuid(hts.getTenantUUID(), devices.getLast().getDeviceEui(),500);
                         } else {
                             quit = true;
                         }
@@ -462,11 +462,11 @@ public class NovaService {
         ArrayList<DeviceRecord> l = collisionSkfsCache.get(tenantId);
         if ( l == null ) {
             l = new ArrayList<>();
-            Slice<HeliumDevice> devices = heliumDeviceRepository.findHeliumDeviceByTenantUUID(tenantId, PageRequest.of(0, 500));
+            List<HeliumDevice> devices = heliumDeviceRepository.findHeliumDeviceByTenantUuid(tenantId,HeliumDeviceRepository.FIRST_DEVICE_EUI,500);
             boolean quit = false;
             int inRouteDev = 0;
             do {
-                for ( HeliumDevice hd : devices.getContent() ) {
+                for ( HeliumDevice hd : devices ) {
                     switch (hd.getState()) {
                         case INSERTED:
                         case ACTIVE:
@@ -493,8 +493,8 @@ public class NovaService {
                             break;
                     }
                 }
-                if ( devices.hasNext() && inRouteDev < collisionSkfsMaxDevicePerRoute ) {
-                    devices = heliumDeviceRepository.findHeliumDeviceByTenantUUID(tenantId, devices.nextPageable());
+                if ( devices.size() == 500 && inRouteDev < collisionSkfsMaxDevicePerRoute ) {
+                    devices = heliumDeviceRepository.findHeliumDeviceByTenantUuid(tenantId, devices.getLast().getDeviceEui(),500);
                 } else {
                     quit = true;
                 }
@@ -1719,7 +1719,7 @@ public class NovaService {
      */
     public boolean grpcAddRemoveInRoutes(List<NovaDevice> devices, String routeId, boolean add) {
 
-        final AtomicInteger counter = new AtomicInteger(0);
+        final AtomicInteger failureCounter = new AtomicInteger(0);
         StreamObserver<route_euis_res_v1> responseObserver = new StreamObserver<route_euis_res_v1>() {
             @Override
             public void onNext(route_euis_res_v1 value) {
@@ -1730,8 +1730,7 @@ public class NovaService {
             @Override
             public void onError(Throwable t) {
                 log.error("Eui update failed {}", t.getMessage());
-                log.error("Failed on entry {}", counter.get());
-
+                failureCounter.incrementAndGet();
             }
 
             @Override
@@ -1791,25 +1790,32 @@ public class NovaService {
         }
 
         long startNova = Now.NowUtcMs();
-        StreamObserver<route_update_euis_req_v1> reqObserver = stub.updateEuis(responseObserver);
+        int retry = 0;
         int updated = 0;
         try {
-            for ( route_update_euis_req_v1 req : requests ) {
-                counter.incrementAndGet();
-                reqObserver.onNext(req);
-                updated++;
-            }
-            reqObserver.onCompleted();
-        } catch ( RuntimeException x ) {
-            reqObserver.onError(x);
-            prometeusService.addHeliumTotalError();
-            log.error("GRPC error during route update {}", x.getMessage());
-            x.printStackTrace();
-            return false;
+            do {
+                if ( retry > 0 ) log.warn("Retry {} / 3", retry);
+                updated = 0;
+                failureCounter.set(0);
+                StreamObserver<route_update_euis_req_v1> reqObserver = stub.updateEuis(responseObserver);
+                try {
+                    for (route_update_euis_req_v1 req : requests) {
+                        reqObserver.onNext(req);
+                        updated++;
+                    }
+                    reqObserver.onCompleted();
+                } catch (RuntimeException x) {
+                    reqObserver.onError(x);
+                    prometeusService.addHeliumTotalError();
+                    log.error("GRPC error during route update {}", x.getMessage());
+                    x.printStackTrace();
+                }
+            } while (failureCounter.get() > 0 && retry++ < 3);
+            if ( retry >= 3) return false;
         } finally {
             //@TODO to remove
-            log.info(">> exit Eui update {} / {}",updated,devices.size());
-            if ( channel != null ) channel.shutdown();
+            log.info(">> exit Eui update {} / {}", updated, devices.size());
+            if (channel != null) channel.shutdown();
             prometeusService.addHeliumApiTotalTimeMs(startNova);
         }
         return true;

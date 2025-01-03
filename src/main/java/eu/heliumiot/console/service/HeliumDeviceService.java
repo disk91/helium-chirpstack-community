@@ -582,7 +582,7 @@ public class HeliumDeviceService {
             all_.put((""+n.devEui+n.appEui).toLowerCase(),n);
         }
 
-        Slice<HeliumDevice> allDevices = heliumDeviceRepository.findHeliumDeviceByTenantUUID(tenantId, PageRequest.of(0, 100));
+        List<HeliumDevice> allDevices = heliumDeviceRepository.findHeliumDeviceByTenantUuid(tenantId,HeliumDeviceRepository.FIRST_DEVICE_EUI,200);
         boolean nextPage = false;
         if ( allDevices != null ) {
             do {
@@ -611,11 +611,13 @@ public class HeliumDeviceService {
                     }
 
                 }
-                if ( allDevices.hasNext() ) {
-                    allDevices = heliumDeviceRepository.findHeliumDeviceByTenantUUID(tenantId, allDevices.nextPageable());
+                if ( allDevices.size() == 200 ) {
+                    allDevices = heliumDeviceRepository.findHeliumDeviceByTenantUuid(tenantId, allDevices.getLast().getDeviceEui(),200);
                     nextPage = true;
-                } else nextPage = false;
-            } while (nextPage);
+                } else {
+                    nextPage = false;
+                }
+            } while (nextPage && allDevices != null);
         }
         if (!missing.isEmpty()) log.info("Found {} devices to add in the route {}", missing.size(), routeId);
         if (commit) novaService.activateDevices(missing);
