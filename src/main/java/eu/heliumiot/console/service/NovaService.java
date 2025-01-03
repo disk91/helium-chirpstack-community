@@ -54,6 +54,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 
 @Service
@@ -1720,6 +1721,7 @@ public class NovaService {
     public boolean grpcAddRemoveInRoutes(List<NovaDevice> devices, String routeId, boolean add) {
 
         final AtomicInteger failureCounter = new AtomicInteger(0);
+        final AtomicBoolean isCompleted = new AtomicBoolean(false);
         StreamObserver<route_euis_res_v1> responseObserver = new StreamObserver<route_euis_res_v1>() {
             @Override
             public void onNext(route_euis_res_v1 value) {
@@ -1735,7 +1737,8 @@ public class NovaService {
 
             @Override
             public void onCompleted() {
-                log.info("End of Eui updates");
+                isCompleted.set(true);
+                log.debug("End of Eui updates");
             }
         };
 
@@ -1799,16 +1802,22 @@ public class NovaService {
                 failureCounter.set(0);
                 StreamObserver<route_update_euis_req_v1> reqObserver = stub.updateEuis(responseObserver);
                 try {
+                    isCompleted.set(false);
                     for (route_update_euis_req_v1 req : requests) {
                         reqObserver.onNext(req);
                         updated++;
                     }
                     reqObserver.onCompleted();
+
+                    // wait for the end of the update to get the eventual error with a timeout
+                    long startWait = Now.NowUtcMs();
+                    while (!isCompleted.get() && (Now.NowUtcMs() - startWait) < 20_000) {
+                        Tools.sleep(10);
+                    }
                 } catch (RuntimeException x) {
                     reqObserver.onError(x);
                     prometeusService.addHeliumTotalError();
                     log.error("GRPC error during route update {}", x.getMessage());
-                    x.printStackTrace();
                 }
             } while (failureCounter.get() > 0 && retry++ < 3);
             if ( retry >= 3) return false;
