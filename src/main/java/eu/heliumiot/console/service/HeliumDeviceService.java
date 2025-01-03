@@ -956,6 +956,7 @@ public class HeliumDeviceService {
     ) {}
 
     protected HashMap<String,DeactivationRequest> lastDeactivation = new HashMap<>();
+    private final Object asyncLastDeactivation = new Object();
 
     /**
      * Search all devices of the tenant that are currently
@@ -968,36 +969,38 @@ public class HeliumDeviceService {
     @Async
     public void processTenantDeactivation(String tenantID) {
         long start = Now.NowUtcMs();
-
-        // clean the deactivation cache
-        ArrayList<String> cleanup = new ArrayList<>();
-        for ( DeactivationRequest d : lastDeactivation.values() ) {
-            if ( d.done && d.lastRequest < (start - 15*Now.ONE_MINUTE) ) {
-                // more than 15 minutes pending
-                cleanup.add(d.tenantID);
+        DeactivationRequest r;
+        synchronized (asyncLastDeactivation) {
+            // clean the deactivation cache
+            ArrayList<String> cleanup = new ArrayList<>();
+            for ( DeactivationRequest d : lastDeactivation.values() ) {
+                if ( d.done && d.lastRequest < (start - 15*Now.ONE_MINUTE) ) {
+                    // more than 15 minutes pending
+                    cleanup.add(d.tenantID);
+                }
             }
-        }
-        for ( String s : cleanup ) {
-            lastDeactivation.remove(s);
-        }
+            for ( String s : cleanup ) {
+                lastDeactivation.remove(s);
+            }
 
-        // recreate deactivation cache
-        DeactivationRequest r = lastDeactivation.get(tenantID);
-        if (r != null) {
-            if ( !r.done ) return; // in progress deactivation, no need to retry in parallel
-            else if  ( (start - r.lastRequest) < 5*Now.ONE_MINUTE ) return; // reenter too fast
-            else if ( r.retries > 5 ) {
-                log.error("More than 5 trials to deactivate a tenant is not normal for {}", tenantID);
-                return;
+            // recreate deactivation cache
+            r = lastDeactivation.get(tenantID);
+            if (r != null) {
+                if ( !r.done ) return; // in progress deactivation, no need to retry in parallel
+                else if ( (start - r.lastRequest) < 2*Now.ONE_MINUTE ) return; // reenter too fast
+                else if ( r.retries > 5 ) {
+                    log.error("More than 5 trials to deactivate a tenant is not normal for {}", tenantID);
+                    return;
+                } else {
+                    r = new DeactivationRequest(tenantID, start, r.retries+1, false);
+                    lastDeactivation.put(tenantID, r);
+                    log.debug("Retry tenant deactivation for {}", tenantID);
+                }
             } else {
-                r = new DeactivationRequest(tenantID, start, r.retries+1, false);
+                r = new DeactivationRequest(tenantID, start, 0, false);
                 lastDeactivation.put(tenantID, r);
-                log.debug("Retry tenant deactivation for {}", tenantID);
+                log.debug("Start tenant deactivation for {}", tenantID);
             }
-        } else {
-            r = new DeactivationRequest(tenantID, start, 0, false);
-            lastDeactivation.put(tenantID, r);
-            log.debug("Start tenant deactivation for {}", tenantID);
         }
 
         String tName = "Unknown";
@@ -1065,7 +1068,9 @@ public class HeliumDeviceService {
         log.debug("tenantDeactivation ({})- processed in {}ms", tenantID, Now.NowUtcMs() - start);
 
         // Update the deactivation cache
-        lastDeactivation.put(tenantID, new DeactivationRequest(tenantID, r.lastRequest, r.retries, true));
+        synchronized (asyncLastDeactivation) {
+            lastDeactivation.put(tenantID, new DeactivationRequest(tenantID, Now.NowUtcMs(), r.retries, true));
+        }
 
     }
 
