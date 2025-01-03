@@ -816,17 +816,22 @@ public class NovaService {
     protected final HashMap<String,NovaDevice> delayedEuisRefreshAddition = new HashMap<>();
     protected final HashMap<String,NovaDevice> delayedEuisRefreshRemoval = new HashMap<>();
 
+    private final Object asyncEuisRefreshAddition = new Object();
+    private final Object asyncEuisRefreshRemoval = new Object();
+
+    // @TODO - le synchronized sur le hashmap ne doit pas marcher s'il en manque ... ?
+
     protected void addDelayedEuisRefreshAddition(NovaDevice dev) {
         if (dev.routeId == null) return;
         // make sure so we don't have to retest this later
         dev.devEui = dev.devEui.toLowerCase();
         dev.appEui = dev.appEui.toLowerCase();
         if ( dev.timeMs == 0 ) dev.timeMs = Now.NowUtcMs();
-        synchronized (delayedEuisRefreshAddition) {
-            boolean found = delayedEuisRefreshAddition.get(dev.devEui.toLowerCase()) != null;
+        synchronized (asyncEuisRefreshAddition) {
+            boolean found = delayedEuisRefreshAddition.get(dev.devEui) != null;
             if ( !found ) {
                 log.debug("To be added {} ({}) {}", dev.devEui, dev.appEui, dev.routeId);
-                this.delayedEuisRefreshAddition.put(dev.devEui.toLowerCase(),dev);
+                this.delayedEuisRefreshAddition.put(dev.devEui,dev);
             }
         }
     }
@@ -838,11 +843,11 @@ public class NovaService {
         dev.appEui = dev.appEui.toLowerCase();
         if ( dev.timeMs == 0 ) dev.timeMs = Now.NowUtcMs();
 
-        synchronized (delayedEuisRefreshRemoval) {
-            boolean found = delayedEuisRefreshRemoval.get(dev.devEui.toLowerCase()) != null;
+        synchronized (asyncEuisRefreshRemoval) {
+            boolean found = delayedEuisRefreshRemoval.get(dev.devEui) != null;
             if ( !found ) {
                 log.debug("To be deleted {} ({}) {}", dev.devEui, dev.appEui, dev.routeId);
-                this.delayedEuisRefreshRemoval.put(dev.devEui.toLowerCase(),dev);
+                this.delayedEuisRefreshRemoval.put(dev.devEui,dev);
             }
         }
     }
@@ -876,7 +881,7 @@ public class NovaService {
             // Add = Add - Remove
             // Remove = Remove
             HashMap<String,ArrayList<NovaDevice>> toRemove = new HashMap<>();
-            synchronized (delayedEuisRefreshRemoval) {
+            synchronized (asyncEuisRefreshRemoval) {
 
                 // scan the removal list and get the 2000 first elements
                 // (the HPR API refuse around 5000 elements and also requires longer timeout)
@@ -897,7 +902,7 @@ public class NovaService {
             }
 
             HashMap<String,ArrayList<NovaDevice>> toAdd = new HashMap<>();
-            synchronized (delayedEuisRefreshAddition) {
+            synchronized (asyncEuisRefreshAddition) {
 
                 // doing the same with the device addition
                 // scan the addition list and get the 2000 first elements
@@ -908,7 +913,10 @@ public class NovaService {
                     boolean found = false;
 
                     // search in the pending removal list
-                    NovaDevice ns = delayedEuisRefreshRemoval.get(n.devEui);
+                    NovaDevice ns = null;
+                    synchronized (asyncEuisRefreshRemoval) {
+                        ns = delayedEuisRefreshRemoval.get(n.devEui);
+                    }
                     if ( ns != null && ns.appEui.compareTo(n.appEui) == 0  /* && ns.timeMs > n.timeMs */ ) {
                         found = true;
                     } else {
@@ -1712,19 +1720,22 @@ public class NovaService {
     public boolean grpcAddRemoveInRoutes(List<NovaDevice> devices, String routeId, boolean add) {
 
         StreamObserver<route_euis_res_v1> responseObserver = new StreamObserver<route_euis_res_v1>() {
+            private long updated = 0;
             @Override
             public void onNext(route_euis_res_v1 value) {
+                updated++;
                 log.debug("Eui Updated");
             }
 
             @Override
             public void onError(Throwable t) {
-                log.debug("Eui update failed "+t.getMessage());
+                log.error("Eui update failed avec {} updates {}",updated,t.getMessage());
             }
 
+            // @TODO : back to debug
             @Override
             public void onCompleted() {
-                log.debug("End of Eui updates");
+                log.info("End of Eui updates {}",updated);
             }
         };
 
@@ -1792,6 +1803,8 @@ public class NovaService {
             x.printStackTrace();
             return false;
         } finally {
+            //@TODO to remove
+            log.info(">> exit Eui update");
             if ( channel != null ) channel.shutdown();
             prometeusService.addHeliumApiTotalTimeMs(startNova);
         }
