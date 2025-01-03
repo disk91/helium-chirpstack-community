@@ -1761,7 +1761,7 @@ public class NovaService {
 
             @Override
             public void onError(Throwable t) {
-                log.error("Eui update failed {}", t.getMessage());
+                log.error("Eui update failed {}", t.getMessage().substring(0,50));
                 failureCounter.incrementAndGet();
             }
 
@@ -1776,9 +1776,9 @@ public class NovaService {
         if ( ! this.grpcInitOk ) return false;
         long start = Now.NowUtcMs();
         if ( add ) {
-            log.info("GRPC Add routes ({}) in {}", devices.size(), routeId);
+            log.debug("GRPC Add routes ({}) in {}", devices.size(), routeId);
         } else {
-            log.info("GRPC Remove routes ({}) in {}", devices.size(), routeId);
+            log.debug("GRPC Remove routes ({}) in {}", devices.size(), routeId);
         }
 
         ManagedChannel channel = ManagedChannelBuilder.forAddress(
@@ -1790,7 +1790,7 @@ public class NovaService {
         int updated = 0;
         try {
             do {
-                if ( retry > 0 ) log.warn("Retry {} / 3", retry);
+                if ( retry > 0 ) log.warn("GRPC Route update Retry {} / 3", retry);
                 routeGrpc.routeStub stub = routeGrpc.newStub(channel);
 
                 long now = Now.NowUtcMs();
@@ -1856,8 +1856,7 @@ public class NovaService {
             } while (failureCounter.get() > 0 && retry++ < 3);
             if ( retry >= 3) return false;
         } finally {
-            //@TODO to remove
-            log.info(">> exit Eui update {} / {}", updated, devices.size());
+            log.debug(">> exit Eui update {} / {}", updated, devices.size());
             if (channel != null) channel.shutdown();
             prometeusService.addHeliumApiTotalTimeMs(startNova);
         }

@@ -1062,7 +1062,7 @@ public class HeliumDeviceService {
         }
 
         heliumTenantService.commitTenantDeactivation(tenantID);
-        log.info("tenantDeactivation ({})- processed in {}ms", tenantID, Now.NowUtcMs() - start);
+        log.debug("tenantDeactivation ({})- processed in {}ms", tenantID, Now.NowUtcMs() - start);
 
         // Update the deactivation cache
         lastDeactivation.put(tenantID, new DeactivationRequest(tenantID, r.lastRequest, r.retries, true));
@@ -1135,7 +1135,7 @@ public class HeliumDeviceService {
         }
 
         heliumTenantService.commitTenantReactivation(tenantID);
-        log.info("tenantReactivation ({})- processed in {}ms", tenantID, Now.NowUtcMs() - start);
+        log.debug("tenantReactivation ({})- processed in {}ms", tenantID, Now.NowUtcMs() - start);
 
     }
 
