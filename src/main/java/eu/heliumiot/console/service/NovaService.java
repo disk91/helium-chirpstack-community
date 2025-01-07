@@ -1037,6 +1037,10 @@ public class NovaService {
         }
 
         // Load Private key
+        // There is two key format, the first initial one was 65 bytes long, potentially composed by
+        // 01 + 32 bytes of private key + 32 bytes of public key (but I'm not sure, this format is working as a bytestream to init the java class
+        // The second one is 98 bytes long: 01 + 32 bytes of private key + 32 bytes of public key + 01 + 32 bytes of public key
+        // This file format is a bit like a buggy format... but using the first 65 bytes as the previous format is working the same way ...
         this.privateKey = new byte[64];
         try {
             InputStream inputStream = new FileInputStream(consoleConfig.getHeliumGrpcPrivateKeyfilePath());
@@ -1046,13 +1050,12 @@ public class NovaService {
             while ((b = inputStream.read()) != -1) {
                 // verifiy key header should be 1 for type of key
                 if (k == 0 && b != 1) break;
-                if (k > 65) break;
                 if (k > 0 && k < 65) {
                     privateKey[k - 1] = (byte) b;
                 }
                 k++;
             }
-            if (k != 65) {
+            if (k != 65 && k != 98 ) {
                 // error
                 log.error("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
                 log.error("Invalid private keyfile");
@@ -1071,19 +1074,15 @@ public class NovaService {
 
         // Prepare owner information
         try {
-            byte[] owner_b = Base58.decode(consoleConfig.getHeliumGprcPublicKey());
+            byte[] owner_b = Base58.decode(consoleConfig.getHeliumGprcPublicKey(),false);
             if (owner_b.length == 38) {
                 byte[] owner_b2 = new byte[33];
-                for (int i = 0; i < 33; i++) {
-                    owner_b2[i] = owner_b[i + 1];
-                }
+                System.arraycopy(owner_b, 1, owner_b2, 0, 33);
                 this.owner = ByteString.copyFrom(owner_b2);
             } else if (owner_b.length == 37) {
                 // no leading  0
                 byte[] owner_b2 = new byte[33];
-                for (int i = 0; i < 33; i++) {
-                    owner_b2[i] = owner_b[i];
-                }
+                System.arraycopy(owner_b, 0, owner_b2, 0, 33);
                 this.owner = ByteString.copyFrom(owner_b2);
             } else {
                 log.error("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
@@ -1104,6 +1103,21 @@ public class NovaService {
         Ed25519PrivateKeyParameters secretKeyParameters = new Ed25519PrivateKeyParameters(this.privateKey, 0);
         signer = new Ed25519Signer();
         signer.init(true, secretKeyParameters);
+
+        // Verify the public key
+        byte[] pubKeyBytes = secretKeyParameters.generatePublicKey().getEncoded();
+        byte[] pubKeyWithHeader = new byte[pubKeyBytes.length+2];
+        pubKeyWithHeader[0] = 0x00;
+        pubKeyWithHeader[1] = 0x01;
+        System.arraycopy(pubKeyBytes, 0, pubKeyWithHeader, 2, pubKeyBytes.length);
+        String pubKeyHex = Base58.encode(pubKeyWithHeader,true);
+        if ( pubKeyHex.compareToIgnoreCase(consoleConfig.getHeliumGprcPublicKey()) != 0) {
+            log.error("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+            log.error("The public key is not the same as the one in the properties file");
+            log.error("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+            ConsoleApplication.requestingExitForStartupFailure = true;
+            return;
+        }
 
         // Verify the rest of the configuration
         String _netId = consoleConfig.getHeliumRouteNetid();

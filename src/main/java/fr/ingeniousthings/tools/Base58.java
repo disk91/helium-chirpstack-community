@@ -17,6 +17,8 @@
 package fr.ingeniousthings.tools;
 
 import java.math.BigInteger;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
 
 /**
@@ -54,16 +56,21 @@ public class Base58 {
         }
     }
 
+    public static String encode(byte[] input) {
+        return encode(input, false);
+    }
+
     /**
      * Encodes the given bytes as a base58 string (no checksum is appended).
      *
      * @param input the bytes to encode
      * @return the base58-encoded string
      */
-    public static String encode(byte[] input) {
+    public static String encode(byte[] input, boolean withCheck) {
         if (input.length == 0) {
             return "";
         }
+
         // Count leading zeros.
         int zeros = 0;
         while (zeros < input.length && input[zeros] == 0) {
@@ -71,6 +78,22 @@ public class Base58 {
         }
         // Convert base-256 digits to base-58 digits (plus conversion to ASCII characters)
         input = Arrays.copyOf(input, input.length); // since we modify it in-place
+
+        if ( withCheck ) {
+            try {
+                // to check the decoding, we add 4 bytes from the double Hash SHA256 of the data
+                // at the end of the byte values for the check
+                MessageDigest digest = MessageDigest.getInstance("SHA-256");
+                byte[] encodedhash = digest.digest(input);
+                encodedhash = digest.digest(encodedhash);
+                int oldSz = input.length;
+                input = Arrays.copyOf(input, input.length+4);
+                System.arraycopy(encodedhash, 0, input, oldSz, 4);
+            } catch (NoSuchAlgorithmException x) {
+                return "";
+            }
+        }
+
         char[] encoded = new char[input.length * 2]; // upper bound
         int outputStart = encoded.length;
         for (int inputStart = zeros; inputStart < input.length; ) {
@@ -97,10 +120,11 @@ public class Base58 {
      * @return the decoded data bytes
      * @throws ITParseException if the given string is not a valid base58 string
      */
-    public static byte[] decode(String input) throws ITParseException {
-        if (input.length() == 0) {
+    public static byte[] decode(String input, boolean wCheck) throws ITParseException {
+        if (input.isEmpty()) {
             return new byte[0];
         }
+
         // Convert the base58-encoded ASCII chars to a base58 byte sequence (base58 digits).
         byte[] input58 = new byte[input.length()];
         for (int i = 0; i < input.length(); ++i) {
@@ -130,11 +154,15 @@ public class Base58 {
             ++outputStart;
         }
         // Return decoded data (including original number of leading zeros).
-        return Arrays.copyOfRange(decoded, outputStart - zeros, decoded.length);
+        if ( wCheck ) {
+            return Arrays.copyOfRange(decoded, outputStart - zeros, decoded.length-4);
+        } else {
+            return Arrays.copyOfRange(decoded, outputStart - zeros, decoded.length);
+        }
     }
 
     public static BigInteger decodeToBigInteger(String input) throws ITParseException {
-        return new BigInteger(1, decode(input));
+        return new BigInteger(1, decode(input,false));
     }
 
     /**
