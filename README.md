@@ -9,7 +9,7 @@
 **Do not use the master version in production, they are in-progress not tested at scale versions, please use the Released Versions**
 
 ### Chirpstack support
-- Chirpstack 4.7.0
+- Chirpstack 4.10.2
 - Never change the Chirpstack version, this project is specific for a given Chirpstack version, wait for project update before upgrading Chirpstack.
 
 
@@ -91,10 +91,16 @@ Thank you to the following persons contributing to the project:
 
 
 ## Misc for developers
+## Misc
 - Nova service GRPC proto can be found on - https://github.com/helium/proto/blob/master/src/service/iot_config.proto
-- Protoc - version used 25.1 - https://github.com/protocolbuffers/protobuf
+- Protoc - version used 29.0 - https://github.com/protocolbuffers/protobuf
 - Stub pluggin - https://github.com/grpc/grpc-java/releases
-- Download Stub pluggin - https://repo.maven.apache.org/maven2/io/grpc/protoc-gen-grpc-java/1.60.1/
+- Download Stub pluggin - https://repo.maven.apache.org/maven2/io/grpc/protoc-gen-grpc-java/1.69.0/
+- Add headers in service.iot_config.proto / region.proto / blockchain_region_param_v1.proto
+```proto
+option java_package = "com.helium.grpc";
+option java_multiple_files = true;
+```
 - Command lines
 ```agsl
 ./protoc/bin/protoc --plugin=protoc-gen-grpc-java=.../protoc-gen-grpc-java-1.60.1-osx-x86_64.exe --java_out=... \
@@ -108,31 +114,32 @@ Thank you to the following persons contributing to the project:
 - Chirpstack grpc api found on - https://github.com/chirpstack/chirpstack.git
 ```bash
 # for chirpstack grpc api
-~ git checkout v4.7.0
+~ git checkout v4.10.2
 ```
-
 Add following headers in file `chirpstack/api/proto/internal/internal.proto`
 ```proto
 option java_package = "io.chirpstack.internal";
 option java_multiple_files = true;
 option java_outer_classname = "InternalProto";
 ```
-
-````
 ./protoc/bin/protoc -I ./chirpstack/api/proto -I ./googleapis/ --java_out ./out ./chirpstack/api/proto/common/common.proto
-./protoc/bin/protoc -I ./chirpstack/api/proto -I ./googleapis/ --java_out ./out ./chirpstack/api/proto/api/user.proto 
+./protoc/bin/protoc -I ./chirpstack/api/proto -I ./googleapis/ --java_out ./out ./chirpstack/api/proto/api/user.proto
 ./protoc/bin/protoc -I ./chirpstack/api/proto -I ./googleapis/ --java_out ./out ./chirpstack/api/proto/api/device.proto
 ./protoc/bin/protoc -I ./chirpstack/api/proto -I ./googleapis/ --java_out ./out ./chirpstack/api/proto/api/internal.proto
 ./protoc/bin/protoc -I ./chirpstack/api/proto -I ./googleapis/ --java_out ./out ./chirpstack/api/proto/api/tenant.proto
 ./protoc/bin/protoc -I ./chirpstack/api/proto -I ./googleapis/ --java_out ./out ./chirpstack/api/proto/internal/internal.proto
-
 ./protoc/bin/protoc -I ./chirpstack/api/proto -I ./googleapis/ --java_out ./out ./chirpstack/api/proto/stream/api_request.proto
 ./protoc/bin/protoc -I ./chirpstack/api/proto -I ./googleapis/ --java_out ./out ./chirpstack/api/proto/stream/frame.proto
 ./protoc/bin/protoc -I ./chirpstack/api/proto -I ./googleapis/ --java_out ./out ./chirpstack/api/proto/gw/gw.proto
-````
+```
 
 Install OpenJDK21
 ```
 apt-get install openjdk-21-jdk
 update-java-alternatives --set /usr/lib/jvm/java-1.21.0-openjdk-amd64
+```
+
+Update Gradle
+```
+./gradlew wrapper --gradle-version 8.5
 ```
