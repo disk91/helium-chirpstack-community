@@ -20,7 +20,7 @@
     "signup_verif_rpassword" : "Ceci n'est pas encore identique a votre mot de passe",
     "signup_verif_tenant" : "Un peu plus long svp",
     "signup_invite" : "code complementaire",
-    "signup_desc_invite" : "Ajoutez un code complémentaire si vous en avez un", 
+    "signup_desc_invite" : "Ajoutez un code complémentaire si vous en avez un",
     "signup_verif_conditions" : "Vous devez accepter les conditions pour vous inscrire",
     "signup_button" : "S'inscrire",
     "sret_error_conditions" : "Les conditions d'utilisation doivent etre acceptées",
@@ -54,7 +54,7 @@
     "page_not_found" : "Oups... nous sommes actuellement dans l'inconnu",
     "page_error" : "Aïe, on dirait qu'un truc s'est mal passé !",
     "page_home" : "Le mieux est de retourner dans un lieu sûr : l'acceuil",
-  
+
     "menu_add_tenant" : "Créer un tenant",
     "menu_documentation" : "Documentation",
     "menu_documentation_api" : "Documentation API",
@@ -63,10 +63,10 @@
     "menu_user_stats" : "Info Tenant",
     "menu_purchase_dc": "Acheter des Data Credits",
     "menu_admin_profiles" : "Adm profils",
-    "menu_admin_users" : "Adm users",   
-    "menu_edit_profile" : "Mes informations",  
+    "menu_admin_users" : "Adm users",
+    "menu_edit_profile" : "Mes informations",
     "menu_service_request" : "Service request",
-    "menu_migration" : "Import d'objets",   
+    "menu_migration" : "Import d'objets",
     "addtenant_vmessage_success" : "Le tenant a bien été créé",
 
     "tsl_tenantUUID" : "Nom",
@@ -95,7 +95,7 @@
     "tsl_edit" : "Edition",
     "tsl_credit" : "Maj Balance",
     "ts_list_title" : "Liste des modèles de configuration",
-  
+
     "tip_tenantUUID" : "Nom du template",
     "tip_dcBalanceStop" : "En dessous de ce montant, le tenant sera desactivé",
     "tip_dcPer24BMessage" : "Cout en DCs pour un Uplink de moins de 24 octets",
@@ -103,7 +103,7 @@
     "tip_dcPer24BDuplicate" : "Cout en DCs pour les répétitions d'un uplink par 24 octets",
     "tip_dcPerJoinRequest" : "Cout en DCs pour un paquet Join Request",
     "tip_maxJoinRequestDup" : "Nombre max de paquet doublon Join Req pour une meme demande, -1 pour tous",
-    "tip_dcPerJoinAccept" : "Cout en DCs pour une réponse Join Accept", 
+    "tip_dcPerJoinAccept" : "Cout en DCs pour une réponse Join Accept",
     "tip_dcPerDeviceInserted" : "Cout en DCs pour l'ajout d'un objet",
     "tip_inactivityBillingPeriodMs" : "Durée d'une période d'inactivité en ms",
     "tip_dcPerInactivityPeriod" : "Cout en DCs pour un objet sans communication durant la période d'innactivité",
@@ -134,7 +134,7 @@
     "tsl_dcBalance" : "Balance (DCs)",
     "tsl_tenantID" : "Tenant UUID",
     "tsl_addBalance" : "DCs a ajouter / enlever",
-    "tsl_newBalance" : "Balance future",  
+    "tsl_newBalance" : "Balance future",
     "balance_modal" : "Mis à jour de la balance d'un tenant",
     "tenant_edit_modal" : "Mis à jour d'un tenant",
 
@@ -144,7 +144,7 @@
     "bstat_card_param" : "Paramètre",
     "bstat_card_value" : "Valeur",
     "bstat_card_stat" : "Usage des 7 derniers jours",
-  
+
     "days" : "Jours",
     "hours" : "Heures",
 
@@ -168,7 +168,7 @@
     "delmessage_vmessage_success" : "Message supprimé",
     "sret_err_id" : "Id de message invalide",
     "sret_err_category" :"Categorie invalide",
-    "sret_err_type" :"Type invalide", 
+    "sret_err_type" :"Type invalide",
     "sret_err_content" : "Contenu invalide",
     "sret_err_until" : "Date invalide",
     "sret_err_index" : "Index temporel invalide",
@@ -262,8 +262,8 @@
     "txst_processing" : "En attente",
     "txst_requires_capture" : "En attente",
     "txst_canceled" : "Abandonnée",
-    "txst_timeout" : "Abandonnée", 
-    "txst_null" : "Inconnu", 
+    "txst_timeout" : "Abandonnée",
+    "txst_null" : "Inconnu",
     "dc_transaction_histo" : "Historique des transactions réussies",
     "dc_transac_owner_label" : "Facturé à",
 
@@ -306,7 +306,7 @@
     "ticket_response_add" : "Répondre",
     "ticket_response_close" : "Répondre et fermer",
     "ticket_response_saved" : "Réponse enregistrée",
-  
+
     "mig_title" : "Migration d'objets depuis la console Helium historique",
     "mig_setup" : "Configuration de l'API",
     "mig_chirpstack" : "Configuration de Chirpstack",
@@ -401,7 +401,7 @@
     "mig_device_t_devtype" : "Dev Type",
     "mig_device_t_application" : "Dev Application",
     "mig_device_t_status" : "Status",
-  
+
     "mig_modal_devices" : "Confirmation avant migration",
     "mig_modal_description" : "Le processus de migration va desactiver la source. Assurez vous que votre configuration et vos settings sont corrects. Il ne sera pas possible de faire machine arrière.",
     "mig_start_migrate_1" : "Cliquer pour migrer ",
@@ -415,9 +415,9 @@
     "mig_setup_integration_info" : "Actuellement toutes les intégrations ne sont pas migrable, seules celles migrables sont affichées.",
 
     "bcopy_card_title" : "Achats multiples / copie de messages",
-    "bcopy_parameter" : "Paramètre", 
-    "bcopy_curvalue" : "Valeur actuelle", 
-    "bcopy_newvalue" : "Nouvelle Valeur", 
+    "bcopy_parameter" : "Paramètre",
+    "bcopy_curvalue" : "Valeur actuelle",
+    "bcopy_newvalue" : "Nouvelle Valeur",
     "bcopy_name" : "Max copy",
     "bcopy_desc" : "Nombre de paquet acheté au maximum pour chaque messages",
     "bcopy_update" : "Changer le nombre de copies",
@@ -465,7 +465,7 @@
     "cc_tenant_validity" : "Validité du coupon",
     "cc_tenant_validity_desc" : "Durée en jour de validite du coupon",
     "cc_tenant_toCreate" : "Combien ?",
-    "cc_tenant_toCreate_desc" : "Nombre de coupons different à créer.",  
+    "cc_tenant_toCreate_desc" : "Nombre de coupons different à créer.",
     "cc_create" : "Générer",
     "cc_create_success" : "Les coupons ont été créés",
     "cc_create_error" : "Problème durant la génération des coupons, vérifiez les données d'entrée",
@@ -509,7 +509,7 @@
     "ctx_hs_beacon_dist": "Tx Distance",
     "ctx_hs_witness_tot": "Hs Reçus",
     "ctx_hs_witness_dist": "Rx Distance",
-    "ctx_hs_rx_warning": "La performance en réception est significativement inférieur à la transmission, ce hotspot pourrait être dans un environnement bruité.",  
+    "ctx_hs_rx_warning": "La performance en réception est significativement inférieur à la transmission, ce hotspot pourrait être dans un environnement bruité.",
     "ctx_hs_traffic_chart": "Traffic vu par le LNS",
     "ctx_hs_witness_chart": "Witnesses reçus",
     "ctx_hs_reward_chart": "Revenus récents",
@@ -562,6 +562,9 @@
     "inac_table_joinonly_tip":"<b>Device Recently Joined Req only</b><br/>The <span style='color:#f00;'>&#10754;</span> is diplayed when the device in the recent communication only sent Join Request and never succeeded in getting connected. It can be a problem of noise on reception or a problem of hotspot involved in communication. You can inclease max_copy to try to resolve, you can get more information on frame analysis. The <span style='color:#e93;'>&#10754;</span> means, the status can't be computed, it's a normal behavior.",
     "inac_table_covrisk_tip":"<b>Device Link Quality</b><br/>The <span style='color:#f00;'>&#10754;</span> is diplayed when the device reception conditions are bad and may be the cause of miscommunications. The <span style='color:#e93;'>&#10754;</span> means link quality is unknown or not good but average. You can get more information for the Frame Analysis page.",
     "inac_table_skcol_tip":"<b>Session Key Filter Collision</b><br/>The <span style='color:#f00;'>&#10754;</span> is diplayed when the device shares the same session than another. This prevent data to be correctly route to the device. Change your appKey in a such situation. The <span style='color:#e93;'>&#10754;</span> is displayed when the check is not performed, this is a normal behavior.",
+
+    "tsl_punishment":"Comportement anormal",
+    "tip_punishment":"Cout associé à des comportements anormaux tels que triche",
 
     "end" : "fin"
 }

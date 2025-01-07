@@ -21,7 +21,7 @@
   "signup_verif_rpassword" : "This is not yet identical to your password.",
   "signup_verif_tenant" : "Please make tenant name longer.",
   "signup_invite" : "Coupon Code",
-  "signup_desc_invite" : "A coupon code can be added, if you have one.", 
+  "signup_desc_invite" : "A coupon code can be added, if you have one.",
   "signup_verif_conditions" : "You need to accept service conditions to register.",
   "signup_button" : "Register",
   "sret_error_conditions" : "Terms of use must be accepted.",
@@ -103,7 +103,7 @@
   "tip_dcPer24BDownlink" : "Cost in DCs of a dowlink message under 24 bytes",
   "tip_dcPerJoinRequest" : "Cost in DCs of a Join Request frame",
   "tip_maxJoinRequestDup" : "Max number of Join Req dup packet to invoice for a single JoinReq, -1 all",
-  "tip_dcPerJoinAccept" : "Cost in DCs of a Join Accept response", 
+  "tip_dcPerJoinAccept" : "Cost in DCs of a Join Accept response",
   "tip_dcPer24BDuplicate" : "Cost in DCs of duplicates (hotspots other than 1st one)",
   "tip_dcPerDeviceInserted" : "Cost isn DCs for adding a new device",
   "tip_inactivityBillingPeriodMs" : "Duration of an inactivity period in ms",
@@ -138,7 +138,7 @@
   "tsl_newBalance" : "Future balance",
   "balance_modal" : "Update Tenant DC balance",
   "tenant_edit_modal" : "Update Tenant Details",
-  
+
   "error_load_basicstat" : "Unable to load the tenant statistics. Please try again later.",
   "error_find_basicstat" : "A Tenant needs to be seleted first. Go back to Chirpstack page.",
   "bstat_card_title" : "Tenant setup & last 7 days stats",
@@ -169,7 +169,7 @@
   "delmessage_vmessage_success" : "Message deletion success",
   "sret_err_id" : "Invalid message ID",
   "sret_err_category" :"Invalid category",
-  "sret_err_type" :"Invalid type", 
+  "sret_err_type" :"Invalid type",
   "sret_err_content" : "Invalid content",
   "sret_err_until" : "Invalid date",
   "sret_err_index" : "Invalid index",
@@ -263,8 +263,8 @@
   "txst_pending" : "Pending",
   "txst_requires_capture" : "Pending",
   "txst_canceled" : "Failed",
-  "txst_timeout" : "Failed", 
-  "txst_null" : "Unknown", 
+  "txst_timeout" : "Failed",
+  "txst_null" : "Unknown",
   "dc_transaction_histo" : "Completed Transaction history",
   "dc_transac_owner_label" : "Invoiced to",
 
@@ -414,9 +414,9 @@
   "mig_setup_integration_info" : "Currently, not all types of integration are supported for migration. The list only displays what is supported.",
 
   "bcopy_card_title" : "Multi-buy / frame copy",
-  "bcopy_parameter" : "Parameter", 
-  "bcopy_curvalue" : "Curent Value", 
-  "bcopy_newvalue" : "New Value", 
+  "bcopy_parameter" : "Parameter",
+  "bcopy_curvalue" : "Curent Value",
+  "bcopy_newvalue" : "New Value",
   "bcopy_name" : "Max copy",
   "bcopy_desc" : "Max quantity of packet purchased for each messages",
   "bcopy_update" : "Update Max copy",
@@ -434,7 +434,7 @@
   "uc_update_error" : "Unable to update condition version",
   "uc_condition_message" : "The end user licence agreement has been updated, before being able to access the service, you need to renew your agreement for these new conditions.",
   "uc_condition_visit" : "Please read the end-user license agreement",
-  "uc_condition_valid" : "I accept the new end-user license agreement",  
+  "uc_condition_valid" : "I accept the new end-user license agreement",
   "uc_condition_submit" : "Next",
 
   "u_search_title" : "User Mangement",
@@ -561,6 +561,8 @@
   "inac_table_joinonly_tip":"<b>Device Recently Joined Req only</b><br/>The <span style='color:#f00;'>&#10754;</span> is diplayed when the device in the recent communication only sent Join Request and never succeeded in getting connected. It can be a problem of noise on reception or a problem of hotspot involved in communication. You can inclease max_copy to try to resolve, you can get more information on frame analysis. The <span style='color:#e93;'>&#10754;</span> means, the status can't be computed, it's a normal behavior.",
   "inac_table_covrisk_tip":"<b>Device Link Quality</b><br/>The <span style='color:#f00;'>&#10754;</span> is diplayed when the device reception conditions are bad and may be the cause of miscommunications. The <span style='color:#e93;'>&#10754;</span> means link quality is unknown or not good but average. You can get more information for the Frame Analysis page.",
   "inac_table_skcol_tip":"<b>Session Key Filter Collision</b><br/>The <span style='color:#f00;'>&#10754;</span> is diplayed when the device shares the same session than another. This prevent data to be correctly route to the device. Change your appKey in a such situation. The <span style='color:#e93;'>&#10754;</span> is displayed when the check is not performed, this is a normal behavior.",
+  "tsl_punishment":"Anormal Behavior",
+  "tip_punishment":"Cost of DCs associated with some anormal behavior related to gaming",
 
   "end" : "end"
 }
