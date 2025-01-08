@@ -510,10 +510,15 @@ export class ChirpstackService {
         }
 
         // normal case where the device has already been activated prevously
+        // As we cant' retrieve the downlink counter it better to have a higher number
+        // than what the device have to avoid rejection by device. 1000 is purely abitrary.
+        // in case the fleets needs more a script is available for a mass update
+        // This is reset on rejoin. This can be set manually on the device activation page also.
+        // aFCntDown is for application fPort != 0 and nFCntDown is for network server fPort = 0
         let body : DeviceActivation = {
             deviceActivation : {
-                aFCntDown : 0,
-                nFCntDown: 0,
+                aFCntDown : 1000,
+                nFCntDown: 1000,
                 fCntUp : 0,
                 appSKey : dev.rawDevice.app_s_key,
                 devAddr : dev.rawDevice.devaddr,
