@@ -512,14 +512,15 @@ export class ChirpstackService {
         // normal case where the device has already been activated prevously
         // As we cant' retrieve the downlink counter it better to have a higher number
         // than what the device have to avoid rejection by device. 1000 is purely abitrary.
+        // Helium Api has been updated on VIP to send the counter (but only this instance may have it)
         // in case the fleets needs more a script is available for a mass update
         // This is reset on rejoin. This can be set manually on the device activation page also.
         // aFCntDown is for application fPort != 0 and nFCntDown is for network server fPort = 0
         let body : DeviceActivation = {
             deviceActivation : {
-                aFCntDown : 1000,
-                nFCntDown: 1000,
-                fCntUp : 0,
+                aFCntDown : dev.rawDevice.frame_down ?? 1000,
+                nFCntDown: dev.rawDevice.frame_down ?? 1000,
+                fCntUp : dev.rawDevice.frame_up ?? 0,
                 appSKey : dev.rawDevice.app_s_key,
                 devAddr : dev.rawDevice.devaddr,
                 fNwkSIntKey : dev.rawDevice.nwk_s_key,
@@ -527,6 +528,10 @@ export class ChirpstackService {
                 sNwkSIntKey : dev.rawDevice.nwk_s_key,
             }
         }
+        // make sure if we had downlink during the migration process 
+        // they won't be missed
+        body.deviceActivation.aFCntDown+=10;
+        body.deviceActivation.nFCntDown+=10;
         return new Promise<string>((resolve) => { 
             // create device
             //console.log(dev);

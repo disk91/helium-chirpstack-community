@@ -33,6 +33,8 @@ declare module "vue/types/proxy" {
         config_profile_id : string,
         dc_usage : number,
         devaddr : string,
+        frame_down : number,
+        frame_up : number,
         id : string,
         in_xor_filter : boolean,
         labels : LabelItf[],
