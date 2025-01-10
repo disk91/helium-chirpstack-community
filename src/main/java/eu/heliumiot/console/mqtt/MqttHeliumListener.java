@@ -25,6 +25,7 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 import eu.heliumiot.console.ConsoleConfig;
 import eu.heliumiot.console.jpa.db.HeliumParameter;
 import eu.heliumiot.console.jpa.db.HeliumTenant;
+import eu.heliumiot.console.mqtt.api.FrameForwardReport;
 import eu.heliumiot.console.mqtt.api.HeliumDeviceActDeactItf;
 import eu.heliumiot.console.mqtt.api.HeliumDeviceStatItf;
 import eu.heliumiot.console.mqtt.api.HeliumTenantActDeactItf;
@@ -57,6 +58,9 @@ public class MqttHeliumListener implements MqttCallback {
     @Autowired
     protected HeliumParameterService heliumParameterService;
 
+    @Autowired
+    protected CrossDeviceService crossDeviceService;
+
     private MqttConnectOptions connectionOptions;
     private MemoryPersistence persistence;
     private MqttClient mqttClient;
@@ -83,10 +87,10 @@ public class MqttHeliumListener implements MqttCallback {
         this.persistence = new MemoryPersistence();
         this.connectionOptions = new MqttConnectOptions();
         try {
-            log.info("MQTT H Url :"+mqttConfig.getMqttServer());
-            log.info("MQTT H User :"+mqttConfig.getMqttLogin());
+            log.info("MQTT H Url :{}", mqttConfig.getMqttServer());
+            log.info("MQTT H User :{}", mqttConfig.getMqttLogin());
             //log.info("Password :"+mqttConfig.getPassword());
-            log.info("MQTT H Id : "+clientId);
+            log.info("MQTT H Id : {}", clientId);
             this.mqttClient = new MqttClient(mqttConfig.getMqttServer(), clientId, persistence);
             this.connectionOptions.setCleanSession(false);          // restart by processing pending events
             this.connectionOptions.setAutomaticReconnect(false);    // reconnect managed manually
@@ -102,7 +106,7 @@ public class MqttHeliumListener implements MqttCallback {
 
             log.info("MQTT H Starting Mqtt listener");
         } catch (MqttException me) {
-            log.error("MQTT H Init ERROR : "+me.getMessage());
+            log.error("MQTT H Init ERROR : {}", me.getMessage());
         }
         return this.mqttClient;
     }
@@ -121,7 +125,7 @@ public class MqttHeliumListener implements MqttCallback {
             this.mqttClient.disconnect();
             this.mqttClient.close();
         } catch (MqttException me) {
-            log.error("MQTT H ERROR :"+me.getMessage());
+            log.error("MQTT H ERROR :{}", me.getMessage());
         }
     }
 
@@ -159,7 +163,7 @@ public class MqttHeliumListener implements MqttCallback {
             }
             pendingReconnection = false;
         } catch (MqttException me) {
-            log.warn("MQTT H - reconnection failed - "+me.getMessage());
+            log.warn("MQTT H - reconnection failed - {}", me.getMessage());
         }
     }
 
@@ -218,6 +222,10 @@ public class MqttHeliumListener implements MqttCallback {
                 HeliumTenant t = mapper.readValue(message.toString(), HeliumTenant.class);
                 log.info("FireDcBalanceAlarm for {}", t.getTenantUUID());
                 userService.fireDcBalanceAlarm(t);
+            } else if (crossDeviceService.isFullVersion() && topicName.matches("helium/forwarder/process/")) {
+                // messages from forwarder
+                FrameForwardReport f = mapper.readValue(message.toString(), FrameForwardReport.class);
+                crossDeviceService.processForwarderMessage(f);
             } else {
 // =================================================
 // OTHERS

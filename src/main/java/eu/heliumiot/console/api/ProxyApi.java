@@ -151,7 +151,7 @@ public class ProxyApi {
             URI uri = Paths.get(reqItf.getEndpoint()).toUri();
             log.debug(uri.getHost()); // force to use uri.
 
-            if ( reqItf.getKey() != null && reqItf.getKey().length() > 0 ) {
+            if ( reqItf.getKey() != null && !reqItf.getKey().isEmpty()) {
                 // test authorized URL
                 if ( ! verifyEndpoint(reqItf.getEndpoint(), request.getUserPrincipal().getName() ) ) {
                     r.setMessage("console_response");
