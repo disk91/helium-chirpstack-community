@@ -29,4 +29,6 @@ public enum FrameForwardReportType {
     MQTT_FAILURE,
     MQTT_RETRY_FAILURE,
     DOWNLINK_RECEIVED,
+
+    UNKNOWN
 }
