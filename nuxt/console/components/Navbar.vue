@@ -14,7 +14,7 @@
         <b-nav-item to="/front/" exact active-class="active" >{{ $t('menu_chirpstack') }}</b-nav-item>
         <b-nav-item to="/front/stats" exact active-class="active" >{{ $t('menu_user_stats') }}</b-nav-item>
         <b-nav-item v-if="!$config.community" 
-                    to="/front/showcontext" 
+                    to="/front/privshowcontext" 
                     exact active-class="active">
                     {{ $t('menu_showcontext') }}
         </b-nav-item>
