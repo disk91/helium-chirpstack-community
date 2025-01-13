@@ -75,6 +75,12 @@ public class UserDetailRespItf {
     )
     private String country="";
 
+    @Schema(
+            description = "User country code ISO-2",
+            requiredMode = Schema.RequiredMode.REQUIRED
+    )
+    private String country_iso="";
+
 
     // ------------------------------------
 
@@ -141,5 +147,13 @@ public class UserDetailRespItf {
 
     public void setCountry(String country) {
         this.country = country;
+    }
+
+    public String getCountry_iso() {
+        return country_iso;
+    }
+
+    public void setCountry_iso(String country_iso) {
+        this.country_iso = country_iso;
     }
 }

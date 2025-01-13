@@ -182,7 +182,7 @@ public class UserService {
 
         // verify invitation code
         String profile = HELIUM_TENANT_SETUP_DEFAULT;
-        if  (req.getInviteCode().length() > 0) {
+        if  (!req.getInviteCode().isEmpty()) {
             // process verification ...
             // set profile based on the invitation code verification
             String uuid = heliumTenantSetupService.acquiresCoupon(req.getInviteCode());
@@ -211,13 +211,13 @@ public class UserService {
 
         // verify email
         if ( ! Tools.isAcceptedEmailSyntax(req.getUsername(), consoleConfig.getIngeniousthingsEmailFilter()) ) {
-            log.warn("Refused email registration for "+req.getUsername()+" from "+adr);
+            log.warn("Refused email registration for {} from {}", req.getUsername(), adr);
             r.setErrorMessage("success");
             Tools.sleep(8+((new Random().nextInt()) % 7));
             return r;
         }
         if ( ! Tools.isValidEmailSyntax(req.getUsername()) ) {
-            log.warn("Rejected email registration for "+req.getUsername());
+            log.warn("Rejected email registration for {}", req.getUsername());
             throw new ITParseException("error_invalid_email");
         }
 
@@ -262,8 +262,8 @@ public class UserService {
                 HPU_TYPE_CREATION
                 );
         int retry = 0;
-        if ( hpes != null && hpes.size() > 0 ) {
-            retry = hpes.get(0).getRetrial()+1;
+        if ( hpes != null && !hpes.isEmpty()) {
+            retry = hpes.getFirst().getRetrial()+1;
             for (HeliumPendingUser hpe : hpes ) {
                 heliumPendingUserRepository.delete(hpe);
             }
@@ -403,9 +403,9 @@ public class UserService {
             }
 
         } catch ( ITRightException x ) {
-            log.error("Impossible to create new tenant - rights - "+x.getMessage());
+            log.error("Impossible to create new tenant - rights - {}", x.getMessage());
         } catch ( ITNotFoundException x ) {
-            log.error("Impossible to create new tenant - not found - "+x.getMessage());
+            log.error("Impossible to create new tenant - not found - {}", x.getMessage());
         } catch ( InvalidProtocolBufferException x ) {
             log.error("Impossible to create new tenant - protobuf");
         }
@@ -465,9 +465,9 @@ public class UserService {
             }
 
         } catch ( ITRightException x ) {
-            log.error("Impossible to create new user - rights - "+x.getMessage());
+            log.error("Impossible to create new user - rights - {}", x.getMessage());
         } catch ( ITNotFoundException x ) {
-            log.error("Impossible to create new user - not found - "+x.getMessage());
+            log.error("Impossible to create new user - not found - {}", x.getMessage());
         } catch ( InvalidProtocolBufferException x ) {
             log.error("Impossible to create new user - protobuf");
         }
@@ -488,9 +488,9 @@ public class UserService {
                 );
 
             } catch ( ITRightException x ) {
-                log.error("Impossible to delete tenant - rights - "+x.getMessage());
+                log.error("Impossible to delete tenant - rights - {}", x.getMessage());
             } catch (ITNotFoundException x) {
-                log.error("Impossible to delete tenant - not found - "+x.getMessage());
+                log.error("Impossible to delete tenant - not found - {}", x.getMessage());
             } catch ( ITParseException x) {
                 log.error("Impossible to delete tenant - parse");
             }
@@ -660,6 +660,7 @@ public class UserService {
             r.setCompany(encryptionHelper.decryptStringWithServerKey(c.heliumUser.getCompany()));
         } else r.setCompany("");
         r.setCountry(c.heliumUser.getCountry());
+        r.setCountry_iso(c.heliumUser.getCountryCode());
         if ( c.heliumUser.getFirstName() != null ) {
             r.setFirstName(encryptionHelper.decryptStringWithServerKey(c.heliumUser.getFirstName()));
         } else r.setFirstName("");
@@ -707,7 +708,8 @@ public class UserService {
         c.heliumUser.setCityCode(u.getCityCode());
         c.heliumUser.setCityName(u.getCityName());
         c.heliumUser.setCountry(u.getCountry());
-        if ( u.getLastName().length() > 0 && u.getCityCode().length() >0 && u.getCityName().length() > 0 && u.getCountry().length() > 0 ) {
+        c.heliumUser.setCountryCode(u.getCountry_iso());
+        if (!u.getLastName().isEmpty() && !u.getCityCode().isEmpty() && !u.getCityName().isEmpty() && !u.getCountry().isEmpty() && !u.getCountry_iso().isEmpty()) {
             c.heliumUser.setProfileStatus(HUPROFILE_STATUS_COMPLETED);
         } else {
             c.heliumUser.setProfileStatus(HUPROFILE_STATUS_CREATED);
@@ -721,6 +723,7 @@ public class UserService {
         r.setCityName(c.heliumUser.getCityName());
         r.setCompany(u.getCompany());
         r.setCountry(c.heliumUser.getCountry());
+        r.setCountry_iso(c.heliumUser.getCountryCode());
         r.setFirstName(u.getFirstName());
         r.setLastName(u.getLastName());
         return r;
@@ -950,7 +953,7 @@ public class UserService {
                     }
                     resp.add(r);
                 } else {
-                    log.warn("User "+u.getUsername()+" exist in helium_user but can't be find in cache");
+                    log.warn("User {} exist in helium_user but can't be find in cache", u.getUsername());
                 }
             }
             // make newer come first
@@ -966,20 +969,20 @@ public class UserService {
     public void banUser( String adminId, String userName) throws ITNotFoundException, ITRightException {
         UserCacheService.UserCacheElement ad = userCacheService.getUserById(adminId);
         if (ad == null) {
-            log.warn("Ban request from unknown admin "+adminId);
+            log.warn("Ban request from unknown admin {}", adminId);
             throw new ITNotFoundException();
         }
         if (! ad.user.isAdmin()) {
-            log.error("Ban request from a non admin user ("+ad.user.getEmail()+")");
+            log.error("Ban request from a non admin user ({})", ad.user.getEmail());
             throw new ITRightException();
         }
 
         UserCacheService.UserCacheElement u = userCacheService.getUserByUsername(userName);
         if (u == null) {
-            log.warn("Ban request for unknown user ("+userName+")");
+            log.warn("Ban request for unknown user ({})", userName);
             throw new ITNotFoundException();
         }
-        log.info("Ban request for ("+u.user.getEmail()+")");
+        log.info("Ban request for ({})", u.user.getEmail());
 
         // Ban the User steps
         // Reset Password and deactivate
@@ -1000,7 +1003,7 @@ public class UserService {
         } catch ( ITRightException x ) {
             log.error("Impossible to force reset password - rights");
         } catch ( ITNotFoundException | ITParseException x ) {
-            log.error("Impossible to force reset password - not found/parse "+x.getMessage());
+            log.error("Impossible to force reset password - not found/parse {}", x.getMessage());
         }
 
         // Disable the user, then he won't be able to reset password
@@ -1026,7 +1029,7 @@ public class UserService {
         } catch ( ITRightException x ) {
             log.error("Impossible to update user in ban - rights");
         } catch ( ITNotFoundException x ) {
-            log.error("Impossible to update user in ban - not found - "+x.getMessage());
+            log.error("Impossible to update user in ban - not found - {}", x.getMessage());
         } catch ( ITParseException x ) {
             log.error("Parse error to update user in ban - parse");
         }

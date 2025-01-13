@@ -67,6 +67,9 @@ public class HeliumUser {
     @Column(name = "country")
     private String country="";
 
+    @Column(name = "country_code")
+    private String countryCode="";
+
     // completion status - see option in UserService
     @Column(name = "profile_status")
     private String profileStatus;
@@ -246,5 +249,13 @@ public class HeliumUser {
 
     public void setConditionTime(Timestamp conditionTime) {
         this.conditionTime = conditionTime;
+    }
+
+    public String getCountryCode() {
+        return countryCode;
+    }
+
+    public void setCountryCode(String countryCode) {
+        this.countryCode = countryCode;
     }
 }
