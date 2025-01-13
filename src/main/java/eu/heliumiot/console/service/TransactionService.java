@@ -49,6 +49,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.PostConstruct;
 import java.awt.*;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -72,6 +73,62 @@ public class TransactionService {
     @Autowired
     HeliumTenantService heliumTenantService;
 
+    @Autowired
+    private ConsoleConfig consoleConfig;
+
+    protected record VatParam(String countryIso, int vat, String message){};
+    protected HashMap<String,VatParam> vatParams = new HashMap<>();
+    protected VatParam defaultVatParam = new VatParam("ZZ", consoleConfig.getHeliumBillingVat(), "");
+    @PostConstruct
+    void initTransactionServiceVat() {
+        String vatString = consoleConfig.getHeliumBillingVatCountry();
+        if ( !vatString.isEmpty() ) {
+            String [] countries = vatString.split(";");
+            for ( String country : countries ) {
+                // format is FR,2000,0
+                //  for ISO Code, VAT in 1/10000, message number to be used for that country
+                String [] data = country.split(",");
+                try {
+                    if (data.length == 3 && data[0].length() == 2 && Integer.parseInt(data[2]) <= 9) {
+                        String mess = switch (Integer.parseInt(data[2])) {
+                            case 1 -> consoleConfig.getHeliumBillingVatMessage1();
+                            case 2 -> consoleConfig.getHeliumBillingVatMessage2();
+                            case 3 -> consoleConfig.getHeliumBillingVatMessage3();
+                            case 4 -> consoleConfig.getHeliumBillingVatMessage4();
+                            case 5 -> consoleConfig.getHeliumBillingVatMessage5();
+                            case 6 -> consoleConfig.getHeliumBillingVatMessage6();
+                            case 7 -> consoleConfig.getHeliumBillingVatMessage7();
+                            case 8 -> consoleConfig.getHeliumBillingVatMessage8();
+                            case 9 -> consoleConfig.getHeliumBillingVatMessage9();
+                            default -> "";
+                        };
+                        if( data[0].compareToIgnoreCase("zz") == 0 ) {
+                            defaultVatParam = new VatParam(data[0], Integer.parseInt(data[1]), mess);
+                        } else {
+                            vatParams.put(data[0].toLowerCase(), new VatParam(data[0], Integer.parseInt(data[1]), mess));
+                        }
+                    } else {
+                        log.error("---------------------------------------");
+                        log.error("VAT CONFIGURATION IS NOT VALID - 1");
+                        log.error("---------------------------------------");
+                    }
+                } catch (NumberFormatException e) {
+                    log.error("---------------------------------------");
+                    log.error("VAT CONFIGURATION IS NOT VALID - 2");
+                    log.error("---------------------------------------");
+                }
+            }
+        }
+        // display result
+        log.info("VAT Configuration :");
+        log.info("For consumer {} %", consoleConfig.getHeliumBillingVat()/10000.0);
+        log.info("For business not listed country {}% with message {}", defaultVatParam.vat/10000.0, defaultVatParam.message);
+        for ( String key : vatParams.keySet() ) {
+            VatParam vp = vatParams.get(key);
+            log.info("For business in {} {}% with message {}", vp.countryIso, vp.vat/10000.0, vp.message);
+        }
+    }
+
     /**
      * Get the User transaction history
      *
@@ -83,7 +140,7 @@ public class TransactionService {
         ArrayList<TransactionListRespItf> rs = new ArrayList<>();
 
         List<HeliumDcTransaction> ts = heliumDcTransactionRepository.findHeliumDcTransactionByUserUUIDOrderByCreatedAtDesc(userId);
-        if (ts != null && ts.size() > 0) {
+        if (ts != null && !ts.isEmpty()) {
             for (HeliumDcTransaction t : ts) {
                 TransactionListRespItf r = new TransactionListRespItf();
                 r.setTransactionUUID(t.getId().toString());
@@ -121,7 +178,7 @@ public class TransactionService {
         );
 
         ArrayList<TransactionListRespItf> rs = new ArrayList<>();
-        if ( ts != null && ts.size() > 0 ) {
+        if ( ts != null && !ts.isEmpty()) {
             for ( HeliumDcTransaction t : ts ) {
                 TransactionListRespItf r = new TransactionListRespItf();
                 r.setTransactionUUID(t.getId().toString());
@@ -140,9 +197,6 @@ public class TransactionService {
         return rs;
     }
 
-
-    @Autowired
-    private ConsoleConfig consoleConfig;
 
     @Autowired
     private UserCacheService userCacheService;
@@ -187,7 +241,7 @@ public class TransactionService {
 
         // check ownership
         UserTenant td = userTenantRepository.findOneUserByUserIdAndTenantId(UUID.fromString(userId), UUID.fromString(req.getTenantUUID()));
-        if (td == null || td.isAdmin() == false) {
+        if (td == null || !td.isAdmin()) {
             log.warn("PurchaseDC - attempt to credit from not owned tenant by " + userId);
             throw new ITRightException("stripe_invalid_tenant");
         }
@@ -195,11 +249,11 @@ public class TransactionService {
         // check amounts
         HeliumTenantSetup ts = heliumTenantSetupService.getHeliumTenantSetup(req.getTenantUUID(),true);
         if (Math.round((req.getDcs() * ts.getDcPrice()) * 100.0) != Math.round(req.getCost() * 100.0)) {
-            log.warn("PurchaseDC - attempt to send a wrong amount :" + (Math.round((req.getDcs() * ts.getDcPrice()) * 100.0)) + " vs " + (Math.round(req.getCost() * 100.0)));
+            log.warn("PurchaseDC - attempt to send a wrong amount :{} vs {}", Math.round((req.getDcs() * ts.getDcPrice()) * 100.0), Math.round(req.getCost() * 100.0));
             throw new ITParseException("stripe_invalid_amount");
         }
         if (req.getDcs() < ts.getDcMin()) {
-            log.warn("PurchaseDC - attempt to send invalid DCs qty :" + (req.getDcs()) + " vs " + (ts.getDcMin()));
+            log.warn("PurchaseDC - attempt to send invalid DCs qty :{} vs {}", req.getDcs(), ts.getDcMin());
             throw new ITParseException("stripe_invalid_qty");
         }
 
@@ -295,7 +349,7 @@ public class TransactionService {
             t.setCompleted(true);
             if ( t.getStripeStatus().compareToIgnoreCase("succeeded") != 0 ) {
                 t.setStripeStatus("timeout");
-                log.info("Expiring one transaction ("+t.getTransactionId()+")");
+                log.info("Expiring one transaction ({})", t.getTransactionId());
             }
             return t;
         }
@@ -308,12 +362,12 @@ public class TransactionService {
 
             if ( p.getStatus() != null ) {
                 if ( t.getStripeStatus().compareToIgnoreCase(p.getStatus()) != 0 ) {
-                    log.info("Updating transaction ("+t.getTransactionId()+") to status "+p.getStatus());
+                    log.info("Updating transaction ({}) to status {}", t.getTransactionId(), p.getStatus());
                     t.setStripeStatus(p.getStatus());
                     modified = true;
                 }
                 if (p.getStatus().compareToIgnoreCase("succeeded") == 0) {
-                    log.info("Terminating transaction ("+t.getTransactionId()+") with success");
+                    log.info("Terminating transaction ({}) with success", t.getTransactionId());
 
                     // get Charged
                     if ( p.getLatestCharge() != null ) {
@@ -334,9 +388,19 @@ public class TransactionService {
                             if (tx.getExchangeRate() != null) {
                                 t.setStripeCRate(tx.getExchangeRate().doubleValue());
                             } else {
-                                log.warn("No exChange Rate for transaction "+tx.getId()+" with currency "+tx.getCurrency());
+                                log.warn("No exChange Rate for transaction {} with currency {}", tx.getId(), tx.getCurrency());
                                 t.setStripeCRate(1.0);
                             }
+
+                            // Vat computation
+                            // When we have no country information, we use the default VAT
+                            // When we have a country but no TAX information, we use the default VAT
+                            // When we have a country & Tax information, we use the corresponding ISO VAT & message, if we have no ISO code entry, we use the ZZ VAT & message
+
+                            // Todo : aller chercher les param de client, caluler les info ...
+                            // Virer le param en bdd sur la vat, ajoute de la complexité.
+
+
                             HeliumParameter vat = heliumParameterService.getParameter(HeliumParameterService.PARAM_INVOICE_VAT);
                             t.setApplicableVAT(vat.getLongValue()/10_000.0);
 
@@ -350,17 +414,17 @@ public class TransactionService {
                             }
 
                         } else {
-                            log.warn("No balance transaction for Payment Intent "+p.getId());
+                            log.warn("No balance transaction for Payment Intent {}", p.getId());
                         }
 
                     } else {
-                        log.warn("Charge not found for Payment Intent "+p.getId());
+                        log.warn("Charge not found for Payment Intent {}", p.getId());
                     }
                 }
             }
 
         } catch (StripeException x) {
-            log.error("Failed to refresh stripe intent " + x.getMessage());
+            log.error("Failed to refresh stripe intent {}", x.getMessage());
             throw new ITParseException("stripe_failed_intent");
         //} catch (JsonProcessingException x) {
         //    log.error("Failed to process json " + x.getMessage());
@@ -386,7 +450,7 @@ public class TransactionService {
                         heliumDcTransactionRepository.save(t);
                     }
                 } catch ( ITParseException x ) {
-                    log.error("Failure in updateTransaction "+x.getMessage());
+                    log.error("Failure in updateTransaction {}", x.getMessage());
                 }
             }
 
@@ -414,7 +478,7 @@ public class TransactionService {
         } catch (Exception x) {
             // @todo is the api used with the right Id ?
             // apparently the payment intent id (pi_xxxxx) is used, none the UUID of transaction
-            log.error("Transaction format invalid "+transactionId);
+            log.error("Transaction format invalid {}", transactionId);
             throw new ITRightException();
         }
         if (uuid != null ) {
@@ -435,7 +499,7 @@ public class TransactionService {
                         heliumDcTransactionRepository.save(t);
                     }
                 } catch (ITParseException x) {
-                    log.error("Failure in updateTransaction "+x.getMessage());
+                    log.error("Failure in updateTransaction {}", x.getMessage());
                 }
             }
 
@@ -604,7 +668,7 @@ public class TransactionService {
             // Customer company
             if ( t.getCompany() != null ) {
                 String s = encryptionHelper.decryptStringWithServerKey(t.getCompany());
-                if ( s.length() > 0 ) {
+                if (!s.isEmpty()) {
                     contentStream.moveTo(0, 0);
                     contentStream.beginText();
                     contentStream.newLineAtOffset(300, offset);
@@ -846,7 +910,7 @@ public class TransactionService {
             if ( t.getMemo() != null ) {
 
                 String memo = encryptionHelper.decryptStringWithServerKey(t.getMemo());
-                if ( memo.length() > 0 ) {
+                if (!memo.isEmpty()) {
                     contentStream.moveTo(0,0);
                     contentStream.beginText();
                     contentStream.setFont(bold, 9);
@@ -882,7 +946,7 @@ public class TransactionService {
             document.close();
             return out.toByteArray();
         } catch (IOException x) {
-            log.warn("Failed to create invoice "+x.getMessage());
+            log.warn("Failed to create invoice {}", x.getMessage());
             StackTraceElement [] st = x.getStackTrace();
             for ( StackTraceElement s : st ) {
                 if ( s.getClassName().toLowerCase().contains("transactionservice")) {

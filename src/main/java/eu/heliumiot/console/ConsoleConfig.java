@@ -81,7 +81,7 @@ public class ConsoleConfig {
     }
 
     public boolean getHeliumZoneDetectionEnable() {
-        if ( heliumZoneDetectionEnable.length() > 0 ) {
+        if (!heliumZoneDetectionEnable.isEmpty()) {
             return ( heliumZoneDetectionEnable.compareToIgnoreCase("true") == 0 );
         }
         return heliumZoneDetectionEnableDefault;
@@ -104,7 +104,7 @@ public class ConsoleConfig {
     }
 
     public boolean isHeliumAllowsSignup() {
-        if ( getHeliumAllowsSignupExternal().length() > 0 ) return Boolean.parseBoolean(getHeliumAllowsSignupExternal());
+        if (!getHeliumAllowsSignupExternal().isEmpty()) return Boolean.parseBoolean(getHeliumAllowsSignupExternal());
         return Boolean.parseBoolean(getHeliumAllowsSignupDefault());
     }
 
@@ -117,7 +117,7 @@ public class ConsoleConfig {
     }
 
     public boolean isHeliumAllowsActivation() {
-        if ( getHeliumAllowsActivationExternal().length() > 0 ) return Boolean.parseBoolean(getHeliumAllowsActivationExternal());
+        if (!getHeliumAllowsActivationExternal().isEmpty()) return Boolean.parseBoolean(getHeliumAllowsActivationExternal());
         return Boolean.parseBoolean(getHeliumAllowsActivationDefault());
     }
 
@@ -260,6 +260,37 @@ public class ConsoleConfig {
     @Value ("${helium.billing.dcPunishment:100}")
     private int heliumBillingDcPunishment;
 
+    @Value ("helium.billing.vat.country:")
+    private String heliumBillingVatCountry;
+
+    @Value ("helium.billing.vat.message1:")
+    private String heliumBillingVatMessage1;
+
+    @Value ("helium.billing.vat.message2:")
+    private String heliumBillingVatMessage2;
+
+    @Value ("helium.billing.vat.message3:")
+    private String heliumBillingVatMessage3;
+
+    @Value ("helium.billing.vat.message4:")
+    private String heliumBillingVatMessage4;
+
+    @Value ("helium.billing.vat.message5:")
+    private String heliumBillingVatMessage5;
+
+    @Value ("helium.billing.vat.message6:")
+    private String heliumBillingVatMessage6;
+
+    @Value ("helium.billing.vat.message7:")
+    private String heliumBillingVatMessage7;
+
+    @Value ("helium.billing.vat.message8:")
+    private String heliumBillingVatMessage8;
+
+    @Value ("helium.billing.vat.message9:")
+    private String heliumBillingVatMessage9;
+
+
     public int getHeliumBillingDcPunishment() {
         return heliumBillingDcPunishment;
     }
@@ -397,72 +428,72 @@ public class ConsoleConfig {
     }
 
     public int getHeliumBillingMaxDcPerDevice() {
-        if ( getHeliumBillingMaxDcPerDeviceExternal().length() > 0 ) return Integer.parseInt(getHeliumBillingMaxDcPerDeviceExternal());
+        if (!getHeliumBillingMaxDcPerDeviceExternal().isEmpty()) return Integer.parseInt(getHeliumBillingMaxDcPerDeviceExternal());
         return Integer.parseInt(getHeliumBillingMaxDcPerDeviceDefault());
     }
 
     public int getHeliumBillingLimitDcRatePerDevice() {
-        if ( getHeliumBillingLimitDcRatePerDeviceExternal().length() > 0 ) return Integer.parseInt(getHeliumBillingLimitDcRatePerDeviceExternal());
+        if (!getHeliumBillingLimitDcRatePerDeviceExternal().isEmpty()) return Integer.parseInt(getHeliumBillingLimitDcRatePerDeviceExternal());
         return Integer.parseInt(getHeliumBillingLimitDcRatePerDeviceDefault());
     }
 
     public long getHeliumBillingLimitDcRatePeriod() {
-        if ( getHeliumBillingLimitDcRatePeriodExternal().length() > 0 ) return Integer.parseInt(getHeliumBillingLimitDcRatePeriodExternal());
+        if (!getHeliumBillingLimitDcRatePeriodExternal().isEmpty()) return Integer.parseInt(getHeliumBillingLimitDcRatePeriodExternal());
         return Long.parseLong(getHeliumBillingLimitDcRatePeriodDefault());
     }
 
     public int getHeliumBillingFreeTenantDc() {
-        if ( getHeliumBillingFreeTenantDcExternal().length() > 0 ) return Integer.parseInt(getHeliumBillingFreeTenantDcExternal());
+        if (!getHeliumBillingFreeTenantDcExternal().isEmpty()) return Integer.parseInt(getHeliumBillingFreeTenantDcExternal());
         return Integer.parseInt(getHeliumBillingFreeTenantDcDefault());
     }
 
     public int getHeliumBillingDcBalanceStop() {
-        if ( getHeliumBillingDcBalanceStopExternal().length() > 0 ) return Integer.parseInt(getHeliumBillingDcBalanceStopExternal());
+        if (!getHeliumBillingDcBalanceStopExternal().isEmpty()) return Integer.parseInt(getHeliumBillingDcBalanceStopExternal());
         return Integer.parseInt(getHeliumBillingDcBalanceStopDefault());
     }
 
     public int getHeliumBillingDcPer24BytesMessage() {
-        if ( getHeliumBillingDcPer24BytesMessageExternal().length() > 0 ) return Integer.parseInt(getHeliumBillingDcPer24BytesMessageExternal());
+        if (!getHeliumBillingDcPer24BytesMessageExternal().isEmpty()) return Integer.parseInt(getHeliumBillingDcPer24BytesMessageExternal());
         return Integer.parseInt(getHeliumBillingDcPer24BytesMessageDefault());
     }
 
     public int getHeliumBillingDcPer24BDuplicate() {
-        if ( getHeliumBillingDcPer24BDuplicateExternal().length() > 0 ) return Integer.parseInt(getHeliumBillingDcPer24BDuplicateExternal());
+        if (!getHeliumBillingDcPer24BDuplicateExternal().isEmpty()) return Integer.parseInt(getHeliumBillingDcPer24BDuplicateExternal());
         return Integer.parseInt(getHeliumBillingDcPer24BDuplicateDefault());
     }
 
     public int getHeliumBillingDcPer24BDownlink() {
-        if ( getHeliumBillingDcPer24BDownlinkExternal().length() > 0 ) return Integer.parseInt(getHeliumBillingDcPer24BDownlinkExternal());
+        if (!getHeliumBillingDcPer24BDownlinkExternal().isEmpty()) return Integer.parseInt(getHeliumBillingDcPer24BDownlinkExternal());
         return Integer.parseInt(getHeliumBillingDcPer24BDownlinkDefault());
     }
 
 
     public int getHeliumBillingDcPerDeviceInserted() {
-        if ( getHeliumBillingDcPerDeviceInsertedExternal().length() > 0 ) return Integer.parseInt(getHeliumBillingDcPerDeviceInsertedExternal());
+        if (!getHeliumBillingDcPerDeviceInsertedExternal().isEmpty()) return Integer.parseInt(getHeliumBillingDcPerDeviceInsertedExternal());
         return Integer.parseInt(getHeliumBillingDcPerDeviceInsertedDefault());
     }
 
 
     public long getHeliumBillingInactivityBillingPeriodMs() {
-        if ( getHeliumBillingInactivityBillingPeriodMsExternal().length() > 0 ) return Long.parseLong(getHeliumBillingInactivityBillingPeriodMsExternal());
+        if (!getHeliumBillingInactivityBillingPeriodMsExternal().isEmpty()) return Long.parseLong(getHeliumBillingInactivityBillingPeriodMsExternal());
         return Long.parseLong(getHeliumBillingInactivityBillingPeriodMsDefault());
     }
 
 
     public int getHeliumBillingDcPerInactivityPeriod() {
-        if ( getHeliumBillingDcPerInactivityPeriodExternal().length() > 0 ) return Integer.parseInt(getHeliumBillingDcPerInactivityPeriodExternal());
+        if (!getHeliumBillingDcPerInactivityPeriodExternal().isEmpty()) return Integer.parseInt(getHeliumBillingDcPerInactivityPeriodExternal());
         return Integer.parseInt(getHeliumBillingDcPerInactivityPeriodDefault());
     }
 
 
     public long getHeliumBillingActivityBillingPeriod() {
-        if ( getHeliumBillingActivityBillingPeriodExternal().length() > 0 ) return Long.parseLong(getHeliumBillingActivityBillingPeriodExternal());
+        if (!getHeliumBillingActivityBillingPeriodExternal().isEmpty()) return Long.parseLong(getHeliumBillingActivityBillingPeriodExternal());
         return Long.parseLong(getHeliumBillingActivityBillingPeriodDefault());
     }
 
 
     public int getHeliumBillingDcPerActivityPeriod() {
-        if ( getHeliumBillingDcPerActivityPeriodExternal().length() > 0 ) return Integer.parseInt(getHeliumBillingDcPerActivityPeriodExternal());
+        if (!getHeliumBillingDcPerActivityPeriodExternal().isEmpty()) return Integer.parseInt(getHeliumBillingDcPerActivityPeriodExternal());
         return Integer.parseInt(getHeliumBillingDcPerActivityPeriodDefault());
     }
 
@@ -499,25 +530,64 @@ public class ConsoleConfig {
     }
 
     public double getHeliumBillingDcPrice() {
-        if ( getHeliumBillingDcPriceExternal().length() > 0 ) return Double.parseDouble(getHeliumBillingDcPriceExternal());
+        if (!getHeliumBillingDcPriceExternal().isEmpty()) return Double.parseDouble(getHeliumBillingDcPriceExternal());
         return Double.parseDouble(getHeliumBillingDcPriceDefault());
     }
 
     public long getHeliumBillingDcMinAmount() {
-        if ( getHeliumBillingDcMinAmountExternal().length() > 0 ) return Long.parseLong(getHeliumBillingDcMinAmountExternal());
+        if (!getHeliumBillingDcMinAmountExternal().isEmpty()) return Long.parseLong(getHeliumBillingDcMinAmountExternal());
         return Long.parseLong(getHeliumBillingDcMinAmountDefault());
     }
 
     public int getHeliumBillingMaxTenant() {
-        if ( getHeliumBillingMaxTenantExternal().length() > 0 ) return Integer.parseInt(getHeliumBillingMaxTenantExternal());
+        if (!getHeliumBillingMaxTenantExternal().isEmpty()) return Integer.parseInt(getHeliumBillingMaxTenantExternal());
         return Integer.parseInt(getHeliumBillingMaxTenantDefault());
     }
 
     public int getHeliumBillingMaxDevices() {
-        if ( getHeliumBillingMaxDevicesExternal().length() > 0 ) return Integer.parseInt(getHeliumBillingMaxDevicesExternal());
+        if (!getHeliumBillingMaxDevicesExternal().isEmpty()) return Integer.parseInt(getHeliumBillingMaxDevicesExternal());
         return Integer.parseInt(getHeliumBillingMaxDevicesDefault());
     }
 
+    public String getHeliumBillingVatCountry() {
+        return heliumBillingVatCountry;
+    }
+
+    public String getHeliumBillingVatMessage1() {
+        return heliumBillingVatMessage1;
+    }
+
+    public String getHeliumBillingVatMessage2() {
+        return heliumBillingVatMessage2;
+    }
+
+    public String getHeliumBillingVatMessage3() {
+        return heliumBillingVatMessage3;
+    }
+
+    public String getHeliumBillingVatMessage4() {
+        return heliumBillingVatMessage4;
+    }
+
+    public String getHeliumBillingVatMessage5() {
+        return heliumBillingVatMessage5;
+    }
+
+    public String getHeliumBillingVatMessage6() {
+        return heliumBillingVatMessage6;
+    }
+
+    public String getHeliumBillingVatMessage7() {
+        return heliumBillingVatMessage7;
+    }
+
+    public String getHeliumBillingVatMessage8() {
+        return heliumBillingVatMessage8;
+    }
+
+    public String getHeliumBillingVatMessage9() {
+        return heliumBillingVatMessage9;
+    }
 
     // =====================================
     // MQTT
@@ -571,19 +641,19 @@ public class ConsoleConfig {
     }
 
     public String getMqttServer() {
-        if (this.getMqttServerExternal().length() > 0) return this.getMqttServerExternal();
+        if (!this.getMqttServerExternal().isEmpty()) return this.getMqttServerExternal();
         return this.getMqttServerDefault();
     }
     public String getMqttId() {
-        if (this.getMqttIdExternal().length() > 0) return this.getMqttIdExternal();
+        if (!this.getMqttIdExternal().isEmpty()) return this.getMqttIdExternal();
         return this.getMqttIdDefault();
     }
     public String getMqttLogin() {
-        if (this.getMqttLoginExternal().length() > 0) return this.getMqttLoginExternal();
+        if (!this.getMqttLoginExternal().isEmpty()) return this.getMqttLoginExternal();
         return this.getMqttLoginDefault();
     }
     public String getMqttPassword() {
-        if (this.getMqttPasswordExternal().length() > 0) return this.getMqttPasswordExternal();
+        if (!this.getMqttPasswordExternal().isEmpty()) return this.getMqttPasswordExternal();
         return this.getMqttPasswordDefault();
     }
 
@@ -699,12 +769,12 @@ public class ConsoleConfig {
     }
 
     public String getHeliumGrpcServer() {
-        if (this.getHeliumGrpcServerExternal().length() > 0) return this.getHeliumGrpcServerExternal();
+        if (!this.getHeliumGrpcServerExternal().isEmpty()) return this.getHeliumGrpcServerExternal();
         return this.getHeliumGrpcServerDefault();
     }
 
     public int getHeliumGrpcPort() {
-        if (this.getHeliumGrpcPortExternal().length() > 0) return Integer.parseInt(this.getHeliumGrpcPortExternal());
+        if (!this.getHeliumGrpcPortExternal().isEmpty()) return Integer.parseInt(this.getHeliumGrpcPortExternal());
         return Integer.parseInt(this.getHeliumGrpcPortDefault());
     }
 
@@ -759,7 +829,7 @@ public class ConsoleConfig {
     }
 
     public String getChirpstackApiBase() {
-        if (this.getChirpstackApiBaseExternal().length() > 0) return this.getChirpstackApiBaseExternal();
+        if (!this.getChirpstackApiBaseExternal().isEmpty()) return this.getChirpstackApiBaseExternal();
         return getChirpstackApiBaseDefault();
     }
 
@@ -772,7 +842,7 @@ public class ConsoleConfig {
     }
 
     public String getJwtSignatureKey() {
-        if (this.getJwtSignatureKeyExternal().length() >  0 && this.getJwtSignatureKeyExternal().length() != 64) {
+        if (!this.getJwtSignatureKeyExternal().isEmpty() && this.getJwtSignatureKeyExternal().length() != 64) {
             log.error("helium.jwt.signature.key format is invalid, must be 64 char. Back to default");
         }
         if (this.getJwtSignatureKeyExternal().length() == 64) return this.getJwtSignatureKeyExternal();
@@ -845,12 +915,12 @@ public class ConsoleConfig {
     }
 
     public String getStripeKeyPrivate() {
-        if (this.getStripeKeyPrivateExternal().length() > 0) return this.getStripeKeyPrivateExternal();
+        if (!this.getStripeKeyPrivateExternal().isEmpty()) return this.getStripeKeyPrivateExternal();
         return getStripeKeyPrivateDefault();
     }
 
     public String getStripeKeyPublic() {
-        if (this.getStripeKeyPublicExternal().length() > 0) return this.getStripeKeyPublicExternal();
+        if (!this.getStripeKeyPublicExternal().isEmpty()) return this.getStripeKeyPublicExternal();
         return getStripeKeyPublicDefault();
     }
 
@@ -886,7 +956,7 @@ public class ConsoleConfig {
 
 
     public boolean isStatReportEnable() {
-        if ( statReportEnable.length() > 0 ) {
+        if (!statReportEnable.isEmpty()) {
             if ( statReportEnable.compareToIgnoreCase("true") == 0 ) return true;
             return false;
         } else return statReportEnableDefault;
@@ -901,7 +971,7 @@ public class ConsoleConfig {
     }
 
     public String getTestdeviceEui() {
-        if (this.getTestdeviceEuiExternal().length() > 0) return this.getTestdeviceEuiExternal();
+        if (!this.getTestdeviceEuiExternal().isEmpty()) return this.getTestdeviceEuiExternal();
         return getTestdeviceEuiDefault();
     }
 

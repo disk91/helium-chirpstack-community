@@ -99,6 +99,13 @@ public class HeliumDcTransaction {
     private String stripeUser;
     private double applicableVAT;
 
+    @Column(name="vat_message")
+    private String vatMessage;
+    @Column(name="country_code")
+    private String countryCode;
+    @Column(name="tax_number")
+    private String taxNumber;
+
     // Stripe info
     @Column(name="stripe_client_key")
     private String stripeClientKey = null;
@@ -346,5 +353,29 @@ public class HeliumDcTransaction {
 
     public void setMemo(String memo) {
         this.memo = memo;
+    }
+
+    public String getVatMessage() {
+        return vatMessage;
+    }
+
+    public void setVatMessage(String vatMessage) {
+        this.vatMessage = vatMessage;
+    }
+
+    public String getCountryCode() {
+        return countryCode;
+    }
+
+    public void setCountryCode(String countryCode) {
+        this.countryCode = countryCode;
+    }
+
+    public String getTaxNumber() {
+        return taxNumber;
+    }
+
+    public void setTaxNumber(String taxNumber) {
+        this.taxNumber = taxNumber;
     }
 }
