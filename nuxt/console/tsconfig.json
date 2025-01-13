@@ -15,7 +15,8 @@
       "~/*": ["./*"],
       "@/*": ["./*"]
     },
-    "types": ["@nuxt/types", "@nuxtjs/axios", "@types/node", "@nuxtjs/auth-next", "@nuxtjs/i18n", "nuxt-leaflet"]
+    "types": ["@nuxt/types", "@nuxtjs/axios", "@types/node", "@nuxtjs/auth-next", "@nuxtjs/i18n", "nuxt-leaflet"],
+    "resolveJsonModule": true,
   },
   "exclude": ["node_modules", ".nuxt", "dist"]
 }

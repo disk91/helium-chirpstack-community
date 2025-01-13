@@ -23,6 +23,7 @@
     "nuxt-leaflet": "^0.0.27",
     "simple-code-editor": "^1.2.2",
     "vue": "^2.7.10",
+    "vue-multiselect": "^2.1.9",
     "vue-server-renderer": "^2.7.10",
     "vue-template-compiler": "^2.7.10"
   },
