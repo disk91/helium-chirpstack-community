@@ -79,9 +79,13 @@ public class TransactionService {
 
     protected record VatParam(String countryIso, int vat, String message){};
     protected HashMap<String,VatParam> vatParams = new HashMap<>();
-    protected VatParam defaultVatParam = new VatParam("ZZ", consoleConfig.getHeliumBillingVat(), "");
+    protected VatParam defaultVatParam;
 
-    public TransactionService() {
+    @PostConstruct
+    protected void initTransactionVATParam() {
+        // default init, will be override by the configuration
+        defaultVatParam = new VatParam("ZZ", consoleConfig.getHeliumBillingVat(), "");
+        // look at configuration
         String vatString = consoleConfig.getHeliumBillingVatCountry();
         if ( !vatString.isEmpty() ) {
             String [] countries = vatString.split(";");
