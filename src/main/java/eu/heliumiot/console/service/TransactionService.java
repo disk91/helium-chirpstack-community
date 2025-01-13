@@ -62,7 +62,6 @@ import java.util.List;
 import static eu.heliumiot.console.service.HeliumTenantService.HTRANSACTION_TYPE_STRIPE;
 import static eu.heliumiot.console.service.UserService.HUPROFILE_STATUS_COMPLETED;
 
-@DependsOn({"ConsoleConfig"})
 @Service
 public class TransactionService {
     private final Logger log = LoggerFactory.getLogger(this.getClass());
@@ -81,8 +80,8 @@ public class TransactionService {
     protected record VatParam(String countryIso, int vat, String message){};
     protected HashMap<String,VatParam> vatParams = new HashMap<>();
     protected VatParam defaultVatParam = new VatParam("ZZ", consoleConfig.getHeliumBillingVat(), "");
-    @PostConstruct
-    protected void initTransactionServiceVat() {
+
+    public TransactionService() {
         String vatString = consoleConfig.getHeliumBillingVatCountry();
         if ( !vatString.isEmpty() ) {
             String [] countries = vatString.split(";");
