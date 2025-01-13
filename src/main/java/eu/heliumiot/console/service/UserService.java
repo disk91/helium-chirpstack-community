@@ -811,7 +811,7 @@ public class UserService {
         }
 
         if ( hpe.getRetrial() > 10 ) {
-            log.error("User with email "+hpe.getUsername()+" has made too many psloss retry");
+            log.error("User with email {} has made too many psloss retry", hpe.getUsername());
             throw new ITParseException("error_invalid");
         }
 
@@ -869,7 +869,7 @@ public class UserService {
             "Sincerely.";
 
         List<eu.heliumiot.console.jpa.db.UserTenant> us = userTenantRepository.findUserTenantByTenantIdAndIsAdmin(UUID.fromString(t.getTenantUUID()),true);
-        if ( us.size() > 0 ) {
+        if (!us.isEmpty()) {
             us.forEach( u -> {
                 UserCacheService.UserCacheElement uc = userCacheService.getUserById(u.getUserId().toString());
                 if ( uc.user.isActive() ) {
