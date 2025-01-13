@@ -46,6 +46,7 @@ import org.apache.pdfbox.pdmodel.font.Standard14Fonts;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.DependsOn;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
@@ -61,6 +62,7 @@ import java.util.List;
 import static eu.heliumiot.console.service.HeliumTenantService.HTRANSACTION_TYPE_STRIPE;
 import static eu.heliumiot.console.service.UserService.HUPROFILE_STATUS_COMPLETED;
 
+@DependsOn({"ConsoleConfig"})
 @Service
 public class TransactionService {
     private final Logger log = LoggerFactory.getLogger(this.getClass());
@@ -74,13 +76,13 @@ public class TransactionService {
     HeliumTenantService heliumTenantService;
 
     @Autowired
-    private ConsoleConfig consoleConfig;
+    protected ConsoleConfig consoleConfig;
 
     protected record VatParam(String countryIso, int vat, String message){};
     protected HashMap<String,VatParam> vatParams = new HashMap<>();
     protected VatParam defaultVatParam = new VatParam("ZZ", consoleConfig.getHeliumBillingVat(), "");
     @PostConstruct
-    void initTransactionServiceVat() {
+    protected void initTransactionServiceVat() {
         String vatString = consoleConfig.getHeliumBillingVatCountry();
         if ( !vatString.isEmpty() ) {
             String [] countries = vatString.split(";");
