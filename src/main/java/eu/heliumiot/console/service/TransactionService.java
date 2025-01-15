@@ -78,10 +78,16 @@ public class TransactionService {
 
     protected record VatParam(String countryIso, int vat, String message){};
     protected HashMap<String,VatParam> vatParams = new HashMap<>();
-    protected VatParam defaultVatParam;
+    protected VatParam defaultVatParam = null;
 
-    @PostConstruct
+    // Strange situation where postconstruct never start
+    // using a schedule to run it once on startup
+    // @PostConstruct
+
+    @Scheduled(fixedRate = 86_400_000, initialDelay = 2_000)
     private void initTransactionVATParam() {
+        if (defaultVatParam != null) return; // already init
+
         log.info("Init initTransactionVATParam");
         // default init, will be override by the configuration
         defaultVatParam = new VatParam("ZZ", consoleConfig.getHeliumBillingVat(), "");
