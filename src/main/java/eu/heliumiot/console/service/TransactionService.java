@@ -83,6 +83,7 @@ public class TransactionService {
 
     @PostConstruct
     protected void initTransactionVATParam() {
+        log.info("Init VAT Configuration");
         // default init, will be override by the configuration
         defaultVatParam = new VatParam("ZZ", consoleConfig.getHeliumBillingVat(), "");
         // look at configuration
