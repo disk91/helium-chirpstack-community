@@ -46,7 +46,6 @@ import org.apache.pdfbox.pdmodel.font.Standard14Fonts;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.DependsOn;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
@@ -402,7 +401,9 @@ public class TransactionService {
                             // When we have no country information, we use the default VAT
                             // When we have a country but no TAX information, we use the default VAT
                             // When we have a country & Tax information, we use the corresponding ISO VAT & message, if we have no ISO code entry, we use the ZZ VAT & message
-
+                            if ( this.vatParams.get(t.getCountryCode()) != null ) {
+                                log.info("We have a country code for this country");
+                            }
                             // Todo : aller chercher les param de client, caluler les info ...
                             // Virer le param en bdd sur la vat, ajoute de la complexité.
 
