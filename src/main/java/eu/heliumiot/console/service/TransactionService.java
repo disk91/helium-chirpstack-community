@@ -81,8 +81,8 @@ public class TransactionService {
     protected VatParam defaultVatParam;
 
     @PostConstruct
-    protected void initTransactionVATParam() {
-        log.info("Init VAT Configuration");
+    private void initTransactionVATParam() {
+        log.info("Init initTransactionVATParam");
         // default init, will be override by the configuration
         defaultVatParam = new VatParam("ZZ", consoleConfig.getHeliumBillingVat(), "");
         // look at configuration
@@ -247,7 +247,7 @@ public class TransactionService {
         // check ownership
         UserTenant td = userTenantRepository.findOneUserByUserIdAndTenantId(UUID.fromString(userId), UUID.fromString(req.getTenantUUID()));
         if (td == null || !td.isAdmin()) {
-            log.warn("PurchaseDC - attempt to credit from not owned tenant by " + userId);
+            log.warn("PurchaseDC - attempt to credit from not owned tenant by {}", userId);
             throw new ITRightException("stripe_invalid_tenant");
         }
 
@@ -329,7 +329,7 @@ public class TransactionService {
             t.setStripeClientKey(paymentIntent.getClientSecret());
             t.setTransactionId(paymentIntent.getId());
         } catch (StripeException x) {
-            log.error("Failed to create stripe intent " + x.getMessage());
+            log.error("Failed to create stripe intent {}", x.getMessage());
             throw new ITParseException("stripe_failed_intent");
         }
 
