@@ -60,7 +60,7 @@ public class HeliumOuiDcService {
 
     @PostConstruct
     private void initHeliumOuiDcService() {
-
+        log.info("Init initHeliumOuiDcService");
         this.getInformations();
 
     }

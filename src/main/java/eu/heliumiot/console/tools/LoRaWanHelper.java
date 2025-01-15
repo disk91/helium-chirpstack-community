@@ -15,7 +15,7 @@ public class LoRaWanHelper {
 
     /** Test function for MIC computation
      * test frame source : https://github.com/sntcz/LoRa.Message/blob/master/LoRa.Message.UnitTest/CalculatedMICTest.cs
-    @PostConstruct
+    @ PostConstruct
     protected void init() {
         log.info("LoRaWanHelper initialized");
 

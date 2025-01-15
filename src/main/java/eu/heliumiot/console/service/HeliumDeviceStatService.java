@@ -52,6 +52,7 @@ public class HeliumDeviceStatService {
     private ObjectCache<String, HeliumDeviceStat> heliumDeviceStatCache;
     @PostConstruct
     private void initHeliumDeviceStatService() {
+        log.info("Init initHeliumDeviceStatService");
         this.heliumDeviceStatCache = new ObjectCache<String, HeliumDeviceStat>(
                 "DeviceStat",
                 5000,

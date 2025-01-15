@@ -63,7 +63,7 @@ public class HeliumTenantSetupService {
     private ObjectCache<String,HeliumTenantSetup> heliumSetupCache;
     @PostConstruct
     private void initHeliumTenantSetupService() {
-        log.info("initHeliumTenantSetupService initialization");
+        log.info("Init initHeliumTenantSetupService");
         this.heliumSetupCache = new ObjectCache<String, HeliumTenantSetup>("HeliumSetup", 5000) {
             @Override
             public void onCacheRemoval(String key, HeliumTenantSetup obj, boolean batch, boolean last) {

@@ -74,7 +74,7 @@ public class HeliumTenantService {
 
     @PostConstruct
     private void initHeliumTenantService() {
-        log.info("initHeliumTenantService initialization");
+        log.info("Init initHeliumTenantService");
 
         mapper = new ObjectMapper();
         mapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);

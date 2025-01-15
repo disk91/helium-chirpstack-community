@@ -50,7 +50,7 @@ public class HeliumTenantStatService {
     private ObjectCache<String, TenantBasicStatRespItf> tenantStatCache;
     @PostConstruct
     private void initHeliumTenantStatCacheService() {
-        log.info("initHeliumTenantStatCacheService initialization");
+        log.info("Init initHeliumTenantStatCacheService");
         this.tenantStatCache = new ObjectCache<String, TenantBasicStatRespItf>("TenantStatCache", 5000) {
             @Override
             public void onCacheRemoval(String key, TenantBasicStatRespItf obj, boolean batch, boolean last) {

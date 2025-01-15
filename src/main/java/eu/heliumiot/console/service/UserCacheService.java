@@ -66,7 +66,7 @@ public class UserCacheService {
     private ObjectCache<String, UserCacheElement> userCache;
     @PostConstruct
     private void initUserCacheService() {
-        log.info("initUserCacheService initialization");
+        log.info("Init initUserCacheService");
         this.userCache = new ObjectCache<String, UserCacheElement>("UserCache", 2000) {
             @Override
             public void onCacheRemoval(String key, UserCacheElement obj, boolean batch, boolean last) {

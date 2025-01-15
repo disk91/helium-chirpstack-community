@@ -32,6 +32,7 @@ public class LogService {
      */
     @PostConstruct
     private void initLogService() {
+        log.info("Init initLogService");
         try {
             Class<?> clazz = Class.forName("eu.heliumiot.console.service.PrivLogService");
             privLogService = clazz.getDeclaredConstructor().newInstance();

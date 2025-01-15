@@ -111,6 +111,7 @@ public class HeliumDeviceService {
 
     @PostConstruct
     private void initHeliumDeviceService() {
+        log.info("Init initHeliumDeviceService");
         mapper = new ObjectMapper();
         mapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
         mapper.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);

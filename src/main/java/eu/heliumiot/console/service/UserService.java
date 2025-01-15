@@ -81,6 +81,7 @@ public class UserService {
 
     @PostConstruct
     private void initUserService() {
+        log.info("Init initUserService");
 
         // common email footer
         bottomEmail_en = "\n\n";
