@@ -260,34 +260,34 @@ public class ConsoleConfig {
     @Value ("${helium.billing.dcPunishment:100}")
     private int heliumBillingDcPunishment;
 
-    @Value ("helium.billing.vat.country:")
+    @Value ("${helium.billing.vat.country:}")
     private String heliumBillingVatCountry;
 
-    @Value ("helium.billing.vat.message1:")
+    @Value ("${helium.billing.vat.message1:}")
     private String heliumBillingVatMessage1;
 
-    @Value ("helium.billing.vat.message2:")
+    @Value ("${helium.billing.vat.message2:}")
     private String heliumBillingVatMessage2;
 
-    @Value ("helium.billing.vat.message3:")
+    @Value ("${helium.billing.vat.message3:}")
     private String heliumBillingVatMessage3;
 
-    @Value ("helium.billing.vat.message4:")
+    @Value ("${helium.billing.vat.message4:}")
     private String heliumBillingVatMessage4;
 
-    @Value ("helium.billing.vat.message5:")
+    @Value ("${helium.billing.vat.message5:}")
     private String heliumBillingVatMessage5;
 
-    @Value ("helium.billing.vat.message6:")
+    @Value ("${helium.billing.vat.message6:}")
     private String heliumBillingVatMessage6;
 
-    @Value ("helium.billing.vat.message7:")
+    @Value ("${helium.billing.vat.message7:}")
     private String heliumBillingVatMessage7;
 
-    @Value ("helium.billing.vat.message8:")
+    @Value ("${helium.billing.vat.message8:}")
     private String heliumBillingVatMessage8;
 
-    @Value ("helium.billing.vat.message9:")
+    @Value ("${helium.billing.vat.message9:}")
     private String heliumBillingVatMessage9;
 
 
