@@ -136,7 +136,7 @@ public class TransactionService {
         log.info("For business not listed country {}% with message [{}]", defaultVatParam.vat/100.0, defaultVatParam.message);
         for ( String key : vatParams.keySet() ) {
             VatParam vp = vatParams.get(key);
-            log.info("For business in {} {}% with message {}", vp.countryIso, vp.vat/100.0, vp.message);
+            log.info("For business in {} {}% with message [{}]", vp.countryIso, vp.vat/100.0, vp.message);
         }
     }
 
@@ -295,6 +295,7 @@ public class TransactionService {
         t.setCityId(user.heliumUser.getCityCode());
         t.setCityName(user.heliumUser.getCityName());
         t.setCountry(user.heliumUser.getCountry());
+        t.setCountryCode(user.heliumUser.getCountryCode());
         t.setTaxNumber(user.heliumUser.getCompanyTax());
 
         t.setIntentTime(Now.NowUtcMs());
