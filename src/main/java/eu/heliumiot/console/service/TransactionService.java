@@ -785,17 +785,19 @@ public class TransactionService {
             // Tax Number
             if ( t.getTaxNumber() != null ) {
                 String clearTaxNumber = encryptionHelper.decryptStringWithServerKey(t.getTaxNumber());
-                contentStream.moveTo(0, 0);
-                contentStream.beginText();
-                contentStream.newLineAtOffset(300, offset);
-                contentStream.setFont(normal, 12);
-                try {
-                    contentStream.showText("Tax ID: "+clearTaxNumber);
-                } catch ( java.lang.IllegalArgumentException x ) {
-                    contentStream.showText("Only ASCII chars supported");
+                if (clearTaxNumber.length() > 4) {
+                    contentStream.moveTo(0, 0);
+                    contentStream.beginText();
+                    contentStream.newLineAtOffset(300, offset);
+                    contentStream.setFont(normal, 12);
+                    try {
+                        contentStream.showText("Tax ID: " + clearTaxNumber);
+                    } catch (java.lang.IllegalArgumentException x) {
+                        contentStream.showText("Only ASCII chars supported");
+                    }
+                    contentStream.endText();
+                    offset -= 16;
                 }
-                contentStream.endText();
-                offset -= 16;
             }
 
             // headers
