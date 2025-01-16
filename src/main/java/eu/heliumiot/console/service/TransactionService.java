@@ -295,6 +295,7 @@ public class TransactionService {
         t.setCityId(user.heliumUser.getCityCode());
         t.setCityName(user.heliumUser.getCityName());
         t.setCountry(user.heliumUser.getCountry());
+        t.setTaxNumber(user.heliumUser.getCompanyTax());
 
         t.setIntentTime(Now.NowUtcMs());
         t.setCompleted(false);
@@ -407,15 +408,36 @@ public class TransactionService {
                             // When we have no country information, we use the default VAT
                             // When we have a country but no TAX information, we use the default VAT
                             // When we have a country & Tax information, we use the corresponding ISO VAT & message, if we have no ISO code entry, we use the ZZ VAT & message
-                            if ( this.vatParams.get(t.getCountryCode()) != null ) {
-                                log.info("We have a country code for this country");
+
+                            if ( t.getCountryCode() != null &&  !t.getCountryCode().isEmpty() ) {
+                                // We have a country code
+                                if ( t.getTaxNumber() != null ) {
+                                    String clearTaxNumber = encryptionHelper.decryptStringWithServerKey(t.getTaxNumber());
+                                    if (clearTaxNumber.length() > 4) {
+                                        // we have a tax number, assuming it's a valid one
+                                        // search for country condition
+                                        VatParam vp = vatParams.get(t.getCountryCode().toLowerCase());
+                                        if (vp != null) {
+                                            // we have a country code
+                                            t.setApplicableVAT(vp.vat / 10_000.0);
+                                            t.setVatMessage(vp.message);
+                                        } else {
+                                            // we have no rules for that country code, apply default B2B
+                                            t.setApplicableVAT(defaultVatParam.vat / 10_000.0);
+                                            t.setVatMessage(defaultVatParam.message);
+                                        }
+                                    } else {
+                                        // no tax number => apply the default VAT
+                                        t.setApplicableVAT(consoleConfig.getHeliumBillingVat() / 10_000.0);
+                                    }
+                                } else {
+                                    // no tax number => apply the default VAT
+                                    t.setApplicableVAT(consoleConfig.getHeliumBillingVat() / 10_000.0);
+                                }
+                            } else {
+                                // No country code selected => apply default VAT
+                                t.setApplicableVAT(consoleConfig.getHeliumBillingVat()/10_000.0);
                             }
-                            // Todo : aller chercher les param de client, caluler les info ...
-                            // Virer le param en bdd sur la vat, ajoute de la complexité.
-
-
-                            HeliumParameter vat = heliumParameterService.getParameter(HeliumParameterService.PARAM_INVOICE_VAT);
-                            t.setApplicableVAT(vat.getLongValue()/10_000.0);
 
                             // completed
                             t.setCompleted(true);
@@ -760,6 +782,22 @@ public class TransactionService {
                 offset -= 16;
             }
 
+            // Tax Number
+            if ( t.getTaxNumber() != null ) {
+                String clearTaxNumber = encryptionHelper.decryptStringWithServerKey(t.getTaxNumber());
+                contentStream.moveTo(0, 0);
+                contentStream.beginText();
+                contentStream.newLineAtOffset(300, offset);
+                contentStream.setFont(normal, 12);
+                try {
+                    contentStream.showText("Tax ID: "+clearTaxNumber);
+                } catch ( java.lang.IllegalArgumentException x ) {
+                    contentStream.showText("Only ASCII chars supported");
+                }
+                contentStream.endText();
+                offset -= 16;
+            }
+
             // headers
             int qtyPos = 60;
             int descPos = 120;
@@ -919,6 +957,15 @@ public class TransactionService {
             contentStream.newLineAtOffset(descPos, tableStart-tableHeight-24);
             contentStream.showText("Invoice paid online");
             contentStream.endText();
+
+            if ( t.getVatMessage() != null && !t.getVatMessage().isEmpty() ) {
+                contentStream.moveTo(0, 0);
+                contentStream.beginText();
+                contentStream.setFont(bold, 9);
+                contentStream.newLineAtOffset(descPos, tableStart - tableHeight - 36);
+                contentStream.showText(t.getVatMessage());
+                contentStream.endText();
+            }
 
             if ( t.getMemo() != null ) {
 

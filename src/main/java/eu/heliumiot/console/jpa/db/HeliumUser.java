@@ -49,6 +49,9 @@ public class HeliumUser {
     @Column(name = "company")
     private String company ="";
 
+    @Column(name = "company_tax")
+    private String companyTax ="";
+
     @Column(name = "first_name")
     private String firstName ="";
 
@@ -257,5 +260,13 @@ public class HeliumUser {
 
     public void setCountryCode(String countryCode) {
         this.countryCode = countryCode;
+    }
+
+    public String getCompanyTax() {
+        return companyTax;
+    }
+
+    public void setCompanyTax(String companyTax) {
+        this.companyTax = companyTax;
     }
 }

@@ -662,6 +662,7 @@ public class UserService {
         } else r.setCompany("");
         r.setCountry(c.heliumUser.getCountry());
         r.setCountry_iso(c.heliumUser.getCountryCode());
+        r.setCompany_tax(encryptionHelper.decryptStringWithServerKey(c.heliumUser.getCompanyTax()));
         if ( c.heliumUser.getFirstName() != null ) {
             r.setFirstName(encryptionHelper.decryptStringWithServerKey(c.heliumUser.getFirstName()));
         } else r.setFirstName("");
@@ -710,6 +711,7 @@ public class UserService {
         c.heliumUser.setCityName(u.getCityName());
         c.heliumUser.setCountry(u.getCountry());
         c.heliumUser.setCountryCode(u.getCountry_iso());
+        c.heliumUser.setCompanyTax(encryptionHelper.encryptStringWithServerKey(u.getCompany_tax()));
         if (!u.getLastName().isEmpty() && !u.getCityCode().isEmpty() && !u.getCityName().isEmpty() && !u.getCountry().isEmpty() && !u.getCountry_iso().isEmpty()) {
             c.heliumUser.setProfileStatus(HUPROFILE_STATUS_COMPLETED);
         } else {
@@ -725,6 +727,7 @@ public class UserService {
         r.setCompany(u.getCompany());
         r.setCountry(c.heliumUser.getCountry());
         r.setCountry_iso(c.heliumUser.getCountryCode());
+        r.setCompany_tax(u.getCompany_tax());
         r.setFirstName(u.getFirstName());
         r.setLastName(u.getLastName());
         return r;

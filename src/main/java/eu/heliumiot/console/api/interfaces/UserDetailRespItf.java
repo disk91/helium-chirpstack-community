@@ -81,6 +81,12 @@ public class UserDetailRespItf {
     )
     private String country_iso="";
 
+    @Schema(
+            description = "Company VAT numer",
+            requiredMode = Schema.RequiredMode.REQUIRED
+    )
+    private String company_tax="";
+
 
     // ------------------------------------
 
@@ -155,5 +161,13 @@ public class UserDetailRespItf {
 
     public void setCountry_iso(String country_iso) {
         this.country_iso = country_iso;
+    }
+
+    public String getCompany_tax() {
+        return company_tax;
+    }
+
+    public void setCompany_tax(String company_tax) {
+        this.company_tax = company_tax;
     }
 }
