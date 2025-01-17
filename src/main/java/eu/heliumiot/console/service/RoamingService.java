@@ -65,7 +65,7 @@ public class RoamingService {
     protected String convertRegion(String topicRegion) {
         topicRegion = topicRegion.toUpperCase();
         if ( topicRegion.contains("US915") ) return "US915";
-        if ( topicRegion.contains("EU869") ) return "EU868";
+        if ( topicRegion.contains("EU868") ) return "EU868";
         if ( topicRegion.contains("AS923") ) return "AS923";
         if ( topicRegion.contains("AU915") ) return "AU915";
         if ( topicRegion.contains("KR920") ) return "KR920";
