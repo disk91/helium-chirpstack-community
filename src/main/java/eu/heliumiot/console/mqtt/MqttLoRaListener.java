@@ -655,21 +655,22 @@ public class MqttLoRaListener implements MqttCallback {
                     d = dedupHashMap.get(dedup.deviceEui);
                 }
                 if (d == null || (e.arrivalTime - d.lastSeen) > Now.ONE_MINUTE) {
+                    // Only new join session are processed for zone change
+                    // but we want to retry in the case of > 1 minute retry
+                    if (mqttConfig.getHeliumZoneDetectionEnable()) {
+                        String region = e.topic.substring(0, e.topic.indexOf("/"));
+                        // ... push to process, this is synchronous action, can be long
+                        // and delay the rest of the timing, rare but could be optimized.
+                        log.debug("Found a join request for {} for region {}", dedup.deviceEui, region);
+                        roamingService.processJoinMessage(dedup._deviceEui, dedup.deviceEui, region);
+                    }
+
                     // found a new join for that device
                     if (d == null) {
                         d = new DeviceDedup();
                         d.count = 1;
                         d.devEui = dedup.deviceEui;
                         d.lastSeen = e.arrivalTime;
-
-                        // Only new join session are processed for zone change
-                        if (mqttConfig.getHeliumZoneDetectionEnable()) {
-                            String region = e.topic.substring(0, e.topic.indexOf("/"));
-                            // ... push to process, this is synchronous action, can be long
-                            // and delay the rest of the timing, rare but could be optimized.
-                            log.debug("Found a join request for {} for region {}", d.devEui, region);
-                            roamingService.processJoinMessage(dedup._deviceEui, d.devEui, region);
-                        }
                     } else {
                         // new session but we keep the structure
                         d.lastSeen = e.arrivalTime;
