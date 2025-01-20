@@ -24,6 +24,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import eu.heliumiot.console.ConsoleConfig;
 import eu.heliumiot.console.jpa.db.*;
+import eu.heliumiot.console.jpa.interfaces.IHeliumDeviceChange;
 import eu.heliumiot.console.jpa.repository.*;
 import eu.heliumiot.console.mqtt.MqttSender;
 import eu.heliumiot.console.mqtt.api.HeliumDeviceActDeactItf;
@@ -36,7 +37,6 @@ import fr.ingeniousthings.tools.Now;
 import fr.ingeniousthings.tools.Tools;
 import io.chirpstack.internal.DeviceSession;
 import jakarta.annotation.PostConstruct;
-import org.checkerframework.checker.units.qual.A;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,7 +44,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Slice;
-import org.springframework.data.domain.Sort;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
@@ -1187,6 +1186,23 @@ public class HeliumDeviceService {
 
         novaService.activateDevices(toReactivate);
     }
+
+    // =================================================
+    // Device Activity (creation / deletion) Stats
+    // =================================================
+
+    public List<IHeliumDeviceChange> reportDeviceCreationByTenant(long from, int count) {
+        log.debug("reportDeviceCreationByTenant - from {} - count {}", from, count);
+        List<IHeliumDeviceChange> tenants = heliumDeviceRepository.findTopRecentTenantDeviceCreationByDeviceCount(from,count);
+        if ( tenants != null ) {
+            for ( IHeliumDeviceChange t : tenants ) {
+                log.info("reportDeviceCreationByTenant - Tenant {} - {} devices", t.getTenant_name(), t.getDevice_count());
+            }
+            return tenants;
+        }
+        return new ArrayList<>();
+    }
+
 
     // =================================================
     // Helper

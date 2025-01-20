@@ -20,6 +20,7 @@
 package eu.heliumiot.console.jpa.repository;
 
 import eu.heliumiot.console.jpa.db.HeliumDevice;
+import eu.heliumiot.console.jpa.interfaces.IHeliumDeviceChange;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
 import org.springframework.data.jpa.repository.Query;
@@ -92,6 +93,32 @@ public interface HeliumDeviceRepository extends CrudRepository<HeliumDevice, UUI
         int limit
     );
 
+
+    // This query gives the X most device creating tenant since a given date
+    // return the tenant name, ID and counter
+    @Query(value="SELECT t.name as tenant_name,d.tenantuuid as tenant_uuid,count(*) as device_count "+
+            "FROM helium_devices d "+
+            "JOIN tenant t ON d.tenantuuid::UUID = t.id "+
+            "WHERE d.created_at > ?1 "+
+            "GROUP BY t.name, d.tenantuuid "+
+            "ORDER BY counter DESC "+
+            "LIMIT ?2", nativeQuery = true)
+    public List<IHeliumDeviceChange> findTopRecentTenantDeviceCreationByDeviceCount(
+            long since,
+            int limit
+    );
+
+    @Query(value="SELECT t.name as tenant_name,d.tenantuuid as tenant_uuid,count(*) as device_count "+
+            "FROM helium_devices d "+
+            "JOIN tenant t ON d.tenantuuid::UUID = t.id "+
+            "WHERE d.deleted_at > ?1 "+
+            "GROUP BY t.name,d.tenantuuid "+
+            "ORDER BY counter DESC "+
+            "LIMIT ?2", nativeQuery = true)
+    public List<IHeliumDeviceChange> findTopRecentTenantDeviceDeletionByDeviceCount(
+            long since,
+            int limit
+    );
 
 }
 
