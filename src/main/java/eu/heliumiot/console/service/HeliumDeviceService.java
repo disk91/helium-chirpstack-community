@@ -1196,7 +1196,19 @@ public class HeliumDeviceService {
         List<IHeliumDeviceChange> tenants = heliumDeviceRepository.findTopRecentTenantDeviceCreationByDeviceCount(from,count);
         if ( tenants != null ) {
             for ( IHeliumDeviceChange t : tenants ) {
-                log.info("reportDeviceCreationByTenant - Tenant {} - {} devices", t.getTenant_name(), t.getDevice_count());
+                log.debug("reportDeviceCreationByTenant - Tenant {} - {} devices", t.getTenant_name(), t.getDevice_count());
+            }
+            return tenants;
+        }
+        return new ArrayList<>();
+    }
+
+    public List<IHeliumDeviceChange> reportDeviceDeletionByTenant(long from, int count) {
+        log.debug("reportDeviceDeletionByTenant - from {} - count {}", from, count);
+        List<IHeliumDeviceChange> tenants = heliumDeviceRepository.findTopRecentTenantDeviceDeletionByDeviceCount(from,count);
+        if ( tenants != null ) {
+            for ( IHeliumDeviceChange t : tenants ) {
+                log.debug("reportDeviceDeletionByTenant - Tenant {} - {} devices", t.getTenant_name(), t.getDevice_count());
             }
             return tenants;
         }
