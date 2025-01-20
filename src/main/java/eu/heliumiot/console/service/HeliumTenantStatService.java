@@ -263,6 +263,7 @@ public class HeliumTenantStatService {
                 sCopies.getData().add(s.getDuplicate());
                 sDownlink.getData().add(s.getDownlink());
                 sJoin.getData().add(s.getJoinReq());
+                _time += Now.ONE_FULL_DAY;
             }
             while ( _time < (start + duration) ) {
                 // add an empty entry
