@@ -21,6 +21,8 @@ package eu.heliumiot.console.service;
 
 import eu.heliumiot.console.ConsoleConfig;
 import eu.heliumiot.console.jpa.db.HeliumDeviceStat;
+import eu.heliumiot.console.jpa.interfaces.IHeliumDeviceChange;
+import eu.heliumiot.console.jpa.interfaces.IHeliumDeviceStatConsumption;
 import eu.heliumiot.console.mqtt.api.HeliumDeviceStatItf;
 import eu.heliumiot.console.jpa.repository.HeliumDeviceStatsRepository;
 import fr.ingeniousthings.tools.Now;
@@ -235,6 +237,22 @@ public class HeliumDeviceStatService {
             r.add(c);
         }
         return r;
+    }
+
+    // =================================================
+    // Device Activity (creation / deletion) Stats
+    // =================================================
+
+    public List<IHeliumDeviceStatConsumption> reportDeviceCreationByTenant(long from, int count) {
+        log.debug("reportDeviceCreationByTenant - from {} - count {}", from, count);
+        List<IHeliumDeviceStatConsumption> devices = heliumDeviceStatsRepository.findTopConsumingDevices(from,count);
+        if ( devices != null ) {
+            for ( IHeliumDeviceStatConsumption t : devices ) {
+                log.debug("reportDeviceCreationByTenant - Tenant {} - {} devEui {}", t.getTenant_name(), t.getDevice_uuid(), t.getTotal_dc());
+            }
+            return devices;
+        }
+        return new ArrayList<>();
     }
 
 }

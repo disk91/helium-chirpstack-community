@@ -21,6 +21,7 @@ package eu.heliumiot.console.jpa.repository;
 
 import eu.heliumiot.console.jpa.db.HeliumDeviceStat;
 import eu.heliumiot.console.jpa.db.Tenant;
+import eu.heliumiot.console.jpa.interfaces.IHeliumDeviceStatConsumption;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
@@ -108,4 +109,13 @@ public interface HeliumDeviceStatsRepository extends CrudRepository<HeliumDevice
         "GROUP BY tenantuuid ORDER BY activity_dc DESC LIMIT ?3", nativeQuery = true)
     public List<HeliumDeviceStat> findSumStatByDayBetween(long from, long to, int limit);
 
+
+    @Query(value ="SELECT t.name as tenant_name, d.tenantuuid AS tenant_uuid, d.deviceuuid AS device_uuid, SUM((uplink_dc+duplicate_dc+downlink_dc+join_dc+join_accept_dc)) as total_dc " +
+            "FROM helium_device_stats d" +
+            "JOIN tenant t ON d.tenantuuid::UUID = t.id" +
+            "Where day >= ?1" +
+            "GROUP BY d.deviceuuid,d.tenantuuid,t.name " +
+            "ORDER BY total_dc DESC " +
+            "LIMIT ?2", nativeQuery = true)
+    public List<IHeliumDeviceStatConsumption> findTopConsumingDevices(long since, int limit);
 }
