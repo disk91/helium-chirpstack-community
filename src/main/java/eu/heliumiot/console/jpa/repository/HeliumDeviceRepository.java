@@ -101,7 +101,7 @@ public interface HeliumDeviceRepository extends CrudRepository<HeliumDevice, UUI
             "JOIN tenant t ON d.tenantuuid::UUID = t.id "+
             "WHERE d.created_at > ?1 "+
             "GROUP BY t.name, d.tenantuuid "+
-            "ORDER BY counter DESC "+
+            "ORDER BY device_count DESC "+
             "LIMIT ?2", nativeQuery = true)
     public List<IHeliumDeviceChange> findTopRecentTenantDeviceCreationByDeviceCount(
             long since,
@@ -113,7 +113,7 @@ public interface HeliumDeviceRepository extends CrudRepository<HeliumDevice, UUI
             "JOIN tenant t ON d.tenantuuid::UUID = t.id "+
             "WHERE d.deleted_at > ?1 "+
             "GROUP BY t.name,d.tenantuuid "+
-            "ORDER BY counter DESC "+
+            "ORDER BY device_count DESC "+
             "LIMIT ?2", nativeQuery = true)
     public List<IHeliumDeviceChange> findTopRecentTenantDeviceDeletionByDeviceCount(
             long since,
