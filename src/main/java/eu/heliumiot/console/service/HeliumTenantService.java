@@ -1230,13 +1230,12 @@ public class HeliumTenantService {
 
         long duration = 15*Now.ONE_FULL_DAY;
         long start = Now.TodayMidnightUtc() - duration;
-        TenantSetupStatsRespItf stats = heliumTenantStatService.getTenantStatsForChart(
+
+        return heliumTenantStatService.getTenantStatsForChart(
             tenantId,
             start,
             duration
         );
-
-        return stats;
     }
 
     public TenantSetupStatsRespItf getTenantDeviceActivityStat(String userId, String tenantId)

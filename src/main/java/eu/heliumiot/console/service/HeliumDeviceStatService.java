@@ -139,7 +139,7 @@ public class HeliumDeviceStatService {
         } finally {
             this.runningJobs--;
         }
-        log.debug("Device stat cache flushed in "+(Now.NowUtcMs()-start)+"ms");
+        log.debug("Device stat cache flushed in {}ms", Now.NowUtcMs() - start);
     }
 
     protected HeliumDeviceStat getCurrentDeviceStat(String devId, String tenantId, boolean createOne) {

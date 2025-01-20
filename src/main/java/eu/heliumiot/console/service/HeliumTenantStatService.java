@@ -77,13 +77,13 @@ public class HeliumTenantStatService {
         long start = Now.NowUtcMs();
         try {
             jdbcTemplate.execute("CALL move_helium_device_stats_history()");
-            log.info("clean_stat_tables - move_helium_device_stats_history duration " + (Now.NowUtcMs() - start) / 1000 + "s");
+            log.info("clean_stat_tables - move_helium_device_stats_history duration {}s", (Now.NowUtcMs() - start) / 1000);
             start = Now.NowUtcMs();
 
             jdbcTemplate.execute("CALL delete_helium_device_stats_history()");
-            log.info("clean_stat_tables - delete_helium_device_stats_history duration " + (Now.NowUtcMs() - start) / 1000 + "s");
+            log.info("clean_stat_tables - delete_helium_device_stats_history duration {}s", (Now.NowUtcMs() - start) / 1000);
         } catch (Exception x) {
-            log.error("clean_stat_tables - error ("+x.getMessage()+") - after "+ (Now.NowUtcMs() - start) / 1000 + "s");
+            log.error("clean_stat_tables - error ({}) - after {}s", x.getMessage(), (Now.NowUtcMs() - start) / 1000);
         }
     }
 
@@ -111,7 +111,7 @@ public class HeliumTenantStatService {
         }
 
         // calculate stats
-        log.debug("Basic Stats calculation for "+tenantUUID+" between "+start+" and "+(start+duration));
+        log.debug("Basic Stats calculation for {} between {} and {}", tenantUUID, start, start + duration);
 
         // we need to recalculate / build
         r = new TenantBasicStatRespItf();
@@ -196,9 +196,9 @@ public class HeliumTenantStatService {
         tenantStatCache.put(r,tenantUUID);
 
         long _duration = Now.NowUtcMs() - _start;
-        log.debug("Basic stat calculation duration "+_duration+"ms");
+        log.debug("Basic stat calculation duration {}ms", _duration);
         if ( _duration > 2000 ) {
-            log.warn("Basic stat calculation duration "+_duration+"ms");
+            log.warn("Basic stat calculation duration {}ms", _duration);
         }
         return r;
     }
@@ -208,7 +208,7 @@ public class HeliumTenantStatService {
         long _start = Now.NowUtcMs();
 
         // calculate stats
-        log.debug("Tenant Stats calculation for "+tenantUUID+" between "+start+" and "+(start+duration));
+        log.debug("Tenant Stats calculation for {} between {} and {}", tenantUUID, start, start + duration);
 
         // get the usage stat
         boolean success = false;
@@ -223,7 +223,7 @@ public class HeliumTenantStatService {
         } catch (Exception x) {
             // We have an exception when no value match the SUM on the period
             // forget this
-            log.debug("Failed to get Tenant stats calculation "+x.getMessage());
+            log.debug("Failed to get Tenant stats calculation {}", x.getMessage());
         }
         if ( !success ) {
             throw new ITParseException();
@@ -247,12 +247,31 @@ public class HeliumTenantStatService {
             r.getSeries().add(sCopies);
             r.getSeries().add(sDownlink);
             r.getSeries().add(sJoin);
+            long _time = start;
             for ( HeliumDeviceStat s : ss ) {
+                while ( s.getDay() > _time ) {
+                    // add an empty entry
+                    r.getDateLabel().add(Now.formatToYYYYMMDDUtc(_time));
+                    sUplink.getData().add(0);
+                    sCopies.getData().add(0);
+                    sDownlink.getData().add(0);
+                    sJoin.getData().add(0);
+                    _time += Now.ONE_FULL_DAY;
+                }
                 r.getDateLabel().add(Now.formatToYYYYMMDDUtc(s.getDay()));
                 sUplink.getData().add(s.getUplink());
                 sCopies.getData().add(s.getDuplicate());
                 sDownlink.getData().add(s.getDownlink());
                 sJoin.getData().add(s.getJoinReq());
+            }
+            while ( _time < (start + duration) ) {
+                // add an empty entry
+                r.getDateLabel().add(Now.formatToYYYYMMDDUtc(_time));
+                sUplink.getData().add(0);
+                sCopies.getData().add(0);
+                sDownlink.getData().add(0);
+                sJoin.getData().add(0);
+                _time += Now.ONE_FULL_DAY;
             }
             return r;
         }
@@ -263,7 +282,7 @@ public class HeliumTenantStatService {
         long _start = Now.NowUtcMs();
 
         // calculate stats
-        log.debug("Tenant Device Stats calculation for "+tenantUUID+" between "+start+" and "+(start+duration));
+        log.debug("Tenant Device Stats calculation for {} between {} and {}", tenantUUID, start, start + duration);
 
         // get the usage stat
         boolean success = false;
@@ -279,7 +298,7 @@ public class HeliumTenantStatService {
         } catch (Exception x) {
             // We have an exception when no value match the SUM on the period
             // forget this
-            log.debug("Failed to get Tenant Device stats calculation "+x.getMessage());
+            log.debug("Failed to get Tenant Device stats calculation {}", x.getMessage());
         }
         if ( !success ) {
             throw new ITParseException();
@@ -320,7 +339,7 @@ public class HeliumTenantStatService {
         long _start = Now.NowUtcMs();
 
         // calculate stats
-        log.debug("Tenant Inactive Device Stats calculation for "+tenantUUID+" between "+start+" and "+(start+duration));
+        log.debug("Tenant Inactive Device Stats calculation for {} between {} and {}", tenantUUID, start, start + duration);
 
         // get the usage stat
         boolean success = false;
@@ -336,7 +355,7 @@ public class HeliumTenantStatService {
         } catch (Exception x) {
             // We have an exception when no value match the SUM on the period
             // forget this
-            log.debug("Failed to get Tenant Inactiv Device stats calculation "+x.getMessage());
+            log.debug("Failed to get Tenant Inactiv Device stats calculation {}", x.getMessage());
         }
         if ( !success ) {
             throw new ITParseException();
@@ -382,7 +401,7 @@ public class HeliumTenantStatService {
         long _start = Now.NowUtcMs();
 
         // calculate stats
-        log.debug("Top consumer Stats calculation for between "+start+" and "+(start+duration));
+        log.debug("Top consumer Stats calculation for between {} and {}", start, start + duration);
 
         // get the usage stat
         boolean success = false;
@@ -397,7 +416,7 @@ public class HeliumTenantStatService {
         } catch (Exception x) {
             // We have an exception when no value match the SUM on the period
             // forget this
-            log.debug("Failed to get top consumer stats calculation "+x.getMessage());
+            log.debug("Failed to get top consumer stats calculation {}", x.getMessage());
         }
         if ( !success ) {
             throw new ITParseException();
