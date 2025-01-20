@@ -13,6 +13,12 @@ public class IHeliumDeviceChange {
 
     // ---
 
+    public IHeliumDeviceChange(String tenant_name, String tenant_uuid, int device_count) {
+        this.tenant_name = tenant_name;
+        this.tenant_uuid = tenant_uuid;
+        this.device_count = device_count;
+    }
+
     // ---
 
 
