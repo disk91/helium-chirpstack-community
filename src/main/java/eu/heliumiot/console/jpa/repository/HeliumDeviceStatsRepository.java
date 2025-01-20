@@ -111,9 +111,9 @@ public interface HeliumDeviceStatsRepository extends CrudRepository<HeliumDevice
 
 
     @Query(value ="SELECT t.name as tenant_name, d.tenantuuid AS tenant_uuid, d.deviceuuid AS device_uuid, SUM((uplink_dc+duplicate_dc+downlink_dc+join_dc+join_accept_dc)) as total_dc " +
-            "FROM helium_device_stats d" +
-            "JOIN tenant t ON d.tenantuuid::UUID = t.id" +
-            "Where day >= ?1" +
+            "FROM helium_device_stats d " +
+            "JOIN tenant t ON d.tenantuuid::UUID = t.id " +
+            "WHERE d.day >= ?1 " +
             "GROUP BY d.deviceuuid,d.tenantuuid,t.name " +
             "ORDER BY total_dc DESC " +
             "LIMIT ?2", nativeQuery = true)
