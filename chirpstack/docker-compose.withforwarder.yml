@@ -93,6 +93,10 @@ services:
     ports:
       - 127.0.0.1:8080:8080
       - 127.0.0.1:8070:8070
+    deploy:
+      resources:
+        limits:
+          cpus: "4.0"
     logging: *logs
 
   chirpstack-gateway-bridge-eu868:
