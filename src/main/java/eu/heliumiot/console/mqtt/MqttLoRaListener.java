@@ -502,12 +502,15 @@ public class MqttLoRaListener implements MqttCallback {
             }
 
             // internal test to be removed
+            /*
             logService.log(new LogEntry(
                     LogLevel.WARN,
                     "MqttLoRaListener",
                     "One packet received",
                     0
             ));
+            */
+
 
             String spayload = HexaConverters.byteToHexString(payload);
             // Manage arrival time for the first frame
