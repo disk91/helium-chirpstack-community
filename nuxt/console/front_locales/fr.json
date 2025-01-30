@@ -565,6 +565,18 @@
 
     "tsl_punishment":"Comportement anormal",
     "tip_punishment":"Cout associé à des comportements anormaux tels que triche",
-
+    "ctx_frame_integration": "Intégration",
+    "tsl_company_tax": "Numero TVA",
+    "tip_company_tax": "(Recommandé) Identifiant de l'entreprise pour les taxes (TVA)",
+    "tsl_tenant_name": "Tenant",
+    "tsl_tenant_uuid": "UUID",
+    "tsl_tenant_deveui": "Dev EUI",
+    "tsl_tenant_dcs": "DCs",
+    "tsl_new_device_count" : "Objets ajoutés",
+    "tsl_rem_device_count" : "Objets supprimés",
+    "new_dev_created_title" : "Objets ajoutés dans les dernières 48h",
+    "new_dev_removed_title" : "Objets supprimé dans les dernières 48h",
+    "most_dev_consum_title" : "Objets les plus consommateurs sur 24h",
+    
     "end" : "fin"
 }

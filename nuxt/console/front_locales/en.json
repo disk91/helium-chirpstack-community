@@ -563,6 +563,18 @@
   "inac_table_skcol_tip":"<b>Session Key Filter Collision</b><br/>The <span style='color:#f00;'>&#10754;</span> is diplayed when the device shares the same session than another. This prevent data to be correctly route to the device. Change your appKey in a such situation. The <span style='color:#e93;'>&#10754;</span> is displayed when the check is not performed, this is a normal behavior.",
   "tsl_punishment":"Anormal Behavior",
   "tip_punishment":"Cost of DCs associated with some anormal behavior related to gaming",
-
+  "ctx_frame_integration": "Integration",
+  "tsl_company_tax": "Tax number",
+  "tip_company_tax": "(Recommended) Company tax ID",
+  "tsl_tenant_name": "Tenant",
+  "tsl_tenant_uuid": "UUID",
+  "tsl_tenant_deveui": "Dev EUI",
+  "tsl_tenant_dcs": "DCs",
+  "tsl_new_device_count" : "New Devices",
+  "tsl_rem_device_count" : "Removed Devices",
+  "new_dev_created_title" : "Last 48h Added devices",
+  "new_dev_removed_title" : "Last 48h Removed devices",
+  "most_dev_consum_title" : "Last 24h most consuming devices",
+  
   "end" : "end"
 }
