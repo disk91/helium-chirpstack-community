@@ -22,7 +22,7 @@
         <b-nav-item to="/front/profiles" exact active-class="active" v-if="$store.state.admin" class="sm">{{ $t('menu_admin_profiles') }}</b-nav-item>
         <b-nav-item to="/front/messages" exact active-class="active" v-if="$store.state.admin" class="sm">{{ $t('menu_admin_messages') }}</b-nav-item>
         <b-nav-item v-if="!$config.community && $store.state.admin" 
-                    to="/front/shield" exact active-class="active" class="sm">{{ $t('menu_admin_shield') }}</b-nav-item>
+                    to="/front/privshield" exact active-class="active" class="sm">{{ $t('menu_admin_shield') }}</b-nav-item>
       </b-navbar-nav>
       <b-navbar-nav class="ml-auto">
         <b-nav-text right class="mr-1">
