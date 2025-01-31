@@ -986,4 +986,14 @@ public class ConsoleConfig {
     public int getHeliumTenantDcAlarm() {
         return heliumTenantDcAlarm;
     }
+
+    // ==============================
+    // Caching
+    // ==============================
+    @Value ("${helium.cache.device.stat:5000}")
+    private int heliumCacheDeviceStat;
+
+    public int getHeliumCacheDeviceStat() {
+        return heliumCacheDeviceStat;
+    }
 }

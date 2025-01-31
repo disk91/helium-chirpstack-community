@@ -57,7 +57,7 @@ public class HeliumDeviceStatService {
         log.info("Init initHeliumDeviceStatService");
         this.heliumDeviceStatCache = new ObjectCache<String, HeliumDeviceStat>(
                 "DeviceStat",
-                5000,
+                consoleConfig.getHeliumCacheDeviceStat(),
                 2*Now.ONE_HOUR
         ) {
             @Override
