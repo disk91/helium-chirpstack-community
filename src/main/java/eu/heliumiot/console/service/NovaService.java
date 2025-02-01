@@ -727,7 +727,7 @@ public class NovaService {
             } while (devices != null && !quit);
         }
 
-        log.info("refreshOneRouteSkf - scan route {} exists {} processed {} devices",inRouteSkfs.size(), routeId, processed);
+        log.debug("refreshOneRouteSkf - scan route {} exists {} processed {} devices",inRouteSkfs.size(), routeId, processed);
 
         // search for session to be removed
         boolean hasNonEmpty = false;            // search & make sure this route have the dummy session keys
