@@ -327,6 +327,7 @@ public class TransactionService {
                 // .setCustomer(user.heliumUser.getId().toString()) // @TODO need to be created ... let see that later
                 .setReceiptEmail(user.user.getEmail())
                 .addPaymentMethodType("card")
+                .setStatementDescriptorSuffix("Helium DCs")
                 .setStatementDescriptor("Helium DCs")
                 .putMetadata("cust_id", user.heliumUser.getId().toString())
                 .build();
