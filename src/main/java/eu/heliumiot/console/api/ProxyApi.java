@@ -76,9 +76,9 @@ public class ProxyApi {
 
         // @TODO - rate limiter could be implemented
         // validate the standard domains
-        if ( endPoint.compareToIgnoreCase("https://console.helium-iot.eu/api") == 0
-           || endPoint.compareToIgnoreCase("https://console-vip.helium.com/api/") == 0
-           || endPoint.compareToIgnoreCase("https://console.helium.com/api/") == 0
+        if ( endPoint.startsWith("https://console.helium-iot.eu/api/")
+           || endPoint.startsWith("https://console-vip.helium.com/api/")
+           || endPoint.startsWith("https://console.helium.com/api/")
         ) {
             return true;
         }
@@ -154,6 +154,7 @@ public class ProxyApi {
             if ( reqItf.getKey() != null && !reqItf.getKey().isEmpty()) {
                 // test authorized URL
                 if ( ! verifyEndpoint(reqItf.getEndpoint(), request.getUserPrincipal().getName() ) ) {
+                    log.info("Invalid endpoint {}", reqItf.getEndpoint());
                     r.setMessage("console_response");
                     return new ResponseEntity<>(r, HttpStatus.BAD_REQUEST);
                 }
@@ -184,6 +185,7 @@ public class ProxyApi {
                     if (responseEntity.getStatusCode() == HttpStatus.OK) {
                         return new ResponseEntity<>(responseEntity.getBody(), HttpStatus.OK);
                     } else {
+                        log.info("Invalid response {}", responseEntity.getStatusCode());
                         r.setMessage("console_response");
                     }
                 } else r.setMessage("unsupported_endpoint");
