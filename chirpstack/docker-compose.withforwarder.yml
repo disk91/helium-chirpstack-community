@@ -76,7 +76,7 @@ services:
     logging: *logs
 
   chirpstack:
-    image: chirpstack/chirpstack:4.11.0
+    image: chirpstack/chirpstack:4.11.1
     command: -c /etc/chirpstack
     restart: unless-stopped
     volumes:
