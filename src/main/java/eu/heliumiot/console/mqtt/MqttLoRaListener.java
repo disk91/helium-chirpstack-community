@@ -28,8 +28,6 @@ import com.google.protobuf.InvalidProtocolBufferException;
 import eu.heliumiot.console.ConsoleConfig;
 import eu.heliumiot.console.jpa.db.HeliumParameter;
 import eu.heliumiot.console.service.*;
-import eu.heliumiot.console.service.interfaces.LogEntry;
-import eu.heliumiot.console.service.interfaces.LogLevel;
 import eu.heliumiot.console.tools.LoRaWanHelper;
 import fr.ingeniousthings.tools.*;
 import io.chirpstack.api.gw.UplinkFrame;
@@ -39,7 +37,7 @@ import io.chirpstack.json.UplinkEvent;
 import io.chirpstack.json.sub.UplinkEventRxInfo;
 import org.eclipse.paho.client.mqttv3.*;
 import org.eclipse.paho.client.mqttv3.persist.MemoryPersistence;
-import org.postgresql.shaded.com.ongres.scram.common.bouncycastle.base64.Base64;
+import java.util.Base64;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -709,14 +707,14 @@ public class MqttLoRaListener implements MqttCallback {
             if (matchUplink.matcher(e.topic).matches()) {
                 try {
                     UplinkEvent up = mapper.readValue(e.message.toString(), UplinkEvent.class);
-                    int dataSz = Base64.decode(up.getData()).length;
+                    int dataSz = Base64.getDecoder().decode(up.getData()).length;
                     prometeusService.addLoRaUplink(
                         e.arrivalTime - DateConverters.StringDateToMs(up.getTime()),
                         dataSz,
                         true,
                         up.getRxInfo().size() - 1
                     );
-                    log.debug("UPLINK Dev: {} Adr:{} Fcnt:{}({}) duplicates:{} size: {}", up.getDeviceInfo().getDevEui(), up.getDevAddr(), up.getfCnt(), up.getfCnt() & 0xFFFF, up.getRxInfo().size(), Base64.decode(up.getData()).length);
+                    log.debug("UPLINK Dev: {} Adr:{} Fcnt:{}({}) duplicates:{} size: {}", up.getDeviceInfo().getDevEui(), up.getDevAddr(), up.getfCnt(), up.getfCnt() & 0xFFFF, up.getRxInfo().size(), Base64.getDecoder().decode(up.getData()).length);
                     heliumTenantService.processUplink(
                         up.getDeviceInfo().getTenantId(),
                         up.getDeviceInfo().getDevEui(),

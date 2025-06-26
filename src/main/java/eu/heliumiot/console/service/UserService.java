@@ -33,11 +33,10 @@ import eu.heliumiot.console.tools.ExecuteEmail;
 import fr.ingeniousthings.tools.*;
 import fr.ingeniousthings.tools.Claims;
 import io.chirpstack.api.*;
-import io.chirpstack.api.Tenant;
 import io.chirpstack.api.UserTenant;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
-import org.postgresql.shaded.com.ongres.scram.common.bouncycastle.base64.Base64;
+import java.util.Base64;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -122,7 +121,7 @@ public class UserService {
         // get the 2rd element of bearer xxxx.XXXXXX.xxxxx
         String [] split = bearer.split("\\.");
         if ( split.length >= 3 ) {
-            String decoded = new String(Base64.decode(split[1]));
+            String decoded = new String(Base64.getDecoder().decode(split[1]));
             ObjectMapper mapper = new ObjectMapper();
             try {
                 Claims claims = mapper.readValue(decoded, Claims.class);
