@@ -328,7 +328,7 @@ public class TransactionService {
                 .setReceiptEmail(user.user.getEmail())
                 .addPaymentMethodType("card")
                 .setStatementDescriptorSuffix("Helium DCs")
-                .setStatementDescriptor("Helium DCs")
+                // .setStatementDescriptor("Helium DCs")        // This method is deprecated and replaced by DescriptorSuffix
                 .putMetadata("cust_id", user.heliumUser.getId().toString())
                 .build();
 
