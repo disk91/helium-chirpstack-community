@@ -812,7 +812,7 @@ public class MqttLoRaListener implements MqttCallback {
                                 hni = hotspotHash.get(rx.getGatewayId().toLowerCase());
                             }
                             if ( hni != null ) {
-                                if ( hni.id == null ) hni.id = rx.getMetadata().getGateway_id();
+                                if ( hni.id == null && rx.getMetadata() != null ) hni.id = rx.getMetadata().getGateway_id();
                                 hni.addInvoicedPacket(up.getDeviceInfo().getDevEui());
                             }
                         }
