@@ -683,29 +683,36 @@ public class PrometeusService {
 
     @Scheduled(fixedRateString = "${helium.prometeus.scanPeriod}", initialDelay = 1_000) // default 1m
     protected void backgroundPrometeusStatsUpdate() {
-        long start = Now.NowUtcMs();
-        // collect metrics form DB and DB response time metrics for this
-        long tenants = tenantRepository.count();
-        long users = userRepository.count();
-        long devices = deviceRepository.count();
-        Long sumDc = heliumTenantRepository.selectSumOfDcs();
-        if ( sumDc == null ) sumDc = Long.valueOf(0);
+        try {
+            long start = Now.NowUtcMs();
+            // collect metrics form DB and DB response time metrics for this
+            long tenants = tenantRepository.count();
+            long users = userRepository.count();
+            long devices = deviceRepository.count();
+            Long sumDc = heliumTenantRepository.selectSumOfDcs();
+            if (sumDc == null) sumDc = 0L;
 
-        Device d = null;
-        if ( consoleConfig.getTestdeviceEui().length() == 16 ) {
-            d = deviceRepository.findOneDeviceByDevEui(Tools.EuiStringToByteArray(consoleConfig.getTestdeviceEui()));
+            Device d = null;
+            if (consoleConfig.getTestdeviceEui() != null && consoleConfig.getTestdeviceEui().length() == 16) {
+                d = deviceRepository.findOneDeviceByDevEui(Tools.EuiStringToByteArray(consoleConfig.getTestdeviceEui()));
+            }
+            this.addQueryDb(Now.NowUtcMs() - start);
+            this.updateTenantTotal(tenants);
+            this.updateUserTotal(users);
+            this.updateDeviceTotal(devices);
+            this.updateDcTotal(sumDc);
+            if (d != null && d.getLastSeenAt() != null) {
+                this.setLastSeenTestDevice(d.getLastSeenAt().getTime());
+            } else {
+                this.setLastSeenTestDevice(Now.NowUtcMs()); //default behavior
+            }
+            log.debug("backgroundPrometeusStatsUpdate execution has been {}ms.", Now.NowUtcMs() - start);
+            if ((Now.NowUtcMs() - start) > 5_000) {
+                log.warn("backgroundPrometeusStatsUpdate execution took more than 5s, it is not normal.({}ms)", Now.NowUtcMs() - start);
+            }
+        } catch (Exception e) {
+            log.error("Error in backgroundPrometeusStatsUpdate", e);
         }
-        this.addQueryDb(Now.NowUtcMs()-start);
-        this.updateTenantTotal(tenants);
-        this.updateUserTotal(users);
-        this.updateDeviceTotal(devices);
-        this.updateDcTotal(sumDc.longValue());
-        if ( d != null && d.getLastSeenAt() != null ) {
-            this.setLastSeenTestDevice(d.getLastSeenAt().getTime());
-        } else {
-            this.setLastSeenTestDevice(Now.NowUtcMs()); //default behavior
-        }
-        log.debug("backgroundPrometeusStatsUpdate execution has been "+(Now.NowUtcMs()-start)+"ms.");
     }
 
     @Autowired
