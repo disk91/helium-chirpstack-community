@@ -626,21 +626,27 @@ public class MqttLoRaListener implements MqttCallback {
                     }
                 }
             }
+            // check if the frame is in the future, not make sense
+            boolean futureFrame = (e.arrivalTime - rx) < 0;
 
             // count packets received at gateway level (invoiced by HPR, potentially rejected by LNS)
             if (isJoin) {
-                prometeusService.addLoRaJoinRequest(e.arrivalTime - rx);
+                if ( !futureFrame ) {
+                    prometeusService.addLoRaJoinRequest(e.arrivalTime - rx);
+                } else {
+                    log.debug("Join Request with negative rx time, this is not expected, check the gateway clock");
+                }
             } else {
                 if ( rx >= (dedup.firstRxTime-100) ) {
                     // if a frame arrives after the first one but in the past with more than
                     // 100 ms, we can consider the clock as invalid, first clock or next clocks
-                    prometeusService.addLoRaGatewayUplink(e.arrivalTime - rx);
+                    if ( !futureFrame ) prometeusService.addLoRaGatewayUplink(e.arrivalTime - rx);
 
                     // Measure uplink confirmed processing time
                     // Based on GW time, so it's an approximation
                     if ( loRaWanHelper.isUplinkConfirmed(payload) && rx > 0) {
                         // header for confirmed frame - compute elapse time in ms
-                        prometeusService.addLoRaUplinkConf(
+                        if ( !futureFrame ) prometeusService.addLoRaUplinkConf(
                             e.arrivalTime - rx
                         );
                     }
@@ -708,12 +714,16 @@ public class MqttLoRaListener implements MqttCallback {
                 try {
                     UplinkEvent up = mapper.readValue(e.message.toString(), UplinkEvent.class);
                     int dataSz = Base64.getDecoder().decode(up.getData()).length;
-                    prometeusService.addLoRaUplink(
-                        e.arrivalTime - DateConverters.StringDateToMs(up.getTime()),
-                        dataSz,
-                        true,
-                        up.getRxInfo().size() - 1
-                    );
+                    if ( (e.arrivalTime - DateConverters.StringDateToMs(up.getTime())) > 0 ) {
+                        prometeusService.addLoRaUplink(
+                                e.arrivalTime - DateConverters.StringDateToMs(up.getTime()),
+                                dataSz,
+                                true,
+                                up.getRxInfo().size() - 1
+                        );
+                    } else {
+                        log.debug("Uplink event from {} with negative time, this is not expected, check the gateway clock",up.getDeviceInfo().getDevEui());
+                    }
                     log.debug("UPLINK Dev: {} Adr:{} Fcnt:{}({}) duplicates:{} size: {}", up.getDeviceInfo().getDevEui(), up.getDevAddr(), up.getfCnt(), up.getfCnt() & 0xFFFF, up.getRxInfo().size(), Base64.getDecoder().decode(up.getData()).length);
                     heliumTenantService.processUplink(
                         up.getDeviceInfo().getTenantId(),
