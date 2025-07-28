@@ -108,6 +108,8 @@ public class RedisDeviceEventStreamListener {
     @Autowired
     protected PrometeusService prometeusService;
 
+    private boolean failedCreation = false;
+
     @Scheduled(fixedRateString = "${spring.data.redis.metaRefreshRate}", initialDelay = 1_000)
     void ListenOnRedisStreamEvent() {
 
@@ -133,11 +135,18 @@ public class RedisDeviceEventStreamListener {
             } catch (Exception x) {
                 // the stream does not exist yet ... until the first device it seems we don't have it or it's name
             }
-            if ( !this.streamExists ) log.warn("Impossible to create the redis stream reader, will try later");
+            if ( !this.streamExists ) {
+                log.warn("Impossible to create the redis event stream reader, will try later");
+                this.failedCreation = true;
+            }
         }
 
         if ( this.streamExists ) {
             try {
+                if ( this.failedCreation ) {
+                    log.info("Redis event stream recovered");
+                    this.failedCreation = false;
+                }
 
                 @SuppressWarnings("unchecked")
                 List<StreamMessage<String, byte[]>> messages = syncCommands.xreadgroup(
@@ -161,21 +170,21 @@ public class RedisDeviceEventStreamListener {
                                                 // we have an activation update
                                                 String devEui = req.getMetadataMap().get("dev_eui");
                                                 if ( devEui != null ) {
-                                                    log.debug("Found activation change for "+devEui);
+                                                    log.debug("Found activation change for {}", devEui);
                                                     heliumDeviceService.reportDeviceActivationOnMqtt(devEui);
                                                 }
                                             }
                                         } else {
-                                            log.debug("Req: " + req.getMethod() + " Srv:" + req.getService() + " Meta: " + req.getMetadataCount());
+                                            log.debug("Req: {} Srv:{} Meta: {}", req.getMethod(), req.getService(), req.getMetadataCount());
                                             //req.getMetadataMap().forEach( (s,l) -> { log.debug(s+" "+l); });
                                         }
                                     }
                                 } catch (InvalidProtocolBufferException x) {
-                                    log.error("Impossible to parse stream type up with " + x.getMessage());
+                                    log.error("Impossible to parse stream type up with {}", x.getMessage());
                                     log.info(HexaConverters.byteToHexStringWithSpace(byteData));
                                 }
                             } else {
-                                log.warn("## Found a new key on device:stream:event " + k);
+                                log.warn("## Found a new key on device:stream:event {}", k);
                                 byte[] byteData = message.getBody().get(k);
                                 log.info(HexaConverters.byteToHexStringWithSpace(byteData));
                             }
@@ -195,9 +204,9 @@ public class RedisDeviceEventStreamListener {
                 this.runningJobs--;
             }
         }
-        log.debug("ListenOnRedisStreamEvent - duration "+(Now.NowUtcMs()-start)+" ms, process "+processed+" new entries");
+        log.debug("ListenOnRedisStreamEvent - duration {} ms, process {} new entries", Now.NowUtcMs() - start, processed);
         if ( (Now.NowUtcMs()-start) > 1000 ) {
-            log.warn("ListenOnRedisStreamEvent - duration "+(Now.NowUtcMs()-start)+" ms, process "+processed+" new entries");
+            log.warn("ListenOnRedisStreamEvent - duration {} ms, process {} new entries", Now.NowUtcMs() - start, processed);
         }
     }
 

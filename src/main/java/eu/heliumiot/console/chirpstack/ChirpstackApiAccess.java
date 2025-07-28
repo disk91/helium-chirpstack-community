@@ -258,7 +258,7 @@ public class ChirpstackApiAccess {
                     // message in header "gprc-message"
                     String v = response.getHeaders().getFirst("grpc-message");
                     if ( v != null ) log.debug("Problem : "+v);
-                    throw new ITNotFoundException(v);
+                    throw new ITNotFoundException((v==null)?"Response Body is empty":v);
                 }
                 log.debug("Response from the API :"+respStr);
 

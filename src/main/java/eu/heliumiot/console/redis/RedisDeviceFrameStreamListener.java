@@ -108,6 +108,8 @@ public class RedisDeviceFrameStreamListener {
     @Autowired
     protected PrometeusService prometeusService;
 
+    private boolean failedCreation = false;
+
     @Scheduled(fixedRateString = "${spring.data.redis.metaRefreshRate}", initialDelay = 2_000)
     void ListenOnRedisStreamMeta() {
 
@@ -133,11 +135,19 @@ public class RedisDeviceFrameStreamListener {
             } catch (Exception x) {
                 // the stream does not exist yet ... until the first device it seems we don't have it or it's name
             }
-            if ( !this.streamExists ) log.warn("Impossible to create the redis stream reader, will try later");
+            if ( !this.streamExists ) {
+                log.warn("Impossible to create the redis stream reader, will try later");
+                this.failedCreation = true;
+            }
         }
 
         if ( this.streamExists ) {
             try {
+
+                if ( this.failedCreation ) {
+                    log.info("Redis stream recovered");
+                    this.failedCreation = false;
+                }
 
                 @SuppressWarnings("unchecked")
                 List<StreamMessage<String, byte[]>> messages = syncCommands.xreadgroup(
@@ -187,7 +197,7 @@ public class RedisDeviceFrameStreamListener {
                                         if (downlinkSize <= 12) downlinkSize = 0;
                                         else downlinkSize -= 13;
 
-                                        log.debug("Dev: " + dwn.getDevEui() + " Adr:" + dwn.getDevAddr() + " size: " + downlinkSize);
+                                        log.debug("Dev: {} Adr:{} size: {}", dwn.getDevEui(), dwn.getDevAddr(), downlinkSize);
                                         heliumTenantService.processDownlink(
                                                 null,
                                                 dwn.getDevEui(),
@@ -196,11 +206,11 @@ public class RedisDeviceFrameStreamListener {
                                         prometeusService.addLoRaDownlink(downlinkSize);
                                     }
                                 } catch (InvalidProtocolBufferException x) {
-                                    log.error("Impossible to parse stream type up with " + x.getMessage());
+                                    log.error("Impossible to parse stream type up with {}", x.getMessage());
                                     log.info(HexaConverters.byteToHexStringWithSpace(byteData));
                                 }
                             } else {
-                                log.warn("## Found a new key on device:stream:frame " + k);
+                                log.warn("## Found a new key on device:stream:frame {}", k);
                                 byte[] byteData = message.getBody().get(k);
                                 log.info(HexaConverters.byteToHexStringWithSpace(byteData));
                             }
@@ -220,7 +230,7 @@ public class RedisDeviceFrameStreamListener {
                 this.runningJobs--;
             }
         }
-        log.debug("ListenOnRedisStreamMeta - duration "+(Now.NowUtcMs()-start)+" ms, process "+processed+" new entries");
+        log.debug("ListenOnRedisStreamMeta - duration {} ms, process {} new entries", Now.NowUtcMs() - start, processed);
 
     }
 
