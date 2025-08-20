@@ -210,6 +210,7 @@ services:
 
   postgres:
     image: postgres:14-alpine
+    shm_size: 512m
     restart: unless-stopped
     command: postgres -c 'max_connections=250'
     volumes:
