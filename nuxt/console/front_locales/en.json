@@ -425,7 +425,7 @@
 
   "mig_setup_auth_data_tx" : "By entering your API key, you accept to transfer device meta-data, credentials and other needed information to this service.",
   "mig_processing_devices" : "Preparing devices",
-
+  
   "uc_version_title" : "User condition version",
   "uc_version" : "Current version",
   "uc_version_desc" : "Free text field for naming the current user condition version",
@@ -529,7 +529,7 @@
   "shield_admin_title": "Shielding Administration",
 
   "inac_show_all": "See all inactive",
-  "inac_main_title": "Inactiv devices",
+  "inac_main_title": "Inactive devices",
   "inac_missing_tenant_info": "Before processing inactivity analysis, you need to select a tenant from the Chirpstack tab.",
   "inac_loading_in_progress": "Loading in progress",
   "inac_list_title": "Inactiv devices list",
@@ -561,8 +561,8 @@
   "inac_table_joinonly_tip":"<b>Device Recently Joined Req only</b><br/>The <span style='color:#f00;'>&#10754;</span> is diplayed when the device in the recent communication only sent Join Request and never succeeded in getting connected. It can be a problem of noise on reception or a problem of hotspot involved in communication. You can inclease max_copy to try to resolve, you can get more information on frame analysis. The <span style='color:#e93;'>&#10754;</span> means, the status can't be computed, it's a normal behavior.",
   "inac_table_covrisk_tip":"<b>Device Link Quality</b><br/>The <span style='color:#f00;'>&#10754;</span> is diplayed when the device reception conditions are bad and may be the cause of miscommunications. The <span style='color:#e93;'>&#10754;</span> means link quality is unknown or not good but average. You can get more information for the Frame Analysis page.",
   "inac_table_skcol_tip":"<b>Session Key Filter Collision</b><br/>The <span style='color:#f00;'>&#10754;</span> is diplayed when the device shares the same session than another. This prevent data to be correctly route to the device. Change your appKey in a such situation. The <span style='color:#e93;'>&#10754;</span> is displayed when the check is not performed, this is a normal behavior.",
-  "tsl_punishment":"Anormal Behavior",
-  "tip_punishment":"Cost of DCs associated with some anormal behavior related to gaming",
+  "tsl_punishment":"Abnormal Behavior",
+  "tip_punishment":"Cost of DCs associated with some abnormal behavior related to gaming",
   "ctx_frame_integration": "Integration",
   "tsl_company_tax": "Tax number",
   "tip_company_tax": "(Recommended) Company tax ID",
