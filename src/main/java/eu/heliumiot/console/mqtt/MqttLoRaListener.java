@@ -848,7 +848,7 @@ public class MqttLoRaListener implements MqttCallback {
                     log.debug("LOG - Dev: {} Eui: {} Tenant: {}", le.getDeviceInfo().getDeviceName(), le.getDeviceInfo().getDevEui(), le.getDeviceInfo().getTenantId());
                     if ( le.getCode().compareToIgnoreCase("UPLINK_F_CNT_RESET") == 0 ) {
                         log.info("Found an UPLINK_F_CNT_RESET for devEui: {}", le.getDeviceInfo().getDevEui());
-                        // anormal behavior use as an attack, pay 100 Uplink equivalent
+                        // abnormal behavior use as an attack, pay 100 Uplink equivalent
                         heliumTenantService.punish(
                             le.getDeviceInfo().getTenantId(),
                             le.getDeviceInfo().getDevEui()
