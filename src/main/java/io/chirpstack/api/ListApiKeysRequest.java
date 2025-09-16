@@ -48,6 +48,7 @@ private static final long serialVersionUID = 0L;
   /**
    * <pre>
    * Max number of items to return.
+   * If not set, it will be treated as 0, and the response will only return the total_count.
    * </pre>
    *
    * <code>uint32 limit = 1;</code>
@@ -503,6 +504,7 @@ private static final long serialVersionUID = 0L;
     /**
      * <pre>
      * Max number of items to return.
+     * If not set, it will be treated as 0, and the response will only return the total_count.
      * </pre>
      *
      * <code>uint32 limit = 1;</code>
@@ -515,6 +517,7 @@ private static final long serialVersionUID = 0L;
     /**
      * <pre>
      * Max number of items to return.
+     * If not set, it will be treated as 0, and the response will only return the total_count.
      * </pre>
      *
      * <code>uint32 limit = 1;</code>
@@ -531,6 +534,7 @@ private static final long serialVersionUID = 0L;
     /**
      * <pre>
      * Max number of items to return.
+     * If not set, it will be treated as 0, and the response will only return the total_count.
      * </pre>
      *
      * <code>uint32 limit = 1;</code>

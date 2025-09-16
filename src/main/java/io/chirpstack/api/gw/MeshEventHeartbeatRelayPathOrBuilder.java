@@ -5,8 +5,8 @@
 
 package io.chirpstack.api.gw;
 
-public interface MeshHeartbeatRelayPathOrBuilder extends
-    // @@protoc_insertion_point(interface_extends:gw.MeshHeartbeatRelayPath)
+public interface MeshEventHeartbeatRelayPathOrBuilder extends
+    // @@protoc_insertion_point(interface_extends:gw.MeshEventHeartbeatRelayPath)
     com.google.protobuf.MessageOrBuilder {
 
   /**

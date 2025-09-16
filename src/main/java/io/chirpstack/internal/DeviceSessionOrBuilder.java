@@ -668,4 +668,58 @@ io.chirpstack.internal.DeviceSessionChannel defaultValue);
    * <code>.internal.Relay relay = 41;</code>
    */
   io.chirpstack.internal.RelayOrBuilder getRelayOrBuilder();
+
+  /**
+   * <pre>
+   * Pending mac-commands.
+   * </pre>
+   *
+   * <code>map&lt;uint32, bytes&gt; mac_command_pending = 43;</code>
+   */
+  int getMacCommandPendingCount();
+  /**
+   * <pre>
+   * Pending mac-commands.
+   * </pre>
+   *
+   * <code>map&lt;uint32, bytes&gt; mac_command_pending = 43;</code>
+   */
+  boolean containsMacCommandPending(
+      int key);
+  /**
+   * Use {@link #getMacCommandPendingMap()} instead.
+   */
+  @java.lang.Deprecated
+  java.util.Map<java.lang.Integer, com.google.protobuf.ByteString>
+  getMacCommandPending();
+  /**
+   * <pre>
+   * Pending mac-commands.
+   * </pre>
+   *
+   * <code>map&lt;uint32, bytes&gt; mac_command_pending = 43;</code>
+   */
+  java.util.Map<java.lang.Integer, com.google.protobuf.ByteString>
+  getMacCommandPendingMap();
+  /**
+   * <pre>
+   * Pending mac-commands.
+   * </pre>
+   *
+   * <code>map&lt;uint32, bytes&gt; mac_command_pending = 43;</code>
+   */
+  /* nullable */
+com.google.protobuf.ByteString getMacCommandPendingOrDefault(
+      int key,
+      /* nullable */
+com.google.protobuf.ByteString defaultValue);
+  /**
+   * <pre>
+   * Pending mac-commands.
+   * </pre>
+   *
+   * <code>map&lt;uint32, bytes&gt; mac_command_pending = 43;</code>
+   */
+  com.google.protobuf.ByteString getMacCommandPendingOrThrow(
+      int key);
 }

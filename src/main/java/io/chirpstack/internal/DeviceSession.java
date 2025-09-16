@@ -52,6 +52,8 @@ private static final long serialVersionUID = 0L;
         return internalGetExtraUplinkChannels();
       case 31:
         return internalGetMacCommandErrorCount();
+      case 43:
+        return internalGetMacCommandPending();
       default:
         throw new RuntimeException(
             "Invalid map field number: " + number);
@@ -1066,6 +1068,101 @@ io.chirpstack.internal.DeviceSessionChannel defaultValue) {
     return relay_ == null ? io.chirpstack.internal.Relay.getDefaultInstance() : relay_;
   }
 
+  public static final int MAC_COMMAND_PENDING_FIELD_NUMBER = 43;
+  private static final class MacCommandPendingDefaultEntryHolder {
+    static final com.google.protobuf.MapEntry<
+        java.lang.Integer, com.google.protobuf.ByteString> defaultEntry =
+            com.google.protobuf.MapEntry
+            .<java.lang.Integer, com.google.protobuf.ByteString>newDefaultInstance(
+                io.chirpstack.internal.InternalProto.internal_static_internal_DeviceSession_MacCommandPendingEntry_descriptor, 
+                com.google.protobuf.WireFormat.FieldType.UINT32,
+                0,
+                com.google.protobuf.WireFormat.FieldType.BYTES,
+                com.google.protobuf.ByteString.EMPTY);
+  }
+  @SuppressWarnings("serial")
+  private com.google.protobuf.MapField<
+      java.lang.Integer, com.google.protobuf.ByteString> macCommandPending_;
+  private com.google.protobuf.MapField<java.lang.Integer, com.google.protobuf.ByteString>
+  internalGetMacCommandPending() {
+    if (macCommandPending_ == null) {
+      return com.google.protobuf.MapField.emptyMapField(
+          MacCommandPendingDefaultEntryHolder.defaultEntry);
+    }
+    return macCommandPending_;
+  }
+  public int getMacCommandPendingCount() {
+    return internalGetMacCommandPending().getMap().size();
+  }
+  /**
+   * <pre>
+   * Pending mac-commands.
+   * </pre>
+   *
+   * <code>map&lt;uint32, bytes&gt; mac_command_pending = 43;</code>
+   */
+  @java.lang.Override
+  public boolean containsMacCommandPending(
+      int key) {
+
+    return internalGetMacCommandPending().getMap().containsKey(key);
+  }
+  /**
+   * Use {@link #getMacCommandPendingMap()} instead.
+   */
+  @java.lang.Override
+  @java.lang.Deprecated
+  public java.util.Map<java.lang.Integer, com.google.protobuf.ByteString> getMacCommandPending() {
+    return getMacCommandPendingMap();
+  }
+  /**
+   * <pre>
+   * Pending mac-commands.
+   * </pre>
+   *
+   * <code>map&lt;uint32, bytes&gt; mac_command_pending = 43;</code>
+   */
+  @java.lang.Override
+  public java.util.Map<java.lang.Integer, com.google.protobuf.ByteString> getMacCommandPendingMap() {
+    return internalGetMacCommandPending().getMap();
+  }
+  /**
+   * <pre>
+   * Pending mac-commands.
+   * </pre>
+   *
+   * <code>map&lt;uint32, bytes&gt; mac_command_pending = 43;</code>
+   */
+  @java.lang.Override
+  public /* nullable */
+com.google.protobuf.ByteString getMacCommandPendingOrDefault(
+      int key,
+      /* nullable */
+com.google.protobuf.ByteString defaultValue) {
+
+    java.util.Map<java.lang.Integer, com.google.protobuf.ByteString> map =
+        internalGetMacCommandPending().getMap();
+    return map.containsKey(key) ? map.get(key) : defaultValue;
+  }
+  /**
+   * <pre>
+   * Pending mac-commands.
+   * </pre>
+   *
+   * <code>map&lt;uint32, bytes&gt; mac_command_pending = 43;</code>
+   */
+  @java.lang.Override
+  public com.google.protobuf.ByteString getMacCommandPendingOrThrow(
+      int key) {
+
+    java.util.Map<java.lang.Integer, com.google.protobuf.ByteString> map =
+        internalGetMacCommandPending().getMap();
+    if (!map.containsKey(key)) {
+      throw new java.lang.IllegalArgumentException();
+    }
+    return map.get(key);
+  }
+
   private byte memoizedIsInitialized = -1;
   @java.lang.Override
   public final boolean isInitialized() {
@@ -1211,6 +1308,12 @@ io.chirpstack.internal.DeviceSessionChannel defaultValue) {
     if (!jsSessionKeyId_.isEmpty()) {
       output.writeBytes(42, jsSessionKeyId_);
     }
+    com.google.protobuf.GeneratedMessage
+      .serializeIntegerMapTo(
+        output,
+        internalGetMacCommandPending(),
+        MacCommandPendingDefaultEntryHolder.defaultEntry,
+        43);
     getUnknownFields().writeTo(output);
   }
 
@@ -1401,6 +1504,16 @@ io.chirpstack.internal.DeviceSessionChannel defaultValue) {
       size += com.google.protobuf.CodedOutputStream
         .computeBytesSize(42, jsSessionKeyId_);
     }
+    for (java.util.Map.Entry<java.lang.Integer, com.google.protobuf.ByteString> entry
+         : internalGetMacCommandPending().getMap().entrySet()) {
+      com.google.protobuf.MapEntry<java.lang.Integer, com.google.protobuf.ByteString>
+      macCommandPending__ = MacCommandPendingDefaultEntryHolder.defaultEntry.newBuilderForType()
+          .setKey(entry.getKey())
+          .setValue(entry.getValue())
+          .build();
+      size += com.google.protobuf.CodedOutputStream
+          .computeMessageSize(43, macCommandPending__);
+    }
     size += getUnknownFields().getSerializedSize();
     memoizedSize = size;
     return size;
@@ -1507,6 +1620,8 @@ io.chirpstack.internal.DeviceSessionChannel defaultValue) {
       if (!getRelay()
           .equals(other.getRelay())) return false;
     }
+    if (!internalGetMacCommandPending().equals(
+        other.internalGetMacCommandPending())) return false;
     if (!getUnknownFields().equals(other.getUnknownFields())) return false;
     return true;
   }
@@ -1618,6 +1733,10 @@ io.chirpstack.internal.DeviceSessionChannel defaultValue) {
     if (hasRelay()) {
       hash = (37 * hash) + RELAY_FIELD_NUMBER;
       hash = (53 * hash) + getRelay().hashCode();
+    }
+    if (!internalGetMacCommandPending().getMap().isEmpty()) {
+      hash = (37 * hash) + MAC_COMMAND_PENDING_FIELD_NUMBER;
+      hash = (53 * hash) + internalGetMacCommandPending().hashCode();
     }
     hash = (29 * hash) + getUnknownFields().hashCode();
     memoizedHashCode = hash;
@@ -1736,6 +1855,8 @@ io.chirpstack.internal.DeviceSessionChannel defaultValue) {
           return internalGetExtraUplinkChannels();
         case 31:
           return internalGetMacCommandErrorCount();
+        case 43:
+          return internalGetMacCommandPending();
         default:
           throw new RuntimeException(
               "Invalid map field number: " + number);
@@ -1749,6 +1870,8 @@ io.chirpstack.internal.DeviceSessionChannel defaultValue) {
           return internalGetMutableExtraUplinkChannels();
         case 31:
           return internalGetMutableMacCommandErrorCount();
+        case 43:
+          return internalGetMutableMacCommandPending();
         default:
           throw new RuntimeException(
               "Invalid map field number: " + number);
@@ -1849,6 +1972,7 @@ io.chirpstack.internal.DeviceSessionChannel defaultValue) {
         relayBuilder_.dispose();
         relayBuilder_ = null;
       }
+      internalGetMutableMacCommandPending().clear();
       return this;
     }
 
@@ -2034,6 +2158,10 @@ io.chirpstack.internal.DeviceSessionChannel defaultValue) {
             : relayBuilder_.build();
         to_bitField0_ |= 0x00000008;
       }
+      if (((from_bitField1_ & 0x00000100) != 0)) {
+        result.macCommandPending_ = internalGetMacCommandPending();
+        result.macCommandPending_.makeImmutable();
+      }
       result.bitField0_ |= to_bitField0_;
     }
 
@@ -2202,6 +2330,9 @@ io.chirpstack.internal.DeviceSessionChannel defaultValue) {
       if (other.hasRelay()) {
         mergeRelay(other.getRelay());
       }
+      internalGetMutableMacCommandPending().mergeFrom(
+          other.internalGetMacCommandPending());
+      bitField1_ |= 0x00000100;
       this.mergeUnknownFields(other.getUnknownFields());
       onChanged();
       return this;
@@ -2463,6 +2594,15 @@ io.chirpstack.internal.DeviceSessionChannel defaultValue) {
               bitField0_ |= 0x00000040;
               break;
             } // case 338
+            case 346: {
+              com.google.protobuf.MapEntry<java.lang.Integer, com.google.protobuf.ByteString>
+              macCommandPending__ = input.readMessage(
+                  MacCommandPendingDefaultEntryHolder.defaultEntry.getParserForType(), extensionRegistry);
+              internalGetMutableMacCommandPending().getMutableMap().put(
+                  macCommandPending__.getKey(), macCommandPending__.getValue());
+              bitField1_ |= 0x00000100;
+              break;
+            } // case 346
             default: {
               if (!super.parseUnknownField(input, extensionRegistry, tag)) {
                 done = true; // was an endgroup tag
@@ -5470,6 +5610,161 @@ io.chirpstack.internal.DeviceSessionChannel defaultValue) {
         relay_ = null;
       }
       return relayBuilder_;
+    }
+
+    private com.google.protobuf.MapField<
+        java.lang.Integer, com.google.protobuf.ByteString> macCommandPending_;
+    private com.google.protobuf.MapField<java.lang.Integer, com.google.protobuf.ByteString>
+        internalGetMacCommandPending() {
+      if (macCommandPending_ == null) {
+        return com.google.protobuf.MapField.emptyMapField(
+            MacCommandPendingDefaultEntryHolder.defaultEntry);
+      }
+      return macCommandPending_;
+    }
+    private com.google.protobuf.MapField<java.lang.Integer, com.google.protobuf.ByteString>
+        internalGetMutableMacCommandPending() {
+      if (macCommandPending_ == null) {
+        macCommandPending_ = com.google.protobuf.MapField.newMapField(
+            MacCommandPendingDefaultEntryHolder.defaultEntry);
+      }
+      if (!macCommandPending_.isMutable()) {
+        macCommandPending_ = macCommandPending_.copy();
+      }
+      bitField1_ |= 0x00000100;
+      onChanged();
+      return macCommandPending_;
+    }
+    public int getMacCommandPendingCount() {
+      return internalGetMacCommandPending().getMap().size();
+    }
+    /**
+     * <pre>
+     * Pending mac-commands.
+     * </pre>
+     *
+     * <code>map&lt;uint32, bytes&gt; mac_command_pending = 43;</code>
+     */
+    @java.lang.Override
+    public boolean containsMacCommandPending(
+        int key) {
+
+      return internalGetMacCommandPending().getMap().containsKey(key);
+    }
+    /**
+     * Use {@link #getMacCommandPendingMap()} instead.
+     */
+    @java.lang.Override
+    @java.lang.Deprecated
+    public java.util.Map<java.lang.Integer, com.google.protobuf.ByteString> getMacCommandPending() {
+      return getMacCommandPendingMap();
+    }
+    /**
+     * <pre>
+     * Pending mac-commands.
+     * </pre>
+     *
+     * <code>map&lt;uint32, bytes&gt; mac_command_pending = 43;</code>
+     */
+    @java.lang.Override
+    public java.util.Map<java.lang.Integer, com.google.protobuf.ByteString> getMacCommandPendingMap() {
+      return internalGetMacCommandPending().getMap();
+    }
+    /**
+     * <pre>
+     * Pending mac-commands.
+     * </pre>
+     *
+     * <code>map&lt;uint32, bytes&gt; mac_command_pending = 43;</code>
+     */
+    @java.lang.Override
+    public /* nullable */
+com.google.protobuf.ByteString getMacCommandPendingOrDefault(
+        int key,
+        /* nullable */
+com.google.protobuf.ByteString defaultValue) {
+
+      java.util.Map<java.lang.Integer, com.google.protobuf.ByteString> map =
+          internalGetMacCommandPending().getMap();
+      return map.containsKey(key) ? map.get(key) : defaultValue;
+    }
+    /**
+     * <pre>
+     * Pending mac-commands.
+     * </pre>
+     *
+     * <code>map&lt;uint32, bytes&gt; mac_command_pending = 43;</code>
+     */
+    @java.lang.Override
+    public com.google.protobuf.ByteString getMacCommandPendingOrThrow(
+        int key) {
+
+      java.util.Map<java.lang.Integer, com.google.protobuf.ByteString> map =
+          internalGetMacCommandPending().getMap();
+      if (!map.containsKey(key)) {
+        throw new java.lang.IllegalArgumentException();
+      }
+      return map.get(key);
+    }
+    public Builder clearMacCommandPending() {
+      bitField1_ = (bitField1_ & ~0x00000100);
+      internalGetMutableMacCommandPending().getMutableMap()
+          .clear();
+      return this;
+    }
+    /**
+     * <pre>
+     * Pending mac-commands.
+     * </pre>
+     *
+     * <code>map&lt;uint32, bytes&gt; mac_command_pending = 43;</code>
+     */
+    public Builder removeMacCommandPending(
+        int key) {
+
+      internalGetMutableMacCommandPending().getMutableMap()
+          .remove(key);
+      return this;
+    }
+    /**
+     * Use alternate mutation accessors instead.
+     */
+    @java.lang.Deprecated
+    public java.util.Map<java.lang.Integer, com.google.protobuf.ByteString>
+        getMutableMacCommandPending() {
+      bitField1_ |= 0x00000100;
+      return internalGetMutableMacCommandPending().getMutableMap();
+    }
+    /**
+     * <pre>
+     * Pending mac-commands.
+     * </pre>
+     *
+     * <code>map&lt;uint32, bytes&gt; mac_command_pending = 43;</code>
+     */
+    public Builder putMacCommandPending(
+        int key,
+        com.google.protobuf.ByteString value) {
+
+      if (value == null) { throw new NullPointerException("map value"); }
+      internalGetMutableMacCommandPending().getMutableMap()
+          .put(key, value);
+      bitField1_ |= 0x00000100;
+      return this;
+    }
+    /**
+     * <pre>
+     * Pending mac-commands.
+     * </pre>
+     *
+     * <code>map&lt;uint32, bytes&gt; mac_command_pending = 43;</code>
+     */
+    public Builder putAllMacCommandPending(
+        java.util.Map<java.lang.Integer, com.google.protobuf.ByteString> values) {
+      internalGetMutableMacCommandPending().getMutableMap()
+          .putAll(values);
+      bitField1_ |= 0x00000100;
+      return this;
     }
 
     // @@protoc_insertion_point(builder_scope:internal.DeviceSession)

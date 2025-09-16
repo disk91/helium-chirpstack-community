@@ -26,6 +26,36 @@ public final class GatewayProto {
         (com.google.protobuf.ExtensionRegistryLite) registry);
   }
   static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_gw_Event_descriptor;
+  static final 
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_gw_Event_fieldAccessorTable;
+  static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_gw_Command_descriptor;
+  static final 
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_gw_Command_fieldAccessorTable;
+  static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_gw_MeshEvent_descriptor;
+  static final 
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_gw_MeshEvent_fieldAccessorTable;
+  static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_gw_MeshEventItem_descriptor;
+  static final 
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_gw_MeshEventItem_fieldAccessorTable;
+  static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_gw_MeshCommand_descriptor;
+  static final 
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_gw_MeshCommand_fieldAccessorTable;
+  static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_gw_MeshCommandItem_descriptor;
+  static final 
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_gw_MeshCommandItem_fieldAccessorTable;
+  static final com.google.protobuf.Descriptors.Descriptor
     internal_static_gw_Modulation_descriptor;
   static final 
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
@@ -191,6 +221,26 @@ public final class GatewayProto {
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_gw_GatewayConfiguration_fieldAccessorTable;
   static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_gw_GetGatewayIdRequest_descriptor;
+  static final 
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_gw_GetGatewayIdRequest_fieldAccessorTable;
+  static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_gw_GetGatewayIdResponse_descriptor;
+  static final 
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_gw_GetGatewayIdResponse_fieldAccessorTable;
+  static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_gw_GetLocationRequest_descriptor;
+  static final 
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_gw_GetLocationRequest_fieldAccessorTable;
+  static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_gw_GetLocationResponse_descriptor;
+  static final 
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_gw_GetLocationResponse_fieldAccessorTable;
+  static final com.google.protobuf.Descriptors.Descriptor
     internal_static_gw_ChannelConfiguration_descriptor;
   static final 
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
@@ -236,15 +286,25 @@ public final class GatewayProto {
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_gw_ConnState_fieldAccessorTable;
   static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_gw_MeshHeartbeat_descriptor;
+    internal_static_gw_MeshEventHeartbeat_descriptor;
   static final 
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
-      internal_static_gw_MeshHeartbeat_fieldAccessorTable;
+      internal_static_gw_MeshEventHeartbeat_fieldAccessorTable;
   static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_gw_MeshHeartbeatRelayPath_descriptor;
+    internal_static_gw_MeshEventHeartbeatRelayPath_descriptor;
   static final 
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
-      internal_static_gw_MeshHeartbeatRelayPath_fieldAccessorTable;
+      internal_static_gw_MeshEventHeartbeatRelayPath_fieldAccessorTable;
+  static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_gw_MeshEventProprietary_descriptor;
+  static final 
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_gw_MeshEventProprietary_fieldAccessorTable;
+  static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_gw_MeshCommandProprietary_descriptor;
+  static final 
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_gw_MeshCommandProprietary_fieldAccessorTable;
 
   public static com.google.protobuf.Descriptors.FileDescriptor
       getDescriptor() {
@@ -257,199 +317,226 @@ public final class GatewayProto {
       "\n\013gw/gw.proto\022\002gw\032\023common/common.proto\032\037" +
       "google/protobuf/timestamp.proto\032\036google/" +
       "protobuf/duration.proto\032\034google/protobuf" +
-      "/struct.proto\"\225\001\n\nModulation\022&\n\004lora\030\003 \001" +
-      "(\0132\026.gw.LoraModulationInfoH\000\022$\n\003fsk\030\004 \001(" +
-      "\0132\025.gw.FskModulationInfoH\000\022+\n\007lr_fhss\030\005 " +
-      "\001(\0132\030.gw.LrFhssModulationInfoH\000B\014\n\nparam" +
-      "eters\"\215\002\n\022UplinkTxInfoLegacy\022\021\n\tfrequenc" +
-      "y\030\001 \001(\r\022&\n\nmodulation\030\002 \001(\0162\022.common.Mod" +
-      "ulation\0226\n\024lora_modulation_info\030\003 \001(\0132\026." +
-      "gw.LoraModulationInfoH\000\0224\n\023fsk_modulatio" +
-      "n_info\030\004 \001(\0132\025.gw.FskModulationInfoH\000\022;\n" +
-      "\027lr_fhss_modulation_info\030\005 \001(\0132\030.gw.LrFh" +
-      "ssModulationInfoH\000B\021\n\017modulation_info\"E\n" +
-      "\014UplinkTxInfo\022\021\n\tfrequency\030\001 \001(\r\022\"\n\nmodu" +
-      "lation\030\002 \001(\0132\016.gw.Modulation\"\276\001\n\022LoraMod" +
-      "ulationInfo\022\021\n\tbandwidth\030\001 \001(\r\022\030\n\020spread" +
-      "ing_factor\030\002 \001(\r\022\030\n\020code_rate_legacy\030\003 \001" +
-      "(\t\022\037\n\tcode_rate\030\005 \001(\0162\014.gw.CodeRate\022\036\n\026p" +
-      "olarization_inversion\030\004 \001(\010\022\020\n\010preamble\030" +
-      "\006 \001(\r\022\016\n\006no_crc\030\007 \001(\010\"B\n\021FskModulationIn" +
-      "fo\022\033\n\023frequency_deviation\030\001 \001(\r\022\020\n\010datar" +
-      "ate\030\002 \001(\r\"\206\001\n\024LrFhssModulationInfo\022\037\n\027op" +
-      "erating_channel_width\030\001 \001(\r\022\030\n\020code_rate" +
-      "_legacy\030\002 \001(\t\022\037\n\tcode_rate\030\004 \001(\0162\014.gw.Co" +
-      "deRate\022\022\n\ngrid_steps\030\003 \001(\r\"V\n\026EncryptedF" +
-      "ineTimestamp\022\025\n\raes_key_index\030\001 \001(\r\022\024\n\014e" +
-      "ncrypted_ns\030\002 \001(\014\022\017\n\007fpga_id\030\003 \001(\014\">\n\022Pl" +
-      "ainFineTimestamp\022(\n\004time\030\001 \001(\0132\032.google." +
-      "protobuf.Timestamp\"\276\007\n\014GatewayStats\022\031\n\021g" +
-      "ateway_id_legacy\030\001 \001(\014\022\022\n\ngateway_id\030\021 \001" +
-      "(\t\022(\n\004time\030\002 \001(\0132\032.google.protobuf.Times" +
-      "tamp\022\"\n\010location\030\003 \001(\0132\020.common.Location" +
-      "\022\026\n\016config_version\030\004 \001(\t\022\033\n\023rx_packets_r" +
-      "eceived\030\005 \001(\r\022\036\n\026rx_packets_received_ok\030" +
-      "\006 \001(\r\022\033\n\023tx_packets_received\030\007 \001(\r\022\032\n\022tx" +
-      "_packets_emitted\030\010 \001(\r\0220\n\010metadata\030\n \003(\013" +
-      "2\036.gw.GatewayStats.MetadataEntry\022M\n\030tx_p" +
-      "ackets_per_frequency\030\014 \003(\0132+.gw.GatewayS" +
-      "tats.TxPacketsPerFrequencyEntry\022M\n\030rx_pa" +
-      "ckets_per_frequency\030\r \003(\0132+.gw.GatewaySt" +
-      "ats.RxPacketsPerFrequencyEntry\0229\n\031tx_pac" +
-      "kets_per_modulation\030\016 \003(\0132\026.gw.PerModula" +
-      "tionCount\0229\n\031rx_packets_per_modulation\030\017" +
-      " \003(\0132\026.gw.PerModulationCount\022G\n\025tx_packe" +
-      "ts_per_status\030\020 \003(\0132(.gw.GatewayStats.Tx" +
-      "PacketsPerStatusEntry\022,\n\020duty_cycle_stat" +
-      "s\030\022 \001(\0132\022.gw.DutyCycleStats\032/\n\rMetadataE" +
-      "ntry\022\013\n\003key\030\001 \001(\t\022\r\n\005value\030\002 \001(\t:\0028\001\032<\n\032" +
-      "TxPacketsPerFrequencyEntry\022\013\n\003key\030\001 \001(\r\022" +
-      "\r\n\005value\030\002 \001(\r:\0028\001\032<\n\032RxPacketsPerFreque" +
-      "ncyEntry\022\013\n\003key\030\001 \001(\r\022\r\n\005value\030\002 \001(\r:\0028\001" +
-      "\0329\n\027TxPacketsPerStatusEntry\022\013\n\003key\030\001 \001(\t" +
-      "\022\r\n\005value\030\002 \001(\r:\0028\001\"G\n\022PerModulationCoun" +
-      "t\022\"\n\nmodulation\030\001 \001(\0132\016.gw.Modulation\022\r\n" +
-      "\005count\030\002 \001(\r\"\205\001\n\016DutyCycleStats\022&\n\nregul" +
-      "ation\030\001 \001(\0162\022.common.Regulation\022)\n\006windo" +
-      "w\030\002 \001(\0132\031.google.protobuf.Duration\022 \n\005ba" +
-      "nds\030\003 \003(\0132\021.gw.DutyCycleBand\"\251\001\n\rDutyCyc" +
-      "leBand\022\014\n\004name\030\001 \001(\t\022\025\n\rfrequency_min\030\002 " +
-      "\001(\r\022\025\n\rfrequency_max\030\003 \001(\r\022+\n\010load_max\030\004" +
-      " \001(\0132\031.google.protobuf.Duration\022/\n\014load_" +
-      "tracked\030\005 \001(\0132\031.google.protobuf.Duration" +
-      "\"\200\005\n\022UplinkRxInfoLegacy\022\022\n\ngateway_id\030\001 " +
-      "\001(\014\022(\n\004time\030\002 \001(\0132\032.google.protobuf.Time" +
-      "stamp\0227\n\024time_since_gps_epoch\030\003 \001(\0132\031.go" +
-      "ogle.protobuf.Duration\022\014\n\004rssi\030\005 \001(\005\022\020\n\010" +
-      "lora_snr\030\006 \001(\001\022\017\n\007channel\030\007 \001(\r\022\020\n\010rf_ch" +
-      "ain\030\010 \001(\r\022\r\n\005board\030\t \001(\r\022\017\n\007antenna\030\n \001(" +
-      "\r\022\"\n\010location\030\013 \001(\0132\020.common.Location\0222\n" +
-      "\023fine_timestamp_type\030\014 \001(\0162\025.gw.FineTime" +
-      "stampType\022>\n\030encrypted_fine_timestamp\030\r " +
-      "\001(\0132\032.gw.EncryptedFineTimestampH\000\0226\n\024pla" +
-      "in_fine_timestamp\030\016 \001(\0132\026.gw.PlainFineTi" +
-      "mestampH\000\022\017\n\007context\030\017 \001(\014\022\021\n\tuplink_id\030" +
-      "\020 \001(\014\022!\n\ncrc_status\030\021 \001(\0162\r.gw.CRCStatus" +
-      "\0226\n\010metadata\030\022 \003(\0132$.gw.UplinkRxInfoLega" +
-      "cy.MetadataEntry\032/\n\rMetadataEntry\022\013\n\003key" +
-      "\030\001 \001(\t\022\r\n\005value\030\002 \001(\t:\0028\001B\020\n\016fine_timest" +
-      "amp\"\237\004\n\014UplinkRxInfo\022\022\n\ngateway_id\030\001 \001(\t" +
-      "\022\021\n\tuplink_id\030\002 \001(\r\022+\n\007gw_time\030\003 \001(\0132\032.g" +
-      "oogle.protobuf.Timestamp\022+\n\007ns_time\030\021 \001(" +
-      "\0132\032.google.protobuf.Timestamp\0227\n\024time_si" +
-      "nce_gps_epoch\030\004 \001(\0132\031.google.protobuf.Du" +
-      "ration\022<\n\031fine_time_since_gps_epoch\030\005 \001(" +
-      "\0132\031.google.protobuf.Duration\022\014\n\004rssi\030\006 \001" +
-      "(\005\022\013\n\003snr\030\007 \001(\002\022\017\n\007channel\030\010 \001(\r\022\020\n\010rf_c" +
-      "hain\030\t \001(\r\022\r\n\005board\030\n \001(\r\022\017\n\007antenna\030\013 \001" +
-      "(\r\022\"\n\010location\030\014 \001(\0132\020.common.Location\022\017" +
-      "\n\007context\030\r \001(\014\0220\n\010metadata\030\017 \003(\0132\036.gw.U" +
-      "plinkRxInfo.MetadataEntry\022!\n\ncrc_status\030" +
-      "\020 \001(\0162\r.gw.CRCStatus\032/\n\rMetadataEntry\022\013\n" +
-      "\003key\030\001 \001(\t\022\r\n\005value\030\002 \001(\t:\0028\001\"\202\004\n\024Downli" +
-      "nkTxInfoLegacy\022\022\n\ngateway_id\030\001 \001(\014\022\021\n\tfr" +
-      "equency\030\005 \001(\r\022\r\n\005power\030\006 \001(\005\022&\n\nmodulati" +
-      "on\030\007 \001(\0162\022.common.Modulation\0226\n\024lora_mod" +
-      "ulation_info\030\010 \001(\0132\026.gw.LoraModulationIn" +
-      "foH\000\0224\n\023fsk_modulation_info\030\t \001(\0132\025.gw.F" +
-      "skModulationInfoH\000\022\r\n\005board\030\n \001(\r\022\017\n\007ant" +
-      "enna\030\013 \001(\r\022\"\n\006timing\030\014 \001(\0162\022.gw.Downlink" +
-      "Timing\022<\n\027immediately_timing_info\030\r \001(\0132" +
-      "\031.gw.ImmediatelyTimingInfoH\001\0220\n\021delay_ti" +
-      "ming_info\030\016 \001(\0132\023.gw.DelayTimingInfoH\001\0227" +
-      "\n\025gps_epoch_timing_info\030\017 \001(\0132\026.gw.GPSEp" +
-      "ochTimingInfoH\001\022\017\n\007context\030\020 \001(\014B\021\n\017modu" +
-      "lation_infoB\r\n\013timing_info\"\243\001\n\016DownlinkT" +
-      "xInfo\022\021\n\tfrequency\030\001 \001(\r\022\r\n\005power\030\002 \001(\005\022" +
-      "\"\n\nmodulation\030\003 \001(\0132\016.gw.Modulation\022\r\n\005b" +
-      "oard\030\004 \001(\r\022\017\n\007antenna\030\005 \001(\r\022\032\n\006timing\030\006 " +
-      "\001(\0132\n.gw.Timing\022\017\n\007context\030\007 \001(\014\"\233\001\n\006Tim" +
-      "ing\0220\n\013immediately\030\001 \001(\0132\031.gw.Immediatel" +
-      "yTimingInfoH\000\022$\n\005delay\030\002 \001(\0132\023.gw.DelayT" +
-      "imingInfoH\000\022+\n\tgps_epoch\030\003 \001(\0132\026.gw.GPSE" +
-      "pochTimingInfoH\000B\014\n\nparameters\"\027\n\025Immedi" +
-      "atelyTimingInfo\";\n\017DelayTimingInfo\022(\n\005de" +
-      "lay\030\001 \001(\0132\031.google.protobuf.Duration\"M\n\022" +
-      "GPSEpochTimingInfo\0227\n\024time_since_gps_epo" +
-      "ch\030\001 \001(\0132\031.google.protobuf.Duration\"\310\001\n\013" +
-      "UplinkFrame\022\023\n\013phy_payload\030\001 \001(\014\022.\n\016tx_i" +
-      "nfo_legacy\030\002 \001(\0132\026.gw.UplinkTxInfoLegacy" +
-      "\022.\n\016rx_info_legacy\030\003 \001(\0132\026.gw.UplinkRxIn" +
-      "foLegacy\022!\n\007tx_info\030\004 \001(\0132\020.gw.UplinkTxI" +
-      "nfo\022!\n\007rx_info\030\005 \001(\0132\020.gw.UplinkRxInfo\"k" +
-      "\n\016UplinkFrameSet\022\023\n\013phy_payload\030\001 \001(\014\022!\n" +
-      "\007tx_info\030\002 \001(\0132\020.gw.UplinkTxInfo\022!\n\007rx_i" +
-      "nfo\030\003 \003(\0132\020.gw.UplinkRxInfo\"\225\001\n\rDownlink" +
-      "Frame\022\023\n\013downlink_id\030\003 \001(\r\022\032\n\022downlink_i" +
-      "d_legacy\030\004 \001(\014\022$\n\005items\030\005 \003(\0132\025.gw.Downl" +
-      "inkFrameItem\022\031\n\021gateway_id_legacy\030\006 \001(\014\022" +
-      "\022\n\ngateway_id\030\007 \001(\t\"\177\n\021DownlinkFrameItem" +
-      "\022\023\n\013phy_payload\030\001 \001(\014\0220\n\016tx_info_legacy\030" +
-      "\002 \001(\0132\030.gw.DownlinkTxInfoLegacy\022#\n\007tx_in" +
-      "fo\030\003 \001(\0132\022.gw.DownlinkTxInfo\"\225\001\n\rDownlin" +
-      "kTxAck\022\031\n\021gateway_id_legacy\030\001 \001(\014\022\022\n\ngat" +
-      "eway_id\030\006 \001(\t\022\023\n\013downlink_id\030\002 \001(\r\022\032\n\022do" +
-      "wnlink_id_legacy\030\004 \001(\014\022$\n\005items\030\005 \003(\0132\025." +
-      "gw.DownlinkTxAckItem\"4\n\021DownlinkTxAckIte" +
-      "m\022\037\n\006status\030\001 \001(\0162\017.gw.TxAckStatus\"\265\001\n\024G" +
-      "atewayConfiguration\022\031\n\021gateway_id_legacy" +
-      "\030\001 \001(\014\022\022\n\ngateway_id\030\005 \001(\t\022\017\n\007version\030\002 " +
-      "\001(\t\022*\n\010channels\030\003 \003(\0132\030.gw.ChannelConfig" +
-      "uration\0221\n\016stats_interval\030\004 \001(\0132\031.google" +
-      ".protobuf.Duration\"\207\002\n\024ChannelConfigurat" +
-      "ion\022\021\n\tfrequency\030\001 \001(\r\022-\n\021modulation_leg" +
-      "acy\030\002 \001(\0162\022.common.Modulation\022:\n\026lora_mo" +
-      "dulation_config\030\003 \001(\0132\030.gw.LoraModulatio" +
-      "nConfigH\000\0228\n\025fsk_modulation_config\030\004 \001(\013" +
-      "2\027.gw.FskModulationConfigH\000\022\r\n\005board\030\005 \001" +
-      "(\r\022\023\n\013demodulator\030\006 \001(\rB\023\n\021modulation_co" +
-      "nfig\"^\n\024LoraModulationConfig\022\030\n\020bandwidt" +
-      "h_legacy\030\001 \001(\r\022\021\n\tbandwidth\030\003 \001(\r\022\031\n\021spr" +
-      "eading_factors\030\002 \003(\r\"S\n\023FskModulationCon" +
-      "fig\022\030\n\020bandwidth_legacy\030\001 \001(\r\022\021\n\tbandwid" +
-      "th\030\003 \001(\r\022\017\n\007bitrate\030\002 \001(\r\"\364\001\n\031GatewayCom" +
-      "mandExecRequest\022\031\n\021gateway_id_legacy\030\001 \001" +
-      "(\014\022\022\n\ngateway_id\030\006 \001(\t\022\017\n\007command\030\002 \001(\t\022" +
-      "\017\n\007exec_id\030\007 \001(\r\022\r\n\005stdin\030\004 \001(\014\022C\n\013envir" +
-      "onment\030\005 \003(\0132..gw.GatewayCommandExecRequ" +
-      "est.EnvironmentEntry\0322\n\020EnvironmentEntry" +
-      "\022\013\n\003key\030\001 \001(\t\022\r\n\005value\030\002 \001(\t:\0028\001\"\213\001\n\032Gat" +
-      "ewayCommandExecResponse\022\031\n\021gateway_id_le" +
-      "gacy\030\001 \001(\014\022\022\n\ngateway_id\030\006 \001(\t\022\017\n\007exec_i" +
-      "d\030\007 \001(\r\022\016\n\006stdout\030\003 \001(\014\022\016\n\006stderr\030\004 \001(\014\022" +
-      "\r\n\005error\030\005 \001(\t\"Y\n\027RawPacketForwarderEven" +
-      "t\022\031\n\021gateway_id_legacy\030\001 \001(\014\022\022\n\ngateway_" +
-      "id\030\004 \001(\t\022\017\n\007payload\030\003 \001(\014\"[\n\031RawPacketFo" +
-      "rwarderCommand\022\031\n\021gateway_id_legacy\030\001 \001(" +
-      "\014\022\022\n\ngateway_id\030\004 \001(\t\022\017\n\007payload\030\003 \001(\014\"\200" +
-      "\001\n\tConnState\022\031\n\021gateway_id_legacy\030\001 \001(\014\022" +
-      "\022\n\ngateway_id\030\003 \001(\t\022\"\n\005state\030\002 \001(\0162\023.gw." +
-      "ConnState.State\" \n\005State\022\013\n\007OFFLINE\020\000\022\n\n" +
-      "\006ONLINE\020\001\"\217\001\n\rMeshHeartbeat\022\022\n\ngateway_i" +
-      "d\030\001 \001(\t\022\020\n\010relay_id\030\002 \001(\t\022(\n\004time\030\003 \001(\0132" +
-      "\032.google.protobuf.Timestamp\022.\n\nrelay_pat" +
-      "h\030\004 \003(\0132\032.gw.MeshHeartbeatRelayPath\"E\n\026M" +
-      "eshHeartbeatRelayPath\022\020\n\010relay_id\030\001 \001(\t\022" +
-      "\014\n\004rssi\030\002 \001(\005\022\013\n\003snr\030\003 \001(\005*\265\001\n\010CodeRate\022" +
-      "\020\n\014CR_UNDEFINED\020\000\022\n\n\006CR_4_5\020\001\022\n\n\006CR_4_6\020" +
-      "\002\022\n\n\006CR_4_7\020\003\022\n\n\006CR_4_8\020\004\022\n\n\006CR_3_8\020\005\022\n\n" +
-      "\006CR_2_6\020\006\022\n\n\006CR_1_4\020\007\022\n\n\006CR_1_6\020\010\022\n\n\006CR_" +
-      "5_6\020\t\022\r\n\tCR_LI_4_5\020\n\022\r\n\tCR_LI_4_6\020\013\022\r\n\tC" +
-      "R_LI_4_8\020\014*;\n\016DownlinkTiming\022\017\n\013IMMEDIAT" +
-      "ELY\020\000\022\t\n\005DELAY\020\001\022\r\n\tGPS_EPOCH\020\002*7\n\021FineT" +
-      "imestampType\022\010\n\004NONE\020\000\022\r\n\tENCRYPTED\020\001\022\t\n" +
-      "\005PLAIN\020\002*0\n\tCRCStatus\022\n\n\006NO_CRC\020\000\022\013\n\007BAD" +
-      "_CRC\020\001\022\n\n\006CRC_OK\020\002*\325\001\n\013TxAckStatus\022\013\n\007IG" +
-      "NORED\020\000\022\006\n\002OK\020\001\022\014\n\010TOO_LATE\020\002\022\r\n\tTOO_EAR" +
-      "LY\020\003\022\024\n\020COLLISION_PACKET\020\004\022\024\n\020COLLISION_" +
-      "BEACON\020\005\022\013\n\007TX_FREQ\020\006\022\014\n\010TX_POWER\020\007\022\020\n\014G" +
-      "PS_UNLOCKED\020\010\022\016\n\nQUEUE_FULL\020\t\022\022\n\016INTERNA" +
-      "L_ERROR\020\n\022\027\n\023DUTY_CYCLE_OVERFLOW\020\013B\240\001\n\024i" +
-      "o.chirpstack.api.gwB\014GatewayProtoP\001Z-git" +
-      "hub.com/chirpstack/chirpstack/api/go/v4/" +
-      "gw\252\002\022Chirpstack.Gateway\312\002\022Chirpstack\\Gat" +
-      "eway\342\002\036GPBMetadata\\Chirpstack\\Gatewayb\006p" +
-      "roto3"
+      "/struct.proto\"\203\001\n\005Event\022\'\n\014uplink_frame\030" +
+      "\001 \001(\0132\017.gw.UplinkFrameH\000\022)\n\rgateway_stat" +
+      "s\030\002 \001(\0132\020.gw.GatewayStatsH\000\022\035\n\004mesh\030\003 \001(" +
+      "\0132\r.gw.MeshEventH\000B\007\n\005event\"\211\002\n\007Command\022" +
+      "0\n\023send_downlink_frame\030\001 \001(\0132\021.gw.Downli" +
+      "nkFrameH\000\022=\n\031set_gateway_configuration\030\002" +
+      " \001(\0132\030.gw.GatewayConfigurationH\000\0221\n\016get_" +
+      "gateway_id\030\003 \001(\0132\027.gw.GetGatewayIdReques" +
+      "tH\000\022.\n\014get_location\030\004 \001(\0132\026.gw.GetLocati" +
+      "onRequestH\000\022\037\n\004mesh\030\005 \001(\0132\017.gw.MeshComma" +
+      "ndH\000B\t\n\007command\"~\n\tMeshEvent\022\022\n\ngateway_" +
+      "id\030\001 \001(\t\022\020\n\010relay_id\030\002 \001(\t\022(\n\004time\030\003 \001(\013" +
+      "2\032.google.protobuf.Timestamp\022!\n\006events\030\004" +
+      " \003(\0132\021.gw.MeshEventItem\"v\n\rMeshEventItem" +
+      "\022/\n\013proprietary\030\001 \001(\0132\030.gw.MeshEventProp" +
+      "rietaryH\000\022+\n\theartbeat\030\002 \001(\0132\026.gw.MeshEv" +
+      "entHeartbeatH\000B\007\n\005event\"Z\n\013MeshCommand\022\022" +
+      "\n\ngateway_id\030\001 \001(\t\022\020\n\010relay_id\030\002 \001(\t\022%\n\010" +
+      "commands\030\003 \003(\0132\023.gw.MeshCommandItem\"O\n\017M" +
+      "eshCommandItem\0221\n\013proprietary\030\001 \001(\0132\032.gw" +
+      ".MeshCommandProprietaryH\000B\t\n\007command\"\225\001\n" +
+      "\nModulation\022&\n\004lora\030\003 \001(\0132\026.gw.LoraModul" +
+      "ationInfoH\000\022$\n\003fsk\030\004 \001(\0132\025.gw.FskModulat" +
+      "ionInfoH\000\022+\n\007lr_fhss\030\005 \001(\0132\030.gw.LrFhssMo" +
+      "dulationInfoH\000B\014\n\nparameters\"\215\002\n\022UplinkT" +
+      "xInfoLegacy\022\021\n\tfrequency\030\001 \001(\r\022&\n\nmodula" +
+      "tion\030\002 \001(\0162\022.common.Modulation\0226\n\024lora_m" +
+      "odulation_info\030\003 \001(\0132\026.gw.LoraModulation" +
+      "InfoH\000\0224\n\023fsk_modulation_info\030\004 \001(\0132\025.gw" +
+      ".FskModulationInfoH\000\022;\n\027lr_fhss_modulati" +
+      "on_info\030\005 \001(\0132\030.gw.LrFhssModulationInfoH" +
+      "\000B\021\n\017modulation_info\"E\n\014UplinkTxInfo\022\021\n\t" +
+      "frequency\030\001 \001(\r\022\"\n\nmodulation\030\002 \001(\0132\016.gw" +
+      ".Modulation\"\276\001\n\022LoraModulationInfo\022\021\n\tba" +
+      "ndwidth\030\001 \001(\r\022\030\n\020spreading_factor\030\002 \001(\r\022" +
+      "\030\n\020code_rate_legacy\030\003 \001(\t\022\037\n\tcode_rate\030\005" +
+      " \001(\0162\014.gw.CodeRate\022\036\n\026polarization_inver" +
+      "sion\030\004 \001(\010\022\020\n\010preamble\030\006 \001(\r\022\016\n\006no_crc\030\007" +
+      " \001(\010\"B\n\021FskModulationInfo\022\033\n\023frequency_d" +
+      "eviation\030\001 \001(\r\022\020\n\010datarate\030\002 \001(\r\"\206\001\n\024LrF" +
+      "hssModulationInfo\022\037\n\027operating_channel_w" +
+      "idth\030\001 \001(\r\022\030\n\020code_rate_legacy\030\002 \001(\t\022\037\n\t" +
+      "code_rate\030\004 \001(\0162\014.gw.CodeRate\022\022\n\ngrid_st" +
+      "eps\030\003 \001(\r\"V\n\026EncryptedFineTimestamp\022\025\n\ra" +
+      "es_key_index\030\001 \001(\r\022\024\n\014encrypted_ns\030\002 \001(\014" +
+      "\022\017\n\007fpga_id\030\003 \001(\014\">\n\022PlainFineTimestamp\022" +
+      "(\n\004time\030\001 \001(\0132\032.google.protobuf.Timestam" +
+      "p\"\276\007\n\014GatewayStats\022\031\n\021gateway_id_legacy\030" +
+      "\001 \001(\014\022\022\n\ngateway_id\030\021 \001(\t\022(\n\004time\030\002 \001(\0132" +
+      "\032.google.protobuf.Timestamp\022\"\n\010location\030" +
+      "\003 \001(\0132\020.common.Location\022\026\n\016config_versio" +
+      "n\030\004 \001(\t\022\033\n\023rx_packets_received\030\005 \001(\r\022\036\n\026" +
+      "rx_packets_received_ok\030\006 \001(\r\022\033\n\023tx_packe" +
+      "ts_received\030\007 \001(\r\022\032\n\022tx_packets_emitted\030" +
+      "\010 \001(\r\0220\n\010metadata\030\n \003(\0132\036.gw.GatewayStat" +
+      "s.MetadataEntry\022M\n\030tx_packets_per_freque" +
+      "ncy\030\014 \003(\0132+.gw.GatewayStats.TxPacketsPer" +
+      "FrequencyEntry\022M\n\030rx_packets_per_frequen" +
+      "cy\030\r \003(\0132+.gw.GatewayStats.RxPacketsPerF" +
+      "requencyEntry\0229\n\031tx_packets_per_modulati" +
+      "on\030\016 \003(\0132\026.gw.PerModulationCount\0229\n\031rx_p" +
+      "ackets_per_modulation\030\017 \003(\0132\026.gw.PerModu" +
+      "lationCount\022G\n\025tx_packets_per_status\030\020 \003" +
+      "(\0132(.gw.GatewayStats.TxPacketsPerStatusE" +
+      "ntry\022,\n\020duty_cycle_stats\030\022 \001(\0132\022.gw.Duty" +
+      "CycleStats\032/\n\rMetadataEntry\022\013\n\003key\030\001 \001(\t" +
+      "\022\r\n\005value\030\002 \001(\t:\0028\001\032<\n\032TxPacketsPerFrequ" +
+      "encyEntry\022\013\n\003key\030\001 \001(\r\022\r\n\005value\030\002 \001(\r:\0028" +
+      "\001\032<\n\032RxPacketsPerFrequencyEntry\022\013\n\003key\030\001" +
+      " \001(\r\022\r\n\005value\030\002 \001(\r:\0028\001\0329\n\027TxPacketsPerS" +
+      "tatusEntry\022\013\n\003key\030\001 \001(\t\022\r\n\005value\030\002 \001(\r:\002" +
+      "8\001\"G\n\022PerModulationCount\022\"\n\nmodulation\030\001" +
+      " \001(\0132\016.gw.Modulation\022\r\n\005count\030\002 \001(\r\"\205\001\n\016" +
+      "DutyCycleStats\022&\n\nregulation\030\001 \001(\0162\022.com" +
+      "mon.Regulation\022)\n\006window\030\002 \001(\0132\031.google." +
+      "protobuf.Duration\022 \n\005bands\030\003 \003(\0132\021.gw.Du" +
+      "tyCycleBand\"\251\001\n\rDutyCycleBand\022\014\n\004name\030\001 " +
+      "\001(\t\022\025\n\rfrequency_min\030\002 \001(\r\022\025\n\rfrequency_" +
+      "max\030\003 \001(\r\022+\n\010load_max\030\004 \001(\0132\031.google.pro" +
+      "tobuf.Duration\022/\n\014load_tracked\030\005 \001(\0132\031.g" +
+      "oogle.protobuf.Duration\"\200\005\n\022UplinkRxInfo" +
+      "Legacy\022\022\n\ngateway_id\030\001 \001(\014\022(\n\004time\030\002 \001(\013" +
+      "2\032.google.protobuf.Timestamp\0227\n\024time_sin" +
+      "ce_gps_epoch\030\003 \001(\0132\031.google.protobuf.Dur" +
+      "ation\022\014\n\004rssi\030\005 \001(\005\022\020\n\010lora_snr\030\006 \001(\001\022\017\n" +
+      "\007channel\030\007 \001(\r\022\020\n\010rf_chain\030\010 \001(\r\022\r\n\005boar" +
+      "d\030\t \001(\r\022\017\n\007antenna\030\n \001(\r\022\"\n\010location\030\013 \001" +
+      "(\0132\020.common.Location\0222\n\023fine_timestamp_t" +
+      "ype\030\014 \001(\0162\025.gw.FineTimestampType\022>\n\030encr" +
+      "ypted_fine_timestamp\030\r \001(\0132\032.gw.Encrypte" +
+      "dFineTimestampH\000\0226\n\024plain_fine_timestamp" +
+      "\030\016 \001(\0132\026.gw.PlainFineTimestampH\000\022\017\n\007cont" +
+      "ext\030\017 \001(\014\022\021\n\tuplink_id\030\020 \001(\014\022!\n\ncrc_stat" +
+      "us\030\021 \001(\0162\r.gw.CRCStatus\0226\n\010metadata\030\022 \003(" +
+      "\0132$.gw.UplinkRxInfoLegacy.MetadataEntry\032" +
+      "/\n\rMetadataEntry\022\013\n\003key\030\001 \001(\t\022\r\n\005value\030\002" +
+      " \001(\t:\0028\001B\020\n\016fine_timestamp\"\237\004\n\014UplinkRxI" +
+      "nfo\022\022\n\ngateway_id\030\001 \001(\t\022\021\n\tuplink_id\030\002 \001" +
+      "(\r\022+\n\007gw_time\030\003 \001(\0132\032.google.protobuf.Ti" +
+      "mestamp\022+\n\007ns_time\030\021 \001(\0132\032.google.protob" +
+      "uf.Timestamp\0227\n\024time_since_gps_epoch\030\004 \001" +
+      "(\0132\031.google.protobuf.Duration\022<\n\031fine_ti" +
+      "me_since_gps_epoch\030\005 \001(\0132\031.google.protob" +
+      "uf.Duration\022\014\n\004rssi\030\006 \001(\005\022\013\n\003snr\030\007 \001(\002\022\017" +
+      "\n\007channel\030\010 \001(\r\022\020\n\010rf_chain\030\t \001(\r\022\r\n\005boa" +
+      "rd\030\n \001(\r\022\017\n\007antenna\030\013 \001(\r\022\"\n\010location\030\014 " +
+      "\001(\0132\020.common.Location\022\017\n\007context\030\r \001(\014\0220" +
+      "\n\010metadata\030\017 \003(\0132\036.gw.UplinkRxInfo.Metad" +
+      "ataEntry\022!\n\ncrc_status\030\020 \001(\0162\r.gw.CRCSta" +
+      "tus\032/\n\rMetadataEntry\022\013\n\003key\030\001 \001(\t\022\r\n\005val" +
+      "ue\030\002 \001(\t:\0028\001\"\202\004\n\024DownlinkTxInfoLegacy\022\022\n" +
+      "\ngateway_id\030\001 \001(\014\022\021\n\tfrequency\030\005 \001(\r\022\r\n\005" +
+      "power\030\006 \001(\005\022&\n\nmodulation\030\007 \001(\0162\022.common" +
+      ".Modulation\0226\n\024lora_modulation_info\030\010 \001(" +
+      "\0132\026.gw.LoraModulationInfoH\000\0224\n\023fsk_modul" +
+      "ation_info\030\t \001(\0132\025.gw.FskModulationInfoH" +
+      "\000\022\r\n\005board\030\n \001(\r\022\017\n\007antenna\030\013 \001(\r\022\"\n\006tim" +
+      "ing\030\014 \001(\0162\022.gw.DownlinkTiming\022<\n\027immedia" +
+      "tely_timing_info\030\r \001(\0132\031.gw.ImmediatelyT" +
+      "imingInfoH\001\0220\n\021delay_timing_info\030\016 \001(\0132\023" +
+      ".gw.DelayTimingInfoH\001\0227\n\025gps_epoch_timin" +
+      "g_info\030\017 \001(\0132\026.gw.GPSEpochTimingInfoH\001\022\017" +
+      "\n\007context\030\020 \001(\014B\021\n\017modulation_infoB\r\n\013ti" +
+      "ming_info\"\243\001\n\016DownlinkTxInfo\022\021\n\tfrequenc" +
+      "y\030\001 \001(\r\022\r\n\005power\030\002 \001(\005\022\"\n\nmodulation\030\003 \001" +
+      "(\0132\016.gw.Modulation\022\r\n\005board\030\004 \001(\r\022\017\n\007ant" +
+      "enna\030\005 \001(\r\022\032\n\006timing\030\006 \001(\0132\n.gw.Timing\022\017" +
+      "\n\007context\030\007 \001(\014\"\233\001\n\006Timing\0220\n\013immediatel" +
+      "y\030\001 \001(\0132\031.gw.ImmediatelyTimingInfoH\000\022$\n\005" +
+      "delay\030\002 \001(\0132\023.gw.DelayTimingInfoH\000\022+\n\tgp" +
+      "s_epoch\030\003 \001(\0132\026.gw.GPSEpochTimingInfoH\000B" +
+      "\014\n\nparameters\"\027\n\025ImmediatelyTimingInfo\";" +
+      "\n\017DelayTimingInfo\022(\n\005delay\030\001 \001(\0132\031.googl" +
+      "e.protobuf.Duration\"M\n\022GPSEpochTimingInf" +
+      "o\0227\n\024time_since_gps_epoch\030\001 \001(\0132\031.google" +
+      ".protobuf.Duration\"\310\001\n\013UplinkFrame\022\023\n\013ph" +
+      "y_payload\030\001 \001(\014\022.\n\016tx_info_legacy\030\002 \001(\0132" +
+      "\026.gw.UplinkTxInfoLegacy\022.\n\016rx_info_legac" +
+      "y\030\003 \001(\0132\026.gw.UplinkRxInfoLegacy\022!\n\007tx_in" +
+      "fo\030\004 \001(\0132\020.gw.UplinkTxInfo\022!\n\007rx_info\030\005 " +
+      "\001(\0132\020.gw.UplinkRxInfo\"k\n\016UplinkFrameSet\022" +
+      "\023\n\013phy_payload\030\001 \001(\014\022!\n\007tx_info\030\002 \001(\0132\020." +
+      "gw.UplinkTxInfo\022!\n\007rx_info\030\003 \003(\0132\020.gw.Up" +
+      "linkRxInfo\"\225\001\n\rDownlinkFrame\022\023\n\013downlink" +
+      "_id\030\003 \001(\r\022\032\n\022downlink_id_legacy\030\004 \001(\014\022$\n" +
+      "\005items\030\005 \003(\0132\025.gw.DownlinkFrameItem\022\031\n\021g" +
+      "ateway_id_legacy\030\006 \001(\014\022\022\n\ngateway_id\030\007 \001" +
+      "(\t\"\177\n\021DownlinkFrameItem\022\023\n\013phy_payload\030\001" +
+      " \001(\014\0220\n\016tx_info_legacy\030\002 \001(\0132\030.gw.Downli" +
+      "nkTxInfoLegacy\022#\n\007tx_info\030\003 \001(\0132\022.gw.Dow" +
+      "nlinkTxInfo\"\225\001\n\rDownlinkTxAck\022\031\n\021gateway" +
+      "_id_legacy\030\001 \001(\014\022\022\n\ngateway_id\030\006 \001(\t\022\023\n\013" +
+      "downlink_id\030\002 \001(\r\022\032\n\022downlink_id_legacy\030" +
+      "\004 \001(\014\022$\n\005items\030\005 \003(\0132\025.gw.DownlinkTxAckI" +
+      "tem\"4\n\021DownlinkTxAckItem\022\037\n\006status\030\001 \001(\016" +
+      "2\017.gw.TxAckStatus\"\265\001\n\024GatewayConfigurati" +
+      "on\022\031\n\021gateway_id_legacy\030\001 \001(\014\022\022\n\ngateway" +
+      "_id\030\005 \001(\t\022\017\n\007version\030\002 \001(\t\022*\n\010channels\030\003" +
+      " \003(\0132\030.gw.ChannelConfiguration\0221\n\016stats_" +
+      "interval\030\004 \001(\0132\031.google.protobuf.Duratio" +
+      "n\"\025\n\023GetGatewayIdRequest\"*\n\024GetGatewayId" +
+      "Response\022\022\n\ngateway_id\030\001 \001(\t\"\024\n\022GetLocat" +
+      "ionRequest\"i\n\023GetLocationResponse\022\"\n\010loc" +
+      "ation\030\001 \001(\0132\020.common.Location\022.\n\nupdated" +
+      "_at\030\002 \001(\0132\032.google.protobuf.Timestamp\"\207\002" +
+      "\n\024ChannelConfiguration\022\021\n\tfrequency\030\001 \001(" +
+      "\r\022-\n\021modulation_legacy\030\002 \001(\0162\022.common.Mo" +
+      "dulation\022:\n\026lora_modulation_config\030\003 \001(\013" +
+      "2\030.gw.LoraModulationConfigH\000\0228\n\025fsk_modu" +
+      "lation_config\030\004 \001(\0132\027.gw.FskModulationCo" +
+      "nfigH\000\022\r\n\005board\030\005 \001(\r\022\023\n\013demodulator\030\006 \001" +
+      "(\rB\023\n\021modulation_config\"^\n\024LoraModulatio" +
+      "nConfig\022\030\n\020bandwidth_legacy\030\001 \001(\r\022\021\n\tban" +
+      "dwidth\030\003 \001(\r\022\031\n\021spreading_factors\030\002 \003(\r\"" +
+      "S\n\023FskModulationConfig\022\030\n\020bandwidth_lega" +
+      "cy\030\001 \001(\r\022\021\n\tbandwidth\030\003 \001(\r\022\017\n\007bitrate\030\002" +
+      " \001(\r\"\364\001\n\031GatewayCommandExecRequest\022\031\n\021ga" +
+      "teway_id_legacy\030\001 \001(\014\022\022\n\ngateway_id\030\006 \001(" +
+      "\t\022\017\n\007command\030\002 \001(\t\022\017\n\007exec_id\030\007 \001(\r\022\r\n\005s" +
+      "tdin\030\004 \001(\014\022C\n\013environment\030\005 \003(\0132..gw.Gat" +
+      "ewayCommandExecRequest.EnvironmentEntry\032" +
+      "2\n\020EnvironmentEntry\022\013\n\003key\030\001 \001(\t\022\r\n\005valu" +
+      "e\030\002 \001(\t:\0028\001\"\213\001\n\032GatewayCommandExecRespon" +
+      "se\022\031\n\021gateway_id_legacy\030\001 \001(\014\022\022\n\ngateway" +
+      "_id\030\006 \001(\t\022\017\n\007exec_id\030\007 \001(\r\022\016\n\006stdout\030\003 \001" +
+      "(\014\022\016\n\006stderr\030\004 \001(\014\022\r\n\005error\030\005 \001(\t\"Y\n\027Raw" +
+      "PacketForwarderEvent\022\031\n\021gateway_id_legac" +
+      "y\030\001 \001(\014\022\022\n\ngateway_id\030\004 \001(\t\022\017\n\007payload\030\003" +
+      " \001(\014\"[\n\031RawPacketForwarderCommand\022\031\n\021gat" +
+      "eway_id_legacy\030\001 \001(\014\022\022\n\ngateway_id\030\004 \001(\t" +
+      "\022\017\n\007payload\030\003 \001(\014\"\200\001\n\tConnState\022\031\n\021gatew" +
+      "ay_id_legacy\030\001 \001(\014\022\022\n\ngateway_id\030\003 \001(\t\022\"" +
+      "\n\005state\030\002 \001(\0162\023.gw.ConnState.State\" \n\005St" +
+      "ate\022\013\n\007OFFLINE\020\000\022\n\n\006ONLINE\020\001\"I\n\022MeshEven" +
+      "tHeartbeat\0223\n\nrelay_path\030\004 \003(\0132\037.gw.Mesh" +
+      "EventHeartbeatRelayPath\"J\n\033MeshEventHear" +
+      "tbeatRelayPath\022\020\n\010relay_id\030\001 \001(\t\022\014\n\004rssi" +
+      "\030\002 \001(\005\022\013\n\003snr\030\003 \001(\005\";\n\024MeshEventPropriet" +
+      "ary\022\022\n\nevent_type\030\001 \001(\r\022\017\n\007payload\030\002 \001(\014" +
+      "\"?\n\026MeshCommandProprietary\022\024\n\014command_ty" +
+      "pe\030\001 \001(\r\022\017\n\007payload\030\002 \001(\014*\265\001\n\010CodeRate\022\020" +
+      "\n\014CR_UNDEFINED\020\000\022\n\n\006CR_4_5\020\001\022\n\n\006CR_4_6\020\002" +
+      "\022\n\n\006CR_4_7\020\003\022\n\n\006CR_4_8\020\004\022\n\n\006CR_3_8\020\005\022\n\n\006" +
+      "CR_2_6\020\006\022\n\n\006CR_1_4\020\007\022\n\n\006CR_1_6\020\010\022\n\n\006CR_5" +
+      "_6\020\t\022\r\n\tCR_LI_4_5\020\n\022\r\n\tCR_LI_4_6\020\013\022\r\n\tCR" +
+      "_LI_4_8\020\014*;\n\016DownlinkTiming\022\017\n\013IMMEDIATE" +
+      "LY\020\000\022\t\n\005DELAY\020\001\022\r\n\tGPS_EPOCH\020\002*7\n\021FineTi" +
+      "mestampType\022\010\n\004NONE\020\000\022\r\n\tENCRYPTED\020\001\022\t\n\005" +
+      "PLAIN\020\002*0\n\tCRCStatus\022\n\n\006NO_CRC\020\000\022\013\n\007BAD_" +
+      "CRC\020\001\022\n\n\006CRC_OK\020\002*\325\001\n\013TxAckStatus\022\013\n\007IGN" +
+      "ORED\020\000\022\006\n\002OK\020\001\022\014\n\010TOO_LATE\020\002\022\r\n\tTOO_EARL" +
+      "Y\020\003\022\024\n\020COLLISION_PACKET\020\004\022\024\n\020COLLISION_B" +
+      "EACON\020\005\022\013\n\007TX_FREQ\020\006\022\014\n\010TX_POWER\020\007\022\020\n\014GP" +
+      "S_UNLOCKED\020\010\022\016\n\nQUEUE_FULL\020\t\022\022\n\016INTERNAL" +
+      "_ERROR\020\n\022\027\n\023DUTY_CYCLE_OVERFLOW\020\013B\240\001\n\024io" +
+      ".chirpstack.api.gwB\014GatewayProtoP\001Z-gith" +
+      "ub.com/chirpstack/chirpstack/api/go/v4/g" +
+      "w\252\002\022Chirpstack.Gateway\312\002\022Chirpstack\\Gate" +
+      "way\342\002\036GPBMetadata\\Chirpstack\\Gatewayb\006pr" +
+      "oto3"
     };
     descriptor = com.google.protobuf.Descriptors.FileDescriptor
       .internalBuildGeneratedFileFrom(descriptorData,
@@ -459,56 +546,92 @@ public final class GatewayProto {
           com.google.protobuf.DurationProto.getDescriptor(),
           com.google.protobuf.StructProto.getDescriptor(),
         });
-    internal_static_gw_Modulation_descriptor =
+    internal_static_gw_Event_descriptor =
       getDescriptor().getMessageTypes().get(0);
+    internal_static_gw_Event_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_gw_Event_descriptor,
+        new java.lang.String[] { "UplinkFrame", "GatewayStats", "Mesh", "Event", });
+    internal_static_gw_Command_descriptor =
+      getDescriptor().getMessageTypes().get(1);
+    internal_static_gw_Command_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_gw_Command_descriptor,
+        new java.lang.String[] { "SendDownlinkFrame", "SetGatewayConfiguration", "GetGatewayId", "GetLocation", "Mesh", "Command", });
+    internal_static_gw_MeshEvent_descriptor =
+      getDescriptor().getMessageTypes().get(2);
+    internal_static_gw_MeshEvent_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_gw_MeshEvent_descriptor,
+        new java.lang.String[] { "GatewayId", "RelayId", "Time", "Events", });
+    internal_static_gw_MeshEventItem_descriptor =
+      getDescriptor().getMessageTypes().get(3);
+    internal_static_gw_MeshEventItem_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_gw_MeshEventItem_descriptor,
+        new java.lang.String[] { "Proprietary", "Heartbeat", "Event", });
+    internal_static_gw_MeshCommand_descriptor =
+      getDescriptor().getMessageTypes().get(4);
+    internal_static_gw_MeshCommand_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_gw_MeshCommand_descriptor,
+        new java.lang.String[] { "GatewayId", "RelayId", "Commands", });
+    internal_static_gw_MeshCommandItem_descriptor =
+      getDescriptor().getMessageTypes().get(5);
+    internal_static_gw_MeshCommandItem_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_gw_MeshCommandItem_descriptor,
+        new java.lang.String[] { "Proprietary", "Command", });
+    internal_static_gw_Modulation_descriptor =
+      getDescriptor().getMessageTypes().get(6);
     internal_static_gw_Modulation_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_gw_Modulation_descriptor,
         new java.lang.String[] { "Lora", "Fsk", "LrFhss", "Parameters", });
     internal_static_gw_UplinkTxInfoLegacy_descriptor =
-      getDescriptor().getMessageTypes().get(1);
+      getDescriptor().getMessageTypes().get(7);
     internal_static_gw_UplinkTxInfoLegacy_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_gw_UplinkTxInfoLegacy_descriptor,
         new java.lang.String[] { "Frequency", "Modulation", "LoraModulationInfo", "FskModulationInfo", "LrFhssModulationInfo", "ModulationInfo", });
     internal_static_gw_UplinkTxInfo_descriptor =
-      getDescriptor().getMessageTypes().get(2);
+      getDescriptor().getMessageTypes().get(8);
     internal_static_gw_UplinkTxInfo_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_gw_UplinkTxInfo_descriptor,
         new java.lang.String[] { "Frequency", "Modulation", });
     internal_static_gw_LoraModulationInfo_descriptor =
-      getDescriptor().getMessageTypes().get(3);
+      getDescriptor().getMessageTypes().get(9);
     internal_static_gw_LoraModulationInfo_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_gw_LoraModulationInfo_descriptor,
         new java.lang.String[] { "Bandwidth", "SpreadingFactor", "CodeRateLegacy", "CodeRate", "PolarizationInversion", "Preamble", "NoCrc", });
     internal_static_gw_FskModulationInfo_descriptor =
-      getDescriptor().getMessageTypes().get(4);
+      getDescriptor().getMessageTypes().get(10);
     internal_static_gw_FskModulationInfo_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_gw_FskModulationInfo_descriptor,
         new java.lang.String[] { "FrequencyDeviation", "Datarate", });
     internal_static_gw_LrFhssModulationInfo_descriptor =
-      getDescriptor().getMessageTypes().get(5);
+      getDescriptor().getMessageTypes().get(11);
     internal_static_gw_LrFhssModulationInfo_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_gw_LrFhssModulationInfo_descriptor,
         new java.lang.String[] { "OperatingChannelWidth", "CodeRateLegacy", "CodeRate", "GridSteps", });
     internal_static_gw_EncryptedFineTimestamp_descriptor =
-      getDescriptor().getMessageTypes().get(6);
+      getDescriptor().getMessageTypes().get(12);
     internal_static_gw_EncryptedFineTimestamp_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_gw_EncryptedFineTimestamp_descriptor,
         new java.lang.String[] { "AesKeyIndex", "EncryptedNs", "FpgaId", });
     internal_static_gw_PlainFineTimestamp_descriptor =
-      getDescriptor().getMessageTypes().get(7);
+      getDescriptor().getMessageTypes().get(13);
     internal_static_gw_PlainFineTimestamp_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_gw_PlainFineTimestamp_descriptor,
         new java.lang.String[] { "Time", });
     internal_static_gw_GatewayStats_descriptor =
-      getDescriptor().getMessageTypes().get(8);
+      getDescriptor().getMessageTypes().get(14);
     internal_static_gw_GatewayStats_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_gw_GatewayStats_descriptor,
@@ -538,25 +661,25 @@ public final class GatewayProto {
         internal_static_gw_GatewayStats_TxPacketsPerStatusEntry_descriptor,
         new java.lang.String[] { "Key", "Value", });
     internal_static_gw_PerModulationCount_descriptor =
-      getDescriptor().getMessageTypes().get(9);
+      getDescriptor().getMessageTypes().get(15);
     internal_static_gw_PerModulationCount_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_gw_PerModulationCount_descriptor,
         new java.lang.String[] { "Modulation", "Count", });
     internal_static_gw_DutyCycleStats_descriptor =
-      getDescriptor().getMessageTypes().get(10);
+      getDescriptor().getMessageTypes().get(16);
     internal_static_gw_DutyCycleStats_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_gw_DutyCycleStats_descriptor,
         new java.lang.String[] { "Regulation", "Window", "Bands", });
     internal_static_gw_DutyCycleBand_descriptor =
-      getDescriptor().getMessageTypes().get(11);
+      getDescriptor().getMessageTypes().get(17);
     internal_static_gw_DutyCycleBand_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_gw_DutyCycleBand_descriptor,
         new java.lang.String[] { "Name", "FrequencyMin", "FrequencyMax", "LoadMax", "LoadTracked", });
     internal_static_gw_UplinkRxInfoLegacy_descriptor =
-      getDescriptor().getMessageTypes().get(12);
+      getDescriptor().getMessageTypes().get(18);
     internal_static_gw_UplinkRxInfoLegacy_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_gw_UplinkRxInfoLegacy_descriptor,
@@ -568,7 +691,7 @@ public final class GatewayProto {
         internal_static_gw_UplinkRxInfoLegacy_MetadataEntry_descriptor,
         new java.lang.String[] { "Key", "Value", });
     internal_static_gw_UplinkRxInfo_descriptor =
-      getDescriptor().getMessageTypes().get(13);
+      getDescriptor().getMessageTypes().get(19);
     internal_static_gw_UplinkRxInfo_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_gw_UplinkRxInfo_descriptor,
@@ -580,103 +703,127 @@ public final class GatewayProto {
         internal_static_gw_UplinkRxInfo_MetadataEntry_descriptor,
         new java.lang.String[] { "Key", "Value", });
     internal_static_gw_DownlinkTxInfoLegacy_descriptor =
-      getDescriptor().getMessageTypes().get(14);
+      getDescriptor().getMessageTypes().get(20);
     internal_static_gw_DownlinkTxInfoLegacy_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_gw_DownlinkTxInfoLegacy_descriptor,
         new java.lang.String[] { "GatewayId", "Frequency", "Power", "Modulation", "LoraModulationInfo", "FskModulationInfo", "Board", "Antenna", "Timing", "ImmediatelyTimingInfo", "DelayTimingInfo", "GpsEpochTimingInfo", "Context", "ModulationInfo", "TimingInfo", });
     internal_static_gw_DownlinkTxInfo_descriptor =
-      getDescriptor().getMessageTypes().get(15);
+      getDescriptor().getMessageTypes().get(21);
     internal_static_gw_DownlinkTxInfo_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_gw_DownlinkTxInfo_descriptor,
         new java.lang.String[] { "Frequency", "Power", "Modulation", "Board", "Antenna", "Timing", "Context", });
     internal_static_gw_Timing_descriptor =
-      getDescriptor().getMessageTypes().get(16);
+      getDescriptor().getMessageTypes().get(22);
     internal_static_gw_Timing_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_gw_Timing_descriptor,
         new java.lang.String[] { "Immediately", "Delay", "GpsEpoch", "Parameters", });
     internal_static_gw_ImmediatelyTimingInfo_descriptor =
-      getDescriptor().getMessageTypes().get(17);
+      getDescriptor().getMessageTypes().get(23);
     internal_static_gw_ImmediatelyTimingInfo_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_gw_ImmediatelyTimingInfo_descriptor,
         new java.lang.String[] { });
     internal_static_gw_DelayTimingInfo_descriptor =
-      getDescriptor().getMessageTypes().get(18);
+      getDescriptor().getMessageTypes().get(24);
     internal_static_gw_DelayTimingInfo_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_gw_DelayTimingInfo_descriptor,
         new java.lang.String[] { "Delay", });
     internal_static_gw_GPSEpochTimingInfo_descriptor =
-      getDescriptor().getMessageTypes().get(19);
+      getDescriptor().getMessageTypes().get(25);
     internal_static_gw_GPSEpochTimingInfo_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_gw_GPSEpochTimingInfo_descriptor,
         new java.lang.String[] { "TimeSinceGpsEpoch", });
     internal_static_gw_UplinkFrame_descriptor =
-      getDescriptor().getMessageTypes().get(20);
+      getDescriptor().getMessageTypes().get(26);
     internal_static_gw_UplinkFrame_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_gw_UplinkFrame_descriptor,
         new java.lang.String[] { "PhyPayload", "TxInfoLegacy", "RxInfoLegacy", "TxInfo", "RxInfo", });
     internal_static_gw_UplinkFrameSet_descriptor =
-      getDescriptor().getMessageTypes().get(21);
+      getDescriptor().getMessageTypes().get(27);
     internal_static_gw_UplinkFrameSet_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_gw_UplinkFrameSet_descriptor,
         new java.lang.String[] { "PhyPayload", "TxInfo", "RxInfo", });
     internal_static_gw_DownlinkFrame_descriptor =
-      getDescriptor().getMessageTypes().get(22);
+      getDescriptor().getMessageTypes().get(28);
     internal_static_gw_DownlinkFrame_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_gw_DownlinkFrame_descriptor,
         new java.lang.String[] { "DownlinkId", "DownlinkIdLegacy", "Items", "GatewayIdLegacy", "GatewayId", });
     internal_static_gw_DownlinkFrameItem_descriptor =
-      getDescriptor().getMessageTypes().get(23);
+      getDescriptor().getMessageTypes().get(29);
     internal_static_gw_DownlinkFrameItem_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_gw_DownlinkFrameItem_descriptor,
         new java.lang.String[] { "PhyPayload", "TxInfoLegacy", "TxInfo", });
     internal_static_gw_DownlinkTxAck_descriptor =
-      getDescriptor().getMessageTypes().get(24);
+      getDescriptor().getMessageTypes().get(30);
     internal_static_gw_DownlinkTxAck_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_gw_DownlinkTxAck_descriptor,
         new java.lang.String[] { "GatewayIdLegacy", "GatewayId", "DownlinkId", "DownlinkIdLegacy", "Items", });
     internal_static_gw_DownlinkTxAckItem_descriptor =
-      getDescriptor().getMessageTypes().get(25);
+      getDescriptor().getMessageTypes().get(31);
     internal_static_gw_DownlinkTxAckItem_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_gw_DownlinkTxAckItem_descriptor,
         new java.lang.String[] { "Status", });
     internal_static_gw_GatewayConfiguration_descriptor =
-      getDescriptor().getMessageTypes().get(26);
+      getDescriptor().getMessageTypes().get(32);
     internal_static_gw_GatewayConfiguration_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_gw_GatewayConfiguration_descriptor,
         new java.lang.String[] { "GatewayIdLegacy", "GatewayId", "Version", "Channels", "StatsInterval", });
+    internal_static_gw_GetGatewayIdRequest_descriptor =
+      getDescriptor().getMessageTypes().get(33);
+    internal_static_gw_GetGatewayIdRequest_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_gw_GetGatewayIdRequest_descriptor,
+        new java.lang.String[] { });
+    internal_static_gw_GetGatewayIdResponse_descriptor =
+      getDescriptor().getMessageTypes().get(34);
+    internal_static_gw_GetGatewayIdResponse_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_gw_GetGatewayIdResponse_descriptor,
+        new java.lang.String[] { "GatewayId", });
+    internal_static_gw_GetLocationRequest_descriptor =
+      getDescriptor().getMessageTypes().get(35);
+    internal_static_gw_GetLocationRequest_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_gw_GetLocationRequest_descriptor,
+        new java.lang.String[] { });
+    internal_static_gw_GetLocationResponse_descriptor =
+      getDescriptor().getMessageTypes().get(36);
+    internal_static_gw_GetLocationResponse_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_gw_GetLocationResponse_descriptor,
+        new java.lang.String[] { "Location", "UpdatedAt", });
     internal_static_gw_ChannelConfiguration_descriptor =
-      getDescriptor().getMessageTypes().get(27);
+      getDescriptor().getMessageTypes().get(37);
     internal_static_gw_ChannelConfiguration_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_gw_ChannelConfiguration_descriptor,
         new java.lang.String[] { "Frequency", "ModulationLegacy", "LoraModulationConfig", "FskModulationConfig", "Board", "Demodulator", "ModulationConfig", });
     internal_static_gw_LoraModulationConfig_descriptor =
-      getDescriptor().getMessageTypes().get(28);
+      getDescriptor().getMessageTypes().get(38);
     internal_static_gw_LoraModulationConfig_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_gw_LoraModulationConfig_descriptor,
         new java.lang.String[] { "BandwidthLegacy", "Bandwidth", "SpreadingFactors", });
     internal_static_gw_FskModulationConfig_descriptor =
-      getDescriptor().getMessageTypes().get(29);
+      getDescriptor().getMessageTypes().get(39);
     internal_static_gw_FskModulationConfig_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_gw_FskModulationConfig_descriptor,
         new java.lang.String[] { "BandwidthLegacy", "Bandwidth", "Bitrate", });
     internal_static_gw_GatewayCommandExecRequest_descriptor =
-      getDescriptor().getMessageTypes().get(30);
+      getDescriptor().getMessageTypes().get(40);
     internal_static_gw_GatewayCommandExecRequest_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_gw_GatewayCommandExecRequest_descriptor,
@@ -688,41 +835,53 @@ public final class GatewayProto {
         internal_static_gw_GatewayCommandExecRequest_EnvironmentEntry_descriptor,
         new java.lang.String[] { "Key", "Value", });
     internal_static_gw_GatewayCommandExecResponse_descriptor =
-      getDescriptor().getMessageTypes().get(31);
+      getDescriptor().getMessageTypes().get(41);
     internal_static_gw_GatewayCommandExecResponse_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_gw_GatewayCommandExecResponse_descriptor,
         new java.lang.String[] { "GatewayIdLegacy", "GatewayId", "ExecId", "Stdout", "Stderr", "Error", });
     internal_static_gw_RawPacketForwarderEvent_descriptor =
-      getDescriptor().getMessageTypes().get(32);
+      getDescriptor().getMessageTypes().get(42);
     internal_static_gw_RawPacketForwarderEvent_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_gw_RawPacketForwarderEvent_descriptor,
         new java.lang.String[] { "GatewayIdLegacy", "GatewayId", "Payload", });
     internal_static_gw_RawPacketForwarderCommand_descriptor =
-      getDescriptor().getMessageTypes().get(33);
+      getDescriptor().getMessageTypes().get(43);
     internal_static_gw_RawPacketForwarderCommand_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_gw_RawPacketForwarderCommand_descriptor,
         new java.lang.String[] { "GatewayIdLegacy", "GatewayId", "Payload", });
     internal_static_gw_ConnState_descriptor =
-      getDescriptor().getMessageTypes().get(34);
+      getDescriptor().getMessageTypes().get(44);
     internal_static_gw_ConnState_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_gw_ConnState_descriptor,
         new java.lang.String[] { "GatewayIdLegacy", "GatewayId", "State", });
-    internal_static_gw_MeshHeartbeat_descriptor =
-      getDescriptor().getMessageTypes().get(35);
-    internal_static_gw_MeshHeartbeat_fieldAccessorTable = new
+    internal_static_gw_MeshEventHeartbeat_descriptor =
+      getDescriptor().getMessageTypes().get(45);
+    internal_static_gw_MeshEventHeartbeat_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-        internal_static_gw_MeshHeartbeat_descriptor,
-        new java.lang.String[] { "GatewayId", "RelayId", "Time", "RelayPath", });
-    internal_static_gw_MeshHeartbeatRelayPath_descriptor =
-      getDescriptor().getMessageTypes().get(36);
-    internal_static_gw_MeshHeartbeatRelayPath_fieldAccessorTable = new
+        internal_static_gw_MeshEventHeartbeat_descriptor,
+        new java.lang.String[] { "RelayPath", });
+    internal_static_gw_MeshEventHeartbeatRelayPath_descriptor =
+      getDescriptor().getMessageTypes().get(46);
+    internal_static_gw_MeshEventHeartbeatRelayPath_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-        internal_static_gw_MeshHeartbeatRelayPath_descriptor,
+        internal_static_gw_MeshEventHeartbeatRelayPath_descriptor,
         new java.lang.String[] { "RelayId", "Rssi", "Snr", });
+    internal_static_gw_MeshEventProprietary_descriptor =
+      getDescriptor().getMessageTypes().get(47);
+    internal_static_gw_MeshEventProprietary_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_gw_MeshEventProprietary_descriptor,
+        new java.lang.String[] { "EventType", "Payload", });
+    internal_static_gw_MeshCommandProprietary_descriptor =
+      getDescriptor().getMessageTypes().get(48);
+    internal_static_gw_MeshCommandProprietary_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_gw_MeshCommandProprietary_descriptor,
+        new java.lang.String[] { "CommandType", "Payload", });
     descriptor.resolveAllFeaturesImmutable();
     io.chirpstack.api.CommonProto.getDescriptor();
     com.google.protobuf.TimestampProto.getDescriptor();

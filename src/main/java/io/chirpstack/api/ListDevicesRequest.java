@@ -30,6 +30,8 @@ private static final long serialVersionUID = 0L;
     search_ = "";
     applicationId_ = "";
     multicastGroupId_ = "";
+    orderBy_ = 0;
+    deviceProfileId_ = "";
   }
 
   public static final com.google.protobuf.Descriptors.Descriptor
@@ -37,6 +39,18 @@ private static final long serialVersionUID = 0L;
     return io.chirpstack.api.DeviceProto.internal_static_api_ListDevicesRequest_descriptor;
   }
 
+  @SuppressWarnings({"rawtypes"})
+  @java.lang.Override
+  protected com.google.protobuf.MapFieldReflectionAccessor internalGetMapFieldReflection(
+      int number) {
+    switch (number) {
+      case 8:
+        return internalGetTags();
+      default:
+        throw new RuntimeException(
+            "Invalid map field number: " + number);
+    }
+  }
   @java.lang.Override
   protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internalGetFieldAccessorTable() {
@@ -45,11 +59,147 @@ private static final long serialVersionUID = 0L;
             io.chirpstack.api.ListDevicesRequest.class, io.chirpstack.api.ListDevicesRequest.Builder.class);
   }
 
+  /**
+   * Protobuf enum {@code api.ListDevicesRequest.OrderBy}
+   */
+  public enum OrderBy
+      implements com.google.protobuf.ProtocolMessageEnum {
+    /**
+     * <code>NAME = 0;</code>
+     */
+    NAME(0),
+    /**
+     * <code>DEV_EUI = 1;</code>
+     */
+    DEV_EUI(1),
+    /**
+     * <code>LAST_SEEN_AT = 2;</code>
+     */
+    LAST_SEEN_AT(2),
+    /**
+     * <code>DEVICE_PROFILE_NAME = 3;</code>
+     */
+    DEVICE_PROFILE_NAME(3),
+    UNRECOGNIZED(-1),
+    ;
+
+    static {
+      com.google.protobuf.RuntimeVersion.validateProtobufGencodeVersion(
+        com.google.protobuf.RuntimeVersion.RuntimeDomain.PUBLIC,
+        /* major= */ 4,
+        /* minor= */ 29,
+        /* patch= */ 2,
+        /* suffix= */ "",
+        OrderBy.class.getName());
+    }
+    /**
+     * <code>NAME = 0;</code>
+     */
+    public static final int NAME_VALUE = 0;
+    /**
+     * <code>DEV_EUI = 1;</code>
+     */
+    public static final int DEV_EUI_VALUE = 1;
+    /**
+     * <code>LAST_SEEN_AT = 2;</code>
+     */
+    public static final int LAST_SEEN_AT_VALUE = 2;
+    /**
+     * <code>DEVICE_PROFILE_NAME = 3;</code>
+     */
+    public static final int DEVICE_PROFILE_NAME_VALUE = 3;
+
+
+    public final int getNumber() {
+      if (this == UNRECOGNIZED) {
+        throw new java.lang.IllegalArgumentException(
+            "Can't get the number of an unknown enum value.");
+      }
+      return value;
+    }
+
+    /**
+     * @param value The numeric wire value of the corresponding enum entry.
+     * @return The enum associated with the given numeric wire value.
+     * @deprecated Use {@link #forNumber(int)} instead.
+     */
+    @java.lang.Deprecated
+    public static OrderBy valueOf(int value) {
+      return forNumber(value);
+    }
+
+    /**
+     * @param value The numeric wire value of the corresponding enum entry.
+     * @return The enum associated with the given numeric wire value.
+     */
+    public static OrderBy forNumber(int value) {
+      switch (value) {
+        case 0: return NAME;
+        case 1: return DEV_EUI;
+        case 2: return LAST_SEEN_AT;
+        case 3: return DEVICE_PROFILE_NAME;
+        default: return null;
+      }
+    }
+
+    public static com.google.protobuf.Internal.EnumLiteMap<OrderBy>
+        internalGetValueMap() {
+      return internalValueMap;
+    }
+    private static final com.google.protobuf.Internal.EnumLiteMap<
+        OrderBy> internalValueMap =
+          new com.google.protobuf.Internal.EnumLiteMap<OrderBy>() {
+            public OrderBy findValueByNumber(int number) {
+              return OrderBy.forNumber(number);
+            }
+          };
+
+    public final com.google.protobuf.Descriptors.EnumValueDescriptor
+        getValueDescriptor() {
+      if (this == UNRECOGNIZED) {
+        throw new java.lang.IllegalStateException(
+            "Can't get the descriptor of an unrecognized enum value.");
+      }
+      return getDescriptor().getValues().get(ordinal());
+    }
+    public final com.google.protobuf.Descriptors.EnumDescriptor
+        getDescriptorForType() {
+      return getDescriptor();
+    }
+    public static final com.google.protobuf.Descriptors.EnumDescriptor
+        getDescriptor() {
+      return io.chirpstack.api.ListDevicesRequest.getDescriptor().getEnumTypes().get(0);
+    }
+
+    private static final OrderBy[] VALUES = values();
+
+    public static OrderBy valueOf(
+        com.google.protobuf.Descriptors.EnumValueDescriptor desc) {
+      if (desc.getType() != getDescriptor()) {
+        throw new java.lang.IllegalArgumentException(
+          "EnumValueDescriptor is not for this type.");
+      }
+      if (desc.getIndex() == -1) {
+        return UNRECOGNIZED;
+      }
+      return VALUES[desc.getIndex()];
+    }
+
+    private final int value;
+
+    private OrderBy(int value) {
+      this.value = value;
+    }
+
+    // @@protoc_insertion_point(enum_scope:api.ListDevicesRequest.OrderBy)
+  }
+
   public static final int LIMIT_FIELD_NUMBER = 1;
   private int limit_ = 0;
   /**
    * <pre>
    * Max number of devices to return in the result-set.
+   * If not set, it will be treated as 0, and the response will only return the total_count.
    * </pre>
    *
    * <code>uint32 limit = 1;</code>
@@ -216,6 +366,189 @@ private static final long serialVersionUID = 0L;
     }
   }
 
+  public static final int ORDER_BY_FIELD_NUMBER = 6;
+  private int orderBy_ = 0;
+  /**
+   * <pre>
+   * If set, the given value will be used to sort by (optional).
+   * </pre>
+   *
+   * <code>.api.ListDevicesRequest.OrderBy order_by = 6;</code>
+   * @return The enum numeric value on the wire for orderBy.
+   */
+  @java.lang.Override public int getOrderByValue() {
+    return orderBy_;
+  }
+  /**
+   * <pre>
+   * If set, the given value will be used to sort by (optional).
+   * </pre>
+   *
+   * <code>.api.ListDevicesRequest.OrderBy order_by = 6;</code>
+   * @return The orderBy.
+   */
+  @java.lang.Override public io.chirpstack.api.ListDevicesRequest.OrderBy getOrderBy() {
+    io.chirpstack.api.ListDevicesRequest.OrderBy result = io.chirpstack.api.ListDevicesRequest.OrderBy.forNumber(orderBy_);
+    return result == null ? io.chirpstack.api.ListDevicesRequest.OrderBy.UNRECOGNIZED : result;
+  }
+
+  public static final int ORDER_BY_DESC_FIELD_NUMBER = 7;
+  private boolean orderByDesc_ = false;
+  /**
+   * <pre>
+   * If set, the sorting direction will be decending (default = ascending) (optional).
+   * </pre>
+   *
+   * <code>bool order_by_desc = 7;</code>
+   * @return The orderByDesc.
+   */
+  @java.lang.Override
+  public boolean getOrderByDesc() {
+    return orderByDesc_;
+  }
+
+  public static final int TAGS_FIELD_NUMBER = 8;
+  private static final class TagsDefaultEntryHolder {
+    static final com.google.protobuf.MapEntry<
+        java.lang.String, java.lang.String> defaultEntry =
+            com.google.protobuf.MapEntry
+            .<java.lang.String, java.lang.String>newDefaultInstance(
+                io.chirpstack.api.DeviceProto.internal_static_api_ListDevicesRequest_TagsEntry_descriptor, 
+                com.google.protobuf.WireFormat.FieldType.STRING,
+                "",
+                com.google.protobuf.WireFormat.FieldType.STRING,
+                "");
+  }
+  @SuppressWarnings("serial")
+  private com.google.protobuf.MapField<
+      java.lang.String, java.lang.String> tags_;
+  private com.google.protobuf.MapField<java.lang.String, java.lang.String>
+  internalGetTags() {
+    if (tags_ == null) {
+      return com.google.protobuf.MapField.emptyMapField(
+          TagsDefaultEntryHolder.defaultEntry);
+    }
+    return tags_;
+  }
+  public int getTagsCount() {
+    return internalGetTags().getMap().size();
+  }
+  /**
+   * <pre>
+   * Tags to filter devices on.
+   * </pre>
+   *
+   * <code>map&lt;string, string&gt; tags = 8;</code>
+   */
+  @java.lang.Override
+  public boolean containsTags(
+      java.lang.String key) {
+    if (key == null) { throw new NullPointerException("map key"); }
+    return internalGetTags().getMap().containsKey(key);
+  }
+  /**
+   * Use {@link #getTagsMap()} instead.
+   */
+  @java.lang.Override
+  @java.lang.Deprecated
+  public java.util.Map<java.lang.String, java.lang.String> getTags() {
+    return getTagsMap();
+  }
+  /**
+   * <pre>
+   * Tags to filter devices on.
+   * </pre>
+   *
+   * <code>map&lt;string, string&gt; tags = 8;</code>
+   */
+  @java.lang.Override
+  public java.util.Map<java.lang.String, java.lang.String> getTagsMap() {
+    return internalGetTags().getMap();
+  }
+  /**
+   * <pre>
+   * Tags to filter devices on.
+   * </pre>
+   *
+   * <code>map&lt;string, string&gt; tags = 8;</code>
+   */
+  @java.lang.Override
+  public /* nullable */
+java.lang.String getTagsOrDefault(
+      java.lang.String key,
+      /* nullable */
+java.lang.String defaultValue) {
+    if (key == null) { throw new NullPointerException("map key"); }
+    java.util.Map<java.lang.String, java.lang.String> map =
+        internalGetTags().getMap();
+    return map.containsKey(key) ? map.get(key) : defaultValue;
+  }
+  /**
+   * <pre>
+   * Tags to filter devices on.
+   * </pre>
+   *
+   * <code>map&lt;string, string&gt; tags = 8;</code>
+   */
+  @java.lang.Override
+  public java.lang.String getTagsOrThrow(
+      java.lang.String key) {
+    if (key == null) { throw new NullPointerException("map key"); }
+    java.util.Map<java.lang.String, java.lang.String> map =
+        internalGetTags().getMap();
+    if (!map.containsKey(key)) {
+      throw new java.lang.IllegalArgumentException();
+    }
+    return map.get(key);
+  }
+
+  public static final int DEVICE_PROFILE_ID_FIELD_NUMBER = 9;
+  @SuppressWarnings("serial")
+  private volatile java.lang.Object deviceProfileId_ = "";
+  /**
+   * <pre>
+   * Device-profile ID (UUID) to filter devices on.
+   * </pre>
+   *
+   * <code>string device_profile_id = 9;</code>
+   * @return The deviceProfileId.
+   */
+  @java.lang.Override
+  public java.lang.String getDeviceProfileId() {
+    java.lang.Object ref = deviceProfileId_;
+    if (ref instanceof java.lang.String) {
+      return (java.lang.String) ref;
+    } else {
+      com.google.protobuf.ByteString bs = 
+          (com.google.protobuf.ByteString) ref;
+      java.lang.String s = bs.toStringUtf8();
+      deviceProfileId_ = s;
+      return s;
+    }
+  }
+  /**
+   * <pre>
+   * Device-profile ID (UUID) to filter devices on.
+   * </pre>
+   *
+   * <code>string device_profile_id = 9;</code>
+   * @return The bytes for deviceProfileId.
+   */
+  @java.lang.Override
+  public com.google.protobuf.ByteString
+      getDeviceProfileIdBytes() {
+    java.lang.Object ref = deviceProfileId_;
+    if (ref instanceof java.lang.String) {
+      com.google.protobuf.ByteString b = 
+          com.google.protobuf.ByteString.copyFromUtf8(
+              (java.lang.String) ref);
+      deviceProfileId_ = b;
+      return b;
+    } else {
+      return (com.google.protobuf.ByteString) ref;
+    }
+  }
+
   private byte memoizedIsInitialized = -1;
   @java.lang.Override
   public final boolean isInitialized() {
@@ -245,6 +578,21 @@ private static final long serialVersionUID = 0L;
     if (!com.google.protobuf.GeneratedMessage.isStringEmpty(multicastGroupId_)) {
       com.google.protobuf.GeneratedMessage.writeString(output, 5, multicastGroupId_);
     }
+    if (orderBy_ != io.chirpstack.api.ListDevicesRequest.OrderBy.NAME.getNumber()) {
+      output.writeEnum(6, orderBy_);
+    }
+    if (orderByDesc_ != false) {
+      output.writeBool(7, orderByDesc_);
+    }
+    com.google.protobuf.GeneratedMessage
+      .serializeStringMapTo(
+        output,
+        internalGetTags(),
+        TagsDefaultEntryHolder.defaultEntry,
+        8);
+    if (!com.google.protobuf.GeneratedMessage.isStringEmpty(deviceProfileId_)) {
+      com.google.protobuf.GeneratedMessage.writeString(output, 9, deviceProfileId_);
+    }
     getUnknownFields().writeTo(output);
   }
 
@@ -271,6 +619,27 @@ private static final long serialVersionUID = 0L;
     if (!com.google.protobuf.GeneratedMessage.isStringEmpty(multicastGroupId_)) {
       size += com.google.protobuf.GeneratedMessage.computeStringSize(5, multicastGroupId_);
     }
+    if (orderBy_ != io.chirpstack.api.ListDevicesRequest.OrderBy.NAME.getNumber()) {
+      size += com.google.protobuf.CodedOutputStream
+        .computeEnumSize(6, orderBy_);
+    }
+    if (orderByDesc_ != false) {
+      size += com.google.protobuf.CodedOutputStream
+        .computeBoolSize(7, orderByDesc_);
+    }
+    for (java.util.Map.Entry<java.lang.String, java.lang.String> entry
+         : internalGetTags().getMap().entrySet()) {
+      com.google.protobuf.MapEntry<java.lang.String, java.lang.String>
+      tags__ = TagsDefaultEntryHolder.defaultEntry.newBuilderForType()
+          .setKey(entry.getKey())
+          .setValue(entry.getValue())
+          .build();
+      size += com.google.protobuf.CodedOutputStream
+          .computeMessageSize(8, tags__);
+    }
+    if (!com.google.protobuf.GeneratedMessage.isStringEmpty(deviceProfileId_)) {
+      size += com.google.protobuf.GeneratedMessage.computeStringSize(9, deviceProfileId_);
+    }
     size += getUnknownFields().getSerializedSize();
     memoizedSize = size;
     return size;
@@ -296,6 +665,13 @@ private static final long serialVersionUID = 0L;
         .equals(other.getApplicationId())) return false;
     if (!getMulticastGroupId()
         .equals(other.getMulticastGroupId())) return false;
+    if (orderBy_ != other.orderBy_) return false;
+    if (getOrderByDesc()
+        != other.getOrderByDesc()) return false;
+    if (!internalGetTags().equals(
+        other.internalGetTags())) return false;
+    if (!getDeviceProfileId()
+        .equals(other.getDeviceProfileId())) return false;
     if (!getUnknownFields().equals(other.getUnknownFields())) return false;
     return true;
   }
@@ -317,6 +693,17 @@ private static final long serialVersionUID = 0L;
     hash = (53 * hash) + getApplicationId().hashCode();
     hash = (37 * hash) + MULTICAST_GROUP_ID_FIELD_NUMBER;
     hash = (53 * hash) + getMulticastGroupId().hashCode();
+    hash = (37 * hash) + ORDER_BY_FIELD_NUMBER;
+    hash = (53 * hash) + orderBy_;
+    hash = (37 * hash) + ORDER_BY_DESC_FIELD_NUMBER;
+    hash = (53 * hash) + com.google.protobuf.Internal.hashBoolean(
+        getOrderByDesc());
+    if (!internalGetTags().getMap().isEmpty()) {
+      hash = (37 * hash) + TAGS_FIELD_NUMBER;
+      hash = (53 * hash) + internalGetTags().hashCode();
+    }
+    hash = (37 * hash) + DEVICE_PROFILE_ID_FIELD_NUMBER;
+    hash = (53 * hash) + getDeviceProfileId().hashCode();
     hash = (29 * hash) + getUnknownFields().hashCode();
     memoizedHashCode = hash;
     return hash;
@@ -426,6 +813,28 @@ private static final long serialVersionUID = 0L;
       return io.chirpstack.api.DeviceProto.internal_static_api_ListDevicesRequest_descriptor;
     }
 
+    @SuppressWarnings({"rawtypes"})
+    protected com.google.protobuf.MapFieldReflectionAccessor internalGetMapFieldReflection(
+        int number) {
+      switch (number) {
+        case 8:
+          return internalGetTags();
+        default:
+          throw new RuntimeException(
+              "Invalid map field number: " + number);
+      }
+    }
+    @SuppressWarnings({"rawtypes"})
+    protected com.google.protobuf.MapFieldReflectionAccessor internalGetMutableMapFieldReflection(
+        int number) {
+      switch (number) {
+        case 8:
+          return internalGetMutableTags();
+        default:
+          throw new RuntimeException(
+              "Invalid map field number: " + number);
+      }
+    }
     @java.lang.Override
     protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
         internalGetFieldAccessorTable() {
@@ -453,6 +862,10 @@ private static final long serialVersionUID = 0L;
       search_ = "";
       applicationId_ = "";
       multicastGroupId_ = "";
+      orderBy_ = 0;
+      orderByDesc_ = false;
+      internalGetMutableTags().clear();
+      deviceProfileId_ = "";
       return this;
     }
 
@@ -501,6 +914,19 @@ private static final long serialVersionUID = 0L;
       if (((from_bitField0_ & 0x00000010) != 0)) {
         result.multicastGroupId_ = multicastGroupId_;
       }
+      if (((from_bitField0_ & 0x00000020) != 0)) {
+        result.orderBy_ = orderBy_;
+      }
+      if (((from_bitField0_ & 0x00000040) != 0)) {
+        result.orderByDesc_ = orderByDesc_;
+      }
+      if (((from_bitField0_ & 0x00000080) != 0)) {
+        result.tags_ = internalGetTags();
+        result.tags_.makeImmutable();
+      }
+      if (((from_bitField0_ & 0x00000100) != 0)) {
+        result.deviceProfileId_ = deviceProfileId_;
+      }
     }
 
     @java.lang.Override
@@ -534,6 +960,20 @@ private static final long serialVersionUID = 0L;
       if (!other.getMulticastGroupId().isEmpty()) {
         multicastGroupId_ = other.multicastGroupId_;
         bitField0_ |= 0x00000010;
+        onChanged();
+      }
+      if (other.orderBy_ != 0) {
+        setOrderByValue(other.getOrderByValue());
+      }
+      if (other.getOrderByDesc() != false) {
+        setOrderByDesc(other.getOrderByDesc());
+      }
+      internalGetMutableTags().mergeFrom(
+          other.internalGetTags());
+      bitField0_ |= 0x00000080;
+      if (!other.getDeviceProfileId().isEmpty()) {
+        deviceProfileId_ = other.deviceProfileId_;
+        bitField0_ |= 0x00000100;
         onChanged();
       }
       this.mergeUnknownFields(other.getUnknownFields());
@@ -587,6 +1027,30 @@ private static final long serialVersionUID = 0L;
               bitField0_ |= 0x00000010;
               break;
             } // case 42
+            case 48: {
+              orderBy_ = input.readEnum();
+              bitField0_ |= 0x00000020;
+              break;
+            } // case 48
+            case 56: {
+              orderByDesc_ = input.readBool();
+              bitField0_ |= 0x00000040;
+              break;
+            } // case 56
+            case 66: {
+              com.google.protobuf.MapEntry<java.lang.String, java.lang.String>
+              tags__ = input.readMessage(
+                  TagsDefaultEntryHolder.defaultEntry.getParserForType(), extensionRegistry);
+              internalGetMutableTags().getMutableMap().put(
+                  tags__.getKey(), tags__.getValue());
+              bitField0_ |= 0x00000080;
+              break;
+            } // case 66
+            case 74: {
+              deviceProfileId_ = input.readStringRequireUtf8();
+              bitField0_ |= 0x00000100;
+              break;
+            } // case 74
             default: {
               if (!super.parseUnknownField(input, extensionRegistry, tag)) {
                 done = true; // was an endgroup tag
@@ -608,6 +1072,7 @@ private static final long serialVersionUID = 0L;
     /**
      * <pre>
      * Max number of devices to return in the result-set.
+     * If not set, it will be treated as 0, and the response will only return the total_count.
      * </pre>
      *
      * <code>uint32 limit = 1;</code>
@@ -620,6 +1085,7 @@ private static final long serialVersionUID = 0L;
     /**
      * <pre>
      * Max number of devices to return in the result-set.
+     * If not set, it will be treated as 0, and the response will only return the total_count.
      * </pre>
      *
      * <code>uint32 limit = 1;</code>
@@ -636,6 +1102,7 @@ private static final long serialVersionUID = 0L;
     /**
      * <pre>
      * Max number of devices to return in the result-set.
+     * If not set, it will be treated as 0, and the response will only return the total_count.
      * </pre>
      *
      * <code>uint32 limit = 1;</code>
@@ -964,6 +1431,370 @@ private static final long serialVersionUID = 0L;
       checkByteStringIsUtf8(value);
       multicastGroupId_ = value;
       bitField0_ |= 0x00000010;
+      onChanged();
+      return this;
+    }
+
+    private int orderBy_ = 0;
+    /**
+     * <pre>
+     * If set, the given value will be used to sort by (optional).
+     * </pre>
+     *
+     * <code>.api.ListDevicesRequest.OrderBy order_by = 6;</code>
+     * @return The enum numeric value on the wire for orderBy.
+     */
+    @java.lang.Override public int getOrderByValue() {
+      return orderBy_;
+    }
+    /**
+     * <pre>
+     * If set, the given value will be used to sort by (optional).
+     * </pre>
+     *
+     * <code>.api.ListDevicesRequest.OrderBy order_by = 6;</code>
+     * @param value The enum numeric value on the wire for orderBy to set.
+     * @return This builder for chaining.
+     */
+    public Builder setOrderByValue(int value) {
+      orderBy_ = value;
+      bitField0_ |= 0x00000020;
+      onChanged();
+      return this;
+    }
+    /**
+     * <pre>
+     * If set, the given value will be used to sort by (optional).
+     * </pre>
+     *
+     * <code>.api.ListDevicesRequest.OrderBy order_by = 6;</code>
+     * @return The orderBy.
+     */
+    @java.lang.Override
+    public io.chirpstack.api.ListDevicesRequest.OrderBy getOrderBy() {
+      io.chirpstack.api.ListDevicesRequest.OrderBy result = io.chirpstack.api.ListDevicesRequest.OrderBy.forNumber(orderBy_);
+      return result == null ? io.chirpstack.api.ListDevicesRequest.OrderBy.UNRECOGNIZED : result;
+    }
+    /**
+     * <pre>
+     * If set, the given value will be used to sort by (optional).
+     * </pre>
+     *
+     * <code>.api.ListDevicesRequest.OrderBy order_by = 6;</code>
+     * @param value The orderBy to set.
+     * @return This builder for chaining.
+     */
+    public Builder setOrderBy(io.chirpstack.api.ListDevicesRequest.OrderBy value) {
+      if (value == null) {
+        throw new NullPointerException();
+      }
+      bitField0_ |= 0x00000020;
+      orderBy_ = value.getNumber();
+      onChanged();
+      return this;
+    }
+    /**
+     * <pre>
+     * If set, the given value will be used to sort by (optional).
+     * </pre>
+     *
+     * <code>.api.ListDevicesRequest.OrderBy order_by = 6;</code>
+     * @return This builder for chaining.
+     */
+    public Builder clearOrderBy() {
+      bitField0_ = (bitField0_ & ~0x00000020);
+      orderBy_ = 0;
+      onChanged();
+      return this;
+    }
+
+    private boolean orderByDesc_ ;
+    /**
+     * <pre>
+     * If set, the sorting direction will be decending (default = ascending) (optional).
+     * </pre>
+     *
+     * <code>bool order_by_desc = 7;</code>
+     * @return The orderByDesc.
+     */
+    @java.lang.Override
+    public boolean getOrderByDesc() {
+      return orderByDesc_;
+    }
+    /**
+     * <pre>
+     * If set, the sorting direction will be decending (default = ascending) (optional).
+     * </pre>
+     *
+     * <code>bool order_by_desc = 7;</code>
+     * @param value The orderByDesc to set.
+     * @return This builder for chaining.
+     */
+    public Builder setOrderByDesc(boolean value) {
+
+      orderByDesc_ = value;
+      bitField0_ |= 0x00000040;
+      onChanged();
+      return this;
+    }
+    /**
+     * <pre>
+     * If set, the sorting direction will be decending (default = ascending) (optional).
+     * </pre>
+     *
+     * <code>bool order_by_desc = 7;</code>
+     * @return This builder for chaining.
+     */
+    public Builder clearOrderByDesc() {
+      bitField0_ = (bitField0_ & ~0x00000040);
+      orderByDesc_ = false;
+      onChanged();
+      return this;
+    }
+
+    private com.google.protobuf.MapField<
+        java.lang.String, java.lang.String> tags_;
+    private com.google.protobuf.MapField<java.lang.String, java.lang.String>
+        internalGetTags() {
+      if (tags_ == null) {
+        return com.google.protobuf.MapField.emptyMapField(
+            TagsDefaultEntryHolder.defaultEntry);
+      }
+      return tags_;
+    }
+    private com.google.protobuf.MapField<java.lang.String, java.lang.String>
+        internalGetMutableTags() {
+      if (tags_ == null) {
+        tags_ = com.google.protobuf.MapField.newMapField(
+            TagsDefaultEntryHolder.defaultEntry);
+      }
+      if (!tags_.isMutable()) {
+        tags_ = tags_.copy();
+      }
+      bitField0_ |= 0x00000080;
+      onChanged();
+      return tags_;
+    }
+    public int getTagsCount() {
+      return internalGetTags().getMap().size();
+    }
+    /**
+     * <pre>
+     * Tags to filter devices on.
+     * </pre>
+     *
+     * <code>map&lt;string, string&gt; tags = 8;</code>
+     */
+    @java.lang.Override
+    public boolean containsTags(
+        java.lang.String key) {
+      if (key == null) { throw new NullPointerException("map key"); }
+      return internalGetTags().getMap().containsKey(key);
+    }
+    /**
+     * Use {@link #getTagsMap()} instead.
+     */
+    @java.lang.Override
+    @java.lang.Deprecated
+    public java.util.Map<java.lang.String, java.lang.String> getTags() {
+      return getTagsMap();
+    }
+    /**
+     * <pre>
+     * Tags to filter devices on.
+     * </pre>
+     *
+     * <code>map&lt;string, string&gt; tags = 8;</code>
+     */
+    @java.lang.Override
+    public java.util.Map<java.lang.String, java.lang.String> getTagsMap() {
+      return internalGetTags().getMap();
+    }
+    /**
+     * <pre>
+     * Tags to filter devices on.
+     * </pre>
+     *
+     * <code>map&lt;string, string&gt; tags = 8;</code>
+     */
+    @java.lang.Override
+    public /* nullable */
+java.lang.String getTagsOrDefault(
+        java.lang.String key,
+        /* nullable */
+java.lang.String defaultValue) {
+      if (key == null) { throw new NullPointerException("map key"); }
+      java.util.Map<java.lang.String, java.lang.String> map =
+          internalGetTags().getMap();
+      return map.containsKey(key) ? map.get(key) : defaultValue;
+    }
+    /**
+     * <pre>
+     * Tags to filter devices on.
+     * </pre>
+     *
+     * <code>map&lt;string, string&gt; tags = 8;</code>
+     */
+    @java.lang.Override
+    public java.lang.String getTagsOrThrow(
+        java.lang.String key) {
+      if (key == null) { throw new NullPointerException("map key"); }
+      java.util.Map<java.lang.String, java.lang.String> map =
+          internalGetTags().getMap();
+      if (!map.containsKey(key)) {
+        throw new java.lang.IllegalArgumentException();
+      }
+      return map.get(key);
+    }
+    public Builder clearTags() {
+      bitField0_ = (bitField0_ & ~0x00000080);
+      internalGetMutableTags().getMutableMap()
+          .clear();
+      return this;
+    }
+    /**
+     * <pre>
+     * Tags to filter devices on.
+     * </pre>
+     *
+     * <code>map&lt;string, string&gt; tags = 8;</code>
+     */
+    public Builder removeTags(
+        java.lang.String key) {
+      if (key == null) { throw new NullPointerException("map key"); }
+      internalGetMutableTags().getMutableMap()
+          .remove(key);
+      return this;
+    }
+    /**
+     * Use alternate mutation accessors instead.
+     */
+    @java.lang.Deprecated
+    public java.util.Map<java.lang.String, java.lang.String>
+        getMutableTags() {
+      bitField0_ |= 0x00000080;
+      return internalGetMutableTags().getMutableMap();
+    }
+    /**
+     * <pre>
+     * Tags to filter devices on.
+     * </pre>
+     *
+     * <code>map&lt;string, string&gt; tags = 8;</code>
+     */
+    public Builder putTags(
+        java.lang.String key,
+        java.lang.String value) {
+      if (key == null) { throw new NullPointerException("map key"); }
+      if (value == null) { throw new NullPointerException("map value"); }
+      internalGetMutableTags().getMutableMap()
+          .put(key, value);
+      bitField0_ |= 0x00000080;
+      return this;
+    }
+    /**
+     * <pre>
+     * Tags to filter devices on.
+     * </pre>
+     *
+     * <code>map&lt;string, string&gt; tags = 8;</code>
+     */
+    public Builder putAllTags(
+        java.util.Map<java.lang.String, java.lang.String> values) {
+      internalGetMutableTags().getMutableMap()
+          .putAll(values);
+      bitField0_ |= 0x00000080;
+      return this;
+    }
+
+    private java.lang.Object deviceProfileId_ = "";
+    /**
+     * <pre>
+     * Device-profile ID (UUID) to filter devices on.
+     * </pre>
+     *
+     * <code>string device_profile_id = 9;</code>
+     * @return The deviceProfileId.
+     */
+    public java.lang.String getDeviceProfileId() {
+      java.lang.Object ref = deviceProfileId_;
+      if (!(ref instanceof java.lang.String)) {
+        com.google.protobuf.ByteString bs =
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        deviceProfileId_ = s;
+        return s;
+      } else {
+        return (java.lang.String) ref;
+      }
+    }
+    /**
+     * <pre>
+     * Device-profile ID (UUID) to filter devices on.
+     * </pre>
+     *
+     * <code>string device_profile_id = 9;</code>
+     * @return The bytes for deviceProfileId.
+     */
+    public com.google.protobuf.ByteString
+        getDeviceProfileIdBytes() {
+      java.lang.Object ref = deviceProfileId_;
+      if (ref instanceof String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        deviceProfileId_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+    /**
+     * <pre>
+     * Device-profile ID (UUID) to filter devices on.
+     * </pre>
+     *
+     * <code>string device_profile_id = 9;</code>
+     * @param value The deviceProfileId to set.
+     * @return This builder for chaining.
+     */
+    public Builder setDeviceProfileId(
+        java.lang.String value) {
+      if (value == null) { throw new NullPointerException(); }
+      deviceProfileId_ = value;
+      bitField0_ |= 0x00000100;
+      onChanged();
+      return this;
+    }
+    /**
+     * <pre>
+     * Device-profile ID (UUID) to filter devices on.
+     * </pre>
+     *
+     * <code>string device_profile_id = 9;</code>
+     * @return This builder for chaining.
+     */
+    public Builder clearDeviceProfileId() {
+      deviceProfileId_ = getDefaultInstance().getDeviceProfileId();
+      bitField0_ = (bitField0_ & ~0x00000100);
+      onChanged();
+      return this;
+    }
+    /**
+     * <pre>
+     * Device-profile ID (UUID) to filter devices on.
+     * </pre>
+     *
+     * <code>string device_profile_id = 9;</code>
+     * @param value The bytes for deviceProfileId to set.
+     * @return This builder for chaining.
+     */
+    public Builder setDeviceProfileIdBytes(
+        com.google.protobuf.ByteString value) {
+      if (value == null) { throw new NullPointerException(); }
+      checkByteStringIsUtf8(value);
+      deviceProfileId_ = value;
+      bitField0_ |= 0x00000100;
       onChanged();
       return this;
     }

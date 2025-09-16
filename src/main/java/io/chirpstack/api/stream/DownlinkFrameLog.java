@@ -29,7 +29,7 @@ private static final long serialVersionUID = 0L;
   private DownlinkFrameLog() {
     phyPayload_ = com.google.protobuf.ByteString.EMPTY;
     gatewayId_ = "";
-    mType_ = 0;
+    fType_ = 0;
     devAddr_ = "";
     devEui_ = "";
   }
@@ -201,30 +201,30 @@ private static final long serialVersionUID = 0L;
     }
   }
 
-  public static final int M_TYPE_FIELD_NUMBER = 6;
-  private int mType_ = 0;
+  public static final int F_TYPE_FIELD_NUMBER = 6;
+  private int fType_ = 0;
   /**
    * <pre>
-   * Message type.
+   * Frame type.
    * </pre>
    *
-   * <code>.common.MType m_type = 6;</code>
-   * @return The enum numeric value on the wire for mType.
+   * <code>.common.FType f_type = 6;</code>
+   * @return The enum numeric value on the wire for fType.
    */
-  @java.lang.Override public int getMTypeValue() {
-    return mType_;
+  @java.lang.Override public int getFTypeValue() {
+    return fType_;
   }
   /**
    * <pre>
-   * Message type.
+   * Frame type.
    * </pre>
    *
-   * <code>.common.MType m_type = 6;</code>
-   * @return The mType.
+   * <code>.common.FType f_type = 6;</code>
+   * @return The fType.
    */
-  @java.lang.Override public io.chirpstack.api.MType getMType() {
-    io.chirpstack.api.MType result = io.chirpstack.api.MType.forNumber(mType_);
-    return result == null ? io.chirpstack.api.MType.UNRECOGNIZED : result;
+  @java.lang.Override public io.chirpstack.api.FType getFType() {
+    io.chirpstack.api.FType result = io.chirpstack.api.FType.forNumber(fType_);
+    return result == null ? io.chirpstack.api.FType.UNRECOGNIZED : result;
   }
 
   public static final int DEV_ADDR_FIELD_NUMBER = 7;
@@ -380,8 +380,8 @@ private static final long serialVersionUID = 0L;
     if (!com.google.protobuf.GeneratedMessage.isStringEmpty(gatewayId_)) {
       com.google.protobuf.GeneratedMessage.writeString(output, 5, gatewayId_);
     }
-    if (mType_ != io.chirpstack.api.MType.JOIN_REQUEST.getNumber()) {
-      output.writeEnum(6, mType_);
+    if (fType_ != io.chirpstack.api.FType.JOIN_REQUEST.getNumber()) {
+      output.writeEnum(6, fType_);
     }
     if (!com.google.protobuf.GeneratedMessage.isStringEmpty(devAddr_)) {
       com.google.protobuf.GeneratedMessage.writeString(output, 7, devAddr_);
@@ -423,9 +423,9 @@ private static final long serialVersionUID = 0L;
     if (!com.google.protobuf.GeneratedMessage.isStringEmpty(gatewayId_)) {
       size += com.google.protobuf.GeneratedMessage.computeStringSize(5, gatewayId_);
     }
-    if (mType_ != io.chirpstack.api.MType.JOIN_REQUEST.getNumber()) {
+    if (fType_ != io.chirpstack.api.FType.JOIN_REQUEST.getNumber()) {
       size += com.google.protobuf.CodedOutputStream
-        .computeEnumSize(6, mType_);
+        .computeEnumSize(6, fType_);
     }
     if (!com.google.protobuf.GeneratedMessage.isStringEmpty(devAddr_)) {
       size += com.google.protobuf.GeneratedMessage.computeStringSize(7, devAddr_);
@@ -472,7 +472,7 @@ private static final long serialVersionUID = 0L;
         != other.getDownlinkId()) return false;
     if (!getGatewayId()
         .equals(other.getGatewayId())) return false;
-    if (mType_ != other.mType_) return false;
+    if (fType_ != other.fType_) return false;
     if (!getDevAddr()
         .equals(other.getDevAddr())) return false;
     if (!getDevEui()
@@ -506,8 +506,8 @@ private static final long serialVersionUID = 0L;
     hash = (53 * hash) + getDownlinkId();
     hash = (37 * hash) + GATEWAY_ID_FIELD_NUMBER;
     hash = (53 * hash) + getGatewayId().hashCode();
-    hash = (37 * hash) + M_TYPE_FIELD_NUMBER;
-    hash = (53 * hash) + mType_;
+    hash = (37 * hash) + F_TYPE_FIELD_NUMBER;
+    hash = (53 * hash) + fType_;
     hash = (37 * hash) + DEV_ADDR_FIELD_NUMBER;
     hash = (53 * hash) + getDevAddr().hashCode();
     hash = (37 * hash) + DEV_EUI_FIELD_NUMBER;
@@ -669,7 +669,7 @@ private static final long serialVersionUID = 0L;
       }
       downlinkId_ = 0;
       gatewayId_ = "";
-      mType_ = 0;
+      fType_ = 0;
       devAddr_ = "";
       devEui_ = "";
       plaintextFOpts_ = false;
@@ -730,7 +730,7 @@ private static final long serialVersionUID = 0L;
         result.gatewayId_ = gatewayId_;
       }
       if (((from_bitField0_ & 0x00000020) != 0)) {
-        result.mType_ = mType_;
+        result.fType_ = fType_;
       }
       if (((from_bitField0_ & 0x00000040) != 0)) {
         result.devAddr_ = devAddr_;
@@ -776,8 +776,8 @@ private static final long serialVersionUID = 0L;
         bitField0_ |= 0x00000010;
         onChanged();
       }
-      if (other.mType_ != 0) {
-        setMTypeValue(other.getMTypeValue());
+      if (other.fType_ != 0) {
+        setFTypeValue(other.getFTypeValue());
       }
       if (!other.getDevAddr().isEmpty()) {
         devAddr_ = other.devAddr_;
@@ -851,7 +851,7 @@ private static final long serialVersionUID = 0L;
               break;
             } // case 42
             case 48: {
-              mType_ = input.readEnum();
+              fType_ = input.readEnum();
               bitField0_ |= 0x00000020;
               break;
             } // case 48
@@ -1386,75 +1386,75 @@ private static final long serialVersionUID = 0L;
       return this;
     }
 
-    private int mType_ = 0;
+    private int fType_ = 0;
     /**
      * <pre>
-     * Message type.
+     * Frame type.
      * </pre>
      *
-     * <code>.common.MType m_type = 6;</code>
-     * @return The enum numeric value on the wire for mType.
+     * <code>.common.FType f_type = 6;</code>
+     * @return The enum numeric value on the wire for fType.
      */
-    @java.lang.Override public int getMTypeValue() {
-      return mType_;
+    @java.lang.Override public int getFTypeValue() {
+      return fType_;
     }
     /**
      * <pre>
-     * Message type.
+     * Frame type.
      * </pre>
      *
-     * <code>.common.MType m_type = 6;</code>
-     * @param value The enum numeric value on the wire for mType to set.
+     * <code>.common.FType f_type = 6;</code>
+     * @param value The enum numeric value on the wire for fType to set.
      * @return This builder for chaining.
      */
-    public Builder setMTypeValue(int value) {
-      mType_ = value;
+    public Builder setFTypeValue(int value) {
+      fType_ = value;
       bitField0_ |= 0x00000020;
       onChanged();
       return this;
     }
     /**
      * <pre>
-     * Message type.
+     * Frame type.
      * </pre>
      *
-     * <code>.common.MType m_type = 6;</code>
-     * @return The mType.
+     * <code>.common.FType f_type = 6;</code>
+     * @return The fType.
      */
     @java.lang.Override
-    public io.chirpstack.api.MType getMType() {
-      io.chirpstack.api.MType result = io.chirpstack.api.MType.forNumber(mType_);
-      return result == null ? io.chirpstack.api.MType.UNRECOGNIZED : result;
+    public io.chirpstack.api.FType getFType() {
+      io.chirpstack.api.FType result = io.chirpstack.api.FType.forNumber(fType_);
+      return result == null ? io.chirpstack.api.FType.UNRECOGNIZED : result;
     }
     /**
      * <pre>
-     * Message type.
+     * Frame type.
      * </pre>
      *
-     * <code>.common.MType m_type = 6;</code>
-     * @param value The mType to set.
+     * <code>.common.FType f_type = 6;</code>
+     * @param value The fType to set.
      * @return This builder for chaining.
      */
-    public Builder setMType(io.chirpstack.api.MType value) {
+    public Builder setFType(io.chirpstack.api.FType value) {
       if (value == null) {
         throw new NullPointerException();
       }
       bitField0_ |= 0x00000020;
-      mType_ = value.getNumber();
+      fType_ = value.getNumber();
       onChanged();
       return this;
     }
     /**
      * <pre>
-     * Message type.
+     * Frame type.
      * </pre>
      *
-     * <code>.common.MType m_type = 6;</code>
+     * <code>.common.FType f_type = 6;</code>
      * @return This builder for chaining.
      */
-    public Builder clearMType() {
+    public Builder clearFType() {
       bitField0_ = (bitField0_ & ~0x00000020);
-      mType_ = 0;
+      fType_ = 0;
       onChanged();
       return this;
     }

@@ -32,6 +32,7 @@ public interface GlobalSearchRequestOrBuilder extends
   /**
    * <pre>
    * Max number of results to return.
+   * If not set, it will be treated as 0, and the response will only return the total_count.
    * </pre>
    *
    * <code>int64 limit = 2;</code>

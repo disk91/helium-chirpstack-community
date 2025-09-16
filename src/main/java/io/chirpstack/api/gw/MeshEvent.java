@@ -6,16 +6,12 @@
 package io.chirpstack.api.gw;
 
 /**
- * <pre>
- * Gateway Mesh heartbeat (sent periodically by the Relay Gateways).
- * </pre>
- *
- * Protobuf type {@code gw.MeshHeartbeat}
+ * Protobuf type {@code gw.MeshEvent}
  */
-public final class MeshHeartbeat extends
+public final class MeshEvent extends
     com.google.protobuf.GeneratedMessage implements
-    // @@protoc_insertion_point(message_implements:gw.MeshHeartbeat)
-    MeshHeartbeatOrBuilder {
+    // @@protoc_insertion_point(message_implements:gw.MeshEvent)
+    MeshEventOrBuilder {
 private static final long serialVersionUID = 0L;
   static {
     com.google.protobuf.RuntimeVersion.validateProtobufGencodeVersion(
@@ -24,29 +20,29 @@ private static final long serialVersionUID = 0L;
       /* minor= */ 29,
       /* patch= */ 2,
       /* suffix= */ "",
-      MeshHeartbeat.class.getName());
+      MeshEvent.class.getName());
   }
-  // Use MeshHeartbeat.newBuilder() to construct.
-  private MeshHeartbeat(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
+  // Use MeshEvent.newBuilder() to construct.
+  private MeshEvent(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
     super(builder);
   }
-  private MeshHeartbeat() {
+  private MeshEvent() {
     gatewayId_ = "";
     relayId_ = "";
-    relayPath_ = java.util.Collections.emptyList();
+    events_ = java.util.Collections.emptyList();
   }
 
   public static final com.google.protobuf.Descriptors.Descriptor
       getDescriptor() {
-    return io.chirpstack.api.gw.GatewayProto.internal_static_gw_MeshHeartbeat_descriptor;
+    return io.chirpstack.api.gw.GatewayProto.internal_static_gw_MeshEvent_descriptor;
   }
 
   @java.lang.Override
   protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internalGetFieldAccessorTable() {
-    return io.chirpstack.api.gw.GatewayProto.internal_static_gw_MeshHeartbeat_fieldAccessorTable
+    return io.chirpstack.api.gw.GatewayProto.internal_static_gw_MeshEvent_fieldAccessorTable
         .ensureFieldAccessorsInitialized(
-            io.chirpstack.api.gw.MeshHeartbeat.class, io.chirpstack.api.gw.MeshHeartbeat.Builder.class);
+            io.chirpstack.api.gw.MeshEvent.class, io.chirpstack.api.gw.MeshEvent.Builder.class);
   }
 
   private int bitField0_;
@@ -182,65 +178,65 @@ private static final long serialVersionUID = 0L;
     return time_ == null ? com.google.protobuf.Timestamp.getDefaultInstance() : time_;
   }
 
-  public static final int RELAY_PATH_FIELD_NUMBER = 4;
+  public static final int EVENTS_FIELD_NUMBER = 4;
   @SuppressWarnings("serial")
-  private java.util.List<io.chirpstack.api.gw.MeshHeartbeatRelayPath> relayPath_;
+  private java.util.List<io.chirpstack.api.gw.MeshEventItem> events_;
   /**
    * <pre>
-   * Relay path.
+   * Mesh events.
    * </pre>
    *
-   * <code>repeated .gw.MeshHeartbeatRelayPath relay_path = 4;</code>
+   * <code>repeated .gw.MeshEventItem events = 4;</code>
    */
   @java.lang.Override
-  public java.util.List<io.chirpstack.api.gw.MeshHeartbeatRelayPath> getRelayPathList() {
-    return relayPath_;
+  public java.util.List<io.chirpstack.api.gw.MeshEventItem> getEventsList() {
+    return events_;
   }
   /**
    * <pre>
-   * Relay path.
+   * Mesh events.
    * </pre>
    *
-   * <code>repeated .gw.MeshHeartbeatRelayPath relay_path = 4;</code>
+   * <code>repeated .gw.MeshEventItem events = 4;</code>
    */
   @java.lang.Override
-  public java.util.List<? extends io.chirpstack.api.gw.MeshHeartbeatRelayPathOrBuilder> 
-      getRelayPathOrBuilderList() {
-    return relayPath_;
+  public java.util.List<? extends io.chirpstack.api.gw.MeshEventItemOrBuilder> 
+      getEventsOrBuilderList() {
+    return events_;
   }
   /**
    * <pre>
-   * Relay path.
+   * Mesh events.
    * </pre>
    *
-   * <code>repeated .gw.MeshHeartbeatRelayPath relay_path = 4;</code>
+   * <code>repeated .gw.MeshEventItem events = 4;</code>
    */
   @java.lang.Override
-  public int getRelayPathCount() {
-    return relayPath_.size();
+  public int getEventsCount() {
+    return events_.size();
   }
   /**
    * <pre>
-   * Relay path.
+   * Mesh events.
    * </pre>
    *
-   * <code>repeated .gw.MeshHeartbeatRelayPath relay_path = 4;</code>
+   * <code>repeated .gw.MeshEventItem events = 4;</code>
    */
   @java.lang.Override
-  public io.chirpstack.api.gw.MeshHeartbeatRelayPath getRelayPath(int index) {
-    return relayPath_.get(index);
+  public io.chirpstack.api.gw.MeshEventItem getEvents(int index) {
+    return events_.get(index);
   }
   /**
    * <pre>
-   * Relay path.
+   * Mesh events.
    * </pre>
    *
-   * <code>repeated .gw.MeshHeartbeatRelayPath relay_path = 4;</code>
+   * <code>repeated .gw.MeshEventItem events = 4;</code>
    */
   @java.lang.Override
-  public io.chirpstack.api.gw.MeshHeartbeatRelayPathOrBuilder getRelayPathOrBuilder(
+  public io.chirpstack.api.gw.MeshEventItemOrBuilder getEventsOrBuilder(
       int index) {
-    return relayPath_.get(index);
+    return events_.get(index);
   }
 
   private byte memoizedIsInitialized = -1;
@@ -266,8 +262,8 @@ private static final long serialVersionUID = 0L;
     if (((bitField0_ & 0x00000001) != 0)) {
       output.writeMessage(3, getTime());
     }
-    for (int i = 0; i < relayPath_.size(); i++) {
-      output.writeMessage(4, relayPath_.get(i));
+    for (int i = 0; i < events_.size(); i++) {
+      output.writeMessage(4, events_.get(i));
     }
     getUnknownFields().writeTo(output);
   }
@@ -288,9 +284,9 @@ private static final long serialVersionUID = 0L;
       size += com.google.protobuf.CodedOutputStream
         .computeMessageSize(3, getTime());
     }
-    for (int i = 0; i < relayPath_.size(); i++) {
+    for (int i = 0; i < events_.size(); i++) {
       size += com.google.protobuf.CodedOutputStream
-        .computeMessageSize(4, relayPath_.get(i));
+        .computeMessageSize(4, events_.get(i));
     }
     size += getUnknownFields().getSerializedSize();
     memoizedSize = size;
@@ -302,10 +298,10 @@ private static final long serialVersionUID = 0L;
     if (obj == this) {
      return true;
     }
-    if (!(obj instanceof io.chirpstack.api.gw.MeshHeartbeat)) {
+    if (!(obj instanceof io.chirpstack.api.gw.MeshEvent)) {
       return super.equals(obj);
     }
-    io.chirpstack.api.gw.MeshHeartbeat other = (io.chirpstack.api.gw.MeshHeartbeat) obj;
+    io.chirpstack.api.gw.MeshEvent other = (io.chirpstack.api.gw.MeshEvent) obj;
 
     if (!getGatewayId()
         .equals(other.getGatewayId())) return false;
@@ -316,8 +312,8 @@ private static final long serialVersionUID = 0L;
       if (!getTime()
           .equals(other.getTime())) return false;
     }
-    if (!getRelayPathList()
-        .equals(other.getRelayPathList())) return false;
+    if (!getEventsList()
+        .equals(other.getEventsList())) return false;
     if (!getUnknownFields().equals(other.getUnknownFields())) return false;
     return true;
   }
@@ -337,53 +333,53 @@ private static final long serialVersionUID = 0L;
       hash = (37 * hash) + TIME_FIELD_NUMBER;
       hash = (53 * hash) + getTime().hashCode();
     }
-    if (getRelayPathCount() > 0) {
-      hash = (37 * hash) + RELAY_PATH_FIELD_NUMBER;
-      hash = (53 * hash) + getRelayPathList().hashCode();
+    if (getEventsCount() > 0) {
+      hash = (37 * hash) + EVENTS_FIELD_NUMBER;
+      hash = (53 * hash) + getEventsList().hashCode();
     }
     hash = (29 * hash) + getUnknownFields().hashCode();
     memoizedHashCode = hash;
     return hash;
   }
 
-  public static io.chirpstack.api.gw.MeshHeartbeat parseFrom(
+  public static io.chirpstack.api.gw.MeshEvent parseFrom(
       java.nio.ByteBuffer data)
       throws com.google.protobuf.InvalidProtocolBufferException {
     return PARSER.parseFrom(data);
   }
-  public static io.chirpstack.api.gw.MeshHeartbeat parseFrom(
+  public static io.chirpstack.api.gw.MeshEvent parseFrom(
       java.nio.ByteBuffer data,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws com.google.protobuf.InvalidProtocolBufferException {
     return PARSER.parseFrom(data, extensionRegistry);
   }
-  public static io.chirpstack.api.gw.MeshHeartbeat parseFrom(
+  public static io.chirpstack.api.gw.MeshEvent parseFrom(
       com.google.protobuf.ByteString data)
       throws com.google.protobuf.InvalidProtocolBufferException {
     return PARSER.parseFrom(data);
   }
-  public static io.chirpstack.api.gw.MeshHeartbeat parseFrom(
+  public static io.chirpstack.api.gw.MeshEvent parseFrom(
       com.google.protobuf.ByteString data,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws com.google.protobuf.InvalidProtocolBufferException {
     return PARSER.parseFrom(data, extensionRegistry);
   }
-  public static io.chirpstack.api.gw.MeshHeartbeat parseFrom(byte[] data)
+  public static io.chirpstack.api.gw.MeshEvent parseFrom(byte[] data)
       throws com.google.protobuf.InvalidProtocolBufferException {
     return PARSER.parseFrom(data);
   }
-  public static io.chirpstack.api.gw.MeshHeartbeat parseFrom(
+  public static io.chirpstack.api.gw.MeshEvent parseFrom(
       byte[] data,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws com.google.protobuf.InvalidProtocolBufferException {
     return PARSER.parseFrom(data, extensionRegistry);
   }
-  public static io.chirpstack.api.gw.MeshHeartbeat parseFrom(java.io.InputStream input)
+  public static io.chirpstack.api.gw.MeshEvent parseFrom(java.io.InputStream input)
       throws java.io.IOException {
     return com.google.protobuf.GeneratedMessage
         .parseWithIOException(PARSER, input);
   }
-  public static io.chirpstack.api.gw.MeshHeartbeat parseFrom(
+  public static io.chirpstack.api.gw.MeshEvent parseFrom(
       java.io.InputStream input,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws java.io.IOException {
@@ -391,26 +387,26 @@ private static final long serialVersionUID = 0L;
         .parseWithIOException(PARSER, input, extensionRegistry);
   }
 
-  public static io.chirpstack.api.gw.MeshHeartbeat parseDelimitedFrom(java.io.InputStream input)
+  public static io.chirpstack.api.gw.MeshEvent parseDelimitedFrom(java.io.InputStream input)
       throws java.io.IOException {
     return com.google.protobuf.GeneratedMessage
         .parseDelimitedWithIOException(PARSER, input);
   }
 
-  public static io.chirpstack.api.gw.MeshHeartbeat parseDelimitedFrom(
+  public static io.chirpstack.api.gw.MeshEvent parseDelimitedFrom(
       java.io.InputStream input,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws java.io.IOException {
     return com.google.protobuf.GeneratedMessage
         .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
   }
-  public static io.chirpstack.api.gw.MeshHeartbeat parseFrom(
+  public static io.chirpstack.api.gw.MeshEvent parseFrom(
       com.google.protobuf.CodedInputStream input)
       throws java.io.IOException {
     return com.google.protobuf.GeneratedMessage
         .parseWithIOException(PARSER, input);
   }
-  public static io.chirpstack.api.gw.MeshHeartbeat parseFrom(
+  public static io.chirpstack.api.gw.MeshEvent parseFrom(
       com.google.protobuf.CodedInputStream input,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws java.io.IOException {
@@ -423,7 +419,7 @@ private static final long serialVersionUID = 0L;
   public static Builder newBuilder() {
     return DEFAULT_INSTANCE.toBuilder();
   }
-  public static Builder newBuilder(io.chirpstack.api.gw.MeshHeartbeat prototype) {
+  public static Builder newBuilder(io.chirpstack.api.gw.MeshEvent prototype) {
     return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
   }
   @java.lang.Override
@@ -439,30 +435,26 @@ private static final long serialVersionUID = 0L;
     return builder;
   }
   /**
-   * <pre>
-   * Gateway Mesh heartbeat (sent periodically by the Relay Gateways).
-   * </pre>
-   *
-   * Protobuf type {@code gw.MeshHeartbeat}
+   * Protobuf type {@code gw.MeshEvent}
    */
   public static final class Builder extends
       com.google.protobuf.GeneratedMessage.Builder<Builder> implements
-      // @@protoc_insertion_point(builder_implements:gw.MeshHeartbeat)
-      io.chirpstack.api.gw.MeshHeartbeatOrBuilder {
+      // @@protoc_insertion_point(builder_implements:gw.MeshEvent)
+      io.chirpstack.api.gw.MeshEventOrBuilder {
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
-      return io.chirpstack.api.gw.GatewayProto.internal_static_gw_MeshHeartbeat_descriptor;
+      return io.chirpstack.api.gw.GatewayProto.internal_static_gw_MeshEvent_descriptor;
     }
 
     @java.lang.Override
     protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
         internalGetFieldAccessorTable() {
-      return io.chirpstack.api.gw.GatewayProto.internal_static_gw_MeshHeartbeat_fieldAccessorTable
+      return io.chirpstack.api.gw.GatewayProto.internal_static_gw_MeshEvent_fieldAccessorTable
           .ensureFieldAccessorsInitialized(
-              io.chirpstack.api.gw.MeshHeartbeat.class, io.chirpstack.api.gw.MeshHeartbeat.Builder.class);
+              io.chirpstack.api.gw.MeshEvent.class, io.chirpstack.api.gw.MeshEvent.Builder.class);
     }
 
-    // Construct using io.chirpstack.api.gw.MeshHeartbeat.newBuilder()
+    // Construct using io.chirpstack.api.gw.MeshEvent.newBuilder()
     private Builder() {
       maybeForceBuilderInitialization();
     }
@@ -476,7 +468,7 @@ private static final long serialVersionUID = 0L;
       if (com.google.protobuf.GeneratedMessage
               .alwaysUseFieldBuilders) {
         getTimeFieldBuilder();
-        getRelayPathFieldBuilder();
+        getEventsFieldBuilder();
       }
     }
     @java.lang.Override
@@ -490,11 +482,11 @@ private static final long serialVersionUID = 0L;
         timeBuilder_.dispose();
         timeBuilder_ = null;
       }
-      if (relayPathBuilder_ == null) {
-        relayPath_ = java.util.Collections.emptyList();
+      if (eventsBuilder_ == null) {
+        events_ = java.util.Collections.emptyList();
       } else {
-        relayPath_ = null;
-        relayPathBuilder_.clear();
+        events_ = null;
+        eventsBuilder_.clear();
       }
       bitField0_ = (bitField0_ & ~0x00000008);
       return this;
@@ -503,17 +495,17 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public com.google.protobuf.Descriptors.Descriptor
         getDescriptorForType() {
-      return io.chirpstack.api.gw.GatewayProto.internal_static_gw_MeshHeartbeat_descriptor;
+      return io.chirpstack.api.gw.GatewayProto.internal_static_gw_MeshEvent_descriptor;
     }
 
     @java.lang.Override
-    public io.chirpstack.api.gw.MeshHeartbeat getDefaultInstanceForType() {
-      return io.chirpstack.api.gw.MeshHeartbeat.getDefaultInstance();
+    public io.chirpstack.api.gw.MeshEvent getDefaultInstanceForType() {
+      return io.chirpstack.api.gw.MeshEvent.getDefaultInstance();
     }
 
     @java.lang.Override
-    public io.chirpstack.api.gw.MeshHeartbeat build() {
-      io.chirpstack.api.gw.MeshHeartbeat result = buildPartial();
+    public io.chirpstack.api.gw.MeshEvent build() {
+      io.chirpstack.api.gw.MeshEvent result = buildPartial();
       if (!result.isInitialized()) {
         throw newUninitializedMessageException(result);
       }
@@ -521,27 +513,27 @@ private static final long serialVersionUID = 0L;
     }
 
     @java.lang.Override
-    public io.chirpstack.api.gw.MeshHeartbeat buildPartial() {
-      io.chirpstack.api.gw.MeshHeartbeat result = new io.chirpstack.api.gw.MeshHeartbeat(this);
+    public io.chirpstack.api.gw.MeshEvent buildPartial() {
+      io.chirpstack.api.gw.MeshEvent result = new io.chirpstack.api.gw.MeshEvent(this);
       buildPartialRepeatedFields(result);
       if (bitField0_ != 0) { buildPartial0(result); }
       onBuilt();
       return result;
     }
 
-    private void buildPartialRepeatedFields(io.chirpstack.api.gw.MeshHeartbeat result) {
-      if (relayPathBuilder_ == null) {
+    private void buildPartialRepeatedFields(io.chirpstack.api.gw.MeshEvent result) {
+      if (eventsBuilder_ == null) {
         if (((bitField0_ & 0x00000008) != 0)) {
-          relayPath_ = java.util.Collections.unmodifiableList(relayPath_);
+          events_ = java.util.Collections.unmodifiableList(events_);
           bitField0_ = (bitField0_ & ~0x00000008);
         }
-        result.relayPath_ = relayPath_;
+        result.events_ = events_;
       } else {
-        result.relayPath_ = relayPathBuilder_.build();
+        result.events_ = eventsBuilder_.build();
       }
     }
 
-    private void buildPartial0(io.chirpstack.api.gw.MeshHeartbeat result) {
+    private void buildPartial0(io.chirpstack.api.gw.MeshEvent result) {
       int from_bitField0_ = bitField0_;
       if (((from_bitField0_ & 0x00000001) != 0)) {
         result.gatewayId_ = gatewayId_;
@@ -561,16 +553,16 @@ private static final long serialVersionUID = 0L;
 
     @java.lang.Override
     public Builder mergeFrom(com.google.protobuf.Message other) {
-      if (other instanceof io.chirpstack.api.gw.MeshHeartbeat) {
-        return mergeFrom((io.chirpstack.api.gw.MeshHeartbeat)other);
+      if (other instanceof io.chirpstack.api.gw.MeshEvent) {
+        return mergeFrom((io.chirpstack.api.gw.MeshEvent)other);
       } else {
         super.mergeFrom(other);
         return this;
       }
     }
 
-    public Builder mergeFrom(io.chirpstack.api.gw.MeshHeartbeat other) {
-      if (other == io.chirpstack.api.gw.MeshHeartbeat.getDefaultInstance()) return this;
+    public Builder mergeFrom(io.chirpstack.api.gw.MeshEvent other) {
+      if (other == io.chirpstack.api.gw.MeshEvent.getDefaultInstance()) return this;
       if (!other.getGatewayId().isEmpty()) {
         gatewayId_ = other.gatewayId_;
         bitField0_ |= 0x00000001;
@@ -584,29 +576,29 @@ private static final long serialVersionUID = 0L;
       if (other.hasTime()) {
         mergeTime(other.getTime());
       }
-      if (relayPathBuilder_ == null) {
-        if (!other.relayPath_.isEmpty()) {
-          if (relayPath_.isEmpty()) {
-            relayPath_ = other.relayPath_;
+      if (eventsBuilder_ == null) {
+        if (!other.events_.isEmpty()) {
+          if (events_.isEmpty()) {
+            events_ = other.events_;
             bitField0_ = (bitField0_ & ~0x00000008);
           } else {
-            ensureRelayPathIsMutable();
-            relayPath_.addAll(other.relayPath_);
+            ensureEventsIsMutable();
+            events_.addAll(other.events_);
           }
           onChanged();
         }
       } else {
-        if (!other.relayPath_.isEmpty()) {
-          if (relayPathBuilder_.isEmpty()) {
-            relayPathBuilder_.dispose();
-            relayPathBuilder_ = null;
-            relayPath_ = other.relayPath_;
+        if (!other.events_.isEmpty()) {
+          if (eventsBuilder_.isEmpty()) {
+            eventsBuilder_.dispose();
+            eventsBuilder_ = null;
+            events_ = other.events_;
             bitField0_ = (bitField0_ & ~0x00000008);
-            relayPathBuilder_ = 
+            eventsBuilder_ = 
               com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders ?
-                 getRelayPathFieldBuilder() : null;
+                 getEventsFieldBuilder() : null;
           } else {
-            relayPathBuilder_.addAllMessages(other.relayPath_);
+            eventsBuilder_.addAllMessages(other.events_);
           }
         }
       }
@@ -654,15 +646,15 @@ private static final long serialVersionUID = 0L;
               break;
             } // case 26
             case 34: {
-              io.chirpstack.api.gw.MeshHeartbeatRelayPath m =
+              io.chirpstack.api.gw.MeshEventItem m =
                   input.readMessage(
-                      io.chirpstack.api.gw.MeshHeartbeatRelayPath.parser(),
+                      io.chirpstack.api.gw.MeshEventItem.parser(),
                       extensionRegistry);
-              if (relayPathBuilder_ == null) {
-                ensureRelayPathIsMutable();
-                relayPath_.add(m);
+              if (eventsBuilder_ == null) {
+                ensureEventsIsMutable();
+                events_.add(m);
               } else {
-                relayPathBuilder_.addMessage(m);
+                eventsBuilder_.addMessage(m);
               }
               break;
             } // case 34
@@ -1024,335 +1016,335 @@ private static final long serialVersionUID = 0L;
       return timeBuilder_;
     }
 
-    private java.util.List<io.chirpstack.api.gw.MeshHeartbeatRelayPath> relayPath_ =
+    private java.util.List<io.chirpstack.api.gw.MeshEventItem> events_ =
       java.util.Collections.emptyList();
-    private void ensureRelayPathIsMutable() {
+    private void ensureEventsIsMutable() {
       if (!((bitField0_ & 0x00000008) != 0)) {
-        relayPath_ = new java.util.ArrayList<io.chirpstack.api.gw.MeshHeartbeatRelayPath>(relayPath_);
+        events_ = new java.util.ArrayList<io.chirpstack.api.gw.MeshEventItem>(events_);
         bitField0_ |= 0x00000008;
        }
     }
 
     private com.google.protobuf.RepeatedFieldBuilder<
-        io.chirpstack.api.gw.MeshHeartbeatRelayPath, io.chirpstack.api.gw.MeshHeartbeatRelayPath.Builder, io.chirpstack.api.gw.MeshHeartbeatRelayPathOrBuilder> relayPathBuilder_;
+        io.chirpstack.api.gw.MeshEventItem, io.chirpstack.api.gw.MeshEventItem.Builder, io.chirpstack.api.gw.MeshEventItemOrBuilder> eventsBuilder_;
 
     /**
      * <pre>
-     * Relay path.
+     * Mesh events.
      * </pre>
      *
-     * <code>repeated .gw.MeshHeartbeatRelayPath relay_path = 4;</code>
+     * <code>repeated .gw.MeshEventItem events = 4;</code>
      */
-    public java.util.List<io.chirpstack.api.gw.MeshHeartbeatRelayPath> getRelayPathList() {
-      if (relayPathBuilder_ == null) {
-        return java.util.Collections.unmodifiableList(relayPath_);
+    public java.util.List<io.chirpstack.api.gw.MeshEventItem> getEventsList() {
+      if (eventsBuilder_ == null) {
+        return java.util.Collections.unmodifiableList(events_);
       } else {
-        return relayPathBuilder_.getMessageList();
+        return eventsBuilder_.getMessageList();
       }
     }
     /**
      * <pre>
-     * Relay path.
+     * Mesh events.
      * </pre>
      *
-     * <code>repeated .gw.MeshHeartbeatRelayPath relay_path = 4;</code>
+     * <code>repeated .gw.MeshEventItem events = 4;</code>
      */
-    public int getRelayPathCount() {
-      if (relayPathBuilder_ == null) {
-        return relayPath_.size();
+    public int getEventsCount() {
+      if (eventsBuilder_ == null) {
+        return events_.size();
       } else {
-        return relayPathBuilder_.getCount();
+        return eventsBuilder_.getCount();
       }
     }
     /**
      * <pre>
-     * Relay path.
+     * Mesh events.
      * </pre>
      *
-     * <code>repeated .gw.MeshHeartbeatRelayPath relay_path = 4;</code>
+     * <code>repeated .gw.MeshEventItem events = 4;</code>
      */
-    public io.chirpstack.api.gw.MeshHeartbeatRelayPath getRelayPath(int index) {
-      if (relayPathBuilder_ == null) {
-        return relayPath_.get(index);
+    public io.chirpstack.api.gw.MeshEventItem getEvents(int index) {
+      if (eventsBuilder_ == null) {
+        return events_.get(index);
       } else {
-        return relayPathBuilder_.getMessage(index);
+        return eventsBuilder_.getMessage(index);
       }
     }
     /**
      * <pre>
-     * Relay path.
+     * Mesh events.
      * </pre>
      *
-     * <code>repeated .gw.MeshHeartbeatRelayPath relay_path = 4;</code>
+     * <code>repeated .gw.MeshEventItem events = 4;</code>
      */
-    public Builder setRelayPath(
-        int index, io.chirpstack.api.gw.MeshHeartbeatRelayPath value) {
-      if (relayPathBuilder_ == null) {
+    public Builder setEvents(
+        int index, io.chirpstack.api.gw.MeshEventItem value) {
+      if (eventsBuilder_ == null) {
         if (value == null) {
           throw new NullPointerException();
         }
-        ensureRelayPathIsMutable();
-        relayPath_.set(index, value);
+        ensureEventsIsMutable();
+        events_.set(index, value);
         onChanged();
       } else {
-        relayPathBuilder_.setMessage(index, value);
+        eventsBuilder_.setMessage(index, value);
       }
       return this;
     }
     /**
      * <pre>
-     * Relay path.
+     * Mesh events.
      * </pre>
      *
-     * <code>repeated .gw.MeshHeartbeatRelayPath relay_path = 4;</code>
+     * <code>repeated .gw.MeshEventItem events = 4;</code>
      */
-    public Builder setRelayPath(
-        int index, io.chirpstack.api.gw.MeshHeartbeatRelayPath.Builder builderForValue) {
-      if (relayPathBuilder_ == null) {
-        ensureRelayPathIsMutable();
-        relayPath_.set(index, builderForValue.build());
+    public Builder setEvents(
+        int index, io.chirpstack.api.gw.MeshEventItem.Builder builderForValue) {
+      if (eventsBuilder_ == null) {
+        ensureEventsIsMutable();
+        events_.set(index, builderForValue.build());
         onChanged();
       } else {
-        relayPathBuilder_.setMessage(index, builderForValue.build());
+        eventsBuilder_.setMessage(index, builderForValue.build());
       }
       return this;
     }
     /**
      * <pre>
-     * Relay path.
+     * Mesh events.
      * </pre>
      *
-     * <code>repeated .gw.MeshHeartbeatRelayPath relay_path = 4;</code>
+     * <code>repeated .gw.MeshEventItem events = 4;</code>
      */
-    public Builder addRelayPath(io.chirpstack.api.gw.MeshHeartbeatRelayPath value) {
-      if (relayPathBuilder_ == null) {
+    public Builder addEvents(io.chirpstack.api.gw.MeshEventItem value) {
+      if (eventsBuilder_ == null) {
         if (value == null) {
           throw new NullPointerException();
         }
-        ensureRelayPathIsMutable();
-        relayPath_.add(value);
+        ensureEventsIsMutable();
+        events_.add(value);
         onChanged();
       } else {
-        relayPathBuilder_.addMessage(value);
+        eventsBuilder_.addMessage(value);
       }
       return this;
     }
     /**
      * <pre>
-     * Relay path.
+     * Mesh events.
      * </pre>
      *
-     * <code>repeated .gw.MeshHeartbeatRelayPath relay_path = 4;</code>
+     * <code>repeated .gw.MeshEventItem events = 4;</code>
      */
-    public Builder addRelayPath(
-        int index, io.chirpstack.api.gw.MeshHeartbeatRelayPath value) {
-      if (relayPathBuilder_ == null) {
+    public Builder addEvents(
+        int index, io.chirpstack.api.gw.MeshEventItem value) {
+      if (eventsBuilder_ == null) {
         if (value == null) {
           throw new NullPointerException();
         }
-        ensureRelayPathIsMutable();
-        relayPath_.add(index, value);
+        ensureEventsIsMutable();
+        events_.add(index, value);
         onChanged();
       } else {
-        relayPathBuilder_.addMessage(index, value);
+        eventsBuilder_.addMessage(index, value);
       }
       return this;
     }
     /**
      * <pre>
-     * Relay path.
+     * Mesh events.
      * </pre>
      *
-     * <code>repeated .gw.MeshHeartbeatRelayPath relay_path = 4;</code>
+     * <code>repeated .gw.MeshEventItem events = 4;</code>
      */
-    public Builder addRelayPath(
-        io.chirpstack.api.gw.MeshHeartbeatRelayPath.Builder builderForValue) {
-      if (relayPathBuilder_ == null) {
-        ensureRelayPathIsMutable();
-        relayPath_.add(builderForValue.build());
+    public Builder addEvents(
+        io.chirpstack.api.gw.MeshEventItem.Builder builderForValue) {
+      if (eventsBuilder_ == null) {
+        ensureEventsIsMutable();
+        events_.add(builderForValue.build());
         onChanged();
       } else {
-        relayPathBuilder_.addMessage(builderForValue.build());
+        eventsBuilder_.addMessage(builderForValue.build());
       }
       return this;
     }
     /**
      * <pre>
-     * Relay path.
+     * Mesh events.
      * </pre>
      *
-     * <code>repeated .gw.MeshHeartbeatRelayPath relay_path = 4;</code>
+     * <code>repeated .gw.MeshEventItem events = 4;</code>
      */
-    public Builder addRelayPath(
-        int index, io.chirpstack.api.gw.MeshHeartbeatRelayPath.Builder builderForValue) {
-      if (relayPathBuilder_ == null) {
-        ensureRelayPathIsMutable();
-        relayPath_.add(index, builderForValue.build());
+    public Builder addEvents(
+        int index, io.chirpstack.api.gw.MeshEventItem.Builder builderForValue) {
+      if (eventsBuilder_ == null) {
+        ensureEventsIsMutable();
+        events_.add(index, builderForValue.build());
         onChanged();
       } else {
-        relayPathBuilder_.addMessage(index, builderForValue.build());
+        eventsBuilder_.addMessage(index, builderForValue.build());
       }
       return this;
     }
     /**
      * <pre>
-     * Relay path.
+     * Mesh events.
      * </pre>
      *
-     * <code>repeated .gw.MeshHeartbeatRelayPath relay_path = 4;</code>
+     * <code>repeated .gw.MeshEventItem events = 4;</code>
      */
-    public Builder addAllRelayPath(
-        java.lang.Iterable<? extends io.chirpstack.api.gw.MeshHeartbeatRelayPath> values) {
-      if (relayPathBuilder_ == null) {
-        ensureRelayPathIsMutable();
+    public Builder addAllEvents(
+        java.lang.Iterable<? extends io.chirpstack.api.gw.MeshEventItem> values) {
+      if (eventsBuilder_ == null) {
+        ensureEventsIsMutable();
         com.google.protobuf.AbstractMessageLite.Builder.addAll(
-            values, relayPath_);
+            values, events_);
         onChanged();
       } else {
-        relayPathBuilder_.addAllMessages(values);
+        eventsBuilder_.addAllMessages(values);
       }
       return this;
     }
     /**
      * <pre>
-     * Relay path.
+     * Mesh events.
      * </pre>
      *
-     * <code>repeated .gw.MeshHeartbeatRelayPath relay_path = 4;</code>
+     * <code>repeated .gw.MeshEventItem events = 4;</code>
      */
-    public Builder clearRelayPath() {
-      if (relayPathBuilder_ == null) {
-        relayPath_ = java.util.Collections.emptyList();
+    public Builder clearEvents() {
+      if (eventsBuilder_ == null) {
+        events_ = java.util.Collections.emptyList();
         bitField0_ = (bitField0_ & ~0x00000008);
         onChanged();
       } else {
-        relayPathBuilder_.clear();
+        eventsBuilder_.clear();
       }
       return this;
     }
     /**
      * <pre>
-     * Relay path.
+     * Mesh events.
      * </pre>
      *
-     * <code>repeated .gw.MeshHeartbeatRelayPath relay_path = 4;</code>
+     * <code>repeated .gw.MeshEventItem events = 4;</code>
      */
-    public Builder removeRelayPath(int index) {
-      if (relayPathBuilder_ == null) {
-        ensureRelayPathIsMutable();
-        relayPath_.remove(index);
+    public Builder removeEvents(int index) {
+      if (eventsBuilder_ == null) {
+        ensureEventsIsMutable();
+        events_.remove(index);
         onChanged();
       } else {
-        relayPathBuilder_.remove(index);
+        eventsBuilder_.remove(index);
       }
       return this;
     }
     /**
      * <pre>
-     * Relay path.
+     * Mesh events.
      * </pre>
      *
-     * <code>repeated .gw.MeshHeartbeatRelayPath relay_path = 4;</code>
+     * <code>repeated .gw.MeshEventItem events = 4;</code>
      */
-    public io.chirpstack.api.gw.MeshHeartbeatRelayPath.Builder getRelayPathBuilder(
+    public io.chirpstack.api.gw.MeshEventItem.Builder getEventsBuilder(
         int index) {
-      return getRelayPathFieldBuilder().getBuilder(index);
+      return getEventsFieldBuilder().getBuilder(index);
     }
     /**
      * <pre>
-     * Relay path.
+     * Mesh events.
      * </pre>
      *
-     * <code>repeated .gw.MeshHeartbeatRelayPath relay_path = 4;</code>
+     * <code>repeated .gw.MeshEventItem events = 4;</code>
      */
-    public io.chirpstack.api.gw.MeshHeartbeatRelayPathOrBuilder getRelayPathOrBuilder(
+    public io.chirpstack.api.gw.MeshEventItemOrBuilder getEventsOrBuilder(
         int index) {
-      if (relayPathBuilder_ == null) {
-        return relayPath_.get(index);  } else {
-        return relayPathBuilder_.getMessageOrBuilder(index);
+      if (eventsBuilder_ == null) {
+        return events_.get(index);  } else {
+        return eventsBuilder_.getMessageOrBuilder(index);
       }
     }
     /**
      * <pre>
-     * Relay path.
+     * Mesh events.
      * </pre>
      *
-     * <code>repeated .gw.MeshHeartbeatRelayPath relay_path = 4;</code>
+     * <code>repeated .gw.MeshEventItem events = 4;</code>
      */
-    public java.util.List<? extends io.chirpstack.api.gw.MeshHeartbeatRelayPathOrBuilder> 
-         getRelayPathOrBuilderList() {
-      if (relayPathBuilder_ != null) {
-        return relayPathBuilder_.getMessageOrBuilderList();
+    public java.util.List<? extends io.chirpstack.api.gw.MeshEventItemOrBuilder> 
+         getEventsOrBuilderList() {
+      if (eventsBuilder_ != null) {
+        return eventsBuilder_.getMessageOrBuilderList();
       } else {
-        return java.util.Collections.unmodifiableList(relayPath_);
+        return java.util.Collections.unmodifiableList(events_);
       }
     }
     /**
      * <pre>
-     * Relay path.
+     * Mesh events.
      * </pre>
      *
-     * <code>repeated .gw.MeshHeartbeatRelayPath relay_path = 4;</code>
+     * <code>repeated .gw.MeshEventItem events = 4;</code>
      */
-    public io.chirpstack.api.gw.MeshHeartbeatRelayPath.Builder addRelayPathBuilder() {
-      return getRelayPathFieldBuilder().addBuilder(
-          io.chirpstack.api.gw.MeshHeartbeatRelayPath.getDefaultInstance());
+    public io.chirpstack.api.gw.MeshEventItem.Builder addEventsBuilder() {
+      return getEventsFieldBuilder().addBuilder(
+          io.chirpstack.api.gw.MeshEventItem.getDefaultInstance());
     }
     /**
      * <pre>
-     * Relay path.
+     * Mesh events.
      * </pre>
      *
-     * <code>repeated .gw.MeshHeartbeatRelayPath relay_path = 4;</code>
+     * <code>repeated .gw.MeshEventItem events = 4;</code>
      */
-    public io.chirpstack.api.gw.MeshHeartbeatRelayPath.Builder addRelayPathBuilder(
+    public io.chirpstack.api.gw.MeshEventItem.Builder addEventsBuilder(
         int index) {
-      return getRelayPathFieldBuilder().addBuilder(
-          index, io.chirpstack.api.gw.MeshHeartbeatRelayPath.getDefaultInstance());
+      return getEventsFieldBuilder().addBuilder(
+          index, io.chirpstack.api.gw.MeshEventItem.getDefaultInstance());
     }
     /**
      * <pre>
-     * Relay path.
+     * Mesh events.
      * </pre>
      *
-     * <code>repeated .gw.MeshHeartbeatRelayPath relay_path = 4;</code>
+     * <code>repeated .gw.MeshEventItem events = 4;</code>
      */
-    public java.util.List<io.chirpstack.api.gw.MeshHeartbeatRelayPath.Builder> 
-         getRelayPathBuilderList() {
-      return getRelayPathFieldBuilder().getBuilderList();
+    public java.util.List<io.chirpstack.api.gw.MeshEventItem.Builder> 
+         getEventsBuilderList() {
+      return getEventsFieldBuilder().getBuilderList();
     }
     private com.google.protobuf.RepeatedFieldBuilder<
-        io.chirpstack.api.gw.MeshHeartbeatRelayPath, io.chirpstack.api.gw.MeshHeartbeatRelayPath.Builder, io.chirpstack.api.gw.MeshHeartbeatRelayPathOrBuilder> 
-        getRelayPathFieldBuilder() {
-      if (relayPathBuilder_ == null) {
-        relayPathBuilder_ = new com.google.protobuf.RepeatedFieldBuilder<
-            io.chirpstack.api.gw.MeshHeartbeatRelayPath, io.chirpstack.api.gw.MeshHeartbeatRelayPath.Builder, io.chirpstack.api.gw.MeshHeartbeatRelayPathOrBuilder>(
-                relayPath_,
+        io.chirpstack.api.gw.MeshEventItem, io.chirpstack.api.gw.MeshEventItem.Builder, io.chirpstack.api.gw.MeshEventItemOrBuilder> 
+        getEventsFieldBuilder() {
+      if (eventsBuilder_ == null) {
+        eventsBuilder_ = new com.google.protobuf.RepeatedFieldBuilder<
+            io.chirpstack.api.gw.MeshEventItem, io.chirpstack.api.gw.MeshEventItem.Builder, io.chirpstack.api.gw.MeshEventItemOrBuilder>(
+                events_,
                 ((bitField0_ & 0x00000008) != 0),
                 getParentForChildren(),
                 isClean());
-        relayPath_ = null;
+        events_ = null;
       }
-      return relayPathBuilder_;
+      return eventsBuilder_;
     }
 
-    // @@protoc_insertion_point(builder_scope:gw.MeshHeartbeat)
+    // @@protoc_insertion_point(builder_scope:gw.MeshEvent)
   }
 
-  // @@protoc_insertion_point(class_scope:gw.MeshHeartbeat)
-  private static final io.chirpstack.api.gw.MeshHeartbeat DEFAULT_INSTANCE;
+  // @@protoc_insertion_point(class_scope:gw.MeshEvent)
+  private static final io.chirpstack.api.gw.MeshEvent DEFAULT_INSTANCE;
   static {
-    DEFAULT_INSTANCE = new io.chirpstack.api.gw.MeshHeartbeat();
+    DEFAULT_INSTANCE = new io.chirpstack.api.gw.MeshEvent();
   }
 
-  public static io.chirpstack.api.gw.MeshHeartbeat getDefaultInstance() {
+  public static io.chirpstack.api.gw.MeshEvent getDefaultInstance() {
     return DEFAULT_INSTANCE;
   }
 
-  private static final com.google.protobuf.Parser<MeshHeartbeat>
-      PARSER = new com.google.protobuf.AbstractParser<MeshHeartbeat>() {
+  private static final com.google.protobuf.Parser<MeshEvent>
+      PARSER = new com.google.protobuf.AbstractParser<MeshEvent>() {
     @java.lang.Override
-    public MeshHeartbeat parsePartialFrom(
+    public MeshEvent parsePartialFrom(
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
@@ -1371,17 +1363,17 @@ private static final long serialVersionUID = 0L;
     }
   };
 
-  public static com.google.protobuf.Parser<MeshHeartbeat> parser() {
+  public static com.google.protobuf.Parser<MeshEvent> parser() {
     return PARSER;
   }
 
   @java.lang.Override
-  public com.google.protobuf.Parser<MeshHeartbeat> getParserForType() {
+  public com.google.protobuf.Parser<MeshEvent> getParserForType() {
     return PARSER;
   }
 
   @java.lang.Override
-  public io.chirpstack.api.gw.MeshHeartbeat getDefaultInstanceForType() {
+  public io.chirpstack.api.gw.MeshEvent getDefaultInstanceForType() {
     return DEFAULT_INSTANCE;
   }
 

@@ -5,8 +5,8 @@
 
 package io.chirpstack.api.gw;
 
-public interface MeshHeartbeatOrBuilder extends
-    // @@protoc_insertion_point(interface_extends:gw.MeshHeartbeat)
+public interface MeshEventOrBuilder extends
+    // @@protoc_insertion_point(interface_extends:gw.MeshEvent)
     com.google.protobuf.MessageOrBuilder {
 
   /**
@@ -78,45 +78,45 @@ public interface MeshHeartbeatOrBuilder extends
 
   /**
    * <pre>
-   * Relay path.
+   * Mesh events.
    * </pre>
    *
-   * <code>repeated .gw.MeshHeartbeatRelayPath relay_path = 4;</code>
+   * <code>repeated .gw.MeshEventItem events = 4;</code>
    */
-  java.util.List<io.chirpstack.api.gw.MeshHeartbeatRelayPath> 
-      getRelayPathList();
+  java.util.List<io.chirpstack.api.gw.MeshEventItem> 
+      getEventsList();
   /**
    * <pre>
-   * Relay path.
+   * Mesh events.
    * </pre>
    *
-   * <code>repeated .gw.MeshHeartbeatRelayPath relay_path = 4;</code>
+   * <code>repeated .gw.MeshEventItem events = 4;</code>
    */
-  io.chirpstack.api.gw.MeshHeartbeatRelayPath getRelayPath(int index);
+  io.chirpstack.api.gw.MeshEventItem getEvents(int index);
   /**
    * <pre>
-   * Relay path.
+   * Mesh events.
    * </pre>
    *
-   * <code>repeated .gw.MeshHeartbeatRelayPath relay_path = 4;</code>
+   * <code>repeated .gw.MeshEventItem events = 4;</code>
    */
-  int getRelayPathCount();
+  int getEventsCount();
   /**
    * <pre>
-   * Relay path.
+   * Mesh events.
    * </pre>
    *
-   * <code>repeated .gw.MeshHeartbeatRelayPath relay_path = 4;</code>
+   * <code>repeated .gw.MeshEventItem events = 4;</code>
    */
-  java.util.List<? extends io.chirpstack.api.gw.MeshHeartbeatRelayPathOrBuilder> 
-      getRelayPathOrBuilderList();
+  java.util.List<? extends io.chirpstack.api.gw.MeshEventItemOrBuilder> 
+      getEventsOrBuilderList();
   /**
    * <pre>
-   * Relay path.
+   * Mesh events.
    * </pre>
    *
-   * <code>repeated .gw.MeshHeartbeatRelayPath relay_path = 4;</code>
+   * <code>repeated .gw.MeshEventItem events = 4;</code>
    */
-  io.chirpstack.api.gw.MeshHeartbeatRelayPathOrBuilder getRelayPathOrBuilder(
+  io.chirpstack.api.gw.MeshEventItemOrBuilder getEventsOrBuilder(
       int index);
 }

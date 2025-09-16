@@ -12,6 +12,7 @@ public interface ListDevicesRequestOrBuilder extends
   /**
    * <pre>
    * Max number of devices to return in the result-set.
+   * If not set, it will be treated as 0, and the response will only return the total_count.
    * </pre>
    *
    * <code>uint32 limit = 1;</code>
@@ -88,4 +89,107 @@ public interface ListDevicesRequestOrBuilder extends
    */
   com.google.protobuf.ByteString
       getMulticastGroupIdBytes();
+
+  /**
+   * <pre>
+   * If set, the given value will be used to sort by (optional).
+   * </pre>
+   *
+   * <code>.api.ListDevicesRequest.OrderBy order_by = 6;</code>
+   * @return The enum numeric value on the wire for orderBy.
+   */
+  int getOrderByValue();
+  /**
+   * <pre>
+   * If set, the given value will be used to sort by (optional).
+   * </pre>
+   *
+   * <code>.api.ListDevicesRequest.OrderBy order_by = 6;</code>
+   * @return The orderBy.
+   */
+  io.chirpstack.api.ListDevicesRequest.OrderBy getOrderBy();
+
+  /**
+   * <pre>
+   * If set, the sorting direction will be decending (default = ascending) (optional).
+   * </pre>
+   *
+   * <code>bool order_by_desc = 7;</code>
+   * @return The orderByDesc.
+   */
+  boolean getOrderByDesc();
+
+  /**
+   * <pre>
+   * Tags to filter devices on.
+   * </pre>
+   *
+   * <code>map&lt;string, string&gt; tags = 8;</code>
+   */
+  int getTagsCount();
+  /**
+   * <pre>
+   * Tags to filter devices on.
+   * </pre>
+   *
+   * <code>map&lt;string, string&gt; tags = 8;</code>
+   */
+  boolean containsTags(
+      java.lang.String key);
+  /**
+   * Use {@link #getTagsMap()} instead.
+   */
+  @java.lang.Deprecated
+  java.util.Map<java.lang.String, java.lang.String>
+  getTags();
+  /**
+   * <pre>
+   * Tags to filter devices on.
+   * </pre>
+   *
+   * <code>map&lt;string, string&gt; tags = 8;</code>
+   */
+  java.util.Map<java.lang.String, java.lang.String>
+  getTagsMap();
+  /**
+   * <pre>
+   * Tags to filter devices on.
+   * </pre>
+   *
+   * <code>map&lt;string, string&gt; tags = 8;</code>
+   */
+  /* nullable */
+java.lang.String getTagsOrDefault(
+      java.lang.String key,
+      /* nullable */
+java.lang.String defaultValue);
+  /**
+   * <pre>
+   * Tags to filter devices on.
+   * </pre>
+   *
+   * <code>map&lt;string, string&gt; tags = 8;</code>
+   */
+  java.lang.String getTagsOrThrow(
+      java.lang.String key);
+
+  /**
+   * <pre>
+   * Device-profile ID (UUID) to filter devices on.
+   * </pre>
+   *
+   * <code>string device_profile_id = 9;</code>
+   * @return The deviceProfileId.
+   */
+  java.lang.String getDeviceProfileId();
+  /**
+   * <pre>
+   * Device-profile ID (UUID) to filter devices on.
+   * </pre>
+   *
+   * <code>string device_profile_id = 9;</code>
+   * @return The bytes for deviceProfileId.
+   */
+  com.google.protobuf.ByteString
+      getDeviceProfileIdBytes();
 }

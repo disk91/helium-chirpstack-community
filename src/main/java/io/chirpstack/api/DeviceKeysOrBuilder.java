@@ -72,4 +72,28 @@ public interface DeviceKeysOrBuilder extends
    */
   com.google.protobuf.ByteString
       getAppKeyBytes();
+
+  /**
+   * <pre>
+   * Gen App Key (128 bit).
+   * Note: This field only needs to be set for LoRaWAN 1.0.x devices that
+   * implement TS005 (remote multicast setup).
+   * </pre>
+   *
+   * <code>string gen_app_key = 4;</code>
+   * @return The genAppKey.
+   */
+  java.lang.String getGenAppKey();
+  /**
+   * <pre>
+   * Gen App Key (128 bit).
+   * Note: This field only needs to be set for LoRaWAN 1.0.x devices that
+   * implement TS005 (remote multicast setup).
+   * </pre>
+   *
+   * <code>string gen_app_key = 4;</code>
+   * @return The bytes for genAppKey.
+   */
+  com.google.protobuf.ByteString
+      getGenAppKeyBytes();
 }

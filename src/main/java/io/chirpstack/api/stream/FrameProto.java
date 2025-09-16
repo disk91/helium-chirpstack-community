@@ -49,7 +49,7 @@ public final class FrameProto {
       "to\032\013gw/gw.proto\"\220\002\n\016UplinkFrameLog\022\023\n\013ph" +
       "y_payload\030\001 \001(\014\022!\n\007tx_info\030\002 \001(\0132\020.gw.Up" +
       "linkTxInfo\022!\n\007rx_info\030\003 \003(\0132\020.gw.UplinkR" +
-      "xInfo\022\035\n\006m_type\030\004 \001(\0162\r.common.MType\022\020\n\010" +
+      "xInfo\022\035\n\006f_type\030\004 \001(\0162\r.common.FType\022\020\n\010" +
       "dev_addr\030\005 \001(\t\022\017\n\007dev_eui\030\006 \001(\t\022(\n\004time\030" +
       "\007 \001(\0132\032.google.protobuf.Timestamp\022\030\n\020pla" +
       "intext_f_opts\030\010 \001(\010\022\035\n\025plaintext_frm_pay" +
@@ -57,7 +57,7 @@ public final class FrameProto {
       "\001 \001(\0132\032.google.protobuf.Timestamp\022\023\n\013phy" +
       "_payload\030\002 \001(\014\022#\n\007tx_info\030\003 \001(\0132\022.gw.Dow" +
       "nlinkTxInfo\022\023\n\013downlink_id\030\004 \001(\r\022\022\n\ngate" +
-      "way_id\030\005 \001(\t\022\035\n\006m_type\030\006 \001(\0162\r.common.MT" +
+      "way_id\030\005 \001(\t\022\035\n\006f_type\030\006 \001(\0162\r.common.FT" +
       "ype\022\020\n\010dev_addr\030\007 \001(\t\022\017\n\007dev_eui\030\010 \001(\t\022\030" +
       "\n\020plaintext_f_opts\030\t \001(\010\022\035\n\025plaintext_fr" +
       "m_payload\030\n \001(\010B\243\001\n\030io.chirpstack.api.st" +
@@ -78,13 +78,13 @@ public final class FrameProto {
     internal_static_stream_UplinkFrameLog_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_stream_UplinkFrameLog_descriptor,
-        new java.lang.String[] { "PhyPayload", "TxInfo", "RxInfo", "MType", "DevAddr", "DevEui", "Time", "PlaintextFOpts", "PlaintextFrmPayload", });
+        new java.lang.String[] { "PhyPayload", "TxInfo", "RxInfo", "FType", "DevAddr", "DevEui", "Time", "PlaintextFOpts", "PlaintextFrmPayload", });
     internal_static_stream_DownlinkFrameLog_descriptor =
       getDescriptor().getMessageTypes().get(1);
     internal_static_stream_DownlinkFrameLog_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_stream_DownlinkFrameLog_descriptor,
-        new java.lang.String[] { "Time", "PhyPayload", "TxInfo", "DownlinkId", "GatewayId", "MType", "DevAddr", "DevEui", "PlaintextFOpts", "PlaintextFrmPayload", });
+        new java.lang.String[] { "Time", "PhyPayload", "TxInfo", "DownlinkId", "GatewayId", "FType", "DevAddr", "DevEui", "PlaintextFOpts", "PlaintextFrmPayload", });
     descriptor.resolveAllFeaturesImmutable();
     com.google.protobuf.TimestampProto.getDescriptor();
     io.chirpstack.api.CommonProto.getDescriptor();

@@ -195,8 +195,7 @@ private static final long serialVersionUID = 0L;
   /**
    * <pre>
    * Network session encryption key (HEX encoded).
-   * Note: For ABP in LoRaWAN 1.0.x, use this, the serving and the forwarding
-   * network session integrity key fields with the LoRaWAN 1.0.x 'NwkSKey`!
+   * Note: For LoRaWAN 1.0.x devices, set this to the NwkSKey.
    * </pre>
    *
    * <code>string nwk_s_enc_key = 4;</code>
@@ -218,8 +217,7 @@ private static final long serialVersionUID = 0L;
   /**
    * <pre>
    * Network session encryption key (HEX encoded).
-   * Note: For ABP in LoRaWAN 1.0.x, use this, the serving and the forwarding
-   * network session integrity key fields with the LoRaWAN 1.0.x 'NwkSKey`!
+   * Note: For LoRaWAN 1.0.x devices, set this to the NwkSKey.
    * </pre>
    *
    * <code>string nwk_s_enc_key = 4;</code>
@@ -246,6 +244,7 @@ private static final long serialVersionUID = 0L;
   /**
    * <pre>
    * Serving network session integrity key (HEX encoded).
+   * Note: For LoRaWAN 1.0.x devices, set this to the NwkSKey.
    * </pre>
    *
    * <code>string s_nwk_s_int_key = 8;</code>
@@ -267,6 +266,7 @@ private static final long serialVersionUID = 0L;
   /**
    * <pre>
    * Serving network session integrity key (HEX encoded).
+   * Note: For LoRaWAN 1.0.x devices, set this to the NwkSKey.
    * </pre>
    *
    * <code>string s_nwk_s_int_key = 8;</code>
@@ -293,6 +293,7 @@ private static final long serialVersionUID = 0L;
   /**
    * <pre>
    * Forwarding network session integrity key (HEX encoded).
+   * Note: For LoRaWAN 1.0.x devices, set this to the NwkSKey.
    * </pre>
    *
    * <code>string f_nwk_s_int_key = 9;</code>
@@ -314,6 +315,7 @@ private static final long serialVersionUID = 0L;
   /**
    * <pre>
    * Forwarding network session integrity key (HEX encoded).
+   * Note: For LoRaWAN 1.0.x devices, set this to the NwkSKey.
    * </pre>
    *
    * <code>string f_nwk_s_int_key = 9;</code>
@@ -1142,8 +1144,7 @@ private static final long serialVersionUID = 0L;
     /**
      * <pre>
      * Network session encryption key (HEX encoded).
-     * Note: For ABP in LoRaWAN 1.0.x, use this, the serving and the forwarding
-     * network session integrity key fields with the LoRaWAN 1.0.x 'NwkSKey`!
+     * Note: For LoRaWAN 1.0.x devices, set this to the NwkSKey.
      * </pre>
      *
      * <code>string nwk_s_enc_key = 4;</code>
@@ -1164,8 +1165,7 @@ private static final long serialVersionUID = 0L;
     /**
      * <pre>
      * Network session encryption key (HEX encoded).
-     * Note: For ABP in LoRaWAN 1.0.x, use this, the serving and the forwarding
-     * network session integrity key fields with the LoRaWAN 1.0.x 'NwkSKey`!
+     * Note: For LoRaWAN 1.0.x devices, set this to the NwkSKey.
      * </pre>
      *
      * <code>string nwk_s_enc_key = 4;</code>
@@ -1187,8 +1187,7 @@ private static final long serialVersionUID = 0L;
     /**
      * <pre>
      * Network session encryption key (HEX encoded).
-     * Note: For ABP in LoRaWAN 1.0.x, use this, the serving and the forwarding
-     * network session integrity key fields with the LoRaWAN 1.0.x 'NwkSKey`!
+     * Note: For LoRaWAN 1.0.x devices, set this to the NwkSKey.
      * </pre>
      *
      * <code>string nwk_s_enc_key = 4;</code>
@@ -1206,8 +1205,7 @@ private static final long serialVersionUID = 0L;
     /**
      * <pre>
      * Network session encryption key (HEX encoded).
-     * Note: For ABP in LoRaWAN 1.0.x, use this, the serving and the forwarding
-     * network session integrity key fields with the LoRaWAN 1.0.x 'NwkSKey`!
+     * Note: For LoRaWAN 1.0.x devices, set this to the NwkSKey.
      * </pre>
      *
      * <code>string nwk_s_enc_key = 4;</code>
@@ -1222,8 +1220,7 @@ private static final long serialVersionUID = 0L;
     /**
      * <pre>
      * Network session encryption key (HEX encoded).
-     * Note: For ABP in LoRaWAN 1.0.x, use this, the serving and the forwarding
-     * network session integrity key fields with the LoRaWAN 1.0.x 'NwkSKey`!
+     * Note: For LoRaWAN 1.0.x devices, set this to the NwkSKey.
      * </pre>
      *
      * <code>string nwk_s_enc_key = 4;</code>
@@ -1244,6 +1241,7 @@ private static final long serialVersionUID = 0L;
     /**
      * <pre>
      * Serving network session integrity key (HEX encoded).
+     * Note: For LoRaWAN 1.0.x devices, set this to the NwkSKey.
      * </pre>
      *
      * <code>string s_nwk_s_int_key = 8;</code>
@@ -1264,6 +1262,7 @@ private static final long serialVersionUID = 0L;
     /**
      * <pre>
      * Serving network session integrity key (HEX encoded).
+     * Note: For LoRaWAN 1.0.x devices, set this to the NwkSKey.
      * </pre>
      *
      * <code>string s_nwk_s_int_key = 8;</code>
@@ -1285,6 +1284,7 @@ private static final long serialVersionUID = 0L;
     /**
      * <pre>
      * Serving network session integrity key (HEX encoded).
+     * Note: For LoRaWAN 1.0.x devices, set this to the NwkSKey.
      * </pre>
      *
      * <code>string s_nwk_s_int_key = 8;</code>
@@ -1302,6 +1302,7 @@ private static final long serialVersionUID = 0L;
     /**
      * <pre>
      * Serving network session integrity key (HEX encoded).
+     * Note: For LoRaWAN 1.0.x devices, set this to the NwkSKey.
      * </pre>
      *
      * <code>string s_nwk_s_int_key = 8;</code>
@@ -1316,6 +1317,7 @@ private static final long serialVersionUID = 0L;
     /**
      * <pre>
      * Serving network session integrity key (HEX encoded).
+     * Note: For LoRaWAN 1.0.x devices, set this to the NwkSKey.
      * </pre>
      *
      * <code>string s_nwk_s_int_key = 8;</code>
@@ -1336,6 +1338,7 @@ private static final long serialVersionUID = 0L;
     /**
      * <pre>
      * Forwarding network session integrity key (HEX encoded).
+     * Note: For LoRaWAN 1.0.x devices, set this to the NwkSKey.
      * </pre>
      *
      * <code>string f_nwk_s_int_key = 9;</code>
@@ -1356,6 +1359,7 @@ private static final long serialVersionUID = 0L;
     /**
      * <pre>
      * Forwarding network session integrity key (HEX encoded).
+     * Note: For LoRaWAN 1.0.x devices, set this to the NwkSKey.
      * </pre>
      *
      * <code>string f_nwk_s_int_key = 9;</code>
@@ -1377,6 +1381,7 @@ private static final long serialVersionUID = 0L;
     /**
      * <pre>
      * Forwarding network session integrity key (HEX encoded).
+     * Note: For LoRaWAN 1.0.x devices, set this to the NwkSKey.
      * </pre>
      *
      * <code>string f_nwk_s_int_key = 9;</code>
@@ -1394,6 +1399,7 @@ private static final long serialVersionUID = 0L;
     /**
      * <pre>
      * Forwarding network session integrity key (HEX encoded).
+     * Note: For LoRaWAN 1.0.x devices, set this to the NwkSKey.
      * </pre>
      *
      * <code>string f_nwk_s_int_key = 9;</code>
@@ -1408,6 +1414,7 @@ private static final long serialVersionUID = 0L;
     /**
      * <pre>
      * Forwarding network session integrity key (HEX encoded).
+     * Note: For LoRaWAN 1.0.x devices, set this to the NwkSKey.
      * </pre>
      *
      * <code>string f_nwk_s_int_key = 9;</code>

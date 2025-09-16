@@ -162,6 +162,8 @@ private static final long serialVersionUID = 0L;
   /**
    * <pre>
    * FPort (must be &gt; 0).
+   * On enqueue and if using a JavaScript codec, this value might be
+   * automatically set by the codec function.
    * </pre>
    *
    * <code>uint32 f_port = 4;</code>
@@ -1101,6 +1103,8 @@ private static final long serialVersionUID = 0L;
     /**
      * <pre>
      * FPort (must be &gt; 0).
+     * On enqueue and if using a JavaScript codec, this value might be
+     * automatically set by the codec function.
      * </pre>
      *
      * <code>uint32 f_port = 4;</code>
@@ -1113,6 +1117,8 @@ private static final long serialVersionUID = 0L;
     /**
      * <pre>
      * FPort (must be &gt; 0).
+     * On enqueue and if using a JavaScript codec, this value might be
+     * automatically set by the codec function.
      * </pre>
      *
      * <code>uint32 f_port = 4;</code>
@@ -1129,6 +1135,8 @@ private static final long serialVersionUID = 0L;
     /**
      * <pre>
      * FPort (must be &gt; 0).
+     * On enqueue and if using a JavaScript codec, this value might be
+     * automatically set by the codec function.
      * </pre>
      *
      * <code>uint32 f_port = 4;</code>

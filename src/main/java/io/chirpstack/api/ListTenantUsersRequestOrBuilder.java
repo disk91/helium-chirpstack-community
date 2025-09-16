@@ -32,6 +32,7 @@ public interface ListTenantUsersRequestOrBuilder extends
   /**
    * <pre>
    * Max number of tenants to return in the result-set.
+   * If not set, it will be treated as 0, and the response will only return the total_count.
    * </pre>
    *
    * <code>uint32 limit = 2;</code>

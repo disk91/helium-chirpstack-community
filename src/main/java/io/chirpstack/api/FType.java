@@ -6,9 +6,9 @@
 package io.chirpstack.api;
 
 /**
- * Protobuf enum {@code common.MType}
+ * Protobuf enum {@code common.FType}
  */
-public enum MType
+public enum FType
     implements com.google.protobuf.ProtocolMessageEnum {
   /**
    * <pre>
@@ -84,7 +84,7 @@ public enum MType
       /* minor= */ 29,
       /* patch= */ 2,
       /* suffix= */ "",
-      MType.class.getName());
+      FType.class.getName());
   }
   /**
    * <pre>
@@ -166,7 +166,7 @@ public enum MType
    * @deprecated Use {@link #forNumber(int)} instead.
    */
   @java.lang.Deprecated
-  public static MType valueOf(int value) {
+  public static FType valueOf(int value) {
     return forNumber(value);
   }
 
@@ -174,7 +174,7 @@ public enum MType
    * @param value The numeric wire value of the corresponding enum entry.
    * @return The enum associated with the given numeric wire value.
    */
-  public static MType forNumber(int value) {
+  public static FType forNumber(int value) {
     switch (value) {
       case 0: return JOIN_REQUEST;
       case 1: return JOIN_ACCEPT;
@@ -188,15 +188,15 @@ public enum MType
     }
   }
 
-  public static com.google.protobuf.Internal.EnumLiteMap<MType>
+  public static com.google.protobuf.Internal.EnumLiteMap<FType>
       internalGetValueMap() {
     return internalValueMap;
   }
   private static final com.google.protobuf.Internal.EnumLiteMap<
-      MType> internalValueMap =
-        new com.google.protobuf.Internal.EnumLiteMap<MType>() {
-          public MType findValueByNumber(int number) {
-            return MType.forNumber(number);
+      FType> internalValueMap =
+        new com.google.protobuf.Internal.EnumLiteMap<FType>() {
+          public FType findValueByNumber(int number) {
+            return FType.forNumber(number);
           }
         };
 
@@ -217,9 +217,9 @@ public enum MType
     return io.chirpstack.api.CommonProto.getDescriptor().getEnumTypes().get(2);
   }
 
-  private static final MType[] VALUES = values();
+  private static final FType[] VALUES = values();
 
-  public static MType valueOf(
+  public static FType valueOf(
       com.google.protobuf.Descriptors.EnumValueDescriptor desc) {
     if (desc.getType() != getDescriptor()) {
       throw new java.lang.IllegalArgumentException(
@@ -233,10 +233,10 @@ public enum MType
 
   private final int value;
 
-  private MType(int value) {
+  private FType(int value) {
     this.value = value;
   }
 
-  // @@protoc_insertion_point(enum_scope:common.MType)
+  // @@protoc_insertion_point(enum_scope:common.FType)
 }
 

@@ -92,22 +92,22 @@ public interface UplinkFrameLogOrBuilder extends
 
   /**
    * <pre>
-   * Message type.
+   * Frame type.
    * </pre>
    *
-   * <code>.common.MType m_type = 4;</code>
-   * @return The enum numeric value on the wire for mType.
+   * <code>.common.FType f_type = 4;</code>
+   * @return The enum numeric value on the wire for fType.
    */
-  int getMTypeValue();
+  int getFTypeValue();
   /**
    * <pre>
-   * Message type.
+   * Frame type.
    * </pre>
    *
-   * <code>.common.MType m_type = 4;</code>
-   * @return The mType.
+   * <code>.common.FType f_type = 4;</code>
+   * @return The fType.
    */
-  io.chirpstack.api.MType getMType();
+  io.chirpstack.api.FType getFType();
 
   /**
    * <pre>

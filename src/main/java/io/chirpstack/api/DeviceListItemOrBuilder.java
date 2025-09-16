@@ -216,4 +216,58 @@ public interface DeviceListItemOrBuilder extends
    * <code>.api.DeviceStatus device_status = 9;</code>
    */
   io.chirpstack.api.DeviceStatusOrBuilder getDeviceStatusOrBuilder();
+
+  /**
+   * <pre>
+   * Device tags.
+   * </pre>
+   *
+   * <code>map&lt;string, string&gt; tags = 10;</code>
+   */
+  int getTagsCount();
+  /**
+   * <pre>
+   * Device tags.
+   * </pre>
+   *
+   * <code>map&lt;string, string&gt; tags = 10;</code>
+   */
+  boolean containsTags(
+      java.lang.String key);
+  /**
+   * Use {@link #getTagsMap()} instead.
+   */
+  @java.lang.Deprecated
+  java.util.Map<java.lang.String, java.lang.String>
+  getTags();
+  /**
+   * <pre>
+   * Device tags.
+   * </pre>
+   *
+   * <code>map&lt;string, string&gt; tags = 10;</code>
+   */
+  java.util.Map<java.lang.String, java.lang.String>
+  getTagsMap();
+  /**
+   * <pre>
+   * Device tags.
+   * </pre>
+   *
+   * <code>map&lt;string, string&gt; tags = 10;</code>
+   */
+  /* nullable */
+java.lang.String getTagsOrDefault(
+      java.lang.String key,
+      /* nullable */
+java.lang.String defaultValue);
+  /**
+   * <pre>
+   * Device tags.
+   * </pre>
+   *
+   * <code>map&lt;string, string&gt; tags = 10;</code>
+   */
+  java.lang.String getTagsOrThrow(
+      java.lang.String key);
 }

@@ -6,12 +6,12 @@
 package io.chirpstack.api.gw;
 
 /**
- * Protobuf type {@code gw.MeshHeartbeatRelayPath}
+ * Protobuf type {@code gw.MeshEventHeartbeatRelayPath}
  */
-public final class MeshHeartbeatRelayPath extends
+public final class MeshEventHeartbeatRelayPath extends
     com.google.protobuf.GeneratedMessage implements
-    // @@protoc_insertion_point(message_implements:gw.MeshHeartbeatRelayPath)
-    MeshHeartbeatRelayPathOrBuilder {
+    // @@protoc_insertion_point(message_implements:gw.MeshEventHeartbeatRelayPath)
+    MeshEventHeartbeatRelayPathOrBuilder {
 private static final long serialVersionUID = 0L;
   static {
     com.google.protobuf.RuntimeVersion.validateProtobufGencodeVersion(
@@ -20,27 +20,27 @@ private static final long serialVersionUID = 0L;
       /* minor= */ 29,
       /* patch= */ 2,
       /* suffix= */ "",
-      MeshHeartbeatRelayPath.class.getName());
+      MeshEventHeartbeatRelayPath.class.getName());
   }
-  // Use MeshHeartbeatRelayPath.newBuilder() to construct.
-  private MeshHeartbeatRelayPath(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
+  // Use MeshEventHeartbeatRelayPath.newBuilder() to construct.
+  private MeshEventHeartbeatRelayPath(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
     super(builder);
   }
-  private MeshHeartbeatRelayPath() {
+  private MeshEventHeartbeatRelayPath() {
     relayId_ = "";
   }
 
   public static final com.google.protobuf.Descriptors.Descriptor
       getDescriptor() {
-    return io.chirpstack.api.gw.GatewayProto.internal_static_gw_MeshHeartbeatRelayPath_descriptor;
+    return io.chirpstack.api.gw.GatewayProto.internal_static_gw_MeshEventHeartbeatRelayPath_descriptor;
   }
 
   @java.lang.Override
   protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internalGetFieldAccessorTable() {
-    return io.chirpstack.api.gw.GatewayProto.internal_static_gw_MeshHeartbeatRelayPath_fieldAccessorTable
+    return io.chirpstack.api.gw.GatewayProto.internal_static_gw_MeshEventHeartbeatRelayPath_fieldAccessorTable
         .ensureFieldAccessorsInitialized(
-            io.chirpstack.api.gw.MeshHeartbeatRelayPath.class, io.chirpstack.api.gw.MeshHeartbeatRelayPath.Builder.class);
+            io.chirpstack.api.gw.MeshEventHeartbeatRelayPath.class, io.chirpstack.api.gw.MeshEventHeartbeatRelayPath.Builder.class);
   }
 
   public static final int RELAY_ID_FIELD_NUMBER = 1;
@@ -173,10 +173,10 @@ private static final long serialVersionUID = 0L;
     if (obj == this) {
      return true;
     }
-    if (!(obj instanceof io.chirpstack.api.gw.MeshHeartbeatRelayPath)) {
+    if (!(obj instanceof io.chirpstack.api.gw.MeshEventHeartbeatRelayPath)) {
       return super.equals(obj);
     }
-    io.chirpstack.api.gw.MeshHeartbeatRelayPath other = (io.chirpstack.api.gw.MeshHeartbeatRelayPath) obj;
+    io.chirpstack.api.gw.MeshEventHeartbeatRelayPath other = (io.chirpstack.api.gw.MeshEventHeartbeatRelayPath) obj;
 
     if (!getRelayId()
         .equals(other.getRelayId())) return false;
@@ -206,44 +206,44 @@ private static final long serialVersionUID = 0L;
     return hash;
   }
 
-  public static io.chirpstack.api.gw.MeshHeartbeatRelayPath parseFrom(
+  public static io.chirpstack.api.gw.MeshEventHeartbeatRelayPath parseFrom(
       java.nio.ByteBuffer data)
       throws com.google.protobuf.InvalidProtocolBufferException {
     return PARSER.parseFrom(data);
   }
-  public static io.chirpstack.api.gw.MeshHeartbeatRelayPath parseFrom(
+  public static io.chirpstack.api.gw.MeshEventHeartbeatRelayPath parseFrom(
       java.nio.ByteBuffer data,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws com.google.protobuf.InvalidProtocolBufferException {
     return PARSER.parseFrom(data, extensionRegistry);
   }
-  public static io.chirpstack.api.gw.MeshHeartbeatRelayPath parseFrom(
+  public static io.chirpstack.api.gw.MeshEventHeartbeatRelayPath parseFrom(
       com.google.protobuf.ByteString data)
       throws com.google.protobuf.InvalidProtocolBufferException {
     return PARSER.parseFrom(data);
   }
-  public static io.chirpstack.api.gw.MeshHeartbeatRelayPath parseFrom(
+  public static io.chirpstack.api.gw.MeshEventHeartbeatRelayPath parseFrom(
       com.google.protobuf.ByteString data,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws com.google.protobuf.InvalidProtocolBufferException {
     return PARSER.parseFrom(data, extensionRegistry);
   }
-  public static io.chirpstack.api.gw.MeshHeartbeatRelayPath parseFrom(byte[] data)
+  public static io.chirpstack.api.gw.MeshEventHeartbeatRelayPath parseFrom(byte[] data)
       throws com.google.protobuf.InvalidProtocolBufferException {
     return PARSER.parseFrom(data);
   }
-  public static io.chirpstack.api.gw.MeshHeartbeatRelayPath parseFrom(
+  public static io.chirpstack.api.gw.MeshEventHeartbeatRelayPath parseFrom(
       byte[] data,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws com.google.protobuf.InvalidProtocolBufferException {
     return PARSER.parseFrom(data, extensionRegistry);
   }
-  public static io.chirpstack.api.gw.MeshHeartbeatRelayPath parseFrom(java.io.InputStream input)
+  public static io.chirpstack.api.gw.MeshEventHeartbeatRelayPath parseFrom(java.io.InputStream input)
       throws java.io.IOException {
     return com.google.protobuf.GeneratedMessage
         .parseWithIOException(PARSER, input);
   }
-  public static io.chirpstack.api.gw.MeshHeartbeatRelayPath parseFrom(
+  public static io.chirpstack.api.gw.MeshEventHeartbeatRelayPath parseFrom(
       java.io.InputStream input,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws java.io.IOException {
@@ -251,26 +251,26 @@ private static final long serialVersionUID = 0L;
         .parseWithIOException(PARSER, input, extensionRegistry);
   }
 
-  public static io.chirpstack.api.gw.MeshHeartbeatRelayPath parseDelimitedFrom(java.io.InputStream input)
+  public static io.chirpstack.api.gw.MeshEventHeartbeatRelayPath parseDelimitedFrom(java.io.InputStream input)
       throws java.io.IOException {
     return com.google.protobuf.GeneratedMessage
         .parseDelimitedWithIOException(PARSER, input);
   }
 
-  public static io.chirpstack.api.gw.MeshHeartbeatRelayPath parseDelimitedFrom(
+  public static io.chirpstack.api.gw.MeshEventHeartbeatRelayPath parseDelimitedFrom(
       java.io.InputStream input,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws java.io.IOException {
     return com.google.protobuf.GeneratedMessage
         .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
   }
-  public static io.chirpstack.api.gw.MeshHeartbeatRelayPath parseFrom(
+  public static io.chirpstack.api.gw.MeshEventHeartbeatRelayPath parseFrom(
       com.google.protobuf.CodedInputStream input)
       throws java.io.IOException {
     return com.google.protobuf.GeneratedMessage
         .parseWithIOException(PARSER, input);
   }
-  public static io.chirpstack.api.gw.MeshHeartbeatRelayPath parseFrom(
+  public static io.chirpstack.api.gw.MeshEventHeartbeatRelayPath parseFrom(
       com.google.protobuf.CodedInputStream input,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws java.io.IOException {
@@ -283,7 +283,7 @@ private static final long serialVersionUID = 0L;
   public static Builder newBuilder() {
     return DEFAULT_INSTANCE.toBuilder();
   }
-  public static Builder newBuilder(io.chirpstack.api.gw.MeshHeartbeatRelayPath prototype) {
+  public static Builder newBuilder(io.chirpstack.api.gw.MeshEventHeartbeatRelayPath prototype) {
     return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
   }
   @java.lang.Override
@@ -299,26 +299,26 @@ private static final long serialVersionUID = 0L;
     return builder;
   }
   /**
-   * Protobuf type {@code gw.MeshHeartbeatRelayPath}
+   * Protobuf type {@code gw.MeshEventHeartbeatRelayPath}
    */
   public static final class Builder extends
       com.google.protobuf.GeneratedMessage.Builder<Builder> implements
-      // @@protoc_insertion_point(builder_implements:gw.MeshHeartbeatRelayPath)
-      io.chirpstack.api.gw.MeshHeartbeatRelayPathOrBuilder {
+      // @@protoc_insertion_point(builder_implements:gw.MeshEventHeartbeatRelayPath)
+      io.chirpstack.api.gw.MeshEventHeartbeatRelayPathOrBuilder {
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
-      return io.chirpstack.api.gw.GatewayProto.internal_static_gw_MeshHeartbeatRelayPath_descriptor;
+      return io.chirpstack.api.gw.GatewayProto.internal_static_gw_MeshEventHeartbeatRelayPath_descriptor;
     }
 
     @java.lang.Override
     protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
         internalGetFieldAccessorTable() {
-      return io.chirpstack.api.gw.GatewayProto.internal_static_gw_MeshHeartbeatRelayPath_fieldAccessorTable
+      return io.chirpstack.api.gw.GatewayProto.internal_static_gw_MeshEventHeartbeatRelayPath_fieldAccessorTable
           .ensureFieldAccessorsInitialized(
-              io.chirpstack.api.gw.MeshHeartbeatRelayPath.class, io.chirpstack.api.gw.MeshHeartbeatRelayPath.Builder.class);
+              io.chirpstack.api.gw.MeshEventHeartbeatRelayPath.class, io.chirpstack.api.gw.MeshEventHeartbeatRelayPath.Builder.class);
     }
 
-    // Construct using io.chirpstack.api.gw.MeshHeartbeatRelayPath.newBuilder()
+    // Construct using io.chirpstack.api.gw.MeshEventHeartbeatRelayPath.newBuilder()
     private Builder() {
 
     }
@@ -341,17 +341,17 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public com.google.protobuf.Descriptors.Descriptor
         getDescriptorForType() {
-      return io.chirpstack.api.gw.GatewayProto.internal_static_gw_MeshHeartbeatRelayPath_descriptor;
+      return io.chirpstack.api.gw.GatewayProto.internal_static_gw_MeshEventHeartbeatRelayPath_descriptor;
     }
 
     @java.lang.Override
-    public io.chirpstack.api.gw.MeshHeartbeatRelayPath getDefaultInstanceForType() {
-      return io.chirpstack.api.gw.MeshHeartbeatRelayPath.getDefaultInstance();
+    public io.chirpstack.api.gw.MeshEventHeartbeatRelayPath getDefaultInstanceForType() {
+      return io.chirpstack.api.gw.MeshEventHeartbeatRelayPath.getDefaultInstance();
     }
 
     @java.lang.Override
-    public io.chirpstack.api.gw.MeshHeartbeatRelayPath build() {
-      io.chirpstack.api.gw.MeshHeartbeatRelayPath result = buildPartial();
+    public io.chirpstack.api.gw.MeshEventHeartbeatRelayPath build() {
+      io.chirpstack.api.gw.MeshEventHeartbeatRelayPath result = buildPartial();
       if (!result.isInitialized()) {
         throw newUninitializedMessageException(result);
       }
@@ -359,14 +359,14 @@ private static final long serialVersionUID = 0L;
     }
 
     @java.lang.Override
-    public io.chirpstack.api.gw.MeshHeartbeatRelayPath buildPartial() {
-      io.chirpstack.api.gw.MeshHeartbeatRelayPath result = new io.chirpstack.api.gw.MeshHeartbeatRelayPath(this);
+    public io.chirpstack.api.gw.MeshEventHeartbeatRelayPath buildPartial() {
+      io.chirpstack.api.gw.MeshEventHeartbeatRelayPath result = new io.chirpstack.api.gw.MeshEventHeartbeatRelayPath(this);
       if (bitField0_ != 0) { buildPartial0(result); }
       onBuilt();
       return result;
     }
 
-    private void buildPartial0(io.chirpstack.api.gw.MeshHeartbeatRelayPath result) {
+    private void buildPartial0(io.chirpstack.api.gw.MeshEventHeartbeatRelayPath result) {
       int from_bitField0_ = bitField0_;
       if (((from_bitField0_ & 0x00000001) != 0)) {
         result.relayId_ = relayId_;
@@ -381,16 +381,16 @@ private static final long serialVersionUID = 0L;
 
     @java.lang.Override
     public Builder mergeFrom(com.google.protobuf.Message other) {
-      if (other instanceof io.chirpstack.api.gw.MeshHeartbeatRelayPath) {
-        return mergeFrom((io.chirpstack.api.gw.MeshHeartbeatRelayPath)other);
+      if (other instanceof io.chirpstack.api.gw.MeshEventHeartbeatRelayPath) {
+        return mergeFrom((io.chirpstack.api.gw.MeshEventHeartbeatRelayPath)other);
       } else {
         super.mergeFrom(other);
         return this;
       }
     }
 
-    public Builder mergeFrom(io.chirpstack.api.gw.MeshHeartbeatRelayPath other) {
-      if (other == io.chirpstack.api.gw.MeshHeartbeatRelayPath.getDefaultInstance()) return this;
+    public Builder mergeFrom(io.chirpstack.api.gw.MeshEventHeartbeatRelayPath other) {
+      if (other == io.chirpstack.api.gw.MeshEventHeartbeatRelayPath.getDefaultInstance()) return this;
       if (!other.getRelayId().isEmpty()) {
         relayId_ = other.relayId_;
         bitField0_ |= 0x00000001;
@@ -640,23 +640,23 @@ private static final long serialVersionUID = 0L;
       return this;
     }
 
-    // @@protoc_insertion_point(builder_scope:gw.MeshHeartbeatRelayPath)
+    // @@protoc_insertion_point(builder_scope:gw.MeshEventHeartbeatRelayPath)
   }
 
-  // @@protoc_insertion_point(class_scope:gw.MeshHeartbeatRelayPath)
-  private static final io.chirpstack.api.gw.MeshHeartbeatRelayPath DEFAULT_INSTANCE;
+  // @@protoc_insertion_point(class_scope:gw.MeshEventHeartbeatRelayPath)
+  private static final io.chirpstack.api.gw.MeshEventHeartbeatRelayPath DEFAULT_INSTANCE;
   static {
-    DEFAULT_INSTANCE = new io.chirpstack.api.gw.MeshHeartbeatRelayPath();
+    DEFAULT_INSTANCE = new io.chirpstack.api.gw.MeshEventHeartbeatRelayPath();
   }
 
-  public static io.chirpstack.api.gw.MeshHeartbeatRelayPath getDefaultInstance() {
+  public static io.chirpstack.api.gw.MeshEventHeartbeatRelayPath getDefaultInstance() {
     return DEFAULT_INSTANCE;
   }
 
-  private static final com.google.protobuf.Parser<MeshHeartbeatRelayPath>
-      PARSER = new com.google.protobuf.AbstractParser<MeshHeartbeatRelayPath>() {
+  private static final com.google.protobuf.Parser<MeshEventHeartbeatRelayPath>
+      PARSER = new com.google.protobuf.AbstractParser<MeshEventHeartbeatRelayPath>() {
     @java.lang.Override
-    public MeshHeartbeatRelayPath parsePartialFrom(
+    public MeshEventHeartbeatRelayPath parsePartialFrom(
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
@@ -675,17 +675,17 @@ private static final long serialVersionUID = 0L;
     }
   };
 
-  public static com.google.protobuf.Parser<MeshHeartbeatRelayPath> parser() {
+  public static com.google.protobuf.Parser<MeshEventHeartbeatRelayPath> parser() {
     return PARSER;
   }
 
   @java.lang.Override
-  public com.google.protobuf.Parser<MeshHeartbeatRelayPath> getParserForType() {
+  public com.google.protobuf.Parser<MeshEventHeartbeatRelayPath> getParserForType() {
     return PARSER;
   }
 
   @java.lang.Override
-  public io.chirpstack.api.gw.MeshHeartbeatRelayPath getDefaultInstanceForType() {
+  public io.chirpstack.api.gw.MeshEventHeartbeatRelayPath getDefaultInstanceForType() {
     return DEFAULT_INSTANCE;
   }
 

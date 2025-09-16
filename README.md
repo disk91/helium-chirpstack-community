@@ -114,7 +114,7 @@ option java_multiple_files = true;
 - Chirpstack grpc api found on - https://github.com/chirpstack/chirpstack.git
 ```bash
 # for chirpstack grpc api
-~ git checkout v4.10.2
+~ git checkout v4.14.1
 ```
 Add following headers in file `chirpstack/api/proto/internal/internal.proto`
 ```proto

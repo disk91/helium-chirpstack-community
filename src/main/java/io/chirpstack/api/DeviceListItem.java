@@ -39,6 +39,18 @@ private static final long serialVersionUID = 0L;
     return io.chirpstack.api.DeviceProto.internal_static_api_DeviceListItem_descriptor;
   }
 
+  @SuppressWarnings({"rawtypes"})
+  @java.lang.Override
+  protected com.google.protobuf.MapFieldReflectionAccessor internalGetMapFieldReflection(
+      int number) {
+    switch (number) {
+      case 10:
+        return internalGetTags();
+      default:
+        throw new RuntimeException(
+            "Invalid map field number: " + number);
+    }
+  }
   @java.lang.Override
   protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internalGetFieldAccessorTable() {
@@ -435,6 +447,101 @@ private static final long serialVersionUID = 0L;
     return deviceStatus_ == null ? io.chirpstack.api.DeviceStatus.getDefaultInstance() : deviceStatus_;
   }
 
+  public static final int TAGS_FIELD_NUMBER = 10;
+  private static final class TagsDefaultEntryHolder {
+    static final com.google.protobuf.MapEntry<
+        java.lang.String, java.lang.String> defaultEntry =
+            com.google.protobuf.MapEntry
+            .<java.lang.String, java.lang.String>newDefaultInstance(
+                io.chirpstack.api.DeviceProto.internal_static_api_DeviceListItem_TagsEntry_descriptor, 
+                com.google.protobuf.WireFormat.FieldType.STRING,
+                "",
+                com.google.protobuf.WireFormat.FieldType.STRING,
+                "");
+  }
+  @SuppressWarnings("serial")
+  private com.google.protobuf.MapField<
+      java.lang.String, java.lang.String> tags_;
+  private com.google.protobuf.MapField<java.lang.String, java.lang.String>
+  internalGetTags() {
+    if (tags_ == null) {
+      return com.google.protobuf.MapField.emptyMapField(
+          TagsDefaultEntryHolder.defaultEntry);
+    }
+    return tags_;
+  }
+  public int getTagsCount() {
+    return internalGetTags().getMap().size();
+  }
+  /**
+   * <pre>
+   * Device tags.
+   * </pre>
+   *
+   * <code>map&lt;string, string&gt; tags = 10;</code>
+   */
+  @java.lang.Override
+  public boolean containsTags(
+      java.lang.String key) {
+    if (key == null) { throw new NullPointerException("map key"); }
+    return internalGetTags().getMap().containsKey(key);
+  }
+  /**
+   * Use {@link #getTagsMap()} instead.
+   */
+  @java.lang.Override
+  @java.lang.Deprecated
+  public java.util.Map<java.lang.String, java.lang.String> getTags() {
+    return getTagsMap();
+  }
+  /**
+   * <pre>
+   * Device tags.
+   * </pre>
+   *
+   * <code>map&lt;string, string&gt; tags = 10;</code>
+   */
+  @java.lang.Override
+  public java.util.Map<java.lang.String, java.lang.String> getTagsMap() {
+    return internalGetTags().getMap();
+  }
+  /**
+   * <pre>
+   * Device tags.
+   * </pre>
+   *
+   * <code>map&lt;string, string&gt; tags = 10;</code>
+   */
+  @java.lang.Override
+  public /* nullable */
+java.lang.String getTagsOrDefault(
+      java.lang.String key,
+      /* nullable */
+java.lang.String defaultValue) {
+    if (key == null) { throw new NullPointerException("map key"); }
+    java.util.Map<java.lang.String, java.lang.String> map =
+        internalGetTags().getMap();
+    return map.containsKey(key) ? map.get(key) : defaultValue;
+  }
+  /**
+   * <pre>
+   * Device tags.
+   * </pre>
+   *
+   * <code>map&lt;string, string&gt; tags = 10;</code>
+   */
+  @java.lang.Override
+  public java.lang.String getTagsOrThrow(
+      java.lang.String key) {
+    if (key == null) { throw new NullPointerException("map key"); }
+    java.util.Map<java.lang.String, java.lang.String> map =
+        internalGetTags().getMap();
+    if (!map.containsKey(key)) {
+      throw new java.lang.IllegalArgumentException();
+    }
+    return map.get(key);
+  }
+
   private byte memoizedIsInitialized = -1;
   @java.lang.Override
   public final boolean isInitialized() {
@@ -476,6 +583,12 @@ private static final long serialVersionUID = 0L;
     if (((bitField0_ & 0x00000008) != 0)) {
       output.writeMessage(9, getDeviceStatus());
     }
+    com.google.protobuf.GeneratedMessage
+      .serializeStringMapTo(
+        output,
+        internalGetTags(),
+        TagsDefaultEntryHolder.defaultEntry,
+        10);
     getUnknownFields().writeTo(output);
   }
 
@@ -515,6 +628,16 @@ private static final long serialVersionUID = 0L;
     if (((bitField0_ & 0x00000008) != 0)) {
       size += com.google.protobuf.CodedOutputStream
         .computeMessageSize(9, getDeviceStatus());
+    }
+    for (java.util.Map.Entry<java.lang.String, java.lang.String> entry
+         : internalGetTags().getMap().entrySet()) {
+      com.google.protobuf.MapEntry<java.lang.String, java.lang.String>
+      tags__ = TagsDefaultEntryHolder.defaultEntry.newBuilderForType()
+          .setKey(entry.getKey())
+          .setValue(entry.getValue())
+          .build();
+      size += com.google.protobuf.CodedOutputStream
+          .computeMessageSize(10, tags__);
     }
     size += getUnknownFields().getSerializedSize();
     memoizedSize = size;
@@ -561,6 +684,8 @@ private static final long serialVersionUID = 0L;
       if (!getDeviceStatus()
           .equals(other.getDeviceStatus())) return false;
     }
+    if (!internalGetTags().equals(
+        other.internalGetTags())) return false;
     if (!getUnknownFields().equals(other.getUnknownFields())) return false;
     return true;
   }
@@ -597,6 +722,10 @@ private static final long serialVersionUID = 0L;
     if (hasDeviceStatus()) {
       hash = (37 * hash) + DEVICE_STATUS_FIELD_NUMBER;
       hash = (53 * hash) + getDeviceStatus().hashCode();
+    }
+    if (!internalGetTags().getMap().isEmpty()) {
+      hash = (37 * hash) + TAGS_FIELD_NUMBER;
+      hash = (53 * hash) + internalGetTags().hashCode();
     }
     hash = (29 * hash) + getUnknownFields().hashCode();
     memoizedHashCode = hash;
@@ -707,6 +836,28 @@ private static final long serialVersionUID = 0L;
       return io.chirpstack.api.DeviceProto.internal_static_api_DeviceListItem_descriptor;
     }
 
+    @SuppressWarnings({"rawtypes"})
+    protected com.google.protobuf.MapFieldReflectionAccessor internalGetMapFieldReflection(
+        int number) {
+      switch (number) {
+        case 10:
+          return internalGetTags();
+        default:
+          throw new RuntimeException(
+              "Invalid map field number: " + number);
+      }
+    }
+    @SuppressWarnings({"rawtypes"})
+    protected com.google.protobuf.MapFieldReflectionAccessor internalGetMutableMapFieldReflection(
+        int number) {
+      switch (number) {
+        case 10:
+          return internalGetMutableTags();
+        default:
+          throw new RuntimeException(
+              "Invalid map field number: " + number);
+      }
+    }
     @java.lang.Override
     protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
         internalGetFieldAccessorTable() {
@@ -763,6 +914,7 @@ private static final long serialVersionUID = 0L;
         deviceStatusBuilder_.dispose();
         deviceStatusBuilder_ = null;
       }
+      internalGetMutableTags().clear();
       return this;
     }
 
@@ -836,6 +988,10 @@ private static final long serialVersionUID = 0L;
             : deviceStatusBuilder_.build();
         to_bitField0_ |= 0x00000008;
       }
+      if (((from_bitField0_ & 0x00000200) != 0)) {
+        result.tags_ = internalGetTags();
+        result.tags_.makeImmutable();
+      }
       result.bitField0_ |= to_bitField0_;
     }
 
@@ -888,6 +1044,9 @@ private static final long serialVersionUID = 0L;
       if (other.hasDeviceStatus()) {
         mergeDeviceStatus(other.getDeviceStatus());
       }
+      internalGetMutableTags().mergeFrom(
+          other.internalGetTags());
+      bitField0_ |= 0x00000200;
       this.mergeUnknownFields(other.getUnknownFields());
       onChanged();
       return this;
@@ -967,6 +1126,15 @@ private static final long serialVersionUID = 0L;
               bitField0_ |= 0x00000100;
               break;
             } // case 74
+            case 82: {
+              com.google.protobuf.MapEntry<java.lang.String, java.lang.String>
+              tags__ = input.readMessage(
+                  TagsDefaultEntryHolder.defaultEntry.getParserForType(), extensionRegistry);
+              internalGetMutableTags().getMutableMap().put(
+                  tags__.getKey(), tags__.getValue());
+              bitField0_ |= 0x00000200;
+              break;
+            } // case 82
             default: {
               if (!super.parseUnknownField(input, extensionRegistry, tag)) {
                 done = true; // was an endgroup tag
@@ -2070,6 +2238,161 @@ private static final long serialVersionUID = 0L;
         deviceStatus_ = null;
       }
       return deviceStatusBuilder_;
+    }
+
+    private com.google.protobuf.MapField<
+        java.lang.String, java.lang.String> tags_;
+    private com.google.protobuf.MapField<java.lang.String, java.lang.String>
+        internalGetTags() {
+      if (tags_ == null) {
+        return com.google.protobuf.MapField.emptyMapField(
+            TagsDefaultEntryHolder.defaultEntry);
+      }
+      return tags_;
+    }
+    private com.google.protobuf.MapField<java.lang.String, java.lang.String>
+        internalGetMutableTags() {
+      if (tags_ == null) {
+        tags_ = com.google.protobuf.MapField.newMapField(
+            TagsDefaultEntryHolder.defaultEntry);
+      }
+      if (!tags_.isMutable()) {
+        tags_ = tags_.copy();
+      }
+      bitField0_ |= 0x00000200;
+      onChanged();
+      return tags_;
+    }
+    public int getTagsCount() {
+      return internalGetTags().getMap().size();
+    }
+    /**
+     * <pre>
+     * Device tags.
+     * </pre>
+     *
+     * <code>map&lt;string, string&gt; tags = 10;</code>
+     */
+    @java.lang.Override
+    public boolean containsTags(
+        java.lang.String key) {
+      if (key == null) { throw new NullPointerException("map key"); }
+      return internalGetTags().getMap().containsKey(key);
+    }
+    /**
+     * Use {@link #getTagsMap()} instead.
+     */
+    @java.lang.Override
+    @java.lang.Deprecated
+    public java.util.Map<java.lang.String, java.lang.String> getTags() {
+      return getTagsMap();
+    }
+    /**
+     * <pre>
+     * Device tags.
+     * </pre>
+     *
+     * <code>map&lt;string, string&gt; tags = 10;</code>
+     */
+    @java.lang.Override
+    public java.util.Map<java.lang.String, java.lang.String> getTagsMap() {
+      return internalGetTags().getMap();
+    }
+    /**
+     * <pre>
+     * Device tags.
+     * </pre>
+     *
+     * <code>map&lt;string, string&gt; tags = 10;</code>
+     */
+    @java.lang.Override
+    public /* nullable */
+java.lang.String getTagsOrDefault(
+        java.lang.String key,
+        /* nullable */
+java.lang.String defaultValue) {
+      if (key == null) { throw new NullPointerException("map key"); }
+      java.util.Map<java.lang.String, java.lang.String> map =
+          internalGetTags().getMap();
+      return map.containsKey(key) ? map.get(key) : defaultValue;
+    }
+    /**
+     * <pre>
+     * Device tags.
+     * </pre>
+     *
+     * <code>map&lt;string, string&gt; tags = 10;</code>
+     */
+    @java.lang.Override
+    public java.lang.String getTagsOrThrow(
+        java.lang.String key) {
+      if (key == null) { throw new NullPointerException("map key"); }
+      java.util.Map<java.lang.String, java.lang.String> map =
+          internalGetTags().getMap();
+      if (!map.containsKey(key)) {
+        throw new java.lang.IllegalArgumentException();
+      }
+      return map.get(key);
+    }
+    public Builder clearTags() {
+      bitField0_ = (bitField0_ & ~0x00000200);
+      internalGetMutableTags().getMutableMap()
+          .clear();
+      return this;
+    }
+    /**
+     * <pre>
+     * Device tags.
+     * </pre>
+     *
+     * <code>map&lt;string, string&gt; tags = 10;</code>
+     */
+    public Builder removeTags(
+        java.lang.String key) {
+      if (key == null) { throw new NullPointerException("map key"); }
+      internalGetMutableTags().getMutableMap()
+          .remove(key);
+      return this;
+    }
+    /**
+     * Use alternate mutation accessors instead.
+     */
+    @java.lang.Deprecated
+    public java.util.Map<java.lang.String, java.lang.String>
+        getMutableTags() {
+      bitField0_ |= 0x00000200;
+      return internalGetMutableTags().getMutableMap();
+    }
+    /**
+     * <pre>
+     * Device tags.
+     * </pre>
+     *
+     * <code>map&lt;string, string&gt; tags = 10;</code>
+     */
+    public Builder putTags(
+        java.lang.String key,
+        java.lang.String value) {
+      if (key == null) { throw new NullPointerException("map key"); }
+      if (value == null) { throw new NullPointerException("map value"); }
+      internalGetMutableTags().getMutableMap()
+          .put(key, value);
+      bitField0_ |= 0x00000200;
+      return this;
+    }
+    /**
+     * <pre>
+     * Device tags.
+     * </pre>
+     *
+     * <code>map&lt;string, string&gt; tags = 10;</code>
+     */
+    public Builder putAllTags(
+        java.util.Map<java.lang.String, java.lang.String> values) {
+      internalGetMutableTags().getMutableMap()
+          .putAll(values);
+      bitField0_ |= 0x00000200;
+      return this;
     }
 
     // @@protoc_insertion_point(builder_scope:api.DeviceListItem)
