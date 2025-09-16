@@ -664,6 +664,9 @@ public class HeliumTenantService {
 
     }
 
+    @Autowired
+    protected HeliumDcCreditLogsRepository heliumDcCreditLogsRepository;
+
     /**
      * Add credits to a tenant, returns true when added
      * Asynchronous process
@@ -716,6 +719,13 @@ public class HeliumTenantService {
                 log.error(x.getMessage());
             }
         }
+        // Trace the balance increase
+        HeliumDcCreditLogs hdccl = new HeliumDcCreditLogs();
+        hdccl.setInsertTime(Now.NowUtcMs());
+        hdccl.setTenantUUID(tenantUUID);
+        hdccl.setAmount(amount);
+        heliumDcCreditLogsRepository.save(hdccl);
+
         return true;
     }
 

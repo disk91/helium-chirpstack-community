@@ -485,7 +485,7 @@ public class TenantApi {
             @RequestBody(required = true) TenantDcBalanceReqItf balance
     ) {
         long startMs= Now.NowUtcMs();
-        log.debug("Update one tenant dc balance "+request.getUserPrincipal().getName());
+        log.debug("Update one tenant dc balance {}", request.getUserPrincipal().getName());
         try {
             if (heliumTenantService.processBalanceIncrease(balance.getTenantUUID(), balance.getDcs())) {
                 return new ResponseEntity<>(ActionResult.SUCESS(), HttpStatus.OK);
