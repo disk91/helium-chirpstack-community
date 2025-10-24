@@ -228,8 +228,10 @@ public class UserService {
         }
         */
         if ( ! safetyService.trustUserSignUp(req,adr) ) {
+            log.warn("Refused registration for {} from {} untrusted", req.getUsername(), adr);
             r.setErrorMessage("success");
             Tools.sleep(8+((new Random().nextInt()) % 7));
+            return r;
         }
 
 
