@@ -578,5 +578,8 @@
     "new_dev_removed_title" : "Objets supprimé dans les dernières 48h",
     "most_dev_consum_title" : "Objets les plus consommateurs sur 24h",
     
+    "captcha_instruction" : "Veuillez valider le captcha pour continuer. Pour celà, sélectionnez les icones correspondantes à l'image ci-dessus.",
+    "captcha_wrong_selection": "Sélection incorrecte du captcha, veuillez réessayer.",
+
     "end" : "fin"
 }

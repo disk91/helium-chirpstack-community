@@ -575,6 +575,7 @@
   "new_dev_created_title" : "Last 48h Added devices",
   "new_dev_removed_title" : "Last 48h Removed devices",
   "most_dev_consum_title" : "Last 24h most consuming devices",
-  
+  "captcha_instruction" : "Please validate the captcha to continue. To do this, select the icons corresponding to the image above.",
+  "captcha_wrong_selection": "Incorrect captcha selection, please try again.",
   "end" : "end"
 }
