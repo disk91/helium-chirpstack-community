@@ -42,3 +42,9 @@ init-forwarder: .FORCE
 	if [ -f $(CONSOLE_DIR)/docker-compose.yml ] ; then mv $(CONSOLE_DIR)/docker-compose.yml $(CONSOLE_DIR)/docker-compose.yml.bak ; fi
 	cp chirpstack/docker-compose.withforwarder.yml $(CONSOLE_DIR)/docker-compose.yml
 	if [ ! -d $(CONSOLE_DIR)/configuration/forwarder ] ; then cp -R chirpstack/configuration/forwarder $(CONSOLE_DIR)/configuration/ ; fi
+
+run-dev: .FORCE
+	docker compose -f ./docker-compose.dev.yml up -d
+
+stop-dev: .FORCE
+	docker compose -f ./docker-compose.dev.yml stop

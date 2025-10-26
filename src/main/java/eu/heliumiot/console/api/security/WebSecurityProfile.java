@@ -67,6 +67,8 @@ public class WebSecurityProfile {
                 .requestMatchers("/console/1.0/misc/logs").permitAll()
                 .requestMatchers("/console/1.0/misc/status").permitAll()
                 .requestMatchers("/console/1.0/misc/status/data").permitAll()
+                // captcha
+                .requestMatchers("/console/1.0/captcha/**").permitAll()
                 // swagger documentation
                 .requestMatchers("/swagger-doc/**").permitAll()
                 .requestMatchers("/v3/api-docs/**").permitAll()
