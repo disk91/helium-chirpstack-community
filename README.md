@@ -3,13 +3,10 @@
 ![screenshot](docs/homepage.png)
 
 - Follow progress and roadmap on the [project board](https://github.com/users/disk91/projects/1/views/1)
-- Public console running the software [console.helium-iot.xyz](https://console.helium-iot.xyz)
-
-### Version
-**Do not use the master version in production, they are in-progress not tested at scale versions, please use the Released Versions**
+- Live console [console.heyiot.xyz](https://console.heyiot.xyz)
 
 ### Chirpstack support
-- Chirpstack 4.10.2
+- Chirpstack 4.14.1
 - Never change the Chirpstack version, this project is specific for a given Chirpstack version, wait for project update before upgrading Chirpstack.
 
 
@@ -40,6 +37,18 @@
 - Manage device live migration from console
 - Manage device live Region change
 - Manage Helium integration with forwarder
+
+### Non Community Features
+
+It is possible to subscribe to a non-community version of the application, offering additional features:
+- Registration filtering
+- Enabling a captcha on registration
+- Providing more detailed reports on device communications
+- Viewing the network status (Helium hotspot statistics)
+- Overall platform activity overview for administrators
+- Search for inactive devices with root cause analysis
+
+If you want access to such features and extended support, please contact me via disk91.com
 
 ## Build the application
 
