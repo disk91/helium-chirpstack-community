@@ -73,7 +73,7 @@ public interface DeviceRepository extends CrudRepository<Device, byte[]> {
 
     @Query(value= "SELECT * FROM device " +
             "WHERE dev_addr = ?1 " +
-            "ORDER BY dev_eui ASC" +
+            "ORDER BY dev_eui ASC " +
             "LIMIT ?3 OFFSET ?2", nativeQuery = true)
     public List<Device> findDeviceByDevAddr(byte [] devAddr, byte[] offset, int limit);
 
