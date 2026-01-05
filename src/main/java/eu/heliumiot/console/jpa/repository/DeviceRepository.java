@@ -20,6 +20,7 @@
 package eu.heliumiot.console.jpa.repository;
 
 import eu.heliumiot.console.jpa.db.Device;
+import io.lettuce.core.dynamic.annotation.Param;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
 import org.springframework.data.jpa.repository.Query;
@@ -72,9 +73,13 @@ public interface DeviceRepository extends CrudRepository<Device, byte[]> {
     public static final String FIRST_DEVEUI = "0000000000000000";
 
     @Query(value= "SELECT * FROM device " +
-            "WHERE dev_addr = ?1 " +
+            "WHERE dev_addr = :devAddr AND dev_eui > :offset " +
             "ORDER BY dev_eui ASC " +
-            "LIMIT ?3 OFFSET ?2", nativeQuery = true)
-    public List<Device> findDeviceByDevAddr(byte [] devAddr, byte[] offset, int limit);
+            "LIMIT :limit", nativeQuery = true)
+    public List<Device> findDeviceByDevAddr(
+            @Param("devAddr") byte [] devAddr, 
+            @Param("offset") byte[] offset,
+            @Param("limit") int limit
+    );
 
 }
