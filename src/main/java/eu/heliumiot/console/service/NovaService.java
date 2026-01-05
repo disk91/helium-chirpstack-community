@@ -337,15 +337,19 @@ public class NovaService {
                                     toBeUpdated = true;
                                 } else {
                                     // check the region list
-                                    for (RegionSupported reg : regionsSupported) {
+                                    if ( regionsSupported.size() != r.getServer().getGwmp().getMappingList().size() ){
                                         toBeUpdated = true;
-                                        for (protocol_gwmp_mapping_v1 gwp : r.getServer().getGwmp().getMappingList()) {
-                                            if (gwp.getRegion() == reg.regionValue && gwp.getPort() == reg.port) {
-                                                toBeUpdated = false;
-                                                break;
+                                    } else {
+                                        for (RegionSupported reg : regionsSupported) {
+                                            toBeUpdated = true;
+                                            for (protocol_gwmp_mapping_v1 gwp : r.getServer().getGwmp().getMappingList()) {
+                                                if (gwp.getRegion() == reg.regionValue && gwp.getPort() == reg.port) {
+                                                    toBeUpdated = false;
+                                                    break;
+                                                }
                                             }
+                                            if (toBeUpdated) break;
                                         }
-                                        if (toBeUpdated) break;
                                     }
                                 }
                             }
