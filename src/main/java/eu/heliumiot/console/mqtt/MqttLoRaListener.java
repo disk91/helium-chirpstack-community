@@ -48,6 +48,7 @@ import jakarta.annotation.PostConstruct;
 
 import java.util.*;
 import java.util.concurrent.ConcurrentLinkedQueue;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
@@ -463,6 +464,7 @@ public class MqttLoRaListener implements MqttCallback {
         public String deviceEui;            // who is to be invoiced
         public String tenantId;
         public byte[] _deviceEui;           // raw devEui
+        public byte[] rawPackets;           // raw packets received for later analysis (when log enabled)
     }
 
     protected HashMap<String, ToDedup> packetDedup = new HashMap<>();
@@ -540,6 +542,8 @@ public class MqttLoRaListener implements MqttCallback {
                 dedup.duplicates = 1;
                 dedup.duplicatesInvoiced = 0;
                 dedup.isJoin = isJoin;
+                dedup.rawPackets = null;
+
                 if (!isJoin) {
                     // Packet is
                     // 40 XX XX XX XX YY ZZ ZZ K..K FF P..P MM MM MM MM
@@ -599,16 +603,6 @@ public class MqttLoRaListener implements MqttCallback {
                     dedup.devAddr = null;
                     dedup.fCnt = 0;
                     dedup.dataSz = 23;
-
-                    // check if we need to monitor that join
-                    if ( consoleConfig.isHeliumLogsEnable() && trackedHotspots.get(uf.getRxInfo().getGatewayId().toLowerCase()) != null) {
-                        // search the gateway in our tracked list
-                        log.warn(ANSI_YELLOW+"[monitor] Catch device {} from {}"+ANSI_RESET,
-                                dedup.deviceEui,
-                                uf.getRxInfo().getGatewayId().toLowerCase()
-                        );
-                    }
-
                 }
                 synchronized (lockPacketDedup) {
                     packetDedup.put(spayload, dedup);
@@ -658,21 +652,51 @@ public class MqttLoRaListener implements MqttCallback {
                 } else {
                     log.debug("Join Request with negative rx time, this is not expected, check the gateway clock");
                 }
+                // check if we need to monitor that join
+                if ( consoleConfig.isHeliumLogsEnable() && trackedHotspots.get(uf.getRxInfo().getGatewayId().toLowerCase()) != null) {
+                    // search the gateway in our tracked list
+                    log.warn(ANSI_YELLOW+"[monitor] Catch device {} from {}"+ANSI_RESET,
+                            dedup.deviceEui,
+                            uf.getRxInfo().getGatewayId().toLowerCase()
+                    );
+                }
             } else {
-                if ( rx >= (dedup.firstRxTime-100) ) {
+                if (rx >= (dedup.firstRxTime - 100)) {
                     // if a frame arrives after the first one but in the past with more than
                     // 100 ms, we can consider the clock as invalid, first clock or next clocks
-                    if ( !futureFrame ) prometeusService.addLoRaGatewayUplink(e.arrivalTime - rx);
+                    if (!futureFrame) prometeusService.addLoRaGatewayUplink(e.arrivalTime - rx);
 
                     // Measure uplink confirmed processing time
                     // Based on GW time, so it's an approximation
-                    if ( loRaWanHelper.isUplinkConfirmed(payload) && rx > 0) {
+                    if (loRaWanHelper.isUplinkConfirmed(payload) && rx > 0) {
                         // header for confirmed frame - compute elapse time in ms
-                        if ( !futureFrame ) prometeusService.addLoRaUplinkConf(
-                            e.arrivalTime - rx
+                        if (!futureFrame) prometeusService.addLoRaUplinkConf(
+                                e.arrivalTime - rx
                         );
                     }
                 }
+
+                // monitor hotspot in our tracked list
+                if (consoleConfig.isHeliumLogsEnable() && dedup.rawPackets == null &&
+                        (    trackedHotspots.get(uf.getRxInfo().getGatewayId().toLowerCase()) != null
+                          || trackedHotspots.get("*") != null
+                        )
+                ) {
+                    dedup.rawPackets = payload;
+                }
+
+                // testing @TODO - remove
+                dedup.rawPackets = payload;
+                String devEui = searchDevEuiFromRawPacket(dedup);
+                if ( !devEui.isEmpty() ) {
+                    log.info(Tools.ANSI_BLUE+"[test] Found devEui {} for devAddr {} fCnt {}"+Tools.ANSI_RESET,
+                            devEui,
+                            dedup.devAddr,
+                            dedup.fCnt
+                    );
+                }
+                // End testing
+
             }
 
             // Manage zone switch on Join Requests
@@ -911,6 +935,9 @@ public class MqttLoRaListener implements MqttCallback {
     // Background cleaning tasks
     // ===============================================================
 
+    @Autowired
+    private DeviceService deviceService;
+
     @Scheduled(fixedDelayString = "${helium.mqtt.dedup.scanPeriod}", initialDelay = 120_000) // default 10m
     protected void cleanDedupCache() {
         if ( this.requestToStop ) return;
@@ -1025,7 +1052,7 @@ public class MqttLoRaListener implements MqttCallback {
                             }
                             if (!found) {
                                 // trace Hotspot information
-                                HotspotNotInvoiced hni = hotspotHash.get(d.firstGatewayId);
+                                HotspotNotInvoiced hni = hotspotHash.get(d.firstGatewayId.toLowerCase());
                                 if ( hni != null ) {
                                     hni.addNonInvoicedPacket();
                                 } else {
@@ -1042,7 +1069,7 @@ public class MqttLoRaListener implements MqttCallback {
                                         }
                                     }
                                     if ( hotspotHash.size() < HS_NOT_INVOICED_MAX_HS ) {
-                                        hni = new HotspotNotInvoiced(d.firstGatewayId);
+                                        hni = new HotspotNotInvoiced(d.firstGatewayId.toLowerCase());
                                         hni.addNonInvoicedPacket();
                                         hotspotHash.put(d.firstGatewayId.toLowerCase(),hni);
                                     } else {
@@ -1051,6 +1078,21 @@ public class MqttLoRaListener implements MqttCallback {
                                 }
                                 // log
                                 log.warn("Found a packetDedup without uplink event at {} for {} / {} from {} sz {} with {} dup", DateConverters.msToStringDate(d.firstArrivalTime), d.devAddr, d.fCnt, d.firstGatewayId, d.dataSz, d.duplicates);
+                                if ( consoleConfig.isHeliumLogsEnable() && d.rawPackets != null ) {
+                                    // Now we need to link the raw packet with the device EUI with NwkSKey search
+                                    if ( !d.isJoin ) {
+                                        // only process uplink
+                                        String devEui = searchDevEuiFromRawPacket(d);
+                                        if ( !devEui.isEmpty() ) {
+                                            log.warn(ANSI_YELLOW + "[monitor] deveui identified {} for devaddr {} fCnt {} from {}" + ANSI_RESET,
+                                                    devEui,
+                                                    d.devAddr,
+                                                    d.fCnt,
+                                                    d.firstGatewayId
+                                            );
+                                        }
+                                    }
+                                }
                                 cost += d.duplicates * ( (d.dataSz/24) + 1);
                                 notInvoicable += d.duplicates;
                             }
@@ -1110,5 +1152,30 @@ public class MqttLoRaListener implements MqttCallback {
     }
 
 
+    protected String searchDevEuiFromRawPacket(ToDedup d) {
+        AtomicReference<String> devEui = new AtomicReference<>();
+        devEui.set("");
+        if ( d.rawPackets == null ) return "";
+
+        deviceService.processAllDevicesByAddr(
+                d.devAddr,
+                device -> {
+                    try {
+                        if (
+                                loRaWanHelper.checkMic(
+                                        d.rawPackets,
+                                        device.getNwkSkey_b(),
+                                        0
+                                )
+                        ) {
+                            devEui.set(HexaConverters.byteToHexString(device.getDevEui()));
+                        }
+                    } catch (Exception x) {
+                        log.error("Exception during session search {} : {}", device.getDevEui(), x.getMessage());
+                    }
+                }
+        );
+        return devEui.get();
+    }
 }
 

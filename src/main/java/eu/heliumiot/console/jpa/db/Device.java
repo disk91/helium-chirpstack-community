@@ -125,7 +125,32 @@ public class Device {
     }
 
     /**
-     * Return the device Session Key from the byte array representing it. This is the commmon expected format
+     * Return the device Network Session Key from the byte array representing it
+     * @return Session key for that device or ITNotFoundException if not initialized
+     * ---
+     * FNwkSIntKey - a network session key that is used by the end device to calculate the MIC (partially)
+     *               of all uplink data messages for ensuring message integrity.
+     * SNwkSIntKey - a network session key that is used by the end device to calculate the MIC (partially)
+     *               of all uplink data messagse and calculate the MIC of all downlink data messages for
+     *               ensuring message integrity.
+     * NwkSEncKey - a network session key that is used to encrypt and decrypt the payloads with MAC commands
+     *              of the uplink and downlink data messages for ensuring message confidentiality
+     * The 3 keys are identical
+     */
+    public byte [] getNwkSkey_b() throws ITNotFoundException {
+        if( this.deviceSession != null ) {
+            try {
+                DeviceSession ds = DeviceSession.parseFrom(this.deviceSession);
+                return ds.getNwkSEncKey().toByteArray();
+            } catch (InvalidProtocolBufferException x) {
+                throw new ITNotFoundException("Impossible to parse deviceSession");
+            }
+        } else throw new ITNotFoundException("No device session found");
+    }
+
+
+    /**
+     * Return the device Session Key from the byte array representing it. This is the common expected format
      * from the rest of the solution
      * @return
      * @throws ITNotFoundException

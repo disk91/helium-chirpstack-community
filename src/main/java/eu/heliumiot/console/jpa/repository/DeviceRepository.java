@@ -69,4 +69,12 @@ public interface DeviceRepository extends CrudRepository<Device, byte[]> {
         int limit
     );
 
+    public static final String FIRST_DEVEUI = "0000000000000000";
+
+    @Query(value= "SELECT * FROM device " +
+            "WHERE dev_addr = ?1 " +
+            "ORDER BY dev_eui ASC" +
+            "LIMIT ?3 OFFSET ?2", nativeQuery = true)
+    public List<Device> findDeviceByDevAddr(byte [] devAddr, byte[] offset, int limit);
+
 }

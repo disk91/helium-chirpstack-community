@@ -29,6 +29,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.function.Consumer;
+
 @Service
 public class DeviceService {
 
@@ -63,5 +66,37 @@ public class DeviceService {
         return getDeviceSession(HexaConverters.hexStringToByteArray(devEui));
     }
 
+
+    /**
+     * Process all devices matching the given DevAddr with a callback function
+     * Process page per page with 200 devices per page
+     * @param devAddr_s
+     * @param callback
+     */
+    public void processAllDevicesByAddr(String devAddr_s, Consumer<Device> callback) {
+        byte [] devAddr = HexaConverters.hexStringToByteArray(devAddr_s);
+        byte [] devEui = HexaConverters.hexStringToByteArray(DeviceRepository.FIRST_DEVEUI);
+        List<Device> allDevices = deviceRepository.findDeviceByDevAddr(
+                devAddr,
+                devEui,
+                200
+        );
+        boolean nextPage = false;
+        if ( allDevices != null ) {
+            do {
+                allDevices.forEach(callback);
+                if ( allDevices.size() == 200 ) {
+                    allDevices = deviceRepository.findDeviceByDevAddr(
+                            devAddr,
+                            allDevices.getLast().getDevEui(),
+                            200
+                    );
+                    nextPage = true;
+                } else {
+                    nextPage = false;
+                }
+            } while (nextPage && allDevices != null && !allDevices.isEmpty());
+        }
+    }
 
 }
