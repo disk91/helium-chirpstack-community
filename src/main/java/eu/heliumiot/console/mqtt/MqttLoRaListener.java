@@ -52,6 +52,8 @@ import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 import static eu.heliumiot.console.service.HeliumParameterService.PARAM_MQTT_CLIENT_ID;
+import static fr.ingeniousthings.tools.Tools.ANSI_RESET;
+import static fr.ingeniousthings.tools.Tools.ANSI_YELLOW;
 
 @Component
 public class MqttLoRaListener implements MqttCallback {
@@ -60,6 +62,9 @@ public class MqttLoRaListener implements MqttCallback {
 
     @Autowired
     protected PrometeusService prometeusService;
+
+    @Autowired
+    protected ConsoleConfig consoleConfig;
 
     ObjectMapper mapper = new ObjectMapper();
 
@@ -133,6 +138,8 @@ public class MqttLoRaListener implements MqttCallback {
     // application/.*/event/log$
     // application/.*/event/down$
 
+    private HashMap<String,String> trackedHotspots = new HashMap<>();
+
     @PostConstruct
     public MqttClient initMqtt() {
 
@@ -141,6 +148,11 @@ public class MqttLoRaListener implements MqttCallback {
         matchJoin = Pattern.compile("application/.*/event/join$");
         matchLog = Pattern.compile("application/.*/event/log$");
 
+        // extract parameters
+        ArrayList<String> hs = Tools.getStringListFromParam(consoleConfig.getHeliumLogsGatewayList());
+        for ( String h : hs ) {
+            trackedHotspots.put( h.toLowerCase(), h.toLowerCase() );
+        }
 
         // manage MQTT
         HeliumParameter mqttClientId = heliumParameterService.getParameter(PARAM_MQTT_CLIENT_ID);
@@ -587,6 +599,16 @@ public class MqttLoRaListener implements MqttCallback {
                     dedup.devAddr = null;
                     dedup.fCnt = 0;
                     dedup.dataSz = 23;
+
+                    // check if we need to monitor that join
+                    if ( consoleConfig.isHeliumLogsEnable() && trackedHotspots.get(uf.getRxInfo().getGatewayId().toLowerCase()) != null) {
+                        // search the gateway in our tracked list
+                        log.warn(ANSI_YELLOW+"[monitor] Catch device {} from {}"+ANSI_RESET,
+                                dedup.deviceEui,
+                                uf.getRxInfo().getGatewayId().toLowerCase()
+                        );
+                    }
+
                 }
                 synchronized (lockPacketDedup) {
                     packetDedup.put(spayload, dedup);
@@ -856,11 +878,17 @@ public class MqttLoRaListener implements MqttCallback {
                     log.debug("LOG - Dev: {} Eui: {} Tenant: {}", le.getDeviceInfo().getDeviceName(), le.getDeviceInfo().getDevEui(), le.getDeviceInfo().getTenantId());
                     if ( le.getCode().compareToIgnoreCase("UPLINK_F_CNT_RESET") == 0 ) {
                         log.info("Found an UPLINK_F_CNT_RESET for devEui: {}", le.getDeviceInfo().getDevEui());
-                        // anormal behavior use as an attack, pay 100 Uplink equivalent
+                        // abnormal behavior use as an attack, pay 100 Uplink equivalent
                         heliumTenantService.punish(
                             le.getDeviceInfo().getTenantId(),
                             le.getDeviceInfo().getDevEui()
                         );
+                    } else if (consoleConfig.isHeliumLogsEnable()){
+                        try {
+                            log.info("Log Event from device {} code {}", le.getDeviceInfo().getDevEui(), le.getCode());
+                        } catch (Exception x) {
+                            log.info("Log Event code {} with error {}", le.getCode(),x.getMessage());
+                        }
                     }
                 } catch (Exception x) {
                     x.printStackTrace();

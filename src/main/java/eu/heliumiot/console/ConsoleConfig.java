@@ -954,6 +954,20 @@ public class ConsoleConfig {
     @Value ("${helium.tenant.dc.alarm:10000}")
     private int heliumTenantDcAlarm;
 
+    @Value("${helium.logs.enable:false}")
+    private boolean heliumLogsEnable;
+
+    @Value("${helium.logs.gateway.list:}")
+    private String heliumLogsGatewayList;
+
+
+    public String getHeliumLogsGatewayList() {
+        return heliumLogsGatewayList;
+    }
+
+    public boolean isHeliumLogsEnable() {
+        return heliumLogsEnable;
+    }
 
     public boolean isStatReportEnable() {
         if (!statReportEnable.isEmpty()) {

@@ -20,7 +20,20 @@
 
 package fr.ingeniousthings.tools;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 public class Tools {
+
+    /**
+     * Color for terminal output
+     */
+    public static final String ANSI_YELLOW = "\u001B[33m";
+    public static final String ANSI_GREEN = "\u001B[32m";
+    public static final String ANSI_RED = "\u001B[31m";
+    public static final String ANSI_BLUE = "\u001B[34m";
+    public static final String ANSI_RESET  = "\u001B[0m";
 
 
     public static boolean isAcceptedEmailSyntax(String email, String filters) {
@@ -80,6 +93,31 @@ public class Tools {
         try {
             Thread.sleep(ms);
         } catch ( InterruptedException x ) {};
+    }
+
+    /**
+     * From a parameter like xxxx,yyyy,zzzz get an arraylist [ xxxx, yyyy, zzzz ]
+     * @param param
+     * @return
+     */
+    public static ArrayList<String> getStringListFromParam(String param) {
+        String[] _params = param.split(",");
+        return new ArrayList<>(Arrays.asList(_params));
+    }
+
+    /**
+     * Return true if the given string is in the given list (comma separated)
+     * @param str
+     * @param list
+     * @return
+     */
+    public static boolean isStringInList(String str,String list) {
+        if ( list == null || list.isEmpty() ) return false;
+        List<String> arrayList = getStringListFromParam(list);
+        for ( String s : arrayList ) {
+            if ( s.compareTo(str) == 0 ) return true;
+        }
+        return false;
     }
 
 }
