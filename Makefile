@@ -31,6 +31,7 @@ front: .FORCE
 	export CONSOLE_NAME=$(CONSOLE_NAME) ; export CONSOLE_TERMS=$(CONSOLE_TERMS) ; \
 	export API_HOST=$(API_HOST) ; export CHIRPSTACK_HOST=$(CHIRPSTACK_HOST) ; \
 	export DIS_DC_PURCHASE=$(DIS_DC_PURCHASE) ; export DIS_NEW_TENANT=$(DIS_NEW_TENANT) ; export DIS_STAT_TENANT=$(DIS_STAT_TENANT) ; export MAP_KEY=$(MAP_KEY) \
+	export DIS_FULL=$(DIS_FULL) ; export DIS_CAPTCHA=$(DIS_CAPTCHA) ; \
 	cd nuxt/console && yarn install --ignore-engines && yarn generate && cp -R dist/* /helium/front/
 
 back: .FORCE
