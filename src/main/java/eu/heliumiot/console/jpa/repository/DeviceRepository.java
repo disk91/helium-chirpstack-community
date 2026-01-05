@@ -77,7 +77,7 @@ public interface DeviceRepository extends CrudRepository<Device, byte[]> {
             "ORDER BY dev_eui ASC " +
             "LIMIT :limit", nativeQuery = true)
     public List<Device> findDeviceByDevAddr(
-            @Param("devAddr") byte [] devAddr, 
+            @Param("devAddr") byte [] devAddr,
             @Param("offset") byte[] offset,
             @Param("limit") int limit
     );

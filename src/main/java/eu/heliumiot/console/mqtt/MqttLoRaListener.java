@@ -684,19 +684,7 @@ public class MqttLoRaListener implements MqttCallback {
                 ) {
                     dedup.rawPackets = payload;
                 }
-
-                // testing @TODO - remove
-                dedup.rawPackets = payload;
-                String devEui = searchDevEuiFromRawPacket(dedup);
-                if ( !devEui.isEmpty() ) {
-                    log.info(Tools.ANSI_BLUE+"[test] Found devEui {} for devAddr {} fCnt {}"+Tools.ANSI_RESET,
-                            devEui,
-                            dedup.devAddr,
-                            dedup.fCnt
-                    );
-                }
-                // End testing
-
+                
             }
 
             // Manage zone switch on Join Requests
