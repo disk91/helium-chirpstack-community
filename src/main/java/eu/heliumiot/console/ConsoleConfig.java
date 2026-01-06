@@ -290,6 +290,13 @@ public class ConsoleConfig {
     @Value ("${helium.billing.vat.message9:}")
     private String heliumBillingVatMessage9;
 
+    @Value("${helium.invoice.recovered.packets:false}")
+    private boolean heliumInvoiceRecoveredPackets;
+
+
+    public boolean isHeliumInvoiceRecoveredPackets() {
+        return heliumInvoiceRecoveredPackets;
+    }
 
     public int getHeliumBillingDcPunishment() {
         return heliumBillingDcPunishment;

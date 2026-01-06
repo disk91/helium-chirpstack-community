@@ -26,6 +26,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.google.protobuf.InvalidProtocolBufferException;
 import eu.heliumiot.console.ConsoleConfig;
+import eu.heliumiot.console.jpa.db.HeliumDevice;
 import eu.heliumiot.console.jpa.db.HeliumParameter;
 import eu.heliumiot.console.service.*;
 import eu.heliumiot.console.tools.LoRaWanHelper;
@@ -677,10 +678,13 @@ public class MqttLoRaListener implements MqttCallback {
                 }
 
                 // monitor hotspot in our tracked list
-                if (consoleConfig.isHeliumLogsEnable() && dedup.rawPackets == null &&
-                        (    trackedHotspots.get(uf.getRxInfo().getGatewayId().toLowerCase()) != null
-                          || trackedHotspots.get("*") != null
-                        )
+                if (    ( consoleConfig.isHeliumInvoiceRecoveredPackets() && crossDeviceService.isFullVersion() )
+                     || (
+                           consoleConfig.isHeliumLogsEnable() && dedup.rawPackets == null &&
+                           (    trackedHotspots.get(uf.getRxInfo().getGatewayId().toLowerCase()) != null
+                             || trackedHotspots.get("*") != null
+                           )
+                         )
                 ) {
                     dedup.rawPackets = payload;
                 }
@@ -924,7 +928,13 @@ public class MqttLoRaListener implements MqttCallback {
     // ===============================================================
 
     @Autowired
-    private DeviceService deviceService;
+    protected DeviceService deviceService;
+
+    @Autowired
+    protected CrossDeviceService crossDeviceService;
+
+    @Autowired
+    protected HeliumDeviceCacheService heliumDeviceCacheService;
 
     @Scheduled(fixedDelayString = "${helium.mqtt.dedup.scanPeriod}", initialDelay = 120_000) // default 10m
     protected void cleanDedupCache() {
@@ -1027,7 +1037,7 @@ public class MqttLoRaListener implements MqttCallback {
                                                 false,
                                                 d.duplicates - _d.duplicatesInvoiced
                                             );
-                                            postInvoiced = (d.duplicates - _d.duplicatesInvoiced);
+                                            postInvoiced += (d.duplicates - _d.duplicatesInvoiced);
                                             found = true;
                                             break;
                                         } else {
@@ -1065,24 +1075,51 @@ public class MqttLoRaListener implements MqttCallback {
                                     }
                                 }
                                 // log
+                                boolean invoiced = false;
                                 log.warn("Found a packetDedup without uplink event at {} for {} / {} from {} sz {} with {} dup", DateConverters.msToStringDate(d.firstArrivalTime), d.devAddr, d.fCnt, d.firstGatewayId, d.dataSz, d.duplicates);
-                                if ( consoleConfig.isHeliumLogsEnable() && d.rawPackets != null ) {
+                                if (   ( consoleConfig.isHeliumLogsEnable() && d.rawPackets != null )
+                                    || ( consoleConfig.isHeliumInvoiceRecoveredPackets() && crossDeviceService.isFullVersion() )
+                                ) {
                                     // Now we need to link the raw packet with the device EUI with NwkSKey search
                                     if ( !d.isJoin ) {
                                         // only process uplink
                                         String devEui = searchDevEuiFromRawPacket(d);
                                         if ( !devEui.isEmpty() ) {
-                                            log.warn(ANSI_YELLOW + "[monitor] deveui identified {} for devaddr {} fCnt {} from {}" + ANSI_RESET,
-                                                    devEui,
-                                                    d.devAddr,
-                                                    d.fCnt,
-                                                    d.firstGatewayId
-                                            );
+                                            if ( consoleConfig.isHeliumLogsEnable() ) {
+                                                log.warn(ANSI_YELLOW + "[monitor] deveui identified {} for devaddr {} fCnt {} from {}" + ANSI_RESET,
+                                                        devEui,
+                                                        d.devAddr,
+                                                        d.fCnt,
+                                                        d.firstGatewayId
+                                                );
+                                            }
+                                            if ( consoleConfig.isHeliumInvoiceRecoveredPackets() && crossDeviceService.isFullVersion() ) {
+                                                prometeusService.addLoRaUplink(
+                                                        0,
+                                                        d.dataSz,
+                                                        false,
+                                                        d.duplicates - d.duplicatesInvoiced
+                                                );
+                                                HeliumDevice hd = heliumDeviceCacheService.getHeliumDevice(devEui);
+                                                if ( hd != null ) {
+                                                    heliumTenantService.processUplink(
+                                                            hd.getTenantUUID(),
+                                                            devEui,
+                                                            d.dataSz,
+                                                            true,
+                                                            d.duplicates
+                                                    );
+                                                    postInvoiced += d.duplicates;
+                                                    invoiced = true;
+                                                }
+                                            }
                                         }
                                     }
                                 }
-                                cost += d.duplicates * ( (d.dataSz/24) + 1);
-                                notInvoicable += d.duplicates;
+                                if (!invoiced) {
+                                    cost += d.duplicates * ((d.dataSz / 24) + 1);
+                                    notInvoicable += d.duplicates;
+                                }
                             }
                         }
                     }
@@ -1158,8 +1195,10 @@ public class MqttLoRaListener implements MqttCallback {
                         ) {
                             devEui.set(HexaConverters.byteToHexString(device.getDevEui()));
                         }
+                    } catch (ITNotFoundException ignored) {
+                        // no session for this device, skip
                     } catch (Exception x) {
-                        log.error("Exception during session search {} : {}", device.getDevEui(), x.getMessage());
+                        log.error("Exception during session search {} : {}", HexaConverters.byteToHexString(device.getDevEui()), x.getMessage());
                     }
                 }
         );
