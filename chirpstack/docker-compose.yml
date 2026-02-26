@@ -236,7 +236,7 @@ services:
   mosquitto_exporter:
     image: sapcc/mosquitto-exporter:latest
     restart: unless-stopped
-    command: --endpoint tcp://mosquitto:1883
+    command: --endpoint tcp://mosquitto:1883 --user gateway --pass buoy
     ports:
       - 127.0.0.1:9101:9234
     depends_on:
