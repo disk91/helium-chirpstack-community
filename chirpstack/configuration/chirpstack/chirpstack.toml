@@ -19,7 +19,7 @@
   #  * require - Always SSL (skip verification)
   #  * verify-ca - Always SSL (verify that the certificate presented by the server was signed by a trusted CA)
   #  * verify-full - Always SSL (verify that the certification presented by the server was signed by a trusted CA and the server host name matches the one in the certificate)
-  dsn="postgres://chirpstack:@DBPASSWORD@@$POSTGRESQL_HOST/chirpstack?sslmode=disable"
+  dsn="postgres://chirpstack:c1a0f38be7bc2d2a4db3@$POSTGRESQL_HOST/chirpstack?sslmode=disable"
 
   # Max open connections.
   #
@@ -70,11 +70,11 @@
 
   # Network identifier (NetID, 3 bytes) encoded as HEX (e.g. 010203).
   # Usually 000024 or 00003C for Helium
-  net_id="@NETID@"
+  net_id="00003C"
 
   # List devAddr range you own
   #dev_addr_prefixes=["FC014C30/28","FC014C50/28","FC014C10/29"]
-  dev_addr_prefixes=["@ADDRRANGE@"]
+  dev_addr_prefixes=["78000190/29"]
 
   # Enabled regions.
   #
@@ -101,13 +101,6 @@
   # must be less than the (first) receive-window.
   deduplication_delay="350ms"
 
-  # Custom ADR plugins.
-  #
-  # The custom ADR plugin must be implemented in JavaScript. For an example
-  # skeleton, please see:
-  # https://github.com/chirpstack/chirpstack/blob/master/examples/adr_plugins/plugin_skeleton.js
-  adr_plugins=[ "/etc/chirpstack/adr/no_adr.js", "/etc/chirpstack/adr/force_dr1_adr.js" ]
-
 # API interface configuration.
 [api]
 
@@ -120,7 +113,7 @@
   # is never exposed. Changing this secret will invalidate all login and API
   # tokens. The following command can be used to generate a random secret:
   #   openssl rand -base64 32
-  secret="@CHIRPSECRET@"
+  secret="GKPv/wiRBZbzVcYRtMZnOUQlJOMoUpidaJ7s69WvR/w="
 
 
 [integration]
@@ -128,6 +121,8 @@
 
   [integration.mqtt]
     server="tcp://$MQTT_BROKER_HOST:1883/"
+    username="gateway"
+    password="buoy"
     json=true
 
 [gateway]

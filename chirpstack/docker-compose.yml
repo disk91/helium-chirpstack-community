@@ -43,7 +43,7 @@ services:
     logging: *logs
 
   chirpstack:
-    image: chirpstack/chirpstack:4.14.1
+    image: chirpstack/chirpstack:4.11.0
     command: -c /etc/chirpstack
     restart: unless-stopped
     volumes:
@@ -198,7 +198,7 @@ services:
     image: eclipse-mosquitto:2
     restart: unless-stopped
     ports:
-      - 127.0.0.1:1883:1883
+      - 0.0.0.0:1883:1883
     volumes:
       - /helium/configuration/mosquitto/mosquitto.conf:/mosquitto/config/mosquitto.conf
       - /helium/mosquitto:/mosquitto/data

@@ -37,10 +37,10 @@
         server="tcp://$MQTT_BROKER_HOST:1883"
 
         # Connect with the given username (optional)
-        username=""
+        username="gateway"
 
         # Connect with the given password (optional)
-        password=""
+        password="buoy"
 
         # Quality of service level
         #
