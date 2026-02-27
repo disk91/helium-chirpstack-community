@@ -415,7 +415,13 @@ fi
 
 
 # ready to run it !
+
+# Fix data directory permissions for containerized services
+# Grafana runs as UID 472, Prometheus runs as UID 65534 (nobody)
+chown -R 472:472 /helium/grafana/
+chown -R 65534:65534 /helium/prometheus/
 cecho "Installation completed"
+
 getPubKey
 cd /helium
 echo "The installation is completed, before being able to run it, you must request Helium Foundation"
