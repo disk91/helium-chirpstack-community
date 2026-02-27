@@ -102,6 +102,19 @@ askSmtpConfig() {
 }
 
 
+
+MQTTLOGIN=""
+MQTTPASSWORD=""
+getMqttConfig() {
+  if [ "$MQTTLOGIN" == "" ] ; then
+    read -p "MQTT username for broker auth (default: gateway): " mqttlogin
+    MQTTLOGIN=${mqttlogin:-gateway}
+  fi
+  if [ "$MQTTPASSWORD" == "" ] ; then
+    MQTTPASSWORD=`openssl rand -hex 16`
+    echo "Generated MQTT password: $MQTTPASSWORD"
+  fi
+}
 DOMAIN=""
 PROTO=""
 FULLDOMAIN=""
@@ -363,6 +376,11 @@ if egrep "@DOMAIN@" /helium/configuration/helium/configuration.properties > /dev
   sed -i "s/@SMTPPORT@/$SMTPPORT/g" /helium/configuration/helium/configuration.properties
   sed -i "s/@SMTPUSER@/$SMTPUSER/g" /helium/configuration/helium/configuration.properties
   sed -i "s/@SMTPPASS@/$SMTPPASS/g" /helium/configuration/helium/configuration.properties
+  getMqttConfig
+  sed -i "s/@MQTTLOGIN@/$MQTTLOGIN/g" /helium/configuration/helium/configuration.properties
+  sed -i "s/@MQTTPASSWORD@/$MQTTPASSWORD/g" /helium/configuration/helium/configuration.properties
+  # Also set the password in mosquitto
+  docker exec helium-mosquitto-1 mosquitto_passwd -b /mosquitto/data/passwd $MQTTLOGIN $MQTTPASSWORD 2>/dev/null || true
 fi
 
 # build the companion
