@@ -978,6 +978,7 @@ public class HeliumTenantService {
         }
 
         // is signup allowed
+        // Rq : tenantSetup have the tenant string text as tenantUUID, this is not tenant.id column
         HeliumTenantSetup hts = heliumTenantSetupService.getHeliumTenantSetup(profile,false);
         if( hts == null ) {
             throw new ITParseException("error_invalidcoupon");

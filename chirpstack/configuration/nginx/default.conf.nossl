@@ -18,11 +18,21 @@ map $arg_override $override {
    true chirpstack;
    default front;
 }
-
+map $uri $is_js {
+    default 0;
+    ~*\.js$ 1;
+}
 server {
     listen 80;
     listen [::]:80;
     http2 on;
+
+    gzip on;
+    gzip_vary on;
+    gzip_min_length 1000;
+    gzip_comp_level 5;
+    gzip_types text/plain text/css application/javascript image/svg+xml application/x-javascript text/xml application/xml application/xml+rss text/javascript application/json;
+    gzip_proxied any;
 
     server_name @DOMAIN@;
 
@@ -61,6 +71,10 @@ server {
          proxy_set_header        X-Real-IP $remote_addr;
          proxy_set_header        X-Forwarded-For $proxy_add_x_forwarded_for;
          proxy_set_header        Host $http_host;
+         if ($is_js) {
+              expires 30m;
+              add_header Cache-Control "public, max-age=1800" always;
+         }
     }
 
     location ~ ^/rest-api/ {
