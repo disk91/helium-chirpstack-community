@@ -108,7 +108,6 @@ export default {
     link: [{ rel: 'icon', type: 'image/x-icon', href: '/static/front/favicon.ico' }],
     script: [
       { src: 'https://js.stripe.com/v3/' },
-      { src: 'https://polyfill.io/v3/polyfill.min.js?version=3.52.1&features=fetch'},
       { src: 'https://unpkg.com/@mapbox/leaflet-pip@latest/leaflet-pip.js' },
     ],
   },
@@ -117,7 +116,8 @@ export default {
   css: [],
 
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
-  plugins: [],
+  plugins: [
+  ],
 
   // Auto import components: https://go.nuxtjs.dev/config-components
   components: true,
