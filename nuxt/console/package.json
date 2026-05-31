@@ -39,6 +39,7 @@
     "eslint-plugin-nuxt": "^4.0.0",
     "eslint-plugin-vue": "^9.5.1",
     "prettier": "^2.7.1",
-    "vue-apexcharts": "^1.6.2"
+    "apexcharts": ">=4.0.0",
+    "vue-apexcharts": "^1.7.0"
   }
 }
