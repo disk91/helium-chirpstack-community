@@ -17,35 +17,40 @@
                 <h1 class="mb-2">{{ $config.consoleName }}</h1>
               </b-card-text>
 
-              <b-card v-if="registrationKey" style="border-radius: 1.5rem;padding: 2rem;">
-                <img :src="$config.captchaGetChallenge + '/' + registrationKey +'/'" 
-                     alt="captcha" 
-                     style="width: 75%; margin: 10px 0px 10px 0px;border-radius: 1.5rem;border:solid 2px #000;" 
-                     />
-                <div v-if="holdOn" style="margin-top:10px;">
-                  <b-card-text class="small mb-2">
-                    {{ $t('captcha_instruction') }}
-                  </b-card-text>
-                  <img :src="$config.captchaGetPad + '/0/' + registrationKey +'/'" alt="captcha pad0" :style="'width: 20%; margin: 10px 0px 0px 0px;border-radius: 1.5rem;border:solid 3px ' + getBorder(0)+';'" @click="selectPad(0)"/>
-                  <img :src="$config.captchaGetPad + '/1/' + registrationKey +'/'" alt="captcha pad1" :style="'width: 20%; margin: 10px 0px 0px 0px;border-radius: 1.5rem;border:solid 3px ' + getBorder(1)+';'" @click="selectPad(1)"/>
-                  <img :src="$config.captchaGetPad + '/2/' + registrationKey +'/'" alt="captcha pad2" :style="'width: 20%; margin: 10px 0px 0px 0px;border-radius: 1.5rem;border:solid 3px ' + getBorder(2)+';'" @click="selectPad(2)"/>
-                  <img :src="$config.captchaGetPad + '/3/' + registrationKey +'/'" alt="captcha pad3" :style="'width: 20%; margin: 10px 0px 0px 0px;border-radius: 1.5rem;border:solid 3px ' + getBorder(3)+';'" @click="selectPad(3)"/>
-                  <img :src="$config.captchaGetPad + '/4/' + registrationKey +'/'" alt="captcha pad4" :style="'width: 20%; margin: 10px 0px 0px 0px;border-radius: 1.5rem;border:solid 3px ' + getBorder(4)+';'" @click="selectPad(4)"/>
-                  <img :src="$config.captchaGetPad + '/5/' + registrationKey +'/'" alt="captcha pad5" :style="'width: 20%; margin: 10px 0px 0px 0px;border-radius: 1.5rem;border:solid 3px ' + getBorder(5)+';'" @click="selectPad(5)"/>
-                  <img :src="$config.captchaGetPad + '/6/' + registrationKey +'/'" alt="captcha pad6" :style="'width: 20%; margin: 10px 0px 0px 0px;border-radius: 1.5rem;border:solid 3px ' + getBorder(6)+';'" @click="selectPad(6)"/>
-                  <img :src="$config.captchaGetPad + '/7/' + registrationKey +'/'" alt="captcha pad7" :style="'width: 20%; margin: 10px 0px 0px 0px;border-radius: 1.5rem;border:solid 3px ' + getBorder(7)+';'" @click="selectPad(7)"/>
-                  <img :src="$config.captchaGetPad + '/8/' + registrationKey +'/'" alt="captcha pad8" :style="'width: 20%; margin: 10px 0px 0px 0px;border-radius: 1.5rem;border:solid 3px ' + getBorder(8)+';'" @click="selectPad(8)"/>
-                  <img :src="$config.captchaGetPad + '/9/' + registrationKey +'/'" alt="captcha pad9" :style="'width: 20%; margin: 10px 0px 0px 0px;border-radius: 1.5rem;border:solid 3px ' + getBorder(9)+';'" @click="selectPad(9)"/>
-                  <img :src="$config.captchaGetPad + '/10/' + registrationKey +'/'" alt="captcha pad10" :style="'width: 20%; margin: 10px 0px 0px 0px;border-radius: 1.5rem;border:solid 3px ' + getBorder(10)+';'" @click="selectPad(10)"/>
-                  <img :src="$config.captchaGetPad + '/11/' + registrationKey +'/'" alt="captcha pad11" :style="'width: 20%; margin: 10px 0px 0px 0px;border-radius: 1.5rem;border:solid 3px ' + getBorder(11)+';'" @click="selectPad(11)"/>
-                  <img :src="$config.captchaGetPad + '/12/' + registrationKey +'/'" alt="captcha pad12" :style="'width: 20%; margin: 10px 0px 0px 0px;border-radius: 1.5rem;border:solid 3px ' + getBorder(12)+';'" @click="selectPad(12)"/>
-                  <img :src="$config.captchaGetPad + '/13/' + registrationKey +'/'" alt="captcha pad13" :style="'width: 20%; margin: 10px 0px 0px 0px;border-radius: 1.5rem;border:solid 3px ' + getBorder(13)+';'" @click="selectPad(13)"/>
-                  <img :src="$config.captchaGetPad + '/14/' + registrationKey +'/'" alt="captcha pad14" :style="'width: 20%; margin: 10px 0px 0px 0px;border-radius: 1.5rem;border:solid 3px ' + getBorder(14)+';'" @click="selectPad(14)"/>
-                  <img :src="$config.captchaGetPad + '/15/' + registrationKey +'/'" alt="captcha pad15" :style="'width: 20%; margin: 10px 0px 0px 0px;border-radius: 1.5rem;border:solid 3px ' + getBorder(15)+';'" @click="selectPad(15)"/>
-                </div>
-              </b-card>
+              <b-card-text class="small mb-2 text-danger">
+                  <b-icon icon="exclamation-circle-fill" variant="danger"></b-icon>
+                  {{ $t(errorMessage) }}
+                </b-card-text>
 
-              <b-card-text class="mb-2 text-success" v-show="printSuccess">
+                <b-card v-if="registrationKey && printCatpcha" style="border-radius: 1.5rem;padding: 2rem;">
+                  <img :src="$config.captchaGetChallenge + '/' + registrationKey +'/'" 
+                      alt="captcha" 
+                      style="width: 75%; margin: 10px 0px 10px 0px;border-radius: 1.5rem;border:solid 2px #000;" 
+                      />
+                  <div v-if="holdOn" style="margin-top:10px;">
+                    <b-card-text class="small mb-2">
+                      {{ $t('captcha_instruction') }}
+                    </b-card-text>
+                    <img :src="$config.captchaGetPad + '/0/' + registrationKey +'/'" alt="captcha pad0" :style="'width: 20%; margin: 10px 0px 0px 0px;border-radius: 1.5rem;border:solid 3px ' + getBorder(0)+';'" @click="selectPad(0)"/>
+                    <img :src="$config.captchaGetPad + '/1/' + registrationKey +'/'" alt="captcha pad1" :style="'width: 20%; margin: 10px 0px 0px 0px;border-radius: 1.5rem;border:solid 3px ' + getBorder(1)+';'" @click="selectPad(1)"/>
+                    <img :src="$config.captchaGetPad + '/2/' + registrationKey +'/'" alt="captcha pad2" :style="'width: 20%; margin: 10px 0px 0px 0px;border-radius: 1.5rem;border:solid 3px ' + getBorder(2)+';'" @click="selectPad(2)"/>
+                    <img :src="$config.captchaGetPad + '/3/' + registrationKey +'/'" alt="captcha pad3" :style="'width: 20%; margin: 10px 0px 0px 0px;border-radius: 1.5rem;border:solid 3px ' + getBorder(3)+';'" @click="selectPad(3)"/>
+                    <img :src="$config.captchaGetPad + '/4/' + registrationKey +'/'" alt="captcha pad4" :style="'width: 20%; margin: 10px 0px 0px 0px;border-radius: 1.5rem;border:solid 3px ' + getBorder(4)+';'" @click="selectPad(4)"/>
+                    <img :src="$config.captchaGetPad + '/5/' + registrationKey +'/'" alt="captcha pad5" :style="'width: 20%; margin: 10px 0px 0px 0px;border-radius: 1.5rem;border:solid 3px ' + getBorder(5)+';'" @click="selectPad(5)"/>
+                    <img :src="$config.captchaGetPad + '/6/' + registrationKey +'/'" alt="captcha pad6" :style="'width: 20%; margin: 10px 0px 0px 0px;border-radius: 1.5rem;border:solid 3px ' + getBorder(6)+';'" @click="selectPad(6)"/>
+                    <img :src="$config.captchaGetPad + '/7/' + registrationKey +'/'" alt="captcha pad7" :style="'width: 20%; margin: 10px 0px 0px 0px;border-radius: 1.5rem;border:solid 3px ' + getBorder(7)+';'" @click="selectPad(7)"/>
+                    <img :src="$config.captchaGetPad + '/8/' + registrationKey +'/'" alt="captcha pad8" :style="'width: 20%; margin: 10px 0px 0px 0px;border-radius: 1.5rem;border:solid 3px ' + getBorder(8)+';'" @click="selectPad(8)"/>
+                    <img :src="$config.captchaGetPad + '/9/' + registrationKey +'/'" alt="captcha pad9" :style="'width: 20%; margin: 10px 0px 0px 0px;border-radius: 1.5rem;border:solid 3px ' + getBorder(9)+';'" @click="selectPad(9)"/>
+                    <img :src="$config.captchaGetPad + '/10/' + registrationKey +'/'" alt="captcha pad10" :style="'width: 20%; margin: 10px 0px 0px 0px;border-radius: 1.5rem;border:solid 3px ' + getBorder(10)+';'" @click="selectPad(10)"/>
+                    <img :src="$config.captchaGetPad + '/11/' + registrationKey +'/'" alt="captcha pad11" :style="'width: 20%; margin: 10px 0px 0px 0px;border-radius: 1.5rem;border:solid 3px ' + getBorder(11)+';'" @click="selectPad(11)"/>
+                    <img :src="$config.captchaGetPad + '/12/' + registrationKey +'/'" alt="captcha pad12" :style="'width: 20%; margin: 10px 0px 0px 0px;border-radius: 1.5rem;border:solid 3px ' + getBorder(12)+';'" @click="selectPad(12)"/>
+                    <img :src="$config.captchaGetPad + '/13/' + registrationKey +'/'" alt="captcha pad13" :style="'width: 20%; margin: 10px 0px 0px 0px;border-radius: 1.5rem;border:solid 3px ' + getBorder(13)+';'" @click="selectPad(13)"/>
+                    <img :src="$config.captchaGetPad + '/14/' + registrationKey +'/'" alt="captcha pad14" :style="'width: 20%; margin: 10px 0px 0px 0px;border-radius: 1.5rem;border:solid 3px ' + getBorder(14)+';'" @click="selectPad(14)"/>
+                    <img :src="$config.captchaGetPad + '/15/' + registrationKey +'/'" alt="captcha pad15" :style="'width: 20%; margin: 10px 0px 0px 0px;border-radius: 1.5rem;border:solid 3px ' + getBorder(15)+';'" @click="selectPad(15)"/>
+                  </div>
+                </b-card>
+
+                <b-card-text class="mb-2 text-success" v-show="printSuccess">
                 <b-icon icon="check-square" variant="success"></b-icon>
                 {{ $t(successMessage) }}
               </b-card-text>
@@ -79,6 +84,7 @@ export default Vue.extend({
         registrationKey: undefined as string | undefined,
         holdOn:false as boolean,
         bColor: [] as string[],
+        printCatpcha: (this.$config.disableCaptcha == 'false') as boolean,
       }
     },
     computed : {
