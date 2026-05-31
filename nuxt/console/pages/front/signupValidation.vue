@@ -20,9 +20,9 @@
               <b-card-text class="small mb-2 text-danger">
                   <b-icon icon="exclamation-circle-fill" variant="danger"></b-icon>
                   {{ $t(errorMessage) }}
-                </b-card-text>
+              </b-card-text>
 
-                <b-card v-if="registrationKey && printCatpcha" style="border-radius: 1.5rem;padding: 2rem;">
+              <b-card v-if="registrationKey && printCatpcha" style="border-radius: 1.5rem;padding: 2rem;">
                   <img :src="$config.captchaGetChallenge + '/' + registrationKey +'/'" 
                       alt="captcha" 
                       style="width: 75%; margin: 10px 0px 10px 0px;border-radius: 1.5rem;border:solid 2px #000;" 
@@ -48,9 +48,9 @@
                     <img :src="$config.captchaGetPad + '/14/' + registrationKey +'/'" alt="captcha pad14" :style="'width: 20%; margin: 10px 0px 0px 0px;border-radius: 1.5rem;border:solid 3px ' + getBorder(14)+';'" @click="selectPad(14)"/>
                     <img :src="$config.captchaGetPad + '/15/' + registrationKey +'/'" alt="captcha pad15" :style="'width: 20%; margin: 10px 0px 0px 0px;border-radius: 1.5rem;border:solid 3px ' + getBorder(15)+';'" @click="selectPad(15)"/>
                   </div>
-                </b-card>
+              </b-card>
 
-                <b-card-text class="mb-2 text-success" v-show="printSuccess">
+              <b-card-text class="mb-2 text-success" v-show="printSuccess">
                 <b-icon icon="check-square" variant="success"></b-icon>
                 {{ $t(successMessage) }}
               </b-card-text>
@@ -59,11 +59,8 @@
                               class="my-2"
                               v-show="printSuccess"
                               >
-                              {{ $t('signup_login_button') }}</b-button>
-              <b-card-text class="small mb-2 text-danger" v-show="printError">
-                <b-icon icon="exclamation-circle-fill" variant="danger"></b-icon>
-                {{ $t(errorMessage) }}
-              </b-card-text>
+                              {{ $t('signup_login_button') }}
+              </b-button>
             </b-card>
         </div>
   </div>
@@ -101,7 +98,7 @@ export default Vue.extend({
       else if ( key.length != 80 ) this.$data.errorMessage = "signup_vmessage_badkey";
       else {
 
-        if ( this.$config.disableCaptcha == 'true' ) {
+        if ( this.$config.disableCaptcha != 'false' ) {
 
           this.$data.errorMessage='';
           this.$data.successMessage='';
