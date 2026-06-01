@@ -46,6 +46,10 @@ server {
 
     location ~ ^(/front/|/_nuxt/|/_loading/|/__webpack_hmr/|/static/front/) {
          root /var/www/front;
+         if ($is_js) {
+              expires 30m;
+              add_header Cache-Control "public, max-age=1800" always;
+         }
     }
 
 	location = /integrations/mqtt.png {
