@@ -76,7 +76,7 @@ services:
     logging: *logs
 
   chirpstack:
-    image: chirpstack/chirpstack:4.15.0
+    image: chirpstack/chirpstack:4.18.0
     command: -c /etc/chirpstack
     restart: unless-stopped
     volumes:
@@ -100,7 +100,7 @@ services:
     logging: *logs
 
   chirpstack-gateway-bridge-eu868:
-    image: chirpstack/chirpstack-gateway-bridge:4.0.11
+    image: chirpstack/chirpstack-gateway-bridge:4.1.1
     restart: unless-stopped
     ports:
       - 1700:1700/udp
@@ -111,7 +111,7 @@ services:
     logging: *logs
 
   chirpstack-gateway-bridge-us915:
-    image: chirpstack/chirpstack-gateway-bridge:4.0.11
+    image: chirpstack/chirpstack-gateway-bridge:4.1.1
     restart: unless-stopped
     ports:
       - 1701:1700/udp
@@ -122,7 +122,7 @@ services:
     logging: *logs
 
   chirpstack-gateway-bridge-au915-1:
-    image: chirpstack/chirpstack-gateway-bridge:4.0.11
+    image: chirpstack/chirpstack-gateway-bridge:4.1.1
     restart: unless-stopped
     ports:
       - 1702:1700/udp
@@ -133,7 +133,7 @@ services:
     logging: *logs
 
   chirpstack-gateway-bridge-as923:
-    image: chirpstack/chirpstack-gateway-bridge:4.0.11
+    image: chirpstack/chirpstack-gateway-bridge:4.1.1
     restart: unless-stopped
     ports:
       - 1703:1700/udp
@@ -144,7 +144,7 @@ services:
     logging: *logs
 
   chirpstack-gateway-bridge-as923-2:
-    image: chirpstack/chirpstack-gateway-bridge:4.0.11
+    image: chirpstack/chirpstack-gateway-bridge:4.1.1
     restart: unless-stopped
     ports:
       - 1704:1700/udp
@@ -155,7 +155,7 @@ services:
     logging: *logs
 
   chirpstack-gateway-bridge-as923-3:
-    image: chirpstack/chirpstack-gateway-bridge:4.0.11
+    image: chirpstack/chirpstack-gateway-bridge:4.1.1
     restart: unless-stopped
     ports:
       - 1705:1700/udp
@@ -166,7 +166,7 @@ services:
     logging: *logs
 
   chirpstack-gateway-bridge-as923-4:
-    image: chirpstack/chirpstack-gateway-bridge:4.0.11
+    image: chirpstack/chirpstack-gateway-bridge:4.1.1
     restart: unless-stopped
     ports:
       - 1706:1700/udp
@@ -177,7 +177,7 @@ services:
     logging: *logs
 
   chirpstack-gateway-bridge-in865:
-    image: chirpstack/chirpstack-gateway-bridge:4.0.11
+    image: chirpstack/chirpstack-gateway-bridge:4.1.1
     restart: unless-stopped
     ports:
       - 1707:1700/udp
@@ -188,7 +188,7 @@ services:
     logging: *logs
 
   chirpstack-gateway-bridge-kr920:
-    image: chirpstack/chirpstack-gateway-bridge:4.0.11
+    image: chirpstack/chirpstack-gateway-bridge:4.1.1
     restart: unless-stopped
     ports:
       - 1708:1700/udp
@@ -198,8 +198,19 @@ services:
       - mosquitto
     logging: *logs
 
+  chirpstack-gateway-bridge-as923-1c:
+    image: chirpstack/chirpstack-gateway-bridge:4.1.1
+    restart: unless-stopped
+    ports:
+      - 1709:1700/udp
+    volumes:
+      - /helium/configuration/chirpstack-gateway-bridge-as923-1c:/etc/chirpstack-gateway-bridge
+    depends_on:
+      - mosquitto
+    logging: *logs
+
   chirpstack-rest-api:
-    image: chirpstack/chirpstack-rest-api:4.15.0
+    image: chirpstack/chirpstack-rest-api:4.18.0
     restart: unless-stopped
     command: --server chirpstack:8080 --bind 0.0.0.0:8090 --insecure
     ports:

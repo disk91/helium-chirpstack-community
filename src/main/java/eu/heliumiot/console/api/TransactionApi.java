@@ -226,7 +226,7 @@ public class TransactionApi {
             }
     )
     @RequestMapping(value="/invoice/{txUUID}/",
-            produces = MediaType.APPLICATION_PDF_VALUE,
+            produces = { MediaType.APPLICATION_PDF_VALUE, MediaType.APPLICATION_JSON_VALUE },
             method= RequestMethod.GET)
     @PreAuthorize("hasAnyRole('ROLE_USER')")
     public ResponseEntity<?> requestInvoice(
