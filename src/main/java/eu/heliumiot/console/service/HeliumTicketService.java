@@ -105,7 +105,7 @@ public class HeliumTicketService {
         // Admin have a different path to get all pending
         UserCacheService.UserCacheElement user = userCacheService.getUserById(userUUID);
         if (user == null) throw new ITRightException();
-        if ( user.user.isAdmin() ) return getAdminTickets();
+        if ( user.user.isAdmin() ) return getAdminTickets(false);
 
         ArrayList<TicketListRespItf> rs = new ArrayList<>();
         List<HeliumTicket> ts = heliumTicketRepository.findHeliumTicketByUserUUIDOrderByCreatedAtDesc(
@@ -139,7 +139,7 @@ public class HeliumTicketService {
         UserCacheService.UserCacheElement user = userCacheService.getUserById(userUUID);
         if (user == null) throw new ITRightException();
         if ( user.user.isAdmin() ) {
-            r.setPending(getAdminTickets().size());
+            r.setPending(getAdminTickets(true).size());
         } else {
             List<HeliumTicket> ts = heliumTicketRepository.findHeliumTicketByUserUUIDAndStatusOrderByCreatedAtDesc(
                 UUID.fromString(userUUID),
@@ -154,7 +154,7 @@ public class HeliumTicketService {
 
 
     // List admin ticket + 5 last tickets
-    public List<TicketListRespItf> getAdminTickets() {
+    public List<TicketListRespItf> getAdminTickets(boolean onlypending) {
         List<HeliumTicket> ts = heliumTicketRepository.findHeliumTicketByStatusOrderByCreatedAtDesc(
                 HELIUM_TICKET_STATUS_OPEN
         );
@@ -172,18 +172,20 @@ public class HeliumTicketService {
         }
 
         // Get last 5 RESPP tickets
-        List<HeliumTicket> ts2 = heliumTicketRepository.findTop5ByStatusOrderByCreatedAtDesc(
-                HELIUM_TICKET_STATUS_RESPP
-        );
-        if ( ts2 != null ) {
-            for ( HeliumTicket t : ts2 ) {
-                TicketListRespItf r = new TicketListRespItf();
-                r.setTicketUUID(t.getId().toString());
-                r.setStatus(t.getStatus());
-                r.setCreatedAt(t.getCreatedAt().getTime());
-                r.setTopic(t.getTopic());
-                r.setDetails(t.getDetail());
-                rs.add(r);
+        if ( !onlypending) {
+            List<HeliumTicket> ts2 = heliumTicketRepository.findTop5ByStatusOrderByCreatedAtDesc(
+                    HELIUM_TICKET_STATUS_RESPP
+            );
+            if (ts2 != null) {
+                for (HeliumTicket t : ts2) {
+                    TicketListRespItf r = new TicketListRespItf();
+                    r.setTicketUUID(t.getId().toString());
+                    r.setStatus(t.getStatus());
+                    r.setCreatedAt(t.getCreatedAt().getTime());
+                    r.setTopic(t.getTopic());
+                    r.setDetails(t.getDetail());
+                    rs.add(r);
+                }
             }
         }
 
