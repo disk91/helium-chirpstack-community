@@ -210,7 +210,7 @@ public class MqttLoRaListener implements MqttCallback {
             };
             this.connect();
 
-            this.mapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
+            this.mapper.setDefaultPropertyInclusion(JsonInclude.Include.NON_NULL);
             this.mapper.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
             this.mapper.configure(SerializationFeature.FAIL_ON_SELF_REFERENCES, false);
 

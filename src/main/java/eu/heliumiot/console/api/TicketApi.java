@@ -78,7 +78,7 @@ public class TicketApi {
             HttpServletRequest request
     ) {
         long startMs= Now.NowUtcMs();
-        log.debug("Get tickets for "+request.getUserPrincipal().getName());
+        log.debug("Get tickets for {}", request.getUserPrincipal().getName());
         try {
             List<TicketListRespItf> r = heliumTicketService.getUserTickets(request.getUserPrincipal().getName());
             return new ResponseEntity<>(r, HttpStatus.OK);

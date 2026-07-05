@@ -161,7 +161,7 @@ public class MiscApi {
         if ( ! consoleConfig.isStatReportEnable() ) {
             if (log.length() < 1500) {
                 ObjectMapper mapper = new ObjectMapper();
-                mapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
+                mapper.setDefaultPropertyInclusion(JsonInclude.Include.NON_NULL);
                 mapper.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
                 mapper.configure(SerializationFeature.FAIL_ON_SELF_REFERENCES, false);
                 try {

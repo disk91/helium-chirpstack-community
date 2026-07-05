@@ -53,10 +53,8 @@
                   >
                     <b-col cols="11"
                         class="ml-3 bg-light text-dark"
-                        style="font-size:0.8rem;padding-right:0px;font-weight: 600;"
-                    >
-                        {{ ticket.details }} 
-                    </b-col>
+                        style="font-size:0.8rem;padding-right:0px;font-weight: 600;white-space:pre-wrap;"
+                    >{{ ticket.details }}</b-col>
                   </b-row>
 
 
@@ -80,16 +78,12 @@
 
                         <b-col cols="9" v-if="! response.adminReponse"
                             class="bg-light text-dark"
-                            style="font-size:0.8rem;padding-right:0px;border-radius: 0.2rem;"
-                        >
-                            {{ response.content }} 
-                        </b-col>
+                            style="font-size:0.8rem;padding-right:0px;border-radius: 0.2rem;white-space:pre-wrap;"
+                        >{{ response.content }}</b-col>
                         <b-col cols="9" v-if="response.adminReponse"
                             class="bg-success text-white"
-                            style="font-size:0.8rem;padding-right:0px;border-radius: 0.2rem;"
-                        >
-                            {{ response.content }} 
-                        </b-col>
+                            style="font-size:0.8rem;padding-right:0px;border-radius: 0.2rem;white-space:pre-wrap;"
+                        >{{ response.content }}</b-col>
                     </b-row>
                    </b-col>
                   </b-row>

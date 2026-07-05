@@ -77,7 +77,7 @@ public class HeliumTenantService {
         log.info("Init initHeliumTenantService");
 
         mapper = new ObjectMapper();
-        mapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
+        mapper.setDefaultPropertyInclusion(JsonInclude.Include.NON_NULL);
         mapper.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
         mapper.configure(SerializationFeature.FAIL_ON_SELF_REFERENCES, false);
 
@@ -634,7 +634,7 @@ public class HeliumTenantService {
     protected boolean processBalance(HeliumTenantSetup ts, HeliumTenant t) {
         if ( t.getDcBalance() < ts.getDcBalanceStop() ) {
             ObjectMapper mapper = new ObjectMapper();
-            mapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
+            mapper.setDefaultPropertyInclusion(JsonInclude.Include.NON_NULL);
             mapper.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
             mapper.configure(SerializationFeature.FAIL_ON_SELF_REFERENCES, false);
 

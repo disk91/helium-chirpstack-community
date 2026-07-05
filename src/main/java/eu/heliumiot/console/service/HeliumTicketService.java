@@ -153,7 +153,7 @@ public class HeliumTicketService {
     }
 
 
-    // List admin ticket
+    // List admin ticket + 5 last tickets
     public List<TicketListRespItf> getAdminTickets() {
         List<HeliumTicket> ts = heliumTicketRepository.findHeliumTicketByStatusOrderByCreatedAtDesc(
                 HELIUM_TICKET_STATUS_OPEN
@@ -170,6 +170,23 @@ public class HeliumTicketService {
                 rs.add(r);
             }
         }
+
+        // Get last 5 RESPP tickets
+        List<HeliumTicket> ts2 = heliumTicketRepository.findTop5ByStatusOrderByCreatedAtDesc(
+                HELIUM_TICKET_STATUS_RESPP
+        );
+        if ( ts2 != null ) {
+            for ( HeliumTicket t : ts2 ) {
+                TicketListRespItf r = new TicketListRespItf();
+                r.setTicketUUID(t.getId().toString());
+                r.setStatus(t.getStatus());
+                r.setCreatedAt(t.getCreatedAt().getTime());
+                r.setTopic(t.getTopic());
+                r.setDetails(t.getDetail());
+                rs.add(r);
+            }
+        }
+
         return rs;
     }
 

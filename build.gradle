@@ -1,6 +1,6 @@
 plugins {
 	id 'java'
-	id 'org.springframework.boot' version '3.5.14'
+	id 'org.springframework.boot' version '3.5.16'
 	id 'io.spring.dependency-management' version '1.1.7'
 }
 
@@ -34,26 +34,26 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-data-redis'
     implementation 'org.springframework.boot:spring-boot-starter-actuator'
 	implementation group: 'org.eclipse.paho', name:'org.eclipse.paho.client.mqttv3', version: '1.2.5'
-	implementation group: 'io.micrometer', name: 'micrometer-registry-prometheus', version: '1.16.5'
-	implementation group: 'org.postgresql', name: 'postgresql', version: '42.7.11'
+	implementation group: 'io.micrometer', name: 'micrometer-registry-prometheus', version: '1.17.0'
+	implementation group: 'org.postgresql', name: 'postgresql', version: '42.7.12'
 	implementation group: 'redis.clients', name: 'jedis', version: '5.1.5'
 	implementation group: 'com.google.protobuf', name: 'protobuf-java-util', version: '3.25.8'
 	implementation group: 'org.springdoc', name: 'springdoc-openapi-ui', version: '1.8.0'
 	implementation group: 'org.bouncycastle', name: 'bcprov-jdk18on', version: '1.84'
 	implementation group: 'io.jsonwebtoken', name: 'jjwt-api', version: '0.13.0'
-	implementation group: 'org.flywaydb', name: 'flyway-core', version: '11.20.3'
+	implementation group: 'org.flywaydb', name: 'flyway-core', version: '12.10.0'
 	implementation group: 'com.stripe', name:'stripe-java', version:'29.5.0'
 	implementation group: 'org.apache.pdfbox', name:'pdfbox', version:'3.0.7'
 	implementation group: 'com.google.protobuf', name: 'protobuf-java', version: '4.29.2'
 	implementation group: 'io.grpc', name: 'grpc-protobuf', version:'1.69.0'
 	implementation group: 'io.grpc', name: 'grpc-stub', version:'1.69.0'
-	compileOnly group:'org.apache.tomcat', name:'tomcat-annotations-api', version: '11.0.22'
+	compileOnly group:'org.apache.tomcat', name:'tomcat-annotations-api', version: '11.0.23'
 
 	runtimeOnly group: 'io.grpc', name:'grpc-netty-shaded', version: '1.78.0'
-	runtimeOnly group: 'org.postgresql', name: 'postgresql', version: '42.7.11'
+	runtimeOnly group: 'org.postgresql', name: 'postgresql', version: '42.7.12'
 	runtimeOnly group: 'io.jsonwebtoken', name: 'jjwt-impl', version: '0.13.0'
 	runtimeOnly group: 'io.jsonwebtoken', name: 'jjwt-jackson', version: '0.13.0'
-    runtimeOnly group: 'org.flywaydb', name: 'flyway-database-postgresql', version: '11.20.3'
+    runtimeOnly group: 'org.flywaydb', name: 'flyway-database-postgresql', version: '12.10.0'
     //testImplementation 'org.springframework.boot:spring-boot-starter-test'
 }
 

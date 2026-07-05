@@ -1,4 +1,7 @@
-<template>
+script: [
+  { src: 'https://js.stripe.com/v3/' },
+  { src: 'https://unpkg.com/@mapbox/leaflet-pip@latest/leaflet-pip.js' },  // ← risque
+],<template>
   <div style="height: 100vh; width: 100%; 
         z-index: 1; overflow: hidden; position: relative; 
         display: flex; 

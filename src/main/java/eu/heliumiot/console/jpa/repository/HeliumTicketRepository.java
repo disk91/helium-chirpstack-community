@@ -45,6 +45,9 @@ public interface HeliumTicketRepository extends CrudRepository<HeliumTicket, UUI
             int status
     );
 
+    public List<HeliumTicket> findTop5ByStatusOrderByCreatedAtDesc(
+            int status
+    );
 
 
 }

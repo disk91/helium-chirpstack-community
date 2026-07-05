@@ -732,7 +732,7 @@ public class PrometeusService {
         sl.setDeviceNumber(devices);
 
         ObjectMapper mapper = new ObjectMapper();
-        mapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
+        mapper.setDefaultPropertyInclusion(JsonInclude.Include.NON_NULL);
         mapper.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
         mapper.configure(SerializationFeature.FAIL_ON_SELF_REFERENCES, false);
 
