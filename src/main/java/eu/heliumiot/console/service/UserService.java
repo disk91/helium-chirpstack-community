@@ -929,10 +929,12 @@ public class UserService {
         if ( searchKey.compareTo("***") == 0 ) {
             u1 = heliumUserRepository.findFirst20HeliumUsersByOrderByRegistrationTimeDesc();
         } else {
-            if ( searchKey.length() >= 5 ) {
+            if ( searchKey.length() >= 8 ) {
+                u1 = heliumUserRepository.findHeliumUsersBySearchOrderByRegistration(searchKey, 200);
+            } else if ( searchKey.length() >= 5 ) {
                 u1 = heliumUserRepository.findHeliumUsersBySearchOrderByRegistration(searchKey,100);
             } else {
-                u1 = heliumUserRepository.findHeliumUsersBySearchOrderByRegistration(searchKey,10);
+                u1 = heliumUserRepository.findHeliumUsersBySearchOrderByRegistration(searchKey,20);
             }
         }
         if ( u1 != null ) {
