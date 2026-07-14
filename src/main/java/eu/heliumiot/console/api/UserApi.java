@@ -211,7 +211,7 @@ public class UserApi {
         @RequestParam("keyword") String keyword
     ) {
         long startMs= Now.NowUtcMs();
-        log.debug("Get user list for key "+keyword);
+        log.debug("Get user list for key {}", keyword);
         try {
             List<UserListRespItf> r = userService.getUserlist(request.getUserPrincipal().getName(),keyword);
             return new ResponseEntity<>(r, HttpStatus.OK);

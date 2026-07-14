@@ -1144,7 +1144,7 @@ public class HeliumTenantService {
 
         } else {
             // create a list with 10 - 20 entries based on the search criteria type like
-            List<eu.heliumiot.console.jpa.db.Tenant> t0 = tenantRepository.findTenantLike(searchKey);
+            List<eu.heliumiot.console.jpa.db.Tenant> t0 = tenantRepository.findTenantLike(searchKey,20);
             for (eu.heliumiot.console.jpa.db.Tenant t : t0) {
                 if (tenantsId.get(t.getId().toString()) == null) {
                     tenantsId.put(t.getId().toString(), t.getId().toString());
@@ -1152,7 +1152,7 @@ public class HeliumTenantService {
             }
 
             // search 5 owners with email like
-            List<HeliumUser> u1 = heliumUserRepository.findHeliumUsersBySearch(searchKey);
+            List<HeliumUser> u1 = heliumUserRepository.findHeliumUsersBySearch(searchKey,10);
             for (HeliumUser u : u1) {
                 List<UserTenant> t1 = userTenantRepository.findUserTenantByUserId(UUID.fromString(u.getUserid()));
                 for (UserTenant t : t1) {
