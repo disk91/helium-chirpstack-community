@@ -930,7 +930,7 @@ public class UserService {
             u1 = heliumUserRepository.findFirst20HeliumUsersByOrderByRegistrationTimeDesc();
         } else {
             if ( searchKey.length() >= 5 ) {
-                u1 = heliumUserRepository.findHeliumUsersBySearchOrderByRegistration(searchKey,50);
+                u1 = heliumUserRepository.findHeliumUsersBySearchOrderByRegistration(searchKey,100);
             } else {
                 u1 = heliumUserRepository.findHeliumUsersBySearchOrderByRegistration(searchKey,10);
             }
