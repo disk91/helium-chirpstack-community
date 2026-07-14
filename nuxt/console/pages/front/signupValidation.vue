@@ -17,7 +17,7 @@
                 <h1 class="mb-2">{{ $config.consoleName }}</h1>
               </b-card-text>
 
-              <b-card-text class="small mb-2 text-danger">
+              <b-card-text v-if="errorMessage" class="small mb-2 text-danger">
                   <b-icon icon="exclamation-circle-fill" variant="danger"></b-icon>
                   {{ $t(errorMessage) }}
               </b-card-text>
@@ -81,7 +81,7 @@ export default Vue.extend({
         registrationKey: undefined as string | undefined,
         holdOn:false as boolean,
         bColor: [] as string[],
-        printCatpcha: (this.$config.disableCaptcha === 'false') as boolean,
+        printCatpcha: ( String(this.$config.disableCaptcha).toLowerCase() === 'false') as boolean,
       }
     },
     computed : {
