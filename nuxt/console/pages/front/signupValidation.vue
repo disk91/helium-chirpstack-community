@@ -81,7 +81,7 @@ export default Vue.extend({
         registrationKey: undefined as string | undefined,
         holdOn:false as boolean,
         bColor: [] as string[],
-        printCatpcha: (this.$config.disableCaptcha == 'false') as boolean,
+        printCatpcha: (this.$config.disableCaptcha === 'false') as boolean,
       }
     },
     computed : {
@@ -98,7 +98,7 @@ export default Vue.extend({
       else if ( key.length != 80 ) this.$data.errorMessage = "signup_vmessage_badkey";
       else {
 
-        if ( this.$config.disableCaptcha != 'false' ) {
+        if ( String(this.$config.disableCaptcha).toLowerCase() !== 'false' ) {
 
           this.$data.errorMessage='';
           this.$data.successMessage='';
