@@ -32,7 +32,7 @@ front: .FORCE
 	export API_HOST=$(API_HOST) ; export CHIRPSTACK_HOST=$(CHIRPSTACK_HOST) ; \
 	export DIS_DC_PURCHASE=$(DIS_DC_PURCHASE) ; export DIS_NEW_TENANT=$(DIS_NEW_TENANT) ; export DIS_STAT_TENANT=$(DIS_STAT_TENANT) ; export DIS_FULL=$(DIS_FULL); \
 	export MAP_KEY=$(MAP_KEY); export DIS_CAPTCHA=$(DIS_CAPTCHA); \
-	cd nuxt/console && yarn install --ignore-engines && yarn generate && cp -R dist/* /helium/front/
+	cd nuxt/console && yarn install --ignore-engines && yarn generate && rm $(CONSOLE_DIR)/front/_nuxt/*.js && cp -R dist/* $(CONSOLE_DIR)/front/
 
 back: .FORCE
 	./gradlew build -x test && docker build -t disk91/console .
@@ -46,6 +46,13 @@ init-forwarder: .FORCE
 	if [ -f $(CONSOLE_DIR)/docker-compose.yml ] ; then mv $(CONSOLE_DIR)/docker-compose.yml $(CONSOLE_DIR)/docker-compose.yml.bak ; fi
 	cp chirpstack/docker-compose.withforwarder.yml $(CONSOLE_DIR)/docker-compose.yml
 	if [ ! -d $(CONSOLE_DIR)/configuration/forwarder ] ; then cp -R chirpstack/configuration/forwarder $(CONSOLE_DIR)/configuration/ ; fi
+
+pull: .FORCE
+	docker compose -f $(CONSOLE_DIR)/docker-compose.yml pull --ignore-pull-failures
+
+cert-renew: .FORCE
+	docker compose -f $(CONSOLE_DIR)/docker-compose.yml run --rm certbot renew
+	docker restart helium-nginx-1
 
 run-dev: .FORCE
 	docker compose -f ./docker-compose.dev.yml up -d
