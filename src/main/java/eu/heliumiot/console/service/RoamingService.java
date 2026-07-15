@@ -81,7 +81,7 @@ public class RoamingService {
             // get device
             Device d = deviceRepository.findOneDeviceByDevEui(_devEui);
             if (d == null || d.getDeviceProfileId() == null) {
-                log.warn("Unknown device / deviceProfile for "+devEui+"("+ HexaConverters.byteToHexString(_devEui)+")");
+                log.debug("Unknown device / deviceProfile for {}({})", devEui, HexaConverters.byteToHexString(_devEui));
                 return;
             }
 

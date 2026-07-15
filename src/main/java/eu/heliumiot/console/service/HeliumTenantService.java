@@ -557,8 +557,99 @@ public class HeliumTenantService {
         if ( consoleConfig.isHeliumGrpcSkfEnable() ) {
             novaService.refreshOneEuiSkf(ts.getRouteId(),deviceUUID);
         }
-        log.debug("Process JOIN in "+(Now.NowUtcMs()-start)+"ms");
+        log.debug("Process JOIN in {}ms", Now.NowUtcMs() - start);
     }
+
+    // -------------------------------------------
+    // Trace the Unknown devices
+
+    private static final int MAX_UNKNOWN_DEVICES = 250;
+    private static final int UNKNOWN_DEVICE_REPORT_LIMIT = 20;
+
+    private final HashMap<String, UnknownDeviceStat> unknownDevices = new HashMap<>();
+    private long unknownDevicesLastResetMs;
+
+    private record UnknownDeviceStat(String deviceEui, long views) {}
+
+    protected void addUnknown(String deviceEui) {
+        if ( deviceEui == null || deviceEui.isBlank() ) return;
+        synchronized (unknownDevices) {
+            UnknownDeviceStat current = unknownDevices.get(deviceEui);
+            if (current != null) {
+                unknownDevices.put(deviceEui, new UnknownDeviceStat(deviceEui, current.views() + 1));
+                return;
+            }
+            if ( unknownDevices.size() < MAX_UNKNOWN_DEVICES ) {
+                unknownDevices.put(deviceEui, new UnknownDeviceStat(deviceEui, 1));
+            }
+        }
+    }
+
+    @Scheduled(fixedRate = 3_600_000L, initialDelay = 3_600_000L)
+    protected void asyncUnknownDeviceReport() {
+        if ( ! this.serviceEnable ) return;
+        this.runningJobs++;
+        try {
+            long now = Now.NowUtcMs();
+            boolean resetAfterReport;
+            List<UnknownDeviceStat> snapshot;
+
+            synchronized (unknownDevices) {
+                resetAfterReport = (now - unknownDevicesLastResetMs) >= Now.ONE_FULL_DAY;
+                snapshot = new ArrayList<>(unknownDevices.values());
+            }
+
+            if ( ! snapshot.isEmpty() ) {
+                snapshot.sort(
+                    Comparator.comparingLong(UnknownDeviceStat::views)
+                        .reversed()
+                        .thenComparing(UnknownDeviceStat::deviceEui)
+                );
+
+                long totalViews = 0;
+                for ( UnknownDeviceStat stat : snapshot ) {
+                    totalViews += stat.views();
+                }
+
+                if ( snapshot.size() <= UNKNOWN_DEVICE_REPORT_LIMIT ) {
+                    log.info("Unknown device cache contains {} devices and {} total views", snapshot.size(), totalViews);
+                    for ( UnknownDeviceStat stat : snapshot ) {
+                        log.info("Unknown device {} seen {} times", stat.deviceEui(), stat.views());
+                    }
+                } else {
+                    log.info(
+                        "Unknown device cache contains {} devices and {} total views; top {} entries:",
+                        snapshot.size(),
+                        totalViews,
+                        UNKNOWN_DEVICE_REPORT_LIMIT
+                    );
+                    for ( int i = 0; i < UNKNOWN_DEVICE_REPORT_LIMIT; i++ ) {
+                        UnknownDeviceStat stat = snapshot.get(i);
+                        log.info("[{}] Unknown device {} seen {} times", i, stat.deviceEui(), stat.views());
+                    }
+                }
+            }
+
+            if ( resetAfterReport ) {
+                synchronized (unknownDevices) {
+                    if ( unknownDevices.size() >= MAX_UNKNOWN_DEVICES ) {
+                        unknownDevices.clear();
+                    } else {
+                        for (  UnknownDeviceStat stat : unknownDevices.values() ) {
+                            unknownDevices.put(stat.deviceEui(), new UnknownDeviceStat(stat.deviceEui, 0));
+                        }
+                    }
+                }
+                unknownDevicesLastResetMs = Now.NowUtcMs();
+            }
+        } catch (Exception x) {
+            log.error("Failure in asyncUnknownDeviceReport {}", x.getMessage());
+        } finally {
+            this.runningJobs--;
+        }
+    }
+
+
 
     /**
      * This is called for a group of Join request including the duplicates
