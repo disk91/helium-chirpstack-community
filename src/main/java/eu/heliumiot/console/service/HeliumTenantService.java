@@ -51,6 +51,7 @@ import com.helium.grpc.route_v1;
 import jakarta.annotation.PostConstruct;
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
@@ -83,6 +84,7 @@ public class HeliumTenantService {
 
         runningJobs=0;
         serviceEnable=true;
+        unknownDevicesLastResetMs = Now.NowUtcMs();
     }
 
     // request to stop the service properly
@@ -342,7 +344,7 @@ public class HeliumTenantService {
         if ( tenantUUID == null ) {
             tenantUUID = heliumDeviceCacheService.getTenantId(deviceUUID);
             if (tenantUUID == null) {
-                log.error("Impossible to find tenantUUID for (" + deviceUUID + ") - 1 ");
+                log.error("Impossible to find tenantUUID for ({}) - 2 ", deviceUUID);
                 return;
             }
         }
@@ -384,7 +386,7 @@ public class HeliumTenantService {
         if ( tenantUUID == null ) {
             tenantUUID = heliumDeviceCacheService.getTenantId(deviceUUID);
             if (tenantUUID == null) {
-                log.error("Impossible to find tenantUUID for (" + deviceUUID + ") - 1 ");
+                log.error("Impossible to find tenantUUID for ({}) - 1 ", deviceUUID);
                 return;
             }
         }
@@ -439,7 +441,7 @@ public class HeliumTenantService {
         if ( tenantUUID == null ) {
             tenantUUID = heliumDeviceCacheService.getTenantId(deviceUUID);
             if (tenantUUID == null) {
-                log.error("Impossible to find tenantUUID for (" + deviceUUID + ") - 2");
+                log.error("Impossible to find tenantUUID for ({}) - 2", deviceUUID);
                 return;
             }
         }
@@ -479,7 +481,7 @@ public class HeliumTenantService {
             }
         }
 
-        log.debug("Process DOWNLINK in "+(Now.NowUtcMs()-start)+"ms");
+        log.debug("Process DOWNLINK in {}ms", Now.NowUtcMs() - start);
     }
 
 
@@ -502,7 +504,7 @@ public class HeliumTenantService {
             }
         }
         reportStatToMqtt(infos);
-        log.debug("Process INSERT ACTIVITY INACTIVITY in "+(Now.NowUtcMs()-start)+"ms");
+        log.debug("Process INSERT ACTIVITY INACTIVITY in {}ms", Now.NowUtcMs() - start);
     }
 
     @Autowired
@@ -661,10 +663,11 @@ public class HeliumTenantService {
         long start = Now.NowUtcMs();
         String tenantUUID = heliumDeviceCacheService.getTenantId(deviceEui);
         if ( tenantUUID == null ) {
-            log.error("Join invoice - Get a device to invoice w/o tenantId associated: "+deviceEui+" for "+packets+" packets");
+            log.debug("Join invoice - Get a device to invoice w/o tenantId associated: {} for {} packets", deviceEui, packets);
             if ( heliumDeviceCacheService.getHeliumDevice(deviceEui,false) == null ) {
-                log.error("And this device does not exists...");
+                log.debug("And this device does not exists...");
             }
+            addUnknown(deviceEui);
             return;
         }
 
@@ -676,7 +679,7 @@ public class HeliumTenantService {
             HeliumTenant t = this.getHeliumTenant(tenantUUID,true);
             ts = heliumTenantSetupService.getHeliumTenantSetup(tenantUUID,false);
             if ( ts == null ) {
-                log.error("Found a Tenant "+tenantUUID+" not having a TenantSetup associated (2)");
+                log.error("Found a Tenant {} not having a TenantSetup associated (2)", tenantUUID);
                 return;
             }
         }
@@ -712,7 +715,7 @@ public class HeliumTenantService {
                 }
             }
         }
-        log.debug("Process JOIN invoicing in "+(Now.NowUtcMs()-start)+"ms");
+        log.debug("Process JOIN invoicing in {}ms", Now.NowUtcMs() - start);
     }
 
 
@@ -806,7 +809,7 @@ public class HeliumTenantService {
                 this.prometeusService.addDelayedStatUpdate();
             } catch (Exception x) {
                 this.prometeusService.addMqttConnectionLoss();
-                log.error("Something went wrong with publishing on MQTT tenant reactivation");
+                log.error("Something went wrong with publishing on MQTT tenant reactivation (1)");
                 log.error(x.getMessage());
             }
         }
@@ -1488,7 +1491,7 @@ public class HeliumTenantService {
         // check ownership
         UserTenant ts = userTenantRepository.findOneUserByUserIdAndTenantId(UUID.fromString(userId), UUID.fromString(req.getTenantSrcUUID()));
         UserTenant td = userTenantRepository.findOneUserByUserIdAndTenantId(UUID.fromString(userId), UUID.fromString(req.getTenantDestUUID()));
-        if ( ts == null || ts.isAdmin() == false || td == null ) {
+        if ( ts == null || !ts.isAdmin() || td == null ) {
             log.warn("TransferDC - attempt to transfer from not owned tenant by " + userId);
             throw new ITRightException();
         }
@@ -1574,7 +1577,7 @@ public class HeliumTenantService {
 
         // check ownership
         UserTenant ts = userTenantRepository.findOneUserByUserIdAndTenantId(UUID.fromString(userUUID), UUID.fromString(tenantUUID));
-        if ( ts == null || ts.isAdmin() == false ) {
+        if ( ts == null || !ts.isAdmin()) {
             log.warn("Create ApiKey - attempt to create from non tenant owner / try by " + userUUID);
             throw new ITRightException();
         }
@@ -1640,7 +1643,7 @@ public class HeliumTenantService {
 
         // check ownership
         UserTenant ts = userTenantRepository.findOneUserByUserIdAndTenantId(UUID.fromString(userUUID), UUID.fromString(tenantUUID));
-        if ( ts == null || ts.isAdmin() == false ) {
+        if ( ts == null || !ts.isAdmin()) {
             log.warn("Create ApiKey - attempt to delete from non tenant owner / try by " + userUUID);
             throw new ITRightException("api_key_right");
         }
@@ -1720,8 +1723,8 @@ public class HeliumTenantService {
         // check ownership
         if (! user.user.isAdmin() ) {
             UserTenant ts = userTenantRepository.findOneUserByUserIdAndTenantId(UUID.fromString(userUUID), UUID.fromString(req.getTenantId()));
-            if (ts == null || ts.isAdmin() == false) {
-                log.warn("updateMaxCopyValue - attempt to update by non tenant owner / try by " + userUUID);
+            if (ts == null || !ts.isAdmin()) {
+                log.warn("updateMaxCopyValue - attempt to update by non tenant owner / try by {}", userUUID);
                 throw new ITRightException("tenant_right");
             }
         }
