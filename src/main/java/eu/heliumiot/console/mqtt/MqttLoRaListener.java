@@ -1076,7 +1076,7 @@ public class MqttLoRaListener implements MqttCallback {
                                 }
                                 // log
                                 boolean invoiced = false;
-                                log.warn("Found a packetDedup without uplink event at {} for {} / {} from {} sz {} with {} dup", DateConverters.msToStringDate(d.firstArrivalTime), d.devAddr, d.fCnt, d.firstGatewayId, d.dataSz, d.duplicates);
+                                log.debug("Found a packetDedup without uplink event at {} for {} / {} from {} sz {} with {} dup", DateConverters.msToStringDate(d.firstArrivalTime), d.devAddr, d.fCnt, d.firstGatewayId, d.dataSz, d.duplicates);
                                 if (   ( consoleConfig.isHeliumLogsEnable() && d.rawPackets != null )
                                     || ( consoleConfig.isHeliumInvoiceRecoveredPackets() && crossDeviceService.isFullVersion() )
                                 ) {
@@ -1098,7 +1098,7 @@ public class MqttLoRaListener implements MqttCallback {
                                                         0,
                                                         d.dataSz,
                                                         false,
-                                                        d.duplicates - d.duplicatesInvoiced
+                                                        d.duplicates
                                                 );
                                                 HeliumDevice hd = heliumDeviceCacheService.getHeliumDevice(devEui);
                                                 if ( hd != null ) {
@@ -1111,12 +1111,23 @@ public class MqttLoRaListener implements MqttCallback {
                                                     );
                                                     postInvoiced += d.duplicates;
                                                     invoiced = true;
+                                                } else {
+                                                    log.warn("Helium device not found for devEui {}", devEui);
                                                 }
                                             }
                                         }
                                     }
                                 }
                                 if (!invoiced) {
+                                    if ( crossDeviceService.isFullVersion() ) {
+                                        // non RecoveredPacket
+                                        log.warn("Found a packetDedup not-recoverable at {} for {} / {} from {} sz {} with {} dup", DateConverters.msToStringDate(d.firstArrivalTime), d.devAddr, d.fCnt, d.firstGatewayId, d.dataSz, d.duplicates);
+                                    } else {
+                                        if ( d.dataSz > 32 || d.duplicates > 4 ) {
+                                            // only print what most look like scam
+                                            log.warn("Found a packetDedup without uplink event at {} for {} / {} from {} sz {} with {} dup", DateConverters.msToStringDate(d.firstArrivalTime), d.devAddr, d.fCnt, d.firstGatewayId, d.dataSz, d.duplicates);
+                                        }
+                                    }
                                     cost += d.duplicates * ((d.dataSz / 24) + 1);
                                     notInvoicable += d.duplicates;
                                 }

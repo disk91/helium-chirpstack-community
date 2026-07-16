@@ -20,6 +20,10 @@
 
 package fr.ingeniousthings.tools;
 
+import jakarta.servlet.http.HttpServletRequest;
+
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -118,6 +122,60 @@ public class Tools {
             if ( s.compareTo(str) == 0 ) return true;
         }
         return false;
+    }
+
+    /**
+     * Return true when the given IP address in the String is a non routage IP
+     */
+    public static boolean isRoutableIpAddress(String ip_s) {
+        if ( ip_s == null || ip_s.isEmpty() ) return false;
+        try {
+            InetAddress ip = InetAddress.getByName(ip_s);
+            if (ip.isAnyLocalAddress()) return false;         // 0.0.0.0
+            if (ip.isLoopbackAddress()) return false;         // 127.0.0.1
+            if (ip.isLinkLocalAddress()) return false;        // 169.254.x.x
+            if (ip.isSiteLocalAddress()) return false;        // 10.x.x.x / 172.16-31.x.x / 192.168.x.x
+
+            // All other addresses are considered routable
+            return true;
+        } catch (UnknownHostException x) {
+            return false;
+        }
+    }
+
+
+    /**
+     * Get the remote IP from the request, taking into account possible reverse proxy header
+     * @param req
+     * @return IP address as a String
+     */
+    public static String getRemoteIp(HttpServletRequest req) {
+        // securing ...
+        if ( req == null ) {
+            return "Internal";
+        }
+
+        // by config
+        if ( req.getHeader("x-real-ip") != null && !req.getHeader("x-real-ip").isEmpty()) {
+            return req.getHeader("x-real-ip");
+        }
+
+        // most relevant is x-forwarded-for
+        if ( req.getHeader("x-forwarded-for") != null && !req.getHeader("x-forwarded-for").isEmpty() ) {
+            return req.getHeader("x-forwarded-for");
+        }
+
+        // Empty check for other possible headers
+        if ( req.getRemoteAddr().isEmpty() ) {
+            return "Unknown";
+        }
+
+        // try the RemoteAddr when non local
+        if ( isRoutableIpAddress(req.getRemoteAddr()) ) {
+            return req.getRemoteAddr();
+        } else {
+            return "Local-"+req.getRemoteAddr();
+        }
     }
 
 }

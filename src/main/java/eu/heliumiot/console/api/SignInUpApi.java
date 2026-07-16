@@ -24,10 +24,7 @@ package eu.heliumiot.console.api;
 import eu.heliumiot.console.api.interfaces.*;
 import eu.heliumiot.console.service.PrometeusService;
 import eu.heliumiot.console.service.UserService;
-import fr.ingeniousthings.tools.ITNotFoundException;
-import fr.ingeniousthings.tools.ITParseException;
-import fr.ingeniousthings.tools.ITRightException;
-import fr.ingeniousthings.tools.Now;
+import fr.ingeniousthings.tools.*;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -112,9 +109,10 @@ public class SignInUpApi {
             @RequestBody(required = true) UserSignUpReqItf signup
     ) {
         long startMs= Now.NowUtcMs();
-        log.debug("Sign up for "+signup.getUsername());
+        log.debug("Sign up for {}", signup.getUsername());
         try {
-            UserSignUpRespItf r = userService.userSignup(signup,request.getRemoteAddr());
+            UserSignUpRespItf r = userService.userSignup(signup, Tools.getRemoteIp(request));
+            log.info("New signup from {}", Tools.getRemoteIp(request));
             return new ResponseEntity<>(r, HttpStatus.OK);
         } catch (ITNotFoundException x) {
             prometeusService.addApiTotalError();

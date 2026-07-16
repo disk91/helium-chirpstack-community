@@ -197,7 +197,7 @@ public class HeliumTenantService {
         synchronized (this) {
             HeliumTenant t = this.getHeliumTenant(tenantUUID,false);
             if ( t != null ) {
-                log.warn("Clear a tenant ("+t.getTenantUUID()+") balance was "+t.getDcBalance());
+                log.warn("Clear a tenant ({}) balance was {}", t.getTenantUUID(), t.getDcBalance());
                 t.setDcBalance(0);
                 this.flushHeliumTenant(t);
                 return true;
@@ -223,13 +223,13 @@ public class HeliumTenantService {
         try {
             // find all tenant manually created w/o Helium tenant
             List<eu.heliumiot.console.jpa.db.Tenant> missingTenants = tenantRepository.findMissingTenant();
-            if ( missingTenants != null && missingTenants.size() > 0 ) {
+            if ( missingTenants != null && !missingTenants.isEmpty()) {
                 HeliumTenantSetup hts = heliumTenantSetupService.getHeliumTenantSetup(HELIUM_TENANT_SETUP_DEFAULT,false);
                 if ( hts != null ) {
                     for (eu.heliumiot.console.jpa.db.Tenant t : missingTenants) {
                         // make sure we do not conflict with interactive way
                         if ( t.getCreated_at().getTime() < (now - 30_000) ) {
-                            log.info("Sync Helium Tenant manually created (" + t.getName() + ") with default profile");
+                            log.info("Sync Helium Tenant manually created ({}) with default profile", t.getName());
                             // create the HeliumTenantSetup
                             heliumTenantSetupService.createAndSave(hts, t.getId().toString());
                             // create HeliumTenant
@@ -244,7 +244,7 @@ public class HeliumTenantService {
             if ( tss != null ) {
                 for ( HeliumTenantSetup ts : tss ) {
                     if ( ! ts.isTemplate() && ts.getRouteId() == null ) {
-                        log.debug("asyncRouteRegistration - Found tenant "+ts.getTenantUUID()+" with route to create");
+                        log.debug("asyncRouteRegistration - Found tenant {} with route to create", ts.getTenantUUID());
                         // find tenant to update the max_copy in case of
                         HeliumTenant ht = this.getHeliumTenant(ts.getTenantUUID(),true);
                         int mc = ts.getMaxCopy();
@@ -257,7 +257,7 @@ public class HeliumTenantService {
                             ts.setRouteId(rId);
                             // save and clear cache for making sure information are up-to-date
                             heliumTenantSetupService.flushTenantSetup(ts);
-                            log.debug("Route for tenant "+ts.getTenantUUID()+" created with id "+ts.getRouteId());
+                            log.debug("Route for tenant {} created with id {}", ts.getTenantUUID(), ts.getRouteId());
                         } else {
                             log.debug("Failed to create route");
                         }
@@ -266,7 +266,7 @@ public class HeliumTenantService {
             }
 
         } catch (Exception x) {
-            log.error("Failure in asyncRouteRegistration "+x.getMessage());
+            log.error("Failure in asyncRouteRegistration {}", x.getMessage());
             x.printStackTrace();
         } finally {
             this.runningJobs--;
@@ -297,7 +297,7 @@ public class HeliumTenantService {
             }
 
         } catch (Exception x) {
-            log.error("Failure in asyncTenantDeletion "+x.getMessage());
+            log.error("Failure in asyncTenantDeletion {}", x.getMessage());
             x.printStackTrace();
         } finally {
             this.runningJobs--;
@@ -368,7 +368,7 @@ public class HeliumTenantService {
                 if ( ts != null ) {
                     processBalance(ts,t);
                 } else {
-                    log.error("Punish but HeliumTemplate not found for Tenant "+tenantUUID+" and device "+deviceUUID);
+                    log.error("Punish but HeliumTemplate not found for Tenant {} and device {}", tenantUUID, deviceUUID);
                 }
 
                 // publish message to update the stats async
@@ -433,8 +433,7 @@ public class HeliumTenantService {
                 }
             }
         }
-
-        log.debug("Process UPLINK in "+(Now.NowUtcMs()-start)+"ms");
+        log.debug("Process UPLINK in {}ms", Now.NowUtcMs() - start);
     }
 
     public void processDownlink( String tenantUUID, String deviceUUID,  int payloadSize ) {
@@ -1578,7 +1577,7 @@ public class HeliumTenantService {
         // check ownership
         UserTenant ts = userTenantRepository.findOneUserByUserIdAndTenantId(UUID.fromString(userUUID), UUID.fromString(tenantUUID));
         if ( ts == null || !ts.isAdmin()) {
-            log.warn("Create ApiKey - attempt to create from non tenant owner / try by " + userUUID);
+            log.warn("Create ApiKey - attempt to create from non tenant owner / try by {}", userUUID);
             throw new ITRightException();
         }
 
@@ -1644,7 +1643,7 @@ public class HeliumTenantService {
         // check ownership
         UserTenant ts = userTenantRepository.findOneUserByUserIdAndTenantId(UUID.fromString(userUUID), UUID.fromString(tenantUUID));
         if ( ts == null || !ts.isAdmin()) {
-            log.warn("Create ApiKey - attempt to delete from non tenant owner / try by " + userUUID);
+            log.warn("Create ApiKey - attempt to delete from non tenant owner / try by {}", userUUID);
             throw new ITRightException("api_key_right");
         }
 
@@ -1745,8 +1744,6 @@ public class HeliumTenantService {
         } else {
             throw new ITParseException("nova_failure");
         }
-
     }
-
 
 }
