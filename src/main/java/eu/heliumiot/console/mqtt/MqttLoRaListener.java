@@ -81,10 +81,10 @@ public class MqttLoRaListener implements MqttCallback {
         public int messageType;
         public String topic;
     }
-    protected ConcurrentLinkedQueue<MqttEvent> bridgeQueue = new ConcurrentLinkedQueue<MqttEvent>();
+    protected ConcurrentLinkedQueue<MqttEvent> bridgeQueue = new ConcurrentLinkedQueue<>();
     protected int bridgeQSz = 0;
     protected final Object bridgeQSzLock = new Object();
-    protected ConcurrentLinkedQueue<MqttEvent> chipstackQueue = new ConcurrentLinkedQueue<MqttEvent>();
+    protected ConcurrentLinkedQueue<MqttEvent> chipstackQueue = new ConcurrentLinkedQueue<>();
     protected int chirpstackQSz = 0;
     protected final Object chirpstackQSzLock = new Object();
 
@@ -140,7 +140,7 @@ public class MqttLoRaListener implements MqttCallback {
     // application/.*/event/log$
     // application/.*/event/down$
 
-    private HashMap<String,String> trackedHotspots = new HashMap<>();
+    private final HashMap<String,String> trackedHotspots = new HashMap<>();
 
     @PostConstruct
     public MqttClient initMqtt() {
@@ -241,11 +241,11 @@ public class MqttLoRaListener implements MqttCallback {
         if (!pendingReconnection || inConnect) return;
         try {
             if (mqttClient.isConnected()) {
-                log.info("MQTT LL - reconnected");
+                log.info("MQTT LL - reconnected 1");
             } else {
                 log.info("MQTT LL - reconnecting");
                 this.connect();
-                log.info("MQTT LL - reconnected");
+                log.info("MQTT LL - reconnected 2");
             }
             pendingReconnection = false;
         } catch (MqttException me) {
@@ -415,7 +415,7 @@ public class MqttLoRaListener implements MqttCallback {
             this.invoicedPackets++;
             boolean found = false;
             for ( String dev : this.seeDevices ) {
-                if ( dev.compareTo(device) == 0 ) { found = true; break; };
+                if ( dev.compareTo(device) == 0 ) { found = true; break; }
             }
             if ( !found && this.seeDevices.size() < HS_NOT_INVOICED_MAX_DEVICES ) {
                 this.seeDevices.add(device);
@@ -729,7 +729,7 @@ public class MqttLoRaListener implements MqttCallback {
                     d.count++;
                 }
             }
-            log.debug("MQTT LL processing time {}ms for {}",(Now.NowUtcMs()-now),e.topic);
+            log.debug("MQTT LL processing time {}ms for {} (1)",(Now.NowUtcMs()-now),e.topic);
             prometeusService.addLoRaMessageProcessing(Now.NowUtcMs()-now);
         } catch (InvalidProtocolBufferException x) {
             log.error("MQTT LL - Impossible to parse raw message from bridge");
@@ -992,7 +992,7 @@ public class MqttLoRaListener implements MqttCallback {
                 List<ToDedup> toRemove;
                 synchronized (lockPacketDedup) {
                     toRemove = packetDedup.values().parallelStream().filter(dedup -> (!isFull && (now - dedup.firstArrivalTime) > HPR_PACKET_WINDOW_TIMEOUT)
-                        || (isFull && (now - dedup.firstArrivalTime) > HPR_PACKET_FULL_TIMEOUT)).collect(Collectors.toList());
+                        || (isFull && (now - dedup.firstArrivalTime) > HPR_PACKET_FULL_TIMEOUT)).toList();
                 }
                 log.debug("cleanDedupCache - Found {} packets to clean", toRemove.size());
 
