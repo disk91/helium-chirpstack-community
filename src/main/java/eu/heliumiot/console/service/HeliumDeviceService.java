@@ -770,6 +770,12 @@ public class HeliumDeviceService {
                                 long inactivityPeriods = inactivityPeriod / hts.getInactivityBillingPeriodMs();
                                 log.debug("Found {} periods of inactivity for device {}", inactivityPeriods, hdev.getDeviceEui());
                                 if (inactivityPeriods > 0) {
+                                    // Security, as a deleted device can be re-created and this restores some of the
+                                    // previously existed information, the resume cost can be a problem...
+                                    // let's put a max inactivityPeriods to hardcoded value (@TODO use a parameter instead)
+                                    // the jobs should find one at a time. (this also protect from long DISABLE resumed or long OUTOFDCS resumes)
+                                    if (inactivityPeriods > 4) inactivityPeriods = 4;
+
                                     hdev.setLastInactivityInvoiced(hdev.getLastInactivityInvoiced() + inactivityPeriods * hts.getInactivityBillingPeriodMs());
                                     hdev.setLastActivityInvoiced(hdev.getLastActivityInvoiced() + inactivityPeriods * hts.getInactivityBillingPeriodMs());
                                     if (hts.getDcPerInactivityPeriod() > 0) {
