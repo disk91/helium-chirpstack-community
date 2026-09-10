@@ -231,6 +231,10 @@ services:
       - "--collector.ethtool"
       - "--collector.interrupts"
       - "--collector.tcpstat"
+      # Textfile metrics from console-box exporters that must run here
+      # (helium CLI + OUI keypair): buoy-fish/monitoring console/hpr-skf-monitor.
+      # rootfs is mounted at /host, so the host path is prefixed.
+      - "--collector.textfile.directory=/host/var/lib/node_exporter/textfile_collector"
     network_mode: host
     pid: host
     restart: unless-stopped
