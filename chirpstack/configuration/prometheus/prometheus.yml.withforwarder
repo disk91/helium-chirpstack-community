@@ -38,3 +38,8 @@ scrape_configs:
     scrape_interval: 5s
     static_configs:
       - targets: ['localhost:9102']
+  - job_name: lorafw
+    metrics_path: '/actuator/prometheus'
+    scrape_interval: 5s
+    static_configs:
+      - targets: ['localhost:8181']
