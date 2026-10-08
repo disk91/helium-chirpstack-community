@@ -196,7 +196,7 @@ public class HeliumDeviceStatService {
         return s;
     }
 
-    public void updateDeviceStat(
+    public synchronized void updateDeviceStat(
             HeliumDeviceStatItf e
     ) {
         HeliumDeviceStat s = this.getCurrentDeviceStat(e.getDeviceId(), e.getTenantId(), true);

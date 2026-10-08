@@ -618,7 +618,7 @@ public class NovaService {
             skfToAdd.add(su);
             log.debug("Key {} to be added", ntwSEncKey);
             if ( ! grpcUpdateSessions(skfToAdd,skfToRem,routeId) ) {
-                log.warn("Filed to update skfs for {}", eui);
+                log.warn("Failed to update skfs for {}", eui);
             } else {
                 if ( old != null ) {
                     // update the previous entry in cache
