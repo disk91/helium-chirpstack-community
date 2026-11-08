@@ -209,7 +209,7 @@ public class HeliumDeviceStatService {
         s.setRegistrationDc(s.getRegistrationDc()+e.getRegistrationDc());
         s.setUplink(s.getUplink()+e.getUplink());
         s.setDownlink(s.getDownlink()+e.getDownlink());
-        s.setJoinReq(s.getJoinReq()+e.getJoin());
+        s.setJoinReq(s.getJoinReq()+e.getJoin());                   // when join is received from the garbage collector, we are only 1 join for 10 minutes of joins
         s.setJoinDc(s.getJoinDc()+e.getJoinDc());
         s.setJoinAcceptDc(s.getJoinAcceptDc()+e.getJoinAcceptDc());
         s.setPunishmentDc(s.getPunishmentDc()+e.getPunishmentDc());
