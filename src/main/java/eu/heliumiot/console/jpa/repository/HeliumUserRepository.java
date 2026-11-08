@@ -24,6 +24,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
+import java.time.Instant;
 import java.util.List;
 import java.util.UUID;
 
@@ -45,7 +46,7 @@ public interface HeliumUserRepository extends CrudRepository<HeliumUser, UUID> {
     public List<HeliumUser> findFirst20HeliumUsersByOrderByRegistrationTimeDesc();
 
     // Get recent registrations
-    public List<HeliumUser> findHeliumUsersByRegistrationTimeGreaterThanOrderByRegistrationTimeDesc(long time);
+    public List<HeliumUser> findHeliumUsersByRegistrationTimeGreaterThanOrderByRegistrationTimeDesc(Instant since);
 
     //public List<HeliumUser> findHeliumUsersByUsernameContainingOrUseridContaining(String search,String search2);
 
