@@ -575,12 +575,15 @@ public class MqttLoRaListener implements MqttCallback {
                     }
                     if ( pLen >= 13 ) {
                         // 13B minimum payload structure - FOpts Size
-                        dedup.dataSz = (pLen - 13) - ( Stuff.getIntFromByte(payload[5]) & 0x0F );
-                        if ( dedup.dataSz == -1 ) dedup.dataSz = 0; // this is an empty payload, FPort absent
-                        if ( dedup.dataSz < 0 ) {
-                            log.error("LoRa Payload Incorrect size computation {}", spayload);
-                            dedup.dataSz = 0;
-                        }
+                        //dedup.dataSz = (pLen - 13) - ( Stuff.getIntFromByte(payload[5]) & 0x0F );
+                        //if ( dedup.dataSz == -1 ) dedup.dataSz = 0; // this is an empty payload, FPort absent
+                        //if ( dedup.dataSz < 0 ) {
+                        //    log.error("LoRa Payload Incorrect size computation {}", spayload);
+                        //    dedup.dataSz = 0;
+                        //}
+
+                        // HPR is invoicing the frame Len and not the payload size ; this is a big difference !
+                        dedup.dataSz = pLen;
                     } else {
                         // when payload len is 0, FPort is not transmitted, frame is 12B
                         if ( pLen < 12 ) {
@@ -751,7 +754,7 @@ public class MqttLoRaListener implements MqttCallback {
             if (matchUplink.matcher(e.topic).matches()) {
                 try {
                     UplinkEvent up = mapper.readValue(e.message.toString(), UplinkEvent.class);
-                    int dataSz = Base64.getDecoder().decode(up.getData()).length;
+                    int dataSz = Base64.getDecoder().decode(up.getData()).length + 13; // 13B for the header and MIC, this is what HPR invoice
                     if ( (e.arrivalTime - DateConverters.StringDateToMs(up.getTime())) > 0 ) {
                         prometeusService.addLoRaUplink(
                                 e.arrivalTime - DateConverters.StringDateToMs(up.getTime()),
@@ -762,7 +765,7 @@ public class MqttLoRaListener implements MqttCallback {
                     } else {
                         log.debug("Uplink event from {} with negative time, this is not expected, check the gateway clock",up.getDeviceInfo().getDevEui());
                     }
-                    log.debug("UPLINK Dev: {} Adr:{} Fcnt:{}({}) duplicates:{} size: {}", up.getDeviceInfo().getDevEui(), up.getDevAddr(), up.getfCnt(), up.getfCnt() & 0xFFFF, up.getRxInfo().size(), Base64.getDecoder().decode(up.getData()).length);
+                    log.debug("UPLINK Dev: {} Adr:{} Fcnt:{}({}) duplicates:{} size: {}", up.getDeviceInfo().getDevEui(), up.getDevAddr(), up.getfCnt(), up.getfCnt() & 0xFFFF, up.getRxInfo().size(), dataSz);
                     heliumTenantService.processUplink(
                         up.getDeviceInfo().getTenantId(),
                         up.getDeviceInfo().getDevEui(),
@@ -1123,7 +1126,7 @@ public class MqttLoRaListener implements MqttCallback {
                                         // non RecoveredPacket
                                         log.warn("Found a packetDedup not-recoverable at {} for {} / {} from {} sz {} with {} dup", DateConverters.msToStringDate(d.firstArrivalTime), d.devAddr, d.fCnt, d.firstGatewayId, d.dataSz, d.duplicates);
                                     } else {
-                                        if ( d.dataSz > 32 || d.duplicates > 4 ) {
+                                        if ( d.dataSz > 45 || d.duplicates > 4 ) {
                                             // only print what most look like scam
                                             log.warn("Found a packetDedup without uplink event at {} for {} / {} from {} sz {} with {} dup", DateConverters.msToStringDate(d.firstArrivalTime), d.devAddr, d.fCnt, d.firstGatewayId, d.dataSz, d.duplicates);
                                         }
