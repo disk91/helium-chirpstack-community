@@ -45,7 +45,7 @@ public interface HeliumUserRepository extends CrudRepository<HeliumUser, UUID> {
     public List<HeliumUser> findFirst20HeliumUsersByOrderByRegistrationTimeDesc();
 
     // Get recent registrations
-    public List<HeliumUser> findHeliumUsersByRegistrationTimeAfterOrderByRegistrationTimeDesc(long time);
+    public List<HeliumUser> findHeliumUsersByRegistrationTimeGreaterThanOrderByRegistrationTimeDesc(long time);
 
     //public List<HeliumUser> findHeliumUsersByUsernameContainingOrUseridContaining(String search,String search2);
 
