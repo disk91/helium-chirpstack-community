@@ -27,6 +27,7 @@ import eu.heliumiot.console.api.interfaces.*;
 import eu.heliumiot.console.chirpstack.ChirpstackApiAccess;
 import eu.heliumiot.console.jpa.db.*;
 import eu.heliumiot.console.jpa.db.ApiKey;
+import eu.heliumiot.console.jpa.db.User;
 import eu.heliumiot.console.jpa.repository.*;
 import eu.heliumiot.console.tools.EncryptionHelper;
 import eu.heliumiot.console.tools.ExecuteEmail;
@@ -41,6 +42,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.*;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import jakarta.annotation.PostConstruct;
@@ -1080,6 +1082,125 @@ public class UserService {
             userCacheService.updateHeliumUser(u);
         } else {
             log.error("userBan - can't update user, not found ");
+        }
+    }
+
+
+    // ==================================================
+    // This function will be used to review users, ban those who need to be banned, remove tenants from banned users,
+    // and clean up users who have not logged in for an extended period.
+    @Autowired
+    protected UserRepository userRepository;
+
+    protected long lastPurgeRun = 0L;
+
+    @Scheduled(fixedDelay = 600_000, initialDelay = 2_000)
+    protected void cleanUsers() {
+
+        List<User> inactiveUsers = userRepository.findUsersByIsActive(false);
+        for ( User u : inactiveUsers ) {
+            if ( u.isAdmin() ) continue; // make sure we don't delete an admin user
+            if ( u.getUpdatedAt().getTime() < (Now.NowUtcMs() - 15*Now.ONE_MINUTE) ) {
+                List<eu.heliumiot.console.jpa.db.UserTenant> t1 = userTenantRepository.findUserTenantByUserId(u.getId());
+                for (eu.heliumiot.console.jpa.db.UserTenant ut : t1) {
+                    boolean toDelete = true;
+                    if ( ! ut.isAdmin() ) {
+                        // the user is not admin, do we have a second user who is admin ?
+                        List<eu.heliumiot.console.jpa.db.UserTenant> owners = userTenantRepository.findUserTenantByTenantId(ut.getTenantId());
+                        if (owners.size() > 1) {
+                            toDelete = false;
+                        }
+                    }
+                    if ( toDelete ) {
+                        // delete the chirpstack tenant
+                        // This is cascade deleting application, integration, devices, gateways, etc.
+                        //try {
+                            log.info(Tools.ANSI_RED+"[userService] Purge tenant {} for banned user {}"+Tools.ANSI_RESET, ut.getTenantId().toString(), u.getEmail());
+                            // heliumTenantService.deleteTenant(u.getId().toString(), ut.getTenantId().toString(), true);
+                        //} catch (ITRightException | ITParseException x) {
+                        //    log.error("[userService] Impossible to delete tenant {} for banned user {} - {}", ut.getTenantId().toString(), u.getEmail(), x.getMessage());
+                        //}
+                    }
+                }
+            } else {
+                // check the last login time to see if we can delete the user
+                UserCacheService.UserCacheElement uce = userCacheService.getUserById(u.getId().toString());
+                if ( uce != null ) {
+                    if ( uce.heliumUser.getLastSeen() < (Now.NowUtcMs() - consoleConfig.getHeliumUserPurgePeriodDays()*Now.ONE_FULL_DAY) ) {
+                        log.info(Tools.ANSI_RED+"[userService] Purge banned user {}, after lock period, last seen {}"+Tools.ANSI_RESET, u.getEmail(), DateConverters.msToStringDate(uce.heliumUser.getLastSeen()));
+                        //deleteOneUser(u.getId().toString());
+                        userCacheService.flushHeliumUser(u.getId().toString());
+                    }
+                }
+            }
+        }
+
+        // ---
+        // We will search in the Helium users for those who have not logged in for a certain period of time, and we will be able to delete them if the configuration setting allows it.
+        // run it once a day, this is good enough for a purge, we don't need to run it more often
+        if ( consoleConfig.isHeliumUserPurgeEnable() && (Now.NowUtcMs() - lastPurgeRun > Now.ONE_FULL_DAY) ) {
+            lastPurgeRun = Now.NowUtcMs();
+            List<HeliumUser> notConnectedUsers = heliumUserRepository.findHeliumUsersByLastSeenLowerThan(new Timestamp(Now.NowUtcMs() - consoleConfig.getHeliumUserPurgePeriodDays()*Now.ONE_FULL_DAY));
+            for ( HeliumUser hu : notConnectedUsers ) {
+                UserCacheService.UserCacheElement uce = userCacheService.getUserById(hu.getUserid());
+                if ( uce != null && !uce.user.isAdmin() && uce.user.isActive()) {
+                    // Non admin user, not banned - check the tenant owned
+                    List<eu.heliumiot.console.jpa.db.UserTenant> t1 = userTenantRepository.findUserTenantByUserId(uce.user.getId());
+                    int deleted = 0;
+                    for (eu.heliumiot.console.jpa.db.UserTenant ut : t1) {
+                        boolean toDelete = true;
+                        if ( ! ut.isAdmin() ) {
+                            // the user is not admin, do we have a second user who is admin ?
+                            List<eu.heliumiot.console.jpa.db.UserTenant> owners = userTenantRepository.findUserTenantByTenantId(ut.getTenantId());
+                            if (owners.size() > 1) {
+                                toDelete = false;
+                            }
+                        }
+                        HeliumTenant t = heliumTenantService.getHeliumTenant(ut.getTenantId().toString(),false);
+                        if ( toDelete && ( t == null || t.getDcBalance() <= consoleConfig.getHeliumUserPurgeMaxDc() ) ) {
+                            // delete the chirpstack tenant
+                            // This is cascade deleting application, integration, devices, gateways, etc.
+                            //try {
+                            log.info(Tools.ANSI_RED+"[userService] Purge tenant {} for expired user {} with {} Dcs"+Tools.ANSI_RESET, ut.getTenantId().toString(), uce.user.getEmail(), t != null ? t.getDcBalance() : "N/A");
+                            // heliumTenantService.deleteTenant(uce.user.getId().toString(), ut.getTenantId().toString(), true);
+                            deleted++;
+                            //} catch (ITRightException | ITParseException x) {
+                            //    log.error("[userService] Impossible to delete tenant {} for expired user {} - {}", ut.getTenantId().toString(), uce.user.getEmail(), x.getMessage());
+                            //}
+                        }
+                    }
+                    // all tenant have been deleted, we can delete the user
+                    if ( deleted == t1.size() ) {
+                        log.info(Tools.ANSI_RED+"[userService] Purge expired user {}, last seen {}"+Tools.ANSI_RESET, hu.getUsername(), DateConverters.msToStringDate(uce.heliumUser.getLastSeen()));
+                        //deleteOneUser(hu.getUserid());
+                        userCacheService.flushHeliumUser(hu.getUserid());
+                    }
+                }
+            }
+        }
+    }
+
+
+    protected void deleteOneUser(String userId) {
+        HttpHeaders heads = new HttpHeaders();
+        heads.add("authorization", "Bearer "+consoleConfig.getChirpstackApiAdminKey());
+        io.chirpstack.api.DeleteUserRequest cur = io.chirpstack.api.DeleteUserRequest.newBuilder()
+                .setId(userId)
+                .build();
+        try {
+            chirpstackApiAccess.execute(
+                    HttpMethod.POST,
+                    "/api.UserService/Delete",
+                    null,
+                    heads,
+                    cur.toByteArray()
+            );
+        } catch ( ITRightException x ) {
+            log.error("Impossible to delete user {} - rights", userId);
+        } catch ( ITNotFoundException x ) {
+            log.error("Impossible to delete user {} - not found - {}", userId, x.getMessage());
+        } catch ( ITParseException x ) {
+            log.error("Parse error to delete user {} - parse", userId);
         }
     }
 

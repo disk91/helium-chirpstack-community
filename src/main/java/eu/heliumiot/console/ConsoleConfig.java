@@ -1017,4 +1017,27 @@ public class ConsoleConfig {
     public int getHeliumCacheDeviceStat() {
         return heliumCacheDeviceStat;
     }
+
+
+    // =========================================
+    // USER PURGE
+    // =========================================
+    @Value ("${helium.user.purge.enable:false}")
+    private boolean heliumUserPurgeEnable;
+    public boolean isHeliumUserPurgeEnable() {
+        return heliumUserPurgeEnable;
+    }
+
+    @Value ("${helium.user.purge.period.days:365}")
+    private long heliumUserPurgePeriodDays;
+    public long getHeliumUserPurgePeriodDays() {
+        return heliumUserPurgePeriodDays;
+    }
+
+    @Value ("${helium.user.purge.max.dc:500}")
+    private long heliumUserPurgeMaxDc;
+    public long getHeliumUserPurgeMaxDc() {
+        return heliumUserPurgeMaxDc;
+    }
+
 }

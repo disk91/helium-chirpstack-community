@@ -51,5 +51,8 @@ public interface UserTenantRepository extends CrudRepository<UserTenant, UUID> {
             UUID userId
     );
 
+    public List<UserTenant> findUserTenantByTenantId(
+            UUID tenantId
+    );
 
 }
