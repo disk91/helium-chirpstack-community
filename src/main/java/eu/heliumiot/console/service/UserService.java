@@ -1140,7 +1140,7 @@ public class UserService {
         // run it once a day, this is good enough for a purge, we don't need to run it more often
         if ( consoleConfig.isHeliumUserPurgeEnable() && (Now.NowUtcMs() - lastPurgeRun > Now.ONE_FULL_DAY) ) {
             lastPurgeRun = Now.NowUtcMs();
-            List<HeliumUser> notConnectedUsers = heliumUserRepository.findHeliumUsersByLastSeenLessThan(new Timestamp(Now.NowUtcMs() - consoleConfig.getHeliumUserPurgePeriodDays()*Now.ONE_FULL_DAY));
+            List<HeliumUser> notConnectedUsers = heliumUserRepository.findHeliumUsersByLastSeenLessThan(Now.NowUtcMs() - consoleConfig.getHeliumUserPurgePeriodDays()*Now.ONE_FULL_DAY);
             for ( HeliumUser hu : notConnectedUsers ) {
                 UserCacheService.UserCacheElement uce = userCacheService.getUserById(hu.getUserid());
                 if ( uce != null && !uce.user.isAdmin() && uce.user.isActive()) {
