@@ -81,6 +81,8 @@ public class MqttLoRaListener implements MqttCallback {
         public MqttMessage message;
         public int messageType;
         public String topic;
+//        public int shardId;          // index du shard [0..N-1] (Futur parallelism)
+//        public byte[] phyPayload;    // store the payload to avoid double parsing
     }
     protected ConcurrentLinkedQueue<MqttEvent> bridgeQueue = new ConcurrentLinkedQueue<>();
     protected int bridgeQSz = 0;
@@ -452,6 +454,7 @@ public class MqttLoRaListener implements MqttCallback {
     private final Object lockPreprocessedPacketDedup = new Object();
 
     protected record FrameKey(int addrFcnt, int mic) {}
+    protected record JoinAcceptEvent(String tenantId, String devEui, String devAddr) {}
     protected static class ToDedup {
         public long firstArrivalTime;       // server time for first of the packets
         public long firstRxTime;            // hotspot time, this to eventually clean the data
@@ -473,6 +476,7 @@ public class MqttLoRaListener implements MqttCallback {
     protected HashMap<FrameKey, ToDedup> packetDedup = new HashMap<>();
     protected LinkedList<ToDedup> recentPacketDedup = new LinkedList<>();
     protected ArrayList<ToDedup> preprocessedPacketDedup = new ArrayList<>();
+    protected ConcurrentLinkedQueue<JoinAcceptEvent> joinAcceptQueue = new ConcurrentLinkedQueue<>();
 
     protected static class ToInvoice {
         public String devEui;
@@ -889,11 +893,16 @@ public class MqttLoRaListener implements MqttCallback {
                 try {
                     JoinEvent je = mapper.readValue(e.message.getPayload(), JoinEvent.class);
                     log.debug("JOIN - Dev: {} Adr:{} timestamp :{}", je.getDeviceInfo().getDeviceName(), je.getDevAddr(), DateConverters.StringDateToMs(je.getTime()));
-                    heliumTenantService.processJoinAccept(
+                    if (joinAcceptQueue.size() >= 1000) {
+                        JoinAcceptEvent dropped = joinAcceptQueue.poll();
+                        if (dropped != null)
+                            log.debug("MQTT LL - joinAcceptQueue full, dropping oldest join for {}", dropped.devEui());
+                    }
+                    joinAcceptQueue.add(new JoinAcceptEvent(
                         je.getDeviceInfo().getTenantId(),
                         je.getDeviceInfo().getDevEui(),
                         je.getDevAddr()
-                    );
+                    ));
                     prometeusService.addLoRaJoin();
                 } catch (JsonProcessingException x) {
                     log.error("MQTT LL - failed to parse App JOIN - {}", x.getMessage());
@@ -932,6 +941,23 @@ public class MqttLoRaListener implements MqttCallback {
 
         } catch (Exception x) {
             log.error("MQTT LL - Exception in processing chirpstack message {}", x.getMessage());
+            x.printStackTrace();
+        }
+    }
+
+    @Scheduled(fixedDelay = 20)
+    protected void processJoinAcceptQueue() {
+        try {
+            JoinAcceptEvent event;
+            while ((event = joinAcceptQueue.poll()) != null) {
+                try {
+                    heliumTenantService.processJoinAccept(event.tenantId(), event.devEui(), event.devAddr());
+                } catch (Exception e) {
+                    log.error("MQTT LL - processJoinAcceptQueue error for {}: {}", event.devEui(), e.getMessage());
+                }
+            }
+        } catch (Exception x) {
+            log.error("MQTT LL - Exception in processing join accept queue {}", x.getMessage());
             x.printStackTrace();
         }
     }
