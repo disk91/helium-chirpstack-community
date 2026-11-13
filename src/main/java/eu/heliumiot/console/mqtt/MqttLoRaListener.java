@@ -35,6 +35,7 @@ import io.chirpstack.api.gw.UplinkFrame;
 import io.chirpstack.json.JoinEvent;
 import io.chirpstack.json.LogEvent;
 import io.chirpstack.json.UplinkEvent;
+import io.chirpstack.json.sub.UplinkEventDeviceInfo;
 import io.chirpstack.json.sub.UplinkEventRxInfo;
 import org.eclipse.paho.client.mqttv3.*;
 import org.eclipse.paho.client.mqttv3.persist.MemoryPersistence;
@@ -450,11 +451,12 @@ public class MqttLoRaListener implements MqttCallback {
     private final Object lockRecentPacketDedup = new Object();
     private final Object lockPreprocessedPacketDedup = new Object();
 
+    protected record FrameKey(int addrFcnt, int mic) {}
     protected static class ToDedup {
         public long firstArrivalTime;       // server time for first of the packets
         public long firstRxTime;            // hotspot time, this to eventually clean the data
         public boolean isJoin;              // true when a join packet
-        public String key;                  // entry key
+        public FrameKey key;                // entry key
         public String firstGatewayId;       // for identification
         public String secondGatewayId;      // backup if exists
         public String devAddr;              // device devaddr for identification
@@ -468,7 +470,7 @@ public class MqttLoRaListener implements MqttCallback {
         public byte[] rawPackets;           // raw packets received for later analysis (when log enabled)
     }
 
-    protected HashMap<String, ToDedup> packetDedup = new HashMap<>();
+    protected HashMap<FrameKey, ToDedup> packetDedup = new HashMap<>();
     protected LinkedList<ToDedup> recentPacketDedup = new LinkedList<>();
     protected ArrayList<ToDedup> preprocessedPacketDedup = new ArrayList<>();
 
@@ -501,6 +503,18 @@ public class MqttLoRaListener implements MqttCallback {
 
             byte[] payload = uf.getPhyPayload().toByteArray();
 
+            // Generate a key for the packet based on DevAddr + FCnt + MIC
+            int addrFcnt = ((payload[1] & 0xFF) << 24)
+                    | ((payload[2] & 0xFF) << 16)
+                    | ((payload[6] & 0xFF) << 8)
+                    |  (payload[7] & 0xFF);  // DevAddr[0..1] | FCnt[0..1]  or Part of devEUI
+
+            int mic = ((payload[payload.length-4] & 0xFF) << 24)
+                    | ((payload[payload.length-3] & 0xFF) << 16)
+                    | ((payload[payload.length-2] & 0xFF) << 8)
+                    |  (payload[payload.length-1] & 0xFF);              // Mic or Mic + CRC
+            FrameKey key = new FrameKey(addrFcnt, mic);
+
             // Here we have a problem: the timestamp is a second and not ms, so we have an average offset of 500ms whatever
             // As a reminder for the next time, the nsTime we see in the front end is "network server time" so the reception time
             // on the network server, this one is in ns but is not the precise time from the hotspot and this is also why, here the
@@ -514,22 +528,11 @@ public class MqttLoRaListener implements MqttCallback {
                 prometeusService.addHeliumInvoicedPacket();
             }
 
-            // internal test to be removed
-            /*
-            logService.log(new LogEntry(
-                    LogLevel.WARN,
-                    "MqttLoRaListener",
-                    "One packet received",
-                    0
-            ));
-            */
 
-
-            String spayload = HexaConverters.byteToHexString(payload);
             // Manage arrival time for the first frame
             ToDedup dedup;
             synchronized (lockPacketDedup) {
-                dedup = packetDedup.get(spayload);
+                dedup = packetDedup.get(key);
             }
             if (dedup == null) {
                 // *** FIRST
@@ -539,7 +542,7 @@ public class MqttLoRaListener implements MqttCallback {
                 dedup.secondGatewayId = null;
                 dedup.firstArrivalTime = e.arrivalTime;
                 dedup.firstRxTime = rx;
-                dedup.key = spayload;
+                dedup.key = key;
                 dedup.duplicates = 1;
                 dedup.duplicatesInvoiced = 0;
                 dedup.isJoin = isJoin;
@@ -568,11 +571,7 @@ public class MqttLoRaListener implements MqttCallback {
                     dedup.fCnt = loRaWanHelper.getFcnt(payload);
                     // dataSz is not yet known, get an estimate to monitor the unassociated packets
                     // Sz will be corrected on chirpstack event reception
-                    int pLen = spayload.length() / 2;
-                    if ( payload.length != pLen ) {
-                        log.warn(">> payload len: {} / pLen: {} with: {}", payload.length, pLen, spayload);
-                        log.warn(">> payload {}, {}, {}, {}", HexaConverters.byteToHexString(payload[0]), HexaConverters.byteToHexString(payload[1]), HexaConverters.byteToHexString(payload[2]), HexaConverters.byteToHexString(payload[3]));
-                    }
+                    int pLen = payload.length;
                     if ( pLen >= 13 ) {
                         // 13B minimum payload structure - FOpts Size
                         //dedup.dataSz = (pLen - 13) - ( Stuff.getIntFromByte(payload[5]) & 0x0F );
@@ -587,13 +586,14 @@ public class MqttLoRaListener implements MqttCallback {
                     } else {
                         // when payload len is 0, FPort is not transmitted, frame is 12B
                         if ( pLen < 12 ) {
-                            log.info("Detect a short LoRa frame under minimum {}", spayload);
+                            log.info("Detect a short LoRa frame under minimum {}", HexaConverters.byteToHexString(payload));
                         }
                         dedup.dataSz = 0;
                     }
                     synchronized (lockRecentPacketDedup) {
                         recentPacketDedup.addLast(dedup);
-                        // clear the old one
+                        // We limit the recent packet windows to PACKET_CACHE_TIMEOUT second, on every packet we verify
+                        // if there is something new to clean. (a bit overkill but it not cost a lot, just a test on first element)
                         while ((e.arrivalTime - recentPacketDedup.getFirst().firstArrivalTime) > PACKET_CACHE_TIMEOUT) {
                             recentPacketDedup.removeFirst();
                         }
@@ -609,7 +609,7 @@ public class MqttLoRaListener implements MqttCallback {
                     dedup.dataSz = 23;
                 }
                 synchronized (lockPacketDedup) {
-                    packetDedup.put(spayload, dedup);
+                    packetDedup.put(key, dedup);
                 }
                 if (isJoin) {
                     log.debug("New join detected from {} for device {}", dedup.firstGatewayId, dedup.deviceEui);
@@ -753,22 +753,28 @@ public class MqttLoRaListener implements MqttCallback {
         try {
             if (matchUplink.matcher(e.topic).matches()) {
                 try {
-                    UplinkEvent up = mapper.readValue(e.message.toString(), UplinkEvent.class);
-                    int dataSz = Base64.getDecoder().decode(up.getData()).length + 13; // 13B for the header and MIC, this is what HPR invoice
-                    if ( (e.arrivalTime - DateConverters.StringDateToMs(up.getTime())) > 0 ) {
+                    UplinkEvent up = mapper.readValue(e.message.getPayload(), UplinkEvent.class);
+                    UplinkEventDeviceInfo devInfo = up.getDeviceInfo();
+                    // Compute decoded length from the Base64 string without allocating a byte[]
+                    // decoded = (encoded_len * 3 / 4) - padding; encoded_len is always a multiple of 4
+                    String b64data = up.getData();
+                    int paddingCount = b64data.endsWith("==") ? 2 : b64data.endsWith("=") ? 1 : 0;
+                    int dataSz = (b64data.length() * 3 / 4) - paddingCount + 13; // +13B header+MIC, this is what HPR invoices
+                    long upTime = DateConverters.StringDateToMs(up.getTime());
+                    if ( (e.arrivalTime - upTime) > 0 ) {
                         prometeusService.addLoRaUplink(
-                                e.arrivalTime - DateConverters.StringDateToMs(up.getTime()),
+                                e.arrivalTime - upTime,
                                 dataSz,
                                 true,
                                 up.getRxInfo().size() - 1
                         );
                     } else {
-                        log.debug("Uplink event from {} with negative time, this is not expected, check the gateway clock",up.getDeviceInfo().getDevEui());
+                        log.debug("Uplink event from {} with negative time, this is not expected, check the gateway clock",devInfo.getDevEui());
                     }
-                    log.debug("UPLINK Dev: {} Adr:{} Fcnt:{}({}) duplicates:{} size: {}", up.getDeviceInfo().getDevEui(), up.getDevAddr(), up.getfCnt(), up.getfCnt() & 0xFFFF, up.getRxInfo().size(), dataSz);
+                    log.debug("UPLINK Dev: {} Adr:{} Fcnt:{}({}) duplicates:{} size: {}", devInfo.getDevEui(), up.getDevAddr(), up.getfCnt(), up.getfCnt() & 0xFFFF, up.getRxInfo().size(), dataSz);
                     heliumTenantService.processUplink(
-                        up.getDeviceInfo().getTenantId(),
-                        up.getDeviceInfo().getDevEui(),
+                        devInfo.getTenantId(),
+                        devInfo.getDevEui(),
                         dataSz,
                         true,
                         up.getRxInfo().size() - 1
@@ -777,9 +783,10 @@ public class MqttLoRaListener implements MqttCallback {
                     // Attach to dedup objects, try a fast search on last 10s
                     Optional<ToDedup> theDedup;
                     synchronized (lockRecentPacketDedup) {
-                        theDedup = recentPacketDedup.parallelStream().filter(dedup -> {
+                        // LinkedList has no efficient Spliterator — parallelStream gives no benefit and adds FJP overhead
+                        theDedup = recentPacketDedup.stream().filter(dedup -> {
                             if (dedup.fCnt == (up.getfCnt() & 0xFFFF) && !dedup.isJoin && dedup.devAddr.compareToIgnoreCase(up.getDevAddr()) == 0) {
-                                if (dedup.deviceEui != null && dedup.deviceEui.compareToIgnoreCase(up.getDeviceInfo().getDevEui().toLowerCase()) == 0) {
+                                if (dedup.deviceEui != null && dedup.deviceEui.compareToIgnoreCase(devInfo.getDevEui()) == 0) {
                                     return true;
                                 } else {
                                     for (UplinkEventRxInfo gw : up.getRxInfo()) {
@@ -797,20 +804,23 @@ public class MqttLoRaListener implements MqttCallback {
                     // But also happen when chirpstack event comes before the up event.
                     if (theDedup.isEmpty()) {
                         log.debug("Uplink not found in the recent history... deep search");
-                        theDedup = packetDedup.values().parallelStream().filter(dedup -> {
-                            if (dedup.fCnt == (up.getfCnt() & 0xFFFF) && !dedup.isJoin && dedup.devAddr.compareToIgnoreCase(up.getDevAddr()) == 0) {
-                                if (dedup.deviceEui != null && dedup.deviceEui.compareToIgnoreCase(up.getDeviceInfo().getDevEui()) == 0) {
-                                    return true;
-                                } else {
-                                    for (UplinkEventRxInfo gw : up.getRxInfo()) {
-                                        String gwId = gw.getGatewayId().toLowerCase();
-                                        if (  gwId.compareTo(dedup.firstGatewayId) == 0 || ( dedup.secondGatewayId !=null && gwId.compareTo(dedup.secondGatewayId) == 0) )
-                                            return true;
+                        synchronized (lockPacketDedup) {
+                            // HashMap has no efficient Spliterator — parallelStream gives no benefit and adds FJP overhead
+                            theDedup = packetDedup.values().parallelStream().filter(dedup -> {
+                                if (dedup.fCnt == (up.getfCnt() & 0xFFFF) && !dedup.isJoin && dedup.devAddr.compareToIgnoreCase(up.getDevAddr()) == 0) {
+                                    if (dedup.deviceEui != null && dedup.deviceEui.compareToIgnoreCase(devInfo.getDevEui()) == 0) {
+                                        return true;
+                                    } else {
+                                        for (UplinkEventRxInfo gw : up.getRxInfo()) {
+                                            String gwId = gw.getGatewayId().toLowerCase();
+                                            if (gwId.compareTo(dedup.firstGatewayId) == 0 || (dedup.secondGatewayId != null && gwId.compareTo(dedup.secondGatewayId) == 0))
+                                                return true;
+                                        }
                                     }
                                 }
-                            }
-                            return false;
-                        }).findFirst();
+                                return false;
+                            }).findFirst();
+                        }
                         //if (theDedup.isPresent()) log.warn("Uplink found in recent histo");
                     }
 
@@ -818,11 +828,11 @@ public class MqttLoRaListener implements MqttCallback {
                     if (theDedup.isPresent()) {
                         ToDedup d = theDedup.get();
                         if (d.deviceEui == null) {
-                            d.deviceEui = up.getDeviceInfo().getDevEui();
-                            d.tenantId = up.getDeviceInfo().getTenantId();
+                            d.deviceEui = devInfo.getDevEui();
+                            d.tenantId = devInfo.getTenantId();
                             d.duplicatesInvoiced = up.getRxInfo().size(); // this is a total invoiced ( first + duplicate )
                             d.dataSz = dataSz;
-                            log.debug("Found packet for dedup {} fCnt {} devAddr {} invoiced {}", up.getDeviceInfo().getDevEui(), up.getfCnt(), up.getDevAddr(), d.duplicatesInvoiced);
+                            log.debug("Found packet for dedup {} fCnt {} devAddr {} invoiced {}", devInfo.getDevEui(), up.getfCnt(), up.getDevAddr(), d.duplicatesInvoiced);
                         } else {
                             // packet already known, chirpstack considered this late packet as a new packet
                             d.duplicatesInvoiced += up.getRxInfo().size();
@@ -832,12 +842,12 @@ public class MqttLoRaListener implements MqttCallback {
                         // so the entry is not yet existing.
                         // we can have a reconciliation when cache is cleaned as the same entry exist with no association
                         // make a table of this and then in the case of not found association we can reconciliate it.
-                        log.warn("Found a packet invoiced with no dedup reference {} with fCnt {} and devAddr {}", up.getDeviceInfo().getDevEui(), up.getfCnt(), up.getDevAddr());
+                        log.warn("Found a packet invoiced with no dedup reference {} with fCnt {} and devAddr {}", devInfo.getDevEui(), up.getfCnt(), up.getDevAddr());
                         ToDedup d = new ToDedup();
-                        d.deviceEui = up.getDeviceInfo().getDevEui();
+                        d.deviceEui = devInfo.getDevEui();
                         d.fCnt = up.getfCnt() & 0xFFFF;
                         d.devAddr = up.getDevAddr();
-                        d.tenantId = up.getDeviceInfo().getTenantId();
+                        d.tenantId = devInfo.getTenantId();
                         d.duplicatesInvoiced = up.getRxInfo().size(); // this is a total invoiced ( first + duplicate )
                         d.dataSz = dataSz;
                         d.firstGatewayId = up.getRxInfo().get(0).getGatewayId().toLowerCase();
@@ -864,7 +874,7 @@ public class MqttLoRaListener implements MqttCallback {
                             }
                             if ( hni != null ) {
                                 if ( hni.id == null && rx.getMetadata() != null ) hni.id = rx.getMetadata().getGateway_id();
-                                hni.addInvoicedPacket(up.getDeviceInfo().getDevEui());
+                                hni.addInvoicedPacket(devInfo.getDevEui());
                             }
                         }
                     }
@@ -877,7 +887,7 @@ public class MqttLoRaListener implements MqttCallback {
                 }
             } else if (matchJoin.matcher(e.topic).matches()) {
                 try {
-                    JoinEvent je = mapper.readValue(e.message.toString(), JoinEvent.class);
+                    JoinEvent je = mapper.readValue(e.message.getPayload(), JoinEvent.class);
                     log.debug("JOIN - Dev: {} Adr:{} timestamp :{}", je.getDeviceInfo().getDeviceName(), je.getDevAddr(), DateConverters.StringDateToMs(je.getTime()));
                     heliumTenantService.processJoinAccept(
                         je.getDeviceInfo().getTenantId(),
@@ -893,7 +903,7 @@ public class MqttLoRaListener implements MqttCallback {
                 }
             } else if (matchLog.matcher(e.topic).matches()) {
                 try {
-                    LogEvent le = mapper.readValue(e.message.toString(), LogEvent.class);
+                    LogEvent le = mapper.readValue(e.message.getPayload(), LogEvent.class);
                     log.debug("LOG - Dev: {} Eui: {} Tenant: {}", le.getDeviceInfo().getDeviceName(), le.getDeviceInfo().getDevEui(), le.getDeviceInfo().getTenantId());
                     if ( le.getCode().compareToIgnoreCase("UPLINK_F_CNT_RESET") == 0 ) {
                         log.info("Found an UPLINK_F_CNT_RESET for devEui: {}", le.getDeviceInfo().getDevEui());
