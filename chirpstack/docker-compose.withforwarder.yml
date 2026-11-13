@@ -14,12 +14,24 @@ services:
       - /helium/configuration/ssl/:/etc/nginx/ssl/:ro
       - /helium/front:/var/www/front/:ro
     depends_on:
-      - helium
-      - chirpstack
-      - chirpstack-rest-api
-      - fwdlb
-      - fwnode1
-      - fwnode2
+      helium:
+        condition: service_started
+        restart: true
+      chirpstack:
+        condition: service_started
+        restart: true
+      chirpstack-rest-api:
+        condition: service_started
+        restart: true
+      fwdlb:
+        condition: service_started
+        restart: true
+      fwnode1:
+        condition: service_started
+        restart: true
+      fwnode2:
+        condition: service_started
+        restart: true
     logging: &logs
       driver: "json-file"
       options:

@@ -13,14 +13,19 @@ services:
       - /helium/configuration/ssl/:/etc/nginx/ssl/:ro
       - /helium/front:/var/www/front/:ro
     depends_on:
-      - helium
-      - chirpstack
-      - chirpstack-rest-api
+      helium:
+        condition: service_started
+        restart: true
+      chirpstack:
+        condition: service_started
+        restart: true
+      chirpstack-rest-api:
+        condition: service_started
+        restart: true
     logging: &logs
       driver: "json-file"
       options:
         max-size: "100m"
-
   certbot:
     image: certbot/certbot:latest
     volumes:
