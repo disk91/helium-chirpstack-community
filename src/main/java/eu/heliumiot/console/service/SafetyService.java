@@ -24,6 +24,13 @@ import jakarta.servlet.http.HttpServletRequest;
 public class SafetyService {
     private final Logger log = LoggerFactory.getLogger(this.getClass());
 
+    public void trustIp(boolean trust, String adr) {
+    }
+
+    public boolean trustRequest(HttpServletRequest request, String related) {
+        return true;
+    }
+
     public boolean trustUserSignUp(UserSignUpReqItf req, String adr) {
         return true;
     }
