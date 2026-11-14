@@ -329,17 +329,18 @@ public class HeliumDeviceService {
                 heliumDeviceRepository.save(hdev);
 
                 // need to process stats and invoicing
+                boolean hasDcs = true;
                 HeliumTenantSetup ts = heliumTenantSetupService.getHeliumTenantSetup(hdev.getTenantUUID(),false);
                 if (ts != null) {
                     HeliumDeviceStatItf i = new HeliumDeviceStatItf();
                     i.setTenantId(hdev.getTenantUUID());
                     i.setDeviceId(hdev.getDeviceEui());
                     i.setRegistrationDc(ts.getDcPerDeviceInserted());
-                    heliumTenantService.processDeviceInsertionActivityInactivity(i);
+                    hasDcs = heliumTenantService.processDeviceInsertionActivityInactivity(i);
                 }
 
-                // Declare on Nova Lab Router asynchronously
-                this.reportDeviceActivationOnMqtt(hdev);
+                // Declare on Nova Lab Router asynchronously if the tenant has the required DCs
+                if ( hasDcs ) this.reportDeviceActivationOnMqtt(hdev);
 
                 prometeusService.addDeviceCreation();
                 log.debug("scanNewDevicesJob - Add {}", hdev.getDeviceEui());

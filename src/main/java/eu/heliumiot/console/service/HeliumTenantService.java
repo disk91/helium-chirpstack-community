@@ -484,8 +484,14 @@ public class HeliumTenantService {
     }
 
 
-    public void processDeviceInsertionActivityInactivity(HeliumDeviceStatItf infos) {
+    /**
+     * return true when the tenant has enough DCs to proceed activation
+     * @param infos
+     * @return
+     */
+    public boolean processDeviceInsertionActivityInactivity(HeliumDeviceStatItf infos) {
         long start = Now.NowUtcMs();
+        boolean hasDcs = true;
         synchronized (this) {
             HeliumTenant t = this.getHeliumTenant(infos.getTenantId(),false);
             if (t != null) {
@@ -497,6 +503,7 @@ public class HeliumTenantService {
                 HeliumTenantSetup ts = heliumTenantSetupService.getHeliumTenantSetup(infos.getTenantId(),false);
                 if ( ts != null ) {
                     if ( !processBalance(ts,t) ) {
+                        hasDcs = false;
                         this.flushHeliumTenant(t);
                     }
                 }
@@ -504,6 +511,7 @@ public class HeliumTenantService {
         }
         reportStatToMqtt(infos);
         log.debug("Process INSERT ACTIVITY INACTIVITY in {}ms", Now.NowUtcMs() - start);
+        return hasDcs;
     }
 
     @Autowired
