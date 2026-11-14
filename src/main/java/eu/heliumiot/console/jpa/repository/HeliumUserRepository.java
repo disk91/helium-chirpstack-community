@@ -52,7 +52,7 @@ public interface HeliumUserRepository extends CrudRepository<HeliumUser, UUID> {
     //public List<HeliumUser> findHeliumUsersByUsernameContainingOrUseridContaining(String search,String search2);
 
     // Get user not connected since ...
-    public List<HeliumUser> findHeliumUsersByLastSeenLessThanAndRegistrationTimeLessThan(long lastSeen, long registrationTime);
+    public List<HeliumUser> findHeliumUsersByLastSeenLessThanAndRegistrationTimeLessThan(long lastSeen, Timestamp registrationTime);
 
 
 }

@@ -1142,7 +1142,9 @@ public class UserService {
         if ( consoleConfig.isHeliumUserPurgeEnable() && (Now.NowUtcMs() - lastPurgeRun > Now.ONE_FULL_DAY) ) {
             lastPurgeRun = Now.NowUtcMs();
             long purgeLimit = Now.NowUtcMs() - consoleConfig.getHeliumUserPurgePeriodDays()*Now.ONE_FULL_DAY;
-            List<HeliumUser> notConnectedUsers = heliumUserRepository.findHeliumUsersByLastSeenLessThanAndRegistrationTimeLessThan(purgeLimit, purgeLimit);
+            List<HeliumUser> notConnectedUsers = heliumUserRepository.findHeliumUsersByLastSeenLessThanAndRegistrationTimeLessThan(
+                    purgeLimit, new Timestamp(purgeLimit)
+            );
             for ( HeliumUser hu : notConnectedUsers ) {
                 UserCacheService.UserCacheElement uce = userCacheService.getUserById(hu.getUserid());
                 if ( uce != null && !uce.user.isAdmin() && uce.user.isActive()) {
