@@ -111,8 +111,7 @@ public class SignInUpApi {
         long startMs= Now.NowUtcMs();
         log.debug("Sign up for {}", signup.getUsername());
         try {
-            log.info("New signup from {} with agent {}", Tools.getRemoteIp(request), request.getHeader("User-Agent"));
-            UserSignUpRespItf r = userService.userSignup(signup, Tools.getRemoteIp(request));
+            UserSignUpRespItf r = userService.userSignup(signup, Tools.getRemoteIp(request), request);
             return new ResponseEntity<>(r, HttpStatus.OK);
         } catch (ITNotFoundException x) {
             prometeusService.addApiTotalError();

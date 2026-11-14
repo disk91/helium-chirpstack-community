@@ -176,7 +176,7 @@ public class UserService {
      * @throws ITNotFoundException
      * @throws ITParseException
      */
-    public UserSignUpRespItf userSignup(UserSignUpReqItf req, String adr)
+    public UserSignUpRespItf userSignup(UserSignUpReqItf req, String adr, HttpServletRequest request)
     throws ITNotFoundException,ITParseException
     {
         // Make sure the property file allow signup as a global setting
@@ -213,7 +213,7 @@ public class UserService {
 
         // verify email
         if ( ! Tools.isAcceptedEmailSyntax(req.getUsername(), consoleConfig.getIngeniousthingsEmailFilter()) ) {
-            safetyService.trustUserSignUp(null,adr);
+            safetyService.trustIp(false,adr);
             log.warn("Refused email registration for {} from {}", req.getUsername(), adr);
             r.setErrorMessage("success");
             Tools.sleep(8+((new Random().nextInt()) % 7));
@@ -224,12 +224,20 @@ public class UserService {
             throw new ITParseException("error_invalid_email");
         }
 
-        /* Emil validator is obsolete not supporting new TLDS
+        /* Email validator is obsolete not supporting new TLDS
         if ( ! EmailValidator.getInstance().isValid(req.getUsername()) ) {
             // bypass for helium.foundation not recognized by EmailValidator
             if ( ! req.getUsername().matches("^[A-Z0-9._%+-]+@helium.foundation") )
         }
         */
+
+        if ( ! safetyService.trustRequest(request, req.getUsername()) ) {
+            log.warn("Refused registration for {} from {} request", req.getUsername(), adr);
+            r.setErrorMessage("success");
+            Tools.sleep(8+((new Random().nextInt()) % 7));
+            return r;
+        }
+
         if ( ! safetyService.trustUserSignUp(req,adr) ) {
             log.warn("Refused registration for {} from {} untrusted", req.getUsername(), adr);
             r.setErrorMessage("success");
