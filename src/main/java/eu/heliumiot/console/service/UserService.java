@@ -213,6 +213,7 @@ public class UserService {
 
         // verify email
         if ( ! Tools.isAcceptedEmailSyntax(req.getUsername(), consoleConfig.getIngeniousthingsEmailFilter()) ) {
+            safetyService.trustUserSignUp(null,adr);
             log.warn("Refused email registration for {} from {}", req.getUsername(), adr);
             r.setErrorMessage("success");
             Tools.sleep(8+((new Random().nextInt()) % 7));
@@ -235,7 +236,6 @@ public class UserService {
             Tools.sleep(8+((new Random().nextInt()) % 7));
             return r;
         }
-
 
         // verify password
         if ( req.getPassword().length() < 12 ) {
@@ -1094,7 +1094,8 @@ public class UserService {
 
     protected long lastPurgeRun = 0L;
 
-    @Scheduled(fixedDelay = 600_000, initialDelay = 2_000)
+    //@Scheduled(fixedDelay = 600_000, initialDelay = 2_000)
+    //@TODO restore this
     protected void cleanUsers() {
 
         List<User> inactiveUsers = userRepository.findUsersByIsActive(false);
@@ -1140,7 +1141,8 @@ public class UserService {
         // run it once a day, this is good enough for a purge, we don't need to run it more often
         if ( consoleConfig.isHeliumUserPurgeEnable() && (Now.NowUtcMs() - lastPurgeRun > Now.ONE_FULL_DAY) ) {
             lastPurgeRun = Now.NowUtcMs();
-            List<HeliumUser> notConnectedUsers = heliumUserRepository.findHeliumUsersByLastSeenLessThan(Now.NowUtcMs() - consoleConfig.getHeliumUserPurgePeriodDays()*Now.ONE_FULL_DAY);
+            long purgeLimit = Now.NowUtcMs() - consoleConfig.getHeliumUserPurgePeriodDays()*Now.ONE_FULL_DAY;
+            List<HeliumUser> notConnectedUsers = heliumUserRepository.findHeliumUsersByLastSeenLessThanAndRegistrationTimeLessThan(purgeLimit, purgeLimit);
             for ( HeliumUser hu : notConnectedUsers ) {
                 UserCacheService.UserCacheElement uce = userCacheService.getUserById(hu.getUserid());
                 if ( uce != null && !uce.user.isAdmin() && uce.user.isActive()) {
@@ -1149,6 +1151,8 @@ public class UserService {
                     int deleted = 0;
                     for (eu.heliumiot.console.jpa.db.UserTenant ut : t1) {
                         boolean toDelete = true;
+                        // @TODO : on peut voir plusieurs admin sur le tenant et dans ce cas il  ne faut pas supprimer le tenant
+
                         if ( ! ut.isAdmin() ) {
                             // the user is not admin, do we have a second user who is admin ?
                             List<eu.heliumiot.console.jpa.db.UserTenant> owners = userTenantRepository.findUserTenantByTenantId(ut.getTenantId());
