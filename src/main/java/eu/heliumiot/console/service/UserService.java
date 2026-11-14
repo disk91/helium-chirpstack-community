@@ -1093,7 +1093,6 @@ public class UserService {
         }
     }
 
-
     // ==================================================
     // This function will be used to review users, ban those who need to be banned, remove tenants from banned users,
     // and clean up users who have not logged in for an extended period.
@@ -1102,8 +1101,7 @@ public class UserService {
 
     protected long lastPurgeRun = 0L;
 
-    //@Scheduled(fixedDelay = 600_000, initialDelay = 2_000)
-    //@TODO restore this
+    @Scheduled(fixedDelay = 600_000, initialDelay = 2_000)
     protected void cleanUsers() {
 
         List<User> inactiveUsers = userRepository.findUsersByIsActive(false);
@@ -1123,12 +1121,12 @@ public class UserService {
                     if ( toDelete ) {
                         // delete the chirpstack tenant
                         // This is cascade deleting application, integration, devices, gateways, etc.
-                        //try {
+                        try {
                             log.info(Tools.ANSI_RED+"[userService] Purge tenant {} for banned user {}"+Tools.ANSI_RESET, ut.getTenantId().toString(), u.getEmail());
-                            // heliumTenantService.deleteTenant(u.getId().toString(), ut.getTenantId().toString(), true);
-                        //} catch (ITRightException | ITParseException x) {
-                        //    log.error("[userService] Impossible to delete tenant {} for banned user {} - {}", ut.getTenantId().toString(), u.getEmail(), x.getMessage());
-                        //}
+                            heliumTenantService.deleteTenant(u.getId().toString(), ut.getTenantId().toString(), true);
+                        } catch (ITRightException | ITParseException x) {
+                            log.error("[userService] Impossible to delete tenant {} for banned user {} - {}", ut.getTenantId().toString(), u.getEmail(), x.getMessage());
+                        }
                     }
                 }
             } else {
@@ -1137,7 +1135,7 @@ public class UserService {
                 if ( uce != null ) {
                     if ( uce.heliumUser.getLastSeen() < (Now.NowUtcMs() - consoleConfig.getHeliumUserPurgePeriodDays()*Now.ONE_FULL_DAY) ) {
                         log.info(Tools.ANSI_RED+"[userService] Purge banned user {}, after lock period, last seen {}"+Tools.ANSI_RESET, u.getEmail(), DateConverters.msToStringDate(uce.heliumUser.getLastSeen()));
-                        //deleteOneUser(u.getId().toString());
+                        deleteOneUser(u.getId().toString());
                         userCacheService.flushHeliumUser(u.getId().toString());
                     }
                 }
@@ -1161,39 +1159,36 @@ public class UserService {
                     int deleted = 0;
                     for (eu.heliumiot.console.jpa.db.UserTenant ut : t1) {
                         boolean toDelete = true;
-                        // @TODO : on peut voir plusieurs admin sur le tenant et dans ce cas il  ne faut pas supprimer le tenant
-
-                        if ( ! ut.isAdmin() ) {
-                            // the user is not admin, do we have a second user who is admin ?
-                            List<eu.heliumiot.console.jpa.db.UserTenant> owners = userTenantRepository.findUserTenantByTenantId(ut.getTenantId());
-                            if (owners.size() > 1) {
-                                toDelete = false;
-                            }
+                        // get tenant owners
+                        List<eu.heliumiot.console.jpa.db.UserTenant> owners = userTenantRepository.findUserTenantByTenantId(ut.getTenantId());
+                        if ( owners.size() > 1 ) {
+                            // The tenant has more than one owner, we keep it until we deleted the last owner
+                            log.info(Tools.ANSI_YELLOW+"[userService] Purge tenant {} for expired user {} - but there are still {} owners, we keep it"+Tools.ANSI_RESET, ut.getTenantId().toString(), uce.user.getEmail(), owners.size());
+                            toDelete = false;
                         }
                         HeliumTenant t = heliumTenantService.getHeliumTenant(ut.getTenantId().toString(),false);
                         if ( toDelete && ( t == null || t.getDcBalance() <= consoleConfig.getHeliumUserPurgeMaxDc() ) ) {
                             // delete the chirpstack tenant
                             // This is cascade deleting application, integration, devices, gateways, etc.
-                            //try {
-                            log.info(Tools.ANSI_RED+"[userService] Purge tenant {} for expired user {} with {} Dcs"+Tools.ANSI_RESET, ut.getTenantId().toString(), uce.user.getEmail(), t != null ? t.getDcBalance() : "N/A");
-                            // heliumTenantService.deleteTenant(uce.user.getId().toString(), ut.getTenantId().toString(), true);
-                            deleted++;
-                            //} catch (ITRightException | ITParseException x) {
-                            //    log.error("[userService] Impossible to delete tenant {} for expired user {} - {}", ut.getTenantId().toString(), uce.user.getEmail(), x.getMessage());
-                            //}
+                            try {
+                               log.info(Tools.ANSI_RED+"[userService] Purge tenant {} for expired user {} with {} Dcs"+Tools.ANSI_RESET, ut.getTenantId().toString(), uce.user.getEmail(), t != null ? t.getDcBalance() : "N/A");
+                               heliumTenantService.deleteTenant(uce.user.getId().toString(), ut.getTenantId().toString(), true);
+                               deleted++;
+                            } catch (ITRightException | ITParseException x) {
+                                log.error("[userService] Impossible to delete tenant {} for expired user {} - {}", ut.getTenantId().toString(), uce.user.getEmail(), x.getMessage());
+                            }
                         }
                     }
                     // all tenant have been deleted, we can delete the user
                     if ( deleted == t1.size() ) {
                         log.info(Tools.ANSI_RED+"[userService] Purge expired user {}, last seen {}"+Tools.ANSI_RESET, hu.getUsername(), DateConverters.msToStringDate(uce.heliumUser.getLastSeen()));
-                        //deleteOneUser(hu.getUserid());
+                        deleteOneUser(hu.getUserid());
                         userCacheService.flushHeliumUser(hu.getUserid());
                     }
                 }
             }
         }
     }
-
 
     protected void deleteOneUser(String userId) {
         HttpHeaders heads = new HttpHeaders();
