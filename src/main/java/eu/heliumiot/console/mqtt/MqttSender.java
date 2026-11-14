@@ -160,13 +160,21 @@ public class MqttSender implements MqttCallback {
     ArrayList<MqttBackupMessage> messageBackupQueue = new ArrayList<>();
     public void publishMessage(String topic, String message, int qos) {
         if ( this.mqttClient.isConnected() ) {
+            MqttMessage mqttmessage = new MqttMessage(message.getBytes());
+            mqttmessage.setQos(qos);
+            //log.info("MQTT : Topic("+topic+") Mess("+mqttmessage+")");
             try {
-                MqttMessage mqttmessage = new MqttMessage(message.getBytes());
-                mqttmessage.setQos(qos);
-                //log.info("MQTT : Topic("+topic+") Mess("+mqttmessage+")");
                 this.mqttClient.publish(topic, mqttmessage);
             } catch (MqttException me) {
                 log.error("MQTT S - MessagePublish Error", me);
+                Tools.sleep(500);
+                // retry once
+                try {
+                    log.error("MQTT S - MessagePublish Retry");
+                    this.mqttClient.publish(topic, mqttmessage);
+                } catch (MqttException m) {
+                    log.error("MQTT S - MessagePublish Error", m);
+                }
             }
         } else {
             // buffer the message for later
