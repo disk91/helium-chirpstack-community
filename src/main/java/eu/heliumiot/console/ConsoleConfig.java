@@ -1018,6 +1018,21 @@ public class ConsoleConfig {
         return heliumCacheDeviceStat;
     }
 
+    @Value ("${helium.cache.ro.device.size:5000}")
+    private int heliumCacheRoDeviceSize;
+
+    public int getHeliumCacheRoDeviceSize() {
+        return heliumCacheRoDeviceSize;
+    }
+
+    @Value ("${helium.cache.ro.device.exp:3600000}")
+    private int heliumCacheRoDeviceExp;
+
+    public int getHeliumCacheRoDeviceExpMs() {
+        return heliumCacheRoDeviceExp;
+    }
+
+
 
     // =========================================
     // USER PURGE

@@ -19,6 +19,7 @@
  */
 package eu.heliumiot.console.service;
 
+import eu.heliumiot.console.ConsoleConfig;
 import eu.heliumiot.console.jpa.db.HeliumDevice;
 import eu.heliumiot.console.jpa.db.UserTenant;
 import eu.heliumiot.console.jpa.repository.HeliumDeviceRepository;
@@ -48,6 +49,9 @@ public class HeliumDeviceCacheService {
     @Autowired
     protected HeliumDeviceRepository heliumDeviceRepository;
 
+    @Autowired
+    protected ConsoleConfig consoleConfig;
+
     protected int runningJobs;
     protected boolean serviceEnable; // false to stop the services
 
@@ -57,8 +61,8 @@ public class HeliumDeviceCacheService {
         log.info("Init initHeliumDeviceCacheService");
         this.heliumDeviceCache = new ObjectCache<String, HeliumDevice>(
                 "DeviceROCache",
-                5000,
-                 Now.ONE_HOUR
+                consoleConfig.getHeliumCacheRoDeviceSize(),
+                consoleConfig.getHeliumCacheRoDeviceExpMs()
         ) {
             @Override
             public void onCacheRemoval(String key, HeliumDevice obj, boolean batch, boolean last) {
