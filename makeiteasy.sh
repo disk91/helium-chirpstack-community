@@ -217,19 +217,13 @@ if [ "$UID" != "0" ]; then
   exit 1
 fi
 
-if ! grep PRETTY /etc/os-release | grep -i "ubuntu.*22" > /dev/null ; then
-  read -p "This script has been made for Ubuntu 22.x, are your sur you want to continue [Y/N] ?" resp
+if ! grep PRETTY /etc/os-release | grep -i "ubuntu.*26" > /dev/null ; then
+  read -p "This script has been made for Ubuntu 26.x, are your sur you want to continue [Y/N] ?" resp
   case $resp in
     [Nn] )
        exit 2
        ;;
   esac
-fi
-
-# Add Yarn repo
-if [ ! -f /etc/apt/sources.list.d/yarn.list ] ; then
-  curl -sL https://dl.yarnpkg.com/debian/pubkey.gpg | sudo apt-key add -
-  echo "deb https://dl.yarnpkg.com/debian/ stable main" | sudo tee /etc/apt/sources.list.d/yarn.list
 fi
 
 # Make sure we are up-to-date
@@ -239,7 +233,7 @@ DEBIAN_FRONTEND=noninteractive apt upgrade -y -qq >/dev/null 2>/dev/null
 
 # Install the expected packages
 cecho "Installing required packages"
-for package in openjdk-21-jdk make build-essential libssl-dev pkg-config protobuf-compiler yarn ca-certificates curl gnupg npm; do
+for package in openjdk-21-jdk make build-essential libssl-dev pkg-config protobuf-compiler ca-certificates curl gnupg npm; do
   if ! dpkg -l | grep -q "^ii.*$package" ; then
     echo "[x] $package"
     DEBIAN_FRONTEND=noninteractive apt install $package -y -qq >/dev/null
@@ -247,6 +241,17 @@ for package in openjdk-21-jdk make build-essential libssl-dev pkg-config protobu
     echo "[ ] $package"
   fi
 done
+
+# Add Yarn repo & install it
+if [ ! -f /etc/apt/sources.list.d/yarn.list ] ; then
+  sudo install -d -m 755 /etc/apt/keyrings
+  curl -sL https://dl.yarnpkg.com/debian/pubkey.gpg | sudo gpg --dearmor --yes -o /etc/apt/keyrings/yarn.gpg
+  sudo chmod 644 /etc/apt/keyrings/yarn.gpg
+  echo "deb [signed-by=/etc/apt/keyrings/yarn.gpg] https://dl.yarnpkg.com/debian/ stable main" \
+    | sudo tee /etc/apt/sources.list.d/yarn.list
+  sudo apt update
+  sudo apt install -y yarn
+fi
 
 # Update node.js
 echo "Installing recent version of node.js"
@@ -384,7 +389,7 @@ if egrep "@DOMAIN@" /helium/configuration/nginx/default.conf > /dev/null ; then
       sed -i "s|@DOMAIN@|$DOMAIN|g" /helium/configuration/nginx/default.conf
       cecho "Getting certificate"
       cd /helium
-      docker compose up -d nginx
+      docker compose up -d --no-deps nginx
       sleep 10
       docker compose run --rm certbot certonly --webroot --webroot-path /var/www/certbot/ -d $DOMAIN
       sleep 5
